@@ -32,8 +32,18 @@
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
+		<woego-frame-boot.version>1.0.0-SNAPSHOT</woego-frame-boot.version>
 	</properties>
 
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>com.ai.woego.boot</groupId>
+				<artifactId>cache-engine-spring-boot-autoconfigure</artifactId>
+				<version>${woego-frame-boot.version}</version>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -41,15 +51,6 @@
 			<version>4.12</version>
 		</dependency>
 	</dependencies>
-
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 
 	<repositories>
 		<repository>

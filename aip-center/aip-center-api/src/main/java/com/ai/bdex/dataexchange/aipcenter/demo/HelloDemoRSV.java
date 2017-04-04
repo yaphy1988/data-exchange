@@ -5,5 +5,5 @@ package com.ai.bdex.dataexchange.aipcenter.demo;
  * @since 2017/3/31
  */
 public interface HelloDemoRSV {
-    String helloWorld();
+    public String helloWorld();
 }

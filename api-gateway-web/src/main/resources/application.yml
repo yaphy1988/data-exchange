@@ -1,0 +1,10 @@
+application:
+  configcenter:
+    zkaddress: 127.0.0.1:2181
+    runmode: P
+    login: admin:admin
+  cache:
+    confpath: /com/ai/paas/cache/bdex/conf
+
+server:
+  port: 8080

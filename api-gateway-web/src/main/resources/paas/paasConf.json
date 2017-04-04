@@ -1,0 +1,13 @@
+{
+  "/com/ai/paas/cache/bdex/conf": {
+    "hosts": "127.0.0.1:16379",
+    "timeOut": "20000",
+    "maxActive": "100",
+    "maxIdle": "100",
+    "maxWait": "1000",
+    "testOnBorrow": "false",
+    "testOnReturn": "true",
+    "dbIndex": "0",
+    "twemproxy": "false"
+  }
+}
