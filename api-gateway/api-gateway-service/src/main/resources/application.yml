@@ -9,10 +9,8 @@ spring:
       threads: 300
     registry:
       address: 132.37.2.41:29181
-    monitor:
-      enable: false
     provider:
-      enable: true
+      enabled: true
       group: devGroup
     consumer:
-      enable: false
+      enabled: false
