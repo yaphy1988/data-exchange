@@ -1,0 +1,16 @@
+spring:
+  dubbo:
+    application:
+      name: woego-dubbo-demo
+      owner: owner
+      environment: develop
+    protocol:
+      port: 20880
+      threads: 300
+    registry:
+      address: 132.37.2.41:29181
+    provider:
+      enabled: true
+      group: devGroup
+    consumer:
+      enabled: false

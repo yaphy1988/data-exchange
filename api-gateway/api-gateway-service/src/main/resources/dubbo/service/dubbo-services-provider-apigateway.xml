@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+  <!-- 定义dubbo服务，必填信息有，interface、ref、owner、timeout，其中dubbo服务对应的bean对象也使用bean配置 -->
+  <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IDemoRSV" ref="demoApiRSV"
+                 owner="zhaoyf7" timeout="3000"/>
+  <bean id="demoApiRSV" class="com.ai.bdex.dataexchange.apigateway.dubbo.impl.DemoRSVImpl"/>
+
+</beans>
