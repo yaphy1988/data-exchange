@@ -4,3 +4,21 @@ server:
 spring:
   session:
     store-type: none
+  dubbo:
+      application:
+        name: manage-web
+        owner: owner
+        environment: develop
+      protocol:
+        port: 20881
+        threads: 300
+      registry:
+        address: 127.0.0.1:2181
+      provider:
+        enabled: false
+        group: devGroup
+      consumer:
+        enabled: true
+
+usercenter.dubbo.group: devGroup
+

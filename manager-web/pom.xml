@@ -46,6 +46,19 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>com.ai.bdex.dataexchange</groupId>
+			<artifactId>user-center-api</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ai.woego.boot</groupId>
+			<artifactId>config-engine-spring-boot-autoconfigure</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ai.woego.boot</groupId>
+			<artifactId>dubbo-spring-boot-autoconfigure</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>

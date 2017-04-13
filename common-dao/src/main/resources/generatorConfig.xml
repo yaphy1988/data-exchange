@@ -28,7 +28,7 @@
     </javaClientGenerator>
     
     <!--需要生成的表请按以下配置（tableName 是实际的表名  domainObjectName 映射成的java对象名） -->
-    <table tableName="t_demo" domainObjectName="Tdemo"></table>
+    <table tableName="t_demo" domainObjectName="Demo"></table>
     <!-- 多个表则写多个 table 标签 -->
     <!-- 
     <table tableName="table1" domainObjectName="Table1"></table>

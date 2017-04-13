@@ -3,6 +3,8 @@ package com.ai.bdex.dataexchange.usercenter.dubbo.impl;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.DemoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IDemoRSV;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IDemoSV;
+import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.config.BeanPostProcessor;
 
 import javax.annotation.Resource;
 
@@ -17,6 +19,6 @@ public class DemoRSVImpl implements IDemoRSV {
 
     @Override
     public String callDemoApi(DemoDTO demoDTO) {
-        return "call API success";
+        return demoSV.callDemo(demoDTO);
     }
 }
