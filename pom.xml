@@ -15,6 +15,7 @@
 		<module>api-gateway-web</module>
 		<module>mall-web</module>
 		<module>manager-web</module>
+		<module>common-dao</module>
 	</modules>
 	<packaging>pom</packaging>
 
@@ -33,6 +34,7 @@
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 		<java.version>1.8</java.version>
 		<woego-frame-boot.version>1.0.0-SNAPSHOT</woego-frame-boot.version>
+		<common-dao.version>0.0.1-SNAPSHOT</common-dao.version>
 	</properties>
 
 	<dependencyManagement>
@@ -62,6 +64,32 @@
 				<artifactId>dubbo-spring-boot-autoconfigure</artifactId>
 				<version>${woego-frame-boot.version}</version>
 			</dependency>
+			<dependency>
+				<groupId>com.ai.bdex.dataexchange</groupId>
+				<artifactId>common-dao</artifactId>
+				<version>${common-dao.version}</version>
+			</dependency>
+			<dependency>
+		      <groupId>com.alibaba</groupId>
+		      <artifactId>druid</artifactId>
+		      <version>1.0.25</version>
+		      <scope>runtime</scope>
+		    </dependency>
+			<dependency>
+		      <groupId>mysql</groupId>
+		      <artifactId>mysql-connector-java</artifactId>
+		      <version>5.1.36</version>
+		    </dependency>
+		    <dependency>
+		      <groupId>com.github.pagehelper</groupId>
+		      <artifactId>pagehelper</artifactId>
+		      <version>4.1.6</version>
+		    </dependency>
+		    <dependency>
+		      <groupId>org.mybatis.spring.boot</groupId>
+		      <artifactId>mybatis-spring-boot-starter</artifactId>
+		      <version>1.1.1</version>
+		    </dependency>
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>

@@ -1,10 +1,11 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.impl;
 
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.DemoDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IDemoRSV;
-import com.ai.bdex.dataexchange.usercenter.service.interfaces.IDemoSV;
 
 import javax.annotation.Resource;
+
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.DemoDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.IDemoRSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.IDemoSV;
 
 /**
  * @author yafei

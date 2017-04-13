@@ -14,3 +14,10 @@ spring:
       group: devGroup
     consumer:
       enabled: false
+      
+jdbc:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+  url: jdbc:mysql://132.37.2.102:39306/mp_woego
+  username: wegmpusr
+  password: wegmpusr@123

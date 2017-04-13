@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+  
+  <classPathEntry location="${jdbc.Driver}" />
+  
+  <context id="MySqlTables" targetRuntime="MyBatis3">
+    <jdbcConnection driverClass="${jdbc.driverClass}"
+        connectionURL="${jdbc.connectionURL}"
+        userId="${jdbc.userId}"
+        password="${jdbc.password}">
+    </jdbcConnection>
+
+    <javaModelGenerator targetPackage="com.ai.bdex.dataexchange.common.dao.model" targetProject="MAVEN">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+    <sqlMapGenerator targetPackage="com.ai.bdex.dataexchange.common.dao.mapper"  targetProject="MAVEN">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.ai.bdex.dataexchange.common.dao.mapper"  targetProject="MAVEN">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+    
+    <!--需要生成的表请按以下配置（tableName 是实际的表名  domainObjectName 映射成的java对象名） -->
+    <table tableName="t_demo" domainObjectName="Tdemo"></table>
+    <!-- 多个表则写多个 table 标签 -->
+    <!-- 
+    <table tableName="table1" domainObjectName="Table1"></table>
+    <table tableName="table2" domainObjectName="Table2"></table>
+     -->
+   
+  </context>
+</generatorConfiguration>

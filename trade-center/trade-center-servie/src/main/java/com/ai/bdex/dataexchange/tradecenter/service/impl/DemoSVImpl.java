@@ -1,9 +1,10 @@
 package com.ai.bdex.dataexchange.tradecenter.service.impl;
 
 
-import com.ai.bdex.dataexchange.billingcenter.dubbo.dto.DemoDTO;
-import com.ai.bdex.dataexchange.billingcenter.service.interfaces.IDemoSV;
 import org.springframework.stereotype.Service;
+
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.DemoDTO;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.IDemoSV;
 
 /**
  * Created by fangyunfeng on 2017/4/12.

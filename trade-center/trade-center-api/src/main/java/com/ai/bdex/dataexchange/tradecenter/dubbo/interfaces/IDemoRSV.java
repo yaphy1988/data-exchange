@@ -1,5 +1,5 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DemoDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.DemoDTO;
 
 /**
  * @author yafei
