@@ -6,6 +6,5 @@
   <!-- 定义dubbo服务，必填信息有，interface、ref、owner、timeout，其中dubbo服务对应的bean对象也使用bean配置 -->
   <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IDemoRSV" ref="demoRSV"
                  owner="zhaoyf7" timeout="3000" group="${spring.dubbo.provider.group}"/>
-  <bean id="demoRSV" class="com.ai.bdex.dataexchange.usercenter.dubbo.impl.DemoRSVImpl"/>
 
 </beans>
