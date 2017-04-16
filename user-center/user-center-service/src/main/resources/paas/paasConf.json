@@ -1,0 +1,26 @@
+{
+  "/com/ai/db/bdex/sequence/conf": {
+    "sequenceTable": "t_sequence",
+    "driver": "com.mysql.jdbc.Driver",
+    "username": "root",
+    "password": "{ENC}1234",
+    "url": "jdbc:mysql://localhost:3305/qcs",
+    "initSize": 5,
+    "maxActive": 10,
+    "maxIdle": 4,
+    "maxWait": 10000,
+    "validationQuery": "select&nbsp;1&nbsp;from&nbsp;dual",
+    "testWhileIdle": "true"
+  },
+  "/com/ai/paas/cache/conf": {
+    "hosts": "192.168.111.217:6379",
+    "timeOut": "20000",
+    "maxActive": "100",
+    "maxIdle": "100",
+    "maxWait": "1000",
+    "testOnBorrow": "false",
+    "testOnReturn": "true",
+    "dbIndex": "0",
+    "twemproxy": "false"
+  }
+}

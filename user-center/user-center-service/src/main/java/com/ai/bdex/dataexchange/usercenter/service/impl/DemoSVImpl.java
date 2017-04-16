@@ -5,6 +5,7 @@ import java.util.List;
 import com.ai.bdex.dataexchange.common.dao.mapper.DemoMapper;
 import com.ai.bdex.dataexchange.common.dao.model.Demo;
 import com.ai.bdex.dataexchange.common.dao.model.DemoExample;
+import com.ai.bdex.dataexchange.sequence.SeqUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.DemoDTO;
@@ -29,7 +30,7 @@ public class DemoSVImpl implements IDemoSV {
 
     private void insertTest(){
 		Demo model = new Demo();
-		model.setId((int)(Math.random()*100));
+		model.setId(SeqUtil.getInt("SEQ_DEMO"));
 		model.setUserName("fangyf_"+model.getId());
 		model.setAddr("gx");
 		//model.set
