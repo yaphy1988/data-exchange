@@ -1,9 +1,9 @@
-package com.ai.bdex.dataexchange.usercenter.dubbo.interfaces;
+package com.ai.bdex.dataexchange.usercenter.service.interfaces;
 
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
 
-public interface IAuthStaffRSV {
-
+public interface IAuthStaffSV {
+	
 	/**
 	 * 用户点击注册发送激活邮件
 	 * @param authStaffDTO
