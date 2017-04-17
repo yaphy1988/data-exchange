@@ -73,8 +73,13 @@
       <groupId>org.mybatis</groupId>
       <artifactId>mybatis</artifactId>
       <version>3.3.1</version>
-    </dependency>
-  </dependencies>
+    </dependency>    
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>com.springsource.javax.mail</artifactId>
+      <version>1.4.5</version>
+    </dependency>  
+    </dependencies>
 
 
 </project>
