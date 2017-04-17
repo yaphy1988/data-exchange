@@ -14,3 +14,5 @@ spring:
       group: devGroup
     consumer:
       enabled: false
+    monitor:
+      enabled: false
