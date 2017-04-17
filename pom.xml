@@ -92,8 +92,18 @@
 				<version>${woego-frame.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>com.ai.paas</groupId>
+				<artifactId>sequence-engine</artifactId>
+				<version>${woego-frame.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>com.ai.woego.boot</groupId>
 				<artifactId>dubbo-spring-boot-autoconfigure</artifactId>
+				<version>${woego-frame-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ai.woego.boot</groupId>
+				<artifactId>sequence-spring-boot-autoconfig</artifactId>
 				<version>${woego-frame-boot.version}</version>
 			</dependency>
 			<dependency>

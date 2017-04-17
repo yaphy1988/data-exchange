@@ -17,12 +17,12 @@ public class BaseInfo implements Serializable {
     private String gridQuerySortName = null;
     private String gridQuerySortOrder = null;
 
-    private BaseStaff staff = null;
+    private String currentUserId = null;
     private Locale locale = null;
     private Long currentSiteId = Long.valueOf(0L);
 
     public BaseInfo(){
-        this.staff = StaffLocaleUtil.getStaff();
+        this.currentUserId = StaffLocaleUtil.getCurrentUserId();
         this.locale = LocaleUtil.getLocale();
         this.currentSiteId = SiteLocaleUtil.getSite();
     }

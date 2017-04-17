@@ -10,7 +10,7 @@ import com.ai.bdex.dataexchange.usercenter.dao.mapper.DemoMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.custom.BaseSysCfgMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.model.Demo;
 import com.ai.bdex.dataexchange.usercenter.dao.model.DemoExample;
-import com.ai.bdex.dataexchange.sequence.SeqUtil;
+import com.ai.paas.sequence.SeqUtil;
 import com.ai.bdex.dataexchange.usercenter.dao.model.custom.BaseSysCfg;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqDemoDTO;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
@@ -39,6 +39,7 @@ public class DemoSVImpl implements IDemoSV {
 	
     @Override
     public String callDemo(DemoDTO demoDTO) {
+		insertTest();
 		List<Demo> list= queryTest(demoDTO);
         return list.get(0).getUserName();
     }

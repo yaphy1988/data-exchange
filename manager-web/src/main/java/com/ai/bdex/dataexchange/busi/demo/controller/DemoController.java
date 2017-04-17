@@ -21,10 +21,6 @@ public class DemoController {
     public String init(Model model){
         DemoDTO demoDTO = new DemoDTO();
         demoDTO.setAddr("gx");
-        demoDTO.setPageSize(2);
-        demoDTO.setPageNo(2);
-        demoDTO.setGridQuerySortName("user_name");
-        demoDTO.setGridQuerySortOrder("desc");
         String userName = demoRSV.callDemoApi(demoDTO);
         model.addAttribute("username",userName);
         return "/demo/demo";
