@@ -4,6 +4,7 @@ package com.ai.bdex.dataexchange.usercenter.service.impl;
 import java.sql.Timestamp;
 import java.util.List;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.DemoMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.custom.BaseSysCfgMapper;
@@ -11,6 +12,11 @@ import com.ai.bdex.dataexchange.usercenter.dao.model.Demo;
 import com.ai.bdex.dataexchange.usercenter.dao.model.DemoExample;
 import com.ai.bdex.dataexchange.sequence.SeqUtil;
 import com.ai.bdex.dataexchange.usercenter.dao.model.custom.BaseSysCfg;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqDemoDTO;
+import com.ai.bdex.dataexchange.util.PageResponseFactory;
+import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.DemoDTO;
@@ -23,6 +29,7 @@ import com.github.pagehelper.PageHelper;
  */
 @Service("demoSV")
 public class DemoSVImpl implements IDemoSV {
+	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	DemoMapper demoMapper;
@@ -37,28 +44,25 @@ public class DemoSVImpl implements IDemoSV {
     }
 
 	@Override
-	public Page<DemoDTO> queryDemoPage(DemoDTO demoDTO) throws BusinessException {
+	public PageResponseDTO<DemoDTO> queryDemoPage(ReqDemoDTO demoDTO) throws BusinessException {
+		//分页信息赋值
+		int page = demoDTO.getPageNo();
+		int rows = demoDTO.getPageSize();
+		//查询条件赋值
 		DemoExample example = new DemoExample();
 		DemoExample.Criteria criteria = example.createCriteria();
 		example.setOrderByClause(demoDTO.getGridQuerySortName() +" "+demoDTO.getGridQuerySortOrder());
-		criteria.andAddrEqualTo("gx");
-
-		//第一个参数 PageNo，第二个参数PageSize，该设置只对紧随其后的第一次查询有效
-		PageHelper.startPage(demoDTO.getPageNo(), demoDTO.getPageSize());
-		List<Demo> listDemo = demoMapper.selectByExample(example);
-
-		//转成page对象
-		Page<Demo> page = (Page<Demo>)listDemo;
-		System.out.println("============queryByPageTest result============");
-		if(page != null){
-			System.out.println("总记录数：" + page.getTotal());
-			System.out.println("当前页数据：");
-			for(Demo demo : page.getResult()){
-				System.out.println(demo.getId()+":"+demo.getUserName()+":"+demo.getAddr());
-			}
-		}
-
-		return null;
+		criteria.andUserNameEqualTo(demoDTO.getUserName());
+		//开启分页查询，使用mybatis-PageHelper分页插件，第一个参数 PageNo，第二个参数PageSize，该设置只对紧随其后的第一次查询有效
+		PageHelper.startPage(page, rows);
+		//执行查询第一个mybatis查询方法，会被进行分页
+		List<Demo> lists = demoMapper.selectByExample(example);
+		//使用PageInfo对结果进行包装
+		PageInfo pageInfo = new PageInfo(lists);
+		logger.info("IDemoInfoSV查询完成，总数：" + pageInfo.getTotal() + "当前页内记录数：" + lists.size());
+		//按照返回数据结构封装分页数据，本项目中分页统一返回PageResponseDTO。入参pageInfo，返回的数据传输对象DTO的class
+		PageResponseDTO<DemoDTO> respDTO = PageResponseFactory.genPageResponse(pageInfo,DemoDTO.class);
+		return respDTO;
 	}
 
 	private void insertTest2(){
