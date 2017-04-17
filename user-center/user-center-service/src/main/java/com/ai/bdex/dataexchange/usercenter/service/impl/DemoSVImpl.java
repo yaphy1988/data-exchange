@@ -30,7 +30,6 @@ public class DemoSVImpl implements IDemoSV {
 	
     @Override
     public String callDemo(DemoDTO demoDTO) {
-		insertTest2();
 		List<Demo> list= queryTest(demoDTO);
         return list.get(0).getUserName();
     }
