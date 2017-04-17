@@ -1,7 +1,5 @@
 package com.ai.bdex.dataexchange.common.dto;
 
-import com.ai.bdex.dataexchange.util.StaffLocaleUtil;
-
 /**
  * Created by fangyunfeng on 2017/4/17.
  */

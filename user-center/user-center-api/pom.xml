@@ -13,11 +13,7 @@
   <artifactId>user-center-api</artifactId>
 
   <dependencies>
-    <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
-      <artifactId>bdex-sys-api</artifactId>
-      <version>0.0.1-SNAPSHOT</version>
-    </dependency>
+
   </dependencies>
 
 

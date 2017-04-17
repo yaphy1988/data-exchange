@@ -16,7 +16,7 @@
 		<module>mall-web</module>
 		<module>manager-web</module>
 		<module>common-dao</module>
-		<module>bdex-sys</module>
+		<module>common-api</module>
 	</modules>
 	<packaging>pom</packaging>
 
@@ -117,12 +117,17 @@
 		      <artifactId>mybatis-spring-boot-starter</artifactId>
 		      <version>1.1.1</version>
 		    </dependency>
+
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
 		</dependency>
 	</dependencies>
 

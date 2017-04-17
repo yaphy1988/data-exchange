@@ -49,7 +49,12 @@
 		<dependency>
 			<groupId>com.ai.bdex.dataexchange</groupId>
 			<artifactId>user-center-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.ai.bdex.dataexchange</groupId>
+			<artifactId>common-api</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ai.woego.boot</groupId>

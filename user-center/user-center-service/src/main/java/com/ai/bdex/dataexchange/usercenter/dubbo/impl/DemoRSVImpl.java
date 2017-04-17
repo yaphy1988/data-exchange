@@ -1,8 +1,10 @@
 package com.ai.bdex.dataexchange.usercenter.dubbo.impl;
 
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.DemoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IDemoRSV;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IDemoSV;
+import com.github.pagehelper.Page;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.BeanPostProcessor;
 import org.springframework.stereotype.Component;
@@ -23,5 +25,10 @@ public class DemoRSVImpl implements IDemoRSV {
     @Override
     public String callDemoApi(DemoDTO demoDTO) {
         return demoSV.callDemo(demoDTO);
+    }
+
+    @Override
+    public Page<DemoDTO> queryDemoPage(DemoDTO demoDTO) throws BusinessException {
+        return null;
     }
 }

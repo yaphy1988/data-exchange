@@ -3,6 +3,8 @@ package com.ai.bdex.dataexchange.usercenter.service.impl;
 
 import java.sql.Timestamp;
 import java.util.List;
+
+import com.ai.bdex.dataexchange.exception;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.DemoMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.custom.BaseSysCfgMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.model.Demo;
@@ -34,7 +36,33 @@ public class DemoSVImpl implements IDemoSV {
         return list.get(0).getUserName();
     }
 
-    private void insertTest2(){
+	@Override
+	public Page<DemoDTO> queryDemoPage(DemoDTO demoDTO) throws BusinessException {
+		DemoExample example = new DemoExample();
+		DemoExample.Criteria criteria = example.createCriteria();
+		example.setOrderByClause(demoDTO.getGridQuerySortName() +" "+demoDTO.getGridQuerySortOrder());
+		criteria.andAddrEqualTo("gx");
+
+		//第一个参数 PageNo，第二个参数PageSize，该设置只对紧随其后的第一次查询有效
+		PageHelper.startPage(demoDTO.getPageNo(), demoDTO.getPageSize());
+		List<Demo> listDemo = demoMapper.selectByExample(example);
+
+		//转成page对象
+		Page<Demo> page = (Page<Demo>)listDemo;
+		page.
+		System.out.println("============queryByPageTest result============");
+		if(page != null){
+			System.out.println("总记录数：" + page.getTotal());
+			System.out.println("当前页数据：");
+			for(Demo demo : page.getResult()){
+				System.out.println(demo.getId()+":"+demo.getUserName()+":"+demo.getAddr());
+			}
+		}
+
+		return page;
+	}
+
+	private void insertTest2(){
 		BaseSysCfg baseSysCfg = new BaseSysCfg();
 		baseSysCfg.setParaCode("test");
 		baseSysCfg.setCreateTime(new Timestamp(System.currentTimeMillis()));
