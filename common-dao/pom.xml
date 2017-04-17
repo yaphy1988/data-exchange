@@ -20,9 +20,9 @@
 	    <!-- 生成model和mapper的数据库 -->
 	    <jdbc.Driver>${basedir}/lib/mysql-connector-java-5.1.36.jar</jdbc.Driver>
 	    <jdbc.driverClass>com.mysql.jdbc.Driver</jdbc.driverClass>
-	    <jdbc.connectionURL>jdbc:mysql://localhost:3305/qcs</jdbc.connectionURL>
-	    <jdbc.userId>root</jdbc.userId>
-	    <jdbc.password>1234</jdbc.password>
+	    <jdbc.connectionURL>jdbc:mysql://132.37.2.166:39306/bdex</jdbc.connectionURL>
+	    <jdbc.userId>bdex</jdbc.userId>
+	    <jdbc.password>bdex1234</jdbc.password>
 	    
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

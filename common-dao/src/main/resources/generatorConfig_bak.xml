@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+  PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+  "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+  
+  <classPathEntry location="${jdbc.Driver}" />
+  
+  <context id="MySqlTables" targetRuntime="MyBatis3">
+    <jdbcConnection driverClass="${jdbc.driverClass}"
+        connectionURL="${jdbc.connectionURL}"
+        userId="${jdbc.userId}"
+        password="${jdbc.password}">
+    </jdbcConnection>
+
+    <javaModelGenerator targetPackage="com.ai.bdex.dataexchange.tradecenter.dao.model" targetProject="E:\myIdeaProject\data-exchange\trade-center\trade-center-servie\src\main\java">
+      <property name="enableSubPackages" value="true" />
+      <property name="trimStrings" value="true" />
+    </javaModelGenerator>
+
+    <sqlMapGenerator targetPackage="com.ai.bdex.dataexchange.tradecenter.dao.mapper"  targetProject="E:\myIdeaProject\data-exchange\trade-center\trade-center-servie\src\main\java">
+      <property name="enableSubPackages" value="true" />
+    </sqlMapGenerator>
+
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.ai.bdex.dataexchange.tradecenter.dao.mapper"  targetProject="E:\myIdeaProject\data-exchange\trade-center\trade-center-servie\src\main\java">
+      <property name="enableSubPackages" value="true" />
+    </javaClientGenerator>
+    
+    <!--需要生成的表请按以下配置（tableName 是实际的表名  domainObjectName 映射成的java对象名） -->
+    <table tableName="T_GDS_CAT" domainObjectName="GdsCat"></table>
+    <table tableName="T_GDS_INFO" domainObjectName="GdsInfo"></table>
+    <table tableName="T_GDS_INFO_2_CAT" domainObjectName="GdsInfo2Cat"></table>
+    <table tableName="T_GDS_INFO_2_PROP" domainObjectName="GdsInfo2Prop"></table>
+    <table tableName="T_GDS_LABEL" domainObjectName="GdsLabel"></table>
+    <table tableName="T_GDS_LABEL_QUIK" domainObjectName="GdsLabelQuik"></table>
+    <table tableName="T_GDS_PROP" domainObjectName="GdsProp"></table>
+    <table tableName="T_GDS_SKU" domainObjectName="GdsSku"></table>
+
+  </context>
+</generatorConfiguration>
