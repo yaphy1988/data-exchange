@@ -5,7 +5,6 @@ import com.ai.paas.util.JSONValidator;
 import com.ai.paas.utils.CipherUtil;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.sf.json.JSONObject;
 
 import javax.sql.DataSource;
 import java.io.IOException;
@@ -32,7 +31,7 @@ public class SimpleSequenceFactory extends AbstractConfigurationWatcher implemen
     private static final String TESTWHILEIDLE_KEY = "testWhileIdle";
     private static final String SEQUENCETABLE_KEY = "sequenceTable";
 
-    private static final JSONObject conf = null;
+    private static final JsonNode conf = null;
     private static final String confPath = "/com/ai/db/sequence/conf";
     private static DataSource db;
 

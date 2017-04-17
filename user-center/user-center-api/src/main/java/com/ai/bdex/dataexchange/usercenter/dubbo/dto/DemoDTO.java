@@ -1,11 +1,11 @@
 package com.ai.bdex.dataexchange.usercenter.dubbo.dto;
 
-import java.io.Serializable;
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
 /**
  * Created by fangyunfeng on 2017/4/12.
  */
-public class DemoDTO implements Serializable {
+public class DemoDTO extends BaseInfo {
     private static final long serialVersionUID = 1L;
 
     private int id;
