@@ -4,7 +4,7 @@ package com.ai.bdex.dataexchange.usercenter.service.impl;
 import java.sql.Timestamp;
 import java.util.List;
 
-import com.ai.bdex.dataexchange.exception;
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.DemoMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.custom.BaseSysCfgMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.model.Demo;
@@ -49,7 +49,6 @@ public class DemoSVImpl implements IDemoSV {
 
 		//转成page对象
 		Page<Demo> page = (Page<Demo>)listDemo;
-		page.
 		System.out.println("============queryByPageTest result============");
 		if(page != null){
 			System.out.println("总记录数：" + page.getTotal());
@@ -59,7 +58,7 @@ public class DemoSVImpl implements IDemoSV {
 			}
 		}
 
-		return page;
+		return null;
 	}
 
 	private void insertTest2(){
