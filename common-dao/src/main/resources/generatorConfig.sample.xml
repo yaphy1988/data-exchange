@@ -14,16 +14,16 @@
         password="${jdbc.password}">
     </jdbcConnection>
 
-    <javaModelGenerator targetPackage="com.ai.bdex.dataexchange.common.dao.model" targetProject="MAVEN">
+    <javaModelGenerator targetPackage="com.ai.bdex.dataexchange.usercenter.dao.model" targetProject="MAVEN">
       <property name="enableSubPackages" value="true" />
       <property name="trimStrings" value="true" />
     </javaModelGenerator>
 
-    <sqlMapGenerator targetPackage="com.ai.bdex.dataexchange.common.dao.mapper"  targetProject="MAVEN">
+    <sqlMapGenerator targetPackage="com.ai.bdex.dataexchange.usercenter.dao.mapper"  targetProject="MAVEN">
       <property name="enableSubPackages" value="true" />
     </sqlMapGenerator>
 
-    <javaClientGenerator type="XMLMAPPER" targetPackage="com.ai.bdex.dataexchange.common.dao.mapper"  targetProject="MAVEN">
+    <javaClientGenerator type="XMLMAPPER" targetPackage="com.ai.bdex.dataexchange.usercenter.dao.mapper"  targetProject="MAVEN">
       <property name="enableSubPackages" value="true" />
     </javaClientGenerator>
     

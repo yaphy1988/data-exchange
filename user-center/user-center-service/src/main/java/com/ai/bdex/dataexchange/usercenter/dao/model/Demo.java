@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.common.dao.model;
+package com.ai.bdex.dataexchange.usercenter.dao.model;
 
 public class Demo {
     /**

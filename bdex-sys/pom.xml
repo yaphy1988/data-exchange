@@ -17,5 +17,12 @@
         <module>bdex-sys-service</module>
     </modules>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.ai.woego.boot</groupId>
+            <artifactId>config-engine-spring-boot-autoconfigure</artifactId>
+        </dependency>
+    </dependencies>
+
 
 </project>

@@ -97,11 +97,6 @@
 				<version>${woego-frame-boot.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>com.ai.bdex.dataexchange</groupId>
-				<artifactId>common-dao</artifactId>
-				<version>${common-dao.version}</version>
-			</dependency>
-			<dependency>
 		      <groupId>com.alibaba</groupId>
 		      <artifactId>druid</artifactId>
 		      <version>1.0.25</version>

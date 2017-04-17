@@ -2,9 +2,9 @@ package com.ai.bdex.dataexchange.usercenter.service.impl;
 
 
 import java.util.List;
-import com.ai.bdex.dataexchange.common.dao.mapper.DemoMapper;
-import com.ai.bdex.dataexchange.common.dao.model.Demo;
-import com.ai.bdex.dataexchange.common.dao.model.DemoExample;
+import com.ai.bdex.dataexchange.usercenter.dao.mapper.DemoMapper;
+import com.ai.bdex.dataexchange.usercenter.dao.model.Demo;
+import com.ai.bdex.dataexchange.usercenter.dao.model.DemoExample;
 import com.ai.bdex.dataexchange.sequence.SeqUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

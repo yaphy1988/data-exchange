@@ -1,6 +1,7 @@
 package com.ai.bdex.dataexchange.usercenter;
 
 import com.ai.bdex.dataexchange.sequence.SeqUtil;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.DemoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IDemoRSV;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IDemoSV;
 import com.ai.paas.util.CacheUtil;
@@ -26,7 +27,9 @@ public class HelloDemoRSVImplTest {
 	
     @Test
     public void helloWorld() throws Exception {
-        demoRSV.callDemoApi(null);
+        DemoDTO demoDTO = new DemoDTO();
+        demoDTO.setAddr("gx");
+        demoRSV.callDemoApi(demoDTO);
     }
 
     @Test

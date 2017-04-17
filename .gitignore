@@ -53,5 +53,7 @@ logs/
 
 *.log
 
+generatorConfig.xml
+
 /bin/
 *.db

@@ -56,7 +56,8 @@
     <!-- define the SqlSessionFactory -->
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource" />
-        <property name="typeAliasesPackage" value="com.ai.bdex.dataexchange.common.dao.model" />
+        <property name="typeAliasesPackage" value="com.ai.bdex.dataexchange.usercenter.dao.model" />
+        <property name="mapperLocations" value="classpath*:sqlmapper/usercenter/*.xml" />
         <property name="plugins">
 		    <array>
 		      <bean class="com.github.pagehelper.PageHelper">
@@ -72,7 +73,7 @@
     
     <!-- scan for mappers and let them be autowired -->
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="com.ai.bdex.dataexchange.common.dao.mapper" />
+        <property name="basePackage" value="com.ai.bdex.dataexchange.usercenter.dao.mapper" />
     </bean>
     
     <!-- enable autowire -->
