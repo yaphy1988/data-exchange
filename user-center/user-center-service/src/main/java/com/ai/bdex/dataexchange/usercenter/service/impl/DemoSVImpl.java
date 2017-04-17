@@ -1,11 +1,14 @@
 package com.ai.bdex.dataexchange.usercenter.service.impl;
 
 
+import java.sql.Timestamp;
 import java.util.List;
-import com.ai.bdex.dataexchange.common.dao.mapper.DemoMapper;
-import com.ai.bdex.dataexchange.common.dao.model.Demo;
-import com.ai.bdex.dataexchange.common.dao.model.DemoExample;
+import com.ai.bdex.dataexchange.usercenter.dao.mapper.DemoMapper;
+import com.ai.bdex.dataexchange.usercenter.dao.mapper.custom.BaseSysCfgMapper;
+import com.ai.bdex.dataexchange.usercenter.dao.model.Demo;
+import com.ai.bdex.dataexchange.usercenter.dao.model.DemoExample;
 import com.ai.bdex.dataexchange.sequence.SeqUtil;
+import com.ai.bdex.dataexchange.usercenter.dao.model.custom.BaseSysCfg;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.DemoDTO;
@@ -21,12 +24,26 @@ public class DemoSVImpl implements IDemoSV {
 	
 	@Autowired
 	DemoMapper demoMapper;
+
+	@Autowired
+	BaseSysCfgMapper baseSysCfgMapper;
 	
     @Override
     public String callDemo(DemoDTO demoDTO) {
 		List<Demo> list= queryTest(demoDTO);
         return list.get(0).getUserName();
     }
+
+    private void insertTest2(){
+		BaseSysCfg baseSysCfg = new BaseSysCfg();
+		baseSysCfg.setParaCode("test");
+		baseSysCfg.setCreateTime(new Timestamp(System.currentTimeMillis()));
+		baseSysCfg.setParaDesc("heihei");
+		baseSysCfg.setParaValue("kill");
+		baseSysCfg.setCreateStaff(1000L);
+		baseSysCfgMapper.insert(baseSysCfg);
+
+	}
 
     private void insertTest(){
 		Demo model = new Demo();
