@@ -5,7 +5,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabel;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSku;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.*;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoSIDSVImpl;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSVImpl;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
@@ -13,19 +13,19 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsInfoSIDSVImpl implements IGdsInfoSIDSVImpl {
+public class GdsInfoRSVImpl implements IGdsInfoRSVImpl {
 
-    private static final Logger log = LoggerFactory.getLogger(GdsInfoSIDSVImpl.class);
+    private static final Logger log = LoggerFactory.getLogger(GdsInfoRSVImpl.class);
 
     @Resource
     private IGdsInfoSV iGdsInfoSV;
