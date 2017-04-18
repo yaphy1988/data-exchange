@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by yx on 2017/4/18.
@@ -14,6 +15,8 @@ public class GdsInfoRespVO implements Serializable{
     private String gdsSubtitle;
 
     private Integer catFirst;
+
+    private String catFirstName;
 
     private Integer apiId;
 
@@ -38,6 +41,8 @@ public class GdsInfoRespVO implements Serializable{
     private String updateUser;
 
     private Date updateTime;
+
+    private List<GdsLabelRespVO> gdsLabelRespVOs;
 
     public Integer getGdsId() {
         return gdsId;
@@ -165,5 +170,21 @@ public class GdsInfoRespVO implements Serializable{
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getCatFirstName() {
+        return catFirstName;
+    }
+
+    public void setCatFirstName(String catFirstName) {
+        this.catFirstName = catFirstName;
+    }
+
+    public List<GdsLabelRespVO> getGdsLabelRespVOs() {
+        return gdsLabelRespVOs;
+    }
+
+    public void setGdsLabelRespVOs(List<GdsLabelRespVO> gdsLabelRespVOs) {
+        this.gdsLabelRespVOs = gdsLabelRespVOs;
     }
 }
