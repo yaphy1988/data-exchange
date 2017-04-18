@@ -21,7 +21,7 @@ public class UserCenterServiceStart {
         ApplicationContext context = SpringApplication.run(UserCenterServiceStart.class, args);
         Utils.setCtx(context);
 
-        logger.error("ApiGatewayServiceStart 启动成功...");
+        logger.error("UserCenterServiceStart 启动成功...");
     }
 
 }

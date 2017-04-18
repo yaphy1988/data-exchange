@@ -3,17 +3,14 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>bdex-sys</artifactId>
-        <groupId>com.ai.bdex.dataexchange</groupId>
+        <artifactId>data-exchange</artifactId>
+        <groupId>com.ai.bdex</groupId>
         <version>0.0.1-SNAPSHOT</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ai.bdex.dataexchange</groupId>
-    <artifactId>bdex-sys-api</artifactId>
-    <properties>
-
-    </properties>
+    <artifactId>common-api</artifactId>
 
     <dependencies>
         <dependency>
@@ -28,7 +25,18 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.ai.woego.boot</groupId>
+            <artifactId>config-engine-spring-boot-autoconfigure</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
     </dependencies>
-
 
 </project>

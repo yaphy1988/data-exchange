@@ -16,7 +16,7 @@
 		<module>mall-web</module>
 		<module>manager-web</module>
 		<module>common-dao</module>
-		<module>bdex-sys</module>
+		<module>common-api</module>
 	</modules>
 	<packaging>pom</packaging>
 
@@ -92,8 +92,18 @@
 				<version>${woego-frame.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>com.ai.paas</groupId>
+				<artifactId>sequence-engine</artifactId>
+				<version>${woego-frame.version}</version>
+			</dependency>
+			<dependency>
 				<groupId>com.ai.woego.boot</groupId>
 				<artifactId>dubbo-spring-boot-autoconfigure</artifactId>
+				<version>${woego-frame-boot.version}</version>
+			</dependency>
+			<dependency>
+				<groupId>com.ai.woego.boot</groupId>
+				<artifactId>sequence-spring-boot-autoconfig</artifactId>
 				<version>${woego-frame-boot.version}</version>
 			</dependency>
 			<dependency>
@@ -103,20 +113,31 @@
 		      <scope>runtime</scope>
 		    </dependency>
 			<dependency>
-		      <groupId>mysql</groupId>
-		      <artifactId>mysql-connector-java</artifactId>
-		      <version>5.1.36</version>
-		    </dependency>
-		    <dependency>
-		      <groupId>com.github.pagehelper</groupId>
-		      <artifactId>pagehelper</artifactId>
-		      <version>4.1.6</version>
-		    </dependency>
-		    <dependency>
-		      <groupId>org.mybatis.spring.boot</groupId>
-		      <artifactId>mybatis-spring-boot-starter</artifactId>
-		      <version>1.1.1</version>
-		    </dependency>
+				<groupId>mysql</groupId>
+				<artifactId>mysql-connector-java</artifactId>
+				<version>5.1.36</version>
+			</dependency>
+			<dependency>
+				<groupId>com.github.pagehelper</groupId>
+				<artifactId>pagehelper</artifactId>
+				<version>4.1.6</version>
+			</dependency>
+			<dependency>
+				<groupId>org.mybatis.spring.boot</groupId>
+				<artifactId>mybatis-spring-boot-starter</artifactId>
+				<version>1.1.1</version>
+			</dependency>
+			<dependency>
+				<groupId>commons-beanutils</groupId>
+				<artifactId>commons-beanutils</artifactId>
+				<version>1.9.3</version>
+			</dependency>
+			<dependency>
+				<groupId>com.alibaba</groupId>
+				<artifactId>fastjson</artifactId>
+				<version>1.2.31</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 	<dependencies>
@@ -124,18 +145,24 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.github.pagehelper</groupId>
+			<artifactId>pagehelper</artifactId>
+		</dependency>
 	</dependencies>
 
-	<repositories>
+	<distributionManagement>
 		<repository>
-			<id>aliyun</id>
-			<name>aliyun nexus</name>
-			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
+			<id>releases</id>
+			<name>Internal Releases</name>
+			<url>http://112.74.163.29:8081/nexus/content/repositories/releases</url>
 		</repository>
-	</repositories>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Internal Snapshots</name>
+			<url>http://112.74.163.29:8081/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 
 </project>

@@ -1,16 +1,14 @@
 package com.ai.bdex.dataexchange.usercenter.dubbo.dto;
 
-import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
 /**
- * Created by fangyunfeng on 2017/4/12.
+ * @author yafei
+ * @since 2017/4/17
  */
-public class DemoDTO extends BaseResponseDTO {
-    private static final long serialVersionUID = 1L;
-
+public class ReqDemoDTO extends BaseInfo {
     private int id;
     private String userName;
-    private String addr;
 
     public int getId() {
         return id;
@@ -26,13 +24,5 @@ public class DemoDTO extends BaseResponseDTO {
 
     public void setUserName(String userName) {
         this.userName = userName;
-    }
-
-    public String getAddr() {
-        return addr;
-    }
-
-    public void setAddr(String addr) {
-        this.addr = addr;
     }
 }

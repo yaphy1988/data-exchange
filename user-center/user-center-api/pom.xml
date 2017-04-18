@@ -12,5 +12,13 @@
   <groupId>com.ai.bdex.dataexchange</groupId>
   <artifactId>user-center-api</artifactId>
 
+  <dependencies>
+    <dependency>
+      <groupId>com.ai.bdex.dataexchange</groupId>
+      <artifactId>common-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+  </dependencies>
+
 
 </project>
