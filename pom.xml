@@ -151,16 +151,18 @@
 		</dependency>
 	</dependencies>
 
-	<repositories>
+	<distributionManagement>
 		<repository>
-			<id>aliyun</id>
-			<name>aliyun nexus</name>
-			<url>http://maven.aliyun.com/nexus/content/groups/public/</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
+			<id>releases</id>
+			<name>Internal Releases</name>
+			<url>http://112.74.163.29:8081/nexus/content/repositories/releases</url>
 		</repository>
-	</repositories>
+		<snapshotRepository>
+			<id>snapshots</id>
+			<name>Internal Snapshots</name>
+			<url>http://112.74.163.29:8081/nexus/content/repositories/snapshots</url>
+		</snapshotRepository>
+	</distributionManagement>
 
 
 </project>
