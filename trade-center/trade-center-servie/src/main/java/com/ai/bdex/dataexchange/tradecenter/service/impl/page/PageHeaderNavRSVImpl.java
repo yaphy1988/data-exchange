@@ -4,14 +4,15 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageHeaderNavMapper; 
-import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNav; 
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHeaderNavSV;
-@Service("iPageHeaderNavSV")
+import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageHeaderNavMapper;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNav;
+ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHeaderNavSV;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNavExample;
+ @Service("iPageHeaderNavSV")
 public class PageHeaderNavRSVImpl implements IPageHeaderNavSV{
 	 @Resource
 	  private PageHeaderNavMapper pageHeaderNavMapper;
-	   /***
+ 	   /***
 	    * 接口没有时， 首页热门搜索
 	    */
 	   @Override
@@ -22,4 +23,18 @@ public class PageHeaderNavRSVImpl implements IPageHeaderNavSV{
 		    PageHeaderNav pageHeaderNav =   pageHeaderNavMapper.selectByPrimaryKey(head_id);
 	        return pageHeaderNav;
 	    }
+	   @Override
+			public  PageHeaderNav  queryPageHeaderNavList(PageHeaderNav exam) throws Exception{
+		   PageHeaderNavExample example = new PageHeaderNavExample();
+		   return null;
+		  // Criteria criteria = example.createCriteria();
+			/*if(exam.getPmgId() != 0){
+				criteria.andPmgIdEqualTo(exam.getPmgId());
+			}
+			if(exam.getModuleId() != 0){
+				criteria.andModuleIdEqualTo(exam.getModuleId());
+			}*/
+			//return pageHeaderNavMapper.selectByExample(example);	
+		  } 
+
 }
