@@ -3,14 +3,13 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.impl;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsCat;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabel;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfoReqVO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfoRespVO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelReqVO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelRespVO;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSku;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.*;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoSIDSVImpl;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -37,6 +36,9 @@ public class GdsInfoSIDSVImpl implements IGdsInfoSIDSVImpl {
     @Resource
     private IGdsLabelSV iGdsLabelSV;
 
+    @Resource
+    private IGdsSkuSV iGdsSkuSV;
+
     @Override
     public GdsInfoRespVO queryGdsInfoDetails(GdsInfoReqVO gdsInfoReqVO) throws Exception {
         GdsInfoRespVO gdsInfoRespVO = new GdsInfoRespVO();
@@ -49,7 +51,7 @@ public class GdsInfoSIDSVImpl implements IGdsInfoSIDSVImpl {
             BeanUtils.copyProperties(gdsInfo,gdsInfoRespVO);
             //set商品第一类目名称
             if (gdsInfo.getCatFirst()!=null && gdsInfo.getCatFirst().intValue()>0){
-                GdsCat gdsCat = iGdsCatSV.queryGdsCatById(Long.valueOf(gdsInfo.getCatFirst()));
+                GdsCat gdsCat = iGdsCatSV.queryGdsCatById(gdsInfo.getCatFirst());
                 if(gdsCat!=null){
                     gdsInfoRespVO.setCatFirstName(gdsCat.getCatName());
                 }
@@ -57,7 +59,7 @@ public class GdsInfoSIDSVImpl implements IGdsInfoSIDSVImpl {
             //获得商品标签列表
             List<GdsLabelRespVO> gdsLabelRespVOs = new ArrayList<GdsLabelRespVO>();
             GdsLabelReqVO gdsLabelReqVO = new GdsLabelReqVO();
-            gdsLabelReqVO.setGdsId(Integer.valueOf(gdsInfo.getGdsId()));
+            gdsLabelReqVO.setGdsId(gdsInfo.getGdsId());
             gdsLabelReqVO.setStatus("1");
             List<GdsLabel> gdsLabels = iGdsLabelSV.queryGdsLabelList(gdsLabelReqVO);
             if(!CollectionUtils.isEmpty(gdsLabels)){
@@ -68,6 +70,21 @@ public class GdsInfoSIDSVImpl implements IGdsInfoSIDSVImpl {
                 }
                 gdsInfoRespVO.setGdsLabelRespVOs(gdsLabelRespVOs);
             }
+            //获得商品的单品列表
+            List<GdsSkuRespVO> gdsSkuRespVOs = new ArrayList<GdsSkuRespVO>();
+            GdsSkuReqVO gdsSkuRepVO = new GdsSkuReqVO();
+            gdsSkuRepVO.setStatus("1");
+            gdsSkuRepVO.setGdsId(gdsInfo.getGdsId());
+            List<GdsSku> gdsSkus =iGdsSkuSV.queryGdsSkuList(gdsSkuRepVO);
+            if(!CollectionUtils.isEmpty(gdsSkus)){
+                for (GdsSku gdsSku : gdsSkus){
+                    GdsSkuRespVO gdsSkuRespVO = new GdsSkuRespVO();
+                    BeanUtils.copyProperties(gdsSku,gdsSkuRespVO);
+                    gdsSkuRespVOs.add(gdsSkuRespVO);
+                }
+                gdsInfoRespVO.setGdsSkuRespVOList(gdsSkuRespVOs);
+            }
+
         }else{
             return null;
         }

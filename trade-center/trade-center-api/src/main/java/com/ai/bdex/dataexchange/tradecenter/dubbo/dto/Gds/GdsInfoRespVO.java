@@ -44,6 +44,8 @@ public class GdsInfoRespVO implements Serializable{
 
     private List<GdsLabelRespVO> gdsLabelRespVOs;
 
+    private List<GdsSkuRespVO> gdsSkuRespVOList;
+
     public Integer getGdsId() {
         return gdsId;
     }
@@ -186,5 +188,13 @@ public class GdsInfoRespVO implements Serializable{
 
     public void setGdsLabelRespVOs(List<GdsLabelRespVO> gdsLabelRespVOs) {
         this.gdsLabelRespVOs = gdsLabelRespVOs;
+    }
+
+    public List<GdsSkuRespVO> getGdsSkuRespVOList() {
+        return gdsSkuRespVOList;
+    }
+
+    public void setGdsSkuRespVOList(List<GdsSkuRespVO> gdsSkuRespVOList) {
+        this.gdsSkuRespVOList = gdsSkuRespVOList;
     }
 }
