@@ -46,7 +46,7 @@ public class GdsInfoSIDSVImpl implements IGdsInfoSIDSVImpl {
             throw new Exception("查询商品详细信息异常，入参为空");
         }
 
-        GdsInfo gdsInfo = iGdsInfoSV.queryGdsInfoById(Long.valueOf(gdsInfoReqVO.getGdsId()));
+        GdsInfo gdsInfo = iGdsInfoSV.queryGdsInfoById(gdsInfoReqVO.getGdsId());
         if(gdsInfo!=null){
             BeanUtils.copyProperties(gdsInfo,gdsInfoRespVO);
             //set商品第一类目名称

@@ -7,5 +7,5 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
  */
 public interface IGdsInfoSV {
 
-    public GdsInfo queryGdsInfoById(Long gdsId) throws Exception;
+    public GdsInfo queryGdsInfoById(Integer gdsId) throws Exception;
 }
