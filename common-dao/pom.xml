@@ -20,7 +20,7 @@
 	    <!-- 生成model和mapper的数据库 -->
 	    <jdbc.Driver>${basedir}/lib/mysql-connector-java-5.1.36.jar</jdbc.Driver>
 	    <jdbc.driverClass>com.mysql.jdbc.Driver</jdbc.driverClass>
-	    <jdbc.connectionURL>jdbc:mysql://132.37.2.166:39306/bdex</jdbc.connectionURL>
+	    <jdbc.connectionURL>jdbc:mysql://112.74.163.29:3306/bdex</jdbc.connectionURL>
 	    <jdbc.userId>bdex</jdbc.userId>
 	    <jdbc.password>bdex1234</jdbc.password>
 	    
