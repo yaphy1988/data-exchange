@@ -19,7 +19,6 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.ILoginSV;
 import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
-import com.ai.paas.utils.StringUtil;
 
 public class LoginSVImpl implements ILoginSV {
 	private static final Logger log = Logger.getLogger(LoginSVImpl.class);
@@ -30,28 +29,28 @@ public class LoginSVImpl implements ILoginSV {
 	private AuthStaffPassMapper authStaffPassMapper;
 
 	@Override
-	public StaffInfoDTO loginVerify(LoginInfoDTO loginInfo) throws BusinessException {
+	public StaffInfoDTO loginVerify(LoginInfoDTO loginInfo) throws Exception {
 
         long begin = System.currentTimeMillis();
         String loginName = loginInfo.getLoginName();
         String loginPwd = loginInfo.getLoginPwd();
 
         // 验证用户名正确性
-//        AuthStaff staffBean = verifyLoginName(loginName);
-//        // 验证密码正确性 如果是广东登录的不用校验其密码
-//        AuthStaffPass staffPassBean = new  AuthStaffPass();
-//        staffPassBean = this.verifyPwd(staffBean.getStaffId(), loginPwd,loginInfo);
+        AuthStaff staffBean = verifyLoginName(loginName);
+        // 验证密码正确性 如果是广东登录的不用校验其密码
+        AuthStaffPass staffPassBean = new  AuthStaffPass();
+        staffPassBean = this.verifyPwd(staffBean.getStaffId(), loginPwd,loginInfo);
         // 开关验证，后面补充
 
         // 登陆成功，返回VO对象
-//        StaffInfoDTO staffInfo = new StaffInfoDTO();
-//        BeanUtils.copyProperties(staffPassBean, staffInfo);
-//        staffInfo.setIsFirst(staffPassBean.getIsFirst());
-//        loginName = staffBean.getStaffId();
+        StaffInfoDTO staffInfo = new StaffInfoDTO();
+        BeanUtils.copyProperties(staffPassBean, staffInfo);
+        staffInfo.setIsFirst(staffPassBean.getIsFirst());
+        loginName = staffBean.getStaffId();
 
-//        staffInfo.setLoginIn(true);
+        staffInfo.setLoginIn(true);
         log.error("xujq_sv_time**" + (System.currentTimeMillis() - begin));
-        return null;
+        return staffInfo;
     }
 	
 	public AuthStaff verifyLoginName(String loginName) throws Exception {

@@ -1,6 +1,5 @@
 package com.ai.bdex.dataexchange.usercenter.service.interfaces;
 
-import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 
@@ -11,5 +10,5 @@ public interface ILoginSV {
 	 * loginVerify（）方法名，对应文档内方法
 	 * LoginInfo   入参，对应文档入参
 	 * */
-    public StaffInfoDTO loginVerify(LoginInfoDTO loginInfo) throws BusinessException;
+    public StaffInfoDTO loginVerify(LoginInfoDTO loginInfo) throws Exception;
 }

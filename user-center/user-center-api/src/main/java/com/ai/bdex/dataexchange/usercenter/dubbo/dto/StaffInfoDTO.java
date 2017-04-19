@@ -15,6 +15,13 @@ public class StaffInfoDTO implements Serializable{
 	private String email;
 	private String authenFlag;
 	private String isFirst;
+	private boolean loginIn;
+	public boolean isLoginIn() {
+		return loginIn;
+	}
+	public void setLoginIn(boolean loginIn) {
+		this.loginIn = loginIn;
+	}
 	public String getIsFirst() {
 		return isFirst;
 	}
