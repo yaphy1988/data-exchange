@@ -6,9 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageHotSearchMapper;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNav;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNavExample;
+import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageHotSearchMapper; 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHotSearch;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHotSearchExample;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHotSearchSV;

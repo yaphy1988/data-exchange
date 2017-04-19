@@ -8,7 +8,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.mapper.SortInfoMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
 @Service("iSortInfoSV")
-public class SortInfoRSVImpl  implements ISortInfoSV{
+public class SortInfoSVImpl  implements ISortInfoSV{
 	 @Resource
 	  private SortInfoMapper sortInfoMapper;
 	   /***
