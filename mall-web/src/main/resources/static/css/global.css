@@ -1,0 +1,195 @@
+@charset "UTF-8";
+/* CSS Document 更改测试*/
+html{
+	font-family:"microsoft yahei",Helvetica,Arial,Verdana,sans-serif;
+	
+}
+body, dl, dt, dd, ul, ol, li, pre, form, input, p, blockquote, th, td {
+	margin:0;
+	padding:0;
+	color:#414141;
+}
+
+h1, h2, h3, h4, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6{
+	margin:0;
+	padding:0;
+}
+a,button{
+	cursor:pointer;
+}
+a,a:link{
+	color:#0064dc;
+	text-decoration:none;
+}
+a:visited{
+	color:#414141;
+	text-decoration:none;
+}
+a:hover,
+a:active{
+	color:#ec6000;
+}
+label {
+	font-weight:normal;
+	display:inline;
+}
+dt{
+	font-weight:normal;
+}
+dt,dd{
+	line-height:normal;
+}
+
+ input,select,textarea{
+	padding: 4px;
+	/* outline: none;  */
+} 
+
+select{
+	min-width: 165px;
+	*min-width:158px;
+	margin:0;
+}
+optgroup{
+	padding:3px;
+	color:#999;
+	font-style: normal;
+	font-weight:400;
+}
+select option{
+	color:#000;
+	line-height:18px;
+	padding:0 3px;
+}
+table {
+	border-collapse:collapse;
+}
+
+img {
+	border:none;
+	vertical-align:bottom;
+}
+fieldset p {
+	margin:0;
+	padding:0 0 0 8px;
+}
+address, caption, em, strong, th, i {
+	font-style:normal;
+}
+table caption {
+	margin-left:-1px;
+}
+hr {
+	border-bottom:1px solid #fff;
+	border-top:1px solid #E4E4E4;
+	border-width:1px 0;
+	clear:both;
+	height:2px;
+	overflow:hidden;
+}
+ol, ul {
+	list-style-image:none;
+	list-style-position:outside;
+	list-style-type:none;
+}
+caption, th {
+	text-align:left;
+}
+q:before, q:after, blockquote:before, blockquote:after {
+	content:"";
+}
+img {border: none;vertical-align: middle;}
+
+.hidden{ display:none;}
+.show{ display:block;}
+
+.col_000{color: #000;}
+.col_333{color: #333;}
+.col_666{color: #666;}
+.col_999{color: #999;}
+.col_blue{color: #2b4099;}
+.col_orange{color: #ec6000;}
+
+
+
+/*适用于多数情况的类*/
+.p5{padding: 5px;}
+.pt5{padding-top: 5px;}
+.pb5{padding-bottom: 5px;}
+.pl5{padding-left: 5px;}
+.pr5{padding-right: 5px;}
+.m5{margin: 5px;}
+.mt5{margin-top: 5px;}
+.mb5{margin-bottom: 5px;}
+.ml5{margin-left: 5px;}
+.mr5{margin-right: 5px;}
+
+.p10{padding: 15px;}
+.pt10{padding-top: 15px;}
+.pb10{padding-bottom: 15px;}
+.pl10{padding-left: 15px;}
+.pr10{padding-right: 15px;}
+.m10{margin: 15px;}
+.mt10{margin-top: 15px;}
+.mb10{margin-bottom: 15px;}
+.ml10{margin-left: 15px;}
+.mr10{margin-right: 15px;}
+
+.p15{padding: 15px;}
+.pt15{padding-top: 15px;}
+.pb15{padding-bottom: 15px;}
+.pl15{padding-left: 15px;}
+.pr15{padding-right: 15px;}
+.m15{margin: 15px;}
+.mt15{margin-top: 15px;}
+.mb15{margin-bottom: 15px;}
+.ml15{margin-left: 15px;}
+.mr15{margin-right: 15px;}
+
+.p20{padding: 20px;}
+.pt20{padding-top: 20px;}
+.pb20{padding-bottom: 20px;}
+.pl20{padding-left: 20px;}
+.pr20{padding-right: 20px;}
+.m20{margin: 20px;}
+.mt20{margin-top: 20px;}
+.mb20{margin-bottom: 20px;}
+.ml20{margin-left: 20px;}
+.mr20{margin-right: 20px;}
+.ptb30{padding:30px 0px ;}
+.pt30{padding-top: 30px;}
+.pb30{padding-bottom: 30px;}
+.pl30{padding-left: 30px;}
+.pr30{padding-right:30px;}
+.ptb40{padding:40px 0px ;}
+.pt40{padding-top:40px;}
+.pb40{padding-bottom:40px;}
+.pl40{padding-left:40px;}
+.pr40{padding-right:40px;}
+.ptb50{padding:50px 0px ;}
+.pt50{padding-top:50px;}
+.pb50{padding-bottom:50px;}
+.pl50{padding-left:50px;}
+.pr50{padding-right:50px;}
+.ptb60{padding:60px 0px ;}
+.pt60{padding-top:60px;}
+.pb60{padding-bottom:60px;}
+.pl60{padding-left:60px;}
+.pr60{padding-right:60px;}
+
+/* 清除溢出问题 —— 放在父盒子里 */
+.clearfix:after {content:"."; display:block; height:0; clear:both; visibility:hidden;}
+.clearfix {zoom:1;}
+
+
+.wrap1200{width: 1200px;overflow: hidden;margin: 0px auto;}
+.floatL{float: left;}
+.floatR{float: right;}
+
+.btn-primary{
+    background: #2b4099;
+    color: #fff;
+}
+
+
+
