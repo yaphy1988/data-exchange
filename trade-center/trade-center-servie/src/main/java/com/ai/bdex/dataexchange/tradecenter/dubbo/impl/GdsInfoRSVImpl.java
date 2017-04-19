@@ -90,4 +90,18 @@ public class GdsInfoRSVImpl implements IGdsInfoRSVImpl {
 
         return null;
     }
+    @Override
+    public List<GdsCatRespDTO> queryGdsCatListDTO(GdsCatReqDTO gdsCatReqDTO) throws Exception {
+        List<GdsCatRespDTO> respDTOList = new ArrayList<GdsCatRespDTO>();
+        try{
+        	 if (gdsCatReqDTO ==null || gdsCatReqDTO.getCatPid()==null){
+                 throw new Exception("查询商品分类信息异常，入参为空");
+             }
+             respDTOList= iGdsCatSV.queryGdsCatListDTO(gdsCatReqDTO);
+        }catch(Exception e){
+        	log.error("获取商品分类信息异常:", e);
+            throw new Exception(e);
+        }
+        return respDTOList;
+    }
 }

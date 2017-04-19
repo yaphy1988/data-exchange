@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsCat;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsCatReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsCatRespDTO;
 
 import java.util.List;
 
@@ -18,5 +19,7 @@ public interface IGdsCatSV {
     public int updateGdsCat(GdsCatReqDTO gdsCatReqDTO) throws Exception;
 
     public int deleteGdsCatById(Integer catId) throws Exception;
+    
+    public List<GdsCatRespDTO> queryGdsCatListDTO(GdsCatReqDTO gdsCatReqDTO) throws Exception;
 
 }

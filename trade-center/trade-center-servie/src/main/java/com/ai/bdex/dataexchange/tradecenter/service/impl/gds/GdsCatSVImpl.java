@@ -4,12 +4,17 @@ import com.ai.bdex.dataexchange.tradecenter.dao.mapper.GdsCatMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsCat;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsCatExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsCatReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsCatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
+import com.alibaba.dubbo.common.utils.CollectionUtils;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
+
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,7 +81,25 @@ public class GdsCatSVImpl implements IGdsCatSV{
         int code = gdsCatMapper.deleteByPrimaryKey(catId);
         return code;
     }
-
+    @Override
+    public List<GdsCatRespDTO> queryGdsCatListDTO(GdsCatReqDTO gdsCatReqDTO) throws Exception {
+        if (gdsCatReqDTO ==null){
+            throw new Exception("查询分类列表的入参为空");
+        }
+        GdsCatExample example = new GdsCatExample();
+        GdsCatExample.Criteria criteria = example.createCriteria();
+        initCriteria(criteria, gdsCatReqDTO);
+        List<GdsCat> gdsCatList = gdsCatMapper.selectByExample(example);
+        List<GdsCatRespDTO> respDTOList = new ArrayList<GdsCatRespDTO>();
+        if(CollectionUtils.isNotEmpty(gdsCatList)){
+        	for(GdsCat gdsCat : gdsCatList){
+        		GdsCatRespDTO respDTO = new GdsCatRespDTO();
+                BeanUtils.copyProperties(gdsCat,respDTO);
+                respDTOList.add(respDTO)
+        	}
+        }
+        return respDTOList;
+    }
     private void initCriteria(GdsCatExample.Criteria criteria, GdsCatReqDTO gdsCatReqDTO){
         if (gdsCatReqDTO.getCatId()!=null && gdsCatReqDTO.getCatId().intValue()>0){
             criteria.andCatIdEqualTo(gdsCatReqDTO.getCatId());
