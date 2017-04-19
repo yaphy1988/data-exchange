@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.usercenter.dao.model.custom;
+package com.ai.bdex.dataexchange.usercenter.dao.model;
 
 import java.util.ArrayList;
 import java.util.Date;

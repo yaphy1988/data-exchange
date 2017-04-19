@@ -1,11 +1,11 @@
-package com.ai.bdex.dataexchange.usercenter.dao.mapper.custom;
+package com.ai.bdex.dataexchange.usercenter.dao.mapper;
 
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
-import com.ai.bdex.dataexchange.usercenter.dao.model.custom.BaseParamSimple;
-import com.ai.bdex.dataexchange.usercenter.dao.model.custom.BaseParamSimpleExample;
-import com.ai.bdex.dataexchange.usercenter.dao.model.custom.BaseParamSimpleKey;
+import com.ai.bdex.dataexchange.usercenter.dao.model.BaseParamSimple;
+import com.ai.bdex.dataexchange.usercenter.dao.model.BaseParamSimpleExample;
+import com.ai.bdex.dataexchange.usercenter.dao.model.BaseParamSimpleKey;
 
 public interface BaseParamSimpleMapper {
     /**

@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffMapper;
@@ -27,6 +28,7 @@ public class LoginSVImpl implements ILoginSV {
 	
 	@Autowired
 	private AuthStaffMapper authStaffMapper;
+	
 	@Autowired
 	private AuthStaffPassMapper authStaffPassMapper;
 

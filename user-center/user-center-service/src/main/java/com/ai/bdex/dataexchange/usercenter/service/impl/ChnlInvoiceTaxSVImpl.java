@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.usercenter.service.impl;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.ChnlInvoiceTaxMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.model.ChnlInvoiceTax;
