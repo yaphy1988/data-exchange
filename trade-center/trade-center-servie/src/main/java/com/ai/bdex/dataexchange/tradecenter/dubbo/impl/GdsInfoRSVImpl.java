@@ -5,6 +5,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabel;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSku;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.*;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSVImpl;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
@@ -22,7 +23,7 @@ import java.util.List;
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsInfoRSVImpl implements IGdsInfoRSVImpl {
+public class GdsInfoRSVImpl implements IGdsInfoRSV {
 
     private static final Logger log = LoggerFactory.getLogger(GdsInfoRSVImpl.class);
 

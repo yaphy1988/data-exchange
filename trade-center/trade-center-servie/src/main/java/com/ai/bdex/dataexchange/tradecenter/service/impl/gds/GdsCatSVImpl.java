@@ -95,7 +95,7 @@ public class GdsCatSVImpl implements IGdsCatSV{
         	for(GdsCat gdsCat : gdsCatList){
         		GdsCatRespDTO respDTO = new GdsCatRespDTO();
                 BeanUtils.copyProperties(gdsCat,respDTO);
-                respDTOList.add(respDTO)
+                respDTOList.add(respDTO);
         	}
         }
         return respDTOList;
