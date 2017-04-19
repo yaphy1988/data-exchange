@@ -3,8 +3,10 @@ package com.ai.bdex.dataexchange.tradecenter.service.impl.gds;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.GdsLabelMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabel;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabelExample;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSkuExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsSkuReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 
@@ -98,7 +100,17 @@ public class GdsLabelSVImpl implements IGdsLabelSV {
         int code = gdsLabelMapper.deleteByPrimaryKey(labId);
         return code;
     }
-
+    @Override
+    public int deleteGdslabelBByGdsId(GdsLabelReqDTO gdsLabelReqDTO) throws Exception {
+        if (gdsLabelReqDTO.getGdsId()==null || gdsLabelReqDTO.getGdsId()<=0){
+            throw new Exception("删除商品标签入参为空");
+        }
+        GdsLabelExample gdsLabelExample = new GdsLabelExample();
+        GdsLabelExample.Criteria criteria = gdsLabelExample.createCriteria();
+        initCriteria(criteria, gdsLabelReqDTO);
+        int code = gdsLabelMapper.deleteByExample(gdsLabelExample);
+        return code;
+    }
     private void initCriteria(GdsLabelExample.Criteria criteria , GdsLabelReqDTO gdsLabelReqDTO){
         if (gdsLabelReqDTO.getLabId()!=null && gdsLabelReqDTO.getLabId().intValue()>0){
             criteria.andLabIdEqualTo(gdsLabelReqDTO.getLabId());

@@ -134,10 +134,12 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         BeanUtils.copyProperties(reqDTO,gdsInfo);
         int gdsId = gdsInfoMapper.insert(gdsInfo);
         //保存商品标签
-        GdsLabelReqDTO labelReqDTO = reqDTO.getGdsLabelReqDTO();
-        if(labelReqDTO!=null&&!StringUtils.isEmpty(labelReqDTO.getLabName())){
-        	labelReqDTO.setGdsId(gdsId);
-        	iGdsLabelSV.insertGdsLabel(labelReqDTO);
+        List<GdsLabelReqDTO> labelReqDTOList = reqDTO.getGdsLabelReqDTOList();
+        if(CollectionUtils.isNotEmpty(labelReqDTOList)){
+        	for(GdsLabelReqDTO labelReqDTO : labelReqDTOList){
+            	labelReqDTO.setGdsId(gdsId);
+        		iGdsLabelSV.insertGdsLabel(labelReqDTO);
+        	}
         }
         //保存单品信息
         List<GdsSkuReqDTO> skuList = reqDTO.getGdsSkuReqDTOList();
@@ -171,21 +173,26 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
 		// 商品主表
         GdsInfo gdsInfo = new GdsInfo();
         BeanUtils.copyProperties(reqDTO,gdsInfo);
-        int gdsId = gdsInfoMapper.updateByPrimaryKeySelective(gdsInfo);
+        gdsInfoMapper.updateByPrimaryKeySelective(gdsInfo);
         //保存商品标签
-        GdsLabelReqDTO labelReqDTO = reqDTO.getGdsLabelReqDTO();
-        if(labelReqDTO!=null&&!StringUtils.isEmpty(labelReqDTO.getLabName())){
-        	labelReqDTO.setGdsId(gdsId);
-        	iGdsLabelSV.updateGdsLabel(labelReqDTO);
+        List<GdsLabelReqDTO> labelReqDTOList = reqDTO.getGdsLabelReqDTOList();
+        if(CollectionUtils.isNotEmpty(labelReqDTOList)){
+        	GdsLabelReqDTO gdsLabelReqDTO = new GdsLabelReqDTO();
+        	gdsLabelReqDTO.setGdsId(reqDTO.getGdsId());
+        	iGdsLabelSV.deleteGdslabelBByGdsId(gdsLabelReqDTO);
+        	for(GdsLabelReqDTO labelReqDTO : labelReqDTOList){
+        		iGdsLabelSV.insertGdsLabel(labelReqDTO);
+        	}
         }
         //保存单品信息
         List<GdsSkuReqDTO> skuList = reqDTO.getGdsSkuReqDTOList();
         if(CollectionUtils.isNotEmpty(skuList)){
         	GdsSkuReqDTO gdsSkuReqDTO = new GdsSkuReqDTO();
+        	gdsSkuReqDTO.setGdsId(reqDTO.getGdsId());
         	//删除单品信息
         	iGdsSkuSV.deleteGdsSkuByGdsId(gdsSkuReqDTO);
         	for(GdsSkuReqDTO skuReqDTO : skuList){
-        		skuReqDTO.setGdsId(gdsId);
+        		skuReqDTO.setGdsId(reqDTO.getGdsId());
         		iGdsSkuSV.insertGdsSku(skuReqDTO);
         	}
         }
@@ -196,7 +203,7 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
 
 		// 返回处理结果
         GdsResultVO resultVO = new GdsResultVO();
-		resultVO.setGdsId(gdsId);
+		resultVO.setGdsId(reqDTO.getGdsId());
 		resultVO.setMessage("编辑商品成功");
 		resultVO.setResult(true);
 		return resultVO;

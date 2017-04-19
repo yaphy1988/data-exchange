@@ -44,7 +44,7 @@ public class GdsInfoReqDTO implements Serializable{
     private List<GdsSkuReqDTO> GdsSkuReqDTOList;
     
     //商品标签
-    private GdsLabelReqDTO gdsLabelReqDTO;
+    private List<GdsLabelReqDTO> gdsLabelReqDTOList;
     
     //商品属性配置
     private GdsInfo2PropReqDTO GdsInfo2PropReqDTO;
@@ -57,13 +57,14 @@ public class GdsInfoReqDTO implements Serializable{
 		GdsInfo2PropReqDTO = gdsInfo2PropReqDTO;
 	}
 
-	public GdsLabelReqDTO getGdsLabelReqDTO() {
-		return gdsLabelReqDTO;
+	public List<GdsLabelReqDTO> getGdsLabelReqDTOList() {
+		return gdsLabelReqDTOList;
 	}
 
-	public void setGdsLabelReqDTO(GdsLabelReqDTO gdsLabelReqDTO) {
-		this.gdsLabelReqDTO = gdsLabelReqDTO;
+	public void setGdsLabelReqDTOList(List<GdsLabelReqDTO> gdsLabelReqDTOList) {
+		this.gdsLabelReqDTOList = gdsLabelReqDTOList;
 	}
+
 
 	public List<GdsSkuReqDTO> getGdsSkuReqDTOList() {
 		return GdsSkuReqDTOList;

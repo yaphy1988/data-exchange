@@ -21,4 +21,5 @@ public interface IGdsLabelSV {
 
     public int deleteGdslabelById(Integer labId) throws Exception;
     public List<GdsLabelRespDTO> queryGdsLabelListDTO(GdsLabelReqDTO gdsLabelReqDTO) throws Exception;
+    public int deleteGdslabelBByGdsId(GdsLabelReqDTO gdsLabelReqDTO) throws Exception ;
 }

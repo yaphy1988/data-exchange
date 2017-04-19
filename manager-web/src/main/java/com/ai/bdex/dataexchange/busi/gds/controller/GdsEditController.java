@@ -19,6 +19,14 @@ import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsJsonBean;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsManageInfoVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsCatReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsCatRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelQuikReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelQuikRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.alibaba.dubbo.common.json.ParseException;
 import com.alibaba.dubbo.rpc.service.GenericException;
@@ -36,24 +44,30 @@ public class GdsEditController {
     private IGdsInfoRSV gdsInfoRSV;
 
     @RequestMapping("/pageInit")
-    public String pageInit(Model model,GdsInfoVO gdsInfoVO){
-    	//新增
+    public String pageInit(Model model,GdsInfoVO gdsInfoVO) throws Exception{
     	boolean isEdit = false;
     	boolean isView = false;
-    	GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
-    	GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO()
-    	if(gdsInfoVO.getGdsId()!=null||gdsInfoVO.getGdsId()!=0){
-    		isEdit = true;
-    		gdsInfoReqDTO.setGdsId(gdsInfoVO.getGdsId());
-    		gdsInfoRespDTO=gdsInfoRSV.queryGdsInfoDetails(gdsInfoReqDTO);
-    		
-    	}
-    	if (gdsInfoVO.getIsView() != null && gdsInfoVO.getIsView().equals("true")) {// 查看详情
-    		isView=true;
+    	GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
+
+    	try{
+    		//新增
+        	GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
+        	if(gdsInfoVO.getGdsId()!=null||gdsInfoVO.getGdsId()!=0){
+        		isEdit = true;
+        		gdsInfoReqDTO.setGdsId(gdsInfoVO.getGdsId());
+        		gdsInfoRespDTO=gdsInfoRSV.queryGdsInfoDetails(gdsInfoReqDTO);
+        		
+        	}
+        	if (gdsInfoVO.getIsView() != null && gdsInfoVO.getIsView().equals("true")) {// 查看详情
+        		isView=true;
+            }
+        	GdsCatReqDTO  reqDTO = new GdsCatReqDTO();
+        	reqDTO.setCatId(Integer.valueOf(0));
+        	List<GdsCatRespDTO> catListAll = gdsInfoRSV.queryGdsCatListDTO(reqDTO);
+    	}catch(Exception e){
+            logger.error("查询商品录入信息失败,原因："+e.getMessage(),e);
         }
-    	GdsCatReqDTO  reqDTO = new GdsCatReqDTO();
-    	reqDTO.setCatId(Integer.valueOf(0));
-    	List<GdsCatRespDTO> catListAll = gdsInfoRSV.queryGdsCatListDTO(reqDTO);
+    	
         model.addAttribute("isView", isView);
     	model.addAttribute("isEdit", isEdit);
     	model.addAttribute("gdsInfoRespDTO", gdsInfoRespDTO);
@@ -121,7 +135,7 @@ public class GdsEditController {
     public GdsJsonBean addGds(HttpServletRequest req, HttpServletResponse rep,
     		GdsManageInfoVO gdsManageInfoVO) throws ParseException, BusinessException, GenericException {
     	GdsJsonBean jsonBean = new GdsJsonBean();
-    	GdsInfoVO gdsInfoReqDTO = new GdsInfoVO();
+    	GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
         try {
         	gdsInfoRSV.addGds(gdsInfoReqDTO);
 
