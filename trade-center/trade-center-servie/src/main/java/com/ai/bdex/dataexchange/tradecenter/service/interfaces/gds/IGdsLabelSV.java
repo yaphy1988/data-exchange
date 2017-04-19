@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabel;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelRespDTO;
 
 import java.util.List;
 
@@ -19,4 +20,5 @@ public interface IGdsLabelSV {
     public int updateGdsLabel(GdsLabelReqDTO gdsLabelReqDTO) throws Exception;
 
     public int deleteGdslabelById(Integer labId) throws Exception;
+    public List<GdsLabelRespDTO> queryGdsLabelListDTO(GdsLabelReqDTO gdsLabelReqDTO) throws Exception;
 }

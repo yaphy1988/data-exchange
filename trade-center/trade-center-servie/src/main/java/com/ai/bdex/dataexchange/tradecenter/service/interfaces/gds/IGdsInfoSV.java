@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsResultVO;
 
 import java.util.List;
 
@@ -19,4 +20,6 @@ public interface IGdsInfoSV {
     public int updateGdsInfo(GdsInfoReqDTO gdsInfoReqDTO) throws Exception;
 
     public int deleteGdsInfoById(Integer gdsId) throws Exception;
+    
+	public GdsResultVO addGds(GdsInfoReqDTO reqDTO) throws Exception ;
 }

@@ -8,6 +8,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.*;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelQuikSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
 import org.slf4j.Logger;
@@ -37,7 +38,10 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
 
     @Resource
     private IGdsSkuSV iGdsSkuSV;
-
+    
+    @Resource
+    private IGdsLabelQuikSV iGdsLabelQuikSV;
+    
     @Override
     public GdsInfoRespDTO queryGdsInfoDetails(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
         GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
@@ -104,4 +108,39 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
         }
         return respDTOList;
     }
+    public List<GdsLabelRespDTO> queryGdsLabelListDTO(GdsLabelReqDTO gdsLabelReqDTO) throws Exception {
+        List<GdsLabelRespDTO> respDTOList = new ArrayList<GdsLabelRespDTO>();
+    	 try{
+             respDTOList= iGdsLabelSV.queryGdsLabelListDTO(gdsLabelReqDTO);
+        }catch(Exception e){
+        	log.error("获取商品标签信息异常:", e);
+            throw new Exception(e);
+        }
+        return respDTOList;
+    }
+    public List<GdsLabelQuikRespDTO> queryGdsLabelQuikListDTO(GdsLabelQuikReqDTO gdsLabelQuikReqDTO) throws Exception {
+        List<GdsLabelQuikRespDTO> respDTOList = new ArrayList<GdsLabelQuikRespDTO>();
+    	 try{
+             respDTOList= iGdsLabelQuikSV.queryGdsLabelQuikListDTO(gdsLabelQuikReqDTO);
+        }catch(Exception e){
+        	log.error("获取商品标签快速选择数据信息异常:", e);
+            throw new Exception(e);
+        }
+        return respDTOList;
+    }
+    	
+	public GdsResultVO addGds(GdsInfoReqDTO reqDTO) throws Exception {
+		GdsResultVO resultVO = new GdsResultVO();
+		try{
+			 if (reqDTO ==null){
+	             throw new Exception("新增商品信息异常，入参为空");
+	         }
+			 resultVO=iGdsInfoSV.addGds(reqDTO);
+		}catch(Exception e){
+        	log.error("新增商品信息异常:", e);
+            throw new Exception(e);
+        }
+		return resultVO;
+	}
+	
 }

@@ -7,5 +7,8 @@
   <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.IDemoRSV" ref="demoRSV"
                  owner="zhaoyf7" timeout="3000"/>
   <bean id="demoRSV" class="com.ai.bdex.dataexchange.tradecenter.dubbo.impl.DemoRSVImpl"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSV" ref="iGdsInfoRSV"
+                 owner="zhaoyf7" timeout="3000"/>
+  <bean id="iGdsInfoRSV" class="com.ai.bdex.dataexchange.tradecenter.dubbo.impl.gds.GdsInfoRSVImpl"/>
 
 </beans>

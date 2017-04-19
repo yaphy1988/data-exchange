@@ -4,7 +4,10 @@ import com.ai.bdex.dataexchange.tradecenter.dao.mapper.GdsLabelMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabel;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabelExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
+import com.alibaba.dubbo.common.utils.CollectionUtils;
+
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -42,6 +45,27 @@ public class GdsLabelSVImpl implements IGdsLabelSV {
         initCriteria(criteria, gdsLabelReqDTO);
         gdsLabels = gdsLabelMapper.selectByExample(example);
         return gdsLabels;
+    }
+    @Override
+    public List<GdsLabelRespDTO> queryGdsLabelListDTO(GdsLabelReqDTO gdsLabelReqDTO) throws Exception {
+        if (gdsLabelReqDTO ==null){
+            throw new Exception("查询商品标签信息列表入参为空");
+        }
+        List<GdsLabel> gdsLabels = new ArrayList<GdsLabel>();
+        List<GdsLabelRespDTO> gdsLabelDTOList = new ArrayList<GdsLabelRespDTO>();
+
+        GdsLabelExample example = new GdsLabelExample();
+        GdsLabelExample.Criteria criteria = example.createCriteria();
+        initCriteria(criteria, gdsLabelReqDTO);
+        gdsLabels = gdsLabelMapper.selectByExample(example);
+        if(CollectionUtils.isNotEmpty(gdsLabels)){
+        	for(GdsLabel label : gdsLabels){
+        		GdsLabelRespDTO gdsLabelRespDTO = new GdsLabelRespDTO();
+                BeanUtils.copyProperties(label,gdsLabelRespDTO);
+                gdsLabelDTOList.add(gdsLabelRespDTO);
+        	}
+        }
+        return gdsLabelDTOList;
     }
 
     @Override

@@ -1,13 +1,8 @@
-package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds;
+package com.ai.bdex.dataexchange.busi.gds.entity;
 
-import java.io.Serializable;
 import java.util.Date;
-import java.util.List;
 
-/**
- * Created by yx on 2017/4/18.
- */
-public class GdsInfoReqDTO implements Serializable{
+public class GdsManageInfoVO {
     private Integer gdsId;
 
     private String gdsName;
@@ -39,38 +34,55 @@ public class GdsInfoReqDTO implements Serializable{
     private String updateUser;
 
     private Date updateTime;
+    //json串
+    private String jsonStr;
     
-    //单品信息
-    private List<GdsSkuReqDTO> GdsSkuReqDTOList;
+    private GdsPropVO gdsPropVO;//分类属性表
     
-    //商品标签
-    private GdsLabelReqDTO gdsLabelReqDTO;
+    private GdsLabelVO gdsLabelVO;//商品标签
     
-    //商品属性配置
-    private GdsInfo2PropReqDTO GdsInfo2PropReqDTO;
+    private GdsInfo2CatVO gdsInfo2CatVO;//商品分类配置关联表
     
-    public GdsInfo2PropReqDTO getGdsInfo2PropReqDTO() {
-		return GdsInfo2PropReqDTO;
+    private GdsInfo2PropVO  gdsInfo2PropVO;//商品属性配置
+    
+    public String getJsonStr() {
+		return jsonStr;
 	}
 
-	public void setGdsInfo2PropReqDTO(GdsInfo2PropReqDTO gdsInfo2PropReqDTO) {
-		GdsInfo2PropReqDTO = gdsInfo2PropReqDTO;
+	public void setJsonStr(String jsonStr) {
+		this.jsonStr = jsonStr;
 	}
 
-	public GdsLabelReqDTO getGdsLabelReqDTO() {
-		return gdsLabelReqDTO;
+	public GdsPropVO getGdsPropVO() {
+		return gdsPropVO;
 	}
 
-	public void setGdsLabelReqDTO(GdsLabelReqDTO gdsLabelReqDTO) {
-		this.gdsLabelReqDTO = gdsLabelReqDTO;
+	public void setGdsPropVO(GdsPropVO gdsPropVO) {
+		this.gdsPropVO = gdsPropVO;
 	}
 
-	public List<GdsSkuReqDTO> getGdsSkuReqDTOList() {
-		return GdsSkuReqDTOList;
+	public GdsLabelVO getGdsLabelVO() {
+		return gdsLabelVO;
 	}
 
-	public void setGdsSkuReqDTOList(List<GdsSkuReqDTO> gdsSkuReqDTOList) {
-		GdsSkuReqDTOList = gdsSkuReqDTOList;
+	public void setGdsLabelVO(GdsLabelVO gdsLabelVO) {
+		this.gdsLabelVO = gdsLabelVO;
+	}
+
+	public GdsInfo2CatVO getGdsInfo2CatVO() {
+		return gdsInfo2CatVO;
+	}
+
+	public void setGdsInfo2CatVO(GdsInfo2CatVO gdsInfo2CatVO) {
+		this.gdsInfo2CatVO = gdsInfo2CatVO;
+	}
+
+	public GdsInfo2PropVO getGdsInfo2PropVO() {
+		return gdsInfo2PropVO;
+	}
+
+	public void setGdsInfo2PropVO(GdsInfo2PropVO gdsInfo2PropVO) {
+		this.gdsInfo2PropVO = gdsInfo2PropVO;
 	}
 
 	public Integer getGdsId() {
@@ -84,9 +96,8 @@ public class GdsInfoReqDTO implements Serializable{
     public String getGdsName() {
         return gdsName;
     }
-
     public void setGdsName(String gdsName) {
-        this.gdsName = gdsName;
+        this.gdsName = gdsName == null ? null : gdsName.trim();
     }
 
     public String getGdsSubtitle() {
@@ -94,7 +105,7 @@ public class GdsInfoReqDTO implements Serializable{
     }
 
     public void setGdsSubtitle(String gdsSubtitle) {
-        this.gdsSubtitle = gdsSubtitle;
+        this.gdsSubtitle = gdsSubtitle == null ? null : gdsSubtitle.trim();
     }
 
     public Integer getCatFirst() {
@@ -116,9 +127,8 @@ public class GdsInfoReqDTO implements Serializable{
     public String getGdsPic() {
         return gdsPic;
     }
-
     public void setGdsPic(String gdsPic) {
-        this.gdsPic = gdsPic;
+        this.gdsPic = gdsPic == null ? null : gdsPic.trim();
     }
 
     public String getIfRecommend() {
@@ -126,7 +136,7 @@ public class GdsInfoReqDTO implements Serializable{
     }
 
     public void setIfRecommend(String ifRecommend) {
-        this.ifRecommend = ifRecommend;
+        this.ifRecommend = ifRecommend == null ? null : ifRecommend.trim();
     }
 
     public String getFunIntroduction() {
@@ -134,7 +144,7 @@ public class GdsInfoReqDTO implements Serializable{
     }
 
     public void setFunIntroduction(String funIntroduction) {
-        this.funIntroduction = funIntroduction;
+        this.funIntroduction = funIntroduction == null ? null : funIntroduction.trim();
     }
 
     public String getCommpanyName() {
@@ -142,7 +152,7 @@ public class GdsInfoReqDTO implements Serializable{
     }
 
     public void setCommpanyName(String commpanyName) {
-        this.commpanyName = commpanyName;
+        this.commpanyName = commpanyName == null ? null : commpanyName.trim();
     }
 
     public String getStatus() {
@@ -150,7 +160,7 @@ public class GdsInfoReqDTO implements Serializable{
     }
 
     public void setStatus(String status) {
-        this.status = status;
+        this.status = status == null ? null : status.trim();
     }
 
     public String getShelveUser() {
@@ -158,7 +168,7 @@ public class GdsInfoReqDTO implements Serializable{
     }
 
     public void setShelveUser(String shelveUser) {
-        this.shelveUser = shelveUser;
+        this.shelveUser = shelveUser == null ? null : shelveUser.trim();
     }
 
     public Date getShelveTime() {
@@ -172,9 +182,8 @@ public class GdsInfoReqDTO implements Serializable{
     public String getCreateUser() {
         return createUser;
     }
-
     public void setCreateUser(String createUser) {
-        this.createUser = createUser;
+        this.createUser = createUser == null ? null : createUser.trim();
     }
 
     public Date getCreateTime() {
@@ -190,7 +199,7 @@ public class GdsInfoReqDTO implements Serializable{
     }
 
     public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
+        this.updateUser = updateUser == null ? null : updateUser.trim();
     }
 
     public Date getUpdateTime() {
