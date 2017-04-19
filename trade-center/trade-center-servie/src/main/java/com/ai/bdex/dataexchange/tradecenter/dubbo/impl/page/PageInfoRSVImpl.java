@@ -13,14 +13,24 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.util.CollectionUtils;
 
 import com.ai.bdex.dataexchange.tradecenter.TradeCenterServiceStart;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNav;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHotSearch;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.PageInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContent;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageHeaderNavRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageHotSearchRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.SortContentRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.SortInfoRespDTO; 
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Page.IPageInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHeaderNavSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHotSearchSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortContentSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
 import com.ai.paas.util.Utils;
+import com.ai.paas.utils.StringUtil;
 
  @SuppressWarnings("unused")
 public class PageInfoRSVImpl implements IPageInfoRSV {
@@ -33,6 +43,12 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
     private ISortInfoSV   iSortInfoSV;
     @Resource
     private ISortContentSV   iSortContentSV;
+    @Resource
+    private IPageInfoSV   iPageInfoSV;
+    @Resource
+    private IPageHotSearchSV   iPageHotSearchSV;
+    @Resource
+    private IPageHeaderNavSV   iPageHeaderNavSV;
     
     @Override
     public List<SortInfoRespDTO> querySortInfos(SortInfoRespDTO sortInfoRespDTO) throws Exception {
@@ -62,6 +78,99 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
         }
         return sortInfoRespLis;
     }
+    //查询热点信息 列表
+    @Override
+    public List<PageInfoRespDTO> queryPageInfoList(PageInfoRespDTO pageInfoRespDTO) throws Exception {
+        List<PageInfoRespDTO> PageInfoRespList = new ArrayList<PageInfoRespDTO>();
+        try{
+        	 if (pageInfoRespDTO ==null ){
+                 throw new Exception("查询商品分类信息异常，入参为空");
+             }
+        	 PageInfo exam = new PageInfo();
+         	 BeanUtils.copyProperties( pageInfoRespDTO,exam);
+          	 List<PageInfo> listPageInfo = iPageInfoSV.queryPageInfoList(exam);
+          	    if(!CollectionUtils.isEmpty(listPageInfo)){
+                    for (PageInfo pageInfo : listPageInfo){
+                    	PageInfoRespDTO pageInfoResp = new PageInfoRespDTO();
+                        BeanUtils.copyProperties(pageInfo, pageInfoResp); 
+                        PageInfoRespList.add(pageInfoResp);
+                    }
+                 }   
+        }catch(Exception e){
+        	log.error("获取商品分类信息异常:", e);
+            throw new Exception(e);
+        }
+        return PageInfoRespList;
+    }
+    //查询热点信息 明细
+    @Override
+    public  PageInfoRespDTO  queryPageInfoBYid(Integer PageInfoid) throws Exception {
+        PageInfoRespDTO  pageInfoResp  = new  PageInfoRespDTO ();
+        try{
+        	 if (PageInfoid == 0 ){
+                 throw new Exception("查询热点信息 明细，入参为空");
+             }
+        	 PageInfo exam = new PageInfo(); 
+          	 PageInfo   pageInfo = iPageInfoSV.queryPageInfoById(PageInfoid);
+          	    if(pageInfo != null){ 
+                        BeanUtils.copyProperties(pageInfo, pageInfoResp); 
+                  }   
+        }catch(Exception e){
+        	log.error("查询热点信息 明细异常:", e);
+            throw new Exception(e);
+        }
+        return pageInfoResp;
+    } 
+    //查询查询热门搜索关键字
+    @Override 
+    public List<PageHotSearchRespDTO> queryPageHotSearchNavList(PageHotSearchRespDTO pageHotSearchRespDTO) throws Exception {
+        List<PageHotSearchRespDTO> PageInfoRespList = new ArrayList<PageHotSearchRespDTO>();
+        try{
+        	 if (pageHotSearchRespDTO ==null ){
+                 throw new Exception("查询商品分类信息异常，入参为空");
+             }
+        	 PageHotSearch exam = new PageHotSearch();
+         	 BeanUtils.copyProperties( pageHotSearchRespDTO,exam);
+          	 List<PageHotSearch> listPageInfo = iPageHotSearchSV.queryPageHotSearchNavList(exam);
+          	    if(!CollectionUtils.isEmpty(listPageInfo)){
+                    for (PageHotSearch pageInfoHot : listPageInfo){
+                    	PageHotSearchRespDTO pageInfoResp = new PageHotSearchRespDTO();
+                        BeanUtils.copyProperties(pageInfoHot, pageInfoResp); 
+                        PageInfoRespList.add(pageInfoResp);
+                    }
+                 }   
+        }catch(Exception e){
+        	log.error("获取商品分类信息异常:", e);
+            throw new Exception(e);
+        }
+        return PageInfoRespList;
+    }
+    //	public  List<PageHeaderNav>  queryPageHeaderNavList(PageHeaderNav example) throws Exception ;
+    //查询查询热门搜索关键字
+    @Override 
+    public List<PageHeaderNavRespDTO> queryPageHeaderNavList(PageHeaderNavRespDTO PageHeaderNavRespDTO) throws Exception {
+        List<PageHeaderNavRespDTO> PageInfoRespList = new ArrayList<PageHeaderNavRespDTO>();
+        try{
+        	 if (PageHeaderNavRespDTO ==null ){
+                 throw new Exception("查询商品分类信息异常，入参为空");
+             }
+        	 PageHeaderNav exam = new PageHeaderNav();
+         	 BeanUtils.copyProperties( PageHeaderNavRespDTO,exam);
+          	 List<PageHeaderNav> listPageInfo = iPageHeaderNavSV.queryPageHeaderNavList(exam);
+          	    if(!CollectionUtils.isEmpty(listPageInfo)){
+                    for (PageHeaderNav pageHeaderNav : listPageInfo){
+                    	PageHeaderNavRespDTO pageInfoResp = new PageHeaderNavRespDTO();
+                        BeanUtils.copyProperties(pageHeaderNav, pageInfoResp); 
+                        PageInfoRespList.add(pageInfoResp);
+                    }
+                 }   
+        }catch(Exception e){
+        	log.error("获取商品分类信息异常:", e);
+            throw new Exception(e);
+        }
+        return PageInfoRespList;
+    }
+    
     public static void main(String[] args) throws Exception  { 
     	PageInfoRSVImpl pageInfoRSVImpl = new PageInfoRSVImpl();
     	SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
