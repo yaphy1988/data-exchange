@@ -1,19 +1,21 @@
 package com.ai.bdex.dataexchange.tradecenter.service.impl.page;
 
+import java.util.List;
+
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageHeaderNavMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNav;
- import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHeaderNavSV;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNavExample;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHeaderNavSV;
  @Service("iPageHeaderNavSV")
-public class PageHeaderNavRSVImpl implements IPageHeaderNavSV{
+public class PageHeaderNavSVImpl implements IPageHeaderNavSV{
 	 @Resource
 	  private PageHeaderNavMapper pageHeaderNavMapper;
  	   /***
-	    * 接口没有时， 首页热门搜索
+	    * 接口没有时， 首页导航查询。
 	    */
 	   @Override
 		public  PageHeaderNav  queryPageHeaderNavById(Integer head_id) throws Exception{
@@ -24,17 +26,20 @@ public class PageHeaderNavRSVImpl implements IPageHeaderNavSV{
 	        return pageHeaderNav;
 	    }
 	   @Override
-			public  PageHeaderNav  queryPageHeaderNavList(PageHeaderNav exam) throws Exception{
+		public  List<PageHeaderNav>  queryPageHeaderNavList(PageHeaderNav exam) throws Exception{
 		   PageHeaderNavExample example = new PageHeaderNavExample();
-		   return null;
-		  // Criteria criteria = example.createCriteria();
-			/*if(exam.getPmgId() != 0){
-				criteria.andPmgIdEqualTo(exam.getPmgId());
-			}
-			if(exam.getModuleId() != 0){
-				criteria.andModuleIdEqualTo(exam.getModuleId());
-			}*/
-			//return pageHeaderNavMapper.selectByExample(example);	
+		   PageHeaderNavExample.Criteria criteria = example.createCriteria(); 
+		   if(exam.getNavId() != 0){
+				criteria.andNavIdEqualTo(exam.getNavId());
+			} 
+			if(exam.getStatus() != null){
+				criteria.andStatusEqualTo(exam.getStatus());
+			} 
+			else{
+				//空值，就只查有效的数据
+				criteria.andStatusEqualTo("1");
+			} 
+			 return pageHeaderNavMapper.selectByExample(example);	
 		  } 
 
 }
