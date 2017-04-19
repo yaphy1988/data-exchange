@@ -8,8 +8,6 @@ import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import com.ai.bdex.dataexchange.sequence.SeqUtil;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffSignMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaff;
@@ -18,8 +16,8 @@ import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffSignExample;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SignInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffSV;
 import com.ai.bdex.dataexchange.usercenter.util.SendMailUtil;
+import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
-import com.ai.paas.utils.MD5Util;
 import com.ai.paas.utils.SignUtil;
 
 public class AuthStaffSVImpl implements IAuthStaffSV{
