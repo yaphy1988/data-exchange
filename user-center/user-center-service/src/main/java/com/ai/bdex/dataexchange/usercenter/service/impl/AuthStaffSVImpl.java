@@ -106,7 +106,7 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 		//1.根据signId查询注册数据
 		mainInfo = authStaffSignMapper.selectByPrimaryKey(signId);
 		if(mainInfo==null){
-			result.put("flag", false);
+			result.put("success", false);
 			result.put("msg", "查询无数据");
 		}else{
 			String email = mainInfo.getEmail();
@@ -118,19 +118,19 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 			calendar.set(Calendar.HOUR_OF_DAY, calendar.get(Calendar.HOUR_OF_DAY) - 1);
 			Date beforeDate = calendar.getTime();
 			if(!newCode.equals(code)){
-				result.put("flag", false);
+				result.put("success", false);
 				result.put("msg", "验证链接与数据不符，请重试或重新注册！");
 			}else if("1".equals(mainInfo.getActiveFlag())){
 				//已经激活过
-				result.put("flag", false);
+				result.put("success", false);
 				result.put("msg", "该链接已使用过！");
 			}else if(!DateUtil.compareMs(createTime, beforeDate)){
-				result.put("flag", false);
+				result.put("success", false);
 				result.put("msg", "该链接已过期！");
 			}else{
 				//同步用户表，密码表
 				saveAuthStaffByEmailActive(mainInfo);
-				result.put("flag", true);
+				result.put("success", true);
 				result.put("msg", "激活成功！");
 			}			
 		}

@@ -1,99 +1,147 @@
-//package com.ai.bdex.dataexchange.busi.login.controller;
-//
-//import javax.servlet.http.HttpServletRequest;
-//import javax.servlet.http.HttpServletResponse;
-//
-//import org.slf4j.Logger;
-//import org.slf4j.LoggerFactory;
-//import org.springframework.stereotype.Controller;
-//import org.springframework.web.bind.annotation.RequestMapping;
-//
-//@Controller
-//@RequestMapping(value = "/login")
-//public class LoginController {
-//	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
-//	
-//	@RequestMapping(value="/pageInit")
-//	public String pageInit(HttpServletRequest request,
-//			HttpServletResponse response){
-//		return "/login/login";
-//	}
-//	
-//	@RequestMapping(value="/dologin")
-//	public void dologin(HttpServletRequest request,
-//			HttpServletResponse response){
-//		String token = this.getParam("token");
-//		LoginInfoDTO loginInfo = null;
-//		String isWeak = "0";
-//		String staffId = null;
-//		String ip = InetTool.getClientAddr(request);
-//		if ("QRCODE".equals(token)) { // 使用二维码登录的情况
-//			Object qrCodeLoginCheck = session.getAttribute(QRCodeLoginCheck);
-//			if (qrCodeLoginCheck != null && Constants.Login.QRCODE_SUCCESS.equals(qrCodeLoginCheck.toString())) { // 判断是否通过qrCodeLoginCheck的校验
-//				staffId = session.getAttribute(QRCodeStaffId).toString();
-//				loginInfo = iLoginSIDSV.getLoginInfoshare(staffId);
-//				loginInfo.setLoginIp(ip);
-//			    loginInfo.setAppName("web");
-//			    session.removeAttribute(QRCodeLoginCheck);
-//			    session.removeAttribute(QRCodeStaffId);
-//			} else { // 如果不是通过qrCodeLoginCheck的校验而直接尝试登录的将被认为是非法攻击，页面将被重定向
-//				this.output(response, R.failure(Constants.Login.QRCODE_ATTACK));
-//				return;
-//			}
-//		} else {
-//			staffId = this.getParam("staffId");
-//			String password = this.getParam("password");
-//			String verifyCode = this.getParam("verifyCode");
-//			isWeak = this.getParam("isWeak");
-//			logger.info("pwd:" + password + "______rpd:" + SignUtil.SHA1(SignUtil.SHA1("ok")));
-//			String veriCodeInSession = CaptchaServlet.getCaptchaCode(request);
-//			//验证码注释
-//			if (!CaptchaServlet.verifyCaptcha(request, verifyCode)) {
-//				this.output(response, R.failure("验证码输入错误"));
-//				return;
-//			}
-//	
-//			loginInfo = new LoginInfo();
-//			loginInfo.setLoginName(staffId);
-//			loginInfo.setLoginPwd(password);
-//			loginInfo.setInputVerifyCode(verifyCode);
-//			loginInfo.setSessionVerifyCode(veriCodeInSession);
-//			loginInfo.setLoginIp(ip);
-//		    loginInfo.setAppName("web");
+package com.ai.bdex.dataexchange.busi.login.controller;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
+import com.ai.bdex.dataexchange.util.StaffUtil;
+import com.ai.paas.utils.InetTool;
+import com.ai.paas.utils.SignUtil;
+
+@Controller
+@RequestMapping(value = "/login")
+public class LoginController {
+	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+	
+	@Autowired
+	private ILoginRSV iLoginRSV;
+	@Autowired
+	protected HttpSession session;
+	@Autowired
+	private HttpServletRequest request;
+	
+	@RequestMapping(value="/pageInit")
+	public String pageInit(HttpServletRequest request,
+			HttpServletResponse response){
+		return "/login/login";
+	}
+	
+	@RequestMapping(value="/dologin")
+	public Map<String,Object> dologin(HttpServletRequest request,
+			HttpServletResponse response){
+		Map<String,Object> rMap = new HashMap<String,Object>();
+		LoginInfoDTO loginInfo = null;
+		String staffId = null;
+		String ip = InetTool.getClientAddr(request);
+
+		staffId = request.getParameter("staffId");
+		String password = request.getParameter("password");
+		String verifyCode = request.getParameter("verifyCode");
+		log.info("pwd:" + password + "______rpd:" + SignUtil.SHA1(SignUtil.SHA1("ok")));
+//		String veriCodeInSession = CaptchaServlet.getCaptchaCode(request);
+//		//验证码注释
+//		if (!CaptchaServlet.verifyCaptcha(request, verifyCode)) {
+//			rMap.put("success", false);
+//			rMap.put("errorMsg", "验证码输入错误");
+//			return rMap;
 //		}
-//		//StaffInfoVO staffInfoVO = null;
-//	    session.setAttribute("systype", "web");
-//	    System.out.println(session.getAttribute("systype").toString());
-//		try {
-//			//先校验登录，登录成功再进行其他业务逻辑判断
-//            Map<String,Object> map = loginVerify_new(loginInfo,response,isWeak);
-//            
-//            
-//            if (null != map.get("loginVerifyUrl")||null!=map.get("isFirst")) {
-//				this.output(response,map);
-//			} else {
-//				StaffInfoVO staffInfoVO = (StaffInfoVO) map.get("staffInfoVO");
-//				String canLottery = (String)map.get("canLottery");
-//				//跳转
-//				Map<String,Object> m = new HashMap<String,Object>();
-//				m.put("provinceCode", staffInfoVO.getProvinceCode());
-//				m.put("fairFlag", staffInfoVO.isFairFlag());//是否开启交易会
-//		        m.put("iphone6Flag",staffInfoVO.isIphone6());//是否Iphone6
-//				m.put("chnlAgreementFlag", staffInfoVO.getChnlAgreementFlag());//体验渠道是否协议签署  （空：非体验渠道，1：已签署，0：未签署）
-//				m.put("isLottery", canLottery);
-//				this.output(response,m);
-//			}
-//		} catch (Exception e) {
-//			if (e instanceof BusinessException) {
-//				BusinessException ee = (BusinessException) e;
-//				logger.error("用户名:" + staffId + ",IP:" + ip + ",异常编码:"+ ee.getErrorCode() + ",异常信息:" , ee);
-//				this.output(response, R.failure(ee.getErrorMessage()));
-//				return;
-//			} else {
-//				logger.error("",e);
-//			}
-//			this.output(response, R.failure("系统错误,请联系管理员"));
-//		}
-//	}
-//
-//}
+
+		loginInfo = new LoginInfoDTO();
+		loginInfo.setLoginName(staffId);
+		loginInfo.setLoginPwd(password);
+		loginInfo.setInputVerifyCode(verifyCode);
+//		loginInfo.setSessionVerifyCode(veriCodeInSession);
+		loginInfo.setLoginIp(ip);
+		try {
+			//先校验登录，登录成功再进行其他业务逻辑判断
+            Map<String,Object> map = loginVerify_new(loginInfo,response);
+            StaffInfoDTO staffInfoVO = (StaffInfoDTO) map.get("staffInfoDTO");
+			rMap.put("success", true);
+			rMap.put("data", staffInfoVO);
+		} catch (Exception e) {
+			if (e instanceof BusinessException) {
+				BusinessException ee = (BusinessException) e;
+				log.error("用户名:" + staffId + ",IP:" + ip + ",异常信息:"+ee.getMessage() , ee);
+				rMap.put("success", false);
+				rMap.put("errorMsg", ee.getMessage());
+			} else {
+				log.error("",e);
+			}
+			rMap.put("success", false);
+			rMap.put("errorMsg", "系统错误,请联系管理员");
+		}
+		return rMap;
+	}
+	
+	
+	/**
+	 * 调用登录接口校验是否能登录
+	 * @return
+	 * @throws Exception 
+	 */
+	public Map<String,Object> loginVerify_new(LoginInfoDTO loginInfo,HttpServletResponse response) throws Exception{
+		StaffInfoDTO staffInfoVO = null;
+		staffInfoVO = iLoginRSV.loginVerify(loginInfo);
+		Map<String,Object> result = saveStaffInfotoSession(staffInfoVO, response);		
+		try{
+			iLoginRSV.updateLastLogin(staffInfoVO.getStaffId());
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		
+		return result;
+	}
+	
+	/**
+	 * 将staffInfoDTO存入session
+	 * @return
+	 * @throws Exception 
+	 */
+	
+	public Map<String,Object> saveStaffInfotoSession(StaffInfoDTO staffInfoDTO,HttpServletResponse response) throws Exception{
+		Map<String, Object> map = new HashMap<String, Object>();
+		//存入用户上次登录信息Cookie，时间为一周
+		StaffUtil.addStaffCookie(request, response, staffInfoDTO.getStaffId());
+		
+		log.debug("staffInfoDTO:"+staffInfoDTO.toString());
+		//存入session
+		StaffUtil.setStaffInfo(session, staffInfoDTO);
+		map.put("staffInfoDTO", staffInfoDTO);
+		return map;
+	}
+	
+	/**
+	 * 注销
+	 * @return
+	 */
+	@RequestMapping(value = "/doLogout")
+	@ResponseBody
+	public Map<String,Object> doLogout(HttpServletResponse response) {
+		Map<String, Object> map = new HashMap<String, Object>();
+		try {
+			StaffUtil.removeStaffInfo(session);
+			map.put("success", true);
+			map.put("msg", "注销成功");
+		} catch (Exception e) {
+			log.error("系统异常");
+			map.put("success", false);
+			map.put("msg", "系统异常");
+		}
+		return map;
+	}
+
+}

@@ -56,4 +56,10 @@ public class LoginRSVImpl implements ILoginRSV{
 		return StaffInfo;
 	}
 
+	@Override
+	public int updateLastLogin(String staffId) throws BusinessException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

@@ -11,4 +11,12 @@ public interface ILoginSV {
 	 * LoginInfo   入参，对应文档入参
 	 * */
     public StaffInfoDTO loginVerify(LoginInfoDTO loginInfo) throws Exception;
+    
+    /**
+     * 修改上次登录时间
+     * @param staffId
+     * @return
+     * @throws Exception
+     */
+    public int updateLastLogin(String staffId)throws Exception;
 }

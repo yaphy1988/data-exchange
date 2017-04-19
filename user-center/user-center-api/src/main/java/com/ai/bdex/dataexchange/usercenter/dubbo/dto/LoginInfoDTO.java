@@ -18,6 +18,16 @@ public class LoginInfoDTO implements Serializable{
 	private String remark;
 	
 	private String loginPwd;
+	
+	private String sessionVerifyCode;
+
+	public String getSessionVerifyCode() {
+		return sessionVerifyCode;
+	}
+
+	public void setSessionVerifyCode(String sessionVerifyCode) {
+		this.sessionVerifyCode = sessionVerifyCode;
+	}
 
 	public String getLoginPwd() {
 		return loginPwd;

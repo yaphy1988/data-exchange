@@ -154,4 +154,17 @@ public class LoginSVImpl implements ILoginSV {
         return passInfo;
     }
 
+	@Override
+	public int updateLastLogin(String staffId) throws Exception {
+		AuthStaffExample example = new AuthStaffExample();
+		AuthStaffExample.Criteria sql = example.createCriteria();
+		sql.andStaffIdEqualTo(staffId);
+		AuthStaff record = new AuthStaff();
+		record.setUpdateStaff(staffId);
+		record.setUpdateTime(DateUtil.getNowAsDate());
+		record.setLastLogin(DateUtil.getNowAsDate());
+		int count = authStaffMapper.updateByExampleSelective(record, example);
+		return count;
+	}
+
 }

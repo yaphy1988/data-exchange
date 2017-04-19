@@ -12,4 +12,12 @@ public interface ILoginRSV {
 	 * LoginInfo   入参，对应文档入参
 	 * */
     public StaffInfoDTO loginVerify(LoginInfoDTO loginInfo) throws BusinessException;
+    
+    /**
+     * 修改上次登录时间
+     * @param staffId
+     * @return
+     * @throws BusinessException
+     */
+    public int updateLastLogin(String staffId)throws BusinessException;
 }
