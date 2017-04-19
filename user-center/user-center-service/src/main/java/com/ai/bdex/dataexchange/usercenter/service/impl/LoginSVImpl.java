@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.log4j.Logger;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffMapper;
@@ -20,11 +21,13 @@ import com.ai.bdex.dataexchange.usercenter.service.interfaces.ILoginSV;
 import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
 
+@Service("iLoginSV")
 public class LoginSVImpl implements ILoginSV {
 	private static final Logger log = Logger.getLogger(LoginSVImpl.class);
 	
 	@Autowired
 	private AuthStaffMapper authStaffMapper;
+	
 	@Autowired
 	private AuthStaffPassMapper authStaffPassMapper;
 
