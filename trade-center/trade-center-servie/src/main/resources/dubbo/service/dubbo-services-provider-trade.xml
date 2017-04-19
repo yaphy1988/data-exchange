@@ -8,9 +8,9 @@
                  owner="zhaoyf7" timeout="3000"/>
   <bean id="demoRSV" class="com.ai.bdex.dataexchange.tradecenter.dubbo.impl.DemoRSVImpl"/>
  
-  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSV" ref="iGdsInfoRSV"
+  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSV" ref="gdsInfoRSV"
                  owner="zhaoyf7" timeout="3000"/>
-  <bean id="iGdsInfoRSV" class="com.ai.bdex.dataexchange.tradecenter.dubbo.impl.gds.GdsInfoRSVImpl"/>
+  <bean id="gdsInfoRSV" class="com.ai.bdex.dataexchange.tradecenter.dubbo.impl.gds.GdsInfoRSVImpl"/>
 
   <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Page.IPageInfoRSV" ref="iPageInfoRSV"
                  owner="zhaoyf7" timeout="3000"/>
