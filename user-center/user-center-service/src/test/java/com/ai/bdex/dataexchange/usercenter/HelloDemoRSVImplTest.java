@@ -1,9 +1,8 @@
 package com.ai.bdex.dataexchange.usercenter;
 
-import com.ai.bdex.dataexchange.sequence.SeqUtil;
+import com.ai.paas.sequence.SeqUtil;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.DemoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IDemoRSV;
-import com.ai.bdex.dataexchange.usercenter.service.interfaces.IDemoSV;
 import com.ai.paas.util.CacheUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;

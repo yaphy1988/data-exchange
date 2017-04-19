@@ -18,7 +18,7 @@
     </dependency>
     <dependency>
       <groupId>com.ai.bdex.dataexchange</groupId>
-      <artifactId>bdex-sys-api</artifactId>
+      <artifactId>common-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -30,6 +30,10 @@
       <artifactId>dubbo-spring-boot-autoconfigure</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.ai.woego.boot</groupId>
+      <artifactId>sequence-spring-boot-autoconfig</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
     </dependency>
@@ -38,12 +42,12 @@
       <artifactId>cache-engine</artifactId>
     </dependency>
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
+      <groupId>com.ai.paas</groupId>
+      <artifactId>sequence-engine</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.github.pagehelper</groupId>
-      <artifactId>pagehelper</artifactId>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
     </dependency>
     <dependency>
       <groupId>org.mybatis.spring.boot</groupId>
@@ -53,11 +57,6 @@
       <groupId>com.alibaba</groupId>
       <artifactId>druid</artifactId>
       <scope>runtime</scope>
-    </dependency>
-    <dependency>
-		<groupId>com.ai.bdex.dataexchange</groupId>
-		<artifactId>common-dao</artifactId>
-      <version>${project.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework</groupId>
@@ -73,13 +72,8 @@
       <groupId>org.mybatis</groupId>
       <artifactId>mybatis</artifactId>
       <version>3.3.1</version>
-    </dependency>    
-    <dependency>
-      <groupId>javax.mail</groupId>
-      <artifactId>com.springsource.javax.mail</artifactId>
-      <version>1.4.5</version>
-    </dependency>  
-    </dependencies>
+    </dependency>
+  </dependencies>
 
 
 </project>

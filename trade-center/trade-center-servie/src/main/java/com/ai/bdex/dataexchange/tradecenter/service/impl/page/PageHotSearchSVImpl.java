@@ -12,7 +12,7 @@ public class PageHotSearchSVImpl  implements  IPageHotSearchSV{
 	 @Resource
 	  private PageHotSearchMapper pageHotSearchMapper;
 	   /***
-	    * 接口没有时，需要定制的信息
+	    * 接口没有时， 首页热门搜索
 	    */
 	  @Override
 	   public PageHotSearch queryPageHotSearchById(Integer PageInfoid) throws Exception{
@@ -20,7 +20,7 @@ public class PageHotSearchSVImpl  implements  IPageHotSearchSV{
 	        if (PageInfoid==null){
 	            throw new Exception("根据ID查询 数据定制 信息入参为空");
 	        }
-	        PageHotSearch pageInfo = null;// pageHotSearchMapper.sel.selectByPrimaryKey(PageInfoid);
+	        PageHotSearch pageInfo =   pageHotSearchMapper.selectByPrimaryKey(PageInfoid);
 	        return pageInfo;
 	    }
 }

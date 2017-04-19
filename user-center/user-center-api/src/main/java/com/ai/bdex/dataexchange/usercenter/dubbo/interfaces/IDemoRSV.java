@@ -1,5 +1,8 @@
 package com.ai.bdex.dataexchange.usercenter.dubbo.interfaces;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.DemoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqDemoDTO;
 
 /**
  * @author yafei
@@ -7,4 +10,6 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.DemoDTO;
  */
 public interface IDemoRSV {
     String callDemoApi(DemoDTO demoDTO);
+
+    PageResponseDTO<DemoDTO> queryDemoPage(ReqDemoDTO baseInfo) throws BusinessException;
 }

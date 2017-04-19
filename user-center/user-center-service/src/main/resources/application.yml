@@ -26,3 +26,5 @@ com.ai.auth.login.config: auth
 com.ai.paas.zookeeper: 127.0.0.1:2181
 com.ai.paas.runmode: D
 com.ai.zk.recreate: false
+
+application.sequencefactory.confpath: /com/ai/db/bdex/sequence/conf
