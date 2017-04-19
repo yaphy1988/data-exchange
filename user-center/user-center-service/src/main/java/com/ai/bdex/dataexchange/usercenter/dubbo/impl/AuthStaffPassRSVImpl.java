@@ -2,12 +2,14 @@ package com.ai.bdex.dataexchange.usercenter.dubbo.impl;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffPassDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffPassRSV;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffPassSV;
 
+@Service("iAuthStaffPassRSV")
 public class AuthStaffPassRSVImpl implements IAuthStaffPassRSV{
 	private static final Logger log = Logger.getLogger(AuthStaffPassRSVImpl.class);
 

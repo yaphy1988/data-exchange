@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
@@ -11,6 +12,7 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SignInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffSV;
 
+@Service("iAuthStaffRSV")
 public class AuthStaffRSVImpl implements IAuthStaffRSV{
 	private static final Logger log = Logger.getLogger(AuthStaffRSVImpl.class);
 
@@ -84,6 +86,10 @@ public class AuthStaffRSVImpl implements IAuthStaffRSV{
 				throw new BusinessException("判断用户是否认证异常:" + e.getMessage());
 			}		
 		}
+	}
+	
+	public static void main(String[] args){
+		
 	}
 
 }

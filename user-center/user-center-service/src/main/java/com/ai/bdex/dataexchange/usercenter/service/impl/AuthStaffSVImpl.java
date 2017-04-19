@@ -8,11 +8,13 @@ import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffSignMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaff;
+import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffExample;
 import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffSign;
 import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffSignExample;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
@@ -25,6 +27,7 @@ import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
 import com.ai.paas.utils.SignUtil;
 
+@Service("iAuthStaffSV")
 public class AuthStaffSVImpl implements IAuthStaffSV{
 
 	@Autowired
@@ -45,7 +48,12 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 		//1.1 校验ID是否存在
 		boolean flag = validUserIdExists(info.getStaffId());
 		if(flag){
-			throw new Exception("用户ID已经存在");
+			throw new BusinessException("用户ID已经存在");
+		}
+		//校验邮箱是否被使用
+		boolean existsEmail = validEmail(info.getEmail());
+		if(existsEmail){
+			throw new BusinessException("该邮箱号已经被使用！");
 		}
 		AuthStaffSign record =  new AuthStaffSign();		
 		BeanUtils.copyProperties(info, record);
@@ -109,6 +117,20 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 			result.put("success", false);
 			result.put("msg", "查询无数据");
 		}else{
+			//校验用户ID是否被使用
+			boolean existsStaffId = validStaffId(mainInfo.getStaffId());
+			if(existsStaffId){
+				result.put("success", false);
+				result.put("msg", "该用户Id已经被使用");
+				return result;
+			}
+			//校验邮箱是否被使用
+			boolean existsEmail = validEmail(mainInfo.getEmail());
+			if(existsEmail){
+				result.put("success", false);
+				result.put("msg", "该邮箱已经被使用");
+				return result;
+			}
 			String email = mainInfo.getEmail();
 			String staffId = mainInfo.getStaffId();
 			String newCode = SendMailUtil.getCode(staffId, email);
@@ -129,7 +151,7 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 				result.put("msg", "该链接已过期！");
 			}else{
 				//同步用户表，密码表
-				saveAuthStaffByEmailActive(mainInfo);
+				saveAuthStaffByEmailActive(mainInfo);				
 				result.put("success", true);
 				result.put("msg", "激活成功！");
 			}			
@@ -173,6 +195,12 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 			pass.setStaffPasswd(mainInfo.getPassword());
 			pass.setPasswdFlag("1");
 			iAuthStaffPassSV.savePassInfo(pass);
+			//修改注册表的状态为已激活
+			AuthStaffSign record = new AuthStaffSign();
+			record.setSignId(mainInfo.getSignId());
+			record.setUpdateTime(DateUtil.getNowAsDate());
+			record.setActiveFlag("1");
+			authStaffSignMapper.updateByPrimaryKeySelective(record);
 		}
 		return insertcount;
 	}
@@ -185,6 +213,25 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 		}
 		if("1".equals(info.getAuthenFlag())){
 			return true;
+		}
+		return false;
+	}
+	
+	private boolean validStaffId(String staffId){
+		AuthStaff staff = authStaffMapper.selectByPrimaryKey(staffId);
+		if(staff!=null){
+			return  true;
+		}
+		return false;
+	}
+	
+	private boolean validEmail(String email){
+		AuthStaffExample example = new AuthStaffExample();
+		AuthStaffExample.Criteria sql = example.createCriteria();
+		sql.andEmailEqualTo(email);
+		List<AuthStaff> staff = authStaffMapper.selectByExample(example);
+		if(staff!=null&&staff.size()>0){
+			return  true;
 		}
 		return false;
 	}

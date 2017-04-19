@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.usercenter.dubbo.impl;
 
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
@@ -12,6 +13,7 @@ import com.ai.bdex.dataexchange.usercenter.service.interfaces.ILoginSV;
 import com.ai.paas.utils.DateUtil;
 import com.ai.paas.utils.StringUtil;
 
+@Service("iLoginRSV")
 public class LoginRSVImpl implements ILoginRSV{
 	private static final Logger log = Logger.getLogger(LoginSVImpl.class);
 	

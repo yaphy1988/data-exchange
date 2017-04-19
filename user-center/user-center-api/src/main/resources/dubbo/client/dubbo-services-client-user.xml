@@ -9,5 +9,14 @@
      ">
 
     <dubbo:reference id="demoRSV" interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IDemoRSV" group="${usercenter.dubbo.group}"/>
+    <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV" id="iAuthStaffRSV" group="${usercenter.dubbo.group}"/>
+   
+   <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffPassRSV" id="iAuthStaffPassRSV" group="${usercenter.dubbo.group}"/>
+   
+   <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IChnlInvoiceTaxRSV" id="iChnlInvoiceTaxRSV" group="${usercenter.dubbo.group}"/>
+   
+   <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IDemoRSV" id="demoRSV" group="${usercenter.dubbo.group}"/>
+   
+   <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV" id="iLoginRSV" group="${usercenter.dubbo.group}"/>
 
 </beans>
