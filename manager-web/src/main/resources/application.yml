@@ -7,10 +7,10 @@ spring:
   dubbo:
       application:
         name: manage-web
-        owner: owner
+        owner: zhaoyf7
         environment: develop
       protocol:
-        port: 20881
+        port: 20885
         threads: 300
       registry:
         address: 127.0.0.1:2181
@@ -19,6 +19,7 @@ spring:
         group: devGroup
       consumer:
         enabled: true
+        group: devGroup
 
 usercenter.dubbo.group: devGroup
-
+tradecenter.dubbo.group: devGroup
