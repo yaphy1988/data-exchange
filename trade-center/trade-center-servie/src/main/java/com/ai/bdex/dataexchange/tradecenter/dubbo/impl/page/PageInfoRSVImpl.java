@@ -8,11 +8,9 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.boot.SpringApplication;
-import org.springframework.context.ApplicationContext;
+import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
-import com.ai.bdex.dataexchange.tradecenter.TradeCenterServiceStart;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNav;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHotSearch;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageInfo;
@@ -23,16 +21,15 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageHotSearchRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.SortContentRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.SortInfoRespDTO; 
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Page.IPageInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHeaderNavSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHotSearchSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortContentSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
-import com.ai.paas.util.Utils;
-import com.ai.paas.utils.StringUtil;
 
- @SuppressWarnings("unused")
+@SuppressWarnings("unused")
+ @Service("iPageInfoRSV")
 public class PageInfoRSVImpl implements IPageInfoRSV {
     private static final Logger log = LoggerFactory.getLogger(PageInfoRSVImpl.class);
     /*

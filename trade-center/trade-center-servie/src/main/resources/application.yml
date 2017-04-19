@@ -5,7 +5,7 @@ spring:
       owner: owner
       environment: develop
     protocol:
-      port: 20880
+      port: 20881
       threads: 300
     registry:
       address: 127.0.0.1:2181
@@ -17,7 +17,7 @@ spring:
 jdbc:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-  url: jdbc:mysql://132.37.2.166:39306/bdex
+  url: jdbc:mysql://112.74.163.29:3306/bdex
   username: bdex
   password: bdex1234
 

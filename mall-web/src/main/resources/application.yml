@@ -1,2 +1,21 @@
 server:
   port: 8081
+
+spring:
+  session:
+    store-type: none
+  dubbo:
+      application:
+        name: mall-web
+        owner: owner
+        environment: develop
+      registry:
+        address: 127.0.0.1:2181
+      provider:
+        enabled: false
+        group: devGroup
+      consumer:
+        enabled: true
+
+usercenter.dubbo.group: devGroup
+tradecenter.dubbo.group: devGroup

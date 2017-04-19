@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds;
+package com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds;
 
 import java.util.List;
 

@@ -3,16 +3,11 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
-  <!-- 定义dubbo服务，必填信息有，interface、ref、owner、timeout，其中dubbo服务对应的bean对象也使用bean配置 -->
-  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.IDemoRSV" ref="demoRSV"
-                 owner="zhaoyf7" timeout="3000"/>
-  <bean id="demoRSV" class="com.ai.bdex.dataexchange.tradecenter.dubbo.impl.DemoRSVImpl"/>
+  <!-- 定义dubbo服务，必填信息有，interface、ref、owner、timeout，其中dubbo服务对应的bean对象不要在这里配置，直接在实现类上添加注解即可 -->
  
-  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSV" ref="gdsInfoRSV"
-                 owner="zhaoyf7" timeout="3000"/>
-  <bean id="gdsInfoRSV" class="com.ai.bdex.dataexchange.tradecenter.dubbo.impl.gds.GdsInfoRSVImpl"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV" ref="gdsInfoRSV"
+                 owner="zhaoyf7" timeout="3000" group="${spring.dubbo.provider.group}"/>
 
-  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Page.IPageInfoRSV" ref="iPageInfoRSV"
-                 owner="zhaoyf7" timeout="3000"/>
-  <bean id="iPageInfoRSV" class="com.ai.bdex.dataexchange.tradecenter.dubbo.impl.page.PageInfoRSVImpl"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV" ref="iPageInfoRSV"
+                 owner="zhaoyf7" timeout="3000" group="${spring.dubbo.provider.group}"/>
 </beans>
