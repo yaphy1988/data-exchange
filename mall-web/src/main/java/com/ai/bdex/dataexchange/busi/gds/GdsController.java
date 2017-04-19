@@ -1,6 +1,6 @@
 package com.ai.bdex.dataexchange.busi.gds;
 
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSVImpl;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ public class GdsController {
     private static final Logger log = LoggerFactory.getLogger(GdsController.class);
 
     @Autowired
-    private IGdsInfoRSVImpl iGdsInfoRSV;
+    private IGdsInfoRSV iGdsInfoRSV;
 
     @RequestMapping(value = "/pageInit")
     public String pageInit(){

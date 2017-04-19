@@ -9,5 +9,5 @@
      ">
 
     <dubbo:reference id="demoRSV" interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IDemoRSV" registry="${default.dubbo.registry.id}" version="${default.dubbo.version}" group="${apicenter.dubbo.group}"/>
-    <dubbo:reference id="gdsInfoRSV" interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSVImpl" registry="${default.dubbo.registry.id}}" version="${default.dubbo.version}" group="${apicenter.dubbo.group}"/>
+    <dubbo:reference id="gdsInfoRSV" interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSV" registry="${default.dubbo.registry.id}}" version="${default.dubbo.version}" group="${apicenter.dubbo.group}"/>
 </beans>

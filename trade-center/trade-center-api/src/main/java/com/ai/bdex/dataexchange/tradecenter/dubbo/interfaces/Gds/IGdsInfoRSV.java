@@ -6,7 +6,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfoRespDTO;
 /**
  * Created by yx on 2017/4/18.
  */
-public interface IGdsInfoRSVImpl {
+public interface IGdsInfoRSV {
 
     public GdsInfoRespDTO queryGdsInfoDetails (GdsInfoReqDTO gdsInfoReqDTO) throws Exception;
 }
