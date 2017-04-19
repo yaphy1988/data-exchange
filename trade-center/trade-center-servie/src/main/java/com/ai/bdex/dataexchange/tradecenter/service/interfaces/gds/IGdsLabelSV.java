@@ -10,5 +10,13 @@ import java.util.List;
  */
 public interface IGdsLabelSV {
 
+    public GdsLabel queryGdsLabelById(Integer labId) throws Exception;
+
     public List<GdsLabel> queryGdsLabelList(GdsLabelReqVO gdsLabelReqVO) throws Exception;
+
+    public int insertGdsLabel(GdsLabelReqVO gdsLabelReqVO) throws Exception;
+
+    public int updateGdsLabel(GdsLabelReqVO gdsLabelReqVO) throws Exception;
+
+    public int deleteGdslabelById(Integer labId) throws Exception;
 }

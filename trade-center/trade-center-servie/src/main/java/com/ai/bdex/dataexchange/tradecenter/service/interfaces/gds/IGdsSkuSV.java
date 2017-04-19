@@ -10,5 +10,13 @@ import java.util.List;
  */
 public interface IGdsSkuSV {
 
+    public GdsSku queryGdsSkuById(Integer skuId) throws Exception;
+
     public List<GdsSku> queryGdsSkuList(GdsSkuReqVO gdsSkuReqVO) throws Exception;
+
+    public int insertGdsSku(GdsSkuReqVO gdsSkuReqVO) throws Exception;
+
+    public int updateGdsSku(GdsSkuReqVO gdsSkuReqVO) throws Exception;
+
+    public int deleteGdsSku(Integer skuId) throws Exception;
 }
