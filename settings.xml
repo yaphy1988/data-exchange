@@ -50,7 +50,7 @@ under the License.
    | The path to the local repository maven will use to store artifacts.
    |
    | Default: ${user.home}/.m2/repository  -->
-  <localRepository>C:/Users/fangyunfeng/.m2/repository</localRepository>
+  <!--<localRepository>${user.home}/.m2/repository</localRepository>-->
 
 
   <!-- interactiveMode
@@ -153,7 +153,7 @@ under the License.
 	 <mirror>
         <id>nexus-bdex</id>
         <mirrorOf>*</mirrorOf>
-        <name>Nexus aliyun</name>
+        <name>nexus-bdex</name>
         <url>http://112.74.163.29:8081/nexus/content/groups/public/</url>
     </mirror>
   </mirrors>
@@ -219,7 +219,7 @@ under the License.
    | List of profiles that are active for all builds.
    |  -->
   <activeProfiles>
-    <activeProfile>nexus-aliyun</activeProfile>
+    <activeProfile>nexus-bdex</activeProfile>
   </activeProfiles>
 
 </settings>
