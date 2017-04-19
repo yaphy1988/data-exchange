@@ -6,18 +6,14 @@ import java.util.Date;
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsLabelRespVO implements Serializable {
-    private Integer labId;
+public class GdsInfo2CatReqDTO implements Serializable {
+    private Integer gcId;
+
+    private Integer catId;
+
+    private Integer catFirst;
 
     private Integer gdsId;
-
-    private String labName;
-
-    private String labColor;
-
-    private Integer showOrder;
-
-    private String ifEdit;
 
     private String status;
 
@@ -29,12 +25,28 @@ public class GdsLabelRespVO implements Serializable {
 
     private Date updateTime;
 
-    public Integer getLabId() {
-        return labId;
+    public Integer getGcId() {
+        return gcId;
     }
 
-    public void setLabId(Integer labId) {
-        this.labId = labId;
+    public void setGcId(Integer gcId) {
+        this.gcId = gcId;
+    }
+
+    public Integer getCatId() {
+        return catId;
+    }
+
+    public void setCatId(Integer catId) {
+        this.catId = catId;
+    }
+
+    public Integer getCatFirst() {
+        return catFirst;
+    }
+
+    public void setCatFirst(Integer catFirst) {
+        this.catFirst = catFirst;
     }
 
     public Integer getGdsId() {
@@ -43,38 +55,6 @@ public class GdsLabelRespVO implements Serializable {
 
     public void setGdsId(Integer gdsId) {
         this.gdsId = gdsId;
-    }
-
-    public String getLabName() {
-        return labName;
-    }
-
-    public void setLabName(String labName) {
-        this.labName = labName;
-    }
-
-    public String getLabColor() {
-        return labColor;
-    }
-
-    public void setLabColor(String labColor) {
-        this.labColor = labColor;
-    }
-
-    public Integer getShowOrder() {
-        return showOrder;
-    }
-
-    public void setShowOrder(Integer showOrder) {
-        this.showOrder = showOrder;
-    }
-
-    public String getIfEdit() {
-        return ifEdit;
-    }
-
-    public void setIfEdit(String ifEdit) {
-        this.ifEdit = ifEdit;
     }
 
     public String getStatus() {

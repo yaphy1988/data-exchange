@@ -1,7 +1,7 @@
 package com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsProp;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsPropReqVO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsPropReqDTO;
 
 import java.util.List;
 
@@ -12,11 +12,11 @@ public interface IGdsPropSV {
 
     public GdsProp queryGdsPropById(Integer proId) throws Exception;
 
-    public List<GdsProp> queryGdsPropList(GdsPropReqVO gdsPropReqVO) throws Exception;
+    public List<GdsProp> queryGdsPropList(GdsPropReqDTO gdsPropReqDTO) throws Exception;
 
-    public int insertGdsProp(GdsPropReqVO gdsPropReqVO) throws Exception;
+    public int insertGdsProp(GdsPropReqDTO gdsPropReqDTO) throws Exception;
 
-    public int updateGdsProp(GdsPropReqVO gdsPropReqVO) throws Exception;
+    public int updateGdsProp(GdsPropReqDTO gdsPropReqDTO) throws Exception;
 
     public int deleteGdsPropById(Integer proId) throws Exception;
 }

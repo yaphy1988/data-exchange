@@ -6,18 +6,14 @@ import java.util.Date;
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsSkuReqVO implements Serializable {
-    private Integer skuId;
+public class GdsLabelQuikReqDTO implements Serializable {
+    private Integer labId;
 
-    private Integer gdsId;
+    private String labName;
 
-    private String skuName;
+    private String labColor;
 
-    private Integer packPrice;
-
-    private Integer packTimes;
-
-    private Integer packDay;
+    private Integer catFirst;
 
     private Integer showOrder;
 
@@ -31,52 +27,36 @@ public class GdsSkuReqVO implements Serializable {
 
     private Date updateTime;
 
-    public Integer getSkuId() {
-        return skuId;
+    public Integer getLabId() {
+        return labId;
     }
 
-    public void setSkuId(Integer skuId) {
-        this.skuId = skuId;
+    public void setLabId(Integer labId) {
+        this.labId = labId;
     }
 
-    public Integer getGdsId() {
-        return gdsId;
+    public String getLabName() {
+        return labName;
     }
 
-    public void setGdsId(Integer gdsId) {
-        this.gdsId = gdsId;
+    public void setLabName(String labName) {
+        this.labName = labName;
     }
 
-    public String getSkuName() {
-        return skuName;
+    public String getLabColor() {
+        return labColor;
     }
 
-    public void setSkuName(String skuName) {
-        this.skuName = skuName;
+    public void setLabColor(String labColor) {
+        this.labColor = labColor;
     }
 
-    public Integer getPackPrice() {
-        return packPrice;
+    public Integer getCatFirst() {
+        return catFirst;
     }
 
-    public void setPackPrice(Integer packPrice) {
-        this.packPrice = packPrice;
-    }
-
-    public Integer getPackTimes() {
-        return packTimes;
-    }
-
-    public void setPackTimes(Integer packTimes) {
-        this.packTimes = packTimes;
-    }
-
-    public Integer getPackDay() {
-        return packDay;
-    }
-
-    public void setPackDay(Integer packDay) {
-        this.packDay = packDay;
+    public void setCatFirst(Integer catFirst) {
+        this.catFirst = catFirst;
     }
 
     public Integer getShowOrder() {

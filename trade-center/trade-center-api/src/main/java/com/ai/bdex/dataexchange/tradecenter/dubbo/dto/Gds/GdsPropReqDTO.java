@@ -6,18 +6,14 @@ import java.util.Date;
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsSkuRespVO implements Serializable {
-    private Integer skuId;
+public class GdsPropReqDTO implements Serializable {
+    private Integer proId;
 
-    private Integer gdsId;
+    private String proType;
 
-    private String skuName;
+    private Integer proName;
 
-    private Integer packPrice;
-
-    private Integer packTimes;
-
-    private Integer packDay;
+    private Integer catId;
 
     private Integer showOrder;
 
@@ -31,52 +27,36 @@ public class GdsSkuRespVO implements Serializable {
 
     private Date updateTime;
 
-    public Integer getSkuId() {
-        return skuId;
+    public Integer getProId() {
+        return proId;
     }
 
-    public void setSkuId(Integer skuId) {
-        this.skuId = skuId;
+    public void setProId(Integer proId) {
+        this.proId = proId;
     }
 
-    public Integer getGdsId() {
-        return gdsId;
+    public String getProType() {
+        return proType;
     }
 
-    public void setGdsId(Integer gdsId) {
-        this.gdsId = gdsId;
+    public void setProType(String proType) {
+        this.proType = proType;
     }
 
-    public String getSkuName() {
-        return skuName;
+    public Integer getProName() {
+        return proName;
     }
 
-    public void setSkuName(String skuName) {
-        this.skuName = skuName;
+    public void setProName(Integer proName) {
+        this.proName = proName;
     }
 
-    public Integer getPackPrice() {
-        return packPrice;
+    public Integer getCatId() {
+        return catId;
     }
 
-    public void setPackPrice(Integer packPrice) {
-        this.packPrice = packPrice;
-    }
-
-    public Integer getPackTimes() {
-        return packTimes;
-    }
-
-    public void setPackTimes(Integer packTimes) {
-        this.packTimes = packTimes;
-    }
-
-    public Integer getPackDay() {
-        return packDay;
-    }
-
-    public void setPackDay(Integer packDay) {
-        this.packDay = packDay;
+    public void setCatId(Integer catId) {
+        this.catId = catId;
     }
 
     public Integer getShowOrder() {

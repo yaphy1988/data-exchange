@@ -6,14 +6,16 @@ import java.util.Date;
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsInfo2CatRespVO implements Serializable {
-    private Integer gcId;
+public class GdsPropRespDTO implements Serializable {
+    private Integer proId;
+
+    private String proType;
+
+    private Integer proName;
 
     private Integer catId;
 
-    private Integer catFirst;
-
-    private Integer gdsId;
+    private Integer showOrder;
 
     private String status;
 
@@ -25,12 +27,28 @@ public class GdsInfo2CatRespVO implements Serializable {
 
     private Date updateTime;
 
-    public Integer getGcId() {
-        return gcId;
+    public Integer getProId() {
+        return proId;
     }
 
-    public void setGcId(Integer gcId) {
-        this.gcId = gcId;
+    public void setProId(Integer proId) {
+        this.proId = proId;
+    }
+
+    public String getProType() {
+        return proType;
+    }
+
+    public void setProType(String proType) {
+        this.proType = proType;
+    }
+
+    public Integer getProName() {
+        return proName;
+    }
+
+    public void setProName(Integer proName) {
+        this.proName = proName;
     }
 
     public Integer getCatId() {
@@ -41,20 +59,12 @@ public class GdsInfo2CatRespVO implements Serializable {
         this.catId = catId;
     }
 
-    public Integer getCatFirst() {
-        return catFirst;
+    public Integer getShowOrder() {
+        return showOrder;
     }
 
-    public void setCatFirst(Integer catFirst) {
-        this.catFirst = catFirst;
-    }
-
-    public Integer getGdsId() {
-        return gdsId;
-    }
-
-    public void setGdsId(Integer gdsId) {
-        this.gdsId = gdsId;
+    public void setShowOrder(Integer showOrder) {
+        this.showOrder = showOrder;
     }
 
     public String getStatus() {

@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsCatReqVO implements Serializable {
+public class GdsCatReqDTO implements Serializable {
     private Integer catId;
 
     private Integer catPid;

@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsLabelQuikReqVO implements Serializable {
+public class GdsLabelQuikRespDTO implements Serializable {
     private Integer labId;
 
     private String labName;

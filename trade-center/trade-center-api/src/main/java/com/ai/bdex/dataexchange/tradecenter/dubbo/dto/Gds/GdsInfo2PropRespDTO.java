@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsInfo2PropRespVO implements Serializable {
+public class GdsInfo2PropRespDTO implements Serializable {
     private Integer gpId;
 
     private Integer gdsId;

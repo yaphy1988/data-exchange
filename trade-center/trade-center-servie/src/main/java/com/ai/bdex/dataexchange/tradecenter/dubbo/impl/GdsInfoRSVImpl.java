@@ -13,7 +13,6 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -40,49 +39,49 @@ public class GdsInfoRSVImpl implements IGdsInfoRSVImpl {
     private IGdsSkuSV iGdsSkuSV;
 
     @Override
-    public GdsInfoRespVO queryGdsInfoDetails(GdsInfoReqVO gdsInfoReqVO) throws Exception {
-        GdsInfoRespVO gdsInfoRespVO = new GdsInfoRespVO();
-        if (gdsInfoReqVO==null || gdsInfoReqVO.getGdsId()==null || gdsInfoReqVO.getGdsId().intValue()<=0){
+    public GdsInfoRespDTO queryGdsInfoDetails(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
+        GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
+        if (gdsInfoReqDTO ==null || gdsInfoReqDTO.getGdsId()==null || gdsInfoReqDTO.getGdsId().intValue()<=0){
             throw new Exception("查询商品详细信息异常，入参为空");
         }
 
-        GdsInfo gdsInfo = iGdsInfoSV.queryGdsInfoById(gdsInfoReqVO.getGdsId());
+        GdsInfo gdsInfo = iGdsInfoSV.queryGdsInfoById(gdsInfoReqDTO.getGdsId());
         if(gdsInfo!=null){
-            BeanUtils.copyProperties(gdsInfo,gdsInfoRespVO);
+            BeanUtils.copyProperties(gdsInfo, gdsInfoRespDTO);
             //set商品第一类目名称
             if (gdsInfo.getCatFirst()!=null && gdsInfo.getCatFirst().intValue()>0){
                 GdsCat gdsCat = iGdsCatSV.queryGdsCatById(gdsInfo.getCatFirst());
                 if(gdsCat!=null){
-                    gdsInfoRespVO.setCatFirstName(gdsCat.getCatName());
+                    gdsInfoRespDTO.setCatFirstName(gdsCat.getCatName());
                 }
             }
             //获得商品标签列表
-            List<GdsLabelRespVO> gdsLabelRespVOs = new ArrayList<GdsLabelRespVO>();
-            GdsLabelReqVO gdsLabelReqVO = new GdsLabelReqVO();
-            gdsLabelReqVO.setGdsId(gdsInfo.getGdsId());
-            gdsLabelReqVO.setStatus("1");
-            List<GdsLabel> gdsLabels = iGdsLabelSV.queryGdsLabelList(gdsLabelReqVO);
+            List<GdsLabelRespDTO> gdsLabelRespDTOs = new ArrayList<GdsLabelRespDTO>();
+            GdsLabelReqDTO gdsLabelReqDTO = new GdsLabelReqDTO();
+            gdsLabelReqDTO.setGdsId(gdsInfo.getGdsId());
+            gdsLabelReqDTO.setStatus("1");
+            List<GdsLabel> gdsLabels = iGdsLabelSV.queryGdsLabelList(gdsLabelReqDTO);
             if(!CollectionUtils.isEmpty(gdsLabels)){
                 for (GdsLabel gdsLabel : gdsLabels){
-                    GdsLabelRespVO gdsLabelRespVO = new GdsLabelRespVO();
-                    BeanUtils.copyProperties(gdsLabel,gdsLabelRespVO);
-                    gdsLabelRespVOs.add(gdsLabelRespVO);
+                    GdsLabelRespDTO gdsLabelRespDTO = new GdsLabelRespDTO();
+                    BeanUtils.copyProperties(gdsLabel, gdsLabelRespDTO);
+                    gdsLabelRespDTOs.add(gdsLabelRespDTO);
                 }
-                gdsInfoRespVO.setGdsLabelRespVOs(gdsLabelRespVOs);
+                gdsInfoRespDTO.setGdsLabelRespDTOs(gdsLabelRespDTOs);
             }
             //获得商品的单品列表
-            List<GdsSkuRespVO> gdsSkuRespVOs = new ArrayList<GdsSkuRespVO>();
-            GdsSkuReqVO gdsSkuRepVO = new GdsSkuReqVO();
+            List<GdsSkuRespDTO> gdsSkuRespDTOs = new ArrayList<GdsSkuRespDTO>();
+            GdsSkuReqDTO gdsSkuRepVO = new GdsSkuReqDTO();
             gdsSkuRepVO.setStatus("1");
             gdsSkuRepVO.setGdsId(gdsInfo.getGdsId());
             List<GdsSku> gdsSkus =iGdsSkuSV.queryGdsSkuList(gdsSkuRepVO);
             if(!CollectionUtils.isEmpty(gdsSkus)){
                 for (GdsSku gdsSku : gdsSkus){
-                    GdsSkuRespVO gdsSkuRespVO = new GdsSkuRespVO();
-                    BeanUtils.copyProperties(gdsSku,gdsSkuRespVO);
-                    gdsSkuRespVOs.add(gdsSkuRespVO);
+                    GdsSkuRespDTO gdsSkuRespDTO = new GdsSkuRespDTO();
+                    BeanUtils.copyProperties(gdsSku, gdsSkuRespDTO);
+                    gdsSkuRespDTOs.add(gdsSkuRespDTO);
                 }
-                gdsInfoRespVO.setGdsSkuRespVOList(gdsSkuRespVOs);
+                gdsInfoRespDTO.setGdsSkuRespDTOList(gdsSkuRespDTOs);
             }
 
         }else{

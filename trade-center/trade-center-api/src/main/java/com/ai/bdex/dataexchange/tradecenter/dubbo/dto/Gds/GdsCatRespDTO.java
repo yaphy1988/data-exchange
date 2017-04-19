@@ -6,16 +6,18 @@ import java.util.Date;
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsLabelQuikRespVO implements Serializable {
-    private Integer labId;
+public class GdsCatRespDTO implements Serializable {
+    private Integer catId;
 
-    private String labName;
+    private Integer catPid;
 
-    private String labColor;
+    private String catName;
 
-    private Integer catFirst;
+    private String catDesc;
 
     private Integer showOrder;
+
+    private String ifEdit;
 
     private String status;
 
@@ -27,36 +29,36 @@ public class GdsLabelQuikRespVO implements Serializable {
 
     private Date updateTime;
 
-    public Integer getLabId() {
-        return labId;
+    public Integer getCatId() {
+        return catId;
     }
 
-    public void setLabId(Integer labId) {
-        this.labId = labId;
+    public void setCatId(Integer catId) {
+        this.catId = catId;
     }
 
-    public String getLabName() {
-        return labName;
+    public Integer getCatPid() {
+        return catPid;
     }
 
-    public void setLabName(String labName) {
-        this.labName = labName;
+    public void setCatPid(Integer catPid) {
+        this.catPid = catPid;
     }
 
-    public String getLabColor() {
-        return labColor;
+    public String getCatName() {
+        return catName;
     }
 
-    public void setLabColor(String labColor) {
-        this.labColor = labColor;
+    public void setCatName(String catName) {
+        this.catName = catName;
     }
 
-    public Integer getCatFirst() {
-        return catFirst;
+    public String getCatDesc() {
+        return catDesc;
     }
 
-    public void setCatFirst(Integer catFirst) {
-        this.catFirst = catFirst;
+    public void setCatDesc(String catDesc) {
+        this.catDesc = catDesc;
     }
 
     public Integer getShowOrder() {
@@ -65,6 +67,14 @@ public class GdsLabelQuikRespVO implements Serializable {
 
     public void setShowOrder(Integer showOrder) {
         this.showOrder = showOrder;
+    }
+
+    public String getIfEdit() {
+        return ifEdit;
+    }
+
+    public void setIfEdit(String ifEdit) {
+        this.ifEdit = ifEdit;
     }
 
     public String getStatus() {

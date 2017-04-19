@@ -6,18 +6,20 @@ import java.util.Date;
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsLabelReqVO implements Serializable {
-    private Integer labId;
+public class GdsSkuRespDTO implements Serializable {
+    private Integer skuId;
 
     private Integer gdsId;
 
-    private String labName;
+    private String skuName;
 
-    private String labColor;
+    private Integer packPrice;
+
+    private Integer packTimes;
+
+    private Integer packDay;
 
     private Integer showOrder;
-
-    private String ifEdit;
 
     private String status;
 
@@ -29,12 +31,12 @@ public class GdsLabelReqVO implements Serializable {
 
     private Date updateTime;
 
-    public Integer getLabId() {
-        return labId;
+    public Integer getSkuId() {
+        return skuId;
     }
 
-    public void setLabId(Integer labId) {
-        this.labId = labId;
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
     }
 
     public Integer getGdsId() {
@@ -45,20 +47,36 @@ public class GdsLabelReqVO implements Serializable {
         this.gdsId = gdsId;
     }
 
-    public String getLabName() {
-        return labName;
+    public String getSkuName() {
+        return skuName;
     }
 
-    public void setLabName(String labName) {
-        this.labName = labName;
+    public void setSkuName(String skuName) {
+        this.skuName = skuName;
     }
 
-    public String getLabColor() {
-        return labColor;
+    public Integer getPackPrice() {
+        return packPrice;
     }
 
-    public void setLabColor(String labColor) {
-        this.labColor = labColor;
+    public void setPackPrice(Integer packPrice) {
+        this.packPrice = packPrice;
+    }
+
+    public Integer getPackTimes() {
+        return packTimes;
+    }
+
+    public void setPackTimes(Integer packTimes) {
+        this.packTimes = packTimes;
+    }
+
+    public Integer getPackDay() {
+        return packDay;
+    }
+
+    public void setPackDay(Integer packDay) {
+        this.packDay = packDay;
     }
 
     public Integer getShowOrder() {
@@ -67,14 +85,6 @@ public class GdsLabelReqVO implements Serializable {
 
     public void setShowOrder(Integer showOrder) {
         this.showOrder = showOrder;
-    }
-
-    public String getIfEdit() {
-        return ifEdit;
-    }
-
-    public void setIfEdit(String ifEdit) {
-        this.ifEdit = ifEdit;
     }
 
     public String getStatus() {

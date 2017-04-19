@@ -6,18 +6,18 @@ import java.util.Date;
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsInfo2PropReqVO implements Serializable {
-    private Integer gpId;
+public class GdsSkuReqDTO implements Serializable {
+    private Integer skuId;
 
     private Integer gdsId;
 
-    private Integer proId;
+    private String skuName;
 
-    private String proType;
+    private Integer packPrice;
 
-    private String proName;
+    private Integer packTimes;
 
-    private String proValue;
+    private Integer packDay;
 
     private Integer showOrder;
 
@@ -31,12 +31,12 @@ public class GdsInfo2PropReqVO implements Serializable {
 
     private Date updateTime;
 
-    public Integer getGpId() {
-        return gpId;
+    public Integer getSkuId() {
+        return skuId;
     }
 
-    public void setGpId(Integer gpId) {
-        this.gpId = gpId;
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
     }
 
     public Integer getGdsId() {
@@ -47,36 +47,36 @@ public class GdsInfo2PropReqVO implements Serializable {
         this.gdsId = gdsId;
     }
 
-    public Integer getProId() {
-        return proId;
+    public String getSkuName() {
+        return skuName;
     }
 
-    public void setProId(Integer proId) {
-        this.proId = proId;
+    public void setSkuName(String skuName) {
+        this.skuName = skuName;
     }
 
-    public String getProType() {
-        return proType;
+    public Integer getPackPrice() {
+        return packPrice;
     }
 
-    public void setProType(String proType) {
-        this.proType = proType;
+    public void setPackPrice(Integer packPrice) {
+        this.packPrice = packPrice;
     }
 
-    public String getProName() {
-        return proName;
+    public Integer getPackTimes() {
+        return packTimes;
     }
 
-    public void setProName(String proName) {
-        this.proName = proName;
+    public void setPackTimes(Integer packTimes) {
+        this.packTimes = packTimes;
     }
 
-    public String getProValue() {
-        return proValue;
+    public Integer getPackDay() {
+        return packDay;
     }
 
-    public void setProValue(String proValue) {
-        this.proValue = proValue;
+    public void setPackDay(Integer packDay) {
+        this.packDay = packDay;
     }
 
     public Integer getShowOrder() {

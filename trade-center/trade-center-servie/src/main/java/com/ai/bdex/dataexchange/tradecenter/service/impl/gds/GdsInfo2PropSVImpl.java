@@ -3,7 +3,7 @@ package com.ai.bdex.dataexchange.tradecenter.service.impl.gds;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.GdsInfo2PropMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo2Prop;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo2PropExample;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfo2PropReqVO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfo2PropReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfo2PropSV;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -21,27 +21,27 @@ public class GdsInfo2PropSVImpl implements IGdsInfo2PropSV {
     @Resource
     private GdsInfo2PropMapper gdsInfo2PropMapper;
 
-    private void initCriteria(GdsInfo2PropExample.Criteria criteria, GdsInfo2PropReqVO gdsInfo2PropReqVO){
-        if (gdsInfo2PropReqVO.getGpId()!=null && gdsInfo2PropReqVO.getGpId().intValue()>0){
-            criteria.andGpIdEqualTo(gdsInfo2PropReqVO.getGpId());
+    private void initCriteria(GdsInfo2PropExample.Criteria criteria, GdsInfo2PropReqDTO gdsInfo2PropReqDTO){
+        if (gdsInfo2PropReqDTO.getGpId()!=null && gdsInfo2PropReqDTO.getGpId().intValue()>0){
+            criteria.andGpIdEqualTo(gdsInfo2PropReqDTO.getGpId());
         }
-        if (gdsInfo2PropReqVO.getGdsId()!=null && gdsInfo2PropReqVO.getGdsId().intValue()>0){
-            criteria.andGdsIdEqualTo(gdsInfo2PropReqVO.getGdsId());
+        if (gdsInfo2PropReqDTO.getGdsId()!=null && gdsInfo2PropReqDTO.getGdsId().intValue()>0){
+            criteria.andGdsIdEqualTo(gdsInfo2PropReqDTO.getGdsId());
         }
-        if (gdsInfo2PropReqVO.getProId()!=null && gdsInfo2PropReqVO.getProId().intValue()>0){
-            criteria.andProIdEqualTo(gdsInfo2PropReqVO.getProId());
+        if (gdsInfo2PropReqDTO.getProId()!=null && gdsInfo2PropReqDTO.getProId().intValue()>0){
+            criteria.andProIdEqualTo(gdsInfo2PropReqDTO.getProId());
         }
-        if (!StringUtils.isEmpty(gdsInfo2PropReqVO.getProType())){
-            criteria.andProTypeEqualTo(gdsInfo2PropReqVO.getProType());
+        if (!StringUtils.isEmpty(gdsInfo2PropReqDTO.getProType())){
+            criteria.andProTypeEqualTo(gdsInfo2PropReqDTO.getProType());
         }
-        if (!StringUtils.isEmpty(gdsInfo2PropReqVO.getProValue())){
-            criteria.andProValueEqualTo(gdsInfo2PropReqVO.getProValue());
+        if (!StringUtils.isEmpty(gdsInfo2PropReqDTO.getProValue())){
+            criteria.andProValueEqualTo(gdsInfo2PropReqDTO.getProValue());
         }
-        if (gdsInfo2PropReqVO.getShowOrder()!=null && gdsInfo2PropReqVO.getShowOrder().intValue()>0){
-            criteria.andShowOrderEqualTo(gdsInfo2PropReqVO.getShowOrder());
+        if (gdsInfo2PropReqDTO.getShowOrder()!=null && gdsInfo2PropReqDTO.getShowOrder().intValue()>0){
+            criteria.andShowOrderEqualTo(gdsInfo2PropReqDTO.getShowOrder());
         }
-        if(!StringUtils.isEmpty(gdsInfo2PropReqVO.getStatus())){
-            criteria.andStatusEqualTo(gdsInfo2PropReqVO.getStatus());
+        if(!StringUtils.isEmpty(gdsInfo2PropReqDTO.getStatus())){
+            criteria.andStatusEqualTo(gdsInfo2PropReqDTO.getStatus());
         }
     }
 
@@ -56,35 +56,35 @@ public class GdsInfo2PropSVImpl implements IGdsInfo2PropSV {
     }
 
     @Override
-    public List<GdsInfo2Prop> queryGdsInfo2PropList(GdsInfo2PropReqVO gdsInfo2PropReqVO) throws Exception {
-        if(gdsInfo2PropReqVO==null){
+    public List<GdsInfo2Prop> queryGdsInfo2PropList(GdsInfo2PropReqDTO gdsInfo2PropReqDTO) throws Exception {
+        if(gdsInfo2PropReqDTO ==null){
             throw new Exception("查询商品属性关系信息列表入参为空");
         }
         GdsInfo2PropExample example = new GdsInfo2PropExample();
         GdsInfo2PropExample.Criteria criteria = example.createCriteria();
-        initCriteria(criteria,gdsInfo2PropReqVO);
+        initCriteria(criteria, gdsInfo2PropReqDTO);
         List<GdsInfo2Prop> gdsInfo2Props = gdsInfo2PropMapper.selectByExample(example);
         return gdsInfo2Props;
     }
 
     @Override
-    public int insertGdsInfo2Prop(GdsInfo2PropReqVO gdsInfo2PropReqVO) throws Exception {
-        if (gdsInfo2PropReqVO==null){
+    public int insertGdsInfo2Prop(GdsInfo2PropReqDTO gdsInfo2PropReqDTO) throws Exception {
+        if (gdsInfo2PropReqDTO ==null){
             throw new Exception("插入商品属性关系信息入参为空");
         }
         GdsInfo2Prop gdsInfo2Prop = new GdsInfo2Prop();
-        BeanUtils.copyProperties(gdsInfo2PropReqVO,gdsInfo2Prop);
+        BeanUtils.copyProperties(gdsInfo2PropReqDTO,gdsInfo2Prop);
         int code = gdsInfo2PropMapper.insert(gdsInfo2Prop);
         return code;
     }
 
     @Override
-    public int updateGdsInfo2Prop(GdsInfo2PropReqVO gdsInfo2PropReqVO) throws Exception {
-        if (gdsInfo2PropReqVO==null){
+    public int updateGdsInfo2Prop(GdsInfo2PropReqDTO gdsInfo2PropReqDTO) throws Exception {
+        if (gdsInfo2PropReqDTO ==null){
             throw new Exception("更新商品属性关系信息入参为空");
         }
         GdsInfo2Prop gdsInfo2Prop = new GdsInfo2Prop();
-        BeanUtils.copyProperties(gdsInfo2PropReqVO,gdsInfo2Prop);
+        BeanUtils.copyProperties(gdsInfo2PropReqDTO,gdsInfo2Prop);
         int code = gdsInfo2PropMapper.updateByPrimaryKey(gdsInfo2Prop);
         return code;
     }

@@ -6,18 +6,20 @@ import java.util.Date;
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsCatRespVO implements Serializable {
-    private Integer catId;
+public class GdsInfo2PropReqDTO implements Serializable {
+    private Integer gpId;
 
-    private Integer catPid;
+    private Integer gdsId;
 
-    private String catName;
+    private Integer proId;
 
-    private String catDesc;
+    private String proType;
+
+    private String proName;
+
+    private String proValue;
 
     private Integer showOrder;
-
-    private String ifEdit;
 
     private String status;
 
@@ -29,36 +31,52 @@ public class GdsCatRespVO implements Serializable {
 
     private Date updateTime;
 
-    public Integer getCatId() {
-        return catId;
+    public Integer getGpId() {
+        return gpId;
     }
 
-    public void setCatId(Integer catId) {
-        this.catId = catId;
+    public void setGpId(Integer gpId) {
+        this.gpId = gpId;
     }
 
-    public Integer getCatPid() {
-        return catPid;
+    public Integer getGdsId() {
+        return gdsId;
     }
 
-    public void setCatPid(Integer catPid) {
-        this.catPid = catPid;
+    public void setGdsId(Integer gdsId) {
+        this.gdsId = gdsId;
     }
 
-    public String getCatName() {
-        return catName;
+    public Integer getProId() {
+        return proId;
     }
 
-    public void setCatName(String catName) {
-        this.catName = catName;
+    public void setProId(Integer proId) {
+        this.proId = proId;
     }
 
-    public String getCatDesc() {
-        return catDesc;
+    public String getProType() {
+        return proType;
     }
 
-    public void setCatDesc(String catDesc) {
-        this.catDesc = catDesc;
+    public void setProType(String proType) {
+        this.proType = proType;
+    }
+
+    public String getProName() {
+        return proName;
+    }
+
+    public void setProName(String proName) {
+        this.proName = proName;
+    }
+
+    public String getProValue() {
+        return proValue;
+    }
+
+    public void setProValue(String proValue) {
+        this.proValue = proValue;
     }
 
     public Integer getShowOrder() {
@@ -67,14 +85,6 @@ public class GdsCatRespVO implements Serializable {
 
     public void setShowOrder(Integer showOrder) {
         this.showOrder = showOrder;
-    }
-
-    public String getIfEdit() {
-        return ifEdit;
-    }
-
-    public void setIfEdit(String ifEdit) {
-        this.ifEdit = ifEdit;
     }
 
     public String getStatus() {

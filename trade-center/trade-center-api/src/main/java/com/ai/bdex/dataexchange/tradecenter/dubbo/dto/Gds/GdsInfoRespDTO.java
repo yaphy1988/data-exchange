@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsInfoRespVO implements Serializable{
+public class GdsInfoRespDTO implements Serializable{
     private Integer gdsId;
 
     private String gdsName;
@@ -42,9 +42,9 @@ public class GdsInfoRespVO implements Serializable{
 
     private Date updateTime;
 
-    private List<GdsLabelRespVO> gdsLabelRespVOs;
+    private List<GdsLabelRespDTO> gdsLabelRespDTOs;
 
-    private List<GdsSkuRespVO> gdsSkuRespVOList;
+    private List<GdsSkuRespDTO> gdsSkuRespDTOList;
 
     public Integer getGdsId() {
         return gdsId;
@@ -182,19 +182,19 @@ public class GdsInfoRespVO implements Serializable{
         this.catFirstName = catFirstName;
     }
 
-    public List<GdsLabelRespVO> getGdsLabelRespVOs() {
-        return gdsLabelRespVOs;
+    public List<GdsLabelRespDTO> getGdsLabelRespDTOs() {
+        return gdsLabelRespDTOs;
     }
 
-    public void setGdsLabelRespVOs(List<GdsLabelRespVO> gdsLabelRespVOs) {
-        this.gdsLabelRespVOs = gdsLabelRespVOs;
+    public void setGdsLabelRespDTOs(List<GdsLabelRespDTO> gdsLabelRespDTOs) {
+        this.gdsLabelRespDTOs = gdsLabelRespDTOs;
     }
 
-    public List<GdsSkuRespVO> getGdsSkuRespVOList() {
-        return gdsSkuRespVOList;
+    public List<GdsSkuRespDTO> getGdsSkuRespDTOList() {
+        return gdsSkuRespDTOList;
     }
 
-    public void setGdsSkuRespVOList(List<GdsSkuRespVO> gdsSkuRespVOList) {
-        this.gdsSkuRespVOList = gdsSkuRespVOList;
+    public void setGdsSkuRespDTOList(List<GdsSkuRespDTO> gdsSkuRespDTOList) {
+        this.gdsSkuRespDTOList = gdsSkuRespDTOList;
     }
 }

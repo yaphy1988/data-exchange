@@ -3,14 +3,13 @@ package com.ai.bdex.dataexchange.tradecenter.service.impl.gds;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.GdsInfoMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfoExample;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfoReqVO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import javax.annotation.Resource;
 import java.util.List;
 
 /**
@@ -33,35 +32,35 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
     }
 
     @Override
-    public List<GdsInfo> queryGdsInfoList(GdsInfoReqVO gdsInfoReqVO) throws Exception {
-        if (gdsInfoReqVO==null){
+    public List<GdsInfo> queryGdsInfoList(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
+        if (gdsInfoReqDTO ==null){
             throw new Exception("查询商品信息列表入参为空");
         }
         GdsInfoExample example = new GdsInfoExample();
         GdsInfoExample.Criteria criteria = example.createCriteria();
-        initCriteria(criteria,gdsInfoReqVO);
+        initCriteria(criteria, gdsInfoReqDTO);
         List<GdsInfo> gdsInfos = gdsInfoMapper.selectByExample(example);
         return gdsInfos;
     }
 
     @Override
-    public int insertGdsInfo(GdsInfoReqVO gdsInfoReqVO) throws Exception {
-        if (gdsInfoReqVO==null){
+    public int insertGdsInfo(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
+        if (gdsInfoReqDTO ==null){
             throw new Exception("插入商品信息入参为空");
         }
         GdsInfo gdsInfo = new GdsInfo();
-        BeanUtils.copyProperties(gdsInfoReqVO,gdsInfo);
+        BeanUtils.copyProperties(gdsInfoReqDTO,gdsInfo);
         int code = gdsInfoMapper.insert(gdsInfo);
         return code;
     }
 
     @Override
-    public int updateGdsInfo(GdsInfoReqVO gdsInfoReqVO) throws Exception {
-        if (gdsInfoReqVO==null){
+    public int updateGdsInfo(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
+        if (gdsInfoReqDTO ==null){
             throw new Exception("更新商品信息入参为空");
         }
         GdsInfo gdsInfo = new GdsInfo();
-        BeanUtils.copyProperties(gdsInfoReqVO,gdsInfo);
+        BeanUtils.copyProperties(gdsInfoReqDTO,gdsInfo);
         int code = gdsInfoMapper.updateByPrimaryKey(gdsInfo);
         return code;
     }
@@ -75,33 +74,33 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         return code;
     }
 
-    private void initCriteria(GdsInfoExample.Criteria criteria, GdsInfoReqVO gdsInfoReqVO){
-        if(gdsInfoReqVO.getGdsId()!=null && gdsInfoReqVO.getGdsId().intValue()>0){
-            criteria.andGdsIdEqualTo(gdsInfoReqVO.getGdsId());
+    private void initCriteria(GdsInfoExample.Criteria criteria, GdsInfoReqDTO gdsInfoReqDTO){
+        if(gdsInfoReqDTO.getGdsId()!=null && gdsInfoReqDTO.getGdsId().intValue()>0){
+            criteria.andGdsIdEqualTo(gdsInfoReqDTO.getGdsId());
         }
-        if (!StringUtils.isEmpty(gdsInfoReqVO.getGdsName())){
-            criteria.andGdsNameLike("%"+gdsInfoReqVO.getGdsName()+"%");
+        if (!StringUtils.isEmpty(gdsInfoReqDTO.getGdsName())){
+            criteria.andGdsNameLike("%"+ gdsInfoReqDTO.getGdsName()+"%");
         }
-        if (!StringUtils.isEmpty(gdsInfoReqVO.getGdsSubtitle())){
-            criteria.andGdsSubtitleLike("%"+gdsInfoReqVO.getGdsSubtitle()+"%");
+        if (!StringUtils.isEmpty(gdsInfoReqDTO.getGdsSubtitle())){
+            criteria.andGdsSubtitleLike("%"+ gdsInfoReqDTO.getGdsSubtitle()+"%");
         }
-        if (gdsInfoReqVO.getCatFirst()!=null && gdsInfoReqVO.getCatFirst().intValue()>0){
-            criteria.andCatFirstEqualTo(gdsInfoReqVO.getCatFirst());
+        if (gdsInfoReqDTO.getCatFirst()!=null && gdsInfoReqDTO.getCatFirst().intValue()>0){
+            criteria.andCatFirstEqualTo(gdsInfoReqDTO.getCatFirst());
         }
-        if (gdsInfoReqVO.getApiId()!=null && gdsInfoReqVO.getApiId().intValue()>0){
-            criteria.andApiIdEqualTo(gdsInfoReqVO.getApiId());
+        if (gdsInfoReqDTO.getApiId()!=null && gdsInfoReqDTO.getApiId().intValue()>0){
+            criteria.andApiIdEqualTo(gdsInfoReqDTO.getApiId());
         }
-        if (!StringUtils.isEmpty(gdsInfoReqVO.getIfRecommend())){
-            criteria.andIfRecommendEqualTo(gdsInfoReqVO.getIfRecommend());
+        if (!StringUtils.isEmpty(gdsInfoReqDTO.getIfRecommend())){
+            criteria.andIfRecommendEqualTo(gdsInfoReqDTO.getIfRecommend());
         }
-        if (!StringUtils.isEmpty(gdsInfoReqVO.getFunIntroduction())){
-            criteria.andFunIntroductionEqualTo(gdsInfoReqVO.getFunIntroduction());
+        if (!StringUtils.isEmpty(gdsInfoReqDTO.getFunIntroduction())){
+            criteria.andFunIntroductionEqualTo(gdsInfoReqDTO.getFunIntroduction());
         }
-        if (!StringUtils.isEmpty(gdsInfoReqVO.getCommpanyName())){
-            criteria.andCommpanyNameLike("%"+gdsInfoReqVO.getCommpanyName()+"%");
+        if (!StringUtils.isEmpty(gdsInfoReqDTO.getCommpanyName())){
+            criteria.andCommpanyNameLike("%"+ gdsInfoReqDTO.getCommpanyName()+"%");
         }
-        if (!StringUtils.isEmpty(gdsInfoReqVO.getStatus())){
-            criteria.andStatusEqualTo(gdsInfoReqVO.getStatus());
+        if (!StringUtils.isEmpty(gdsInfoReqDTO.getStatus())){
+            criteria.andStatusEqualTo(gdsInfoReqDTO.getStatus());
         }
     }
 }

@@ -1,7 +1,7 @@
 package com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSku;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsSkuReqVO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsSkuReqDTO;
 
 import java.util.List;
 
@@ -12,11 +12,11 @@ public interface IGdsSkuSV {
 
     public GdsSku queryGdsSkuById(Integer skuId) throws Exception;
 
-    public List<GdsSku> queryGdsSkuList(GdsSkuReqVO gdsSkuReqVO) throws Exception;
+    public List<GdsSku> queryGdsSkuList(GdsSkuReqDTO gdsSkuReqDTO) throws Exception;
 
-    public int insertGdsSku(GdsSkuReqVO gdsSkuReqVO) throws Exception;
+    public int insertGdsSku(GdsSkuReqDTO gdsSkuReqDTO) throws Exception;
 
-    public int updateGdsSku(GdsSkuReqVO gdsSkuReqVO) throws Exception;
+    public int updateGdsSku(GdsSkuReqDTO gdsSkuReqDTO) throws Exception;
 
     public int deleteGdsSku(Integer skuId) throws Exception;
 }
