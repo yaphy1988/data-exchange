@@ -57,3 +57,6 @@ generatorConfig.xml
 
 /bin/
 *.db
+
+application.yml
+application.properties
