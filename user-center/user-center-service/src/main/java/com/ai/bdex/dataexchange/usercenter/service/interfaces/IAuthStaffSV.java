@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.usercenter.service.interfaces;
 
 import java.util.Map;
 
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SignInfoDTO;
 
@@ -27,4 +28,19 @@ public interface IAuthStaffSV {
 	 * @throws Exception
 	 */
 	public Map<String,Object> doActiveByEmail(String signId,String code)throws Exception;
+	
+	/**
+	 * 将数据插入到用户表
+	 * @return
+	 * @throws Exception
+	 */
+	public int insertInfoToAuthStaff(AuthStaffDTO record)throws Exception;
+	
+	/**
+	 * 判断该用户是否已认证
+	 * @param staffId
+	 * @return
+	 * @throws BusinessException
+	 */
+	public boolean checkStaffAuthen(String staffId)throws Exception;
 }

@@ -8,12 +8,17 @@ import java.util.Map;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffSignMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaff;
 import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffSign;
 import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffSignExample;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffPassDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SignInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffPassSV;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffSV;
 import com.ai.bdex.dataexchange.usercenter.util.SendMailUtil;
 import com.ai.paas.sequence.SeqUtil;
@@ -27,6 +32,9 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 	
 	@Autowired
 	private AuthStaffSignMapper authStaffSignMapper;
+	
+	@Autowired
+	private IAuthStaffPassSV iAuthStaffPassSV;
 	
 	@Override
 	public void sendEmalForActive(SignInfoDTO info) throws Exception {
@@ -121,11 +129,64 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 				result.put("msg", "该链接已过期！");
 			}else{
 				//同步用户表，密码表
+				saveAuthStaffByEmailActive(mainInfo);
 				result.put("flag", true);
 				result.put("msg", "激活成功！");
 			}			
 		}
 		return result;
+	}
+
+	@Override
+	public int insertInfoToAuthStaff(AuthStaffDTO record) throws Exception {
+		AuthStaff param = authStaffMapper.selectByPrimaryKey(record.getStaffId());
+		if(param!=null){
+			throw new BusinessException("该用户ID已经被使用！");
+		}
+		AuthStaff info = new AuthStaff();
+		BeanUtils.copyProperties(record, info);
+		int count = authStaffMapper.insertSelective(info);
+		return count;
+	}
+	
+	/**
+	 * 激活用户同步到用户表和密码表
+	 * @param mainInfo
+	 * @return
+	 * @throws Exception 
+	 */
+	private int saveAuthStaffByEmailActive(AuthStaffSign mainInfo) throws Exception{
+		AuthStaffDTO dto = new AuthStaffDTO();
+		dto.setStaffId(mainInfo.getStaffId());
+		dto.setEmail(mainInfo.getEmail());
+		dto.setCreateStaff(mainInfo.getStaffId());
+		dto.setCreateTime(DateUtil.getNowAsDate());
+		dto.setAuthenFlag("0");//是否已认证：1 认证，0未认证
+		dto.setStartDate(DateUtil.getNowAsDate());
+		dto.setEndDate(DateUtil.getFutureTime());
+		dto.setCreateFrom("1");//表示帐号的创建方式（注册 1；管理员创建 2；后台自动生成 3）
+		dto.setLockStatus("1");//锁定状态：0锁定，1正常，默认正常
+		int insertcount = insertInfoToAuthStaff(dto);
+		if(insertcount>0){
+			AuthStaffPassDTO pass = new AuthStaffPassDTO();
+			pass.setStaffId(mainInfo.getStaffId());
+			pass.setStaffPasswd(mainInfo.getPassword());
+			pass.setPasswdFlag("1");
+			iAuthStaffPassSV.savePassInfo(pass);
+		}
+		return insertcount;
+	}
+
+	@Override
+	public boolean checkStaffAuthen(String staffId) throws Exception {
+		AuthStaff info = authStaffMapper.selectByPrimaryKey(staffId);
+		if(info==null){
+			throw new BusinessException("用户不存在");
+		}
+		if("1".equals(info.getAuthenFlag())){
+			return true;
+		}
+		return false;
 	}
 
 }
