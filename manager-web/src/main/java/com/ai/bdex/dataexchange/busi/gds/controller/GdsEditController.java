@@ -6,6 +6,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.*;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Gds.IGdsInfoRSV;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,7 +86,7 @@ public class GdsEditController {
     public GdsJsonBean querySubCatNodes(HttpServletRequest req,HttpServletResponse rep,int catId) {
         GdsJsonBean json=new GdsJsonBean();
         try{
-        	GdsCatReqDTO  reqDTO = new GdsCatReqDTO();
+        	GdsCatReqDTO reqDTO = new GdsCatReqDTO();
         	reqDTO.setCatId(Integer.valueOf(catId));
         	List<GdsCatRespDTO> catListAll = gdsInfoRSV.queryGdsCatListDTO(reqDTO);
         	json.setObject(catListAll);

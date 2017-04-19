@@ -48,6 +48,14 @@ public interface IGdsInfoRSV {
      * @throws Exception
      */
 	public GdsResultVO addGds(GdsInfoReqDTO reqDTO) throws Exception ;
+
+    /**
+     * 查询商品列表
+     * @param gdsInfoRespDTO
+     * @return
+     * @throws Exception
+     */
+    public List<GdsInfoRespDTO> queryGdsInfoList(GdsInfoReqDTO gdsInfoReqDTO) throws Exception;
 	/**
 	 *  编辑商品信息
 	 * @param reqDTO

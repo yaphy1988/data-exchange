@@ -29,6 +29,8 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
 
     private static final Logger log = LoggerFactory.getLogger(GdsInfoRSVImpl.class);
 
+    private final static Integer AIP_CAT_ID = 1;
+
     @Resource
     private IGdsInfoSV iGdsInfoSV;
 
@@ -75,26 +77,28 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
                 }
                 gdsInfoRespDTO.setGdsLabelRespDTOs(gdsLabelRespDTOs);
             }
-            //获得商品的单品列表
-            List<GdsSkuRespDTO> gdsSkuRespDTOs = new ArrayList<GdsSkuRespDTO>();
-            GdsSkuReqDTO gdsSkuRepVO = new GdsSkuReqDTO();
-            gdsSkuRepVO.setStatus("1");
-            gdsSkuRepVO.setGdsId(gdsInfo.getGdsId());
-            List<GdsSku> gdsSkus =iGdsSkuSV.queryGdsSkuList(gdsSkuRepVO);
-            if(!CollectionUtils.isEmpty(gdsSkus)){
-                for (GdsSku gdsSku : gdsSkus){
-                    GdsSkuRespDTO gdsSkuRespDTO = new GdsSkuRespDTO();
-                    BeanUtils.copyProperties(gdsSku, gdsSkuRespDTO);
-                    gdsSkuRespDTOs.add(gdsSkuRespDTO);
-                }
-                gdsInfoRespDTO.setGdsSkuRespDTOList(gdsSkuRespDTOs);
-            }
 
+            if (AIP_CAT_ID.equals(gdsInfoRespDTO.getCatFirst())){
+                //获得商品的单品列表
+                List<GdsSkuRespDTO> gdsSkuRespDTOs = new ArrayList<GdsSkuRespDTO>();
+                GdsSkuReqDTO gdsSkuRepVO = new GdsSkuReqDTO();
+                gdsSkuRepVO.setStatus("1");
+                gdsSkuRepVO.setGdsId(gdsInfo.getGdsId());
+                List<GdsSku> gdsSkus =iGdsSkuSV.queryGdsSkuList(gdsSkuRepVO);
+                if(!CollectionUtils.isEmpty(gdsSkus)){
+                    for (GdsSku gdsSku : gdsSkus){
+                        GdsSkuRespDTO gdsSkuRespDTO = new GdsSkuRespDTO();
+                        BeanUtils.copyProperties(gdsSku, gdsSkuRespDTO);
+                        gdsSkuRespDTOs.add(gdsSkuRespDTO);
+                    }
+                    gdsInfoRespDTO.setGdsSkuRespDTOList(gdsSkuRespDTOs);
+                }
+            }
         }else{
             return null;
         }
 
-        return null;
+        return gdsInfoRespDTO;
     }
     @Override
     public List<GdsCatRespDTO> queryGdsCatListDTO(GdsCatReqDTO gdsCatReqDTO) throws Exception {
@@ -144,6 +148,25 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
         }
 		return resultVO;
 	}
+
+    @Override
+    public List<GdsInfoRespDTO> queryGdsInfoList(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
+        List<GdsInfoRespDTO> gdsInfoRespDTOList = new ArrayList<GdsInfoRespDTO>();
+        try {
+            List<GdsInfo> gdsInfoList = iGdsInfoSV.queryGdsInfoList(gdsInfoReqDTO);
+            if (!CollectionUtils.isEmpty(gdsInfoList)){
+                for (GdsInfo gdsInfo : gdsInfoList){
+                    GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
+                    BeanUtils.copyProperties(gdsInfo,gdsInfoRespDTO);
+                    gdsInfoRespDTOList.add(gdsInfoRespDTO);
+                }
+            }
+        }catch (Exception e){
+            log.error("查询商品列表信息异常：",e);
+        }
+        return gdsInfoRespDTOList;
+    }
+
 	public GdsResultVO editGds(GdsInfoReqDTO reqDTO) throws Exception {
 		GdsResultVO resultVO = new GdsResultVO();
 		try{
