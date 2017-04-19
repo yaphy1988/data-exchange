@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.HtmlUtils;
 
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsJsonBean;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsManageInfoVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
@@ -33,14 +34,24 @@ public class GdsEditController {
     @Autowired
     private IGdsInfoRSV iGdsInfoRSV;
 
-//    @RequestMapping("/pageInit")
-//    public String pageInit(Model model){
-//        DemoDTO demoDTO = new DemoDTO();
-//        demoDTO.setAddr("gx");
-//        String userName = demoRSV.callDemoApi(demoDTO);
-//        model.addAttribute("username",userName);
-//        return "/demo/demo";
-//    }
+    @RequestMapping("/pageInit")
+    public String pageInit(Model model,GdsInfoVO gdsInfoVO){
+    	//新增
+    	boolean isEdit = false;
+    	boolean isView = false;
+    	
+    	if(gdsInfoVO.getGdsId()!=null||gdsInfoVO.getGdsId()!=0){
+    		isEdit = true;
+    		
+    	}
+    	 if (gdsInfoVO.getIsView() != null && gdsInfoVO.getIsView().equals("true")) {// 查看详情
+         	isView=true;
+         }
+        
+        model.addAttribute("isView", isView);
+    	model.addAttribute("isEdit", isEdit);
+        return "/demo/demo";
+    }
     /**
      * 获取商品分类子分类
      * @param req
@@ -50,10 +61,12 @@ public class GdsEditController {
      */
     @RequestMapping(value = "/querySubCatNodes")
     @ResponseBody
-    public GdsJsonBean querySubCatNodes(HttpServletRequest req,HttpServletResponse rep,long catId) {
+    public GdsJsonBean querySubCatNodes(HttpServletRequest req,HttpServletResponse rep,int catId) {
         GdsJsonBean json=new GdsJsonBean();
         try{
-        	List<GdsCatRespDTO> catListAll = iGdsInfoRSV.queryGdsCatListDTO(catId);
+        	GdsCatReqDTO  reqDTO = new GdsCatReqDTO();
+        	reqDTO.setCatId(Integer.valueOf(catId));
+        	List<GdsCatRespDTO> catListAll = iGdsInfoRSV.queryGdsCatListDTO(reqDTO);
         	json.setObject(catListAll);
         	json.setSuccess("true");
         }catch(Exception e){
@@ -101,7 +114,7 @@ public class GdsEditController {
     public GdsJsonBean addGdsSpu(HttpServletRequest req, HttpServletResponse rep,
     		GdsManageInfoVO gdsManageInfoVO) throws ParseException, BusinessException, GenericException {
     	GdsJsonBean jsonBean = new GdsJsonBean();
-    	GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
+    	GdsInfoVO gdsInfoReqDTO = new GdsInfoVO();
         try {
         	iGdsInfoRSV.addGds(gdsInfoReqDTO);
 
