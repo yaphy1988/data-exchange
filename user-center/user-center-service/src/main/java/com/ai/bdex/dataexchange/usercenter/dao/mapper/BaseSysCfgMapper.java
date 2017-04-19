@@ -1,7 +1,7 @@
-package com.ai.bdex.dataexchange.usercenter.dao.mapper.custom;
+package com.ai.bdex.dataexchange.usercenter.dao.mapper;
 
-import com.ai.bdex.dataexchange.usercenter.dao.model.custom.BaseSysCfg;
-import com.ai.bdex.dataexchange.usercenter.dao.model.custom.BaseSysCfgExample;
+import com.ai.bdex.dataexchange.usercenter.dao.model.BaseSysCfg;
+import com.ai.bdex.dataexchange.usercenter.dao.model.BaseSysCfgExample;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
