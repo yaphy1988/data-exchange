@@ -9,7 +9,9 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ChnlInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IChnlInvoiceTaxSV;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
+import org.springframework.stereotype.Service;
 
+@Service("iChnlInvoiceTaxSV")
 public class ChnlInvoiceTaxSVImpl implements IChnlInvoiceTaxSV {
 	
 	@Autowired

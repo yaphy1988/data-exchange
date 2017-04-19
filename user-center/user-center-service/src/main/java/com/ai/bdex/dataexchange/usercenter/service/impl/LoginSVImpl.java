@@ -19,7 +19,9 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.ILoginSV;
 import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
+import org.springframework.stereotype.Service;
 
+@Service("iLoginSV")
 public class LoginSVImpl implements ILoginSV {
 	private static final Logger log = Logger.getLogger(LoginSVImpl.class);
 	

@@ -18,7 +18,7 @@ spring:
 jdbc:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-  url: jdbc:mysql://112.74.163.29:3306/bdex
+  url: jdbc:mysql://132.37.2.166:39306/bdex
   username: bdex
   password: bdex1234
 
