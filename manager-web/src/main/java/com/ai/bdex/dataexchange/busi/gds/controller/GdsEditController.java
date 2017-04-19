@@ -1,28 +1,32 @@
 package com.ai.bdex.dataexchange.busi.gds.controller;
 
-import com.ai.bdex.dataexchange.busi.demo.controller.ArrayList;
-import com.ai.bdex.dataexchange.busi.demo.controller.GdsJsonBean;
-import com.ai.bdex.dataexchange.busi.demo.controller.GdsSpuCategoryVO;
-import com.ai.bdex.dataexchange.busi.demo.controller.HttpServletRequest;
-import com.ai.bdex.dataexchange.busi.demo.controller.List;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.DemoDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IDemoRSV;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsJsonBean;
+
+
 
 @Controller
 @RequestMapping("/gdsEdit")
 public class GdsEditController {
-
+    /**
+     * 记录日志
+     */
+    private final Log logger = LogFactory.getLog(getClass());
     @Autowired
-    private IGdsInfoRSVImpl iGdsInfoRSV;
+    private IGdsInfoRSV iGdsInfoRSV;
 
 //    @RequestMapping("/pageInit")
 //    public String pageInit(Model model){
@@ -44,17 +48,8 @@ public class GdsEditController {
     public GdsJsonBean querySubCatNodes(HttpServletRequest req,HttpServletResponse rep,long catId) {
         GdsJsonBean json=new GdsJsonBean();
         try{
-        	List<GdsSpuCategoryVO> catListAll = iGdsSpuCategoryManageSIDSV.queryCategoryInfo(catId);
-        	List<GdsSpuCategoryVO> catList = new ArrayList<>();
-        	if(catListAll!=null && catListAll.size()>0){
-        		for(GdsSpuCategoryVO c : catListAll){
-        			//去除 “移动业务卡包” 和 “联通手机卡”
-        			if(!Constants.Goods.GDS_STATUS_VALID.equals(c.getIfCard())){
-        				catList.add(c);
-        			}
-        		}
-        	}
-        	json.setObject(catList);
+        	List<GdsCatRespDTO> catListAll = iGdsSpuCategoryManageSIDSV.queryCategoryInfo(catId);
+        	json.setObject(catListAll);
         	json.setSuccess("true");
         }catch(Exception e){
             json.setSuccess("false");

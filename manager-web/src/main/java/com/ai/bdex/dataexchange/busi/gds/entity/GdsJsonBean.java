@@ -1,13 +1,12 @@
-package com.ailk.woego.busi.goods.entity;
+package com.ai.bdex.dataexchange.busi.gds.entity;
 
 /**
  * 商品前后台交互 json对象
  * Title: MVNO-CRM <br>
  * Description: <br>
- * Date: 2014-7-11 <br>
- * Copyright (c) 2014 AILK <br>
+ * Date: 2017-4-19 <br>
+ * Copyright (c) 2017 AILK <br>
  * 
- * @author linwb3
  */
 public class GdsJsonBean {
     
