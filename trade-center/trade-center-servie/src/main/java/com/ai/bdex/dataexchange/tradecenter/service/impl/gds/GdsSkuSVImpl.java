@@ -75,7 +75,17 @@ public class GdsSkuSVImpl implements IGdsSkuSV {
         int code = gdsSkuMapper.deleteByPrimaryKey(skuId);
         return code;
     }
-
+    @Override
+    public int deleteGdsSkuByGdsId(GdsSkuReqDTO gdsSkuReqDTO) throws Exception {
+        if (gdsSkuReqDTO.getGdsId()==null || gdsSkuReqDTO.getGdsId()<=0){
+            throw new Exception("删除单品信息入参为空");
+        }
+        GdsSkuExample gdsSkuExample = new GdsSkuExample();
+        GdsSkuExample.Criteria criteria = gdsSkuExample.createCriteria();
+        initCriteria(criteria, gdsSkuReqDTO);
+        int code = gdsSkuMapper.deleteByExample(gdsSkuExample);
+        return code;
+    }
     private void initCriteria(GdsSkuExample.Criteria criteria,GdsSkuReqDTO gdsSkuReqDTO){
         if (gdsSkuReqDTO.getSkuId()!=null){
             criteria.andSkuIdEqualTo(gdsSkuReqDTO.getSkuId());

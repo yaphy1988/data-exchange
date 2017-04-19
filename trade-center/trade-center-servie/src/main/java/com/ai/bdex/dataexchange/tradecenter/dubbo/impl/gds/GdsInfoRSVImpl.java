@@ -142,5 +142,30 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
         }
 		return resultVO;
 	}
-	
+	public GdsResultVO editGds(GdsInfoReqDTO reqDTO) throws Exception {
+		GdsResultVO resultVO = new GdsResultVO();
+		try{
+			 if (reqDTO ==null&&reqDTO.getGdsId()==0){
+	             throw new Exception("编辑商品信息异常，入参为空");
+	         }
+			 resultVO=iGdsInfoSV.editGds(reqDTO);
+		}catch(Exception e){
+        	log.error("编辑商品信息异常:", e);
+            throw new Exception(e);
+        }
+		return resultVO;
+	}
+	 public GdsInfoRespDTO queryGdsInfo(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
+		 GdsInfoRespDTO respDTO = new GdsInfoRespDTO();
+		 try{
+			 if (gdsInfoReqDTO ==null || gdsInfoReqDTO.getGdsId()==null || gdsInfoReqDTO.getGdsId().intValue()<=0){
+		            throw new Exception("查询商品信息异常，入参为空");
+		      }
+			 respDTO=iGdsInfoSV.queryGdsInfo(gdsInfoReqDTO);
+		}catch(Exception e){
+        	log.error("查询商品信息异常:", e);
+            throw new Exception(e);
+        }
+		return respDTO;
+	 }
 }

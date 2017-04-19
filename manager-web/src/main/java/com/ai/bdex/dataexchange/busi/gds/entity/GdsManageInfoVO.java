@@ -44,7 +44,6 @@ public class GdsManageInfoVO {
     private GdsInfo2CatVO gdsInfo2CatVO;//商品分类配置关联表
     
     private GdsInfo2PropVO  gdsInfo2PropVO;//商品属性配置
-    
     public String getJsonStr() {
 		return jsonStr;
 	}

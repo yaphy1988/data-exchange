@@ -19,4 +19,11 @@ public interface IGdsSkuSV {
     public int updateGdsSku(GdsSkuReqDTO gdsSkuReqDTO) throws Exception;
 
     public int deleteGdsSku(Integer skuId) throws Exception;
+    /**
+     * 根据商品信息删除单品
+     * @param gdsSkuReqDTO
+     * @return
+     * @throws Exception
+     */
+    public int deleteGdsSkuByGdsId(GdsSkuReqDTO gdsSkuReqDTO) throws Exception;
 }
