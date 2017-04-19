@@ -18,9 +18,9 @@ spring:
 jdbc:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-  url: jdbc:mysql://localhost:3305/qcs
-  username: root
-  password: 1234
+  url: jdbc:mysql://112.74.163.29:3306/bdex
+  username: bdex
+  password: bdex1234
 
 com.ai.auth.login.config: auth
 com.ai.paas.zookeeper: 127.0.0.1:2181
