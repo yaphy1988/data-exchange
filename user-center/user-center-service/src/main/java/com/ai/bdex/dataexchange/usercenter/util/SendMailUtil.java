@@ -16,8 +16,8 @@ import javax.mail.internet.MimeMessage;
 import com.ai.paas.utils.MD5Util;
 
 /**
- * 创建人： zy
- * 创建时间： 2014年10月22日 下午3:04:11
+ * 创建人： zouwj
+ * 创建时间： 2017年4月18日
  * 类描述：发送邮件工具类
  */
 public class SendMailUtil {
