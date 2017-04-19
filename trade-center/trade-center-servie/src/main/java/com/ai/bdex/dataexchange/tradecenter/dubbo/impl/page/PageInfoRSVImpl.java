@@ -13,9 +13,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.util.CollectionUtils;
 
 import com.ai.bdex.dataexchange.tradecenter.TradeCenterServiceStart;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo; 
+import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContent;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.SortContentRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.SortInfoRespDTO; 
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Page.IPageInfoRSV; 
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Page.IPageInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortContentSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
 import com.ai.paas.util.Utils;
 
@@ -28,6 +31,9 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
      */
     @Resource
     private ISortInfoSV   iSortInfoSV;
+    @Resource
+    private ISortContentSV   iSortContentSV;
+    
     @Override
     public List<SortInfoRespDTO> querySortInfos(SortInfoRespDTO sortInfoRespDTO) throws Exception {
         List<SortInfoRespDTO> sortInfoRespLis = new ArrayList<SortInfoRespDTO>();
@@ -42,6 +48,11 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
                     for (SortInfo sortInfo : listSortInfo){
                     	SortInfoRespDTO sortInfoResp = new SortInfoRespDTO();
                         BeanUtils.copyProperties(sortInfo, sortInfoResp);
+                        //获取sortContent信息
+                        SortContent sortContentinfo=  iSortContentSV.querysortContenById(sortInfo.getSortId());
+                        SortContentRespDTO sortContentRespDTO =new SortContentRespDTO();
+                        BeanUtils.copyProperties(sortContentinfo, sortContentRespDTO);
+                        sortInfoResp.setSortContentRespDTO(sortContentRespDTO);
                         sortInfoRespLis.add(sortInfoResp);
                     }
                  }   

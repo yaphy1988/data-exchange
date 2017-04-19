@@ -4,22 +4,26 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class SortInfoRespDTO  implements Serializable{ 
-   private Integer sortId; 
-   private String sortType; 
-   private String sortLevel;
- 
-   private String sortName;
- 
-   private Integer parentSortId; 
-   private String orderNo;
- 
-   private String status; 
-   private String createStaffId; 
-   private Date createTime;
- 
-   private String updateStaffId;
- 
-   private Date updateTime;
+    private Integer sortId; 
+    private String sortType; 
+    private String sortLevel;
+    private String sortName;
+    private Integer parentSortId; 
+    private String orderNo;
+    private String status; 
+    private String createStaffId; 
+    private Date createTime;
+    private String updateStaffId;
+    private Date updateTime;
+    private SortContentRespDTO sortContentRespDTO;
+
+public SortContentRespDTO getSortContentRespDTO() {
+		return sortContentRespDTO;
+	}
+
+	public void setSortContentRespDTO(SortContentRespDTO sortContentRespDTO) {
+		this.sortContentRespDTO = sortContentRespDTO;
+	}
 
 public Integer getSortId() {
 	return sortId;
