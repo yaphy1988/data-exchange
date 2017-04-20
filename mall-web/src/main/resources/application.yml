@@ -16,6 +16,3 @@ spring:
         group: devGroup
       consumer:
         enabled: true
-
-usercenter.dubbo.group: devGroup
-tradecenter.dubbo.group: devGroup

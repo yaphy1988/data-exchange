@@ -1,11 +1,13 @@
-package com.ai.bdex.dataexchange.busi.gds;
+package com.ai.bdex.dataexchange.busi.gds.controller;
 
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,12 +39,26 @@ public class GdsController {
         if (gdsId == null || gdsId.intValue()<=0){
             return "error";
         }
+        GdsInfoVO gdsInfoVO = new GdsInfoVO();
         GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
         gdsInfoReqDTO.setGdsId(gdsId);
+        GdsInfoRespDTO gdsInfoRespDTO = null;
         try {
-            GdsInfoRespDTO gdsInfoRespDTO = iGdsInfoRSV.queryGdsInfoDetails(gdsInfoReqDTO);
+            gdsInfoRespDTO = iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO);
         } catch (Exception e) {
-            log.error("��ѯ��Ʒ�����쳣��",e);
+            log.error("查询商品详情异常：",e);
+        }
+
+        if (gdsInfoRespDTO!=null){
+            BeanUtils.copyProperties(gdsInfoRespDTO,gdsInfoVO);
+
+            if (AIP_CAT_ID.equals(gdsInfoRespDTO.getCatFirst())){
+                //API信息接口调用
+
+                //错误代码参照接口调用
+
+                //实例代码接口调用
+            }
         }
 
 
@@ -60,9 +76,9 @@ public class GdsController {
         try{
             gdsInfoRespDTOList = iGdsInfoRSV.queryGdsInfoList(gdsInfoReqDTO);
         }catch (Exception e){
-            log.error("��ѯ��Ʒ�б���Ϣ�쳣��",e);
+            log.error("查询商品信息列表异常",e);
             ajaxJson.setSuccess(false);
-            ajaxJson.setMsg("��ѯ��Ʒ�б���Ϣ�쳣!");
+            ajaxJson.setMsg("查询商品信息列表异常！");
         }
         ajaxJson.setSuccess(true);
         ajaxJson.setObj(gdsInfoRespDTOList);

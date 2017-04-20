@@ -5,18 +5,18 @@
 
   <!-- 定义dubbo服务，必填信息有，interface、ref、owner、timeout，其中dubbo服务对应的bean对象也使用bean配置 -->
   <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV" ref="iAuthStaffRSV"
-                 owner="zhaoyf7" timeout="3000" group="${spring.dubbo.provider.group}"/>
+                 owner="zhaoyf7" timeout="3000"/>
    
    <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffPassRSV" ref="iAuthStaffPassRSV"
-                 owner="zhaoyf7" timeout="3000" group="${spring.dubbo.provider.group}"/>
+                 owner="zhaoyf7" timeout="3000"/>
    
    <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IChnlInvoiceTaxRSV" ref="iChnlInvoiceTaxRSV"
-                 owner="zhaoyf7" timeout="3000" group="${spring.dubbo.provider.group}"/>
+                 owner="zhaoyf7" timeout="3000"/>
    
    <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IDemoRSV" ref="demoRSV"
-                 owner="zhaoyf7" timeout="3000" group="${spring.dubbo.provider.group}"/>
+                 owner="zhaoyf7" timeout="3000"/>
    
    <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV" ref="iLoginRSV"
-                 owner="zhaoyf7" timeout="3000" group="${spring.dubbo.provider.group}"/>
+                 owner="zhaoyf7" timeout="3000"/>
 
 </beans>
