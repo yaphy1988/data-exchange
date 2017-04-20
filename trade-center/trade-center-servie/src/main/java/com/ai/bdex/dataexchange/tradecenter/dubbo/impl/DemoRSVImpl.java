@@ -22,11 +22,5 @@ public class DemoRSVImpl implements IDemoRSV {
     	return demoSV.callDemo(demoDTO);
         // return "call API success"; 
     }
-    
-    public static void main(String[] args) throws Exception  { 
-    	DemoSVImpl demoSVImpl = new DemoSVImpl();
-    	DemoDTO sortInfoRespDTO = new DemoDTO();
-    	String demoinfo = demoSVImpl.callDemo(sortInfoRespDTO);
-    	System.out.print(demoinfo);
-    }
+ 
 }
