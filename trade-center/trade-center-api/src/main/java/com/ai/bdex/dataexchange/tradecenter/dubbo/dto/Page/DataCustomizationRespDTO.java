@@ -14,6 +14,20 @@ public class DataCustomizationRespDTO  implements Serializable{
    private Date createTime2;
    private Date updateTime;
    private String updateStaffId;
+   private String customName;
+   private String customMail;
+	public String getCustomName() {
+	return customName;
+}
+public void setCustomName(String customName) {
+	this.customName = customName;
+}
+public String getCustomMail() {
+	return customMail;
+}
+public void setCustomMail(String customMail) {
+	this.customMail = customMail;
+}
 	public Integer getDczaId() {
 		return dczaId;
 	}
