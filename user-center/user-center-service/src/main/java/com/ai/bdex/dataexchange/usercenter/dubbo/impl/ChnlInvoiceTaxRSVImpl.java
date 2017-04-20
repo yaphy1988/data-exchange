@@ -6,6 +6,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ChnlInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqInvoiceTaxDTO;
@@ -71,6 +72,20 @@ public class ChnlInvoiceTaxRSVImpl implements IChnlInvoiceTaxRSV {
 			else {
 				log.error("查询认证记录异常：" + e.getMessage());
 				throw new BusinessException("查询认证记录异常:" + e.getMessage());
+			}		
+		}
+	}
+
+	@Override
+	public PageResponseDTO<ChnlInvoiceTaxDTO> queryTaxPage(ReqInvoiceTaxDTO taxDTO) throws BusinessException {
+		try {
+			return iChnlInvoiceTaxSV.queryTaxPage(taxDTO);
+		} catch (Exception e) {
+			if (e instanceof BusinessException)
+				throw (BusinessException) e;
+			else {
+				log.error("查询审核记录分页异常：" + e.getMessage());
+				throw new BusinessException("查询审核记录分页异常:" + e.getMessage());
 			}		
 		}
 	}

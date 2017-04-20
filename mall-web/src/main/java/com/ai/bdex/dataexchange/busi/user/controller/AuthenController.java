@@ -14,9 +14,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.ai.bdex.dataexchange.busi.user.entity.InvoiceTaxVO;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ChnlInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqInvoiceTaxDTO;
@@ -86,6 +88,79 @@ public class AuthenController {
 			iChnlInvoiceTaxRSV.saveInvoiceTax(info);
 			rMap.put("success", true);
 			rMap.put("msg", "提交成功");
+		} catch (BusinessException e) {
+			log.error(e.getMessage());
+			rMap.put("success", false);
+			rMap.put("msg", e.getMessage());
+		}
+		return rMap;
+	}
+	
+	/**
+	 * 获取审核数据，分页
+	 * @param model
+	 * @param status
+	 * @return
+	 */
+	@RequestMapping(value="/getcheckdata")
+	public Map<String,Object> getcheckdata(Model model,String status,String pageNo){
+		Map<String,Object> rMap = new HashMap<String,Object>();
+		ReqInvoiceTaxDTO taxDTO = new ReqInvoiceTaxDTO();
+		taxDTO.setStatus(status);
+		if(pageNo!=null){
+			taxDTO.setPageNo(Integer.parseInt(pageNo));			
+		}
+		taxDTO.setPageSize(10);
+		try {
+			PageResponseDTO<ChnlInvoiceTaxDTO> pageInfo = iChnlInvoiceTaxRSV.queryTaxPage(taxDTO);
+			rMap.put("success", true);
+			rMap.put("data", pageInfo.getResult());
+			rMap.put("pageInfo", pageInfo);
+		} catch (BusinessException e) {
+			log.error(e.getMessage());
+			rMap.put("success", false);
+			rMap.put("msg", e.getMessage());
+		}
+		return rMap;
+	}
+	
+	/**
+	 * 进入审核详情
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/getdetail/{taxid}")
+	public String getdetail(Model model,@PathVariable Long taxid)throws Exception{
+		ChnlInvoiceTaxDTO dto = iChnlInvoiceTaxRSV.getInvoiveTaxDetail(taxid);
+		if(dto!=null){
+			InvoiceTaxVO vo = new InvoiceTaxVO();
+			BeanUtils.copyProperties(dto, vo);
+			model.addAttribute("data", vo);
+		}else{
+			throw new Exception("查询数据异常！");
+		}
+		return "authen/checkdetail";
+	}
+	
+	
+	/**
+	 * 审核操作
+	 * @param model
+	 * @param status
+	 * @param taxId
+	 * @return
+	 */
+	@RequestMapping(value="/docheck")
+	public Map<String,Object> docheck(Model model,String status,Long taxId){
+		Map<String,Object> rMap = new HashMap<String,Object>();
+		ChnlInvoiceTaxDTO info = new ChnlInvoiceTaxDTO();
+		info.setStatus(status);
+		info.setTaxId(taxId);
+		info.setUpdateStaff(StaffUtil.getStaffVO(session).getStaffId());
+		try {
+			iChnlInvoiceTaxRSV.doAuditTax(info);
+			rMap.put("success", true);
+			rMap.put("msg", "审核成功");
 		} catch (BusinessException e) {
 			log.error(e.getMessage());
 			rMap.put("success", false);
