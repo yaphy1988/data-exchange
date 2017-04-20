@@ -1,10 +1,9 @@
-package com.ai.bdex.dataexchange.usercenter.dubbo.dto;
+package com.ai.bdex.dataexchange.busi.user.entity;
 
+import java.io.Serializable;
 import java.util.Date;
 
-import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
-
-public class ChnlInvoiceTaxDTO extends BaseResponseDTO{
+public class InvoiceTaxVO implements Serializable{
     /**
 	 * 
 	 */

@@ -17,11 +17,11 @@ public class AuthStaffRSVImpl implements IAuthStaffRSV{
 	private static final Logger log = Logger.getLogger(AuthStaffRSVImpl.class);
 
 	@Autowired
-	private IAuthStaffSV authStaffSV;
+	private IAuthStaffSV iAuthStaffSV;
 	@Override
 	public void sendEmalForActive(SignInfoDTO info) throws BusinessException{
 		try {
-			authStaffSV.sendEmalForActive(info);
+			iAuthStaffSV.sendEmalForActive(info);
 		} catch (Exception e) {
 			if (e instanceof BusinessException)
 				throw (BusinessException) e;
@@ -35,7 +35,7 @@ public class AuthStaffRSVImpl implements IAuthStaffRSV{
 	@Override
 	public boolean validUserIdExists(String staffId) throws BusinessException {
 		try {
-			return authStaffSV.validUserIdExists(staffId);
+			return iAuthStaffSV.validUserIdExists(staffId);
 		} catch (Exception e) {
 			if (e instanceof BusinessException)
 				throw (BusinessException) e;
@@ -49,7 +49,7 @@ public class AuthStaffRSVImpl implements IAuthStaffRSV{
 	@Override
 	public Map<String,Object> doActiveByEmail(String signId, String code) throws BusinessException {
 		try {
-			return authStaffSV.doActiveByEmail(signId, code);
+			return iAuthStaffSV.doActiveByEmail(signId, code);
 		} catch (Exception e) {
 			if (e instanceof BusinessException)
 				throw (BusinessException) e;
@@ -63,7 +63,7 @@ public class AuthStaffRSVImpl implements IAuthStaffRSV{
 	@Override
 	public int insertInfoToAuthStaff(AuthStaffDTO record) throws BusinessException {
 		try {
-			return authStaffSV.insertInfoToAuthStaff(record);
+			return iAuthStaffSV.insertInfoToAuthStaff(record);
 		} catch (Exception e) {
 			if (e instanceof BusinessException)
 				throw (BusinessException) e;
@@ -77,7 +77,7 @@ public class AuthStaffRSVImpl implements IAuthStaffRSV{
 	@Override
 	public boolean checkStaffAuthen(String staffId) throws BusinessException {
 		try {
-			return authStaffSV.checkStaffAuthen(staffId);
+			return iAuthStaffSV.checkStaffAuthen(staffId);
 		} catch (Exception e) {
 			if (e instanceof BusinessException)
 				throw (BusinessException) e;
@@ -86,10 +86,6 @@ public class AuthStaffRSVImpl implements IAuthStaffRSV{
 				throw new BusinessException("判断用户是否认证异常:" + e.getMessage());
 			}		
 		}
-	}
-	
-	public static void main(String[] args){
-		
 	}
 
 }

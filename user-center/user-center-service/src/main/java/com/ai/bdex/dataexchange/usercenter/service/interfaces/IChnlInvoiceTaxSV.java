@@ -1,7 +1,11 @@
 package com.ai.bdex.dataexchange.usercenter.service.interfaces;
 
+import java.util.List;
+
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ChnlInvoiceTaxDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqInvoiceTaxDTO;
 
 public interface IChnlInvoiceTaxSV {
 
@@ -27,4 +31,20 @@ public interface IChnlInvoiceTaxSV {
 	 * @throws Exception
 	 */
 	public int doAuditTax(ChnlInvoiceTaxDTO info)throws Exception;
+	
+	/**
+	 * 分页获取认证审核数据
+	 * @param taxDTO
+	 * @return
+	 * @throws Exception
+	 */
+	PageResponseDTO<ChnlInvoiceTaxDTO> queryTaxPage(ReqInvoiceTaxDTO taxDTO) throws Exception;
+	
+	
+	/**
+	 * 根据用户id查询审核提交记录
+	 * @return
+	 * @throws BusinessException
+	 */
+	public List<ChnlInvoiceTaxDTO> queryInvoiceRecord(ReqInvoiceTaxDTO input)throws Exception;
 }

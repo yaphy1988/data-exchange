@@ -1,9 +1,10 @@
 package com.ai.bdex.dataexchange.usercenter.dubbo.dto;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class AuthStaffDTO implements Serializable {
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+
+public class AuthStaffDTO extends BaseInfo {
     /**
 	 * 
 	 */

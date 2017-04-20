@@ -60,5 +60,18 @@ public class StaffUtil {
 		//统一设置：session失效；
 		session.invalidate();
 	}
+	
+	/**
+	 * 登录人员VO in session
+	 * @param session
+	 * @return
+	 */
+	public static StaffInfoDTO getStaffVO(HttpSession session){
+		Object obj = session.getAttribute(STAFF_INFO);
+		if(obj == null){
+			return null;
+		}
+		return (StaffInfoDTO)obj;
+	}
 
 }
