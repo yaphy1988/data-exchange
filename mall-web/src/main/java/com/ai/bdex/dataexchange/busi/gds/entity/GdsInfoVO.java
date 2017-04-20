@@ -44,6 +44,8 @@ public class GdsInfoVO implements Serializable {
 
     private Integer catId;
 
+    private String catName;
+
     private List<GdsLabelVO> gdsLabelVOList;//商品标签信息列表
 
     private List<GdsSkuVO> gdsSkuVOList;//单品列表
@@ -216,5 +218,13 @@ public class GdsInfoVO implements Serializable {
 
     public void setCatId(Integer catId) {
         this.catId = catId;
+    }
+
+    public String getCatName() {
+        return catName;
+    }
+
+    public void setCatName(String catName) {
+        this.catName = catName;
     }
 }
