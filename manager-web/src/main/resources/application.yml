@@ -4,16 +4,27 @@ server:
 spring:
   session:
     store-type: none
-  dubbo:
-    application:
-      name: manage-web
-      owner: zhaoyf7
-      environment: develop
-    registry:
-      address: 127.0.0.1:2181
-    provider:
-      enabled: false
-    consumer:
-      enabled: true
-      group: devGroup
 
+  dubbo:
+    appname: manager-web
+    registry: zookeeper://127.0.0.1:2181
+    protocol: dubbo
+    group: devGroup
+
+#  dubbo:
+#    application:
+#      name: manager-web
+#      owner: owner
+#      environment: develop
+#    protocol:
+#      port: 20880
+#      threads: 300
+#    registry:
+#      address: 127.0.0.1:2181
+#    monitor:
+#      enabled: false
+#    provider:
+#      enabled: false
+#    consumer:
+#      enabled: true
+#      group: devGroup

@@ -25,6 +25,7 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
 public class SignController {
 	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 	
+	@SuppressWarnings("SpringJavaAutowiringInspection")
 	@Autowired
 	private IAuthStaffRSV iAuthStaffRSV;
 	

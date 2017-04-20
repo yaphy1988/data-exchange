@@ -40,11 +40,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-test</artifactId>
-			<scope>test</scope>
+			<groupId>com.ai.bdex.dataexchange</groupId>
+			<artifactId>common-api</artifactId>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ai.bdex.dataexchange</groupId>
@@ -53,16 +52,26 @@
 		</dependency>
 		<dependency>
 			<groupId>com.ai.bdex.dataexchange</groupId>
-			<artifactId>common-api</artifactId>
+			<artifactId>trade-center-api</artifactId>
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ai.woego.boot</groupId>
 			<artifactId>config-engine-spring-boot-autoconfigure</artifactId>
 		</dependency>
-		<dependency>
+		<!--<dependency>
 			<groupId>com.ai.woego.boot</groupId>
 			<artifactId>dubbo-spring-boot-autoconfigure</artifactId>
+		</dependency>-->
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>spring-boot-starter-dubbo</artifactId>
+			<version>1.0.0-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.101tec</groupId>
+			<artifactId>zkclient</artifactId>
+			<version>0.10</version>
 		</dependency>
 		<dependency>
 			<groupId>org.codehaus.jackson</groupId>
@@ -74,29 +83,17 @@
 			<artifactId>jackson-mapper-asl</artifactId>
 			<version>1.9.13</version>
 		</dependency>
+
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
      	 	<groupId>com.ai.paas</groupId>
       		<artifactId>image-engine</artifactId>
     	</dependency>
     	<dependency>
             <groupId>org.mongodb</groupId>
             <artifactId>mongo-java-driver</artifactId>
-        </dependency>
-		<dependency>
-			<groupId>com.ai.bdex.dataexchange</groupId>
-			<artifactId>trade-center-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-			<groupId>com.ai.bdex.dataexchange</groupId>
-			<artifactId>trade-center-service</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<dependency>
-            <groupId>net.sf.json-lib</groupId>
-            <artifactId>json-lib</artifactId>
-            <version>2.4</version>
-            <classifier>jdk15</classifier>
         </dependency>
 	</dependencies>
 

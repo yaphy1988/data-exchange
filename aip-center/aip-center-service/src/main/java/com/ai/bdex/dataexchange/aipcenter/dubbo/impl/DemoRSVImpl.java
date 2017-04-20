@@ -3,6 +3,7 @@ package com.ai.bdex.dataexchange.aipcenter.dubbo.impl;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DemoDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IDemoRSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IDemoSV;
+import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 
@@ -10,6 +11,7 @@ import javax.annotation.Resource;
  * @author yafei
  * @since 2017/3/31
  */
+@Service("demoRSV")
 public class DemoRSVImpl implements IDemoRSV {
 
     @Resource
