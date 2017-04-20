@@ -3,6 +3,7 @@ package com.ai.bdex.dataexchange.tradecenter.service.impl.page;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageModuleGoodsMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoods;
@@ -10,7 +11,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoodsExample;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoodsExample.Criteria;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleGoodsSV;
 import com.alibaba.dubbo.common.utils.StringUtils;
-
+@Service("iPageModuleGoodsSV")
 public class PageModuleGoodsSVImpl implements IPageModuleGoodsSV {
 	@Autowired
     private PageModuleGoodsMapper pageModuleGoodsMapper;

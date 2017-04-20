@@ -37,7 +37,12 @@ public class HomePageController {
 	@Autowired
 	IPageInfoRSV iPageInfoRSV;
 	@RequestMapping(value="/pageInit")
-	public Map<String,Object> pageInit(Model model){
+	public String pageInit(){
+		
+		return "/index";
+	}
+	@RequestMapping(value="/queryPageModue")
+	public Map<String,Object> queryPageModue(Model model){
 		
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {
