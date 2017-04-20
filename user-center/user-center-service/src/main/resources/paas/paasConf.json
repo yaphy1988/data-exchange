@@ -1,10 +1,10 @@
 {
-  "/com/ai/db/bdex/sequence/conf": {
+  "/com/ai/db/sequence/conf": {
     "sequenceTable": "t_sequence",
     "driver": "com.mysql.jdbc.Driver",
-    "username": "root",
-    "password": "{ENC}1234",
-    "url": "jdbc:mysql://localhost:3305/qcs",
+    "username": "bdex",
+    "password": "{ENC}bdex1234",
+    "url": "jdbc:mysql://112.74.163.29:3306/bdex",
     "initSize": 5,
     "maxActive": 10,
     "maxIdle": 4,
