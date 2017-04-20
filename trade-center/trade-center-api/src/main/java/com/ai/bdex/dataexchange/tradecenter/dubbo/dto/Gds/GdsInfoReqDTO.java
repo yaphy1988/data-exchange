@@ -48,6 +48,8 @@ public class GdsInfoReqDTO implements Serializable{
     
     //商品属性配置
     private GdsInfo2PropReqDTO GdsInfo2PropReqDTO;
+
+    private Integer catId;
     
     public GdsInfo2PropReqDTO getGdsInfo2PropReqDTO() {
 		return GdsInfo2PropReqDTO;
@@ -200,5 +202,13 @@ public class GdsInfoReqDTO implements Serializable{
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getCatId() {
+        return catId;
+    }
+
+    public void setCatId(Integer catId) {
+        this.catId = catId;
     }
 }

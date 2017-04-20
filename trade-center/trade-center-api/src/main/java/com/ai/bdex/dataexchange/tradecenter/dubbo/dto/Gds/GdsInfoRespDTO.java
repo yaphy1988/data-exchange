@@ -48,6 +48,8 @@ public class GdsInfoRespDTO implements Serializable{
 
     private List<GdsInfo2PropRespDTO> gdsInfo2PropRespDTOList;//商品属性列表
 
+    private Integer catId;
+
     public Integer getGdsId() {
         return gdsId;
     }
@@ -206,5 +208,13 @@ public class GdsInfoRespDTO implements Serializable{
 
     public void setGdsInfo2PropRespDTOList(List<GdsInfo2PropRespDTO> gdsInfo2PropRespDTOList) {
         this.gdsInfo2PropRespDTOList = gdsInfo2PropRespDTOList;
+    }
+
+    public Integer getCatId() {
+        return catId;
+    }
+
+    public void setCatId(Integer catId) {
+        this.catId = catId;
     }
 }
