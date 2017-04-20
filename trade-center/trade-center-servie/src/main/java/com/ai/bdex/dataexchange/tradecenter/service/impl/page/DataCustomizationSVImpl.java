@@ -1,26 +1,44 @@
 package com.ai.bdex.dataexchange.tradecenter.service.impl.page;
-
-import javax.annotation.Resource;
-
+ 
+import org.apache.commons.beanutils.BeanUtils;
+import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.DataCustomizationMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.DataCustomization;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.DataCustomizationRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IDataCustomizationSV;
- 
+import com.ai.paas.utils.*;
 @Service("iDataCustomizationSV")
 public class DataCustomizationSVImpl implements IDataCustomizationSV {
-	  @Resource
-	  private DataCustomizationMapper dataCustomizationMapper;
+	
+	  private static final Logger log = Logger.getLogger(DataCustomizationSVImpl.class);
+	
+	  @Autowired
+	  private DataCustomizationMapper dataCustomizationMapper; 
 	   /***
 	    * 接口没有时，需要定制的信息
 	    */
 	  @Override
-	    public DataCustomization queryDATAById(Integer dcza_id) throws Exception {
+	  public DataCustomization queryDATAById(Integer dcza_id) throws Exception {
  	        if (dcza_id==null){
 	            throw new Exception("根据ID查询 数据定制 信息入参为空");
 	        }
  	       DataCustomization dataCustomizationSVImpl =  dataCustomizationMapper.selectByPrimaryKey(dcza_id);
 	        return dataCustomizationSVImpl;
 	    }
+	  //保存定制信息
+	  @Override
+	   public int saveDataCustomization(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception{
+		    DataCustomization record = new DataCustomization();	
+			BeanUtils.copyProperties(record, dataCustomizationRespDTO);
+/*			record.setTaxId(SeqUtil.getLong("SEQ_DATA_CUSTOMIZATION"));
+*/			record.setCreateStaffId(dataCustomizationRespDTO.getCreateStaffId());
+		 	//record.setCreateTime(DateUtil.getNowAsDate());
+			record.setStatus("2");//状态： 2:未处理 
+			return dataCustomizationMapper.insertSelective(record);
+ 	  }
+
+	  
 }
