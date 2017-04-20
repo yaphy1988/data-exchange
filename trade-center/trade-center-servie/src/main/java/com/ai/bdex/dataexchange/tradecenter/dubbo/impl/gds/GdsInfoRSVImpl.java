@@ -3,6 +3,7 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.impl.gds;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsCat;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabel;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsProp;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSku;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.*;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
@@ -10,6 +11,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelQuikSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsPropSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -46,6 +48,7 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
     @Resource
     private IGdsLabelQuikSV iGdsLabelQuikSV;
     
+    private IGdsPropSV iGdsPropSV;
     @Override
     public GdsInfoRespDTO queryGdsInfoDetails(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
         GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
@@ -192,5 +195,22 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
             throw new Exception(e);
         }
 		return respDTO;
+	 }
+	 public List<GdsPropRespDTO> queryGdsPropList(GdsPropReqDTO gdsPropReqDTO) throws Exception {
+		 List<GdsPropRespDTO> respDTOList = new ArrayList<GdsPropRespDTO>();
+		try{
+			List<GdsProp> propList=iGdsPropSV.queryGdsPropList(gdsPropReqDTO);
+			 if (!CollectionUtils.isEmpty(propList)){
+	                for (GdsProp propInfo : propList){
+	                	GdsPropRespDTO gdsPropRespDTO = new GdsPropRespDTO();
+	                    BeanUtils.copyProperties(propInfo,gdsPropRespDTO);
+	                    respDTOList.add(gdsPropRespDTO);
+	                }
+	            }
+		}catch(Exception e){
+        	log.error("查询分类属性异常:", e);
+            throw new Exception(e);
+        }
+		return respDTOList;
 	 }
 }

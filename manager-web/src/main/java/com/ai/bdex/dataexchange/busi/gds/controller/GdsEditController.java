@@ -1,7 +1,14 @@
 package com.ai.bdex.dataexchange.busi.gds.controller;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +19,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.util.HtmlUtils;
 
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsJsonBean;
@@ -25,10 +36,14 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelQuikReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelQuikRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsPropReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsPropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.alibaba.dubbo.common.json.ParseException;
 import com.alibaba.dubbo.rpc.service.GenericException;
+
+import net.sf.json.JSONObject;
 
 
 
@@ -84,7 +99,7 @@ public class GdsEditController {
     public GdsJsonBean querySubCatNodes(HttpServletRequest req,HttpServletResponse rep,int catId) {
         GdsJsonBean json=new GdsJsonBean();
         try{
-        	GdsCatReqDTO reqDTO = new GdsCatReqDTO();
+        	GdsCatReqDTO  reqDTO = new GdsCatReqDTO();
         	reqDTO.setCatId(Integer.valueOf(catId));
         	List<GdsCatRespDTO> catListAll = gdsInfoRSV.queryGdsCatListDTO(reqDTO);
         	json.setObject(catListAll);
@@ -136,8 +151,11 @@ public class GdsEditController {
     	GdsJsonBean jsonBean = new GdsJsonBean();
     	GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
         try {
+        	//商品基本信息
+    		JSONObject gdsInfoVO=JSONObject.fromObject(req.getParameter("gdsInfoVO"));
+			this.setGdsInfo(gdsInfoReqDTO, gdsInfoVO);
+			
         	gdsInfoRSV.addGds(gdsInfoReqDTO);
-
             jsonBean.setSuccess("true");
             jsonBean.setMsg("商品录入成功！");
         } catch (BusinessException e) {
@@ -204,4 +222,46 @@ public class GdsEditController {
 
         return jsonBean;
     }
+	private void setGdsInfo(GdsInfoReqDTO vo,JSONObject baseInfoJson){
+  		try {
+			if(StringUtil.isNotBlank(baseInfoJson.getString("gdsId"))){
+			    vo.setGdsId(Integer.parseInt(baseInfoJson.getString("gdsId")));
+			}
+			vo.setGdsName(baseInfoJson.getString("gdsName"));
+			vo.setCatFirst(Integer.parseInt(baseInfoJson.getString("catFirst")));
+			vo.setApiId(Integer.parseInt(baseInfoJson.getString("apiId")));
+			vo.setGdsPic(baseInfoJson.getString("gdsPic"));
+			vo.setIfRecommend(baseInfoJson.getString("ifRecommend"));
+			vo.setFunIntroduction(baseInfoJson.getString("funIntroduction"));
+			vo.setCommpanyName(baseInfoJson.getString("commpanyName"));
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+	}
+
+	/**
+	 * 根据catId获取商品分类属性信息
+	 * @param req
+	 * @param rep
+	 * @param catId
+	 * @return
+	 */
+	@RequestMapping(value = "/queryGdsPropList")
+	public GdsJsonBean queryGdsPropList(HttpServletRequest req, HttpServletResponse rep, int catId) {
+		GdsJsonBean json = new GdsJsonBean();
+		try {
+			GdsPropReqDTO reqDTO = new GdsPropReqDTO();
+			reqDTO.setCatId(catId);
+			List<GdsPropRespDTO> propList = gdsInfoRSV.queryGdsPropList(reqDTO);
+			json.setObject(propList);
+			json.setSuccess("true");
+		} catch (Exception e) {
+			json.setSuccess("false");
+			json.setMsg("获取商品分类属性信息失败,原因：" + e.getMessage());
+			logger.error("获取商品分类属性信息失败,原因：" + e.getMessage(), e);
+		}
+		return json;
+	}
+
+   
 }
