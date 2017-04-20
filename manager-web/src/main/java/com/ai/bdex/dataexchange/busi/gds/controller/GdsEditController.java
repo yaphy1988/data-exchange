@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,8 +26,11 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.util.HtmlUtils;
 
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsCatVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsJsonBean;
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsLabelQuikVO;
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsLabelVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsManageInfoVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsCatReqDTO;
@@ -40,6 +44,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsPropReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsPropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.util.ImageUtil;
 import com.alibaba.dubbo.common.json.ParseException;
 import com.alibaba.dubbo.rpc.service.GenericException;
 
@@ -96,11 +101,11 @@ public class GdsEditController {
      */
     @RequestMapping(value = "/querySubCatNodes")
     @ResponseBody
-    public GdsJsonBean querySubCatNodes(HttpServletRequest req,HttpServletResponse rep,int catId) {
+    public GdsJsonBean querySubCatNodes(HttpServletRequest req,HttpServletResponse rep,GdsCatVO gdsCatVO) {
         GdsJsonBean json=new GdsJsonBean();
         try{
         	GdsCatReqDTO  reqDTO = new GdsCatReqDTO();
-        	reqDTO.setCatId(Integer.valueOf(catId));
+        	reqDTO.setCatPid(gdsCatVO.getCatPid());
         	List<GdsCatRespDTO> catListAll = gdsInfoRSV.queryGdsCatListDTO(reqDTO);
         	json.setObject(catListAll);
         	json.setSuccess("true");
@@ -119,10 +124,16 @@ public class GdsEditController {
      * @return
      */
     @RequestMapping(value = "/queryGdsLabelQuikList")
-    public GdsJsonBean queryGdsLabelQuikList(HttpServletRequest req,HttpServletResponse rep,long catId) {
+    public GdsJsonBean queryGdsLabelQuikList(HttpServletRequest req,HttpServletResponse rep,GdsLabelQuikVO gdsLabelQuikVO) {
         GdsJsonBean json=new GdsJsonBean();
         try{
         	GdsLabelQuikReqDTO reqDTO = new GdsLabelQuikReqDTO();
+        	if(StringUtil.isNotBlank(gdsLabelQuikVO.getLabName())){
+            	reqDTO.setLabName(gdsLabelQuikVO.getLabName());
+        	}
+        	if(gdsLabelQuikVO.getCatFirst()!=0){
+        		reqDTO.setCatFirst(gdsLabelQuikVO.getCatFirst());
+        	}
         	List<GdsLabelQuikRespDTO> labelList = gdsInfoRSV.queryGdsLabelQuikListDTO(reqDTO);
         	json.setObject(labelList);
         	json.setSuccess("true");
@@ -262,6 +273,105 @@ public class GdsEditController {
 		}
 		return json;
 	}
+	 /**
+     * 上传图片
+     * 
+     * @param request
+     * @param response
+     * @author zjh
+     */
+    @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
+    public void uploadImage(HttpServletRequest request, HttpServletResponse response) {
+        response.setContentType("text/html;charset=UTF-8");
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
+        // 获取图片
+        Iterator<MultipartFile> files = multipartRequest.getFileMap().values().iterator();
+        MultipartFile file = null;
+        if (files.hasNext()) {
+            file = files.next();
+        }
+        Iterator<String> ids = multipartRequest.getFileMap().keySet().iterator();
+        String id = null;
+        if (ids.hasNext()) {
+            id = ids.next();
+        }
+        PrintWriter out = null;
+        try {
+            out = response.getWriter();
+            if (file == null) {
+                resultMap.put("flag", false);
+                resultMap.put("error", "请选择上传文件！");
+                out.print(JSONObject.fromObject(resultMap).toString());
+                return;
+            }
+            String fileName = file.getOriginalFilename();
+            String extensionName = "." + getExtensionName(fileName);
 
+            /** 支持文件拓展名：.jpg,.png,.jpeg,.gif,.bmp */
+            boolean flag = Pattern.compile("\\.(jpg)$|\\.(png)$|\\.(jpeg)$|\\.(gif)$|\\.(bmp)$")
+                    .matcher(extensionName.toLowerCase()).find();
+            if (!flag) {
+                resultMap.put("flag", false);
+                resultMap.put("error", "请选择图片文件(.jpg,.png,.jpeg,.gif,.bmp)!");
+                out.print(JSONObject.fromObject(resultMap).toString());
+                return;
+            }
+            byte[] datas = inputStream2Bytes(file.getInputStream());
+            String imageId = ImageUtil.upLoadImage(datas, fileName);
+            resultMap.put("flag", true);
+            resultMap.put("imageId", imageId);
+            resultMap.put("imageName", fileName);
+            resultMap.put("id", id);
+            resultMap.put("imagePath", ImageUtil.getImageUrl(imageId + "_150x150"));
+            out.print(JSONObject.fromObject(resultMap).toString());
+            logger.debug("imageId = " + imageId);
+        } catch (Exception e) {
+            logger.error("【图片保存失败】异常信息：" + e);
+        } finally {
+            out.close();
+        }
+    }
+	/**
+     * 将InputStream转换成byte数组
+     * 
+     * @author huangcm
+     * @date 2014-7-23
+     * @param in
+     * @return
+     * @throws IOException
+     */
+    private byte[] inputStream2Bytes(InputStream in) throws IOException {
+        ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+        byte[] data = new byte[4096];
+        int count = -1;
+        while ((count = in.read(data, 0, 4096)) != -1)
+            outStream.write(data, 0, count);
+        data = null;
+        return outStream.toByteArray();
+    }
+
+    /**
+     * 获取文件拓展名
+     * 
+     * @author huangcm
+     * @date 2014-7-22
+     * @param fileName
+     * @return
+     */
+    private String getExtensionName(String fileName) {
+        if ((fileName != null) && (fileName.length() > 0)) {
+            int dot = fileName.lastIndexOf('.');
+            if ((dot > -1) && (dot < (fileName.length() - 1))) {
+                return fileName.substring(dot + 1);
+            }
+        }
+        return fileName;
+    }
+
+    private String getHtmlUrl(String vfsId) {
+        return ImageUtil.getStaticDocUrl(vfsId, "html");
+    }
+    
    
 }
