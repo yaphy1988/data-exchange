@@ -2,9 +2,14 @@
 <html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-    <script th:replace="~{fragments/sys_head :: sys_head"></script>
+	<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <title>广州数据中心</title>
+	<!-- 引入模板中sys_head定义的公共js和css等内容 -->
+    <script th:replace="~{fragments/syshead :: syshead"></script>
 </head>
-<body>
+<body class="bgf1">
 	<div th:replace="~{fragments/top :: top"></div>
 	<div th:replace="~{fragments/header :: header"></div>
 	<div layout:fragment="screen_content">
@@ -13,5 +18,6 @@
 	        <p>这里是内容</p>
 	    </div>
 	</div>
+	<!-- footer -->
 	<div th:replace="~{fragments/footer :: footer"></div>
 </html>

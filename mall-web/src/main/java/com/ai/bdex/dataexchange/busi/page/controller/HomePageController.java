@@ -41,6 +41,11 @@ public class HomePageController {
 		
 		return "/index";
 	}
+	/**
+	 * 查询楼层信息
+	 * @param model
+	 * @return
+	 */
 	@RequestMapping(value="/queryPageModue")
 	public Map<String,Object> queryPageModue(Model model){
 		
