@@ -13,7 +13,7 @@
     "testWhileIdle": "true"
   },
   "/com/ai/paas/cache/conf": {
-    "hosts": "192.168.111.217:6379",
+    "hosts": "112.74.163.29:26379",
     "timeOut": "20000",
     "maxActive": "100",
     "maxIdle": "100",
