@@ -1,13 +1,13 @@
-package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds;
+package com.ai.bdex.dataexchange.busi.gds.entity;
 
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 /**
- * Created by yx on 2017/4/18.
+ * Created by yx on 2017/4/20.
  */
-public class GdsInfoRespDTO implements Serializable{
+public class GdsInfoVO implements Serializable {
     private Integer gdsId;
 
     private String gdsName;
@@ -42,11 +42,11 @@ public class GdsInfoRespDTO implements Serializable{
 
     private Date updateTime;
 
-    private List<GdsLabelRespDTO> gdsLabelRespDTOs;//商品标签信息列表
+    private List<GdsLabelVO> gdsLabelVOList;//商品标签信息列表
 
-    private List<GdsSkuRespDTO> gdsSkuRespDTOList;//单品列表
+    private List<GdsSkuVO> gdsSkuVOList;//单品列表
 
-    private List<GdsInfo2PropRespDTO> gdsInfo2PropRespDTOList;//商品属性列表
+    private List<GdsInfo2PropVO> gdsInfo2PropVOList;//商品属性列表
 
     public Integer getGdsId() {
         return gdsId;
@@ -184,27 +184,27 @@ public class GdsInfoRespDTO implements Serializable{
         this.catFirstName = catFirstName;
     }
 
-    public List<GdsLabelRespDTO> getGdsLabelRespDTOs() {
-        return gdsLabelRespDTOs;
+    public List<GdsLabelVO> getGdsLabelVOList() {
+        return gdsLabelVOList;
     }
 
-    public void setGdsLabelRespDTOs(List<GdsLabelRespDTO> gdsLabelRespDTOs) {
-        this.gdsLabelRespDTOs = gdsLabelRespDTOs;
+    public void setGdsLabelVOList(List<GdsLabelVO> gdsLabelVOList) {
+        this.gdsLabelVOList = gdsLabelVOList;
     }
 
-    public List<GdsSkuRespDTO> getGdsSkuRespDTOList() {
-        return gdsSkuRespDTOList;
+    public List<GdsSkuVO> getGdsSkuVOList() {
+        return gdsSkuVOList;
     }
 
-    public void setGdsSkuRespDTOList(List<GdsSkuRespDTO> gdsSkuRespDTOList) {
-        this.gdsSkuRespDTOList = gdsSkuRespDTOList;
+    public void setGdsSkuVOList(List<GdsSkuVO> gdsSkuVOList) {
+        this.gdsSkuVOList = gdsSkuVOList;
     }
 
-    public List<GdsInfo2PropRespDTO> getGdsInfo2PropRespDTOList() {
-        return gdsInfo2PropRespDTOList;
+    public List<GdsInfo2PropVO> getGdsInfo2PropVOList() {
+        return gdsInfo2PropVOList;
     }
 
-    public void setGdsInfo2PropRespDTOList(List<GdsInfo2PropRespDTO> gdsInfo2PropRespDTOList) {
-        this.gdsInfo2PropRespDTOList = gdsInfo2PropRespDTOList;
+    public void setGdsInfo2PropVOList(List<GdsInfo2PropVO> gdsInfo2PropVOList) {
+        this.gdsInfo2PropVOList = gdsInfo2PropVOList;
     }
 }
