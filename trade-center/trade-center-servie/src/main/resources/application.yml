@@ -14,16 +14,18 @@ spring:
       group: devGroup
     consumer:
       enabled: false
-jdbc:
+
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-  url: jdbc:mysql://132.37.2.166:39306/bdex
-  username: bdex
-  password: bdex1234
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://112.74.163.29:3306/bdex
+    username: bdex
+    password: bdex1234
 
-com.ai.auth.login.config: auth
-com.ai.paas.zookeeper: 127.0.0.1:2181
-com.ai.paas.runmode: D
-com.ai.zk.recreate: false
-
-application.sequencefactory.confpath: /com/ai/db/bdex/sequence/conf
+application:
+  configcenter:
+#    login: admin:admin
+#    zkaddress: 127.0.0.1:2181
+    runmode: D
+  sequencefactory:
+    confpath: /com/ai/db/bdex/sequence/conf

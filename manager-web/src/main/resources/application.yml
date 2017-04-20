@@ -5,21 +5,15 @@ spring:
   session:
     store-type: none
   dubbo:
-      application:
-        name: manage-web
-        owner: zhaoyf7
-        environment: develop
-      protocol:
-        port: 20885
-        threads: 300
-      registry:
-        address: 127.0.0.1:2181
-      provider:
-        enabled: false
-        group: devGroup
-      consumer:
-        enabled: true
-        group: devGroup
+    application:
+      name: manage-web
+      owner: zhaoyf7
+      environment: develop
+    registry:
+      address: 127.0.0.1:2181
+    provider:
+      enabled: false
+    consumer:
+      enabled: true
+      group: devGroup
 
-usercenter.dubbo.group: devGroup
-tradecenter.dubbo.group: devGroup
