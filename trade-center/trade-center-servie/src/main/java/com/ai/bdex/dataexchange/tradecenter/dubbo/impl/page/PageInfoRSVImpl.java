@@ -139,7 +139,7 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
     } 
     //查询查询热门搜索关键字
     @Override 
-    public List<PageHotSearchRespDTO> queryPageHotSearchNavList(PageHotSearchRespDTO pageHotSearchRespDTO) throws Exception {
+    public List<PageHotSearchRespDTO> queryPageHotSearchList(PageHotSearchRespDTO pageHotSearchRespDTO) throws Exception {
         List<PageHotSearchRespDTO> PageInfoRespList = new ArrayList<PageHotSearchRespDTO>();
         try{
         	 if (pageHotSearchRespDTO ==null ){
@@ -161,8 +161,7 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
         }
         return PageInfoRespList;
     }
-    //	public  List<PageHeaderNav>  queryPageHeaderNavList(PageHeaderNav example) throws Exception ;
-    //查询查询热门搜索关键字
+    //查询商品分类信息
     @Override 
     public List<PageHeaderNavRespDTO> queryPageHeaderNavList(PageHeaderNavRespDTO PageHeaderNavRespDTO) throws Exception {
         List<PageHeaderNavRespDTO> PageInfoRespList = new ArrayList<PageHeaderNavRespDTO>();

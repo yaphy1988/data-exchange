@@ -112,10 +112,13 @@ public class HomePageController {
 	 * @param model
 	 */
 	@RequestMapping(value="/querySortInfo")
-	public String querySortInfo(Model model) {
+	public String querySortInfo(Model model,@PathVariable Integer sortId,@PathVariable Integer sortParentId) {
 		try {
 			SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
 			sortInfoRespDTO.setStatus(STATUS_VALID);
+			if(sortId != null && sortId != 0){
+				sortInfoRespDTO.setSortId(sortId);
+			}
 			List<SortInfoRespDTO> sortInfos = iPageInfoRSV.querySortInfos(sortInfoRespDTO);
 			model.addAttribute("sortInfos",sortInfos);
 		} catch (Exception e) {
@@ -130,7 +133,7 @@ public class HomePageController {
 		try {
 			PageHotSearchRespDTO pageHotSearchRespDTO = new PageHotSearchRespDTO();
 			pageHotSearchRespDTO.setStatus(STATUS_VALID);
-			List<PageHotSearchRespDTO> hotSearchList = iPageInfoRSV.queryPageHotSearchNavList(pageHotSearchRespDTO);
+			List<PageHotSearchRespDTO> hotSearchList = iPageInfoRSV.queryPageHotSearchList(pageHotSearchRespDTO);
 			model.addAttribute("hotSearchList",hotSearchList);
 		} catch (Exception e) {
 			log.error("查询首页热门搜索信息异常："+e.getMessage());

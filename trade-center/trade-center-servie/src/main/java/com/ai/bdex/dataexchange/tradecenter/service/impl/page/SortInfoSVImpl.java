@@ -12,6 +12,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.PageInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
+import com.alibaba.dubbo.common.utils.StringUtils;
 @Service("iSortInfoSV")
 public class SortInfoSVImpl  implements ISortInfoSV{
 	 @Resource
@@ -31,19 +32,22 @@ public class SortInfoSVImpl  implements ISortInfoSV{
 	   public  List<SortInfo>  querySortInfoList(SortInfo exam) throws Exception{
 		  SortInfoExample example = new SortInfoExample();
 		  SortInfoExample.Criteria criteria = example.createCriteria(); 
-		   if(exam.getSortType()!= null){
+		  if(exam.getSortId() != null && exam.getSortId() != 0){
+			  criteria.andSortIdEqualTo(exam.getSortId());
+		  }
+		   if(!StringUtils.isBlank(exam.getSortType())){
 			   // 类型
 				criteria.andSortTypeEqualTo(exam.getSortType());
 			} 
-		   if(exam.getSortLevel()!= null){ 
+		   if(!StringUtils.isBlank(exam.getSortLevel())){ 
 			   //级别
 				criteria.andSortLevelEqualTo(exam.getSortLevel());
 			} 
-		   if(exam.getParentSortId()!= null){ 
+		   if(exam.getParentSortId()!= null && exam.getParentSortId()!= 0){ 
 			   //父节点ID
 				criteria.andParentSortIdEqualTo(exam.getParentSortId());
 			} 
-			if(exam.getStatus() != null){
+			if(!StringUtils.isBlank(exam.getStatus())){
 				criteria.andStatusEqualTo(exam.getStatus());
 			} 
 			else{

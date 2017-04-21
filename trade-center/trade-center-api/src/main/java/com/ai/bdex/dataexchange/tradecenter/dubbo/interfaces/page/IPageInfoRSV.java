@@ -19,7 +19,7 @@ public interface    IPageInfoRSV {
 
     public PageInfoRespDTO queryPageInfoBYid(Integer PageInfoid) throws Exception;
 
-    public List<PageHotSearchRespDTO> queryPageHotSearchNavList(PageHotSearchRespDTO pageHotSearchRespDTO) throws Exception;
+    public List<PageHotSearchRespDTO> queryPageHotSearchList(PageHotSearchRespDTO pageHotSearchRespDTO) throws Exception;
 
     public List<PageHeaderNavRespDTO> queryPageHeaderNavList(PageHeaderNavRespDTO pageHeaderNavRespDTO) throws Exception;
     

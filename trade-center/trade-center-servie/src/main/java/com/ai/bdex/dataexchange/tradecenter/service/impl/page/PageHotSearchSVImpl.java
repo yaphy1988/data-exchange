@@ -10,6 +10,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageHotSearchMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHotSearch;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHotSearchExample;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHotSearchSV;
+import com.alibaba.dubbo.common.utils.StringUtils;
 @Service("iPageHotSearchSV")
 public class PageHotSearchSVImpl  implements  IPageHotSearchSV{
 	 @Resource
@@ -30,10 +31,10 @@ public class PageHotSearchSVImpl  implements  IPageHotSearchSV{
 		   public  List<PageHotSearch>  queryPageHotSearchNavList(PageHotSearch exam) throws Exception{
 		   PageHotSearchExample example = new PageHotSearchExample();
 		   PageHotSearchExample.Criteria criteria = example.createCriteria(); 
-			   if(exam.getSearchId()!= 0){
+			   if(exam.getSearchId() != null &&exam.getSearchId()!= 0){
 					criteria.andSearchIdEqualTo(exam.getSearchId());
 				} 
-				if(exam.getStatus() != null){
+				if(!StringUtils.isBlank(exam.getStatus())){
 					criteria.andStatusEqualTo(exam.getStatus());
 				} 
 				else{
