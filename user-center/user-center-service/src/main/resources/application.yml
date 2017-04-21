@@ -28,4 +28,4 @@ application:
 #    zkaddress: 127.0.0.1:2181
     runmode: D
   sequencefactory:
-    confpath: /com/ai/db/bdex/sequence/conf
+    confpath: /com/ai/db/sequence/conf
