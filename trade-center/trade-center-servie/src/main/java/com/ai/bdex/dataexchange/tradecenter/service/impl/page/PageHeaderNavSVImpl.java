@@ -10,6 +10,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageHeaderNavMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNav;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNavExample;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHeaderNavSV;
+import com.alibaba.dubbo.common.utils.StringUtils;
  @Service("iPageHeaderNavSV")
 public class PageHeaderNavSVImpl implements IPageHeaderNavSV{
 	 @Resource
@@ -29,10 +30,10 @@ public class PageHeaderNavSVImpl implements IPageHeaderNavSV{
 		public  List<PageHeaderNav>  queryPageHeaderNavList(PageHeaderNav exam) throws Exception{
 		   PageHeaderNavExample example = new PageHeaderNavExample();
 		   PageHeaderNavExample.Criteria criteria = example.createCriteria(); 
-		   if(exam.getNavId() != 0){
+		   if(exam.getNavId() != null && exam.getNavId() != 0){
 				criteria.andNavIdEqualTo(exam.getNavId());
 			} 
-			if(exam.getStatus() != null){
+			if(!StringUtils.isBlank(exam.getStatus())){
 				criteria.andStatusEqualTo(exam.getStatus());
 			} 
 			else{
