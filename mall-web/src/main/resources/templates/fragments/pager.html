@@ -1,29 +1,30 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head >
-    <link rel="stylesheet" href="../static/js/bootstrap.min.js" th:remove="all"/>
-    <link rel="stylesheet" href="../static/css/global.css" th:remove="all"/>
+    <link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
+    <link rel="stylesheet" href="../../static/css/index.css" th:remove="all">
+    <link rel="stylesheet" href="../../static/component/bootstrap/js/bootstrap.min.js" th:remove="all"/>
+    <link rel="stylesheet" href="../../static/css/global.css" th:remove="all"/>
+    <script src="../../static/js/jquery-1.12.4.js" th:remove="all"></script>
 </head>
 <body>
 
 
 <div th:fragment="pager" class="pagerBar" style="margin-top:0px;" >
-  <script type="text/javascript" src="../static/js-busi/common/pager.js" th:src="@{/js-busi/common/pager.js}"></script>
-
- <span data-toggle="pager" id="pagerId" data-count="" data-size="" data-currentindex="" ></span>
+    <script type="text/javascript" src="../../static/js-busi/common/pager.js" th:src="@{/js-busi/common/pager.js}"></script>
+    <span data-toggle="pager" id="pagerId" data-count="" data-size="" data-currentindex="" ></span>
 
 	<script th:inline="javascript">
-	var total = '[[${pageInfo.total}]]';
-	var pageNum = '[[${pageInfo.pageNum}]]';
-	var pageSize = '[[${pageInfo.pageSize}]]';
-	
+        var total = '[[${pageInfo.total}]]';
+	    var pageNum = '[[${pageInfo.pageNum}]]';
+	    var pageSize = '[[${pageInfo.pageSize}]]';
+
 	    if (typeof pagerClick === "undefined") {
 	        pagerClick = function (index) {
 	            alert(index);
 	        }
 	    }
 	    $('#pagerId').pager({callback: pagerClick});
-	
 	</script>
 </div>
 </body>

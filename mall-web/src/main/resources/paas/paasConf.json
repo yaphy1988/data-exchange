@@ -1,0 +1,65 @@
+{
+  "/com/ai/paas/session/conf": {
+    "hosts": "112.74.163.29:26379",
+    "timeOut": "20000",
+    "maxActive": "1024",
+    "maxIdle": "100",
+    "maxWait": "1000",
+    "testOnBorrow": "false",
+    "testOnReturn": "true",
+    "dbIndex": "0",
+    "twemproxy": "false",
+    "expirationUpdateInterval": "300",
+    "maxInactiveInterval": "1800",
+    "domain": ""
+  },
+  "/com/ai/paas/cache/conf": {
+    "hosts": "112.74.163.29:26379",
+    "timeOut": "20000",
+    "maxActive": "100",
+    "maxIdle": "100",
+    "maxWait": "1000",
+    "testOnBorrow": "false",
+    "testOnReturn": "true",
+    "dbIndex": "0",
+    "twemproxy": "false"
+  },
+  "/com/ai/paas/file/conf": {
+    "fileServer": [
+      {
+        "ip": "112.74.163.29",
+        "port": "27011"
+      }
+    ],
+    "fileRepo": "image",
+    "userName": "sa",
+    "password": "f938d82df85971d2"
+  },
+  "/com/ai/paas/image/conf": {
+    "gmMode": "true",
+    "gmPath": "/usr/local/bin/gm",
+    "imageType": ".jpg,.png,.gif",
+    "maxActive": "150",
+    "maxIdle": "20",
+    "maxWait": "1000",
+    "testOnBorrow": "false",
+    "testOnReturn": "true",
+    "originalPath": "woegoimage/images/",
+    "thumbnailPath": "woegoimage/thumbnail/",
+    "reserveImage": "woegoimage/fallback/",
+    "upPath": "woegoimage/upload/",
+    "upPathNew": "woegoimage/images/",
+    "uploadUrl": "http://112.74.163.29/imageServer",
+    "extent": "false",
+    "redisKeyPrefix": "static-",
+    "varnishServer": [
+      {
+        "host": "127.0.0.1",
+        "port": "8000"
+      }
+    ],
+    "commandSize": "20",
+    "primaryParam": "productId",
+    "serverUrl": "http://112.74.163.29/imageServer"
+  }
+}

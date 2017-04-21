@@ -5,7 +5,6 @@
 
 	<groupId>com.ai.bdex.dataexchange</groupId>
 	<artifactId>mall-web</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
 	<packaging>jar</packaging>
 
 	<name>mall-web</name>
@@ -53,6 +52,14 @@
 			<groupId>com.ai.woego.boot</groupId>
 			<artifactId>config-engine-spring-boot-autoconfigure</artifactId>
 		</dependency>
+		<!--<dependency>
+			<groupId>com.ai.woego.boot</groupId>
+			<artifactId>file-engine-spring-boot-autoconfigure</artifactId>
+		</dependency>-->
+		<dependency>
+			<groupId>com.ai.woego.boot</groupId>
+			<artifactId>image-engine-spring-boot-autoconfigure</artifactId>
+		</dependency>
 		<!--<dependency>-->
 			<!--<groupId>com.ai.woego.boot</groupId>-->
 			<!--<artifactId>dubbo-spring-boot-autoconfigure</artifactId>-->
@@ -71,12 +78,12 @@
 		<dependency>
 			<groupId>com.ai.bdex.dataexchange</groupId>
 			<artifactId>trade-center-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.ai.bdex.dataexchange</groupId>
 			<artifactId>user-center-api</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
+			<version>${project.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>

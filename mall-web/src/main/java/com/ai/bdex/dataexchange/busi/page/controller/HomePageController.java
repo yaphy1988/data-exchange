@@ -43,7 +43,7 @@ public class HomePageController {
 	public String pageInit(Model model){
 		queryHotSearch(model);
 		queryHeaderNav(model);
-		return "/index";
+		return "index";
 	}
 	/**
 	 * 查询楼层信息

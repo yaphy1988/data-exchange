@@ -1,20 +1,30 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head lang="en">
+	<meta charset="UTF-8" th:remove="all">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all">
+	<meta name="renderer" content="webkit" th:remove="all">
+	<title th:remove="all">广州数据中心</title>
+	<link rel="icon" type="../static/image/png" href="../../static/images/favicon.png" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/index.css" th:remove="all">
+</head>
 <body class="bgf1">
 	<div class="top" th:fragment="top">
 	    <div class="wrap1200">
 	        <div class="top-left floatL">
 	            <span>欢迎来到广州数据中心</span>
-	            <span>2017年4月20日&nbsp;&nbsp;12：00：30</span>
+	            <span th:text="${#dates}">2017年4月20日&nbsp;&nbsp;12：00：30</span>
 	        </div>
 	        <div class="top-right floatR">
-	            <a href="#"><b>请登录</b></a>
-	            <a href="#">免费注册</a>
+	            <a href="#" th:href="@{/user/login}"><b>请登录</b></a>
+	            <a href="#" th:href="@{/user/signup}">免费注册</a>
 	            <i>|</i>
-	            <a href="#">关注广数</a>
-	            <a href="#">常见问题</a>
-	            <a href="#">联系我们</a>
+	            <a href="#" th:href="@{/gzbdex/interest}">关注广数</a>
+	            <a href="#" th:href="@{/gzbdex/question}">常见问题</a>
+	            <a href="#" th:href="@{/gzbdex/contact}">联系我们</a>
 	        </div>
 	    </div>
 	</div>

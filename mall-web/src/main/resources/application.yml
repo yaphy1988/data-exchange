@@ -9,18 +9,13 @@ spring:
     registry: zookeeper://127.0.0.1:2181
     protocol: dubbo
     group: devGroup
-#  dubbo:
-#      application:
-#        name: mall-web
-#        owner: owner
-#        environment: develop
-#      registry:
-#        address: 127.0.0.1:2181
-#      provider:
-#        enabled: false
-#        group: devGroup
-#      consumer:
-#        enabled: true
+  thymeleaf:
+    enabled: true
+    cache: false
+    suffix: .html
+    encoding: UTF-8
+
+## woego-frame框架包配置
 application:
   cache:
     confpath: /com/ai/paas/cache/conf
@@ -30,3 +25,7 @@ application:
     confpath: /com/ai/paas/image/conf
   file:
     confpath: /com/ai/paas/file/conf
+  configcenter:
+    runmode: D
+    zkaddress: 127.0.0.1:2181
+    login: admin:admin
