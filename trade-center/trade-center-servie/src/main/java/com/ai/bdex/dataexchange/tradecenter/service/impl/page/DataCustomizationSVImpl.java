@@ -39,6 +39,15 @@ public class DataCustomizationSVImpl implements IDataCustomizationSV {
 			record.setStatus("2");//状态： 2:未处理 
 			return dataCustomizationMapper.insertSelective(record);
  	  }
+	  //将定制信息处理为已处理
+	  @Override
+	   public int updateDataCustomizationStatus(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception{
+		    DataCustomization record = new DataCustomization();	
+			BeanUtils.copyProperties(record, dataCustomizationRespDTO);
+  			record.setCreateStaffId(dataCustomizationRespDTO.getCreateStaffId());
+		    record.setCreateTime(DateUtil.getNowAsDate()); 
+			return dataCustomizationMapper.updateByPrimaryKey(record);
+ 	  }
 
 	  
 }

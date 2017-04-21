@@ -6,4 +6,5 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationResp
 public interface IDataCustomizationSV {
 	   public DataCustomization queryDATAById(Integer dcza_id) throws Exception;
 	   public int saveDataCustomization(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception;
+	int updateDataCustomizationStatus(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception;
 }
