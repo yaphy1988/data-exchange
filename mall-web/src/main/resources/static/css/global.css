@@ -328,8 +328,8 @@ fieldset[disabled] .btn-primary.focus {
 		padding: 6px 20px;
 		border-radius: 0;
 	}
-
-	/* 子页面导航 */
+	
+	/* 子页面路径 */
 	.seconav .menuBg{
 		background-color: #f1f1f1;
 		width: 100%;
@@ -389,4 +389,18 @@ fieldset[disabled] .btn-primary.focus {
 	.classify.edit.close:focus{
 		opacity: 1;
 		color: #ec6000;
+	}
+	/* 分页 */
+	.pagelist{
+		text-align: center;
+	}
+	.pagination > .active > a,
+	.pagination > .active > span,
+	.pagination > .active > a:hover,
+	.pagination > .active > span:hover,
+	.pagination > .active > a:focus,
+	.pagination > .active > span:focus {
+	  color: #fff;
+	  background-color: #2b4099;
+	  border-color: #2b4099;
 	}
