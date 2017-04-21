@@ -187,7 +187,9 @@ q:before, q:after, blockquote:before, blockquote:after {
 .clearfix:after {content:"."; display:block; height:0; clear:both; visibility:hidden;}
 .clearfix {zoom:1;}
 
+
 /* 橙色btn */
+a.btn-orange,
 .btn-orange {
   color: #fff;
   background-color: #ec6000;
@@ -247,11 +249,13 @@ fieldset[disabled] .btn-orange.focus {
 }
 
 /* 蓝色btn */
+a.btn-primary,
 .btn-primary {
   color: #fff;
   background-color: #2b4099;
   border-color: #2b4099;
 }
+
 .btn-primary:focus,
 .btn-primary.focus {
   color: #fff;
@@ -315,7 +319,16 @@ fieldset[disabled] .btn-primary.focus {
 
 
 /* liangsx add */
-	
+
+	/* 矩形按钮 无圆角*/
+	.btn_rec{
+	border-radius: 0;
+	}
+	.btn_rec_bg{
+		padding: 6px 20px;
+		border-radius: 0;
+	}
+
 	/* 子页面导航 */
 	.seconav .menuBg{
 		background-color: #f1f1f1;
@@ -340,8 +353,6 @@ fieldset[disabled] .btn-primary.focus {
 		color: #ddd;
 		font-family: "微软雅黑"
 	}
-
-	
 	.classify.edit a{
 		border: solid 1px ;
 		border-color:#ddd;
