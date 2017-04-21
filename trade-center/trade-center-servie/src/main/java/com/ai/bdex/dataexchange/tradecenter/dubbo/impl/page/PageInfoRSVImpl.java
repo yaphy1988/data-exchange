@@ -40,8 +40,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleS
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortContentSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
 
-@SuppressWarnings("unused")
- @Service("iPageInfoRSV")
+@Service("iPageInfoRSV")
 public class PageInfoRSVImpl implements IPageInfoRSV {
     private static final Logger log = LoggerFactory.getLogger(PageInfoRSVImpl.class);
     /*
