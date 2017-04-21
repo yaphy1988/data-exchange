@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,7 +60,8 @@ public class GdsEditController {
      * 记录日志
      */
     private final Log logger = LogFactory.getLog(getClass());
-    @Autowired
+
+    @DubboConsumer
     private IGdsInfoRSV gdsInfoRSV;
 
     @RequestMapping("/pageInit")

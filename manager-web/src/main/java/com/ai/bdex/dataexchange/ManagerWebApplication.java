@@ -5,6 +5,7 @@ import com.ai.paas.util.Utils;
 import com.alibaba.boot.dubbo.annotation.EnableDubboConfiguration;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
@@ -13,8 +14,7 @@ import org.springframework.context.annotation.ImportResource;
 import java.util.ArrayList;
 import java.util.List;
 
-@SpringBootApplication
-//@ImportResource({"classpath:/dubbo/dubboContext.xml"})
+@SpringBootApplication(exclude = MongoAutoConfiguration.class)
 @EnableDubboConfiguration
 public class ManagerWebApplication {
 

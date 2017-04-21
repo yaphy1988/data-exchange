@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ImportResource;
  * @author yafei
  * @since 2017/4/4
  */
-@ImportResource({"/spring/*-db-config.xml"})
+@ImportResource({"/spring/*-db-config.xml","/dubbo/service/*.xml"})
 @SpringBootApplication
 public class UserCenterServiceStart {
     private static Logger logger = LoggerFactory.getLogger(UserCenterServiceStart.class);
