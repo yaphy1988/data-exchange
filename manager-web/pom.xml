@@ -94,8 +94,8 @@
             <artifactId>mongo-java-driver</artifactId>
         </dependency>
 		<dependency>
-			<groupId>net.sf.json-lib</groupId>
-			<artifactId>json-lib</artifactId>
+			<groupId>com.alibaba</groupId>
+			<artifactId>fastjson</artifactId>
 		</dependency>
 	</dependencies>
 
