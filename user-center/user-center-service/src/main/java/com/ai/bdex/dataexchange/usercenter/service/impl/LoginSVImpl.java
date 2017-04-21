@@ -139,8 +139,7 @@ public class LoginSVImpl implements ILoginSV {
         return staffBean;
     }
     
- // 密码验证
-    @SuppressWarnings("static-access")
+    // 密码验证
     private AuthStaffPass verifyPwd(String loginName, String loginPwd,LoginInfoDTO loginInfo) throws Exception {
         long begin = System.currentTimeMillis();
         AuthStaffPass passInfo = authStaffPassMapper.selectByPrimaryKey(loginName);
