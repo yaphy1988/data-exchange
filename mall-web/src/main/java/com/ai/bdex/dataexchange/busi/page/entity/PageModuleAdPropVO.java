@@ -1,8 +1,8 @@
-package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page;
+package com.ai.bdex.dataexchange.busi.page.entity;
 
 import java.util.Date;
 
-public class PageModuleAdpropRespDTO {
+public class PageModuleAdPropVO {
     private Integer attrId;
 
     private String moduleId;

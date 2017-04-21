@@ -16,7 +16,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHotSearch;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModule;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAd;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAdprop;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAdProp;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoods;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContent;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
@@ -24,17 +24,17 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageHeaderNavRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageHotSearchRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageModuleAdRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageModuleAdpropRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageModuleAdPropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageModuleGoodsRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.SortContentRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.SortInfoRespDTO; 
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHeaderNavSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHotSearchSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageInfoSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleAdPropSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleAdSV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleAdpropSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleGoodsSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortContentSV;
@@ -65,7 +65,7 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
     @Resource
     private IPageModuleGoodsSV   iPageModuleGoodsSV;
     @Resource
-    private IPageModuleAdpropSV   iPageModuleAdpropSV;
+    private IPageModuleAdPropSV   iPageModuleAdpropSV;
     
     @Override
     public List<SortInfoRespDTO> querySortInfos(SortInfoRespDTO sortInfoRespDTO) throws Exception {
@@ -261,27 +261,27 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
         return ageModuleGoodsRespDTOList;
     }
 	@Override
-	public List<PageModuleAdpropRespDTO> queryPageModuleAdpropList(PageModuleAdpropRespDTO pageModuleAdpropRespDTO)
+	public List<PageModuleAdPropRespDTO> queryPageModuleAdpropList(PageModuleAdPropRespDTO pageModuleAdpropRespDTO)
 			throws Exception {
-		List<PageModuleAdpropRespDTO> ageModuleAdpropRespDTOList = new ArrayList<PageModuleAdpropRespDTO>();
+		List<PageModuleAdPropRespDTO> ageModuleAdPropRespDTOList = new ArrayList<PageModuleAdPropRespDTO>();
         try{
         	 if (pageModuleAdpropRespDTO ==null ){
                  throw new Exception("查询广告属性信息异常，入参为空");
              }
-         	 PageModuleAdprop exam = new PageModuleAdprop();
+         	 PageModuleAdProp exam = new PageModuleAdProp();
          	 BeanUtils.copyProperties( pageModuleAdpropRespDTO,exam);
-          	 List<PageModuleAdprop> queryPageModuleAdpropList = iPageModuleAdpropSV.queryPageModuleAdpropList(exam);
-          	 if(!CollectionUtils.isEmpty(queryPageModuleAdpropList)){
-          		for (PageModuleAdprop pageModuleAdprop : queryPageModuleAdpropList){
-          			PageModuleAdpropRespDTO pageModuleAdpropResp = new PageModuleAdpropRespDTO();
-                    BeanUtils.copyProperties(pageModuleAdprop, pageModuleAdpropResp); 
-                    ageModuleAdpropRespDTOList.add(pageModuleAdpropResp);
+          	 List<PageModuleAdProp> queryPageModuleAdPropList = iPageModuleAdpropSV.queryPageModuleAdPropList(exam);
+          	 if(!CollectionUtils.isEmpty(queryPageModuleAdPropList)){
+          		for (PageModuleAdProp pageModuleAdProp : queryPageModuleAdPropList){
+          			PageModuleAdPropRespDTO pageModuleAdpropResp = new PageModuleAdPropRespDTO();
+                    BeanUtils.copyProperties(pageModuleAdProp, pageModuleAdpropResp); 
+                    ageModuleAdPropRespDTOList.add(pageModuleAdpropResp);
                 }
           	 }
         }catch(Exception e){
         	log.error("获取广告属性信息异常:", e);
             throw new Exception(e);
         }
-        return ageModuleAdpropRespDTOList;
+        return ageModuleAdPropRespDTOList;
     }
 }
