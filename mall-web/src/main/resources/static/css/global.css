@@ -341,3 +341,41 @@ fieldset[disabled] .btn-primary.focus {
 		font-family: "微软雅黑"
 	}
 
+	
+	.classify.edit a{
+		border: solid 1px ;
+		border-color:#ddd;
+		background-color: #f3f3f3;
+		color: #ec6000;
+		padding: 3px 5px;
+		position: relative;
+	}
+	.classify.edit a:after{
+		content: "";
+	}
+	.classify.edit .close{
+		position: absolute;
+		right: 5px;
+		top: -2px;
+		color: #999;
+	}
+	.classify.edit a > span{
+		padding-right: 14px;
+	}
+	.classify.edit a > em{
+		color: #666;
+		padding-right: 3px;
+	}
+	.classify.edit a:hover{
+		border-color: #ec6000;
+		background-color: #fff;
+	}
+	.classify.edit a:hover > .close{
+		color: #ec6000;
+		font-weight: bold;
+	}
+	.classify.edit .close:hover,	
+	.classify.edit.close:focus{
+		opacity: 1;
+		color: #ec6000;
+	}
