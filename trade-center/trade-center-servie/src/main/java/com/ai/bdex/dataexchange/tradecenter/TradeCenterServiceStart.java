@@ -21,7 +21,7 @@ public class TradeCenterServiceStart {
         ApplicationContext context = SpringApplication.run(TradeCenterServiceStart.class, args);
         Utils.setCtx(context);
 
-        logger.error("TradeCenterServiceStart 启动成功...");
+        logger.error("恭喜你启动成功了！--TradeCenterServiceStart 启动成功...");
     }
 
 }

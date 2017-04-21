@@ -21,7 +21,7 @@ public class UserCenterServiceStart {
         ApplicationContext context = SpringApplication.run(UserCenterServiceStart.class, args);
         Utils.setCtx(context);
 
-        logger.error("UserCenterServiceStart 启动成功...");
+        logger.error("恭喜你，启动成功了--UserCenterServiceStart 启动成功...");
     }
 
 }
