@@ -131,7 +131,7 @@ public class GdsController {
 
         request.setAttribute("gdsInfo",gdsInfoVO);
 
-        return "/goods_ details";
+        return "/goods_details";
     }
 
     @RequestMapping(value = "/queryRecomGdsList")
