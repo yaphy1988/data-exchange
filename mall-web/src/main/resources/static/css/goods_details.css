@@ -413,25 +413,45 @@ h3{
 	position: relative;
 }
 
-.gl_group .fo .btn_more{
-	margin-top: -18px;
+
+
+
+/* 更多按钮 */
+
+
+.gl_group .btn_more{
 	position: absolute;
 	right: 5px;
+	top: 8px;
 	padding: 3px 6px;
 	border: solid 1px #ddd;
 	color: #666;
 	font-size: 12px;
 	background-color: #fff;
 }
-.gl_group .gl_items .btn_more:hover,
-.gl_group .gl_items .btn_more:focus{
+.gl_group .btn_more:hover{
 	border: solid 1px #ec6000;
 	color: #ec6000;
 }
-.gl_group .gl_items .btn_more:active{
-	background-color: #ec6000;
+.gl_group a.btn_more:focus,
+.gl_group a.btn_more:active{
+	background-color: #ec6000!important;
 	color: #fff;
 }
+.gl_group .btn_more.selected{
+	color: #fff;
+	background-color: #ec6000;
+	border: #ec6000 1px solid;
+}
+
+.gl_group .btn_more i{
+	position: relative;
+	/* top: -1px; */
+	opacity: .5;
+	font-size: 70%;
+}
+
+
 
 
 /* 商品结果 */
@@ -475,6 +495,7 @@ h3{
 	width: 232px;
 	border: solid 1px #eee;
 	position: relative;
+	overflow: hidden;
 }
 .glist_items:hover{
 	border: solid 1px #2b4099;
@@ -489,17 +510,24 @@ h3{
 }
 .glist_items .collect{
 	position: absolute;
-	right: 0;
-	top: 0;
+	right: -29px;
+	top: -30px;
 	background-color: #eee;
-	width: 30px;
-	height: 30px;
+	width: 60px;
+	height: 60px;
+	transform:rotate(45deg);
+}
+.glist_items .collect.active{
+	background-color: #2b4099;
 }
 .glist_items .tit{
 	padding:10px;
 	font-weight: bold;
 	text-align: center;
-
+	white-space:nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	width: 100%;
 }
 .glist_items .info{
 	padding: 10px;
@@ -537,32 +565,3 @@ h3{
 	color: #fff;
 }
 
-/* 三角形-右到下 */
-	.tr_icon{
-		position: absolute;
-	}
-	.trigon_r{
-		display: inline-block;
-		position: relative;
-		right: 3px;
-		width: 10px;
-		height: 12px;
-		overflow: hidden;
-		font: 400 15px/15px consolas;
-		color: #6A6A6A;
-		transition: transform .1s ease-in 0s;
-		-webkit-transition: -webkit-transform .1s ease-in 0s;
-	}
-	.trigon_r s{
-		position: relative;
-		top: 1px;
-		text-decoration: none;
-		font-family: simsun;
-		font: 400 15px/15px consolas;
-		color: #6A6A6A;
-	}
-	.btn_more:hover .trigon_r s{
-			color: #ec6000;
-			transform:rotate(180deg);
-			-webkit-transform:rotate(180deg)
-	}
