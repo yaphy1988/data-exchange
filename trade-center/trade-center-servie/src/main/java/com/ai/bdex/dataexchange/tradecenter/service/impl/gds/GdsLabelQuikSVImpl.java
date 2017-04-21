@@ -6,11 +6,11 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabelQuikExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelQuikReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelQuikRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelQuikSV;
-import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StringUtil;
 
-import org.springframework.beans.BeanUtils;
+import com.ai.paas.utils.CollectionUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 
@@ -30,10 +30,10 @@ public class GdsLabelQuikSVImpl implements IGdsLabelQuikSV{
         if (gdsLabelQuikReqDTO.getLabId()!=null && gdsLabelQuikReqDTO.getLabId().intValue()>0){
             criteria.andLabIdEqualTo(gdsLabelQuikReqDTO.getLabId());
         }
-        if (!StringUtils.isEmpty(gdsLabelQuikReqDTO.getLabName())){
+        if (!StringUtil.isBlank(gdsLabelQuikReqDTO.getLabName())){
             criteria.andLabNameLike("%"+ gdsLabelQuikReqDTO.getLabName()+"%");
         }
-        if (!StringUtils.isEmpty(gdsLabelQuikReqDTO.getLabColor())){
+        if (!StringUtil.isBlank(gdsLabelQuikReqDTO.getLabColor())){
             criteria.andLabColorEqualTo(gdsLabelQuikReqDTO.getLabColor());
         }
         if(gdsLabelQuikReqDTO.getCatFirst()!=null && gdsLabelQuikReqDTO.getCatFirst().intValue()>0){
@@ -42,7 +42,7 @@ public class GdsLabelQuikSVImpl implements IGdsLabelQuikSV{
         if (gdsLabelQuikReqDTO.getShowOrder()!=null && gdsLabelQuikReqDTO.getShowOrder().intValue()>0){
             criteria.andShowOrderEqualTo(gdsLabelQuikReqDTO.getShowOrder());
         }
-        if(!StringUtils.isEmpty(gdsLabelQuikReqDTO.getStatus())){
+        if(!StringUtil.isBlank(gdsLabelQuikReqDTO.getStatus())){
             criteria.andStatusEqualTo(gdsLabelQuikReqDTO.getStatus());
         }
     }
@@ -77,10 +77,11 @@ public class GdsLabelQuikSVImpl implements IGdsLabelQuikSV{
         initCriteria(criteria, gdsLabelQuikReqDTO);
         List<GdsLabelQuik> gdsLabelQuiks = gdsLabelQuikMapper.selectByExample(example);
         List<GdsLabelQuikRespDTO> gdsLabelQuikRespList = new ArrayList<GdsLabelQuikRespDTO>();
-        if(CollectionUtils.isNotEmpty(gdsLabelQuiks)){
+        if(!CollectionUtil.isEmpty(gdsLabelQuiks)){
         	for(GdsLabelQuik label : gdsLabelQuiks){
         		GdsLabelQuikRespDTO respDTO = new GdsLabelQuikRespDTO();
-                BeanUtils.copyProperties(label,respDTO);
+                ObjectCopyUtil.copyObjValue(label,respDTO,null,false);
+//                BeanUtils.copyProperties(label,respDTO);
                 gdsLabelQuikRespList.add(respDTO);
         	}
         }
@@ -93,7 +94,8 @@ public class GdsLabelQuikSVImpl implements IGdsLabelQuikSV{
             throw new Exception("插入商品便签快速配置信息入参为空");
         }
         GdsLabelQuik gdsLabelQuik = new GdsLabelQuik();
-        BeanUtils.copyProperties(gdsLabelQuikReqDTO,gdsLabelQuik);
+        ObjectCopyUtil.copyObjValue(gdsLabelQuikReqDTO,gdsLabelQuik,null,false);
+//        BeanUtils.copyProperties(gdsLabelQuikReqDTO,gdsLabelQuik);
         int code = gdsLabelQuikMapper.insert(gdsLabelQuik);
         return code;
     }
@@ -104,7 +106,8 @@ public class GdsLabelQuikSVImpl implements IGdsLabelQuikSV{
             throw new Exception("更新商品标签快速配置信息入参为空");
         }
         GdsLabelQuik gdsLabelQuik = new GdsLabelQuik();
-        BeanUtils.copyProperties(gdsLabelQuikReqDTO,gdsLabelQuik);
+        ObjectCopyUtil.copyObjValue(gdsLabelQuikReqDTO,gdsLabelQuik,null,false);
+//        BeanUtils.copyProperties(gdsLabelQuikReqDTO,gdsLabelQuik);
         int code = gdsLabelQuikMapper.updateByPrimaryKey(gdsLabelQuik);
         return code;
     }

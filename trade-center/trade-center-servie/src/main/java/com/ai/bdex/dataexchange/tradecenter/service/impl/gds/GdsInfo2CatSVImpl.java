@@ -5,9 +5,9 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo2Cat;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo2CatExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2CatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfo2CatSV;
-import org.springframework.beans.BeanUtils;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StringUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -34,7 +34,7 @@ public class GdsInfo2CatSVImpl implements IGdsInfo2CatSV {
         if (gdsInfo2CatReqDTO.getGdsId()!=null && gdsInfo2CatReqDTO.getGdsId().intValue()>0){
             criteria.andGdsIdEqualTo(gdsInfo2CatReqDTO.getGdsId());
         }
-        if (!StringUtils.isEmpty(gdsInfo2CatReqDTO.getStatus())){
+        if (!StringUtil.isBlank(gdsInfo2CatReqDTO.getStatus())){
             criteria.andStatusEqualTo(gdsInfo2CatReqDTO.getStatus());
         }
     }
@@ -66,7 +66,8 @@ public class GdsInfo2CatSVImpl implements IGdsInfo2CatSV {
             throw  new Exception("插入商品与分类信息入参为空");
         }
         GdsInfo2Cat gdsInfo2Cat = new GdsInfo2Cat();
-        BeanUtils.copyProperties(gdsInfo2CatReqDTO,gdsInfo2Cat);
+        ObjectCopyUtil.copyObjValue(gdsInfo2CatReqDTO,gdsInfo2Cat,null,false);
+//        BeanUtils.copyProperties(gdsInfo2CatReqDTO,gdsInfo2Cat);
         int code = gdsInfo2CatMapper.insert(gdsInfo2Cat);
         return code;
     }
@@ -77,7 +78,8 @@ public class GdsInfo2CatSVImpl implements IGdsInfo2CatSV {
             throw new Exception("更新商品与分类信息入参为空");
         }
         GdsInfo2Cat gdsInfo2Cat = new GdsInfo2Cat();
-        BeanUtils.copyProperties(gdsInfo2CatReqDTO,gdsInfo2Cat);
+        ObjectCopyUtil.copyObjValue(gdsInfo2CatReqDTO,gdsInfo2Cat,null,false);
+//        BeanUtils.copyProperties(gdsInfo2CatReqDTO,gdsInfo2Cat);
         int code = gdsInfo2CatMapper.updateByPrimaryKey(gdsInfo2Cat);
         return code;
     }

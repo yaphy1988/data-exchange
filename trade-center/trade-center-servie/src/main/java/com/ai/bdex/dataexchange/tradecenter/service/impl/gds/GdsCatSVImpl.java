@@ -6,11 +6,11 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsCatExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StringUtil;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 
@@ -54,7 +54,7 @@ public class GdsCatSVImpl implements IGdsCatSV{
             throw new Exception("插入商品分类信息的入参为空");
         }
         GdsCat gdsCat = new GdsCat();
-        BeanUtils.copyProperties(gdsCatReqDTO,gdsCat);
+        ObjectCopyUtil.copyObjValue(gdsCatReqDTO,gdsCat,null,false);
         int code = gdsCatMapper.insert(gdsCat);
 
         return code;
@@ -67,7 +67,8 @@ public class GdsCatSVImpl implements IGdsCatSV{
         }
 
         GdsCat gdsCat = new GdsCat();
-        BeanUtils.copyProperties(gdsCatReqDTO,gdsCat);
+        ObjectCopyUtil.copyObjValue(gdsCatReqDTO,gdsCat,null,false);
+//        BeanUtils.copyProperties(gdsCatReqDTO,gdsCat);
         int code = gdsCatMapper.updateByPrimaryKey(gdsCat);
 
         return code;
@@ -94,7 +95,8 @@ public class GdsCatSVImpl implements IGdsCatSV{
         if(CollectionUtils.isNotEmpty(gdsCatList)){
         	for(GdsCat gdsCat : gdsCatList){
         		GdsCatRespDTO respDTO = new GdsCatRespDTO();
-                BeanUtils.copyProperties(gdsCat,respDTO);
+                ObjectCopyUtil.copyObjValue(gdsCat,respDTO,null,false);
+//                BeanUtils.copyProperties(gdsCat,respDTO);
                 respDTOList.add(respDTO);
         	}
         }
@@ -107,19 +109,19 @@ public class GdsCatSVImpl implements IGdsCatSV{
         if (gdsCatReqDTO.getCatPid()!=null && gdsCatReqDTO.getCatPid().intValue()>0){
             criteria.andCatPidEqualTo(gdsCatReqDTO.getCatPid());
         }
-        if(!StringUtils.isEmpty(gdsCatReqDTO.getCatName())){
+        if(!StringUtil.isBlank(gdsCatReqDTO.getCatName())){
             criteria.andCatNameLike("%"+ gdsCatReqDTO.getCatName()+"%");
         }
-        if(!StringUtils.isEmpty(gdsCatReqDTO.getCatDesc())){
+        if(!StringUtil.isBlank(gdsCatReqDTO.getCatDesc())){
             criteria.andCatDescLike("%" + gdsCatReqDTO.getCatDesc() + "%");
         }
         if (gdsCatReqDTO.getShowOrder()!=null && gdsCatReqDTO.getShowOrder().intValue()>0){
             criteria.andShowOrderEqualTo(gdsCatReqDTO.getShowOrder());
         }
-        if (!StringUtils.isEmpty(gdsCatReqDTO.getIfEdit())){
+        if (!StringUtil.isBlank(gdsCatReqDTO.getIfEdit())){
             criteria.andIfEditEqualTo(gdsCatReqDTO.getIfEdit());
         }
-        if (!StringUtils.isEmpty(gdsCatReqDTO.getStatus())){
+        if (!StringUtil.isBlank(gdsCatReqDTO.getStatus())){
             criteria.andStatusEqualTo(gdsCatReqDTO.getStatus());
         }
     }

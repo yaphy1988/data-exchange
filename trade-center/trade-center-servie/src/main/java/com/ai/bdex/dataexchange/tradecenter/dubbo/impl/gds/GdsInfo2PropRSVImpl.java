@@ -5,8 +5,8 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfo2PropRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfo2PropSV;
+import com.ai.paas.utils.CollectionUtil;
 import com.alibaba.dubbo.config.annotation.Reference;
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -34,7 +34,7 @@ public class GdsInfo2PropRSVImpl implements IGdsInfo2PropRSV {
         }
         try{
             List<GdsInfo2Prop> gdsInfo2PropList = iGdsInfo2PropSV.queryGdsInfo2PropList(gdsInfo2PropReqDTO);
-            if(!CollectionUtils.isEmpty(gdsInfo2PropList)){
+            if(!CollectionUtil.isEmpty(gdsInfo2PropList)){
                 for (GdsInfo2Prop gdsInfo2Prop : gdsInfo2PropList){
                     GdsInfo2PropRespDTO gdsInfo2PropRespDTO = new GdsInfo2PropRespDTO();
                     BeanUtils.copyProperties(gdsInfo2Prop,gdsInfo2PropRespDTO);

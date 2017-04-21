@@ -6,11 +6,11 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabelExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
-import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StringUtil;
 
-import org.springframework.beans.BeanUtils;
+import com.ai.paas.utils.CollectionUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -58,10 +58,11 @@ public class GdsLabelSVImpl implements IGdsLabelSV {
         GdsLabelExample.Criteria criteria = example.createCriteria();
         initCriteria(criteria, gdsLabelReqDTO);
         gdsLabels = gdsLabelMapper.selectByExample(example);
-        if(CollectionUtils.isNotEmpty(gdsLabels)){
+        if(!CollectionUtil.isEmpty(gdsLabels)){
         	for(GdsLabel label : gdsLabels){
         		GdsLabelRespDTO gdsLabelRespDTO = new GdsLabelRespDTO();
-                BeanUtils.copyProperties(label,gdsLabelRespDTO);
+                ObjectCopyUtil.copyObjValue(label,gdsLabelRespDTO,null,false);
+//                BeanUtils.copyProperties(label,gdsLabelRespDTO);
                 gdsLabelDTOList.add(gdsLabelRespDTO);
         	}
         }
@@ -74,7 +75,8 @@ public class GdsLabelSVImpl implements IGdsLabelSV {
             throw new Exception("插入商品标签信息入参为空");
         }
         GdsLabel gdsLabel = new GdsLabel();
-        BeanUtils.copyProperties(gdsLabelReqDTO,gdsLabel);
+        ObjectCopyUtil.copyObjValue(gdsLabelReqDTO,gdsLabel,null,false);
+//        BeanUtils.copyProperties(gdsLabelReqDTO,gdsLabel);
         int code = gdsLabelMapper.insert(gdsLabel);
         return code;
     }
@@ -85,7 +87,8 @@ public class GdsLabelSVImpl implements IGdsLabelSV {
             throw new Exception("更新商品标签信息入参为空");
         }
         GdsLabel gdsLabel = new GdsLabel();
-        BeanUtils.copyProperties(gdsLabelReqDTO,gdsLabel);
+        ObjectCopyUtil.copyObjValue(gdsLabelReqDTO,gdsLabel,null,false);
+//        BeanUtils.copyProperties(gdsLabelReqDTO,gdsLabel);
         int code = gdsLabelMapper.updateByPrimaryKey(gdsLabel);
         return code;
     }
@@ -116,19 +119,19 @@ public class GdsLabelSVImpl implements IGdsLabelSV {
         if(gdsLabelReqDTO.getGdsId()!=null && gdsLabelReqDTO.getGdsId().intValue()>0){
             criteria.andGdsIdEqualTo(gdsLabelReqDTO.getGdsId());
         }
-        if(!StringUtils.isEmpty(gdsLabelReqDTO.getLabName())){
+        if(!StringUtil.isBlank(gdsLabelReqDTO.getLabName())){
             criteria.andLabNameLike("%"+ gdsLabelReqDTO.getLabName()+"%");
         }
-        if (!StringUtils.isEmpty(gdsLabelReqDTO.getLabColor())){
+        if (!StringUtil.isBlank(gdsLabelReqDTO.getLabColor())){
             criteria.andLabColorEqualTo(gdsLabelReqDTO.getLabColor());
         }
         if(gdsLabelReqDTO.getShowOrder()!=null && gdsLabelReqDTO.getShowOrder().intValue()>0){
             criteria.andShowOrderEqualTo(gdsLabelReqDTO.getShowOrder());
         }
-        if(!StringUtils.isEmpty(gdsLabelReqDTO.getIfEdit())){
+        if(!StringUtil.isBlank(gdsLabelReqDTO.getIfEdit())){
             criteria.andIfEditEqualTo(gdsLabelReqDTO.getIfEdit());
         }
-        if (!StringUtils.isEmpty(gdsLabelReqDTO.getStatus())){
+        if (!StringUtil.isBlank(gdsLabelReqDTO.getStatus())){
             criteria.andStatusEqualTo(gdsLabelReqDTO.getStatus());
         }
     }

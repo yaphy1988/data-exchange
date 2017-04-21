@@ -5,11 +5,11 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.paas.utils.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -34,10 +34,11 @@ public class GdsSkuRSVImpl implements IGdsSkuRSV {
         }
         try {
             List<GdsSku> gdsSkuList = iGdsSkuSV.queryGdsSkuList(gdsSkuReqDTO);
-            if (!CollectionUtils.isEmpty(gdsSkuList)){
+            if (!CollectionUtil.isEmpty(gdsSkuList)){
                 for (GdsSku gdsSku : gdsSkuList){
                     GdsSkuRespDTO gdsSkuRespDTO = new GdsSkuRespDTO();
-                    BeanUtils.copyProperties(gdsSku,gdsSkuRespDTO);
+                    ObjectCopyUtil.copyObjValue(gdsSku,gdsSkuRespDTO,null,false);
+//                    BeanUtils.copyProperties(gdsSku,gdsSkuRespDTO);
                     gdsSkuRespDTOList.add(gdsSkuRespDTO);
                 }
             }

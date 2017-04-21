@@ -8,7 +8,7 @@ public class GdsPropVO {
 
     private String proType;
 
-    private Integer proName;
+    private String proName;
 
     private Integer catId;
 
@@ -40,11 +40,11 @@ public class GdsPropVO {
         this.proType = proType == null ? null : proType.trim();
     }
 
-    public Integer getProName() {
+    public String getProName() {
         return proName;
     }
 
-    public void setProName(Integer proName) {
+    public void setProName(String proName) {
         this.proName = proName;
     }
 

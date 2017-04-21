@@ -11,7 +11,7 @@ public class GdsPropReqDTO implements Serializable {
 
     private String proType;
 
-    private Integer proName;
+    private String proName;
 
     private Integer catId;
 
@@ -43,11 +43,11 @@ public class GdsPropReqDTO implements Serializable {
         this.proType = proType;
     }
 
-    public Integer getProName() {
+    public String getProName() {
         return proName;
     }
 
-    public void setProName(Integer proName) {
+    public void setProName(String proName) {
         this.proName = proName;
     }
 

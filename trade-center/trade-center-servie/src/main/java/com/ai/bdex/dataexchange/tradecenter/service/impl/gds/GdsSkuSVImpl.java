@@ -5,9 +5,9 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSku;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSkuExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
-import org.springframework.beans.BeanUtils;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StringUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -51,7 +51,8 @@ public class GdsSkuSVImpl implements IGdsSkuSV {
             throw new Exception("插入单品信息入参为空");
         }
         GdsSku gdsSku = new GdsSku();
-        BeanUtils.copyProperties(gdsSkuReqDTO,gdsSku);
+        ObjectCopyUtil.copyObjValue(gdsSkuReqDTO,gdsSku,null,false);
+//        BeanUtils.copyProperties(gdsSkuReqDTO,gdsSku);
         int code = gdsSkuMapper.insert(gdsSku);
         return code;
     }
@@ -62,7 +63,8 @@ public class GdsSkuSVImpl implements IGdsSkuSV {
             throw new Exception("更新单品信息入参为空");
         }
         GdsSku gdsSku = new GdsSku();
-        BeanUtils.copyProperties(gdsSkuReqDTO,gdsSku);
+        ObjectCopyUtil.copyObjValue(gdsSkuReqDTO,gdsSku,null,false);
+//        BeanUtils.copyProperties(gdsSkuReqDTO,gdsSku);
         int code = gdsSkuMapper.updateByPrimaryKey(gdsSku);
         return code;
     }
@@ -93,7 +95,7 @@ public class GdsSkuSVImpl implements IGdsSkuSV {
         if(gdsSkuReqDTO.getGdsId()!=null){
             criteria.andGdsIdEqualTo(gdsSkuReqDTO.getGdsId());
         }
-        if (!StringUtils.isEmpty(gdsSkuReqDTO.getSkuName())){
+        if (!StringUtil.isBlank(gdsSkuReqDTO.getSkuName())){
             criteria.andSkuNameLike("%"+ gdsSkuReqDTO.getSkuName()+"%");
         }
         if(gdsSkuReqDTO.getPackPrice()!=null && gdsSkuReqDTO.getPackPrice().intValue()>0){
@@ -108,7 +110,7 @@ public class GdsSkuSVImpl implements IGdsSkuSV {
         if(gdsSkuReqDTO.getShowOrder()!=null && gdsSkuReqDTO.getShowOrder().intValue()>0){
             criteria.andShowOrderEqualTo(gdsSkuReqDTO.getShowOrder());
         }
-        if (!StringUtils.isEmpty(gdsSkuReqDTO.getStatus())){
+        if (!StringUtil.isBlank(gdsSkuReqDTO.getStatus())){
             criteria.andStatusEqualTo(gdsSkuReqDTO.getStatus());
         }
     }

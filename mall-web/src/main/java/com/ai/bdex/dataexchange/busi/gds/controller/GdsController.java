@@ -7,12 +7,12 @@ import com.ai.bdex.dataexchange.busi.gds.entity.GdsSkuVO;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.*;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.*;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.paas.utils.CollectionUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -57,7 +57,8 @@ public class GdsController {
         try {
             gdsInfoRespDTO = iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO);
             if (gdsInfoRespDTO!=null){
-                BeanUtils.copyProperties(gdsInfoRespDTO,gdsInfoVO);
+                ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,gdsInfoVO,null,false);
+//                BeanUtils.copyProperties(gdsInfoRespDTO,gdsInfoVO);
                 //设置分类名称
                 if (gdsInfoRespDTO.getCatId()!=null && gdsInfoRespDTO.getCatId().intValue()>0){
                     GdsCatRespDTO gdsCatRespDTO = iGdsCatRSV.queryGdsCatByCatId(gdsInfoRespDTO.getCatId());
@@ -78,10 +79,11 @@ public class GdsController {
                 gdsLabelReqDTO.setStatus("1");
                 gdsLabelReqDTO.setGdsId(gdsInfoRespDTO.getGdsId());
                 List<GdsLabelRespDTO> gdsLabelRespDTOList = iGdsLabelRSV.queryGdsLabelList(gdsLabelReqDTO);
-                if (!CollectionUtils.isEmpty(gdsLabelRespDTOList)){
+                if (!CollectionUtil.isEmpty(gdsLabelRespDTOList)){
                     for (GdsLabelRespDTO gdsLabelRespDTO : gdsLabelRespDTOList){
                         GdsLabelVO gdsLabelVO = new GdsLabelVO();
-                        BeanUtils.copyProperties(gdsLabelRespDTO,gdsLabelVO);
+                        ObjectCopyUtil.copyObjValue(gdsLabelRespDTO,gdsLabelVO,null,false);
+//                        BeanUtils.copyProperties(gdsLabelRespDTO,gdsLabelVO);
                         gdsLabelVOList.add(gdsLabelVO);
                     }
                     gdsInfoVO.setGdsLabelVOList(gdsLabelVOList);
@@ -93,10 +95,11 @@ public class GdsController {
                 gdsInfo2PropReqDTO.setGdsId(gdsInfoRespDTO.getGdsId());
                 gdsInfo2PropReqDTO.setStatus("1");
                 List<GdsInfo2PropRespDTO> gdsInfo2PropRespDTOList = iGdsInfo2PropRSV.queryGdsInfo2PropList(gdsInfo2PropReqDTO);
-                if (!CollectionUtils.isEmpty(gdsInfo2PropRespDTOList)){
+                if (!CollectionUtil.isEmpty(gdsInfo2PropRespDTOList)){
                     for (GdsInfo2PropRespDTO gdsInfo2PropRespDTO : gdsInfo2PropRespDTOList){
                         GdsInfo2PropVO gdsInfo2PropVO = new GdsInfo2PropVO();
-                        BeanUtils.copyProperties(gdsInfo2PropRespDTO,gdsInfo2PropVO);
+                        ObjectCopyUtil.copyObjValue(gdsInfo2PropRespDTO,gdsInfo2PropVO,null,false);
+//                        BeanUtils.copyProperties(gdsInfo2PropRespDTO,gdsInfo2PropVO);
                         gdsInfo2PropVOList.add(gdsInfo2PropVO);
                     }
                     gdsInfoVO.setGdsInfo2PropVOList(gdsInfo2PropVOList);
@@ -109,10 +112,11 @@ public class GdsController {
                     gdsSkuReqDTO.setGdsId(gdsInfoRespDTO.getGdsId());
                     gdsSkuReqDTO.setStatus("1");
                     List<GdsSkuRespDTO> gdsSkuRespDTOList = iGdsSkuRSV.queryGdsSkuList(gdsSkuReqDTO);
-                    if (!CollectionUtils.isEmpty(gdsSkuRespDTOList)){
+                    if (!CollectionUtil.isEmpty(gdsSkuRespDTOList)){
                         for (GdsSkuRespDTO gdsSkuRespDTO : gdsSkuRespDTOList){
                             GdsSkuVO gdsSkuVO = new GdsSkuVO();
-                            BeanUtils.copyProperties(gdsSkuRespDTO,gdsSkuVO);
+                            ObjectCopyUtil.copyObjValue(gdsSkuRespDTO,gdsSkuVO,null,false);
+//                            BeanUtils.copyProperties(gdsSkuRespDTO,gdsSkuVO);
                             gdsSkuVOList.add(gdsSkuVO);
                         }
                         gdsInfoVO.setGdsSkuVOList(gdsSkuVOList);

@@ -13,12 +13,12 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfo2Prop
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
-import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StringUtil;
 
-import org.springframework.beans.BeanUtils;
+import com.ai.paas.utils.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -67,7 +67,8 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
             throw new Exception("插入商品信息入参为空");
         }
         GdsInfo gdsInfo = new GdsInfo();
-        BeanUtils.copyProperties(gdsInfoReqDTO,gdsInfo);
+        ObjectCopyUtil.copyObjValue(gdsInfoReqDTO,gdsInfo,null,false);
+//        BeanUtils.copyProperties(gdsInfoReqDTO,gdsInfo);
         int code = gdsInfoMapper.insert(gdsInfo);
         return code;
     }
@@ -78,7 +79,8 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
             throw new Exception("更新商品信息入参为空");
         }
         GdsInfo gdsInfo = new GdsInfo();
-        BeanUtils.copyProperties(gdsInfoReqDTO,gdsInfo);
+        ObjectCopyUtil.copyObjValue(gdsInfoReqDTO,gdsInfo,null,false);
+//        BeanUtils.copyProperties(gdsInfoReqDTO,gdsInfo);
         int code = gdsInfoMapper.updateByPrimaryKey(gdsInfo);
         return code;
     }
@@ -96,10 +98,10 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         if(gdsInfoReqDTO.getGdsId()!=null && gdsInfoReqDTO.getGdsId().intValue()>0){
             criteria.andGdsIdEqualTo(gdsInfoReqDTO.getGdsId());
         }
-        if (!StringUtils.isEmpty(gdsInfoReqDTO.getGdsName())){
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getGdsName())){
             criteria.andGdsNameLike("%"+ gdsInfoReqDTO.getGdsName()+"%");
         }
-        if (!StringUtils.isEmpty(gdsInfoReqDTO.getGdsSubtitle())){
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getGdsSubtitle())){
             criteria.andGdsSubtitleLike("%"+ gdsInfoReqDTO.getGdsSubtitle()+"%");
         }
         if (gdsInfoReqDTO.getCatFirst()!=null && gdsInfoReqDTO.getCatFirst().intValue()>0){
@@ -108,16 +110,16 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         if (gdsInfoReqDTO.getApiId()!=null && gdsInfoReqDTO.getApiId().intValue()>0){
             criteria.andApiIdEqualTo(gdsInfoReqDTO.getApiId());
         }
-        if (!StringUtils.isEmpty(gdsInfoReqDTO.getIfRecommend())){
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getIfRecommend())){
             criteria.andIfRecommendEqualTo(gdsInfoReqDTO.getIfRecommend());
         }
-        if (!StringUtils.isEmpty(gdsInfoReqDTO.getFunIntroduction())){
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getFunIntroduction())){
             criteria.andFunIntroductionEqualTo(gdsInfoReqDTO.getFunIntroduction());
         }
-        if (!StringUtils.isEmpty(gdsInfoReqDTO.getCommpanyName())){
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getCommpanyName())){
             criteria.andCommpanyNameLike("%"+ gdsInfoReqDTO.getCommpanyName()+"%");
         }
-        if (!StringUtils.isEmpty(gdsInfoReqDTO.getStatus())){
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getStatus())){
             criteria.andStatusEqualTo(gdsInfoReqDTO.getStatus());
         }
     }
@@ -131,11 +133,12 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
 	public GdsResultVO addGds(GdsInfoReqDTO reqDTO) throws Exception {
 		// 商品主表
         GdsInfo gdsInfo = new GdsInfo();
-        BeanUtils.copyProperties(reqDTO,gdsInfo);
+        ObjectCopyUtil.copyObjValue(reqDTO,gdsInfo,null,false);
+//        BeanUtils.copyProperties(reqDTO,gdsInfo);
         int gdsId = gdsInfoMapper.insert(gdsInfo);
         //保存商品标签
         List<GdsLabelReqDTO> labelReqDTOList = reqDTO.getGdsLabelReqDTOList();
-        if(CollectionUtils.isNotEmpty(labelReqDTOList)){
+        if(!CollectionUtil.isEmpty(labelReqDTOList)){
         	for(GdsLabelReqDTO labelReqDTO : labelReqDTOList){
             	labelReqDTO.setGdsId(gdsId);
         		iGdsLabelSV.insertGdsLabel(labelReqDTO);
@@ -143,7 +146,7 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         }
         //保存单品信息
         List<GdsSkuReqDTO> skuList = reqDTO.getGdsSkuReqDTOList();
-        if(CollectionUtils.isNotEmpty(skuList)){
+        if(!CollectionUtil.isEmpty(skuList)){
         	for(GdsSkuReqDTO skuReqDTO : skuList){
         		skuReqDTO.setGdsId(gdsId);
         		iGdsSkuSV.insertGdsSku(skuReqDTO);
@@ -172,11 +175,12 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
 	public GdsResultVO editGds(GdsInfoReqDTO reqDTO) throws Exception {
 		// 商品主表
         GdsInfo gdsInfo = new GdsInfo();
-        BeanUtils.copyProperties(reqDTO,gdsInfo);
+        ObjectCopyUtil.copyObjValue(reqDTO,gdsInfo,null,false);
+//        BeanUtils.copyProperties(reqDTO,gdsInfo);
         gdsInfoMapper.updateByPrimaryKeySelective(gdsInfo);
         //保存商品标签
         List<GdsLabelReqDTO> labelReqDTOList = reqDTO.getGdsLabelReqDTOList();
-        if(CollectionUtils.isNotEmpty(labelReqDTOList)){
+        if(!CollectionUtil.isEmpty(labelReqDTOList)){
         	GdsLabelReqDTO gdsLabelReqDTO = new GdsLabelReqDTO();
         	gdsLabelReqDTO.setGdsId(reqDTO.getGdsId());
         	iGdsLabelSV.deleteGdslabelByGdsId(gdsLabelReqDTO);
@@ -186,7 +190,7 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         }
         //保存单品信息
         List<GdsSkuReqDTO> skuList = reqDTO.getGdsSkuReqDTOList();
-        if(CollectionUtils.isNotEmpty(skuList)){
+        if(!CollectionUtil.isEmpty(skuList)){
         	GdsSkuReqDTO gdsSkuReqDTO = new GdsSkuReqDTO();
         	gdsSkuReqDTO.setGdsId(reqDTO.getGdsId());
         	//删除单品信息
@@ -214,9 +218,9 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
 		GdsInfoExample.Criteria criteria = example.createCriteria();
 		List<GdsInfo> gdsInfoList = gdsInfoMapper.selectByExample(example);
 		initCriteria(criteria, gdsInfoReqDTO);
-		if (CollectionUtils.isNotEmpty(gdsInfoList)) {
-			BeanUtils.copyProperties(gdsInfoList.get(0), respDTO);
-
+		if (!CollectionUtil.isEmpty(gdsInfoList)) {
+//			BeanUtils.copyProperties(gdsInfoList.get(0), respDTO);
+            ObjectCopyUtil.copyObjValue(gdsInfoList.get(0),respDTO,null,false);
 		}
 		return respDTO;
 	}

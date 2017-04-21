@@ -5,11 +5,11 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
-import com.alibaba.dubbo.common.utils.CollectionUtils;
 
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.paas.utils.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -36,7 +36,8 @@ public class GdsCatRSVImpl implements IGdsCatRSV {
         try{
             GdsCat gdsCat = iGdsCatSV.queryGdsCatById(catId);
             if (gdsCat!=null){
-                BeanUtils.copyProperties(gdsCat,gdsCatRespDTO);
+                ObjectCopyUtil.copyObjValue(gdsCat,gdsCatRespDTO,null,false);
+//                BeanUtils.copyProperties(gdsCat,gdsCatRespDTO);
             }else{
                 return null;
             }
@@ -53,10 +54,11 @@ public class GdsCatRSVImpl implements IGdsCatRSV {
                  throw new Exception("查询商品分类信息异常，入参为空");
              }
              List<GdsCat> catList= iGdsCatSV.queryGdsCatList(gdsCatReqDTO);
-             if(CollectionUtils.isNotEmpty(catList)){
+             if(!CollectionUtil.isEmpty(catList)){
             	 GdsCatRespDTO respDTO = new GdsCatRespDTO();
             	 for(GdsCat catVO:catList){
-            		 BeanUtils.copyProperties(catVO,respDTO);
+                     ObjectCopyUtil.copyObjValue(catVO,respDTO,null,false);
+//            		 BeanUtils.copyProperties(catVO,respDTO);
             		 respDTOList.add(respDTO);
             	 }
              }

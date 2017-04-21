@@ -13,11 +13,12 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelQuik
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsPropSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.paas.utils.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -58,7 +59,8 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
 
         GdsInfo gdsInfo = iGdsInfoSV.queryGdsInfoById(gdsInfoReqDTO.getGdsId());
         if(gdsInfo!=null){
-            BeanUtils.copyProperties(gdsInfo, gdsInfoRespDTO);
+            ObjectCopyUtil.copyObjValue(gdsInfo,gdsInfoRespDTO,null,false);
+//            BeanUtils.copyProperties(gdsInfo, gdsInfoRespDTO);
             //set商品第一类目名称
             if (gdsInfo.getCatFirst()!=null && gdsInfo.getCatFirst().intValue()>0){
                 GdsCat gdsCat = iGdsCatSV.queryGdsCatById(gdsInfo.getCatFirst());
@@ -72,7 +74,7 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
             gdsLabelReqDTO.setGdsId(gdsInfo.getGdsId());
             gdsLabelReqDTO.setStatus("1");
             List<GdsLabel> gdsLabels = iGdsLabelSV.queryGdsLabelList(gdsLabelReqDTO);
-            if(!CollectionUtils.isEmpty(gdsLabels)){
+            if(!CollectionUtil.isEmpty(gdsLabels)){
                 for (GdsLabel gdsLabel : gdsLabels){
                     GdsLabelRespDTO gdsLabelRespDTO = new GdsLabelRespDTO();
                     BeanUtils.copyProperties(gdsLabel, gdsLabelRespDTO);
@@ -88,7 +90,7 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
                 gdsSkuRepVO.setStatus("1");
                 gdsSkuRepVO.setGdsId(gdsInfo.getGdsId());
                 List<GdsSku> gdsSkus =iGdsSkuSV.queryGdsSkuList(gdsSkuRepVO);
-                if(!CollectionUtils.isEmpty(gdsSkus)){
+                if(!CollectionUtil.isEmpty(gdsSkus)){
                     for (GdsSku gdsSku : gdsSkus){
                         GdsSkuRespDTO gdsSkuRespDTO = new GdsSkuRespDTO();
                         BeanUtils.copyProperties(gdsSku, gdsSkuRespDTO);
@@ -157,7 +159,7 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
         List<GdsInfoRespDTO> gdsInfoRespDTOList = new ArrayList<GdsInfoRespDTO>();
         try {
             List<GdsInfo> gdsInfoList = iGdsInfoSV.queryGdsInfoList(gdsInfoReqDTO);
-            if (!CollectionUtils.isEmpty(gdsInfoList)){
+            if (!CollectionUtil.isEmpty(gdsInfoList)){
                 for (GdsInfo gdsInfo : gdsInfoList){
                     GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
                     BeanUtils.copyProperties(gdsInfo,gdsInfoRespDTO);
@@ -200,7 +202,7 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
 		 List<GdsPropRespDTO> respDTOList = new ArrayList<GdsPropRespDTO>();
 		try{
 			List<GdsProp> propList=iGdsPropSV.queryGdsPropList(gdsPropReqDTO);
-			 if (!CollectionUtils.isEmpty(propList)){
+			 if (!CollectionUtil.isEmpty(propList)){
 	                for (GdsProp propInfo : propList){
 	                	GdsPropRespDTO gdsPropRespDTO = new GdsPropRespDTO();
 	                    BeanUtils.copyProperties(propInfo,gdsPropRespDTO);

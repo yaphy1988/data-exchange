@@ -5,9 +5,9 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsProp;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsPropExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsPropReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsPropSV;
-import org.springframework.beans.BeanUtils;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StringUtil;
 import org.springframework.stereotype.Service;
-import org.springframework.util.StringUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -25,10 +25,10 @@ public class GdsPropSVImpl implements IGdsPropSV {
         if (gdsPropReqDTO.getProId()!=null && gdsPropReqDTO.getProId().intValue()>0){
             criteria.andProIdEqualTo(gdsPropReqDTO.getProId());
         }
-        if (!StringUtils.isEmpty(gdsPropReqDTO.getProType())){
+        if (!StringUtil.isBlank(gdsPropReqDTO.getProType())){
             criteria.andProTypeEqualTo(gdsPropReqDTO.getProType());
         }
-        if (gdsPropReqDTO.getProName()!=null && gdsPropReqDTO.getProName().intValue()>0){
+        if (!StringUtil.isBlank(gdsPropReqDTO.getProName())){
             criteria.andProNameEqualTo(gdsPropReqDTO.getProName());
         }
         if (gdsPropReqDTO.getCatId()!=null && gdsPropReqDTO.getCatId().intValue()>0){
@@ -37,7 +37,7 @@ public class GdsPropSVImpl implements IGdsPropSV {
         if (gdsPropReqDTO.getShowOrder()!=null && gdsPropReqDTO.getShowOrder().intValue()>0){
             criteria.andShowOrderEqualTo(gdsPropReqDTO.getShowOrder());
         }
-        if (!StringUtils.isEmpty(gdsPropReqDTO.getStatus())){
+        if (!StringUtil.isBlank(gdsPropReqDTO.getStatus())){
             criteria.andStatusEqualTo(gdsPropReqDTO.getStatus());
         }
     }
@@ -69,7 +69,8 @@ public class GdsPropSVImpl implements IGdsPropSV {
             throw new Exception("插入商品属性信息入参为空");
         }
         GdsProp gdsProp = new GdsProp();
-        BeanUtils.copyProperties(gdsPropReqDTO,gdsProp);
+        ObjectCopyUtil.copyObjValue(gdsPropReqDTO,gdsProp,null,false);
+//        BeanUtils.copyProperties(gdsPropReqDTO,gdsProp);
         int code = gdsPropMapper.insert(gdsProp);
         return code;
     }
@@ -80,7 +81,8 @@ public class GdsPropSVImpl implements IGdsPropSV {
             throw new Exception("更新商品属性信息入参为空");
         }
         GdsProp gdsProp = new GdsProp();
-        BeanUtils.copyProperties(gdsPropReqDTO,gdsProp);
+        ObjectCopyUtil.copyObjValue(gdsPropReqDTO,gdsProp,null,false);
+//        BeanUtils.copyProperties(gdsPropReqDTO,gdsProp);
         int code = gdsPropMapper.updateByPrimaryKey(gdsProp);
         return 0;
     }
