@@ -10,21 +10,6 @@ h3{
 		width: 100%;
 }
 
-/* 分类路径 */
-.classify{
-	width: 100%;
-	overflow: hidden;
-	position: relative;
-	font-size: 12px;
-	line-height: 55px;
-}
-.classify a:after{
-	content: "\003e";
-	padding-left: 5px;
-	color: #ddd;
-	font-family: "微软雅黑"
-}
-
 /* gd_etails */
 .gd_etails{
 	position: relative;

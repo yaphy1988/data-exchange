@@ -315,6 +315,7 @@ fieldset[disabled] .btn-primary.focus {
 
 
 /* liangsx add */
+	
 	/* 子页面导航 */
 	.seconav .menuBg{
 		background-color: #f1f1f1;
@@ -325,7 +326,18 @@ fieldset[disabled] .btn-primary.focus {
 		right: 10px;
 		top: 18px;
 	}
-	/* 首页背景 */
-	.bgf1{
-		background-color: #f1f1f1;
+	/* 子页面分类路径 */
+	.classify{
+		width: 100%;
+		overflow: hidden;
+		position: relative;
+		font-size: 12px;
+		line-height: 55px;
 	}
+	.classify a:after{
+		content: "\003e";
+		padding-left: 5px;
+		color: #ddd;
+		font-family: "微软雅黑"
+	}
+
