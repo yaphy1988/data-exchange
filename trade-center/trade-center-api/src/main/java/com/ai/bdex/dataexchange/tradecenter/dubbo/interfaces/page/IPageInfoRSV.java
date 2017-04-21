@@ -3,14 +3,14 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page;
  
 import java.util.List;
 
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageHeaderNavRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageHotSearchRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageModuleAdRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageModuleAdPropRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageModuleGoodsRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.PageModuleRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.SortInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdPropRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
  
 public interface    IPageInfoRSV {
     public  List<SortInfoRespDTO>  querySortInfos(SortInfoRespDTO sortInfoRespDTO) throws Exception;

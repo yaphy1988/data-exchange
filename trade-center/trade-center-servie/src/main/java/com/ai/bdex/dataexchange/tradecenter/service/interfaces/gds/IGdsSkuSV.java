@@ -1,7 +1,7 @@
 package com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSku;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsSkuReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
 
 import java.util.List;
 

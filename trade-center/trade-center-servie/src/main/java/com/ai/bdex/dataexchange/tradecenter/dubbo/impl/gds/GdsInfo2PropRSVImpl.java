@@ -1,8 +1,8 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.impl.gds;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo2Prop;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfo2PropReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfo2PropRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfo2PropRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfo2PropSV;
 import com.alibaba.dubbo.config.annotation.Reference;

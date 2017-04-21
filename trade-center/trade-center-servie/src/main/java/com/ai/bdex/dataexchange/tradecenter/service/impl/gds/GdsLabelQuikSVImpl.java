@@ -1,12 +1,10 @@
 package com.ai.bdex.dataexchange.tradecenter.service.impl.gds;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.GdsLabelQuikMapper;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabel;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabelQuik;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabelQuikExample;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelQuikReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelQuikRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelQuikReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelQuikRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelQuikSV;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 

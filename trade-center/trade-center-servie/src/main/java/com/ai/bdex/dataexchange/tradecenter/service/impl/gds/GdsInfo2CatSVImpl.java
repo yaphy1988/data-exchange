@@ -3,7 +3,7 @@ package com.ai.bdex.dataexchange.tradecenter.service.impl.gds;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.GdsInfo2CatMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo2Cat;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo2CatExample;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfo2CatReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2CatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfo2CatSV;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

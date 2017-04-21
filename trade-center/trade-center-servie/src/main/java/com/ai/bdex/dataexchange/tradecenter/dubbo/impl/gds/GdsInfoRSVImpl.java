@@ -5,7 +5,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabel;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsProp;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSku;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.*;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.*;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;

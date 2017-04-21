@@ -2,8 +2,8 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds;
 
 import java.util.List;
 
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsCatReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsCatRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 
 /**
  * Created by yx on 2017/4/20.

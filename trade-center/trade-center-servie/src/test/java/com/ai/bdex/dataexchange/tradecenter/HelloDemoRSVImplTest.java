@@ -7,13 +7,9 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.DemoDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.SortInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.impl.DemoRSVImpl;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.IDemoSV;
- 
-import static org.junit.Assert.*;
 
 import java.util.List;
 

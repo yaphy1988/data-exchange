@@ -1,9 +1,9 @@
 package com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsResultVO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsResultVO;
 
 import java.util.List;
 

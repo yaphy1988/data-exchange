@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.DataCustomizationMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.DataCustomization;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.DataCustomizationRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IDataCustomizationSV;
 import com.ai.paas.utils.*;
 @Service("iDataCustomizationSV")

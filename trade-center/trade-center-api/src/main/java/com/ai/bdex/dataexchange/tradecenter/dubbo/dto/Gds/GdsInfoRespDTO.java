@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds;
+package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds;
 
 import java.io.Serializable;
 import java.util.Date;

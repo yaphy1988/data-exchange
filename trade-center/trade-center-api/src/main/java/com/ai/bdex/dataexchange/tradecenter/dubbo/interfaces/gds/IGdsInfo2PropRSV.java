@@ -1,7 +1,7 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds;
 
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfo2PropReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfo2PropRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropRespDTO;
 
 import java.util.List;
 

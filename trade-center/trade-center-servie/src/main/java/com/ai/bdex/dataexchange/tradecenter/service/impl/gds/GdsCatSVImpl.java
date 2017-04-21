@@ -3,8 +3,8 @@ package com.ai.bdex.dataexchange.tradecenter.service.impl.gds;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.GdsCatMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsCat;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsCatExample;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsCatReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsCatRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 

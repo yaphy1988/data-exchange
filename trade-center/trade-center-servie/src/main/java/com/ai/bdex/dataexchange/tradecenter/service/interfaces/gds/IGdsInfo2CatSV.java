@@ -1,7 +1,7 @@
 package com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo2Cat;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfo2CatReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2CatReqDTO;
 
 import java.util.List;
 

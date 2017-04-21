@@ -1,8 +1,8 @@
 package com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabelQuik;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelQuikReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsLabelQuikRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelQuikReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelQuikRespDTO;
 
 import java.util.List;
 

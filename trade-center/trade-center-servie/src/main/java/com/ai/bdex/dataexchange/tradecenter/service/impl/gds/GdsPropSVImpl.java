@@ -3,7 +3,7 @@ package com.ai.bdex.dataexchange.tradecenter.service.impl.gds;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.GdsPropMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsProp;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsPropExample;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsPropReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsPropReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsPropSV;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
