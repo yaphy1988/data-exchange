@@ -5,8 +5,9 @@ import java.util.List;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdInfo;
 
 public interface IOrdInfoSV {
+	  
+	   public OrdInfo queryOrderDetail(OrdInfo ordInfo) throws Exception;
 	   //我的所有子订单
-	   public OrdInfo queryOrderById(Integer OrderById) throws Exception;
 	   public List<OrdInfo> queryOrderByStaff(OrdInfo ordInfo) throws Exception;
        //商品投诉
 	   public List<OrdInfo> queryOrderByStaffGds(OrdInfo ordInfo) throws Exception;
