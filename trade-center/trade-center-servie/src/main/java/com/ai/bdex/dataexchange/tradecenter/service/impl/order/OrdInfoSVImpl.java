@@ -7,12 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.OrdInfoMapper;
-import com.ai.bdex.dataexchange.tradecenter.dao.mapper.OrdMainInfoMapper;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdInfo;
+ import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdInfoExample;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfo;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfoExample;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdInfoSV;
+ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdInfoSV;
  
 @Service("iOrdInfoSV")
 public class OrdInfoSVImpl  implements IOrdInfoSV {
