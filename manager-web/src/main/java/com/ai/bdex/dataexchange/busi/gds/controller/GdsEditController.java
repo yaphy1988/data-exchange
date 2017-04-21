@@ -52,9 +52,10 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.util.ImageUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
-import com.alibaba.dubbo.common.json.ParseException;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.alibaba.dubbo.rpc.service.GenericException;
+import com.alibaba.fastjson.JSONArray;
+import com.alibaba.fastjson.JSONObject;
 
 
 
@@ -178,15 +179,15 @@ public class GdsEditController {
     	GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
         try {
         	//商品基本信息
-    		JSONObject gdsInfoVO=JSONObject.fromObject(req.getParameter("gdsInfoVO"));
+    		JSONObject gdsInfoVO=JSONObject.parseObject(req.getParameter("gdsInfoVO"));
 			this.setGdsInfo(gdsInfoReqDTO, gdsInfoVO);
         	int gdsId=gdsInfoRSV.insertGdsInfo(gdsInfoReqDTO);
         	GdsInfo2CatReqDTO gdsInfo2CatReqDTO = new GdsInfo2CatReqDTO();
-       		JSONObject gdsInfo2CatVO=JSONObject.fromObject(req.getParameter("gdsInfo2CatVO"));
+       		JSONObject gdsInfo2CatVO=JSONObject.parseObject(req.getParameter("gdsInfo2CatVO"));
     		this.setGdsInfo2Cat(gdsInfo2CatReqDTO, gdsInfo2CatVO);
         	
         	//商品标签信息
-        	JSONArray gdsLabelVOList=JSONArray.fromObject(req.getParameter("gdsLabelList"));
+        	JSONArray gdsLabelVOList=JSONArray.parseArray(req.getParameter("gdsLabelList"));
         	List<GdsLabelReqDTO> gdsLabelReqDTOList =  new ArrayList<>();
         	this.setGdsLabel(gdsLabelReqDTOList, gdsLabelVOList);
         	//保存商品标签
@@ -197,7 +198,7 @@ public class GdsEditController {
         		}
         	}
         	//获取商品单品信息
-        	JSONArray gdsSkuVOList=JSONArray.fromObject(req.getParameter("gdsSkuList"));
+        	JSONArray gdsSkuVOList=JSONArray.parseArray(req.getParameter("gdsSkuList"));
         	List<GdsSkuReqDTO> gdsSkuReqDTOList =  new ArrayList<>();
         	this.setGdsSkuInfo(gdsSkuReqDTOList, gdsSkuVOList);
         	//保存单品信息
@@ -208,7 +209,7 @@ public class GdsEditController {
         		}
         	}
         	//获取商品属性配置信息
-        	JSONArray gdsInfo2PropVOList=JSONArray.fromObject(req.getParameter("gdsInfo2PropList"));
+        	JSONArray gdsInfo2PropVOList=JSONArray.parseArray(req.getParameter("gdsInfo2PropList"));
         	List<GdsInfo2PropReqDTO> gdsInfo2PropReqDTOList =  new ArrayList<>();
         	this.setGdsInfo2PropInfo(gdsInfo2PropReqDTOList, gdsInfo2PropVOList);
         	//保存商品属性配置信息
@@ -440,7 +441,6 @@ public class GdsEditController {
      * 
      * @param request
      * @param response
-     * @author zjh
      */
     @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
     public void uploadImage(HttpServletRequest request, HttpServletResponse response) {
@@ -464,7 +464,7 @@ public class GdsEditController {
             if (file == null) {
                 resultMap.put("flag", false);
                 resultMap.put("error", "请选择上传文件！");
-                out.print(JSONObject.fromObject(resultMap).toString());
+                out.print(JSONObject.toJSONString(resultMap));
                 return;
             }
             String fileName = file.getOriginalFilename();
@@ -476,7 +476,7 @@ public class GdsEditController {
             if (!flag) {
                 resultMap.put("flag", false);
                 resultMap.put("error", "请选择图片文件(.jpg,.png,.jpeg,.gif,.bmp)!");
-                out.print(JSONObject.fromObject(resultMap).toString());
+                out.print(JSONObject.toJSONString(resultMap));
                 return;
             }
             byte[] datas = inputStream2Bytes(file.getInputStream());
@@ -486,7 +486,7 @@ public class GdsEditController {
             resultMap.put("imageName", fileName);
             resultMap.put("id", id);
             resultMap.put("imagePath", ImageUtil.getImageUrl(imageId + "_150x150"));
-            out.print(JSONObject.fromObject(resultMap).toString());
+            out.print(JSONObject.toJSONString(resultMap));
             logger.debug("imageId = " + imageId);
         } catch (Exception e) {
             logger.error("【图片保存失败】异常信息：" + e);
@@ -497,8 +497,6 @@ public class GdsEditController {
 	/**
      * 将InputStream转换成byte数组
      * 
-     * @author huangcm
-     * @date 2014-7-23
      * @param in
      * @return
      * @throws IOException
@@ -516,8 +514,6 @@ public class GdsEditController {
     /**
      * 获取文件拓展名
      * 
-     * @author huangcm
-     * @date 2014-7-22
      * @param fileName
      * @return
      */
