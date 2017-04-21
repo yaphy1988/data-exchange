@@ -36,4 +36,25 @@ public class GdsLabelRSVImpl implements IGdsLabelRSV {
         }
         return gdsLabelRespDTOList;
     }
+    public int insertGdsLabel(GdsLabelReqDTO gdsLabelReqDTO) throws Exception {
+		int labelId =0;
+		try {
+			labelId = iGdsLabelSV.insertGdsLabel(gdsLabelReqDTO);
+		} catch (Exception e) {
+			log.error("新增商品标签异常:", e);
+			throw new Exception(e);
+		}
+		return labelId;
+    }
+    public int deleteGdslabelByGdsId(GdsLabelReqDTO gdsLabelReqDTO) throws Exception {
+    	int labelId =0;
+		try {
+			labelId = iGdsLabelSV.deleteGdslabelByGdsId(gdsLabelReqDTO);
+		} catch (Exception e) {
+			log.error("删除商品标签异常:", e);
+			throw new Exception(e);
+		}
+		return labelId;
+    }
+
 }

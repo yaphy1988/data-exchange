@@ -179,7 +179,7 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         if(CollectionUtils.isNotEmpty(labelReqDTOList)){
         	GdsLabelReqDTO gdsLabelReqDTO = new GdsLabelReqDTO();
         	gdsLabelReqDTO.setGdsId(reqDTO.getGdsId());
-        	iGdsLabelSV.deleteGdslabelBByGdsId(gdsLabelReqDTO);
+        	iGdsLabelSV.deleteGdslabelByGdsId(gdsLabelReqDTO);
         	for(GdsLabelReqDTO labelReqDTO : labelReqDTOList){
         		iGdsLabelSV.insertGdsLabel(labelReqDTO);
         	}

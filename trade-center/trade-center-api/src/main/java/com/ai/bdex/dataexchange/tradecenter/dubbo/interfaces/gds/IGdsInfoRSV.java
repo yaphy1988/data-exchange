@@ -74,4 +74,7 @@ public interface IGdsInfoRSV {
 	public GdsInfoRespDTO queryGdsInfo(GdsInfoReqDTO gdsInfoReqDTO) throws Exception;
 	
 	public List<GdsPropRespDTO> queryGdsPropList(GdsPropReqDTO gdsPropReqDTO) throws Exception;
+	
+	public int insertGdsInfo(GdsInfoReqDTO gdsInfoReqDTO) throws Exception;
+
 }

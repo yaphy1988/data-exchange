@@ -213,4 +213,16 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
         }
 		return respDTOList;
 	 }
+
+	public int insertGdsInfo(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
+		int gdsId =0;
+		try {
+			gdsId = iGdsInfoSV.insertGdsInfo(gdsInfoReqDTO);
+		} catch (Exception e) {
+			log.error("新增商品基本信息异常:", e);
+			throw new Exception(e);
+		}
+		return gdsId;
+	}
+   
 }

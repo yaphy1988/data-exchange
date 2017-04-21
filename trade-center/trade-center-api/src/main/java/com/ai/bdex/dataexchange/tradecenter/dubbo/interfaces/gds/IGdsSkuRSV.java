@@ -17,4 +17,11 @@ public interface IGdsSkuRSV {
      * @throws Exception
      */
     public List<GdsSkuRespDTO> queryGdsSkuList(GdsSkuReqDTO gdsSkuReqDTO) throws Exception;
+    /**
+     * 保存单品信息
+     * @param gdsSkuReqDTO
+     * @return
+     * @throws Exception
+     */
+    public int insertGdsSku(GdsSkuReqDTO gdsSkuReqDTO) throws Exception;
 }

@@ -47,4 +47,23 @@ public class GdsSkuRSVImpl implements IGdsSkuRSV {
 
         return gdsSkuRespDTOList;
     }
+    public int insertGdsSku(GdsSkuReqDTO gdsSkuReqDTO) throws Exception {
+    	int code=0;
+    	 try {
+    		 code= iGdsSkuSV.insertGdsSku(gdsSkuReqDTO);
+         }catch (Exception e){
+             log.error("插入单品信息异常：",e);
+         }	
+    	 return code;
+    }
+    public int deleteGdsSkuByGdsId(GdsSkuReqDTO gdsSkuReqDTO) throws Exception{
+    	int code=0;
+   	 try {
+   		 code= iGdsSkuSV.deleteGdsSkuByGdsId(gdsSkuReqDTO);
+        }catch (Exception e){
+            log.error("删除单品信息异常：",e);
+        }	
+   	 return code;
+    }
+
 }

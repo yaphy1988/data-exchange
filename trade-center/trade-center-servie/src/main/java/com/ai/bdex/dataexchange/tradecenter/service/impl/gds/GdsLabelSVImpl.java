@@ -101,7 +101,7 @@ public class GdsLabelSVImpl implements IGdsLabelSV {
         return code;
     }
     @Override
-    public int deleteGdslabelBByGdsId(GdsLabelReqDTO gdsLabelReqDTO) throws Exception {
+    public int deleteGdslabelByGdsId(GdsLabelReqDTO gdsLabelReqDTO) throws Exception {
         if (gdsLabelReqDTO.getGdsId()==null || gdsLabelReqDTO.getGdsId()<=0){
             throw new Exception("删除商品标签入参为空");
         }

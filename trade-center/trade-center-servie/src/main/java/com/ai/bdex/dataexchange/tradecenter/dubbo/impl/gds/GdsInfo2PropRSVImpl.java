@@ -46,4 +46,24 @@ public class GdsInfo2PropRSVImpl implements IGdsInfo2PropRSV {
 
         return gdsInfo2PropRespDTOList;
     }
+    public int insertGdsInfo2Prop(GdsInfo2PropReqDTO gdsInfo2PropReqDTO) throws Exception{
+    	int code=0;
+        try{
+        	code = iGdsInfo2PropSV.insertGdsInfo2Prop(gdsInfo2PropReqDTO);
+        }catch (Exception e){
+            log.error("查询商品属性关系列表异常：",e);
+        }
+
+        return code;
+    }
+    public int updateGdsInfo2Prop(GdsInfo2PropReqDTO gdsInfo2PropReqDTO) throws Exception {
+    	int code=0;
+        try{
+        	code = iGdsInfo2PropSV.updateGdsInfo2Prop(gdsInfo2PropReqDTO);
+        }catch (Exception e){
+            log.error("更新商品属性关系列表异常：",e);
+        }
+
+        return code;
+    }
 }
