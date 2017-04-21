@@ -404,3 +404,7 @@ fieldset[disabled] .btn-primary.focus {
 	  background-color: #2b4099;
 	  border-color: #2b4099;
 	}
+.pagelist .pagination > li > a,
+.pagelist .pagination > li > span{
+	border: transparent;
+}
