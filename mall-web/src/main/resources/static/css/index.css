@@ -73,7 +73,9 @@
     margin-right: 6px;
 }
 .search-hot a:hover,
-.menu a:hover{color: #ec6000;}
+.menu a:hover,
+.menu li.active a
+{color: #ec6000;}
 .search-hot a.more{
 margin-right: -46px;
 }

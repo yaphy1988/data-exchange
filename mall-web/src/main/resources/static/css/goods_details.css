@@ -202,7 +202,7 @@ h3{
 	color: #ec6000;
 }
 
-.btn_apply{
+.btn_rec{
 	padding: 5px 20px;
 	border-radius: 0;
 }
@@ -211,7 +211,34 @@ h3{
 	right: 10px;
 	bottom: 10px;
 }
-
+.info_bd .explain{
+	color: #999;
+	width: 100%;
+	font-size: 12px;
+	margin-bottom: 20px;
+}
+.explain dl:after{
+	content:".";
+	display:block;
+	height:0; 
+	clear:both;
+	visibility:hidden;
+	zoom:1;
+}
+.explain dl{
+	padding: 10px;
+}
+.explain dt{
+	float: left;
+	width: 12%;
+	font-weight: bold;
+	text-align: right;
+}
+.explain dd{
+	float: right;
+	width: 88%;
+	padding:0 10px;
+}
 /* TAB HD */
 .gd_Tabs .nav-tabs{
 	border-bottom: none!important;
@@ -242,14 +269,36 @@ h3{
 	color: #fe6000;
 }
 /* TAB BD */
-.gd_Tabs .tab-content{
-	padding: 20px;
+.gd_Tabs{
+	border: solid 1px #f2f3f4;
+	margin-bottom: 20px;
 }
-
+.gd_Tabs .tab-content{
+	padding: 10px 20px;
+}
+.gd_info h3{
+	font-size: 14px;
+	margin-top: 20px;
+}
 .gd_info .table{
 	margin: 10px 0;
 }
-
+.gd_info .piclist{
+	width: 100%;
+}
+.piclist{
+	margin-top: 10px;
+}
+.piclist li{
+	float: left;
+	margin-right: 6px;
+	margin-left: 6px;
+	margin-bottom: 12px;
+}
+.piclist li img{
+	display: inline-block;
+	width: 200px;
+}
 .gd_title{
 	width: 100%;
 	position: relative;
@@ -292,7 +341,8 @@ h3{
 	text-align: left;
 	display: block;
 	overflow : hidden;
-	height: 100px;
+	max-height: 100px;
+	margin-bottom: 10px;
 }
 .gd_list .item:after
 {
@@ -320,7 +370,7 @@ h3{
 	overflow: hidden;
 	white-space:nowrap;
 	text-overflow: ellipsis;
-
+	padding-bottom: 5px;
 }
 .gd_list .dd{
 	font-size: 12px;
@@ -331,6 +381,7 @@ h3{
     display: -webkit-box;
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
+    max-height: 55px;
 }
 
 .gd_sales .img{

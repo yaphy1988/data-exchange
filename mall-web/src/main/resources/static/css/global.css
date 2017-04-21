@@ -305,13 +305,16 @@ fieldset[disabled] .btn-primary.focus {
   background-color: #fff;
 }
 /* daigm add */
-.wrap1200{width: 1200px;overflow: hidden;margin: 0px auto;}
+.wrap1200{
+	width: 1200px;
+	overflow: hidden;
+	margin: 0px auto;
+}
 .floatL{float: left;}
 .floatR{float: right;}
 
 
 /* liangsx add */
-
 	/* 子页面导航 */
 	.seconav .menuBg{
 		background-color: #f1f1f1;
