@@ -316,6 +316,16 @@ fieldset[disabled] .btn-primary.focus {
 }
 .floatL{float: left;}
 .floatR{float: right;}
+.form-control::-moz-placeholder {
+    color: #bbb;
+}
+.form-control:-ms-input-placeholder {
+    color: #bbb;
+}
+.form-control::-webkit-input-placeholder {
+    color: #bbb;
+}
+.phcolor{color: #bbb;}
 
 
 /* liangsx add */
