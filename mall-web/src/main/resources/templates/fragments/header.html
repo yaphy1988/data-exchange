@@ -10,15 +10,16 @@
 	                <button class="btn btn-primary">搜索</button>
 	            </div>
 	            <div class="search-hot">
-	                <a href="#" class="more floatR">更多&nbsp;&gt;</a>
-	                <a href="#">手机号码归属地</a>
-	                <a href="#">常用快递</a>
-	                <a href="#">快递</a>
-	                <a href="#">手机号码归属地</a>
-	                <a href="#">全国车辆违章</a>
-	                <a href="#">身份证实名认证</a>
-	                <a href="#">短信API服务</a>
-	                <a href="#">短信API服务</a>
+	                <a href="#" class="more floatR" th:href="@{https://www.baidu.com}">更多&nbsp;&gt;</a>
+	                <a href="#" th:remove="all">手机号码归属地</a>
+	                <a href="#" th:remove="all">常用快递</a>
+	                <a href="#" th:remove="all">快递</a>
+	                <a href="#" th:remove="all">手机号码归属地</a>
+	                <a href="#" th:remove="all">全国车辆违章</a>
+	                <a href="#" th:remove="all">身份证实名认证</a>
+	                <a href="#" th:remove="all">短信API服务</a>
+	                <a href="#" th:remove="all">短信API服务</a>
+                  	<a  th:each="collect,iterStat : hotSearchList" th:href="@{${collect.url}}" th:text="${collect.title}"></a> 
 	            </div>
 	        </div>
 	    </div>
@@ -77,16 +78,18 @@
 	
 	        <!--菜单栏开始-->
 	        <ul class="navbar floatL clearfix">
-	            <li><a href="#">首页</a> </li>
-	            <li><a href="#">API</a> </li>
-	            <li><a href="#">定制数据</a> </li>
-	            <li><a href="#">解决方案</a> </li>
-	            <li><a href="#">新闻动态</a> </li>
+	            <li th:remove="all"><a href="#">首页</a> </li>
+	            <li th:remove="all"><a href="#">API</a> </li>
+	            <li th:remove="all"><a href="#">定制数据</a> </li>
+	            <li th:remove="all"><a href="#">解决方案</a> </li>
+	            <li th:remove="all"><a href="#">新闻动态</a> </li>
+	            <li  th:each="collect,iterStat : ${searchNavList}"> 
+	             	<a th:href="@{${collect.navLink}}" th:text="${collect.navName}"></a>
+	            </li>
 	        </ul>
 	        <!--菜单栏结束-->
 	    </div>
 	</div>
-	
 	
 </body>
 </html>

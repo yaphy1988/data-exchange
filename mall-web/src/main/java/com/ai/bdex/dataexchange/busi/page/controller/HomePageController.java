@@ -4,18 +4,22 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV;
+import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
 
 /**
@@ -37,8 +41,9 @@ public class HomePageController {
 	@DubboConsumer
 	IPageInfoRSV iPageInfoRSV;
 	@RequestMapping(value="/pageInit")
-	public String pageInit(){
-		
+	public String pageInit(Model model){
+		queryHotSearch(model);
+		queryHeaderNav(model);
 		return "/index";
 	}
 	/**
@@ -57,7 +62,7 @@ public class HomePageController {
 			rMap.put("pageModuleList", pageModuleList);
 			rMap.put("success", true);
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error("查询楼层信息出错："+e.getMessage());
 			rMap.put("success", false);
 			rMap.put("msg", e.getMessage());
 		}
@@ -77,9 +82,9 @@ public class HomePageController {
 			pageModuleGoodsRespDTO.setModuleId(moduleId);
 			pageModuleGoodsRespDTO.setStatus(STATUS_VALID);
 			List<PageModuleGoodsRespDTO> moduleGoodsList = iPageInfoRSV.queryPageModuleGoodsList(pageModuleGoodsRespDTO);
-			model.addAllAttributes(moduleGoodsList);
+			model.addAttribute("moduleGoodsList",moduleGoodsList);
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error("查询商品楼层信息："+e.getMessage());
 		}
 		return "";
 	}
@@ -96,10 +101,52 @@ public class HomePageController {
 			pageModuleAdRespDTO.setModuleId(moduleId);
 			pageModuleAdRespDTO.setStatus(STATUS_VALID);
 			List<PageModuleAdRespDTO> moduleAdList = iPageInfoRSV.queryPageModuleAdList(pageModuleAdRespDTO);
-			model.addAllAttributes(moduleAdList);
+			model.addAttribute("moduleAdList",moduleAdList);
 		} catch (Exception e) {
-			log.error(e.getMessage());
+			log.error("查询广告楼层信息出错："+e.getMessage());
 		}
 		return "";
+	}
+	/**
+	 * 查询商品分类信息
+	 * @param model
+	 */
+	@RequestMapping(value="/querySortInfo")
+	public String querySortInfo(Model model) {
+		try {
+			SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
+			sortInfoRespDTO.setStatus(STATUS_VALID);
+			List<SortInfoRespDTO> sortInfos = iPageInfoRSV.querySortInfos(sortInfoRespDTO);
+			model.addAttribute("sortInfos",sortInfos);
+		} catch (Exception e) {
+			log.error("查询商品分类信息异常："+e.getMessage());
+		}
+		return "";
+	}
+	/**
+	 * 查询首页热门搜索信息
+	 */
+	private void queryHotSearch(Model model){
+		try {
+			PageHotSearchRespDTO pageHotSearchRespDTO = new PageHotSearchRespDTO();
+			pageHotSearchRespDTO.setStatus(STATUS_VALID);
+			List<PageHotSearchRespDTO> hotSearchList = iPageInfoRSV.queryPageHotSearchNavList(pageHotSearchRespDTO);
+			model.addAttribute("hotSearchList",hotSearchList);
+		} catch (Exception e) {
+			log.error("查询首页热门搜索信息异常："+e.getMessage());
+		}
+	}
+	/**
+	 * 查询首页导航信息
+	 */
+	private void queryHeaderNav(Model model){
+		try {
+			PageHeaderNavRespDTO pageHeaderNavRespDTO = new PageHeaderNavRespDTO();
+			pageHeaderNavRespDTO.setStatus(STATUS_VALID);
+			List<PageHeaderNavRespDTO> searchNavList = iPageInfoRSV.queryPageHeaderNavList(pageHeaderNavRespDTO);
+			model.addAttribute("searchNavList",searchNavList);
+		} catch (Exception e) {
+			log.error("查询首页导航信息信息异常："+e.getMessage());
+		}
 	}
 }
