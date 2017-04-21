@@ -10,4 +10,12 @@
 
   <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV" ref="iPageInfoRSV"
                  owner="zhaoyf7" timeout="3000"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV" ref="gdsCatRSV"
+                 owner="zhaoyf7" timeout="3000"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsLabelRSV" ref="gdsLabelRSV"
+                 owner="zhaoyf7" timeout="3000"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfo2PropRSV" ref="gdsInfo2PropRSV"
+                 owner="zhaoyf7" timeout="3000"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV" ref="gdsSkuRSV"
+                 owner="zhaoyf7" timeout="3000"/>
 </beans>

@@ -7,6 +7,7 @@ import com.ai.bdex.dataexchange.busi.gds.entity.GdsSkuVO;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.*;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.*;
+import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -33,15 +34,15 @@ public class GdsController {
 
     private final static Integer AIP_CAT_ID = 1;
 
-    @Autowired
+    @DubboConsumer
     private IGdsInfoRSV iGdsInfoRSV;
-    @Autowired
+    @DubboConsumer
     private IGdsCatRSV iGdsCatRSV;
-    @Autowired
+    @DubboConsumer
     private IGdsLabelRSV iGdsLabelRSV;
-    @Autowired
+    @DubboConsumer
     private IGdsInfo2PropRSV iGdsInfo2PropRSV;
-    @Autowired
+    @DubboConsumer
     private IGdsSkuRSV iGdsSkuRSV;
 
     @RequestMapping(value = "/pageInit/{gdsId}-{skuId}")
@@ -129,9 +130,9 @@ public class GdsController {
         }
 
 
+        request.setAttribute("gdsInfo",gdsInfoVO);
 
-
-        return "/gds/gdsInfo";
+        return "/goods_ details";
     }
 
     @RequestMapping(value = "/queryRecomGdsList")

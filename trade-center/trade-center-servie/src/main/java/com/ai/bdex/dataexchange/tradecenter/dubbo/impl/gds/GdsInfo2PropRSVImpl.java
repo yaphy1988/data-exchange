@@ -4,13 +4,13 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo2Prop;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfo2PropReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Gds.GdsInfo2PropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfo2PropRSV;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsLabelRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfo2PropSV;
 import com.alibaba.dubbo.config.annotation.Reference;
 import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ import java.util.List;
 /**
  * Created by yx on 2017/4/20.
  */
+@Service("gdsInfo2PropRSV")
 public class GdsInfo2PropRSVImpl implements IGdsInfo2PropRSV {
 
     private final static Logger log = LoggerFactory.getLogger(GdsInfo2PropRSVImpl.class);

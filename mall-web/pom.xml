@@ -24,10 +24,10 @@
 	</properties>
 
 	<dependencies>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-security</artifactId>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>org.springframework.boot</groupId>-->
+			<!--<artifactId>spring-boot-starter-security</artifactId>-->
+		<!--</dependency>-->
 		<dependency>
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session</artifactId>
@@ -48,10 +48,10 @@
 			<groupId>com.ai.woego.boot</groupId>
 			<artifactId>config-engine-spring-boot-autoconfigure</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.ai.woego.boot</groupId>
-			<artifactId>dubbo-spring-boot-autoconfigure</artifactId>
-		</dependency>
+		<!--<dependency>-->
+			<!--<groupId>com.ai.woego.boot</groupId>-->
+			<!--<artifactId>dubbo-spring-boot-autoconfigure</artifactId>-->
+		<!--</dependency>-->
 		
 			<dependency>
 				<groupId>com.ai.paas</groupId>
@@ -72,6 +72,15 @@
 			<groupId>com.ai.bdex.dataexchange</groupId>
 			<artifactId>user-center-api</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.alibaba</groupId>
+			<artifactId>spring-boot-starter-dubbo</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.101tec</groupId>
+			<artifactId>zkclient</artifactId>
+			<version>0.10</version>
 		</dependency>
 	</dependencies>
 

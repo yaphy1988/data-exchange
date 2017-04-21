@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,12 +29,12 @@ import com.ai.paas.utils.SignUtil;
 public class LoginController {
 	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 	
-	@Autowired
+	@DubboConsumer
 	private ILoginRSV iLoginRSV;
-	@Autowired
-	protected HttpSession session;
-	@Autowired
-	private HttpServletRequest request;
+//	@DubboConsumer
+//	protected HttpSession session;
+//	@DubboConsumer
+//	private HttpServletRequest request;
 	
 	@RequestMapping(value="/pageInit")
 	public String pageInit(Model model){
@@ -42,7 +43,7 @@ public class LoginController {
 	
 	@RequestMapping(value="/dologin")
 	public Map<String,Object> dologin(HttpServletRequest request,
-			HttpServletResponse response){
+			HttpServletResponse response,HttpSession session){
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		LoginInfoDTO loginInfo = null;
 		String staffId = null;
@@ -68,7 +69,7 @@ public class LoginController {
 		loginInfo.setLoginIp(ip);
 		try {
 			//先校验登录，登录成功再进行其他业务逻辑判断
-            Map<String,Object> map = loginVerify_new(loginInfo,response);
+            Map<String,Object> map = loginVerify_new(loginInfo,response,request,session);
             StaffInfoDTO staffInfoVO = (StaffInfoDTO) map.get("staffInfoDTO");
 			rMap.put("success", true);
 			rMap.put("data", staffInfoVO);
@@ -93,10 +94,10 @@ public class LoginController {
 	 * @return
 	 * @throws Exception 
 	 */
-	public Map<String,Object> loginVerify_new(LoginInfoDTO loginInfo,HttpServletResponse response) throws Exception{
+	public Map<String,Object> loginVerify_new(LoginInfoDTO loginInfo,HttpServletResponse response,HttpServletRequest request,HttpSession session) throws Exception{
 		StaffInfoDTO staffInfoVO = null;
 		staffInfoVO = iLoginRSV.loginVerify(loginInfo);
-		Map<String,Object> result = saveStaffInfotoSession(staffInfoVO, response);		
+		Map<String,Object> result = saveStaffInfotoSession(staffInfoVO, response,request,session);
 		try{
 			iLoginRSV.updateLastLogin(staffInfoVO.getStaffId());
 		}catch (Exception e){
@@ -112,7 +113,7 @@ public class LoginController {
 	 * @throws Exception 
 	 */
 	
-	public Map<String,Object> saveStaffInfotoSession(StaffInfoDTO staffInfoDTO,HttpServletResponse response) throws Exception{
+	public Map<String,Object> saveStaffInfotoSession(StaffInfoDTO staffInfoDTO,HttpServletResponse response,HttpServletRequest request,HttpSession session) throws Exception{
 		Map<String, Object> map = new HashMap<String, Object>();
 		//存入用户上次登录信息Cookie，时间为一周
 		StaffUtil.addStaffCookie(request, response, staffInfoDTO.getStaffId());
@@ -130,7 +131,7 @@ public class LoginController {
 	 */
 	@RequestMapping(value = "/doLogout")
 	@ResponseBody
-	public Map<String,Object> doLogout(HttpServletResponse response) {
+	public Map<String,Object> doLogout(HttpServletResponse response,HttpSession session) {
 		Map<String, Object> map = new HashMap<String, Object>();
 		try {
 			StaffUtil.removeStaffInfo(session);

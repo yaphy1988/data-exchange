@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -26,7 +27,7 @@ public class SignController {
 	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 	
 	@SuppressWarnings("SpringJavaAutowiringInspection")
-	@Autowired
+	@DubboConsumer
 	private IAuthStaffRSV iAuthStaffRSV;
 	
 	/**

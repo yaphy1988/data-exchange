@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class HomePageController {
 	
 	private static final Logger log = LoggerFactory.getLogger(HomePageController.class);
 	
-	@Autowired
+	@DubboConsumer
 	IPageInfoRSV iPageInfoRSV;
 	@RequestMapping(value="/pageInit")
 	public String pageInit(){
