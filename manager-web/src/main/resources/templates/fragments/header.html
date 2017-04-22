@@ -20,7 +20,7 @@
 	            </div>
 	            <div class="search-hot">
 	                <a href="#" class="more floatR" th:href="@{https://www.baidu.com}">更多&nbsp;&gt;</a>
-                  	<a  th:each="collect,iterStat : ${hotSearchList}" th:href="@{${collect.searchUrl}}" th:text="${collect.searchKey}"></a>
+                  	<!-- <a  th:each="collect,iterStat : ${hotSearchList}" th:href="@{${collect.searchUrl}}" th:text="${collect.searchKey}"></a> -->
 	            </div>
 	        </div>
 	    </div>
@@ -28,7 +28,7 @@
 	        <!--左侧边栏开始-->
 	        <div class="sidebar floatL">
 	            <h3>全部商品</h3>
-	            <ul>
+	            <ul class="hidden">
 	                <li><a href="#"><i>&rsaquo;</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
 	                <li><a href="#"><i>&rsaquo;</i>交通运输</a> </li>
 	                <li><a href="#"><i>&rsaquo;</i>气象环保</a> </li>

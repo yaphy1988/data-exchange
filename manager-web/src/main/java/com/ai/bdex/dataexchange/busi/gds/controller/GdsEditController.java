@@ -102,7 +102,7 @@ public class GdsEditController {
         model.addAttribute("isView", isView);
     	model.addAttribute("isEdit", isEdit);
     	model.addAttribute("gdsInfoRespDTO", gdsInfoRespDTO);
-        return "/demo/demo";
+        return "goods_import";
     }
     /**
      * 获取商品分类子分类

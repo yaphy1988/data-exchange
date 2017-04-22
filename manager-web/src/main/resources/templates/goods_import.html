@@ -1,14 +1,17 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
 <head>
 	<meta charset="UTF-8">
 	<title>商品录入</title>
-	<link rel="stylesheet" href="../static/css/bootstrap.css">
-	<link rel="stylesheet" href="../static/fonts/iconfont.css">
-	<link rel="stylesheet" href="../static/css/global.css">
-	<link rel="stylesheet" href="../static/css/manage.css">
+	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
 </head>
 <body>
+	<div  layout:fragment="screen_content">
 	<div class="container">
 		<div class="m_con">
 			<div class="title">商品类型</div>
@@ -201,7 +204,8 @@
 			
 			<!-- 下面实际应是编辑器 -->
 			<div>
-				<textarea class="form-control" onkeyup="checkLen(this)" rows="5" "></textarea>
+				<!-- <textarea class="form-control" onkeyup="checkLen(this)" rows="5" "></textarea>-->
+				<textarea class="form-control"  rows="5"></textarea>
 			</div>
 			
 		</div>
@@ -377,7 +381,8 @@
 
 
 
-	<script src="../static/js/jquery-1.12.4.js"></script>
-	<script src="../static/js/bootstrap.min.js"></script>
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+	</div>
 </body>
 </html>
