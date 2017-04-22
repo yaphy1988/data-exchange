@@ -151,4 +151,17 @@ public class HomePageController {
 			log.error("查询首页导航信息信息异常："+e.getMessage());
 		}
 	}
+	/**
+	 * 首页数据定制
+	 */
+	private void saveMadeData(Model model){
+		try {
+			PageHeaderNavRespDTO pageHeaderNavRespDTO = new PageHeaderNavRespDTO();
+			pageHeaderNavRespDTO.setStatus(STATUS_VALID);
+			List<PageHeaderNavRespDTO> searchNavList = iPageInfoRSV.queryPageHeaderNavList(pageHeaderNavRespDTO);
+			model.addAttribute("searchNavList",searchNavList);
+		} catch (Exception e) {
+			log.error("查询首页导航信息信息异常："+e.getMessage());
+		}
+	}
 }
