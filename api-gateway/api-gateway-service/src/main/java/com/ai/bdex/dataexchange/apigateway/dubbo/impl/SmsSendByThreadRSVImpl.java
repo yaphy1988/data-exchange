@@ -1,8 +1,11 @@
 package com.ai.bdex.dataexchange.apigateway.dubbo.impl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -83,5 +86,19 @@ public class SmsSendByThreadRSVImpl implements ISmsSendRSV{
     	public static ExecutorService getExecutor(){
     		return executor;
     	}
-    }   
+    }
+
+	@Override
+	public void sendVerifyCodeByAlibaba(String phone, String verifyCode)
+			throws Exception {	
+		String templateCode="SMS_62495440";
+		List<String> phoneList=new ArrayList<String>();
+		phoneList.add(phone);
+		Map<String,String> map=new HashMap<String,String>();
+		map.put("no", verifyCode);
+		String uuid=UUID.randomUUID().toString().replace("-", "");
+		sendSmsByAlibaba(phoneList,map,templateCode,uuid,"userCenter");
+	}
+    
+    
 }

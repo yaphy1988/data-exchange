@@ -14,5 +14,12 @@ public interface ISmsSendRSV {
 		 * @param owner 请求方标识
 		 * @throws Exception
 		 */
-		void sendSmsByAlibaba(List<String> phone,Map<String,String> params,String templateCode,String uuid,String owner)throws Exception;		
+		void sendSmsByAlibaba(List<String> phone,Map<String,String> params,String templateCode,String uuid,String owner)throws Exception;
+		/**
+		 * 经alibaba发送短信验证码
+		 * @param phone
+		 * @param verifyCode
+		 * @throws Exception
+		 */
+		void sendVerifyCodeByAlibaba(String phone,String verifyCode)throws Exception;
 }

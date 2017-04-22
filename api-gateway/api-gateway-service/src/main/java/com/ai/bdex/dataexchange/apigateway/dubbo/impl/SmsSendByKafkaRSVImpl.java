@@ -1,8 +1,11 @@
 package com.ai.bdex.dataexchange.apigateway.dubbo.impl;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -82,4 +85,15 @@ public class SmsSendByKafkaRSVImpl implements ISmsSendRSV{
         messageSender.sendMessage(message, topic);
         log.debug("发送短信信息到kafka。topic="+topic+"。message="+message);
     }
+	@Override
+	public void sendVerifyCodeByAlibaba(String phone, String verifyCode)
+			throws Exception {	
+		String templateCode="SMS_62495440";
+		List<String> phoneList=new ArrayList<String>();
+		phoneList.add(phone);
+		Map<String,String> map=new HashMap<String,String>();
+		map.put("no", verifyCode);
+		String uuid=UUID.randomUUID().toString().replace("-", "");
+		sendSmsByAlibaba(phoneList,map,templateCode,uuid,"userCenter");
+	}
 }
