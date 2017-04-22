@@ -1,0 +1,39 @@
+spring:
+  dubbo:
+    application:
+      name: woego-dubbo-demo
+      owner: owner
+      environment: develop
+    protocol:
+      port: 20880
+      threads: 300
+    registry:
+      address: 127.0.0.1:2181
+    provider:
+      enabled: true
+      group: devGroup
+    consumer:
+      enabled: false
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://112.74.163.29:3306/bdex
+    username: bdex
+    password: bdex1234
+
+application:
+  configcenter:
+#    login: admin:admin
+#    zkaddress: 127.0.0.1:2181
+    runmode: D
+  sequencefactory:
+    confpath: /com/ai/db/sequence/conf
+  cache:
+    confpath: /com/ai/paas/cache/conf
+  session:
+    confpath: /com/ai/paas/session/conf
+  image:
+    confpath: /com/ai/paas/image/conf
+  file:
+    confpath: /com/ai/paas/file/conf
