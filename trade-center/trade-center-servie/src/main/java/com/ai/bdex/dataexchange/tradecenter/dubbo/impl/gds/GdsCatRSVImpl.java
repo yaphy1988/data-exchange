@@ -8,9 +8,6 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
 
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.paas.utils.CollectionUtil;
-import com.alibaba.dubbo.common.utils.CollectionUtils;
-
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -52,22 +49,24 @@ public class GdsCatRSVImpl implements IGdsCatRSV {
     @Override
     public List<GdsCatRespDTO> queryGdsCatList(GdsCatReqDTO gdsCatReqDTO) throws Exception {
         List<GdsCatRespDTO> respDTOList = new ArrayList<GdsCatRespDTO>();
-       try{
+        try{
         	 if (gdsCatReqDTO ==null || gdsCatReqDTO.getCatPid()==null){
                  throw new Exception("查询商品分类信息异常，入参为空");
              }
-             List<GdsCat> catList= iGdsCatSV.queryGdsCatList(gdsCatReqDTO); 
-             if(CollectionUtils.isNotEmpty(catList)){ 
-            	 for(GdsCat catVO:catList){ 
-                 	 GdsCatRespDTO respDTO = new GdsCatRespDTO();
-            		 BeanUtils.copyProperties(catVO,respDTO); 
+             List<GdsCat> catList= iGdsCatSV.queryGdsCatList(gdsCatReqDTO);
+
+             if(!CollectionUtil.isEmpty(catList)){
+            	 for(GdsCat catVO:catList){
+                     GdsCatRespDTO respDTO = new GdsCatRespDTO();
+                     ObjectCopyUtil.copyObjValue(catVO,respDTO,null,false);
+//            		 BeanUtils.copyProperties(catVO,respDTO);
             		 respDTOList.add(respDTO);
             	 }
              }
         }catch(Exception e){
         	log.error("获取商品分类信息异常:", e);
             throw new Exception(e);
-        } 
+        }
         return respDTOList;
     }
 }
