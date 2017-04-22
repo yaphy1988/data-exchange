@@ -16,7 +16,7 @@
     margin-right: 30px;
 }
 .top-right a,
-.top-right i{
+.top-right i {
     margin-left: 14px;
     color: #666;
 }
@@ -27,6 +27,46 @@
     position: relative;
     top: -2px;
     color: #ddd;
+}
+
+.top-right a.follow{
+    position: relative;
+    display: inline-block;
+    margin-left: 4px;
+    width: 80px;
+    text-align: center;
+}
+.top-right a.follow i{
+    margin-left:5px;
+    top:1px;
+    transition:all 300ms linear;
+}
+.top-right a.follow:hover{
+    background: #fff;
+}
+.top-right a.follow:hover i{
+    transform:rotate(180deg);
+    -ms-transform:rotate(180deg);
+    -moz-transform:rotate(180deg);
+    -webkit-transform:rotate(180deg);
+    -o-transform:rotate(180deg);
+}
+.guangshu{
+    position: absolute;
+    padding: 10px;
+    border: 1px solid #f1f1f1;
+    border-top:0;
+    left:-1px;
+    top:36px;
+    z-index: 99;
+    background: #fff;
+    display: none;
+}
+.top-right a.follow:hover .guangshu{
+    display: block;
+}
+.overflow-inherit{
+    overflow: inherit;
 }
 
 .header{

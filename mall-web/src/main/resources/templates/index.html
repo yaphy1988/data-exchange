@@ -3,21 +3,21 @@
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/layout}">
 <head lang="en">
-    <meta charset="UTF-8" th:remove="all">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all">
-    <meta name="renderer" content="webkit" th:remove="all">
-    <meta name="description" content="" th:remove="all">
-    <meta name="keywords" content="" th:remove="all">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
     <title>广州数据中心</title>
-    <link rel="icon" type="../static/image/png" href="../static/images/favicon.png" th:remove="all">
-    <link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
-    <link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-    <link rel="stylesheet" href="../static/css/index.css" th:remove="all">
-    <script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
-    <script src="../static/component/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
+    <link rel="icon" type="../static/image/png" href="../static/images/favicon.png">
+    <link rel="stylesheet" href="../static/css/bootstrap.css">
+    <link rel="stylesheet" href="../static/css/global.css">
+    <link rel="stylesheet" href="../static/css/index.css">
+    <script src="../static/js/jquery-1.12.4.js"></script>
+    <script src="../static/js/bootstrap.min.js"></script>
 </head>
 <body class="bgf1">
-<div class="top" th:remove="all">
+<div class="top">
     <div class="wrap1200">
         <div class="top-left floatL">
             <span>欢迎来到广州数据中心</span>
@@ -33,7 +33,7 @@
         </div>
     </div>
 </div>
-<div class="header" th:remove="all">
+<div class="header">
     <div class="wrap1200">
         <div class="logo floatL"><img src="../static/images/logo.png" title="广州数据中心"></div>
         <div class="search floatR">
@@ -120,7 +120,7 @@
 </div>
 
 <div layout:fragment="screen_content">
-    <div class="banner wrap1200">
+<div class="banner wrap1200">
     <div class="banner-box">
         <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
@@ -135,19 +135,19 @@
         <!-- Wrapper for slides -->
         <div class="carousel-inner" role="listbox">
             <div class="item active">
-                <img src="../static/images/index-banner.jpg" th:src="@{/images/index-banner.jpg}" alt="...">
+                <img src="../static/images/index-banner.jpg" alt="...">
             </div>
             <div class="item">
-                <img src="../static/images/index-banner.jpg" th:src="@{/images/index-banner.jpg}" alt="...">
+                <img src="../static/images/index-banner.jpg" alt="...">
             </div>
             <div class="item">
-                <img src="../static/images/index-banner.jpg" th:src="@{/images/index-banner.jpg}" alt="...">
+                <img src="../static/images/index-banner.jpg" alt="...">
             </div>
             <div class="item">
-                <img src="../static/images/index-banner.jpg" th:src="@{/images/index-banner.jpg}" alt="...">
+                <img src="../static/images/index-banner.jpg" alt="...">
             </div>
             <div class="item">
-                <img src="../static/images/index-banner.jpg" th:src="@{/images/index-banner.jpg}" alt="...">
+                <img src="../static/images/index-banner.jpg" alt="...">
             </div>
         </div>
 
@@ -164,32 +164,25 @@
     </div>
 </div>
 
-    <div class="wrap1200">
+<div class="wrap1200">
     <div class="date-title">
         <h3 class="title"><i class="point"></i>数据推荐</h3>
     </div>
     <ul class="date-list">
-        <li th:remove="all"><a href="#" th:href="@{}"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>全国基站信息 全国基站信息 全国基站信息</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>股票每日市值数据</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>亚太区企业数据</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>进口贸易数据</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>重点行业数据</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>全国行政村届图层</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>广东省行业GDP</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>广州书大数据企业</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>全国污染源行业排放数据</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>2015年广东汽车零部件生产企业状况 2015年广东汽车零部件生产企业状况</span></a></li>
-        <!--<li th:each="data:${dataList}">
-            <a href="#" th:href="@{data.href}">
-                <img src="../static/images/dateIcon.png" th:src="@{${data.imageUrl}}">
-                <span th:text="${data.info}">2015年广东汽车零部件生产企业状况 2015年广东汽车零部件生产企业状况</span>
-            </a>
-        </li>-->
-        <!-- TODO: 从后台返回数据后使用th:each动态加载数据 -->
+        <li><a href="#"><img src="../static/images/dateIcon.png"><span>全国基站信息 全国基站信息 全国基站信息</span></a></li>
+        <li><a href="#"><img src="../static/images/dateIcon.png"><span>股票每日市值数据</span></a></li>
+        <li><a href="#"><img src="../static/images/dateIcon.png"><span>亚太区企业数据</span></a></li>
+        <li><a href="#"><img src="../static/images/dateIcon.png"><span>进口贸易数据</span></a></li>
+        <li><a href="#"><img src="../static/images/dateIcon.png"><span>重点行业数据</span></a></li>
+        <li><a href="#"><img src="../static/images/dateIcon.png"><span>全国行政村届图层</span></a></li>
+        <li><a href="#"><img src="../static/images/dateIcon.png"><span>广东省行业GDP</span></a></li>
+        <li><a href="#"><img src="../static/images/dateIcon.png"><span>广州书大数据企业</span></a></li>
+        <li><a href="#"><img src="../static/images/dateIcon.png"><span>全国污染源行业排放数据</span></a></li>
+        <li><a href="#"><img src="../static/images/dateIcon.png"><span>2015年广东汽车零部件生产企业状况 2015年广东汽车零部件生产企业状况</span></a></li>
     </ul>
 </div>
 
-    <div class="main ">
+<div class="main ">
     <div class="wrap1200 pt30 pb50">
         <div class="individuation-title">
             <h3>找不到数据？个性化定制提供专业数据服务</h3>
@@ -219,7 +212,7 @@
     </div>
 </div>
 
-    <div class="wrap1200 pt60">
+<div class="wrap1200 pt60">
     <div class="item-list clearfix">
         <div class="item-cum">
             <h3 class="title"><i class="point"></i>平台动态</h3>
@@ -272,29 +265,29 @@
     </div>
 </div>
 
-    <div class="wrap1200 pt60 pb60">
+<div class="wrap1200 pt60 pb60">
     <div class="parter">
         <h3 class="title"><i class="point"></i>合作伙伴</h3>
         <ul>
             <li>
-                <a href="#"><img src="../static/images/partner/partner-img01.png" th:src="@{/images/partner/partner-img01.png}"> </a>
-                <a href="#"><img src="../static/images/partner/partner-img02.png" th:src="@{/images/partner/partner-img02.png}"></a>
-                <a href="#"><img src="../static/images/partner/partner-img03.png" th:src="@{/images/partner/partner-img03.png}"></a>
-                <a href="#"><img src="../static/images/partner/partner-img04.png" th:src="@{/images/partner/partner-img04.png}"></a>
-                <a href="#"><img src="../static/images/partner/partner-img05.png" th:src="@{/images/partner/partner-img05.png}"></a>
+                <a href="#"><img src="../static/images/partner/partner-img01.png"> </a>
+                <a href="#"><img src="../static/images/partner/partner-img02.png"></a>
+                <a href="#"><img src="../static/images/partner/partner-img03.png"></a>
+                <a href="#"><img src="../static/images/partner/partner-img04.png"></a>
+                <a href="#"><img src="../static/images/partner/partner-img05.png"></a>
             </li>
             <li>
-                <a href="#"><img src="../static/images/partner/partner-img06.jpg" th:src="@{/images/partner/partner-img06.jpg}"> </a>
-                <a href="#"><img src="../static/images/partner/partner-img07.png" th:src="@{/images/partner/partner-img07.png}"></a>
-                <a href="#"><img src="../static/images/partner/partner-img08.png" th:src="@{/images/partner/partner-img08.png}"></a>
-                <a href="#"><img src="../static/images/partner/partner-img09.png" th:src="@{/images/partner/partner-img09.png}"></a>
-                <a href="#"><img src="../static/images/partner/partner-img10.png" th:src="@{/images/partner/partner-img10.png}"></a>
+                <a href="#"><img src="../static/images/partner/partner-img06.jpg"> </a>
+                <a href="#"><img src="../static/images/partner/partner-img07.png"></a>
+                <a href="#"><img src="../static/images/partner/partner-img08.png"></a>
+                <a href="#"><img src="../static/images/partner/partner-img09.png"></a>
+                <a href="#"><img src="../static/images/partner/partner-img10.png"></a>
             </li>
         </ul>
     </div>
 </div>
 </div>
-<div class="footer" th:remove="all">
+<div class="footer ">
     <div class="wrap1200 ptb40">
         <div class="left floatL">
             <img src="../static/images/logo-footer.png">
