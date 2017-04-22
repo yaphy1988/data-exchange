@@ -376,6 +376,9 @@ fieldset[disabled] .btn-default.focus {
 }
 .floatL{float: left;}
 .floatR{float: right;}
+.form-control{
+    border-color: #dedede;
+}
 .form-control::-moz-placeholder {
     color: #bbb;
 }
@@ -386,6 +389,34 @@ fieldset[disabled] .btn-default.focus {
     color: #bbb;
 }
 .phcolor{color: #bbb;}
+.modal-dialog{
+    max-width: 800px;
+    width: 600px\9;
+}
+.modal-content{
+    box-shadow: none;
+    border: none;
+    border-radius: 0;
+
+}
+.modal-header{
+    margin: 0 12px;
+    border-bottom:1px solid #eee;
+}
+.modal-title{
+    font-size: 15px;
+    font-weight: bold;
+}
+.modal-body{
+    padding: 15px 30px;
+}
+.modal-footer{
+    border: none;
+    text-align: center;
+}
+.modal-footer button{
+    border-radius: 0;
+}
 
 
 /* liangsx add */
