@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -113,11 +114,29 @@ public class GdsController {
                     gdsSkuReqDTO.setStatus("1");
                     List<GdsSkuRespDTO> gdsSkuRespDTOList = iGdsSkuRSV.queryGdsSkuList(gdsSkuReqDTO);
                     if (!CollectionUtil.isEmpty(gdsSkuRespDTOList)){
+                        boolean ifFirstSelflag = true;//是否设置第一个为选中的单品
                         for (GdsSkuRespDTO gdsSkuRespDTO : gdsSkuRespDTOList){
                             GdsSkuVO gdsSkuVO = new GdsSkuVO();
                             ObjectCopyUtil.copyObjValue(gdsSkuRespDTO,gdsSkuVO,null,false);
+                            //将分转换成元，并保留两位小数
+                            if (gdsSkuVO.getPackPrice()!=null && gdsSkuVO.getPackPrice().intValue()>0){
+                                gdsSkuVO.setPackPriceStr(decimalTwo(gdsSkuVO.getPackPrice()/(float)100));
+                            }else{
+                                gdsSkuVO.setPackPriceStr("0.00");
+                            }
 //                            BeanUtils.copyProperties(gdsSkuRespDTO,gdsSkuVO);
+                            if (skuId!=null && skuId.intValue()>0){
+                                if (skuId.intValue() == gdsSkuVO.getSkuId().intValue()){
+                                    request.setAttribute("curGdsSku",gdsSkuVO);
+                                    gdsSkuVO.setIfHaveSel("active");//直接返回class，省去再根据是否等于1去判断使用class=active
+                                    ifFirstSelflag = false;
+                                }
+                            }
                             gdsSkuVOList.add(gdsSkuVO);
+                        }
+                        if (ifFirstSelflag){
+                            gdsSkuVOList.get(0).setIfHaveSel("1");
+                            request.setAttribute("curGdsSku",gdsSkuVOList.get(0));
                         }
                         gdsInfoVO.setGdsSkuVOList(gdsSkuVOList);
                     }
@@ -134,6 +153,7 @@ public class GdsController {
 
 
         request.setAttribute("gdsInfo",gdsInfoVO);
+        request.setAttribute("ifHiddenHead","hidden");
 
         return "/goods_details";
     }
@@ -157,6 +177,22 @@ public class GdsController {
         ajaxJson.setObj(gdsInfoRespDTOList);
 
         return ajaxJson;
+    }
+
+    /**
+     * 将float保留两位小数
+     * @param num
+     * @return
+     */
+    private String decimalTwo(float num){
+        String returnNum = "0.00";
+        if (num == 0){
+            return returnNum;
+        }
+        DecimalFormat df = new DecimalFormat("0.00");//格式化小数
+        returnNum = df.format(num);//返回的是String类型
+
+        return  returnNum;
     }
 
 }

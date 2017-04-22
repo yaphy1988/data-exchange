@@ -15,6 +15,8 @@ public class GdsSkuVO implements Serializable {
 
     private Integer packPrice;
 
+    private String packPriceStr;//将分转换成元，保留两位小数
+
     private Integer packTimes;
 
     private Integer packDay;
@@ -30,6 +32,8 @@ public class GdsSkuVO implements Serializable {
     private String updateUser;
 
     private Date updateTime;
+
+    private String ifHaveSel;
 
     public Integer getSkuId() {
         return skuId;
@@ -125,5 +129,21 @@ public class GdsSkuVO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getIfHaveSel() {
+        return ifHaveSel;
+    }
+
+    public void setIfHaveSel(String ifHaveSel) {
+        this.ifHaveSel = ifHaveSel;
+    }
+
+    public String getPackPriceStr() {
+        return packPriceStr;
+    }
+
+    public void setPackPriceStr(String packPriceStr) {
+        this.packPriceStr = packPriceStr;
     }
 }
