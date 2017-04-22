@@ -10,11 +10,60 @@
 	border-bottom: solid 1px #eee;
 	margin-bottom: 20px;
 }
+/* 编辑表格 */
 .editTable td.Hint{
-	padding: 20px;
+	padding:20px;
+
 	text-align: right;
 	color: #999;
 }
 .editTable td.Hint.tips{
-	padding: 0 20px;
+	padding:0 20px;
+}
+
+/* 列表表格 */
+.listTable .tit{
+	background-color:#fbfbfb;
+	padding:10px;
+	border: solid 1px #eee;
+	border-bottom: transparent;
+}
+.listTable h2{
+	font-size: 14px;
+	display: inline-block;
+	line-height: 36px;
+}
+.listTable .input-group{
+	float: right;
+	width: 60%;
+}
+.listTable .con{
+	padding:10px;
+	border: solid 1px #eee;
+}
+.listTable .con{
+	overflow-y:auto;
+}
+.listTable table.listitem td{
+	border: transparent;
+}
+.listTable .listitem td{
+	padding: 10px;
+	cursor: pointer;
+}
+.listTable .table > thead > tr > th,
+.listTable .table > tbody > tr > th,
+.listTable .table > tfoot > tr > th,
+.listTable .table > thead > tr > td,
+.listTable .table > tbody > tr > td,
+.listTable .table > tfoot > tr > td{
+	vertical-align: middle;
+}
+/* 模态框 */
+.m_modal
+{
+	font-size: 12px;
+}
+.m_modal .modal-footer{
+	text-align: center;
 }
