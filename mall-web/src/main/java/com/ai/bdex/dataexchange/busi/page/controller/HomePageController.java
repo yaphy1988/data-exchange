@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
@@ -40,10 +41,11 @@ public class HomePageController {
 	@DubboConsumer
 	IPageInfoRSV iPageInfoRSV;
 	@RequestMapping(value="/pageInit")
-	public String pageInit(Model model){
-		queryHotSearch(model);
-		queryHeaderNav(model);
-		return "index";
+	public ModelAndView  pageInit(){
+		ModelAndView modelAndView = new ModelAndView("index");
+		queryHotSearch(modelAndView);
+//		queryHeaderNav(modelAndView);
+		return modelAndView;
 	}
 	/**
 	 * 查询楼层信息
@@ -74,7 +76,7 @@ public class HomePageController {
 	 * @return
 	 */
 	@RequestMapping(value="/queryPageModuleGoods")
-	public String queryPageModuleGoods(Model model,@PathVariable Integer moduleId){
+	public String queryPageModuleGoods(Model model,@PathVariable("moduleId") Integer moduleId){
 		
 		try {
 			PageModuleGoodsRespDTO pageModuleGoodsRespDTO = new PageModuleGoodsRespDTO();
@@ -94,7 +96,7 @@ public class HomePageController {
 	 * @return
 	 */
 	@RequestMapping(value="/queryPageModuleAd")
-	public String queryPageModuleAd(Model model,@PathVariable Integer moduleId){
+	public String queryPageModuleAd(Model model,@PathVariable("moduleId") Integer moduleId){
 		try {
 			PageModuleAdRespDTO pageModuleAdRespDTO = new PageModuleAdRespDTO();
 			pageModuleAdRespDTO.setModuleId(moduleId);
@@ -111,7 +113,7 @@ public class HomePageController {
 	 * @param model
 	 */
 	@RequestMapping(value="/querySortInfo")
-	public String querySortInfo(Model model,@PathVariable Integer sortId,@PathVariable Integer sortParentId) {
+	public String querySortInfo(Model model,@PathVariable("sortId") Integer sortId,@PathVariable("sortParentId") Integer sortParentId) {
 		try {
 			SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
 			sortInfoRespDTO.setStatus(STATUS_VALID);
@@ -128,12 +130,12 @@ public class HomePageController {
 	/**
 	 * 查询首页热门搜索信息
 	 */
-	private void queryHotSearch(Model model){
+	private void queryHotSearch(ModelAndView modelAndView){
 		try {
 			PageHotSearchRespDTO pageHotSearchRespDTO = new PageHotSearchRespDTO();
 			pageHotSearchRespDTO.setStatus(STATUS_VALID);
 			List<PageHotSearchRespDTO> hotSearchList = iPageInfoRSV.queryPageHotSearchList(pageHotSearchRespDTO);
-			model.addAttribute("hotSearchList",hotSearchList);
+			modelAndView.addObject("hotSearchList",hotSearchList);
 		} catch (Exception e) {
 			log.error("查询首页热门搜索信息异常："+e.getMessage());
 		}
@@ -141,12 +143,12 @@ public class HomePageController {
 	/**
 	 * 查询首页导航信息
 	 */
-	private void queryHeaderNav(Model model){
+	private void queryHeaderNav(ModelAndView modelAndView){
 		try {
 			PageHeaderNavRespDTO pageHeaderNavRespDTO = new PageHeaderNavRespDTO();
 			pageHeaderNavRespDTO.setStatus(STATUS_VALID);
 			List<PageHeaderNavRespDTO> searchNavList = iPageInfoRSV.queryPageHeaderNavList(pageHeaderNavRespDTO);
-			model.addAttribute("searchNavList",searchNavList);
+			modelAndView.addObject("searchNavList",searchNavList);
 		} catch (Exception e) {
 			log.error("查询首页导航信息信息异常："+e.getMessage());
 		}

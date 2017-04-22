@@ -1,10 +1,97 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title>Title</title>
+<head lang="en">
+	<meta charset="UTF-8" th:remove="all">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all">
+	<meta name="renderer" content="webkit" th:remove="all">
+	<link rel="icon" type="../static/image/png" href="../../static/images/favicon.png" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/index.css" th:remove="all">
 </head>
-<body>
-
+<body class="bgf1">
+	<div class="header" th:fragment="header">
+	    <div class="wrap1200">
+	        <div class="logo floatL"><img src="../../static/images/logo.png" th:src="@{/images/logo.png}" title="广州数据中心"></div>
+	        <div class="search floatR">
+	            <div class="search-input">
+	                <input type="text">
+	                <button class="btn btn-primary">搜索</button>
+	            </div>
+	            <div class="search-hot">
+	                <a href="#" class="more floatR" th:href="@{https://www.baidu.com}">更多&nbsp;&gt;</a>
+                  	<a  th:each="collect,iterStat : ${hotSearchList}" th:href="@{${collect.searchUrl}}" th:text="${collect.searchKey}"></a>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="menu clearfix">
+	        <!--左侧边栏开始-->
+	        <div class="sidebar floatL">
+	            <h3>全部商品</h3>
+	            <ul>
+	                <li><a href="#"><i>&rsaquo;</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
+	                <li><a href="#"><i>&rsaquo;</i>交通运输</a> </li>
+	                <li><a href="#"><i>&rsaquo;</i>气象环保</a> </li>
+	                <li><a href="#"><i>&rsaquo;</i>生活服务</a> </li>
+	                <li><a href="#"><i>&rsaquo;</i>生活服务</a> </li>
+	                <li><a href="#"><i>&rsaquo;</i>时空数据</a> </li>
+	                <li><a href="#"><i>&rsaquo;</i>健康医疗</a> </li>
+	                <li><a href="#"><i>&rsaquo;</i>更多服务</a> </li>
+	            </ul>
+	
+	            <!--二级导航开始-->
+	            <div class="sidebar-hidden" style="display: none">
+	                <h4>金融服务</h4>
+	                <div class="sidebar-link">
+	                    <a href="#">条码查询</a>
+	                    <a href="#">万能小哥</a>
+	                    <a href="#">专利查询</a>
+	                    <a href="#">全国违章直连查询</a>
+	                    <a href="#">H5在线电影票</a>
+	                    <a href="#">常用快递</a>
+	                    <a href="#">快递在线下单</a>
+	                    <a href="#">名片识别</a>
+	                    <a href="#">条码查询</a>
+	                    <a href="#">万能小哥</a>
+	                    <a href="#">专利查询</a>
+	                    <a href="#">全国违章直连查询</a>
+	                    <a href="#">H5在线电影票</a>
+	                    <a href="#">常用快递</a>
+	                    <a href="#">快递在线下单</a>
+	                    <a href="#">名片识别</a>
+	                    <a href="#">条码查询</a>
+	                    <a href="#">万能小哥</a>
+	                    <a href="#">专利查询</a>
+	                    <a href="#">全国违章直连查询</a>
+	                    <a href="#">H5在线电影票</a>
+	                    <a href="#">常用快递</a>
+	                </div>
+	
+	                <div class="ad-list clearfix">
+	                    <div class="item floatL"></div>
+	                    <div class="item floatL"></div>
+	                    <div class="item floatL"></div>
+	                </div>
+	            </div>
+	            <!--二级导航结束-->
+	        </div>
+	        <!--左侧边栏结束-->
+	
+	        <!--菜单栏开始-->
+	        <ul class="navbar floatL clearfix">
+	            <li><a href="#">首页</a> </li>
+	            <li><a href="#">API</a> </li>
+	            <li><a href="#">定制数据</a> </li>
+	            <li><a href="#">解决方案</a> </li>
+	            <li><a href="#">新闻动态</a> </li>
+	            <!--<li  th:each="collect,iterStat : ${#session.getAttribute('searchNavList')}">
+	             	<a th:href="@{${collect.navLink}}" th:text="${collect.navName}"></a>
+	            </li>-->
+				<!-- TODO: 菜单功能实现后替换成动态菜单栏，实现后去掉前面几个demo的li标签 -->
+	        </ul>
+	        <!--菜单栏结束-->
+	    </div>
+	</div>
+	
 </body>
 </html>
