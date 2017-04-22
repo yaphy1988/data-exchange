@@ -76,7 +76,7 @@
                         <configuration>
                             <finalName>bdex</finalName>
                             <descriptors><!--描述文件路径-->
-                                <descriptor>src/main/resources/zip.xml</descriptor>
+                                <descriptor>src/main/resources/bdexzip.xml</descriptor>
                             </descriptors>
                         </configuration>
                     </execution>
