@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{fragments/layout}">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
 <head>
 	<meta charset="UTF-8">
 	<title>商品录入</title>
@@ -11,8 +11,43 @@
 	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
 </head>
 <body>
-	<div  layout:fragment="screen_content">
-	<div class="container">
+<header class="clearfix m_header">
+	<a href="" class="Logo" target="_blank" >
+		<img width="160" src="../static/images/manage_logo.jpg" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<div  layout:fragment="screen_content">
+	<div class="m_main">
 		<div class="m_con">
 			<div class="title">商品类型</div>
 			<table class="editTable">
@@ -23,8 +58,8 @@
 					</td>
 					<td width="520">
 						<div class="input-group">
-						  <input type="text" class="form-control" placeholder="/API/">
-						  <span class="input-group-btn">
+							<input type="text" class="form-control" placeholder="/API/">
+							<span class="input-group-btn">
 					        <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">请选择</button>
 					      </span>
 						</div>
@@ -36,8 +71,8 @@
 					</td>
 					<td>
 						<div class="input-group">
-						  <input type="text" class="form-control" placeholder="/条码查询/">
-						  <span class="input-group-btn">
+							<input type="text" class="form-control" placeholder="/条码查询/">
+							<span class="input-group-btn">
 					        <button class="btn btn-default" type="button">请选择</button>
 					      </span>
 						</div>
@@ -49,13 +84,13 @@
 					</td>
 					<td>
 						<div class="input-group">
-						  <input type="text" class="form-control" placeholder="/汽车/">
-						  <span class="input-group-btn">
+							<input type="text" class="form-control" placeholder="/汽车/">
+							<span class="input-group-btn">
 					        <button class="btn btn-default" type="button">请选择</button>
 					      </span>
 						</div>
 					</td>
-					
+
 				</tr>
 				<tr>
 					<td></td>
@@ -67,8 +102,8 @@
 					</td>
 					<td>
 						<div class="input-group">
-						  <input type="text" class="form-control" placeholder="/热门数据/">
-						  <span class="input-group-btn">
+							<input type="text" class="form-control" placeholder="/热门数据/">
+							<span class="input-group-btn">
 					        <button class="btn btn-default" type="button">请选择</button>
 					      </span>
 						</div>
@@ -84,8 +119,8 @@
 					</td>
 					<td width="520">
 						<div class="input-group">
-						  <input type="text" class="form-control" placeholder="/VIN车架号查询/">
-						  <span class="input-group-btn">
+							<input type="text" class="form-control" placeholder="/VIN车架号查询/">
+							<span class="input-group-btn">
 					        <button class="btn btn-default" type="button">请选择</button>
 					      </span>
 						</div>
@@ -105,13 +140,13 @@
 					</td>
 					<td width="520">
 						<div  class="input-group">
-						  <input type="text" class="form-control" placeholder="VIN车架号查询详细版">
-						  <span class="input-group-btn">
+							<input type="text" class="form-control" placeholder="VIN车架号查询详细版">
+							<span class="input-group-btn">
 					        <button class="btn btn-default" type="button">请选择</button>
 					      </span>
 						</div>
 					</td>
-					
+
 				</tr>
 				<tr>
 					<td></td>
@@ -124,8 +159,8 @@
 					</td>
 					<td>
 						<div class="input-group">
-						  <input type="text" class="form-control" placeholder="根据传递17位的车架号进行详细信息查询">
-						  <span class="input-group-btn">
+							<input type="text" class="form-control" placeholder="根据传递17位的车架号进行详细信息查询">
+							<span class="input-group-btn">
 					        <button class="btn btn-default" type="button">请选择</button>
 					      </span>
 						</div>
@@ -142,7 +177,7 @@
 						<a href="" class="btn btn-default  btn-sm ml20" data-toggle="modal" data-target="#myModal2">请选择</a>
 					</td>
 					<td>
-						
+
 					</td>
 				</tr>
 				<tr>
@@ -159,8 +194,8 @@
 					<td class="Hint"></td>
 					<td>
 						<div class="input-group" style="width: 50%; padding-top: 20px;">
-						  <input  type="text" class="form-control" placeholder="">
-						  <span class="input-group-btn">
+							<input  type="text" class="form-control" placeholder="">
+							<span class="input-group-btn">
 					        <button class="btn btn-default" type="button">请选择</button>
 					      </span>
 						</div>
@@ -171,218 +206,332 @@
 			<div class="title">价格信息</div>
 			<table class="table table-bordered" >
 				<thead>
-					<tr class="active">
-						<th>套餐名称</th>
-						<th>套餐价格(元)</th>
-						<th>调用次数(次)</th>
-						<th>有效期（天）</th>
-					</tr>
+				<tr class="active">
+					<th>套餐名称</th>
+					<th>套餐价格(元)</th>
+					<th>调用次数(次)</th>
+					<th>有效期（天）</th>
+				</tr>
 				</thead>
 				<tbody>
-					<tr>
-						<td>aaa</td>
-						<td>aaa</td>
-						<td>aaa</td>
-						<td>aaa</td>
-					</tr>
-					<tr>
-						<td>aaa</td>
-						<td>aaa</td>
-						<td>aaa</td>
-						<td>aaa</td>
-					</tr>
-					<tr>
-						<td>aaa</td>
-						<td>aaa</td>
-						<td>aaa</td>
-						<td>aaa</td>
-					</tr>
-				</tbody>			
+				<tr>
+					<td>aaa</td>
+					<td>aaa</td>
+					<td>aaa</td>
+					<td>aaa</td>
+				</tr>
+				<tr>
+					<td>aaa</td>
+					<td>aaa</td>
+					<td>aaa</td>
+					<td>aaa</td>
+				</tr>
+				<tr>
+					<td>aaa</td>
+					<td>aaa</td>
+					<td>aaa</td>
+					<td>aaa</td>
+				</tr>
+				</tbody>
 			</table>
 			<div class="clearfix"><a href="" class="btn btn-default btn-sm pull-right">新增套餐</a></div>
 			<div class="title">套餐介绍</div>
-			
+
 			<!-- 下面实际应是编辑器 -->
 			<div>
 				<!-- <textarea class="form-control" onkeyup="checkLen(this)" rows="5" "></textarea>-->
 				<textarea class="form-control"  rows="5"></textarea>
 			</div>
-			
 		</div>
+	</div>
+	<div class="m_nav">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li class="active">
+							<a href=""></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i ></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li >
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
 	</div>
 
 	<!-- API分类选择 modal-->
 	<div class="m_modal modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog"  style="width:500px;" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">API分类选择</h4>
-	      </div>
-	      <div class="modal-body">
-	        <div class="listTable">
-		        <div class="tit">
-		        	<h2>待选列表</h2>
-		        	<div class="input-group">
-					  <input type="text" class="form-control" placeholder="">
-					  <span class="input-group-btn">
+		<div class="modal-dialog"  style="width:500px;" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">API分类选择</h4>
+				</div>
+				<div class="modal-body">
+					<div class="listTable">
+						<div class="tit">
+							<h2>待选列表</h2>
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="">
+								<span class="input-group-btn">
 				        <button class="btn btn-default" type="button">查询</button>
 				      </span>
+							</div>
+						</div>
+						<div class="con" style="height:300px;">
+							<table class="table listitem table-hover" >
+								<tbody>
+								<tr>
+									<td>API分类</td>
+								</tr>
+								<tr class="warning">
+									<td>应用分类</td>
+								</tr>
+								<tr>
+									<td>免费数据</td>
+								</tr>
+								<tr>
+									<td>免费数据</td>
+								</tr>
+								<tr>
+									<td>免费数据</td>
+								</tr>
+								<tr>
+									<td>免费数据</td>
+								</tr>
+								<tr>
+									<td>免费数据</td>
+								</tr>
+								<tr>
+									<td>API分类</td>
+								</tr>
+								<tr>
+									<td>应用分类</td>
+								</tr>
+								<tr>
+									<td>免费数据</td>
+								</tr>
+								<tr>
+									<td>免费数据</td>
+								</tr>
+								<tr>
+									<td>免费数据</td>
+								</tr>
+								<tr>
+									<td>免费数据</td>
+								</tr>
+								<tr>
+									<td>免费数据</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-				<div class="con" style="height:300px;">
-					<table class="table listitem table-hover" >
-						<tbody>
-							<tr>
-								<td>API分类</td>
-							</tr>
-							<tr class="warning">
-								<td>应用分类</td>
-							</tr>
-							<tr>
-								<td>免费数据</td>
-							</tr>
-							<tr>
-								<td>免费数据</td>
-							</tr>
-							<tr>
-								<td>免费数据</td>
-							</tr>
-							<tr>
-								<td>免费数据</td>
-							</tr>
-							<tr>
-								<td>免费数据</td>
-							</tr>
-							<tr>
-								<td>API分类</td>
-							</tr>
-							<tr>
-								<td>应用分类</td>
-							</tr>
-							<tr>
-								<td>免费数据</td>
-							</tr>
-							<tr>
-								<td>免费数据</td>
-							</tr>
-							<tr>
-								<td>免费数据</td>
-							</tr>
-							<tr>
-								<td>免费数据</td>
-							</tr>
-							<tr>
-								<td>免费数据</td>
-							</tr>
-						</tbody>
-					</table>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">确认</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 				</div>
-	        </div>
-	      </div>
-	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-primary">确认</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	      </div>
-	    </div>
-	  </div>
+			</div>
+		</div>
 	</div>
 	<!-- 标签选择 modal-->
 	<div class="m_modal modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document" style="width:900px;">
-	    <div class="modal-content" >
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">配置标签</h4>
-	      </div>
-	      <div class="modal-body clearfix">
-	      	<table class="editTable" style="float: left; width:40%;">
-				<tr>
-					<td class="Hint" width="120">
-						标签名称:
-					</td>
-					<td width="220">
-						  <input type="text" class="form-control" placeholder="支持HTTPS">
-					</td>
-				</tr>
-				<tr>
-					<td class="Hint ">
-						颜色选择:
-					</td>
-					<td width="120">
-						<select class="form-control">
-							<optgroup>
-								<option>1</option>
-								<option>2</option>
-								<option>3</option>
-							</optgroup>
-						</select>
-					</td>
-				</tr>
-				<tr>
-					<td class="Hint">
-						商品标签:
-					</td>
-					<td>
-						<span class="label label-primary">API</span>
-						<span class="label label-warning">支持HTTPS</span>
-						<span class="label label-warning">免费体验</span>
-						<span class="label label-warning">免费体验</span>
-						<span class="label label-warning">免费体验</span>
-						<span class="label label-warning">免费体验</span>
-						<span class="label label-warning">免费体验</span>
-						<span class="label label-warning">免费体验</span>
-						<span class="label label-warning">免费体验</span>
-						<span class="label label-warning">免费体验</span>
-						<span class="label label-warning">免费体验</span>
-						<span class="label label-warning">免费体验</span>
-						<span class="label label-warning">免费体验</span>
-						<span class="label label-warning">免费体验</span>
-					</td>
-				</tr>
-				
-				
-			</table>
-	        <div class="listTable" style="float: right; width:50%;">
-		        <div class="tit">
-		        	<h2>快速选择</h2>
-		        	<div class="input-group">
-					  <input type="text" class="form-control" placeholder="">
-					  <span class="input-group-btn">
+		<div class="modal-dialog" role="document" style="width:900px;">
+			<div class="modal-content" >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">配置标签</h4>
+				</div>
+				<div class="modal-body clearfix">
+					<table class="editTable" style="float: left; width:40%;">
+						<tr>
+							<td class="Hint" width="120">
+								标签名称:
+							</td>
+							<td width="220">
+								<input type="text" class="form-control" placeholder="支持HTTPS">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint ">
+								颜色选择:
+							</td>
+							<td width="120">
+								<select class="form-control">
+									<optgroup>
+										<option>1</option>
+										<option>2</option>
+										<option>3</option>
+									</optgroup>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								商品标签:
+							</td>
+							<td>
+								<span class="label label-primary">API</span>
+								<span class="label label-warning">支持HTTPS</span>
+								<span class="label label-warning">免费体验</span>
+								<span class="label label-warning">免费体验</span>
+								<span class="label label-warning">免费体验</span>
+								<span class="label label-warning">免费体验</span>
+								<span class="label label-warning">免费体验</span>
+								<span class="label label-warning">免费体验</span>
+								<span class="label label-warning">免费体验</span>
+								<span class="label label-warning">免费体验</span>
+								<span class="label label-warning">免费体验</span>
+								<span class="label label-warning">免费体验</span>
+								<span class="label label-warning">免费体验</span>
+								<span class="label label-warning">免费体验</span>
+							</td>
+						</tr>
+
+
+					</table>
+					<div class="listTable" style="float: right; width:50%;">
+						<div class="tit">
+							<h2>快速选择</h2>
+							<div class="input-group">
+								<input type="text" class="form-control" placeholder="">
+								<span class="input-group-btn">
 				        <button class="btn btn-default" type="button">查询</button>
 				      </span>
+							</div>
+						</div>
+						<div class="con" style="height:150px;">
+							<table class="table listitem table-hover" >
+								<tbody>
+								<tr>
+									<td>API</td>
+								</tr>
+								<tr class="warning">
+									<td>支持HTTPS</td>
+								</tr>
+								<tr>
+									<td>免费体验</td>
+								</tr>
+
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-				<div class="con" style="height:150px;">
-					<table class="table listitem table-hover" >
-						<tbody>
-							<tr>
-								<td>API</td>
-							</tr>
-							<tr class="warning">
-								<td>支持HTTPS</td>
-							</tr>
-							<tr>
-								<td>免费体验</td>
-							</tr>
-							
-						</tbody>
-					</table>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">确认</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 				</div>
-	        </div>
-	      </div>
-	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-primary">确认</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	      </div>
-	    </div>
-	  </div>
+			</div>
+		</div>
 	</div>
-
-
-
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
-	</div>
+
 </body>
 </html>
