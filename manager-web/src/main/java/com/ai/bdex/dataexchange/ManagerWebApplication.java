@@ -16,6 +16,7 @@ public class ManagerWebApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(ManagerWebApplication.class, args);
+		System.out.println("-----------------恭喜你启动ManagerWeb成功了！-----------------"); 
 	}
 
 	@Bean
