@@ -1,18 +1,31 @@
 spring:
   dubbo:
     application:
-      name: woego-dubbo-demo
+      name: apigateway-dubbo-demo
       owner: owner
       environment: develop
     protocol:
       port: 20880
       threads: 300
     registry:
-      address: 132.37.2.41:29181
+      address: 127.0.0.1:2181
     provider:
       enabled: true
       group: devGroup
     consumer:
       enabled: false
-    monitor:
-      enabled: false
+
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://112.74.163.29:3306/bdex
+    username: bdex
+    password: bdex1234
+
+application:
+  configcenter:
+#    login: admin:admin
+#    zkaddress: 127.0.0.1:2181
+    runmode: D
+  sequencefactory:
+    confpath: /com/ai/db/bdex/sequence/conf

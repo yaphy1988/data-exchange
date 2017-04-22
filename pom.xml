@@ -99,6 +99,11 @@
 				<version>${woego-frame.version}</version>
 			</dependency>
 			<dependency>
+				<groupId>com.ai.paas</groupId>
+				<artifactId>message-engine</artifactId>
+				<version>${woego-frame.version}</version>
+			</dependency>			
+			<dependency>
 				<groupId>com.ai.woego.boot</groupId>
 				<artifactId>dubbo-spring-boot-autoconfigure</artifactId>
 				<version>${woego-frame-boot.version}</version>

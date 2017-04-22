@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ImportResource;
  * @author yafei
  * @since 2017/4/4
  */
-@ImportResource({"classpath:/dubbo/dubboContext.xml"})
+@ImportResource({"classpath:/dubbo/dubboContext.xml","/spring/*-db-config.xml"})
 @SpringBootApplication
 public class ApiCenterServiceStart {
     private static Logger logger = LoggerFactory.getLogger(ApiCenterServiceStart.class);
@@ -21,7 +21,7 @@ public class ApiCenterServiceStart {
         ApplicationContext context = SpringApplication.run(ApiCenterServiceStart.class, args);
         Utils.setCtx(context);
 
-        logger.error("ApiGatewayServiceStart 启动成功...");
+        logger.error("ApiCenterServiceStart 启动成功...");
     }
 
 }
