@@ -136,6 +136,7 @@ public class GdsEditController {
      * @return
      */
     @RequestMapping(value = "/queryGdsLabelQuikList")
+    @ResponseBody
     public GdsJsonBean queryGdsLabelQuikList(HttpServletRequest req,HttpServletResponse rep,GdsLabelQuikVO gdsLabelQuikVO) {
         GdsJsonBean json=new GdsJsonBean();
         try{
@@ -155,6 +156,40 @@ public class GdsEditController {
             logger.error("商品标签快速选择数据失败,原因："+e.getMessage(),e);
         }
         return  json;
+    }
+    /**
+     * 
+     * 
+     * @param req
+     * @param rep
+     * @param gdsSpuInfo
+     * @return
+     * @throws ParseException
+     * @throws BusinessException
+     * @throws GenericException
+     */
+    @RequestMapping(value = "/saveGdsLabelQuik")
+    @ResponseBody
+    public GdsJsonBean GdsLabelQuik(HttpServletRequest req, HttpServletResponse rep,
+    		GdsLabelQuikVO gdsLabelQuikVO) throws BusinessException, GenericException {
+    	GdsJsonBean jsonBean = new GdsJsonBean();
+    	GdsLabelQuikReqDTO labelReqDTO = new GdsLabelQuikReqDTO();
+        try {
+        	labelReqDTO.setLabName(gdsLabelQuikVO.getLabName());
+        	labelReqDTO.setLabColor(gdsLabelQuikVO.getLabColor());
+        	labelReqDTO.setCatFirst(gdsLabelQuikVO.getCatFirst());
+        	int labId = gdsInfoRSV.insertGdsLabelQuik(labelReqDTO);
+        	//商品标签信息
+            jsonBean.setSuccess("true");
+            jsonBean.setMsg("商品标签快速选择数据录入成功！");
+            jsonBean.setObject(labId);
+        } catch (Exception e) {
+            jsonBean.setSuccess("false");
+            jsonBean.setMsg(e.getMessage());
+            logger.error("商品标签快速选择数据录入失败,原因："+e.getMessage(),e);
+        }
+
+        return jsonBean;
     }
     /**
      * 

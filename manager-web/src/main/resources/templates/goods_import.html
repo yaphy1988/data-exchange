@@ -8,7 +8,8 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
+	<script type="text/javascript" src="../../static\js-busi\gds\gdsEdit.js" th:src="@{/js-busi/gds\gdsEdit.js}"></script>
 </head>
 <body>
 <header class="clearfix m_header">
@@ -58,8 +59,14 @@
 					</td>
 					<td width="520">
 						<div class="input-group">
+<<<<<<< Upstream, based on origin/develop
 							<input type="text" class="form-control" placeholder="/API/">
 							<span class="input-group-btn">
+=======
+							<input type="hidden" id="catFirst">
+						  <input type="text" class="form-control" placeholder="/API/">
+						  <span class="input-group-btn">
+>>>>>>> 6ed9f4c 商品录入
 					        <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">请选择</button>
 					      </span>
 						</div>
@@ -170,11 +177,11 @@
 					<td class="Hint">
 						商品标签:
 					</td>
-					<td>
+					<td name="labelList">
 						<span class="label label-primary">API</span>
 						<span class="label label-warning">支持HTTPS</span>
 						<span class="label label-warning">免费体验</span>
-						<a href="" class="btn btn-default  btn-sm ml20" data-toggle="modal" data-target="#myModal2">请选择</a>
+						<a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsLabelModal()'">请选择</a>
 					</td>
 					<td>
 
@@ -553,15 +560,34 @@
 					
 					</div>
 				</div>
+<<<<<<< Upstream, based on origin/develop
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary">确认</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+=======
+				<div class="con" style="height:300px;">
+					<table class="table listitem table-hover" >
+						<tbody>
+							<tr>
+								<td>API分类</td>
+							</tr>
+							<tr class="warning">
+								<td>应用分类</td>
+							</tr>
+							<tr>
+								<td>免费数据</td>
+							</tr>
+							
+						</tbody>
+					</table>
+>>>>>>> 6ed9f4c 商品录入
 				</div>
 			</div>
 		</div>
 	</div>
 	<!-- 标签选择 modal-->
 	<div class="m_modal modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+<<<<<<< Upstream, based on origin/develop
 		<div class="modal-dialog" role="document" style="width:900px;">
 			<div class="modal-content" >
 				<div class="modal-header">
@@ -642,14 +668,86 @@
 								</tbody>
 							</table>
 						</div>
+=======
+	  <div class="modal-dialog" role="document" style="width:900px;">
+	    <div class="modal-content" >
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">配置标签</h4>
+	      </div>
+	      <div class="modal-body clearfix">
+	      	<table class="editTable" style="float: left; width:40%;">
+				<tr>
+					<td class="Hint" width="120">
+						标签名称:
+					</td>
+					<td width="220">
+						  <input type="text" class="form-control" placeholder="支持HTTPS" id="selGdsLabName">
+						  <input type="hidden" id="selGdsLabId">
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint ">
+						颜色选择:
+					</td>
+					<td width="120">
+						<select class="form-control" id="selGdsLabColor">
+							<optgroup>
+								<option>1</option>
+								<option>2</option>
+								<option>3</option>
+							</optgroup>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint">
+						商品标签:
+					</td>
+					<td>
+						<span class="label label-primary">API</span>
+						<span class="label label-warning">支持HTTPS</span>
+					</td>
+				</tr>
+				
+				
+			</table>
+	        <div class="listTable" style="float: right; width:50%;">
+		        <div class="tit">
+		        	<h2>快速选择</h2>
+		        	<div class="input-group">
+					  <input type="text" class="form-control" placeholder="" id="qryLabName">
+					  <span class="input-group-btn">
+				        <button class="btn btn-default" type="button" th:onclick="'queryGdsLabelQuikList'">查询</button>
+				      </span>
+>>>>>>> 6ed9f4c 商品录入
 					</div>
 				</div>
+<<<<<<< Upstream, based on origin/develop
 				<div class="modal-footer">
 					<button type="button" class="btn btn-primary">确认</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+=======
+				<div class="con" style="height:150px;">
+					<table class="table listitem table-hover"  id="gdsLabelQuikTable">
+						<tbody>
+						</tbody>
+					</table>
+>>>>>>> 6ed9f4c 商品录入
 				</div>
+<<<<<<< Upstream, based on origin/develop
 			</div>
 		</div>
+=======
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary" th:onclick="'saveGdsLabelQuik'">确认</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	    </div>
+	  </div>
+>>>>>>> 6ed9f4c 商品录入
 	</div>
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
