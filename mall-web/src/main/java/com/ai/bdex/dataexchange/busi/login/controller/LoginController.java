@@ -10,7 +10,6 @@ import javax.servlet.http.HttpSession;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,8 +20,8 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
+import com.ai.paas.captcha.CaptchaServlet;
 import com.ai.paas.utils.InetTool;
-import com.ai.paas.utils.SignUtil;
 
 @Controller
 @RequestMapping(value = "/login")
@@ -31,14 +30,10 @@ public class LoginController {
 	
 	@DubboConsumer
 	private ILoginRSV iLoginRSV;
-//	@DubboConsumer
-//	protected HttpSession session;
-//	@DubboConsumer
-//	private HttpServletRequest request;
 	
 	@RequestMapping(value="/pageInit")
 	public String pageInit(Model model){
-		return "/login/login";
+		return "login";
 	}
 	
 	@RequestMapping(value="/dologin")
@@ -52,20 +47,19 @@ public class LoginController {
 		staffId = request.getParameter("staffId");
 		String password = request.getParameter("password");
 		String verifyCode = request.getParameter("verifyCode");
-		log.info("pwd:" + password + "______rpd:" + SignUtil.SHA1(SignUtil.SHA1("ok")));
-//		String veriCodeInSession = CaptchaServlet.getCaptchaCode(request);
-//		//验证码注释
-//		if (!CaptchaServlet.verifyCaptcha(request, verifyCode)) {
-//			rMap.put("success", false);
-//			rMap.put("errorMsg", "验证码输入错误");
-//			return rMap;
-//		}
+		String veriCodeInSession = CaptchaServlet.getCaptchaCode(request);
+		//验证码注释
+		if (!CaptchaServlet.verifyCaptcha(request, verifyCode)) {
+			rMap.put("success", false);
+			rMap.put("errorMsg", "验证码输入错误");
+			return rMap;
+		}
 
 		loginInfo = new LoginInfoDTO();
 		loginInfo.setLoginName(staffId);
 		loginInfo.setLoginPwd(password);
 		loginInfo.setInputVerifyCode(verifyCode);
-//		loginInfo.setSessionVerifyCode(veriCodeInSession);
+		loginInfo.setSessionVerifyCode(veriCodeInSession);
 		loginInfo.setLoginIp(ip);
 		try {
 			//先校验登录，登录成功再进行其他业务逻辑判断

@@ -1,5 +1,7 @@
 package com.ai.bdex.dataexchange.usercenter;
 
+import java.util.Map;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +26,10 @@ public class UserServiceTest {
 	@Autowired
 	private IAuthStaffRSV iAuthStaffRSV;
 	
+	/**
+	 * 模拟注册发送邮件激活
+	 * @throws BusinessException
+	 */
 //	@Test
 //	public void sendEmalForActiveTest() throws BusinessException{
 //		SignInfoDTO info = new SignInfoDTO();
@@ -32,6 +38,17 @@ public class UserServiceTest {
 //		info.setConfirmPass("hcxyjie2010");
 //		info.setSignpass("hcxyjie2010");
 //		iAuthStaffRSV.sendEmalForActive(info);
+//	}
+	
+	/**
+	 * 模拟激活
+	 * @throws BusinessException
+	 */
+//	@Test
+//	public void doActiveByEmailTest()throws BusinessException{
+//		//signid=4,code=ba82c1c839b257f314a1c4d7e93b6779
+//		Map<String,Object> rMap = iAuthStaffRSV.doActiveByEmail("8", "ba82c1c839b257f314a1c4d7e93b6779");
+//		System.out.println(rMap.toString());
 //	}
 	
 	public static void main(String[] args){

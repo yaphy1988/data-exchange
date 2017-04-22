@@ -83,7 +83,7 @@
 			</dependency>
 			<dependency>
 				<groupId>com.ai.paas</groupId>
-				<artifactId>captcha-util</artifactId>
+				<artifactId>captcha-utils</artifactId>
 				<version>${woego-frame.version}</version>
 			</dependency>
 			<dependency>

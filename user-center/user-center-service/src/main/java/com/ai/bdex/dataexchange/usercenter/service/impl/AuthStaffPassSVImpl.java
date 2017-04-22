@@ -25,7 +25,7 @@ public class AuthStaffPassSVImpl implements IAuthStaffPassSV {
 		record.setCreateTime(DateUtil.getNowAsDate());
 		record.setInvalidTime(DateUtil.getFutureTime());
 		record.setIsFirst("1");//是否首次登录
-		if("0".equals(pass.getPasswdFlag())){
+		if(!"1".equals(pass.getPasswdFlag())){
 			record.setStaffPasswd(SignUtil.SHA1(pass.getStaffPasswd()));
 		}
 		return authStaffPassMapper.insertSelective(record);

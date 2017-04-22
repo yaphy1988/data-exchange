@@ -61,7 +61,7 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 		record.setSignId(signId);
 		record.setPassword(SignUtil.SHA1(info.getSignpass()));
 		record.setActiveFlag("0");//未激活
-		record.setCreateTime(DateUtil.getNowAsDate());
+		record.setCreateTime(DateUtil.getNowAsTimestamp());
 		int result = authStaffSignMapper.insertSelective(record);
 		if(result>0){
 			//2.发送激活邮件

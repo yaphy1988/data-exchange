@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.paas.session.impl.SessionManager;
 import com.ai.paas.util.Utils;
+import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
 public class StaffUtil {
 	private static Logger logger = Logger.getLogger(StaffUtil.class);
