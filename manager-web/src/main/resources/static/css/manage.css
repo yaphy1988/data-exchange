@@ -145,6 +145,9 @@ body{
 	display: inline-block;
 }
 /* 列表表格 */
+.listTable{
+	width: 100%;
+}
 .listTable .tit{
 	background-color:#fbfbfb;
 	padding:10px;
@@ -161,12 +164,12 @@ body{
 	width: 60%;
 }
 .listTable .con{
+	width: 100%;
 	padding:10px;
 	border: solid 1px #eee;
-}
-.listTable .con{
 	overflow-y:auto;
 }
+
 .listTable table.listitem td{
 	border: transparent;
 }
@@ -182,6 +185,14 @@ body{
 .listTable .table > tfoot > tr > td{
 	vertical-align: middle;
 }
+
+/* 多个层级分类选择 */
+.ClassItem{
+	display: inline-block;
+	float: left;
+}
+
+
 /* 模态框 */
 .m_modal
 {
