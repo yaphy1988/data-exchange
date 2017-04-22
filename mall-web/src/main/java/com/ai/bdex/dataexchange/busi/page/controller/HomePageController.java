@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.busi.page.controller;
 
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -158,9 +159,11 @@ public class HomePageController {
 	@RequestMapping(value="/saveMadeData")
 	private void saveMadeData(Model model, HttpServletRequest request, HttpServletResponse response){
 		try {
-			String needTiel = request.getParameter("needTiel");
-			String needcontent = request.getParameter("needcontent");
-			String lnkposen = request.getParameter("lnkposen");
+
+            String needTieltmp = request.getParameter("needTiel");
+			String needTiel = uRLDecoderStr(needTieltmp);
+			String needcontent = uRLDecoderStr(request.getParameter("needcontent"));
+			String lnkposen = uRLDecoderStr(request.getParameter("lnkposen"));
 			String lnkphone = request.getParameter("lnkphone");
 			String lnkemail = request.getParameter("lnkemail");
 
@@ -171,11 +174,22 @@ public class HomePageController {
 			dataCustomizationRespDTO.setLinkPhnoe(lnkphone);
 			dataCustomizationRespDTO.setCustomMail(lnkemail);
 			dataCustomizationRespDTO.setCreateStaffId("chuangjianren");
-			dataCustomizationRespDTO.setStatus(CUSTOMDATA_STATUS_VALID);
+ 			dataCustomizationRespDTO.setStatus(CUSTOMDATA_STATUS_VALID);
 			int count = iPageInfoRSV.saveDataCustomizationRsv(dataCustomizationRespDTO);
 			model.addAttribute("savecount",count);
 		} catch (Exception e) {
 			log.error("查询首页导航信息信息异常："+e.getMessage());
 		}
 	}
+	private String uRLDecoderStr(String strinfo)
+	{
+		String newstrinfo  ="";
+		try{
+			newstrinfo = URLDecoder.decode(strinfo , "utf-8");
+		}catch(Exception e){
+		}
+		return newstrinfo;
+	}
+
+
 }
