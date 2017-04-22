@@ -1,0 +1,3 @@
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<a  th:each="collect,iterStat : ${hotSearchList}" th:href="@{${collect.searchUrl}}" th:text="${collect.searchKey}"></a>
+</html>            

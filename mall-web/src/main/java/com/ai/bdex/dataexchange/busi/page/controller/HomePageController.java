@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV;
@@ -42,8 +43,6 @@ public class HomePageController {
 	@RequestMapping(value="/pageInit")
 	public ModelAndView  pageInit(){
 		ModelAndView modelAndView = new ModelAndView("index");
-		queryHotSearch(modelAndView);
-//		queryHeaderNav(modelAndView);
 		return modelAndView;
 	}
 	/**
@@ -129,28 +128,40 @@ public class HomePageController {
 	/**
 	 * 查询首页热门搜索信息
 	 */
-	private void queryHotSearch(ModelAndView modelAndView){
+	@RequestMapping(value="/queryHotSearch")
+	@ResponseBody
+	private Map<String,Object> queryHotSearch(){
+		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {
 			PageHotSearchRespDTO pageHotSearchRespDTO = new PageHotSearchRespDTO();
 			pageHotSearchRespDTO.setStatus(STATUS_VALID);
 			List<PageHotSearchRespDTO> hotSearchList = iPageInfoRSV.queryPageHotSearchList(pageHotSearchRespDTO);
-			modelAndView.addObject("hotSearchList",hotSearchList);
+			rMap.put("hotSearchList", hotSearchList);
+			rMap.put("success", true);
 		} catch (Exception e) {
+			rMap.put("success", false);
 			log.error("查询首页热门搜索信息异常："+e.getMessage());
 		}
+		return rMap;
 	}
 	/**
 	 * 查询首页导航信息
 	 */
-	private void queryHeaderNav(ModelAndView modelAndView){
+	@RequestMapping(value="/queryHeaderNav")
+	@ResponseBody
+	private Map<String,Object>  queryHeaderNav(){
+		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {
 			PageHeaderNavRespDTO pageHeaderNavRespDTO = new PageHeaderNavRespDTO();
 			pageHeaderNavRespDTO.setStatus(STATUS_VALID);
 			List<PageHeaderNavRespDTO> searchNavList = iPageInfoRSV.queryPageHeaderNavList(pageHeaderNavRespDTO);
-			modelAndView.addObject("searchNavList",searchNavList);
+			rMap.put("searchNavList", searchNavList);
+			rMap.put("success", true);
 		} catch (Exception e) {
+			rMap.put("success", false);
 			log.error("查询首页导航信息信息异常："+e.getMessage());
 		}
+		return rMap;
 	}
 
 	/**

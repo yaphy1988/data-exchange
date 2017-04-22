@@ -13,16 +13,18 @@
 </head>
 <body class="bgf1">
 	<div class="top" th:fragment="top">
-	    <div class="wrap1200">
+	    <div class="wrap1200 overflow-inherit clearfix">
 	        <div class="top-left floatL">
 	            <span>欢迎来到广州数据中心</span>
-	            <span th:text="${#dates}">2017年4月20日&nbsp;&nbsp;12：00：30</span>
+	            <span id="clockdate">2017年4月20日&nbsp;&nbsp;12：00：30</span>
 	        </div>
 	        <div class="top-right floatR">
 	            <a href="#" th:href="@{/user/login}"><b>请登录</b></a>
 	            <a href="#" th:href="@{/user/signup}">免费注册</a>
 	            <i>|</i>
-	            <a href="#" th:href="@{/gzbdex/interest}">关注广数</a>
+                <a href="#" class="follow">关注广数<i class="glyphicon glyphicon-menu-down"></i>
+                	<div class="guangshu"><i></i><img src="../static/images/wexin.jpg" th:src="@{/images/wexin.jpg}"></div>
+            	</a>
 	            <a href="#" th:href="@{/gzbdex/question}">常见问题</a>
 	            <a href="#" th:href="@{/gzbdex/contact}">联系我们</a>
 	        </div>
