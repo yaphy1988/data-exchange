@@ -1,13 +1,16 @@
+function  alertt() {
+	alert("提示一下");
+}
 /**
  * 
  */
 /** 获取地市列表 */
 function saveMadeData() {
-	var needTiel    = $("#needTiel").val();
-	var needcontent = $("#needcontent").val();
-	var lnkposen    = $("#lnkposen").val();
-	var lnkphone    = $("#lnkphone").val();
-	var lnkemail    = $("#lnkemail").val();
+	var needTiel    =  "needTiel";//$("#needTiel").val();
+	var needcontent = "needcontent";//$("#needcontent").val();
+	var lnkposen    = "lnkposen";//$("#lnkposen").val();
+	var lnkphone    = "lnkphone";//$("#lnkphone").val();
+	var lnkemail    = "lnkemail";//$("#lnkemail").val();
 	var url = WEB_ROOT + "/homePage/saveMadeData";
 	param = {
 		needTiel : needTiel,
