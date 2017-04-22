@@ -106,7 +106,7 @@ public class GdsCatSVImpl implements IGdsCatSV{
         if (gdsCatReqDTO.getCatId()!=null && gdsCatReqDTO.getCatId().intValue()>0){
             criteria.andCatIdEqualTo(gdsCatReqDTO.getCatId());
         }
-        if (gdsCatReqDTO.getCatPid()!=null && gdsCatReqDTO.getCatPid().intValue()>0){
+        if (gdsCatReqDTO.getCatPid()!=null){
             criteria.andCatPidEqualTo(gdsCatReqDTO.getCatPid());
         }
         if(!StringUtil.isBlank(gdsCatReqDTO.getCatName())){

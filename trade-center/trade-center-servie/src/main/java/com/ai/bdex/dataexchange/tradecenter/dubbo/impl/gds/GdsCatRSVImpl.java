@@ -54,11 +54,20 @@ public class GdsCatRSVImpl implements IGdsCatRSV {
                  throw new Exception("查询商品分类信息异常，入参为空");
              }
              List<GdsCat> catList= iGdsCatSV.queryGdsCatList(gdsCatReqDTO);
+<<<<<<< Upstream, based on origin/develop
              if(!CollectionUtil.isEmpty(catList)){
             	 GdsCatRespDTO respDTO = new GdsCatRespDTO();
+=======
+             if(CollectionUtils.isNotEmpty(catList)){
+>>>>>>> 6229a3c 商品分类
             	 for(GdsCat catVO:catList){
+<<<<<<< Upstream, based on origin/develop
                      ObjectCopyUtil.copyObjValue(catVO,respDTO,null,false);
 //            		 BeanUtils.copyProperties(catVO,respDTO);
+=======
+                	 GdsCatRespDTO respDTO = new GdsCatRespDTO();
+            		 BeanUtils.copyProperties(catVO,respDTO);
+>>>>>>> 6229a3c 商品分类
             		 respDTOList.add(respDTO);
             	 }
              }
