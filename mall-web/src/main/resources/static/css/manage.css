@@ -1,0 +1,20 @@
+.m_con{
+	margin-bottom:20px ;
+	font-size: 12px;
+}
+.m_con .title{
+	font-size: 14px;
+	color: #666;
+	font-weight: bold;
+	line-height: 50px;
+	border-bottom: solid 1px #eee;
+	margin-bottom: 20px;
+}
+.editTable td.Hint{
+	padding: 20px;
+	text-align: right;
+	color: #999;
+}
+.editTable td.Hint.tips{
+	padding: 0 20px;
+}

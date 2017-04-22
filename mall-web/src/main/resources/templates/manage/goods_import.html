@@ -3,14 +3,188 @@
 <head>
 	<meta charset="UTF-8">
 	<title>商品录入</title>
+	<link rel="stylesheet" href="../../static/css/bootstrap.css">
+	<link rel="stylesheet" href="../../static/fonts/iconfont.css">
+	<link rel="stylesheet" href="../../static/css/global.css">
+	<link rel="stylesheet" href="../../static/css/manage.css">
 </head>
 <body>
 	<div class="container">
-		<div class="m_title">商品类型</div>
-		<div class="m_title">API接口</div>
-		<div class="m_title">商品基本信息</div>
-		<div class="m_title">价格信息</div>
-		<div class="m_title">套餐介绍</div>
+		
+		<div class="m_con">
+			<div class="title">商品类型</div>
+			<table class="editTable">
+				<tr>
+					<td class="Hint" width="120">
+						<span class="col_red">*</span>
+						类型:
+					</td>
+					<td width="520">
+						<div class="input-group">
+						  <input type="text" class="form-control" placeholder="/API/">
+						  <span class="input-group-addon" >请选择</span>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint">
+						API分类:
+					</td>
+					<td>
+						<div class="input-group">
+						  <input type="text" class="form-control" placeholder="/API/">
+						  <span class="input-group-addon" >请选择</span>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint">
+						应用分类:
+					</td>
+					<td>
+						<div class="input-group">
+						  <input type="text" class="form-control" placeholder="/API/">
+						  <span class="input-group-addon" >请选择</span>
+						</div>
+					</td>
+					<td class="pl20"><a href="">请选择商品分类</a></td>
+				</tr>
+				<tr>
+					<td class="Hint">
+						其他分类:
+					</td>
+					<td>
+						<div class="input-group">
+						  <input type="text" class="form-control" placeholder="/API/">
+						  <span class="input-group-addon" >请选择</span>
+						</div>
+					</td>
+				</tr>
+			</table>
+			<div class="title">API接口</div>
+			<table class="editTable">
+				<tr>
+					<td class="Hint tips" width="120">
+						<span class="col_red">*</span>
+						接口:
+					</td>
+					<td width="520">
+						<div class="input-group">
+						  <input type="text" class="form-control" placeholder="/VIN车架号查询/">
+						  <span class="input-group-addon" >请选择</span>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td class="pt5"><span class="col_999 ">计费方式：按照请求次数统计</span></td>
+				</tr>
+			</table>
+			<div class="title">商品基本信息</div>
+			<table class="editTable">
+				<tr>
+					<td class="Hint" width="120">
+						<span class="col_red">*</span>
+						商品名称:
+					</td>
+					<td width="520">
+						<div class="input-group">
+						  <input type="text" class="form-control" placeholder="VIN车架号查询详细版">
+						  <span class="input-group-addon" >请选择</span>
+						</div>
+					</td>
+					<td class="pl20"><a href="">请录入商品名称</a></td>
+
+				</tr>
+
+				<tr>
+					<td class="Hint">
+						<span class="col_red">*</span>
+						商品副标题:
+					</td>
+					<td>
+						<div class="input-group">
+						  <input type="text" class="form-control" placeholder="根据传递17位的车架号进行详细信息查询">
+						  <span class="input-group-addon" >请选择</span>
+						</div>
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint">
+						商品标签:
+					</td>
+					<td>
+						<span class="label label-primary">API</span>
+						<span class="label label-warning">支持HTTPS</span>
+						<span class="label label-warning">免费体验</span>
+						<a href="" class="btn btn-default  btn-sm ml20">请选择</a>
+					</td>
+					<td>
+						
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint">
+						商品图片:
+					</td>
+					<td>
+						<span>
+							<img src="" width="120" height="120">
+						</span>
+					</td>
+				</tr>
+				<tr >
+					<td class="Hint"></td>
+					<td>
+						<div class="input-group" style="width: 50%; padding-top: 20px;">
+						  <input  type="text" class="form-control" placeholder="">
+						  <span class="input-group-addon" >请选择</span>
+						</div>
+						<span class="col_red">说明：建议选择100*100规格图片</span>
+					</td>
+				</tr>
+			</table>
+			<div class="title">价格信息</div>
+			<table class="table table-bordered" >
+				<thead>
+					<tr class="active">
+						<th>套餐名称</th>
+						<th>套餐价格(元)</th>
+						<th>调用次数(次)</th>
+						<th>有效期（天）</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>aaa</td>
+						<td>aaa</td>
+						<td>aaa</td>
+						<td>aaa</td>
+					</tr>
+					<tr>
+						<td>aaa</td>
+						<td>aaa</td>
+						<td>aaa</td>
+						<td>aaa</td>
+					</tr>
+					<tr>
+						<td>aaa</td>
+						<td>aaa</td>
+						<td>aaa</td>
+						<td>aaa</td>
+					</tr>
+				</tbody>			
+			</table>
+			<div class="clearfix"><a href="" class="btn btn-default btn-sm pull-right">新增套餐</a></div>
+			<div class="title">套餐介绍</div>
+			
+			<!-- 下面实际应是编辑器 -->
+			<div>
+				<textarea class="form-control" onkeyup="checkLen(this)" rows="5" "></textarea>
+			</div>
+			
+		</div>
+		
 	</div>
 </body>
 </html>
