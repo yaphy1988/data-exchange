@@ -640,6 +640,31 @@ h3{
 	right: 20px;
 	color: #999;
 }
-
-
-
+/* 商品搜索列表-定制数据 */
+.gl_banner{
+	width: 100%;
+	margin: 20px 0;
+	background-color: #22d18d;
+	position: relative;
+}
+.gl_banner .btnBox{
+	position: absolute;
+	right: 40px;
+	width: 300px;
+	top: 60px;
+}
+.gl_banner .btn_banner{
+	border: solid 1px #fff;
+	color: #fff;
+	padding: 20px 110px;
+	background-color: #22d18d;
+	border-radius: 50px;
+	margin-bottom: 20px;
+	font-size: 20px;
+}
+.btn_banner:hover{
+	background-color: #1bbe7f;
+}
+.btn_banner:focus{
+	color: #42da9f;
+}
