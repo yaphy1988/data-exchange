@@ -17,7 +17,16 @@ public class UserSignVO implements Serializable{
    
    private String confirmPass;//确认密码
    private String signpass;//输入密码
-   public String getConfirmPass() {
+   private String smsCode;//短信验证码
+   public String getSmsCode() {
+	return smsCode;
+}
+
+public void setSmsCode(String smsCode) {
+	this.smsCode = smsCode;
+}
+
+public String getConfirmPass() {
 	return confirmPass;
 }
 

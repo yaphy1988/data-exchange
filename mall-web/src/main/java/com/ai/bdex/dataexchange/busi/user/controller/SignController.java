@@ -85,4 +85,12 @@ public class SignController {
 		return "sign/activeresult";
 		
 	}
+	
+	/**
+	 * 短信验证码注册
+	 */
+	@RequestMapping(value="/savesign")
+	public void savesign(Model model,UserSignVO signvo){
+		
+	}
 }

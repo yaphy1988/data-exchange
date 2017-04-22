@@ -13,19 +13,24 @@ import org.springframework.stereotype.Service;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffSignMapper;
+import com.ai.bdex.dataexchange.usercenter.dao.mapper.SmsSeccodeLogMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaff;
 import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffExample;
 import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffSign;
 import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffSignExample;
+import com.ai.bdex.dataexchange.usercenter.dao.model.SmsSeccodeLog;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffPassDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SignInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SmsSeccodeReqDTO;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffPassSV;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffSV;
 import com.ai.bdex.dataexchange.usercenter.util.SendMailUtil;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
+import com.ai.paas.utils.ObjectCopyUtil;
 import com.ai.paas.utils.SignUtil;
+import com.alibaba.dubbo.common.utils.LogUtil;
 
 @Service("iAuthStaffSV")
 public class AuthStaffSVImpl implements IAuthStaffSV{
@@ -38,6 +43,9 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 	
 	@Autowired
 	private IAuthStaffPassSV iAuthStaffPassSV;
+	
+	@Autowired
+	private SmsSeccodeLogMapper smsSeccodeLogMapper;
 	
 	@Override
 	public void sendEmalForActive(SignInfoDTO info) throws Exception {
@@ -235,5 +243,32 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 		}
 		return false;
 	}
+
+	@Override
+	public int saveSignInfoBysms(SignInfoDTO info) throws Exception {
+		AuthStaff record = new AuthStaff();
+		BeanUtils.copyProperties(info, record);
+		record.setCreateStaff(info.getStaffId());
+		record.setCreateTime(DateUtil.getNowAsTimestamp());
+		int count = authStaffMapper.insertSelective(record);
+		if(count>0){
+			AuthStaffPassDTO pass = new AuthStaffPassDTO();
+			pass.setStaffId(info.getStaffId());
+			pass.setStaffPasswd(info.getConfirmPass());
+			iAuthStaffPassSV.savePassInfo(pass);
+		}
+		return count;
+	}
+	
+	@Override
+	public void insertSmsSeccodelog(SmsSeccodeReqDTO req) throws BusinessException {
+        long logId = SeqUtil.getLong("seq_sms_seccode_log");
+        SmsSeccodeLog record = new SmsSeccodeLog();
+        record.setLogId(logId);   
+        ObjectCopyUtil.copyObjValue(req, record, null, false);
+        record.setCreateTime(DateUtil.getNowAsTimestamp());
+        smsSeccodeLogMapper.insert(record);
+
+    }
 
 }

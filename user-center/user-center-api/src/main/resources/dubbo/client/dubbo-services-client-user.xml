@@ -17,5 +17,7 @@
   <dubbo:reference interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IChnlInvoiceTaxRSV" id="iChnlInvoiceTaxRSV"/>
 
   <dubbo:reference interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV" id="iLoginRSV"/>
+  
+  <dubbo:reference interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ISmsSeccodeRSV" id="iSmsSeccodeRSV"/>
 
 </beans>

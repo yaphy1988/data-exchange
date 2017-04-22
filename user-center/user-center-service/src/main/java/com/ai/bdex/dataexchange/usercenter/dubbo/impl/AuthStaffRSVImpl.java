@@ -88,4 +88,18 @@ public class AuthStaffRSVImpl implements IAuthStaffRSV{
 		}
 	}
 
+	@Override
+	public int saveSignInfoBysms(SignInfoDTO info) throws BusinessException {
+		try {
+			return iAuthStaffSV.saveSignInfoBysms(info);
+		} catch (Exception e) {
+			if (e instanceof BusinessException)
+				throw (BusinessException) e;
+			else {
+				log.error("保存注册信息异常" + e.getMessage());
+				throw new BusinessException("保存注册信息异常:" + e.getMessage());
+			}		
+		}
+	}
+
 }

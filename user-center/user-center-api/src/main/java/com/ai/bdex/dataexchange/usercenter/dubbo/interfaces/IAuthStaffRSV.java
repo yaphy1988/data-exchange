@@ -43,4 +43,12 @@ public interface IAuthStaffRSV {
 	 * @throws BusinessException
 	 */
 	public boolean checkStaffAuthen(String staffId)throws BusinessException;
+	
+	/**
+	 * 通过短信验证码注册
+	 * @param info
+	 * @return
+	 * @throws BusinessException
+	 */
+	public int saveSignInfoBysms(SignInfoDTO info)throws BusinessException;
 }

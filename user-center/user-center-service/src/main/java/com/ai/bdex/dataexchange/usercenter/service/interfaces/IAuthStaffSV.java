@@ -5,6 +5,7 @@ import java.util.Map;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SignInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SmsSeccodeReqDTO;
 
 public interface IAuthStaffSV {
 	
@@ -43,4 +44,19 @@ public interface IAuthStaffSV {
 	 * @throws BusinessException
 	 */
 	public boolean checkStaffAuthen(String staffId)throws Exception;
+	
+	/**
+	 * 通过短信验证码注册
+	 * @param info
+	 * @return
+	 * @throws Exception
+	 */
+	public int saveSignInfoBysms(SignInfoDTO info)throws Exception;
+	
+	/**
+     * 保存短信校验码
+     * @param req
+     * @throws BusinessException
+     */
+    public void insertSmsSeccodelog(SmsSeccodeReqDTO req)throws Exception;
 }

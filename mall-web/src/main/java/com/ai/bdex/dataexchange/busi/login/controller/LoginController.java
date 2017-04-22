@@ -19,6 +19,7 @@ import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ISmsSeccodeRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.captcha.CaptchaServlet;
 import com.ai.paas.utils.InetTool;
@@ -30,6 +31,9 @@ public class LoginController {
 	
 	@DubboConsumer
 	private ILoginRSV iLoginRSV;
+	
+	@DubboConsumer
+	private ISmsSeccodeRSV iSmsSeccodeRSV;
 	
 	@RequestMapping(value="/pageInit")
 	public String pageInit(Model model){
