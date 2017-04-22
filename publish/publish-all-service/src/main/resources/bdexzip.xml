@@ -9,18 +9,18 @@
     <fileSets>
         <fileSet>
             <directory>${project.basedir}\src\main\resources\devconfig</directory>
-            <!-- 过滤 -->
-            <excludes>
-                <exclude>*.xml</exclude>
-            </excludes>
+            <!--&lt;!&ndash; 过滤 &ndash;&gt;-->
+            <!--<excludes>-->
+                <!--<exclude>*.xml</exclude>-->
+            <!--</excludes>-->
             <outputDirectory>\config</outputDirectory>
         </fileSet>
         <fileSet>
             <directory>${project.build.directory}\lib</directory>
-            <!-- 过滤 -->
-            <excludes>
-                <exclude>*.xml</exclude>
-            </excludes>
+            <!--&lt;!&ndash; 过滤 &ndash;&gt;-->
+            <!--<excludes>-->
+                <!--<exclude>*.xml</exclude>-->
+            <!--</excludes>-->
             <outputDirectory>\lib</outputDirectory>
         </fileSet>
     </fileSets>
