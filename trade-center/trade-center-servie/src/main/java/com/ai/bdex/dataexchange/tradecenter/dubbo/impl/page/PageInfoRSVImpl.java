@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -20,25 +22,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAdProp;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoods;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContent;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdPropRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHeaderNavSV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHotSearchSV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageInfoSV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleAdPropSV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleAdSV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleGoodsSV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleSV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortContentSV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
 
 @Service("iPageInfoRSV")
 public class PageInfoRSVImpl implements IPageInfoRSV {
@@ -65,7 +49,9 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
     private IPageModuleGoodsSV   iPageModuleGoodsSV;
     @Resource
     private IPageModuleAdPropSV   iPageModuleAdpropSV;
-    
+    @Resource
+    private IDataCustomizationSV iDataCustomizationSV;
+
     @Override
     public List<SortInfoRespDTO> querySortInfos(SortInfoRespDTO sortInfoRespDTO) throws Exception {
         List<SortInfoRespDTO> sortInfoRespLis = new ArrayList<SortInfoRespDTO>();
@@ -281,5 +267,9 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
             throw new Exception(e);
         }
         return ageModuleAdPropRespDTOList;
+    }
+    public int saveDataCustomizationRsv(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception
+    {
+         return   iDataCustomizationSV.saveDataCustomization(dataCustomizationRespDTO);
     }
 }

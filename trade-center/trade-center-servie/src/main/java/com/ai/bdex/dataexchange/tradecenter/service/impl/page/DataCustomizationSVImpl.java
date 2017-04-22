@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.tradecenter.service.impl.page;
  
+import com.ai.paas.sequence.SeqUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +34,10 @@ public class DataCustomizationSVImpl implements IDataCustomizationSV {
 	   public int saveDataCustomization(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception{
 		    DataCustomization record = new DataCustomization();	
 			BeanUtils.copyProperties(record, dataCustomizationRespDTO);
- 			//record.setTaxId(SeqUtil.getLong("SEQ_DATA_CUSTOMIZATION"));
+ 			record.setDczaId(SeqUtil.getInt("SEQ_DATA_CUSTOMIZATION"));
  			record.setCreateStaffId(dataCustomizationRespDTO.getCreateStaffId());
 		 	 record.setCreateTime(DateUtil.getNowAsDate());
-			record.setStatus("2");//状态： 2:未处理 
+			record.setStatus("1");//状态： 2:未处理
 			return dataCustomizationMapper.insertSelective(record);
  	  }
 	  //将定制信息处理为已处理

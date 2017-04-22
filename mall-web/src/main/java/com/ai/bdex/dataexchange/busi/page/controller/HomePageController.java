@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
+import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -12,14 +14,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
+
+import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -35,9 +33,9 @@ import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 public class HomePageController {
 	
 	private final static String STATUS_VALID="1";//有效
-	
+	private final static String CUSTOMDATA_STATUS_VALID="1";//有效
 	private static final Logger log = LoggerFactory.getLogger(HomePageController.class);
-	
+
 	@DubboConsumer
 	IPageInfoRSV iPageInfoRSV;
 	@RequestMapping(value="/pageInit")
@@ -153,15 +151,29 @@ public class HomePageController {
 			log.error("查询首页导航信息信息异常："+e.getMessage());
 		}
 	}
+
 	/**
 	 * 首页数据定制
 	 */
-	private void saveMadeData(Model model){
+	@RequestMapping(value="/saveMadeData")
+	private void saveMadeData(Model model, HttpServletRequest request, HttpServletResponse response){
 		try {
-			PageHeaderNavRespDTO pageHeaderNavRespDTO = new PageHeaderNavRespDTO();
-			pageHeaderNavRespDTO.setStatus(STATUS_VALID);
-			List<PageHeaderNavRespDTO> searchNavList = iPageInfoRSV.queryPageHeaderNavList(pageHeaderNavRespDTO);
-			model.addAttribute("searchNavList",searchNavList);
+			String needTiel = request.getParameter("needTiel");
+			String needcontent = request.getParameter("needcontent");
+			String lnkposen = request.getParameter("lnkposen");
+			String lnkphone = request.getParameter("lnkphone");
+			String lnkemail = request.getParameter("lnkemail");
+
+			DataCustomizationRespDTO dataCustomizationRespDTO   = new DataCustomizationRespDTO();
+			dataCustomizationRespDTO.setCustomName(needTiel);
+			dataCustomizationRespDTO.setCustomDescrip(needcontent);
+			dataCustomizationRespDTO.setLinkPerson(lnkposen);
+			dataCustomizationRespDTO.setLinkPhnoe(lnkphone);
+			dataCustomizationRespDTO.setCustomMail(lnkemail);
+			dataCustomizationRespDTO.setCreateStaffId("chuangjianren");
+			dataCustomizationRespDTO.setStatus(CUSTOMDATA_STATUS_VALID);
+			int count = iPageInfoRSV.saveDataCustomizationRsv(dataCustomizationRespDTO);
+			model.addAttribute("savecount",count);
 		} catch (Exception e) {
 			log.error("查询首页导航信息信息异常："+e.getMessage());
 		}
