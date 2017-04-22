@@ -9,8 +9,10 @@ import java.util.UUID;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ai.bdex.dataexchange.apigateway.dao.model.AipPServiceUsedLog;
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipSmsRevLog;
 import com.ai.bdex.dataexchange.apigateway.dao.model.SmsMessage;
 import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.ISmsSendRSV;
@@ -25,12 +27,14 @@ import com.alibaba.fastjson.JSON;
 public class SmsSendByKafkaRSVImpl implements ISmsSendRSV{
 	private static transient Logger log = LoggerFactory.getLogger(SmsSendByKafkaRSVImpl.class);
 	private static String sequenceName="SEQ_AIP_SMS_REV_LOG";
+	@Autowired
     private MessageSender messageSender = null;
+    @Autowired
     private ISmsLogSV smsLogSV;
     
 	@Override
 	public void sendSmsByAlibaba(List<String> phones,
-			Map<String, String> params, String templateCode,String uuid,String owner) throws Exception {
+			Map<String, String> params, String templateCode,String uuid,String owner,String token) throws Exception {
 		Timestamp requestTime=null;
 		Timestamp responseTime=null;
 		StringBuffer request=new StringBuffer();
@@ -42,7 +46,8 @@ public class SmsSendByKafkaRSVImpl implements ISmsSendRSV{
 			request.append("params:"+JSON.toJSONString(params)+"\n");
 			request.append("templateCode:"+templateCode+"\n");
 			request.append("uuid:"+uuid+"\n");
-			request.append("owner:"+owner+"\n");			
+			request.append("owner:"+owner+"\n");	
+			request.append("token:"+token+"\n");	
 			requestTime=new Timestamp(System.currentTimeMillis());
 			logId=SeqUtil.getNextValueLong(sequenceName)+DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss");
 			
@@ -51,6 +56,11 @@ public class SmsSendByKafkaRSVImpl implements ISmsSendRSV{
 			mess.setOwner(owner);
 			mess.setTemplateCode(templateCode);
 			mess.setLogId(logId);
+			AipPServiceUsedLog plog=new AipPServiceUsedLog();
+			plog.setAccessToken(token);
+			plog.setClientId(owner);
+			mess.setObject(plog);
+			
 			if(null!=params){
 				mess.setContent(params);
 			}
@@ -94,6 +104,6 @@ public class SmsSendByKafkaRSVImpl implements ISmsSendRSV{
 		Map<String,String> map=new HashMap<String,String>();
 		map.put("no", verifyCode);
 		String uuid=UUID.randomUUID().toString().replace("-", "");
-		sendSmsByAlibaba(phoneList,map,templateCode,uuid,"userCenter");
+		sendSmsByAlibaba(phoneList,map,templateCode,uuid,"userCenter","");
 	}
 }

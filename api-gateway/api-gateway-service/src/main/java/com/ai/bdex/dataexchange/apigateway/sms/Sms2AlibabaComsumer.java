@@ -10,10 +10,11 @@ import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
+import com.ai.bdex.dataexchange.apigateway.dao.model.AipPServiceUsedLog;
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipSmsSendLog;
 import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.ISmsSendRSV;
+import com.ai.bdex.dataexchange.apigateway.service.interfaces.IAipPServiceUsedLogSV;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.ISmsLogSV;
 import com.ai.bdex.dataexchange.apigateway.util.HttpUtils;
 import com.ai.paas.message.AsyncMessageProcessor;
@@ -29,7 +30,11 @@ public class Sms2AlibabaComsumer extends AsyncMessageProcessor{
 	 private static final Logger log = LoggerFactory.getLogger(Sms2AlibabaComsumer.class);
 	 @Autowired
 	 private ISmsLogSV smsLogSV;
+	 @Autowired
+	 private IAipPServiceUsedLogSV aipPServiceUsedLogSV;
+	 
 	 private  static final String SeqName_AipSmsSendLog="SEQ_AIP_SMS_SEND_LOG";
+	 private  static final String SeqName_AipPServiceUsedLog="SEQ_P_SERVICE_USED_LOG";
 	 private static final  String host = "http://sms.market.alicloudapi.com";
 	 private static final   String path = "/singleSendSms";
 	 private static final   String method = "GET";
@@ -47,12 +52,20 @@ public class Sms2AlibabaComsumer extends AsyncMessageProcessor{
 		String templateCode=json.getString("templateCode");
 		String content=json.getString("content");
 		JSONArray phones=json.getJSONArray("phoneNums");
+		JSONObject pUserLog= JSON.parseObject(json.getString("object"));
+		
 		AipSmsSendLog logBean=new AipSmsSendLog();
 		logBean.setBatchId(batchId);
 		logBean.setOwner(owner);
-		logBean.setRevLogId(logId);
-		logBean.setRequestTime(new Timestamp(System.currentTimeMillis()));
+		logBean.setRevLogId(logId);		
 
+		AipPServiceUsedLog pUserLogBean=new AipPServiceUsedLog();
+		pUserLogBean.setAccessToken(pUserLog.getString("accessToken"));
+		pUserLogBean.setClientId(owner);
+		pUserLogBean.setProviderId("1");
+		pUserLogBean.setServiceId("1");
+		pUserLogBean.setStatus("1");
+		pUserLogBean.setVersion("1.0");
 		
 		try{
 			if(ISmsSendRSV.SMS2ALIBABA.equals(topic)){
@@ -71,7 +84,7 @@ public class Sms2AlibabaComsumer extends AsyncMessageProcessor{
 						if(count==maxNumPerSend){
 							comitString=phonebf.toString();
 							comitString=comitString.substring(0,comitString.lastIndexOf(","));
-							sendSms(querys, logBean,comitString );
+							sendSms(querys, logBean,comitString, pUserLogBean);
 							count=0;
 							phonebf=new StringBuffer();
 							comitString=null;
@@ -81,7 +94,7 @@ public class Sms2AlibabaComsumer extends AsyncMessageProcessor{
 					if(StringUtils.isNotBlank(phonebf.toString())){
 						comitString=phonebf.toString();
 						comitString=comitString.substring(0,comitString.lastIndexOf(","));
-						sendSms(querys, logBean,comitString );
+						sendSms(querys, logBean,comitString ,pUserLogBean);
 					}
 				}
 			}
@@ -107,11 +120,15 @@ public class Sms2AlibabaComsumer extends AsyncMessageProcessor{
 		   return response;
 	 }
 	 
-	 private void sendSms(Map<String, String> querys,AipSmsSendLog logBean,String phones){
+	 private void sendSms(Map<String, String> querys,AipSmsSendLog logBean,String phones,AipPServiceUsedLog pUserLogBean ){
 			HttpResponse response=null;
 			String responseString=null;
+			logBean.setRequestTime(new Timestamp(System.currentTimeMillis()));
+			pUserLogBean.setCreateTime(new Timestamp(System.currentTimeMillis()));
+			String usedLogId=SeqUtil.getNextValueLong(SeqName_AipPServiceUsedLog)+DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss");
 			String sendLogId=SeqUtil.getNextValueLong(SeqName_AipSmsSendLog)+DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss");
-			 querys.put("RecNum",phones);
+			
+			querys.put("RecNum",phones);
 			 try{
 				 response=send2Alibaba(querys);
 				 responseString=response.toString();
@@ -124,10 +141,21 @@ public class Sms2AlibabaComsumer extends AsyncMessageProcessor{
 				 logBean.setResponse(responseString);
 				 logBean.setResponseTime(new Timestamp(System.currentTimeMillis()));
 				 logBean.setCreateTime(new Timestamp(System.currentTimeMillis()));
+				 
+				 pUserLogBean.setRequestMsg(logBean.getRequest());
+				 pUserLogBean.setUsedId(usedLogId);
+				 pUserLogBean.setResponseMsg(responseString);
+				 pUserLogBean.setResponseTime(new Timestamp(System.currentTimeMillis()));
+				 pUserLogBean.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 				 try{
 					 smsLogSV.insertSmsSendLog(logBean);
 				 }catch(Exception e){
 					log.error("insert error",e); 
+				 }
+				 try{
+					 aipPServiceUsedLogSV.insertLog(pUserLogBean);
+				 }catch(Exception e){
+					 log.error("insert error",e); 
 				 }
 			 }
 	 }

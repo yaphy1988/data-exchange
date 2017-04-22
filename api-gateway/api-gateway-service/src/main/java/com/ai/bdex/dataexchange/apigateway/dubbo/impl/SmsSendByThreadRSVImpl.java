@@ -14,9 +14,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ai.bdex.dataexchange.apigateway.dao.model.AipPServiceUsedLog;
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipSmsRevLog;
 import com.ai.bdex.dataexchange.apigateway.dao.model.SmsMessage;
 import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.ISmsSendRSV;
+import com.ai.bdex.dataexchange.apigateway.service.interfaces.IAipPServiceUsedLogSV;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.ISmsLogSV;
 import com.ai.bdex.dataexchange.apigateway.sms.Sms2AlibabaByThread;
 import com.ai.paas.sequence.SeqUtil;
@@ -29,10 +31,12 @@ public class SmsSendByThreadRSVImpl implements ISmsSendRSV{
 	private static String sequenceName="SEQ_AIP_SMS_REV_LOG";
 	@Autowired
     private ISmsLogSV smsLogSV;
+	@Autowired
+	private IAipPServiceUsedLogSV aipPServiceUsedLogSV;
 	@Override
 	public void sendSmsByAlibaba(List<String> phones,
 			Map<String, String> params, String templateCode, String uuid,
-			String owner) throws Exception {
+			String owner,String token) throws Exception {
 		Timestamp requestTime=null;
 		Timestamp responseTime=null;
 		StringBuffer request=new StringBuffer();
@@ -53,11 +57,17 @@ public class SmsSendByThreadRSVImpl implements ISmsSendRSV{
 			mess.setOwner(owner);
 			mess.setTemplateCode(templateCode);
 			mess.setLogId(logId);
+			AipPServiceUsedLog plog=new AipPServiceUsedLog();
+			plog.setAccessToken(token);
+			plog.setClientId(owner);
+			mess.setObject(plog);
+			
 			if(null!=params){
 				mess.setContent(params);
 			}						
 			Sms2AlibabaByThread thread=new Sms2AlibabaByThread(mess);
-			thread.setSmsLogSV(smsLogSV);		
+			thread.setSmsLogSV(smsLogSV);	
+			thread.setAipPServiceUsedLogSV(aipPServiceUsedLogSV);
 			ThreadPoolForSms.getExecutor().execute(thread);
 			response.append("success");
 		}catch(Exception e){
@@ -97,7 +107,7 @@ public class SmsSendByThreadRSVImpl implements ISmsSendRSV{
 		Map<String,String> map=new HashMap<String,String>();
 		map.put("no", verifyCode);
 		String uuid=UUID.randomUUID().toString().replace("-", "");
-		sendSmsByAlibaba(phoneList,map,templateCode,uuid,"userCenter");
+		sendSmsByAlibaba(phoneList,map,templateCode,uuid,"userCenter","");
 	}
     
     

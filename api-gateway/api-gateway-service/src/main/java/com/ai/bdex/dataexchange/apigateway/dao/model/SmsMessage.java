@@ -19,6 +19,7 @@ public class SmsMessage {
     private String sign;//短信签名
     private String owner;
     private String templateCode;
+    private Object object;
 
     public static enum TOPIC {
     	SMS2ALIBABA
@@ -99,10 +100,20 @@ public class SmsMessage {
 	public void setTemplateCode(String templateCode) {
 		this.templateCode = templateCode;
 	}
+	
+
+	public Object getObject() {
+		return object;
+	}
+
+	public void setObject(Object object) {
+		this.object = object;
+	}
 
 	@Override
     public String toString() {
         return JSON.toJSONString(this);
     }
+	
     
 }

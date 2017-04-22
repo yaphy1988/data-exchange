@@ -10,10 +10,13 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import com.ai.bdex.dataexchange.apigateway.dao.model.AipPServiceUsedLog;
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipSmsSendLog;
 import com.ai.bdex.dataexchange.apigateway.dao.model.SmsMessage;
 import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.ISmsSendRSV;
+import com.ai.bdex.dataexchange.apigateway.service.interfaces.IAipPServiceUsedLogSV;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.ISmsLogSV;
 import com.ai.bdex.dataexchange.apigateway.util.HttpUtils;
 import com.ai.paas.sequence.SeqUtil;
@@ -24,6 +27,10 @@ import com.alibaba.fastjson.JSON;
 public class Sms2AlibabaByThread implements Runnable{
 	 private static final Logger log = LoggerFactory.getLogger(Sms2AlibabaByThread.class);	
 	 private ISmsLogSV smsLogSV;
+	
+	 private IAipPServiceUsedLogSV aipPServiceUsedLogSV;
+	 
+	 private  static final String SeqName_AipPServiceUsedLog="SEQ_P_SERVICE_USED_LOG";
 	 private  static final String SeqName_AipSmsSendLog="SEQ_AIP_SMS_SEND_LOG";
 	 private static final  String host = "http://sms.market.alicloudapi.com";
 	 private static final   String path = "/singleSendSms";
@@ -45,8 +52,16 @@ public class Sms2AlibabaByThread implements Runnable{
 	}
 	public void setSmsLogSV(ISmsLogSV smsLogSV) {
 		this.smsLogSV = smsLogSV;
-	}
+	}	
 	
+	public IAipPServiceUsedLogSV getAipPServiceUsedLogSV() {
+		return aipPServiceUsedLogSV;
+	}
+
+	public void setAipPServiceUsedLogSV(IAipPServiceUsedLogSV aipPServiceUsedLogSV) {
+		this.aipPServiceUsedLogSV = aipPServiceUsedLogSV;
+	}
+
 	public void sendToAlibaba(SmsMessage mess){
 		
 		String topic=mess.getTopic();
@@ -60,8 +75,13 @@ public class Sms2AlibabaByThread implements Runnable{
 		logBean.setBatchId(batchId);
 		logBean.setOwner(owner);		
 		logBean.setRevLogId(logId);
-		logBean.setRequestTime(new Timestamp(System.currentTimeMillis()));
 
+
+		AipPServiceUsedLog pUserLogBean=(AipPServiceUsedLog)mess.getObject();
+		pUserLogBean.setProviderId("1");
+		pUserLogBean.setServiceId("1");
+		pUserLogBean.setStatus("1");
+		pUserLogBean.setVersion("1.0");
 		
 		try{
 			if(ISmsSendRSV.SMS2ALIBABA.equals(topic)){
@@ -80,7 +100,7 @@ public class Sms2AlibabaByThread implements Runnable{
 						if(count==maxNumPerSend){
 							comitString=phonebf.toString();
 							comitString=comitString.substring(0,comitString.lastIndexOf(","));
-							sendSms(querys, logBean,comitString );
+							sendSms(querys, logBean,comitString ,pUserLogBean);
 							count=0;
 							phonebf=new StringBuffer();
 							comitString=null;
@@ -90,7 +110,7 @@ public class Sms2AlibabaByThread implements Runnable{
 					if(StringUtils.isNotBlank(phonebf.toString())){
 						comitString=phonebf.toString();
 						comitString=comitString.substring(0,comitString.lastIndexOf(","));
-						sendSms(querys, logBean,comitString );
+						sendSms(querys, logBean,comitString ,pUserLogBean);
 					}
 				}
 			}
@@ -112,9 +132,12 @@ public class Sms2AlibabaByThread implements Runnable{
 		   return response;
 	 }
 	 
-	 private void sendSms(Map<String, String> querys,AipSmsSendLog logBean,String phones){
+	 private void sendSms(Map<String, String> querys,AipSmsSendLog logBean,String phones,AipPServiceUsedLog pUserLogBean){
 			HttpResponse response=null;
 			String responseString=null;
+			logBean.setRequestTime(new Timestamp(System.currentTimeMillis()));
+			pUserLogBean.setCreateTime(new Timestamp(System.currentTimeMillis()));
+			String usedLogId=SeqUtil.getNextValueLong(SeqName_AipPServiceUsedLog)+DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss");
 			String sendLogId=SeqUtil.getNextValueLong(SeqName_AipSmsSendLog)+DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss");
 			 querys.put("RecNum",phones);
 			 try{
@@ -129,10 +152,22 @@ public class Sms2AlibabaByThread implements Runnable{
 				 logBean.setResponse(responseString);
 				 logBean.setResponseTime(new Timestamp(System.currentTimeMillis()));
 				 logBean.setCreateTime(new Timestamp(System.currentTimeMillis()));
+				 
+				 pUserLogBean.setRequestMsg(logBean.getRequest());
+				 pUserLogBean.setUsedId(usedLogId);
+				 pUserLogBean.setResponseMsg(responseString);
+				 pUserLogBean.setResponseTime(new Timestamp(System.currentTimeMillis()));
+				 pUserLogBean.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+				 
 				 try{
 					 smsLogSV.insertSmsSendLog(logBean);
 				 }catch(Exception e){
 					log.error("insert error",e); 
+				 }
+				 try{
+					 aipPServiceUsedLogSV.insertLog(pUserLogBean);
+				 }catch(Exception e){
+					 log.error("insert error",e); 
 				 }
 			 }
 	 }
