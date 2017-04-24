@@ -27,7 +27,7 @@ import com.alibaba.fastjson.JSON;
 public class SmsSendByKafkaRSVImpl implements ISmsSendRSV{
 	private static transient Logger log = LoggerFactory.getLogger(SmsSendByKafkaRSVImpl.class);
 	private static String sequenceName="SEQ_AIP_SMS_REV_LOG";
-	@Autowired
+	
     private MessageSender messageSender = null;
     @Autowired
     private ISmsLogSV smsLogSV;

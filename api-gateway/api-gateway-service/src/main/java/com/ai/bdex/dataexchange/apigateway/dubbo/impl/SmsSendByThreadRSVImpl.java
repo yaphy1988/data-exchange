@@ -50,7 +50,7 @@ public class SmsSendByThreadRSVImpl implements ISmsSendRSV{
 			request.append("uuid:"+uuid+"\n");
 			request.append("owner:"+owner+"\n");			
 			requestTime=new Timestamp(System.currentTimeMillis());
-			logId=SeqUtil.getNextValueLong(sequenceName)+DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss");
+			logId=DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss")+SeqUtil.getNextValueLong(sequenceName);
 			
 			SmsMessage mess=new SmsMessage(SmsMessage.TOPIC.SMS2ALIBABA,uuid);
 			mess.setPhoneNums(phones);
@@ -76,6 +76,7 @@ public class SmsSendByThreadRSVImpl implements ISmsSendRSV{
 			throw e;
 		}finally{
 			responseTime=new Timestamp(System.currentTimeMillis());
+			logBean.setLogId(logId);
 			logBean.setBatchId(uuid);
 			logBean.setOwner(owner);
 			logBean.setRequest(request.toString());

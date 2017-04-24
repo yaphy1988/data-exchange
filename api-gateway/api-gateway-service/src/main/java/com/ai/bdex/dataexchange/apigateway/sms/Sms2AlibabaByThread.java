@@ -8,9 +8,9 @@ import java.util.Map;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
+import org.apache.http.util.EntityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipPServiceUsedLog;
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipSmsSendLog;
@@ -137,12 +137,12 @@ public class Sms2AlibabaByThread implements Runnable{
 			String responseString=null;
 			logBean.setRequestTime(new Timestamp(System.currentTimeMillis()));
 			pUserLogBean.setCreateTime(new Timestamp(System.currentTimeMillis()));
-			String usedLogId=SeqUtil.getNextValueLong(SeqName_AipPServiceUsedLog)+DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss");
-			String sendLogId=SeqUtil.getNextValueLong(SeqName_AipSmsSendLog)+DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss");
+			String usedLogId=DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss")+SeqUtil.getNextValueLong(SeqName_AipPServiceUsedLog);
+			String sendLogId=DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss")+SeqUtil.getNextValueLong(SeqName_AipSmsSendLog);
 			 querys.put("RecNum",phones);
 			 try{
 				 response=send2Alibaba(querys);
-				 responseString=response.toString();
+				 responseString=EntityUtils.toString(response.getEntity());
 			 }catch(Exception e){
 				 log.error(sendLogId+" send failted",e);
 				 responseString=e.getMessage();
