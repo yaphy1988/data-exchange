@@ -1,4 +1,7 @@
 var basePath = WEB_ROOT;
+$(function(){
+	queryPageModue();
+})
 function  showMyModal() {
 	$("#myModal").show();
 }
@@ -47,9 +50,9 @@ function queryPageModue(){
 			 if(data.success){
 				 if(data.pageModuleList != null && data.pageModuleList != undefined){
 					 $(data.pageModuleList).each(function(i,d){
-						 switch (d.moduleType) {
+						 switch (d.moduleId) {
 						case '01'://01-首页轮播广告；
-							
+							queryHotSearch();
 							break;
 						case '02'://01-首页轮播广告；
 							
