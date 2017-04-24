@@ -1,16 +1,19 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
 <head>
-	<meta charset="UTF-8">
-	<title>商品详情</title>
-	<link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" >
-	<link rel="stylesheet" href="../static/css/global.css" th:href="@{/css/global.css}">
-	<link rel="stylesheet" href="../static/css/index.css" th:href="@{/css/index.css}">
+	<meta charset="UTF-8" th:remove="all">
+	<title>商品详情-API</title>
+	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all" >
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/index.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
+	<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>
 </head>
 <body>
-<div class="seconav">
-	<div class="top">
+<!--<div class="seconav">-->
+	<div class="top" th:remove="all">
 	    <div class="wrap1200">
 	        <div class="top-left floatL">
 	            <span>欢迎来到广州数据中心</span>
@@ -26,7 +29,7 @@
 	        </div>
 	    </div>
 	</div>
-	<div class="header">
+	<div class="header" th:remove="all">
 	    <div class="wrap1200">
 	        <div class="logo floatL"><img th:src="@{/images/logo.png}" src="../static/images/logo.png" title="广州数据中心"></div>
 	        <div class="search floatR">
@@ -113,8 +116,8 @@
 	    	</div>
 	    </div>
 	</div>
-</div>
-	<div class="main">
+<!--</div>-->
+	<div class="main" layout:fragment="screen_content">
 		<div class="classify">
 			<i class="iconfont"></i>
 			<span>当前位置：</span>
@@ -127,7 +130,7 @@
 				<div class="gd_hd clearfix">
 					<div class="imgBox">
 						<span class="img">
-							<img src="../static/images/img.jpg">
+							<img src="../static/images/img.jpg" th:src="'http://'+${gdsInfo.gdsPic}">
 						</span>
 						<a class="active collect">
 							<i class="iconfont"></i>收藏商品
@@ -137,40 +140,43 @@
 					<div class="info ">
 						<div class="info_hd clearfix">
 							<div class="tit ">
-								<h1>常用快递常用快递常用快递常用快递</h1>
-								<p class="replenish">支持大多数快递公司支持大多数快递快递公司</p>
+								<h1 th:text="${gdsInfo.gdsName}">常用快递常用快递常用快递常用快递</h1>
+								<p class="replenish" th:text="${gdsInfo.gdsSubtitle}">支持大多数快递公司支持大多数快递快递公司</p>
 							</div>
 							<div class="label_box ">
-								<p>免费体验</p>
-								<p>API</p>
-								<p>支持HTTPS</p>
-								<p class="lable_blue">
+								<p  th:each="gdsLabel,gdsLabelStat : ${gdsInfo.gdsLabelVOList}" th:text="${gdsLabel.labName}" th:style="'color:'+${gdsLabel.labColor}+';border-color:'+${gdsLabel.labColor}">免费体验</p>
+								<p th:remove="all">API</p>
+								<p th:remove="all">支持HTTPS</p>
+								<p th:remove="all" class="lable_blue">
 									<span>广交所</span>
 									<i>接入服务商</i>
 								</p>
-								
 							</div>
 						</div>
 						<div class="info_bd">
 							<div class="inner">
-								<span>数据ID：<b class="col_orange">43</b><i></i></span>
+								<span>数据ID：<b class="col_orange" th:text="${gdsInfo.apiId}">43</b><i></i></span>
 								<span>接口状态：<b class="col_green">正常</b><i></i></span>
 								<span>数据接入服务商：<b class="">广交所</b></span>
 							</div>
 							<div class="pirce">
 								<h2>
 									<small>￥</small>
-									<span class="col_orange">299.00</span>
-									<small>/20000次</small>
+									<span class="col_orange" th:text="${curGdsSku.packPriceStr}" id="gds_priceDisplay">299.00</span>
+									<small th:text="'/'+${curGdsSku.packTimes}+'次'" id="gds_timesDisplay">/20000次</small>
 								</h2>
-								<p class="label label-success"><i class="iconfont"></i>有效期120天</p>
+								<p class="label label-success" ><i class="iconfont" th:text="'有效期'+${curGdsSku.packDay}+'天'" id="gds_dayDisplay">有效期120天</i></p>
 								<!-- <p class="label label-info"><i class="iconfont"></i>有效期120天</p>
 								<p class="label label-warning"><i class="iconfont"></i>有效期120天</p> -->
 							</div>
 							<ul class="norms clearfix">
-								<li class="active"><a href="">0.00/10次</a></li>
-								<li><a href="">套餐二</a></li>
-								<li><a href="">1000次</a></li>
+								<li th:each="gdsSku,gdsSkuStat:${gdsInfo.gdsSkuVOList}" th:class="${gdsSku.ifHaveSel}" class="active">
+									<a href="javascript:void(0)" th:attr="skuId=${gdsSku.skuId},packPriceStr=${gdsSku.packPriceStr},packPrice=${gdsSku.packPrice},packTimes=${gdsSku.packTimes},packDay=${gdsSku.packDay}" th:text="${gdsSku.skuName}" th:onclick="'changeGdsSku(this)'">
+										0.00/10次
+									</a>
+								</li>
+								<li th:remove="All"><a href="">套餐二</a></li>
+								<li th:remove="All"><a href="">1000次</a></li>
 							</ul>
 							<a class="btn btn-orange btn_rec_bg">
 								<i class="iconfont"></i>
@@ -328,7 +334,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="footer">
+	<div class="footer" th:remove="all">
     <div class="wrap1200 ptb40">
         <div class="left floatL">
             <img src="../static/images/logo-footer.png" >
