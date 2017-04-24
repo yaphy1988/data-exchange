@@ -10,6 +10,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModule;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleExample;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleExample.Criteria;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleSV;
+import com.ai.paas.utils.StringUtil;
 import com.alibaba.dubbo.common.utils.StringUtils;
 @Service("iPageModuleSV")
 public class PageModuleSVImpl implements IPageModuleSV {
@@ -24,13 +25,13 @@ public class PageModuleSVImpl implements IPageModuleSV {
 	public List<PageModule> queryPageModuleList(PageModule pageModule) throws Exception {
 		PageModuleExample example = new PageModuleExample();
 		Criteria criteria = example.createCriteria();
-		if(pageModule.getModuleId() != null && pageModule.getModuleId() != 0){
+		if(   pageModule.getModuleId() != null && pageModule.getModuleId() != 0){
 			criteria.andModuleIdEqualTo(pageModule.getModuleId());
 		}
-		if(StringUtils.isBlank(pageModule.getModuleType())){
+		if(!StringUtil.isBlank( pageModule.getModuleType())){
 			criteria.andModuleTypeEqualTo(pageModule.getModuleType());
 		}
-		if(StringUtils.isBlank(pageModule.getStatus())){
+		if(!StringUtils.isBlank(pageModule.getStatus())){
 			criteria.andStatusEqualTo(pageModule.getStatus());
 		}
 		if(pageModule.getModulePid() != null && pageModule.getModulePid() != 0){

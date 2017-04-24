@@ -44,7 +44,7 @@ function queryPageModue(){
 		url : basePath+'/homePage/queryPageModue',
 		type : "POST",
 		dataType : "json",
-		async : false,
+		async : true,
 		data : {},
 		success : function(data) {
 			 if(data.success){
@@ -52,10 +52,10 @@ function queryPageModue(){
 					 $(data.pageModuleList).each(function(i,d){
 						 switch (d.moduleId) {
 						case '01'://01-首页轮播广告；
-							queryHotSearch();
+							 
 							break;
 						case '02'://01-首页轮播广告；
-							
+							queryDateModue(d.moduleId);
 							break;
 						case '03'://03-首页数据定制；
 							
@@ -72,7 +72,32 @@ function queryPageModue(){
 					 });
 				 }
 			 }else{
-				 console.error('查询楼层信息异常！');
+				 alert('查询楼层信息异常！');
+			 }
+	}});
+}
+//查询推荐楼层信息
+function queryDateModue(modoltype){
+	debugger;
+	$.ajax({
+		url : basePath+'/homePage/queryPageModuleGoods',
+		type : "POST",
+		dataType : "json",
+		async : true,
+		data : {moduleId:moduleId},
+		success : function(data) {
+			 if(data.success){
+				 var html = "";
+ 			        if(data.success){
+						$(data.hotSearchList).each(function(i,d){
+							//WEB_ROOT+d.searchUrl
+							//html +='<li><a href='+1+' target="_blank"><img src='+d.searchUrl+'><span>'+d.searchKey+'</span></a></li>';
+							html +='<li><a href='+1+' target="_blank"><img src=11><span>推荐数据</span></a></li>';
+						});
+					}
+					$('#data_recommend').html(html);
+			 }else{
+				 console.error('查询推荐楼层信息异常！');
 			 }
 	}});
 }
