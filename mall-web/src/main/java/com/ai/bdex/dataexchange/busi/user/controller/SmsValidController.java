@@ -62,28 +62,28 @@ public class SmsValidController{
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		
 		/** 图片验证码 */
-//		if(!StringUtils.isBlank(picVerifyCode)){
-//			if (CaptchaServlet.verifyCaptcha(request, picVerifyCode.trim()) == false) {
-//				rMap.put("error_msg","图片验证码不正确，请重新输入！");
-//				rMap.put("success",false);
-//				return rMap;
-//			}
-//		}
-//		
-//		/** 时间间隔限制 80秒 */
-//		Long lastSendTime = (Long) CacheUtil.getItem(LAST_SEND_TIME + phoneNo + "_" + busiType);
-//		if (lastSendTime != null && ((System.currentTimeMillis() - lastSendTime) < 80 * 1000)) {
-//			rMap.put("error_msg","短信验证码已经发送，请在80秒之后再次获取！");
-//			rMap.put("success",false);
-//			return rMap;
-//		}
-//		
-//		if(StringUtils.isBlank(lastTocken)){
-//			rMap.put("error_msg","获取短信验证码失败，请重新刷新页面之后再获取！");
-//			rMap.put("success",false);			
-//			logger.error("短信发送验证码非正常，入参不对，lastTocken不能为空");
-//			return rMap;
-//		}
+		if(!StringUtils.isBlank(picVerifyCode)){
+			if (CaptchaServlet.verifyCaptcha(request, picVerifyCode.trim()) == false) {
+				rMap.put("error_msg","图片验证码不正确，请重新输入！");
+				rMap.put("success",false);
+				return rMap;
+			}
+		}
+		
+		/** 时间间隔限制 80秒 */
+		Long lastSendTime = (Long) CacheUtil.getItem(LAST_SEND_TIME + phoneNo + "_" + busiType);
+		if (lastSendTime != null && ((System.currentTimeMillis() - lastSendTime) < 80 * 1000)) {
+			rMap.put("error_msg","短信验证码已经发送，请在80秒之后再次获取！");
+			rMap.put("success",false);
+			return rMap;
+		}
+		
+		if(StringUtils.isBlank(lastTocken)){
+			rMap.put("error_msg","获取短信验证码失败，请重新刷新页面之后再获取！");
+			rMap.put("success",false);			
+			logger.error("短信发送验证码非正常，入参不对，lastTocken不能为空");
+			return rMap;
+		}
 		
         try {
         	 SmsSeccodeReqDTO seccodeInitVO = new SmsSeccodeReqDTO();
@@ -109,17 +109,21 @@ public class SmsValidController{
              SmsSeccodeReqDTO tockenInfo = smsSeccodeRSV.genSmsSecCode(seccodeInitVO);
              if(tockenInfo!=null){
             	 //发送验证码
-//            	 iSmsSendRSV.sendVerifyCodeByAlibaba(phoneNo, tockenInfo.getSecurityCode());
+            	 iSmsSendRSV.sendVerifyCodeByAlibaba(phoneNo, tockenInfo.getSecurityCode());
              }
              rMap.put("error_msg","验证码已经发送到手机，请查收！");
              rMap.put("success",true);
              rMap.put("tocken",tockenInfo.getTocken());
              // 有效时间10分钟
-//             CacheUtil.addItem(LAST_SEND_TIME + phoneNo + "_" + busiType, System.currentTimeMillis(), 1 * 10 * 60);
+             CacheUtil.addItem(LAST_SEND_TIME + phoneNo + "_" + busiType, System.currentTimeMillis(), 1 * 10 * 60);
         } catch (BusinessException err) {
             logger.error("发送校验码失败；" + err.getMessage(), err);
+            rMap.put("error_msg",err.getMessage());
+ 			rMap.put("success",false);
         } catch (Exception err) {
             logger.error("发送校验码失败；" + err.getMessage(), err);
+            rMap.put("error_msg",err.getMessage());
+ 			rMap.put("success",false);
         }
 		return rMap;
 	}

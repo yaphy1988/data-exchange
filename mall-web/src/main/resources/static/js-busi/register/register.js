@@ -134,7 +134,7 @@ function afterSend(){
       }
     },1000);
     
-    eDialog.info("发送验证码成功！");
+    alert("发送验证码成功！");
 }
 
 $(function(){

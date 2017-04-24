@@ -14,7 +14,6 @@ spring:
       group: devGroup
     consumer:
       enabled: false
-
 jdbc:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
@@ -29,3 +28,11 @@ application:
     runmode: D
   sequencefactory:
     confpath: /com/ai/db/sequence/conf
+  cache:
+    confpath: /com/ai/paas/cache/conf
+  session:
+    confpath: /com/ai/paas/session/conf
+  image:
+    confpath: /com/ai/paas/image/conf
+  file:
+    confpath: /com/ai/paas/file/conf

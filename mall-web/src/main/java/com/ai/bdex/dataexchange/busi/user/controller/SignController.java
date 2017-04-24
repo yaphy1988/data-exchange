@@ -106,9 +106,9 @@ public class SignController {
 		smsDto.setTocken(signvo.getTocken());
 		smsDto.setPhoneNo(signvo.getPhoneNo());
 		smsDto.setInputSecurityCode(signvo.getSmsCode());
-		boolean codeFlag = false;
+		boolean codeFlag = true;
 		try {
-			codeFlag = iSmsSeccodeRSV.checkSmsSecCode(smsDto);
+//			codeFlag = iSmsSeccodeRSV.checkSmsSecCode(smsDto);
 			if(codeFlag){
 				//查询用户名是否重复
 				AuthStaffDTO input1 = new AuthStaffDTO();

@@ -14,12 +14,16 @@
     <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
     <script src="../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
     <script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="../static/js-busi/login/login.js" th:src="@{/js-busi/login/login.js}"></script>
+    <script type="text/javascript">
+        var WEB_ROOT = '[[${#httpServletRequest.contextPath}]]';
+    </script>
 </head>
 <body  class="bg-gray32">
 <div class="header bg-white">
     <div class="wrap1000">
         <div class="logo floatL"><img src="../static/images/logo.png" th:src="@{/images/logo.png}" title="广州数据中心"></div>
-        <div class="register floatR">还没有广数账号？ <a href="#">立即注册</a></div>
+        <div class="register floatR">还没有广数账号？ <a href="/regist/pageInit">立即注册</a></div>
     </div>
 </div>
 <div class="main bg-col01">
@@ -34,24 +38,24 @@
             <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i>账号与密码输入不匹配</p>
 
             <div class="login-input">
-                <input type="text" class="form-control" placeholder="请输入邮箱或账户名">
+                <input type="text" class="form-control" placeholder="请输入邮箱或账户名" id="STAFF_ID">
                 <label><i class="icon iconfont icon-iconuser"></i></label>
             </div>
             <div class="login-input">
-                <input type="password" class="form-control" placeholder="请输入密码">
+                <input type="password" class="form-control" placeholder="请输入密码" id="LOGIN_PASSWORD">
                 <label><i class="icon iconfont icon-mm"></i></label>
             </div>
             <div class="login-input login-code">
-                <input type="password" class="form-control" placeholder="请输入验证码">
+                <input type="text" class="form-control" placeholder="请输入验证码" maxlength="4" id="verifyCode">
                 <label><i class="icon iconfont icon-yaochi"></i></label>
-                <div class="code">图片验证码</div>
+                <div class="code"><img id="check_img" src="" /></div>
             </div>
             <div class="login-input">
-                <button class="btn btn-primary">登录</button>
+                <button class="btn btn-primary" id="bLoginSubmit">登录</button>
             </div>
             <div class="login-link">
                 <a href="#" class="floatR">忘记密码</a>
-                <p>还没有广数账号，<a href="#">立即注册</a></p>
+                <p>还没有广数账号，<a href="/regist/pageInit">立即注册</a></p>
             </div>
         </div>
     </div>

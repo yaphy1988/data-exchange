@@ -22,6 +22,7 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.captcha.CaptchaServlet;
 import com.ai.paas.utils.InetTool;
+import com.ai.paas.utils.SignUtil;
 
 @Controller
 @RequestMapping(value = "/login")
@@ -49,15 +50,15 @@ public class LoginController {
 		String verifyCode = request.getParameter("verifyCode");
 		String veriCodeInSession = CaptchaServlet.getCaptchaCode(request);
 		//验证码注释
-		if (!CaptchaServlet.verifyCaptcha(request, verifyCode)) {
-			rMap.put("success", false);
-			rMap.put("errorMsg", "验证码输入错误");
-			return rMap;
-		}
+//		if (!CaptchaServlet.verifyCaptcha(request, verifyCode)) {
+//			rMap.put("success", false);
+//			rMap.put("errorMsg", "验证码输入错误");
+//			return rMap;
+//		}
 
 		loginInfo = new LoginInfoDTO();
 		loginInfo.setLoginName(staffId);
-		loginInfo.setLoginPwd(password);
+		loginInfo.setLoginPwd(SignUtil.SHA1(password));
 		loginInfo.setInputVerifyCode(verifyCode);
 		loginInfo.setSessionVerifyCode(veriCodeInSession);
 		loginInfo.setLoginIp(ip);

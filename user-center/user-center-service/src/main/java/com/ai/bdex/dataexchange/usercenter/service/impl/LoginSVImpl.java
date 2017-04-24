@@ -41,7 +41,7 @@ public class LoginSVImpl implements ILoginSV {
 
         // 验证用户名正确性
         AuthStaff staffBean = verifyLoginName(loginName);
-        // 验证密码正确性 如果是广东登录的不用校验其密码
+        // 验证密码正确性
         AuthStaffPass staffPassBean = new  AuthStaffPass();
         staffPassBean = this.verifyPwd(staffBean.getStaffId(), loginPwd,loginInfo);
         // 开关验证，后面补充

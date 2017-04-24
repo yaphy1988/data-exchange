@@ -23,12 +23,12 @@
 		/*校验登录码*/
 		"checksms" : function(seccode,phoneNo,callback){
 			if(!seccode || seccode =="" || seccode == "undefined"){
-				eDialog.info("请输入手机收到的校验码");
+				alert("请输入手机收到的校验码");
 				return ;
 			}
 			
 			if(smsWin.tocken=="1" || !smsWin.tocken || smsWin.tocken =="" || smsWin.tocken == "undefined"){
-				eDialog.info("未获取手机校验码，请先获取之后，再输入校验码");
+				alert("未获取手机校验码，请先获取之后，再输入校验码");
 				return ;
 			}
 			
@@ -45,7 +45,7 @@
 							callback(smsWin.tocken,seccode,phoneNo);
 						};
 					} else {
-						eDialog.info(data.error_msg);
+						alert(data.error_msg);
 					}
 			    }
 			});
@@ -59,13 +59,13 @@
 		 */
 		"sendsms" : function(phoneNo,busiType,callback){
 			if(!phoneNo || phoneNo =="" || phoneNo == "undefined"){
-				eDialog.info("接收短信手机号码不能为空，请重新输入");
+				alert("接收短信手机号码不能为空，请重新输入");
 				return ;
 			}
 			
 			var mobileReg=/^1[34578]\d{9}$/;//简单的正则校验
 		 	if(!mobileReg.test(phoneNo)){ 
-		 	    eDialog.info("手机号码格式不正确，请重新输入");
+		 	    alert("手机号码格式不正确，请重新输入");
 		 	    return ; 
 		 	 } 
 
@@ -81,11 +81,11 @@
 						if($.isFunction(callback)){
 							callback();
 						} else {
-							eDialog.info("发送验证码成功！");
+							alert("发送验证码成功！");
 						}
 					    
 					} else {
-						eDialog.info(data.error_msg);
+						alert(data.error_msg);
 					}
 			    }
 			});
@@ -107,7 +107,7 @@
 	          }
 	        },1000);
 	        
-	        eDialog.info("发送验证码成功！");
+	        alert("发送验证码成功！");
 		},
 		
 		///在校验成功之后；
@@ -204,7 +204,7 @@
 		    		//发送短信验证码
 		    		var picVerifyCode = $("#PIC_VERIFY_CODE_UC").val();
 		    		if (picVerifyCode == null || picVerifyCode == "") {
-		    			eDialog.info("验证码不能为空！");
+		    			alert("验证码不能为空！");
 		    			return;
 		    		}
 		    		smsWin.picVerifyCode = picVerifyCode;
