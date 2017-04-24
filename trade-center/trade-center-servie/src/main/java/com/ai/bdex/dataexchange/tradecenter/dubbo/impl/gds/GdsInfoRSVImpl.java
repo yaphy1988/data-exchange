@@ -48,8 +48,9 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
     
     @Resource
     private IGdsLabelQuikSV iGdsLabelQuikSV;
-    
+    @Resource
     private IGdsPropSV iGdsPropSV;
+    
     @Override
     public GdsInfoRespDTO queryGdsInfoDetails(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
         GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();

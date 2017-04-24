@@ -55,12 +55,11 @@ function saveGdsLabelQuik(){
 /**
  * 查询分类属表
  */
-function queryGdsProp(){
+function queryGdsProp(catId){
 	//商品分类：API、数据定制、解决方案
-	var  catFirst = $("#catFirst").val();
 	var url="/gdsEdit/queryGdsPropList";
 	var params={
-			catFirst:catFirst
+			catId:catId
 	};
 	 $.ajax({
          url : url,
@@ -155,6 +154,9 @@ function querySubCatNodes(obj){
          dataType : 'json',
          success : function(data) {
         	 $this.parents().find('div[level="'+(nodeLevel+1)+'"] table tbody').empty();
+        	 if(nodeLevel==1){
+            	 $this.parents().find('div[level="'+(nodeLevel+2)+'"] table tbody').empty();
+        	 }
              if (data.success&&data.object.length>0) {
             	 var appendCat=""
                 for(var i=0 ;i<data.object.length;i++){
@@ -197,36 +199,45 @@ function catIsSubNode(){
          		var catFirst = $('div[name="catDiv"]').eq(0).find('.active').attr('catId');
          		var catFirstName=$('div[name="catDiv"]').eq(0).find('.active').attr('catName');
          		if(typeof(selectCatCallback)!='undefined'){
-         			selectCatCallback(catId,catName,catFirst);
+         			selectCatCallback(catId,catName,catFirst,catFirstName);
          		}
          		$('#myModal').modal('hide');
          	}
          }
      });
 }
-	 /**
-	  * 选择商品大类回调函数
-	  * @param {} catId
-	  * @param {} catName
-	  */
-	 function selectCatCallback(catId,catName,catFirst,catFirstName){
-	 	var oldCatFirst = $('#catFirst').val();
-	 	if(oldCatFirst!=""&&oldCatFirst!=catFirst){
-	 		//document.location = basePath+"/product/pageInit?catId="+ catId+'&catFirst='+catFirst;
-	 	}
-	 	$('#catName').val(catName);
-	 	$('#catId').val(catId);
-	 	$('#catFirst').val(catFirst);
-	 	var catText="/"+catFirstName+"/"+catName;
-	 	$("#catText").val(catText);
-	 }
 /**
- * 保存子节点
+ *  选择商品大类回调函数
+ * @param catId
+ * @param catName
+ * @param catFirst
+ * @param catFirstName
  */
-function saveSubCatNodes(){
-	
+function selectCatCallback(catId, catName, catFirst, catFirstName) {
+	var oldCatFirst = $('#catFirst').val();
+	if (oldCatFirst != catFirst) {
+		queryGdsProp(catFirst);
+	}
+	//API分类
+	if(catFirst=="1"){
+		$('[name="DivAPI"]').css("display","block")	;
+		$("#TableAPI").css("display","block");
+		$("#APIPackage").css("display","block");
+	}else{
+		$('[name="DivAPI"]').css("display","none")	;
+		$("#TableAPI").css("display","none");
+		$("#APIPackage").css("display","none");
+		$("#gdsApiId").val("");
+		$("#APIPackage").find("tbody").empty();
+	}
+	$('#catName').val(catName);
+	$('#catId').val(catId);
+	$('#catFirst').val(catFirst);
+	var catText = "/" + catFirstName + "/" + catName;
+	$("#catText").val(catText);
 }
-//保存商品信息
+
+// 保存商品信息
 function saveGds(){
 	var catId = $("catId").val();
 	var catFirst = $("#catFirst").val();

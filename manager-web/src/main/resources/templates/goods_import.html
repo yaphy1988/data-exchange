@@ -12,7 +12,41 @@
 	<script type="text/javascript" src="../../static/js-busi/gds/gdsEdit.js" th:src="@{/js-busi/gds/gdsEdit.js}"></script>
 </head>
 <body>
-
+<header class="clearfix m_header" th:remove="all">
+	<a href="" class="Logo" target="_blank" >
+		<img width="160" src="../static/images/manage_logo.jpg" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
 <div  layout:fragment="screen_content">
 	<div class="m_main">
 		<div class="m_con">
@@ -80,8 +114,8 @@
 					</td>
 				</tr>
 			</table>
-			<div class="title">API接口</div>
-			<table class="editTable">
+			<div class="title" th:style="'display:none'" th:name="DivAPI">API接口</div>
+			<table class="editTable"  th:style="'display:none'" id="TableAPI">
 				<tr>
 					<td class="Hint tips" width="120">
 						<span class="col_red">*</span>
@@ -89,10 +123,16 @@
 					</td>
 					<td width="520">
 						<div class="input-group">
+							<select class="form-control" id="gdsApiId">
+									<optgroup>
+										<option>1</option>
+									</optgroup>
+								</select>
+								<!--
 							<input type="text" class="form-control" placeholder="/VIN车架号查询/">
 							<span class="input-group-btn">
 					        <button class="btn btn-default" type="button">请选择</button>
-					      </span>
+					      </span>-->
 						</div>
 					</td>
 				</tr>
@@ -173,8 +213,8 @@
 					</td>
 				</tr>
 			</table>
-			<div class="title">价格信息</div>
-			<table class="table table-bordered" >
+			<div class="title" th:style="'display:none'" th:name="DivAPI">价格信息</div>
+			<table class="table table-bordered" th:style="'display:none'" id="APIPackage" >
 				<thead>
 				<tr class="active">
 					<th>套餐名称</th>
@@ -190,25 +230,14 @@
 					<td>aaa</td>
 					<td>aaa</td>
 				</tr>
-				<tr>
-					<td>aaa</td>
-					<td>aaa</td>
-					<td>aaa</td>
-					<td>aaa</td>
-				</tr>
-				<tr>
-					<td>aaa</td>
-					<td>aaa</td>
-					<td>aaa</td>
-					<td>aaa</td>
-				</tr>
 				</tbody>
 			</table>
-			<div class="clearfix"><a href="" class="btn btn-default btn-sm pull-right">新增套餐</a></div>
-			<div class="title">套餐介绍</div>
+			<div class="clearfix"><a href="" class="btn btn-default btn-sm pull-right"  th:onclick="'Add()'">新增套餐</a></div>
+			<div>
+			<div class="title" th:remove="all">套餐介绍</div>
 
 			<!-- 下面实际应是编辑器 -->
-			<div>
+			<div th:remove="all">
 				<!-- <textarea class="form-control" onkeyup="checkLen(this)" rows="5" "></textarea>-->
 				<textarea class="form-control"  rows="5"></textarea>
 			</div>
@@ -366,8 +395,126 @@
 			</div>
 		</div>
 	</div>
+	<div class="m_nav" th:remove="all">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li class="active">
+							<a href=""></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i ></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li >
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
-
+</div>
 </body>
 </html>

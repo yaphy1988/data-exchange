@@ -29,6 +29,7 @@ import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsJsonBean;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsLabelQuikVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsManageInfoVO;
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsPropVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
@@ -453,11 +454,11 @@ public class GdsEditController {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryGdsPropList")
-	public GdsJsonBean queryGdsPropList(HttpServletRequest req, HttpServletResponse rep, int catId) {
+	public GdsJsonBean queryGdsPropList(HttpServletRequest req, HttpServletResponse rep, GdsPropVO gdsPropVO) {
 		GdsJsonBean json = new GdsJsonBean();
 		try {
 			GdsPropReqDTO reqDTO = new GdsPropReqDTO();
-			reqDTO.setCatId(catId);
+			reqDTO.setCatId(gdsPropVO.getCatId());
 			List<GdsPropRespDTO> propList = gdsInfoRSV.queryGdsPropList(reqDTO);
 			json.setObject(propList);
 			json.setSuccess("true");
