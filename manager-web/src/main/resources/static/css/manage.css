@@ -131,6 +131,13 @@ body{
 	margin-bottom: 20px;
 }
 /* 编辑表格 */
+.borTable{
+	border: solid 1px #eee;
+}
+
+.editTable{
+	width: 100%;
+}
 .editTable td.Hint{
 	padding:20px;
 

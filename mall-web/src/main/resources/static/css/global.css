@@ -525,6 +525,9 @@ fieldset[disabled] .btn-default.focus {
 	.pageskip .btn{
 		margin-top: -4px;
 	}
+	.pagination > li:first-child > a, .pagination > li:first-child > span{
+		border-radius:0;
+	}
 	/* 标签 */
 	.label_box > p{
 		display: inline-block;

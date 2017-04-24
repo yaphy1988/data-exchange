@@ -474,11 +474,29 @@ fieldset[disabled] .btn-default.focus {
 	  background-color: #2b4099;
 	  border-color: #2b4099;
 	}
-.pagelist .pagination > li > a,
-.pagelist .pagination > li > span{
-	border: transparent;
-}
-
+	.pagelist .pagination > li > a,
+	.pagelist .pagination > li > span{
+		border: transparent;
+	}
+	
+	.pageskip{
+		display: inline-block;
+		line-height: 32px;
+		padding-left: 10px;
+	}
+	.pageskip .pageskip_box{
+		width: 40px;
+		height: 30px;
+		border: solid 1px #eee;
+		display: inline-block;
+		margin: 0 5px;
+	}
+	.pageskip .btn{
+		margin-top: -4px;
+	}
+	.pagination > li:first-child > a, .pagination > li:first-child > span{
+		border-radius:0;
+	}
 
 /*tab切换*/
 .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
