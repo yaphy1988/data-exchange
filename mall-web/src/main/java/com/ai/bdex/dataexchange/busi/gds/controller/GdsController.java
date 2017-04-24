@@ -32,7 +32,9 @@ public class GdsController {
 
     private static final Logger log = LoggerFactory.getLogger(GdsController.class);
 
-    private final static Integer AIP_CAT_ID = 1;
+    private final static Integer AIP_CAT_ID = 1;//aip的catId
+    private final static Integer CUSTOM_CAT_ID = 2;//定制需求catId
+    private final static Integer SOLUTION_CAT_ID = 3;//解决方案catId
 
     @DubboConsumer
     private IGdsInfoRSV iGdsInfoRSV;
@@ -51,6 +53,8 @@ public class GdsController {
         if (gdsId == null || gdsId.intValue()<=0){
             return "error";
         }
+        String viewName = "";
+        request.setAttribute("ifHiddenCatNav","hidden");
         GdsInfoVO gdsInfoVO = new GdsInfoVO();
         GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
         gdsInfoReqDTO.setGdsId(gdsId);
@@ -145,7 +149,13 @@ public class GdsController {
                     //错误代码参照接口调用
 
                     //实例代码接口调用
+                }else if (CUSTOM_CAT_ID.equals(gdsInfoRespDTO.getCatFirst())){
+
+                    viewName = "/goods_custom";
+                }else if (SOLUTION_CAT_ID.equals(gdsInfoRespDTO.getCatFirst())){
+                    viewName = "/goods_solution";
                 }
+                viewName = "/goods_details";
             }
         } catch (Exception e) {
             log.error("查询商品详情异常：",e);
@@ -155,7 +165,7 @@ public class GdsController {
         request.setAttribute("gdsInfo",gdsInfoVO);
         request.setAttribute("ifHiddenHead","hidden");
 
-        return "/goods_details";
+        return viewName;
     }
 
     @RequestMapping(value = "/queryRecomGdsList")

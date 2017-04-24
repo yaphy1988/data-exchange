@@ -130,7 +130,7 @@
 				<div class="gd_hd clearfix">
 					<div class="imgBox">
 						<span class="img">
-							<img src="../static/images/img.jpg">
+							<img src="../static/images/img.jpg" th:src="'http://'+${gdsInfo.gdsPic}">
 						</span>
 						<a class="active collect">
 							<i class="iconfont"></i>收藏商品
@@ -140,14 +140,14 @@
 					<div class="info ">
 						<div class="info_hd clearfix">
 							<div class="tit ">
-								<h1>常用快递常用快递常用快递常用快递</h1>
-								<p class="replenish">支持大多数快递公司支持大多数快递快递公司</p>
+								<h1 th:text="${gdsInfo.gdsName}">常用快递常用快递常用快递常用快递</h1>
+								<p class="replenish" th:text="${gdsInfo.gdsSubtitle}">支持大多数快递公司支持大多数快递快递公司</p>
 							</div>
 							<div class="label_box ">
-								<p>免费体验</p>
-								<p>API</p>
-								<p>支持HTTPS</p>
-								<p class="lable_blue">
+								<p th:each="gdsLabel,gdsLabelStat : ${gdsInfo.gdsLabelVOList}" th:text="${gdsLabel.labName}" th:style="'color:'+${gdsLabel.labColor}+';border-color:'+${gdsLabel.labColor}">免费体验</p>
+								<p th:remove="">API</p>
+								<p th:remove="">支持HTTPS</p>
+								<p class="lable_blue" th:remove="">
 									<span>广交所</span>
 									<i>接入服务商</i>
 								</p>
@@ -327,7 +327,7 @@
     </div>
     <div class="copyright"> © 2016 版权所有 亚信科技(中国)有限公司 京ICP备11005544号-15 京公网安备 11010802022324号</div>
 </div>
-	<script src="../static/js/jquery-1.12.4.js"></script>
-	<script src="../static/js/bootstrap.min.js"></script>
+	<script src="../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
+	<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
 </body>
 </html>
