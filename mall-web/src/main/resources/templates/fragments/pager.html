@@ -13,7 +13,6 @@
 <div th:fragment="pager" class="pagelist" style="margin-top:0px;" >
     <script type="text/javascript" src="../../static/js-busi/common/pager.js" th:src="@{/js-busi/common/pager.js}"></script>
     <span data-toggle="pager" id="pagerId" data-count="" data-size="" data-currentindex="" ></span>
-
 	<script th:inline="javascript">
         var total = '[[${pageInfo.pageCount}]]';
 	    var pageNum = '[[${pageInfo.pageNo}]]';

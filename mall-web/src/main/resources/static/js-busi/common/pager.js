@@ -31,7 +31,7 @@
 
 	$.pager = {
 		init : function($this, opts) {
-            $skip = $('<span style="float:right;margin-left:5px;">到第<input type="text" id="skipPage'+$this.attr('id')+'" name="skipPage'+$this.attr('id')+'" style="width:40px;height:27px;border:1px solid #E5E5E5;" value="'+opts.currentindex+'"/>页&nbsp;<button id="skip'+$this.attr('id')+'" style="height:27px;border:1px solid #E5E5E5;background-color:#fff">确定</button></span>');
+//            $skip = $('<span style="float:right;margin-left:5px;">到第<input type="text" id="skipPage'+$this.attr('id')+'" name="skipPage'+$this.attr('id')+'" style="width:40px;height:27px;border:1px solid #E5E5E5;" value="'+opts.currentindex+'"/>页&nbsp;<button id="skip'+$this.attr('id')+'" style="height:27px;border:1px solid #E5E5E5;background-color:#fff">确定</button></span>');
             opts.currentindex = parseInt(opts.currentindex!=""? opts.currentindex:"1");
 			opts.count = parseInt(opts.count!=""? opts.count:"0");
 			opts.size = parseInt(opts.size!=""? opts.size:"1");
@@ -92,9 +92,9 @@
 					+ opts.currentindex + '" ><a href="javascript:void(0)">下一页</a></li>'
 					: '<li class="pgNext" pagerIndex="'
 							+ (opts.currentindex + 1) + '" ><a href="javascript:void(0)">下一页</a></li> ';
-			lisString += "</ul>";
+			lisString += '<div class="pageskip"><span class="pr10">到第<input type="text" id="skipPage'+$this.attr('id')+'" name="skipPage'+$this.attr('id')+'" value="'+opts.currentindex+'" class="pageskip_box">页</span><a href="javascript:void(0)" id="skip'+$this.attr('id')+'" class="btn btn-default  btn_rec btn-sm">确定</a></div></ul>';
 			$ul.append(lisString);
-			$this.append($skip);
+//			$ul.append($skip);
 			$this.append($ul);
 			
 			$('#skip'+$this.attr('id')).on('click',function(){
