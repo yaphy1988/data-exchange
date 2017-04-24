@@ -509,6 +509,22 @@ fieldset[disabled] .btn-default.focus {
 	.pagelist .pagination > li > span{
 		border: transparent;
 	}
+	
+	.pageskip{
+		display: inline-block;
+		line-height: 32px;
+		padding-left: 10px;
+	}
+	.pageskip .pageskip_box{
+		width: 40px;
+		height: 30px;
+		border: solid 1px #eee;
+		display: inline-block;
+		margin: 0 5px;
+	}
+	.pageskip .btn{
+		margin-top: -4px;
+	}
 	/* 标签 */
 	.label_box > p{
 		display: inline-block;
