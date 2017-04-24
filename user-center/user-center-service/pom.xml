@@ -38,8 +38,8 @@
       <artifactId>spring-boot-starter</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.ai.paas</groupId>
-      <artifactId>cache-engine</artifactId>
+      <groupId>com.ai.woego.boot</groupId>
+      <artifactId>cache-engine-spring-boot-autoconfigure</artifactId>
     </dependency>
     <dependency>
       <groupId>com.ai.paas</groupId>

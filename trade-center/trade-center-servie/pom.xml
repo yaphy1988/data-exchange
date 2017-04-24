@@ -31,6 +31,14 @@
       <artifactId>dubbo-spring-boot-autoconfigure</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.ai.woego.boot</groupId>
+      <artifactId>cache-engine-spring-boot-autoconfigure</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.ai.woego.boot</groupId>
+      <artifactId>sequence-spring-boot-autoconfig</artifactId>
+    </dependency>
+    <dependency>
       <groupId>org.springframework.boot</groupId>
       <artifactId>spring-boot-starter</artifactId>
     </dependency>
@@ -50,10 +58,6 @@
       <groupId>com.alibaba</groupId>
       <artifactId>druid</artifactId>
       <scope>runtime</scope>
-    </dependency>
-    <dependency>
-      <groupId>com.ai.woego.boot</groupId>
-      <artifactId>sequence-spring-boot-autoconfig</artifactId>
     </dependency>
   </dependencies>
 
