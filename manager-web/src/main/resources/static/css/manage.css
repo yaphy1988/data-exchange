@@ -134,13 +134,16 @@ body{
 .borTable.editTable,
 .borTable{
 	border: solid 1px #eee;
+	
+}
+.borTable.editTable,
+.borTable .editTable{
+	width: 100%;
 }
 .editTable.table-hover td{
 	padding: 10px 0;
 }
-.editTable{
-	width: 100%;
-}
+
 .editTable td.Hint{
 	padding:20px;
 
