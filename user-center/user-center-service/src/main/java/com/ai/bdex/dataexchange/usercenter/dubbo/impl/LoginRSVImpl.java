@@ -60,8 +60,19 @@ public class LoginRSVImpl implements ILoginRSV{
 
 	@Override
 	public int updateLastLogin(String staffId) throws BusinessException {
-		// TODO Auto-generated method stub
-		return 0;
+		try {
+			return iLoginSV.updateLastLogin(staffId);
+		} catch (Exception e) {
+			// 错误信息通过异常抛出
+			log.error("updateLastLogin verify error:", e);
+			// 判断是否有业务异常，有则抛BusinessException
+			if (e instanceof BusinessException)
+				throw (BusinessException) e;
+			// 无业务异常有运行异常，抛出GenericException
+			else {
+				throw new BusinessException(e.getMessage());
+			}
+		}
 	}
 
 }
