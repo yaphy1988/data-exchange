@@ -5,7 +5,7 @@ spring:
       owner: owner
       environment: develop
     protocol:
-      port: 20880
+      port: 20883
       threads: 300
     registry:
       address: 132.37.2.41:29181

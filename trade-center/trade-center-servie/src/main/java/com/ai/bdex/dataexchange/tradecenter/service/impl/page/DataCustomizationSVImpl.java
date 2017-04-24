@@ -32,7 +32,7 @@ public class DataCustomizationSVImpl implements IDataCustomizationSV {
 	    }
 	  //保存定制信息
 	  @Override
-	   public int saveDataCustomization(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception{
+	   public  int saveDataCustomization(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception{
 		    DataCustomization record = new DataCustomization();	
 			BeanUtils.copyProperties(record, dataCustomizationRespDTO);
 		    int seq =  SeqUtil.getInt("SEQ_DATA_CUSTOMIZATION");
