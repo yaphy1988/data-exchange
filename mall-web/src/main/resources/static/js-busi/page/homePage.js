@@ -17,6 +17,17 @@ function saveMadeData() {
 	var lnkphone    =  $("#lnkphone").val();
 	var lnkemail    =  $("#lnkemail").val();
 	var url = WEB_ROOT + "/homePage/saveMadeData";
+	if(!WEB.check.isMobile(lnkphone))
+	{
+		WEB.msg.info("提示",'请输入正确的手机号码');
+		return;
+	}
+	if(!WEB.check.isEmail(lnkemail))
+	{
+		WEB.msg.info("提示",'请输入正确的邮箱地址');
+		return;
+	}
+	
 	param = {
 		needTiel : needTiel,
 		needcontent : needcontent,
