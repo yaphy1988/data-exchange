@@ -73,7 +73,7 @@ public class Sms2AlibabaComsumer extends AsyncMessageProcessor{
 				if(null!=phones){
 					String[] phoneArr=phones.toArray(new String[phones.size()]);
 				    Map<String, String> querys = new HashMap<String, String>();
-				    querys.put("ParamString", URLEncoder.encode(content, "utf-8"));				   
+				    querys.put("ParamString", content);				   
 				    querys.put("SignName", "广州数据交易");
 				    querys.put("TemplateCode", templateCode);
 				    int count=0;

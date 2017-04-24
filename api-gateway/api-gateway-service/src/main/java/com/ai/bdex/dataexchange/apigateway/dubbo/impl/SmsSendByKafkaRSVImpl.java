@@ -102,7 +102,7 @@ public class SmsSendByKafkaRSVImpl implements ISmsSendRSV{
 		List<String> phoneList=new ArrayList<String>();
 		phoneList.add(phone);
 		Map<String,String> map=new HashMap<String,String>();
-		map.put("no", verifyCode);
+		map.put("number", verifyCode);
 		String uuid=UUID.randomUUID().toString().replace("-", "");
 		sendSmsByAlibaba(phoneList,map,templateCode,uuid,"userCenter","");
 	}

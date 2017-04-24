@@ -88,7 +88,7 @@ public class Sms2AlibabaByThread implements Runnable{
 				if(!CollectionUtil.isEmpty(phones)){
 					
 				    Map<String, String> querys = new HashMap<String, String>();
-				    querys.put("ParamString", URLEncoder.encode(JSON.toJSONString(content), "utf-8"));				   
+				    querys.put("ParamString",JSON.toJSONString(content));				   
 				    querys.put("SignName", "广州数据交易");
 				    querys.put("TemplateCode", templateCode);
 				    int count=0;

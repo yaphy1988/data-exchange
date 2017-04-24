@@ -9,5 +9,6 @@
      ">
 
     <dubbo:reference id="apiGatewayDemoRSV" interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IDemoRSV"/>
-
+	
+	<dubbo:reference id="smsSendByThreadRSV" interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.ISmsSendRSV"/>
 </beans>

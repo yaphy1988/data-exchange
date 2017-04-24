@@ -10,6 +10,5 @@
   
   <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.ISmsSendRSV" ref="smsSendByThreadRSV"
                  owner="zhaoyf7" timeout="3000"/>
-  <bean id="smsSendByThreadRSV" class="com.ai.bdex.dataexchange.apigateway.dubbo.impl.SmsSendByThreadRSVImpl"/>
 
 </beans>
