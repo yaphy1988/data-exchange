@@ -18,7 +18,7 @@ spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://112.74.163.29:3306/bdex
+    url: jdbc:mysql://112.74.163.29:3306/bdex?useUnicode=true&characterEncoding=utf8
     username: bdex
     password: bdex1234
 
