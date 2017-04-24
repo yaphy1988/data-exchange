@@ -431,11 +431,11 @@ fieldset[disabled] .btn-default.focus {
 	}
 	
 	/* 子页面路径 */
-	.seconav .menuBg{
+	.seconav.menuBg{
 		background-color: #f1f1f1;
 		width: 100%;
 	}
-	.seconav .menuBg h3 >i {
+	.seconav.menuBg h3 >i {
 		position: absolute;
 		right: 10px;
 		top: 18px;
