@@ -478,3 +478,30 @@ fieldset[disabled] .btn-default.focus {
 .pagelist .pagination > li > span{
 	border: transparent;
 }
+
+
+/*tab切换*/
+.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+    border-color: transparent;
+    border-bottom: 3px solid #2b4099;
+    color:#2b4099 ;
+}
+.nav > li > a:hover, .nav > li > a:focus{
+    background: transparent;
+    border-color: transparent;
+}
+.nav-tabs > li > a:hover{
+}
+.nav-tabs > li > a{
+    font-size: 14px;
+    color: #333;
+    padding-left: 26px;
+    padding-right: 26px;
+}
+.nav-tabs{
+border-bottom: 2px solid #eee;
+}
+/*弹窗*/
+.modal-body{
+    font-size: 14px;
+}

@@ -201,3 +201,28 @@ body{
 .m_modal .modal-footer{
 	text-align: center;
 }
+
+/*商品管理添加*/
+.top-table{
+    padding: 20px;
+}
+
+.top-table .editTable td.Hint.tips{
+    padding: 0;
+}
+.top-table .editTable td{
+    padding: 8px;
+}
+.text-center th{
+    text-align: center;
+}
+.pop-link{
+    line-height: 1.8;
+}
+.pop-link i,.pop-link a{
+    margin: 0px 3px;
+    outline: none;
+}
+.pop-link i{
+    color: #999;
+}
