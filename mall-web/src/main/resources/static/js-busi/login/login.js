@@ -4,7 +4,7 @@ function checkImgChng(){
 	//$("#VERIFY_CODE").val("");
 	$("#verifyCode").val("");
 	$("#verifyCode").css('color','#999');
-//	document.getElementById('check_img').src = WEB_ROOT + "/login/CapthcaImage?a="+ new Date().getTime();
+//	document.getElementById('check_img').src = WEB_ROOT + "/captcha/captcha?a="+ new Date().getTime();
 }
 
 /**登录*/
@@ -14,9 +14,9 @@ function doLogin(){
 	var verifyCode = $("#verifyCode").val();	
 	$.ajax({
 		url : WEB_ROOT+"/login/dologin",
-		async : true,
 		type : "POST",
-		dataType : 'json',
+		dataType : "json",
+		async : false,
 		data : {
 			staffId:staffId,
 			password:password,

@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.bdex.dataexchange.exception.BusinessException;
@@ -37,7 +38,15 @@ public class LoginController {
 		return "login";
 	}
 	
-	@RequestMapping(value="/dologin")
+	/**
+	 * 登录操作
+	 * @param request
+	 * @param response
+	 * @param session
+	 * @return
+	 */
+	@RequestMapping(value="/dologin",method=RequestMethod.POST)
+	@ResponseBody
 	public Map<String,Object> dologin(HttpServletRequest request,
 			HttpServletResponse response,HttpSession session){
 		Map<String,Object> rMap = new HashMap<String,Object>();
@@ -69,16 +78,8 @@ public class LoginController {
 			rMap.put("success", true);
 			rMap.put("data", staffInfoVO);
 		} catch (Exception e) {
-			if (e instanceof BusinessException) {
-				BusinessException ee = (BusinessException) e;
-				log.error("用户名:" + staffId + ",IP:" + ip + ",异常信息:"+ee.getMessage() , ee);
-				rMap.put("success", false);
-				rMap.put("errorMsg", ee.getMessage());
-			} else {
-				log.error("",e);
-			}
 			rMap.put("success", false);
-			rMap.put("errorMsg", "系统错误,请联系管理员");
+			rMap.put("errorMsg",e.getMessage());
 		}
 		return rMap;
 	}
@@ -92,11 +93,12 @@ public class LoginController {
 	public Map<String,Object> loginVerify_new(LoginInfoDTO loginInfo,HttpServletResponse response,HttpServletRequest request,HttpSession session) throws Exception{
 		StaffInfoDTO staffInfoVO = null;
 		staffInfoVO = iLoginRSV.loginVerify(loginInfo);
-		Map<String,Object> result = saveStaffInfotoSession(staffInfoVO, response,request,session);
+		Map<String,Object> result = new HashMap<String,Object>();
 		try{
+//			result = saveStaffInfotoSession(staffInfoVO, response,request,session);
 			iLoginRSV.updateLastLogin(staffInfoVO.getStaffId());
 		}catch (Exception e){
-			e.printStackTrace();
+			log.error(e.getMessage());
 		}
 		
 		return result;
