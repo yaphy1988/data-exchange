@@ -18,4 +18,6 @@
                  owner="zhaoyf7" timeout="3000"/>
   <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV" ref="gdsSkuRSV"
                  owner="zhaoyf7" timeout="3000"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoQueryRSV" ref="gdsInfoQueryRSV"
+                 owner="zhaoyf7" timeout="3000"/>
 </beans>

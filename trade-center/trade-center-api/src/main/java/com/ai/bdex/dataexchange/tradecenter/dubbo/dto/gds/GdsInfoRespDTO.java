@@ -4,10 +4,18 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsInfoRespDTO implements Serializable{
+public class GdsInfoRespDTO extends BaseResponseDTO implements Serializable {
+    /** 
+     * serialVersionUID:TODO(用一句话描述这个变量表示什么). 
+     * @since JDK 1.6 
+     */ 
+    private static final long serialVersionUID = 6519890226668240246L;
+
     private Integer gdsId;
 
     private String gdsName;

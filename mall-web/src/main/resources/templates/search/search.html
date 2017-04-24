@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+	<meta charset="UTF-8">
+	<title>商品搜索</title>
+	<link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}">
+		<link rel="stylesheet" href="../static/css/global.css" th:href="@{/css/global.css}">
+	<link rel="stylesheet" href="../static/css/index.css" th:href="@{/css/index.css}">
+	<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+</head>
+<div th:replace="~{fragments/syshead :: syshead}"></div>
+<body>
+	<div class="seconav">
+		<div class="top">
+		    <div class="wrap1200">
+		        <div class="top-left floatL">
+		            <span>欢迎来到广州数据中心</span>
+		            <span>2017年4月20日&nbsp;&nbsp;12：00：30</span>
+		        </div>
+		        <div class="top-right floatR">
+		            <a href="#"><b>请登录</b></a>
+		            <a href="#">免费注册</a>
+		            <i>|</i>
+		            <a href="#">关注广数</a>
+		            <a href="#">常见问题</a>
+		            <a href="#">联系我们</a>
+		        </div>
+		    </div>
+		</div>
+		<div class="header">
+		    <div class="wrap1200">
+		        <div class="logo floatL"><img src="../static/images/logo.png" title="广州数据中心" th:src="@{/images/logo.png}"></div>
+		        <div class="search floatR">
+		            <div class="search-input">
+		                <input type="text">
+		                <button class="btn btn-primary">搜索</button>
+		            </div>
+		            <div class="search-hot">
+		                <a href="#" class="more floatR">更多&nbsp;&gt;</a>
+		                <a href="#">手机号码归属地</a>
+		                <a href="#">常用快递</a>
+		                <a href="#">快递</a>
+		                <a href="#">手机号码归属地</a>
+		                <a href="#">全国车辆违章</a>
+		                <a href="#">身份证实名认证</a>
+		                <a href="#">短信API服务</a>
+		                <a href="#">短信API服务</a>
+		            </div>
+		        </div>
+		    </div>
+		    <div class="menuBg">
+		    	<div class="menu clearfix">
+		        <!--左侧边栏开始-->
+		        <div class="sidebar floatL">
+		            <h3>全部商品<i class="glyphicon glyphicon-list"></i></h3>
+		            <ul class="hidden">
+		                <li><a href="#"><i>&rsaquo;</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
+		                <li><a href="#"><i>&rsaquo;</i>交通运输</a> </li>
+		                <li><a href="#"><i>&rsaquo;</i>气象环保</a> </li>
+		                <li><a href="#"><i>&rsaquo;</i>生活服务</a> </li>
+		                <li><a href="#"><i>&rsaquo;</i>生活服务</a> </li>
+		                <li><a href="#"><i>&rsaquo;</i>时空数据</a> </li>
+		                <li><a href="#"><i>&rsaquo;</i>健康医疗</a> </li>
+		                <li><a href="#"><i>&rsaquo;</i>更多服务</a> </li>
+		            </ul>
+
+		            <!--二级导航开始-->
+		            <div class="sidebar-hidden" style="display: none">
+		                <h4>金融服务</h4>
+		                <div class="sidebar-link">
+		                    <a href="#">条码查询</a>
+		                    <a href="#">万能小哥</a>
+		                    <a href="#">专利查询</a>
+		                    <a href="#">全国违章直连查询</a>
+		                    <a href="#">H5在线电影票</a>
+		                    <a href="#">常用快递</a>
+		                    <a href="#">快递在线下单</a>
+		                    <a href="#">名片识别</a>
+		                    <a href="#">条码查询</a>
+		                    <a href="#">万能小哥</a>
+		                    <a href="#">专利查询</a>
+		                    <a href="#">全国违章直连查询</a>
+		                    <a href="#">H5在线电影票</a>
+		                    <a href="#">常用快递</a>
+		                    <a href="#">快递在线下单</a>
+		                    <a href="#">名片识别</a>
+		                    <a href="#">条码查询</a>
+		                    <a href="#">万能小哥</a>
+		                    <a href="#">专利查询</a>
+		                    <a href="#">全国违章直连查询</a>
+		                    <a href="#">H5在线电影票</a>
+		                    <a href="#">常用快递</a>
+		                </div>
+
+		                <div class="ad-list clearfix">
+		                    <div class="item floatL"></div>
+		                    <div class="item floatL"></div>
+		                    <div class="item floatL"></div>
+		                </div>
+		            </div>
+		            <!--二级导航结束-->
+		        </div>
+		        <!--左侧边栏结束-->
+
+		        <!--菜单栏开始-->
+		        <ul class="navbar floatL clearfix">
+		            <li><a href="#">首页</a> </li>
+		            <li><a href="#">API</a> </li>
+		            <li><a href="#">定制数据</a> </li>
+		            <li><a href="#">解决方案</a> </li>
+		            <li><a href="#">新闻动态</a> </li>
+		        </ul>
+		        <!--菜单栏结束-->
+		    	</div>
+		    </div>
+		</div>
+	</div>
+
+	<div class="main">
+		<div class="classify edit" id="selectedCondition">
+			<span id="condictionFlag">
+				<i class="iconfont"></i>
+				<span id="">所有分类：</span>
+			</span>
+			<a href="javascript:void(0)"><em>其他分类:</em><span>数据市场</span><i class="close">×</i></a>
+		</div>
+		<div class="gl_group">
+			<div class="gl_items" th:each="cat,iterStat : ${catList}">
+				<div class="hd" th:text="${cat.catName+'：'}" th:attr="catId=${cat.catId}">
+					API分类：
+				</div>
+				<div class="bd">
+					<a class="catSelecte" th:each="subcat,iterStat : ${cat.subCatList}" href="javascript:void(0)" th:text="${subcat.catName}" th:attr="catPName=${cat.catName}">生活常用</a>
+					<a href="" th:remove="all">金融服务</a>
+				</div>
+				<div class="fo">
+					
+						<a href="" class="btn btn_rec btn_more selected">
+							更多
+							<i class="glyphicon glyphicon-menu-down"></i>
+						</a>
+					
+				</div>
+			</div>
+			<div class="gl_items" th:remove="all">
+				<div class="hd">
+					应用分类：
+				</div>
+				<div class="bd">
+					<a href="" >生活常用</a>
+					<a href="" >金融服务</a>
+					<a href="" >金融服务</a>
+					<a href="" >生活常用</a>
+					<a href="" >金融服务</a>
+					
+				</div>
+				<div class="fo">
+					<a href="" class="btn btn_rec btn_more tr_icon">
+						更多
+						<i class="glyphicon glyphicon-menu-right"></i>
+					</a>
+				</div>
+			</div>
+			<div class="gl_items" th:remove="all">
+				<div class="hd">
+					应用分类：
+				</div>
+				<div class="bd">
+					<a href="" >生活常用</a>
+					<a href="" >金融服务</a>
+					<a href="" >金融服务</a>
+					<a href="" >生活常用</a>
+					<a href="" >金融服务</a>
+					
+				</div>
+				<div class="fo">
+					<a href="" class="btn btn_rec btn_more tr_icon">
+						更多
+						<i class="glyphicon glyphicon-menu-right"></i>
+					</a>
+				</div>
+			</div>
+		</div>
+		<div class="gl_list">
+			<div class="filter clearfix">
+				<ul>
+					<li class="active"><a href="">综合<i></i></a></li>
+					<li><a href="">最新</a></li>
+					<li><a href="">最热<i></i></a></li>
+				</ul>
+				<p class="pull-right pr10">为您找到<b class="col_orange"><font id="numFound">1234</font></b>个结果</p>
+			</div>
+			<div id="search_list">
+			</div>
+		</div>
+	</div>
+	<!-- footer -->
+	<div th:replace="~{fragments/footer :: footer}"><!-- footer --></div>
+	<script src="../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
+	<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" src="$JS_PATH/jquery/jquery.metadata.js" th:src="@{/js/jquery.metadata.js}"></script>
+	<script type="text/javascript" src="$JS_PATH/jquery/jquery-migrate-1.2.1.min.js" th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
+	<script th:src="@{/js-busi/search/search.js}"></script>
+</body>
+</html>

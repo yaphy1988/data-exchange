@@ -40,10 +40,10 @@
 			var midNum = parseInt(opts.maxButtons / 2), _pagerCount = Math
 					.ceil( parseFloat(opts.count)  / opts.size), _start = opts.maxButtons < opts.currentindex
 					|| (opts.currentindex > midNum && opts.currentindex + midNum <= _pagerCount) ? opts.currentindex- midNum
-					: 1, $ul = $('<ul class="pages"> </ul>'), lisString = '';
+					: 1, $ul = $('	<nav aria-label="Page navigation"></nav>'), lisString = '<ul class="pagination">';
 			lisString += opts.currentindex > 1 ? '<li class="pgNext" pagerIndex="'
-					+ (opts.currentindex - 1) + '" >上一页</li>'
-					: '<li class="pgNext" pagerIndex="1">上一页</li>'
+					+ (opts.currentindex - 1) + '" ><a href="javascript:void(0)">上一页</a></li>'
+					: '<li class="pgNext" pagerIndex="1"><a href="javascript:void(0)">上一页</a></li>'
 
 			if (_pagerCount > opts.maxButtons && _start > _pagerCount - opts.maxButtons) {
 				_start = _pagerCount - opts.maxButtons + 1;
@@ -55,7 +55,7 @@
 		    		break ; 
 		    	}
 		    	lisString += '<li class="page-number" pagerIndex="'
-					+ i + '" >' + i + '</li>';
+					+ i + '" ><a href="javascript:void(0)">' + i + '</a></li>';
 		    }
 		    var tempIndex = _start ; 
 			for (var i = 0 ; i < opts.maxButtons ; i++) {
@@ -63,10 +63,10 @@
 			    if(tempIndex>_pagerCount){break ; }
 				if (tempIndex != opts.currentindex) {
 					lisString += '<li class="page-number" pagerIndex="'
-							+ tempIndex + '" >' + tempIndex + '</li>';
+							+ tempIndex + '" ><a href="javascript:void(0)">' + tempIndex + '</a></li>';
 				} else {
-					lisString += '<li class="page-number pgCurrent" pagerIndex="'
-							+ tempIndex + '" >' + tempIndex + '</li>';
+					lisString += '<li class="page-number active" pagerIndex="'
+							+ tempIndex + '" ><a href="javascript:void(0)">' + tempIndex + '</a></li>';
 				}
 			}
 			var tempb = _start+opts.maxButtons ; 
@@ -75,24 +75,24 @@
 			
 				while(_pagerCount>=tempb){
 					lisString += '<li class="page-number" pagerIndex="'
-						+ tempb + '" >' + (tempb) + '</li>';
+						+ tempb + '" ><a href="javascript:void(0)">' + (tempb) + '</a></li>';
 					tempb++ ; 
 				}
 
 			}else if(_pagerCount>tempb+1){
 				
-				lisString += '<li>...</li><li class="page-number" pagerIndex="'
-					+ (_pagerCount-1) + '" >' + (_pagerCount-1) + '</li>';
+				lisString += '<li><a href="javascript:void(0)">...</a></li><li class="page-number" pagerIndex="'
+					+ (_pagerCount-1) + '" ><a href="javascript:void(0)">' + (_pagerCount-1) + '</a></li>';
 		
 				lisString += '<li class="page-number" pagerIndex="'
-					+ (_pagerCount) + '" >' + (_pagerCount) + '</li>';
+					+ (_pagerCount) + '" ><a href="javascript:void(0)">' + (_pagerCount) + '</a></li>';
 
 			}
 			lisString += opts.currentindex >= _pagerCount ? '<li class="pgNext" pagerIndex="'
-					+ opts.currentindex + '" >下一页</li>'
+					+ opts.currentindex + '" ><a href="javascript:void(0)">下一页</a></li>'
 					: '<li class="pgNext" pagerIndex="'
-							+ (opts.currentindex + 1) + '" >下一页</li>';
-
+							+ (opts.currentindex + 1) + '" ><a href="javascript:void(0)">下一页</a></li> ';
+			lisString += "</ul>";
 			$ul.append(lisString);
 			$this.append($skip);
 			$this.append($ul);

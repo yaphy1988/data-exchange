@@ -4,10 +4,18 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsInfoReqDTO implements Serializable{
+public class GdsInfoReqDTO extends BaseInfo implements Serializable{
+    /** 
+     * serialVersionUID:TODO(用一句话描述这个变量表示什么). 
+     * @since JDK 1.6 
+     */ 
+    private static final long serialVersionUID = -1543483611353442297L;
+
     private Integer gdsId;
 
     private String gdsName;

@@ -1,0 +1,34 @@
+<div class="goodslist clearfix">
+	<ul >
+		<li th:each="list : ${pageInfo.result}">
+			<div class="glist_items">
+				<div class="collect active">
+					<span class="bg"></span>
+					<i class="iconfont icon-xingxing"></i>
+				</div>
+				<div class="pic">
+					<img src="" th:src="${list.gdsPic}">
+				</div>
+				<div class="tit" th:text="${list.gdsName}">我是商品名称最长配置十四字我|是多余的文字</div>
+				<div class="info">
+					<div class="pirce">
+						<small>￥</small>
+						<strong>499.00</strong>
+						<small>/10000次</small>
+					</div>
+					<div class="sale">
+						首次申请赠送50次
+					</div>
+					<a href="" class="btn btn-primary btn_rec">
+						申请数据
+					</a> 
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>
+<!-- 分页-->
+<div th:replace="~{fragments/pager :: pager}"></div>
+<script type="text/javascript">
+$("#numFound").text([[${pageInfo.pageCount}]]);
+</script>

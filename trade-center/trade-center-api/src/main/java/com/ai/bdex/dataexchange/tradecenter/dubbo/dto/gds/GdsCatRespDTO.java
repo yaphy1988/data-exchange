@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by yx on 2017/4/18.
@@ -28,6 +29,10 @@ public class GdsCatRespDTO implements Serializable {
     private String updateUser;
 
     private Date updateTime;
+    /**
+     * 子分类
+     */
+    private List<GdsCatRespDTO> subCatList;
 
     public Integer getCatId() {
         return catId;
@@ -115,5 +120,13 @@ public class GdsCatRespDTO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public List<GdsCatRespDTO> getSubCatList() {
+        return subCatList;
+    }
+
+    public void setSubCatList(List<GdsCatRespDTO> subCatList) {
+        this.subCatList = subCatList;
     }
 }
