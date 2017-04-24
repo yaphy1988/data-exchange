@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.util;
+package com.ai.bdex.dataexchange.solrutil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -72,5 +72,6 @@ public class SolrIndexUtil {
         System.out.println("time elapsed(ms):"
                 + (System.currentTimeMillis() - start));
     }
+    
 }
 
