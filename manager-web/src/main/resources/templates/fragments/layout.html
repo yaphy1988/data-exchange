@@ -11,14 +11,15 @@
 </head>
 <body class="bgf1">
 	<div th:replace="~{fragments/top :: top}"></div>
-	<div th:replace="~{fragments/header :: header}"></div>
+	<!--   <div th:replace="~{fragments/header :: header}"></div>-->
 	<div layout:fragment="screen_content">
 	    <!-- 主内容 -->
 	    <div class="m10">
 	        <p>这里是内容</p>
 	    </div>
 	</div>
+	<div th:replace="~{fragments/nav_left :: nav_left}"></div>
 	<!-- footer -->
-	<div th:replace="~{fragments/footer :: footer}"></div>
+	<!--  <div th:replace="~{fragments/footer :: footer}"></div>-->
 </body>
 </html>

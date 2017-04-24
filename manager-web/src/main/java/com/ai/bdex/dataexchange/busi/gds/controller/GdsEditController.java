@@ -94,7 +94,8 @@ public class GdsEditController {
             }
         	GdsCatReqDTO  reqDTO = new GdsCatReqDTO();
         	reqDTO.setCatPid(Integer.valueOf(0));
-        	List<GdsCatRespDTO> catListAll = gdsInfoRSV.queryGdsCatListDTO(reqDTO);
+        	List<GdsCatRespDTO> catList = gdsInfoRSV.queryGdsCatListDTO(reqDTO);
+        	model.addAttribute("catList", catList);
     	}catch(Exception e){
             logger.error("查询商品录入信息失败,原因："+e.getMessage(),e);
         }
@@ -117,7 +118,7 @@ public class GdsEditController {
         GdsJsonBean json=new GdsJsonBean();
         try{
         	GdsCatReqDTO  reqDTO = new GdsCatReqDTO();
-        	reqDTO.setCatPid(gdsCatVO.getCatPid());
+        	reqDTO.setCatPid(gdsCatVO.getCatId());
         	List<GdsCatRespDTO> catListAll = iGdsCatRSV.queryGdsCatList(reqDTO);
         	json.setObject(catListAll);
         	json.setSuccess("true");

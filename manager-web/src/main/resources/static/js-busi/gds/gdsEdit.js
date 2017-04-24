@@ -1,3 +1,4 @@
+
 /**
  * 弹出商品标签选择框
  * @returns
@@ -35,7 +36,7 @@ function saveGdsLabelQuik(){
 			labColor:labColor,
 			catFist:catFist
 	}
-	var ="/gdsEdit/saveGdsLabelQuik";
+	var url="/gdsEdit/saveGdsLabelQuik";
 	$.ajax({
 		url : url,
 		type : "POST",
@@ -121,7 +122,7 @@ function queryGdsLabelQuikList(){
  			if(data.object != null && data.object != ""){
 				$.each(data, function(i, n) {
 					var prop=n;
-                	append+='<tr><td labId="'+prop.labId+'" labColor="'+prop.labColor+'"  th:onclick="selectGdsLabel(this)">'+prop.labName+'</td></tr>';
+                	append +='<tr><td labId="'+prop.labId+'" labColor="'+prop.labColor+'" onclick="selectGdsLabel(this)">'+prop.labName+'</td></tr>';
 				});
 				html.append(append);
              }
@@ -131,17 +132,21 @@ function queryGdsLabelQuikList(){
      });
 }
 /**
- * 查询获取商品标签快速选择数据
+ * 查询获取商品分类快速选择数据
  */
-function querySubCatNodes(){
+function querySubCatNodes(obj){
+	var $this = $(obj);
+	$this.parent().siblings().find(".active").removeClass('active');
+	$this.addClass("warning")
+	$this.addClass("active");
 	//商品分类：API、数据定制、解决方案
-	var  labelName = $("#labelName").val();
-	var  catFirst = $("#catFirst").val();
-	var  catFirst = $("#catFirst").val();
-	var url="gdsEdit/querySubCatNodes";
+	var  catId = $this.attr("catId");
+	//当前操作的节点层级
+	var nodeLevel = Number($this.attr('level'));
+
+	var url="/gdsEdit/querySubCatNodes";
 	var params={
-			catFirst:catFirst,
-			labelName:labelName
+			catId:catId
 	};
 	 $.ajax({
          url : url,
@@ -149,16 +154,77 @@ function querySubCatNodes(){
          async : true,
          dataType : 'json',
          success : function(data) {
+        	 $this.parents().find('div[level="'+(nodeLevel+1)+'"] table tbody').empty();
              if (data.success&&data.object.length>0) {
+            	 var appendCat=""
                 for(var i=0 ;i<data.object.length;i++){
                 	var prop=data.object[i];
-                	addmodular(prop);
+                	appendCat +='<tr><td level="'+(nodeLevel+1)+'" catId="'+prop.catId+'" catName="'+prop.catName+'" onclick="querySubCatNodes(this)" >'+prop.catName+'</td></tr>';
                 }
+            	 $this.parents().find('div[level="'+(nodeLevel+1)+'"] table tbody').append(appendCat);
              }
-         },
-         error : function() {
          }
      });
+}
+/**
+ * 校验当前结点是不是子结点，如果是则调用回调函数，否则提示不是叶子结点
+ */
+function catIsSubNode(){
+	//最后一个选择的商品分类
+	var lastCatDiv = $('div[name="catDiv"] .active:last');
+	var catId=lastCatDiv.attr("catId");
+	var catName=lastCatDiv.attr("catName");
+	var level =  Number(lastCatDiv.attr("level"));
+	var url="/gdsEdit/querySubCatNodes";
+	var params={
+			catId:catId
+	};
+	var isSubNode=true;
+	 $.ajax({
+         url : url,
+         data : params,
+         async : true,
+         dataType : 'json',
+         success : function(data) {
+             if (data.success&&data.object.length>0) {
+            	 isSubNode=false;
+             }
+             if(!isSubNode){
+         		alert('提示','请选择一个没有子级的商品分类');
+         		return;
+         	}else{
+
+         		var catFirst = $('div[name="catDiv"]').eq(0).find('.active').attr('catId');
+         		var catFirstName=$('div[name="catDiv"]').eq(0).find('.active').attr('catName');
+         		if(typeof(selectCatCallback)!='undefined'){
+         			selectCatCallback(catId,catName,catFirst);
+         		}
+         		$('#myModal').modal('hide');
+         	}
+         }
+     });
+}
+	 /**
+	  * 选择商品大类回调函数
+	  * @param {} catId
+	  * @param {} catName
+	  */
+	 function selectCatCallback(catId,catName,catFirst,catFirstName){
+	 	var oldCatFirst = $('#catFirst').val();
+	 	if(oldCatFirst!=""&&oldCatFirst!=catFirst){
+	 		//document.location = basePath+"/product/pageInit?catId="+ catId+'&catFirst='+catFirst;
+	 	}
+	 	$('#catName').val(catName);
+	 	$('#catId').val(catId);
+	 	$('#catFirst').val(catFirst);
+	 	var catText="/"+catFirstName+"/"+catName;
+	 	$("#catText").val(catText);
+	 }
+/**
+ * 保存子节点
+ */
+function saveSubCatNodes(){
+	
 }
 //保存商品信息
 function saveGds(){
@@ -201,7 +267,7 @@ function saveGds(){
 			gdsInfoVO:gdsInfoVO,
 			gdsInfo2CatVO:gdsInfo2CatVO,
 	};
-	var url="gdsEdit/addGds";
+	var url="/gdsEdit/addGds";
 	$.ajax({
         url : url,
         data : params,

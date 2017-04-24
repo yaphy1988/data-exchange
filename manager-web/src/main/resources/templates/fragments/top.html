@@ -10,23 +10,43 @@
 	<link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../../static/css/index.css" th:remove="all">
+	
 </head>
 <body class="bgf1">
-	<div class="top" th:fragment="top">
-	    <div class="wrap1200">
-	        <div class="top-left floatL">
-	            <span>欢迎来到广州数据中心</span>
-	            <span th:text="${#dates}">2017年4月20日&nbsp;&nbsp;12：00：30</span>
-	        </div>
-	        <div class="top-right floatR">
-	            <a href="#" th:href="@{/user/login}"><b>请登录</b></a>
-	            <a href="#" th:href="@{/user/signup}">免费注册</a>
-	            <i>|</i>
-	            <a href="#" th:href="@{/gzbdex/interest}">关注广数</a>
-	            <a href="#" th:href="@{/gzbdex/question}">常见问题</a>
-	            <a href="#" th:href="@{/gzbdex/contact}">联系我们</a>
-	        </div>
-	    </div>
+	<div class="clearfix m_header" th:fragment="top">
+	<a href="" class="Logo" target="_blank" >
+		<img width="160" src="../static/images/manage_logo.jpg"  th:src="@{/images/manage_logo.jpg}" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg" th:src="@{/images/wexin.jpg}" ></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
 	</div>
 </body>
 </html>
