@@ -119,11 +119,10 @@
 
 	<div class="main">
 		<div class="classify edit" id="selectedCondition">
-			<span id="condictionFlag">
+			<span id="condictionFlag" style="visibility:hidden">
 				<i class="iconfont"></i>
 				<span id="">所有分类：</span>
 			</span>
-			<a href="javascript:void(0)"><em>其他分类:</em><span>数据市场</span><i class="close">×</i></a>
 		</div>
 		<div class="gl_group">
 			<div class="gl_items" th:each="cat,iterStat : ${catList}">
