@@ -131,10 +131,13 @@ body{
 	margin-bottom: 20px;
 }
 /* 编辑表格 */
+.borTable.editTable,
 .borTable{
 	border: solid 1px #eee;
 }
-
+.editTable.table-hover td{
+	padding: 10px 0;
+}
 .editTable{
 	width: 100%;
 }
