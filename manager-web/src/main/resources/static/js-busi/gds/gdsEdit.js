@@ -1,4 +1,4 @@
-
+var ckeditPackage,ckeditDataDetail,ckeditDataExample,ckeditCase,ckeditCompany;
 /**
  * 弹出商品标签选择框
  * @returns
@@ -82,20 +82,21 @@ function queryGdsProp(catId){
 function addGdsSkuHtml(){
 	
 }
-function addProp(obj, layout) {
-	var propType = layout['propType'];
-	var propId = layout['propId'];
+function addProp(layout) {
+	var proType = layout['proType'];//1文本、2富文本
+	var proId = layout['proId'];
+	var proName = layout['proName'];
 	var sort = layout['showOrder'];
-	var modular;
-	modular = $('#modular'+modularId).clone();
-	switch (modularId) {
-		case 24:
-			qrypageToolbar(itemId);
-			break;
-
-		default:
-			break;
-		}
+	var modular=$("#addProp");
+//	switch (proId) {
+//		case 1:
+			//套餐介绍
+			addCkedit(proId,proName,proType);
+//			break;
+//		case 2:
+//		default:
+//			break;
+//		}
 }
 /**
  * 查询获取商品标签快速选择数据
@@ -220,9 +221,9 @@ function selectCatCallback(catId, catName, catFirst, catFirstName) {
 	}
 	//API分类
 	if(catFirst=="1"){
-		$('[name="DivAPI"]').css("display","block")	;
-		$("#TableAPI").css("display","block");
-		$("#APIPackage").css("display","block");
+		$('[name="DivAPI"]').css("display","")	;
+		$("#TableAPI").css("display","");
+		$("#APIPackage").css("display","");
 	}else{
 		$('[name="DivAPI"]').css("display","none")	;
 		$("#TableAPI").css("display","none");
@@ -366,4 +367,58 @@ function ajaxFileUpload(url, secureuri, fileElementId, type, dataType, callback)
 					alert(e);
 				}
 			});
+}
+function addCkedit(proId,proName,proType){
+	var modular=$("#addProp");
+	var html="";
+	html +='<div class="title">'+proName+'</div>';
+	var ckeditId="";
+	if(proId==1){//套餐介绍
+		ckeditId="editorPackage";
+	}else if(proId==3){//数据详情
+		ckeditId="editorDataDetail";
+	}else if(propId==4){//样例数据
+		ckeditId="editorDataExample";
+	}else if(propId==7){//应用场景或案例
+		ckeditId="editorCase";
+	}else if(pro==8){
+		ckeditId="editorCompany";
+	}
+	if(proType=="2"){//富文本
+		html +='<div id='+ckeditId+'></div>';
+	}else{
+		if(proId=="2"){
+			html +='<table class="editTable"><tbody><tr>'
+					+'<td class="Hint tips" width="120"><span class="col_red">*</span>'
+					+proName+':</td><td width="520"><textarea class="form-control" rows="5"></textarea>'
+					+'</td></tr></tbody></table>';
+		}else{
+			html +='<div><textarea class="form-control"  rows="5"></textarea></div>';	
+		}
+	}
+	modular.append(html);
+	createEditor(ckeditId);
+}
+//创建编辑器
+function createEditor(id) {
+	// Create a new editor inside the <div id="editor">, setting its value to
+	// html
+
+	var config = {
+		filebrowserImageUploadUrl : "/ck/upload?type=Image",
+		filebrowserUploadUrl :"/ck/upload?type=File",
+		filebrowserFlashUploadUrl :"/ck/upload?type=Flash"
+	};
+	if(id=="editorPackage"){
+		ckeditPackage=CKEDITOR.replace(id, config);
+	}else if(id=="editorDataDetail"){
+		ckeditDataDetail=CKEDITOR.replace(id, config);
+	}else if(id=="editorDataExample"){
+		ckeditDataExample=CKEDITOR.replace(id, config);
+	}else if(id=="editorCase"){
+		ckeditCase=CKEDITOR.replace(id, config);
+	}else if(id=="editorCompany"){
+		ckeditCompany=CKEDITOR.replace(id, config);
+	}
+		
 }

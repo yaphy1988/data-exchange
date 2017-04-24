@@ -10,6 +10,8 @@
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/manage.css"   th:href="@{/css/manage.css}">
 	<script type="text/javascript" src="../../static/js-busi/gds/gdsEdit.js" th:src="@{/js-busi/gds/gdsEdit.js}"></script>
+	<script type="text/javascript" src="../../static/component/ckeditor/ckeditor.js" th:src="@{/component/ckeditor/ckeditor.js}"></script>
+	
 </head>
 <body>
 <header class="clearfix m_header" th:remove="all">
@@ -225,7 +227,8 @@
 				</tbody>
 			</table>
 			<div class="clearfix"><a href="" class="btn btn-default btn-sm pull-right"  th:onclick="'Add()'">新增套餐</a></div>
-			<div>
+			<!-- 增加商品属性 -->
+			<div id="addProp"></div>
 			<div class="title" th:remove="all">套餐介绍</div>
 
 			<!-- 下面实际应是编辑器 -->

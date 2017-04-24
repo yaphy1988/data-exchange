@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+    <head>
+       <title>wo demo</title>
+	   #parse("/sys/sys_head.vm")
+      <script type="text/javascript" src="${BUSIJS_PATH}/demo/demo.js?v=${JS_VERSION}"></script>
+</head>
+<body>
+		<h1 class="samples">
+		商品详情DemoMMMMMMM
+	</h1>
+	<div class="description">
+		<p>
+			商品详情编辑和显示Demo，目前只支持JPG图片
+		</p>
+	</div>
+	<p>
+		<input onclick="createEditor();" type="button" value="创建">
+		<input onclick="removeEditor();" type="button" value="删除">
+	</p>
+	<!-- This div will hold the editor. -->
+	<div id="editor">
+	</div>
+	<input id="btn" type="button" value="点击获取输入内容"/>
+	<input id="btn1" type="button" value="点击获取存入mongodb后返回Html到页面底部"/>
+	<div id="contents">
+	</div>
+</body>
+</html>

@@ -454,11 +454,13 @@ public class GdsEditController {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryGdsPropList")
+    @ResponseBody
 	public GdsJsonBean queryGdsPropList(HttpServletRequest req, HttpServletResponse rep, GdsPropVO gdsPropVO) {
 		GdsJsonBean json = new GdsJsonBean();
 		try {
 			GdsPropReqDTO reqDTO = new GdsPropReqDTO();
 			reqDTO.setCatId(gdsPropVO.getCatId());
+			reqDTO.setStatus("1");//有效
 			List<GdsPropRespDTO> propList = gdsInfoRSV.queryGdsPropList(reqDTO);
 			json.setObject(propList);
 			json.setSuccess("true");
