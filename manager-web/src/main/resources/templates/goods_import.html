@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="../static/css/manage.css"   th:href="@{/css/manage.css}">
 	<script type="text/javascript" src="../../static/js-busi/gds/gdsEdit.js" th:src="@{/js-busi/gds/gdsEdit.js}"></script>
 	<script type="text/javascript" src="../../static/component/ckeditor/ckeditor.js" th:src="@{/component/ckeditor/ckeditor.js}"></script>
-	
+	<script type="text/javascript" src="../../static/js-busi/common/uploadimg.js" th:src="@{/js-busi/common/uploadimg.js}"></script>
 </head>
 <body>
 <header class="clearfix m_header" th:remove="all">
@@ -116,8 +116,9 @@
 					</td>
 				</tr>
 			</table>
-			<div class="title" th:style="'display:none'" th:name="DivAPI">API接口</div>
-			<table class="editTable"  th:style="'display:none'" id="TableAPI">
+			<div  th:style="'display:none'" th:name="DivAPI">
+			<div class="title">API接口</div>
+			<table class="editTable">
 				<tr>
 					<td class="Hint tips" width="120">
 						<span class="col_red">*</span>
@@ -139,6 +140,7 @@
 					<td class="pt5"><span class="col_999 ">计费方式：按照请求次数统计</span></td>
 				</tr>
 			</table>
+			</div>
 			<div class="title">商品基本信息</div>
 			<table class="editTable">
 				<tr>
@@ -149,9 +151,6 @@
 					<td width="520">
 						
 							<input type="text" class="form-control" placeholder="VIN车架号查询详细版">
-							
-					       
-						</div>
 					</td>
 
 				</tr>
@@ -200,6 +199,7 @@
 						<div class="input-group" style="width: 50%; padding-top: 20px;">
 							<input  type="text" class="form-control" placeholder="">
 							<span class="input-group-btn">
+							<input type="file" class="float_File" name="picUpLoad" id="picUpLoad">
 					        <button class="btn btn-default" type="button">请选择</button>
 					      </span>
 						</div>
@@ -207,8 +207,9 @@
 					</td>
 				</tr>
 			</table>
-			<div class="title" th:style="'display:none'" th:name="DivAPI">价格信息</div>
-			<table class="table table-bordered" th:style="'display:none'" id="APIPackage" >
+			<div  th:style="'display:none'" th:name="DivAPI">
+			<div class="title">价格信息</div>
+			<table class="table table-bordered" id="APIPackage" >
 				<thead>
 				<tr class="active">
 					<th>套餐名称</th>
@@ -218,7 +219,7 @@
 				</tr>
 				</thead>
 				<tbody>
-				<tr>
+				<tr th:remove="all">
 					<td>aaa</td>
 					<td>aaa</td>
 					<td>aaa</td>
@@ -226,9 +227,8 @@
 				</tr>
 				</tbody>
 			</table>
-			<div class="clearfix"><a href="" class="btn btn-default btn-sm pull-right"  th:onclick="'Add()'">新增套餐</a></div>
-			<!-- 增加商品属性 -->
-			<div id="addProp"></div>
+			<div class="clearfix"><a href="" class="btn btn-default btn-sm pull-right"  th:onclick="'addPackAgeOne()'">新增套餐</a></div>
+			</div>
 			<div class="title" th:remove="all">套餐介绍</div>
 
 			<!-- 下面实际应是编辑器 -->
@@ -236,6 +236,25 @@
 				<!-- <textarea class="form-control" onkeyup="checkLen(this)" rows="5" "></textarea>-->
 				<textarea class="form-control"  rows="5"></textarea>
 			</div>
+			<!-- 其他信息 -->
+			<div id="otherInfo" th:style="'display:none'" >
+				<div class="title">其他信息</div>
+				<table class="editTable">
+					<tbody>
+					<tr>
+						<td class="Hint tips" width="120">
+							<span class="col_red">*</span>
+							数据描述:
+						</td>
+						<td width="520">
+							<textarea class="form-control" rows="5"></textarea>
+						</td>
+					</tr>
+					</tbody>
+				</table>
+			</div>
+			<!-- 增加商品属性 -->
+			<div id="addProp"></div>
 		</div>
 	</div>
 

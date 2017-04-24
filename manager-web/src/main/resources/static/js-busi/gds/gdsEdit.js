@@ -1,4 +1,15 @@
 var ckeditPackage,ckeditDataDetail,ckeditDataExample,ckeditCase,ckeditCompany;
+$(function(){
+	//图片上传
+	$("#picUpLoad").live("change",function(){
+	    var path = $(this).val();
+	    if(path==""){
+	    	return false;
+	    }else{
+	    	uploadImage(this,path);
+	    }
+	});
+});
 /**
  * 弹出商品标签选择框
  * @returns
@@ -53,6 +64,17 @@ function saveGdsLabelQuik(){
 
 }
 /**
+ * 新增套餐
+ */
+function addPackAgeOne(){
+	var html='';
+	html +='<td><input type="text" name="skuName"></td>'
+		   +'<td><input type="text" name="packPrice"></td>'
+		   +'<td><input type="text" name="packTimes"></td>'
+		   +'<td><input type="text" name="packDay"></td>';
+	$("#APIPackage").find("tbody").append(html);
+}
+/**
  * 查询分类属表
  */
 function queryGdsProp(catId){
@@ -78,10 +100,7 @@ function queryGdsProp(catId){
          }
      });
 }
-//新增套餐
-function addGdsSkuHtml(){
-	
-}
+
 function addProp(layout) {
 	var proType = layout['proType'];//1文本、2富文本
 	var proId = layout['proId'];
@@ -91,7 +110,12 @@ function addProp(layout) {
 //	switch (proId) {
 //		case 1:
 			//套餐介绍
-			addCkedit(proId,proName,proType);
+	if(proType=="2"){
+		addCkedit(proId,proName);
+	}else{
+		addEditor(proId,proName);
+	}
+			
 //			break;
 //		case 2:
 //		default:
@@ -215,21 +239,28 @@ function catIsSubNode(){
  * @param catFirstName
  */
 function selectCatCallback(catId, catName, catFirst, catFirstName) {
-	var oldCatFirst = $('#catFirst').val();
-	if (oldCatFirst != catFirst) {
-		queryGdsProp(catFirst);
-	}
 	//API分类
 	if(catFirst=="1"){
-		$('[name="DivAPI"]').css("display","")	;
-		$("#TableAPI").css("display","");
-		$("#APIPackage").css("display","");
-	}else{
-		$('[name="DivAPI"]').css("display","none")	;
-		$("#TableAPI").css("display","none");
-		$("#APIPackage").css("display","none");
+		$('div[name="DivAPI"]').css("display","");
+		$("#otherInfo").css("display","none");
+	}else if(catFirst=="3"){//解决方案
+		$('div[name="DivAPI"]').css("display","none");
+		$("#otherInfo").css("display","");
 		$("#gdsApiId").val("");
 		$("#APIPackage").find("tbody").empty();
+		$("#otherInfo").find("tbody").empty();
+		addSolutionText();
+	}else{
+		$('div[name="DivAPI"]').css("display","none");
+		$("#otherInfo").css("display","");
+		$("#gdsApiId").val("");
+		$("#APIPackage").find("tbody").empty();
+		$("#otherInfo").find("tbody").empty();
+	}	
+	var oldCatFirst = $('#catFirst').val();
+	if (oldCatFirst != catFirst) {
+		$("#addProp").empty();
+		queryGdsProp(catFirst);
 	}
 	$('#catName').val(catName);
 	$('#catId').val(catId);
@@ -297,78 +328,8 @@ function saveGds(){
         }
     });
 }
-/**
- * 上传图片
- * 
- * @param {}
- *            object
- * @param {}
- *            path
- */
-function uploadImage(object, path) {
-	var filepath = path;
-	filepath = (filepath + '').toLowerCase();
-	var regex = new RegExp(
-			'\\.(jpg)$|\\.(png)$|\\.(jpeg)$|\\.(gif)$|\\.(bmp)$', 'gi');
-	/** 上传图片文件格式验证 */
-	if (!filepath || !filepath.match(regex)) {
-		alert('请选择图片文件(.jpg,.png,.jpeg,.gif,.bmp).');
-		uploadfile.value = "";
-		return;
-	}
-	var url = basePath + '/product/uploadImage';
-	var callback = function(data, status) {
 
-		/** 上传成功，隐藏上传组件，并显示该图片 */
-		if (data.flag == true) {
-			// $("#imageFileUpload").hide();
-			var img = "img[name='" + data.id + "']";
-			$(img).attr("src", data.imagePath);
-			var hid_pic_str = "input[type='hidden'][name='" + data.id + "']";
-			var hid_pic_str_name = "input[type='hidden'][name='" + data.id
-					+ "Name']";
-			$(hid_pic_str).val(data.imageId);
-			$(hid_pic_str_name).val(data.imageName);
-			$('.productImage_con').next().children("input[type='file']").each(
-					function() {
-						$(this).bind("change", function(o) {
-
-									var path = $(this).val();
-									uploadImage(this, path);
-								});
-					});
-		} else {
-			alert(data.error);
-		}
-	};
-	ajaxFileUpload(url, false, $(object).attr('id'), "POST", "json", callback);
-}
-/**
- * 上传文件
- * @param {} url
- * @param {} secureuri
- * @param {} fileElementId
- * @param {} type
- * @param {} dataType
- * @param {} callback
- */
-function ajaxFileUpload(url, secureuri, fileElementId, type, dataType, callback) {
-	$.ajaxFileUpload({
-				url : url, // 用于文件上传的服务器端请求地址
-				secureuri : secureuri, // 一般设置为false
-				fileElementId : fileElementId, // 文件上传空间的id属性 <input
-				// type="file" id="imageFile"
-				// name="imageFile" />
-				type : type, // get 或 post
-				dataType : dataType, // 返回值类型
-				success : callback, // 服务器成功响应处理函数
-				error : function(data, status, e) // 服务器响应失败处理函数
-				{
-					alert(e);
-				}
-			});
-}
-function addCkedit(proId,proName,proType){
+function addCkedit(proId,proName){
 	var modular=$("#addProp");
 	var html="";
 	html +='<div class="title">'+proName+'</div>';
@@ -377,27 +338,40 @@ function addCkedit(proId,proName,proType){
 		ckeditId="editorPackage";
 	}else if(proId==3){//数据详情
 		ckeditId="editorDataDetail";
-	}else if(propId==4){//样例数据
+	}else if(proId==4){//样例数据
 		ckeditId="editorDataExample";
-	}else if(propId==7){//应用场景或案例
+	}else if(pr0Id==7){//应用场景或案例
 		ckeditId="editorCase";
 	}else if(pro==8){
 		ckeditId="editorCompany";
 	}
-	if(proType=="2"){//富文本
-		html +='<div id='+ckeditId+'></div>';
-	}else{
-		if(proId=="2"){
-			html +='<table class="editTable"><tbody><tr>'
-					+'<td class="Hint tips" width="120"><span class="col_red">*</span>'
-					+proName+':</td><td width="520"><textarea class="form-control" rows="5"></textarea>'
-					+'</td></tr></tbody></table>';
-		}else{
-			html +='<div><textarea class="form-control"  rows="5"></textarea></div>';	
-		}
-	}
+	html +='<div id='+ckeditId+'></div>';
 	modular.append(html);
 	createEditor(ckeditId);
+}
+function addEditor(proId,proName){
+	var name="";
+	var html='<tr>'
+				+'<td class="Hint tips" width="120"><span class="col_red">*</span>'+proName+'
+				+'</td><td width="520"><textarea class="form-control" rows="5" name="dataProp"></textarea>'
+				+'</td></tr>';
+	$("#otherInfo").find("tbody").append(html);
+}
+/**
+ * 增加解决方案的功能介绍和公司名称
+ * @param proId
+ * @param proName
+ */
+function addSolutionText(proId,proName){
+	var html='<tr>'
+				+'<td class="Hint tips" width="120"><span class="col_red">*功能介绍</span>'
+				+'</td><td width="520"><textarea class="form-control" rows="5" name="unIntroduction"></textarea>'
+				+'</td></tr>';
+	html +='<tr>'
+		+'<td class="Hint tips" width="120"><span class="col_red">*公司名称</span>'
+		+'</td><td width="520"><textarea class="form-control" rows="5" name="commpanyName"></textarea>'
+		+'</td></tr>';
+	$("#otherInfo").find("tbody").append(html);
 }
 //创建编辑器
 function createEditor(id) {
@@ -420,5 +394,17 @@ function createEditor(id) {
 	}else if(id=="editorCompany"){
 		ckeditCompany=CKEDITOR.replace(id, config);
 	}
+}
+function onImageFileChange(obj){
+	
+	uploadImage($(obj),function(data){
+		//上传成功
+		var fileId = data.fileId;
+		var fileName = data.fileName;
+		var fileType = data.fileType;
 		
+		var iamgeSize = "_80x80";//可不设置
+		var imageUrl = WEB_SHOW_IMG_PATH + fileId +iamgeSize+"."+ fileType;
+		$("#iamgeTag").attr("src",imageUrl);
+	});
 }
