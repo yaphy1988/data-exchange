@@ -22,7 +22,9 @@ public interface    IPageInfoRSV {
     
     public List<PageModuleGoodsRespDTO> queryPageModuleGoodsList(PageModuleGoodsRespDTO pageModuleGoodsRespDTO) throws Exception;
     
-    public List<PageModuleAdPropRespDTO> queryPageModuleAdpropList(PageModuleAdPropRespDTO pageModuleAdpropRespDTO) throws Exception;
+    public List<PageModuleAdPropRespDTO> queryPageModuleAdPropList(PageModuleAdPropRespDTO pageModuleAdpropRespDTO) throws Exception;
+    
     public int saveDataCustomizationRsv(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception;
-
+    
+    public List<SortContentRespDTO> querysortContenList(SortContentRespDTO sortContentRespDTO) throws Exception;
 }

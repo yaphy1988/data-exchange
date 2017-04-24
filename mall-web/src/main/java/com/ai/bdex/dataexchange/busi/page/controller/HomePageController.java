@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
+import com.alibaba.dubbo.common.utils.StringUtils;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -51,6 +52,7 @@ public class HomePageController {
 	 * @return
 	 */
 	@RequestMapping(value="/queryPageModue")
+	@ResponseBody
 	public Map<String,Object> queryPageModue(Model model){
 		
 		Map<String,Object> rMap = new HashMap<String,Object>();
@@ -111,19 +113,32 @@ public class HomePageController {
 	 * @param model
 	 */
 	@RequestMapping(value="/querySortInfo")
-	public String querySortInfo(Model model,@PathVariable("sortId") Integer sortId,@PathVariable("sortParentId") Integer sortParentId) {
+	@ResponseBody
+	public Map<String,Object> querySortInfo(Model model,HttpServletRequest request) {
+		String sortId = request.getParameter("sortId");
+		String sortParentId = request.getParameter("sortParentId");
+		String sortLever = request.getParameter("sortLever");
+		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {
 			SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
 			sortInfoRespDTO.setStatus(STATUS_VALID);
-			if(sortId != null && sortId != 0){
-				sortInfoRespDTO.setSortId(sortId);
+			if(!StringUtils.isBlank(sortId)){
+				sortInfoRespDTO.setSortId(Integer.valueOf(sortId));
+			}
+			if(!StringUtils.isBlank(sortParentId)){
+				sortInfoRespDTO.setParentSortId(Integer.valueOf(sortParentId));
+			}
+			if(!StringUtils.isBlank(sortLever)){
+				sortInfoRespDTO.setSortLevel(sortLever);
 			}
 			List<SortInfoRespDTO> sortInfos = iPageInfoRSV.querySortInfos(sortInfoRespDTO);
-			model.addAttribute("sortInfos",sortInfos);
+			rMap.put("success", true);
+			rMap.put("sortInfos",sortInfos);
 		} catch (Exception e) {
+			rMap.put("success", false);
 			log.error("查询商品分类信息异常："+e.getMessage());
 		}
-		return "";
+		return rMap;
 	}
 	/**
 	 * 查询首页热门搜索信息

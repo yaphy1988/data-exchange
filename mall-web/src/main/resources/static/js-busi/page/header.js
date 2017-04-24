@@ -3,6 +3,7 @@ $(document).ready(function(){
 	header.queryHotSearch();
 	header.queryHeaderNav();
 	header.setSpanDate();
+	header.querySortInfo('','-1','1');
 	window.setInterval("header.setSpanDate()", 1000);
 });
 var header = new Object({
@@ -62,5 +63,58 @@ var header = new Object({
 			  return "0" + num;     
 		  else        
 			  return num;
-	  }
+	},
+	querySortInfo:function(sortId,sortParentId,sortLever){
+		$.ajax({
+			url:WEB_ROOT+'/homePage/querySortInfo',
+			data:{sortId:sortId,sortParentId:sortParentId,sortLever:sortLever},
+			cache:false,
+			async:true,
+			type:'post',
+			dataType:'json',
+			success:function(data){
+				var html='';
+				if(data.success){
+					if(sortLever== '2'){//2级导航
+						html +='<h4>金融服务</h4><div class="sidebar-link">';
+					}
+					$(data.sortInfos).each(function(i,d){
+						var link ;
+						if(d.sortContentRespDTO!=null && d.sortContentRespDTO!= undefined){
+							link =d.sortContentRespDTO.contentLink;
+						}
+						if(sortLever== '2'){//2级导航
+							html +='<a href='+setUrlLink(link)+' target="_blank">'+d.sortName+'</a>';
+						}else{//1级导航
+							html +='<li sortId="'+d.sortId+'"><a href='+setUrlLink(link)+' target="_blank"><i>&rsaquo;</i>'+d.sortName+'</a> </li>';
+						}
+					});
+				}
+				if(sortLever== '2'){
+					html+='<div class="ad-list clearfix">'+
+	                    	'<div class="item floatL"></div>'+
+	                    	'<div class="item floatL"></div>'+
+	                    	'<div class="item floatL"></div>'+
+							'</div>';
+					$('#head_sidebar>div').html(html).show();
+				}else{
+					$('#head_sidebar>ul').html(html);
+					$('#head_sidebar>ul').children().hover(function(){
+						header.querySortInfo('',$(this).attr('sortId'),'2');
+					},function(){
+						$('#head_sidebar>div').hide();
+					});
+				}
+			}
+		});
+	}
+	
 });
+
+function setUrlLink(link){
+	if(link == null || link == undefined){
+		return 'javascript:void(0);'
+	}else{
+		return basePath+link;
+	}
+}

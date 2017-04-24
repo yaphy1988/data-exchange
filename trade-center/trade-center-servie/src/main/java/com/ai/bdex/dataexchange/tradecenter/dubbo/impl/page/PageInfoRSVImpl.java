@@ -66,12 +66,18 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
                     for (SortInfo sortInfo : listSortInfo){
                     	SortInfoRespDTO sortInfoResp = new SortInfoRespDTO();
                         BeanUtils.copyProperties(sortInfo, sortInfoResp);
-                        //获取sortContent信息
-                        SortContent sortContentinfo=  iSortContentSV.querysortContenById(sortInfo.getSortId());
-                        SortContentRespDTO sortContentRespDTO =new SortContentRespDTO();
-                        BeanUtils.copyProperties(sortContentinfo, sortContentRespDTO);
-                        sortInfoResp.setSortContentRespDTO(sortContentRespDTO);
                         sortInfoRespLis.add(sortInfoResp);
+                        
+                    	SortContent sortContent = new SortContent();
+                    	sortContent.setSortId(sortInfo.getSortId());
+                    	sortContent.setStatus("1");//有效的
+                        //获取sortContent信息
+                        List<SortContent> sortContenList=  iSortContentSV.querysortContenList(sortContent);
+                        if(!CollectionUtils.isEmpty(sortContenList)){
+                        	SortContentRespDTO sortContentRespDTO =new SortContentRespDTO();
+                        	BeanUtils.copyProperties(sortContenList.get(0), sortContentRespDTO);
+                        	sortInfoResp.setSortContentRespDTO(sortContentRespDTO);
+                        }
                     }
                  }   
         }catch(Exception e){
@@ -245,7 +251,7 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
         return ageModuleGoodsRespDTOList;
     }
 	@Override
-	public List<PageModuleAdPropRespDTO> queryPageModuleAdpropList(PageModuleAdPropRespDTO pageModuleAdpropRespDTO)
+	public List<PageModuleAdPropRespDTO> queryPageModuleAdPropList(PageModuleAdPropRespDTO pageModuleAdpropRespDTO)
 			throws Exception {
 		List<PageModuleAdPropRespDTO> ageModuleAdPropRespDTOList = new ArrayList<PageModuleAdPropRespDTO>();
         try{
@@ -272,4 +278,24 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
     {
          return   iDataCustomizationSV.saveDataCustomization(dataCustomizationRespDTO);
     }
+	@Override
+	public List<SortContentRespDTO> querysortContenList(SortContentRespDTO sortContentRespDTO) throws Exception {
+		List<SortContentRespDTO> respDTOs = new ArrayList<SortContentRespDTO>();
+		try {
+			SortContent sortContent = new SortContent();
+			BeanUtils.copyProperties(sortContentRespDTO, sortContent);
+			List<SortContent> contenList = iSortContentSV.querysortContenList(sortContent);
+			if(!CollectionUtils.isEmpty(contenList)){
+				for(SortContent contentVO : contenList){
+					SortContentRespDTO  respDTO = new SortContentRespDTO();
+					BeanUtils.copyProperties(contentVO, respDTO);
+					respDTOs.add(respDTO);
+				}
+			}
+		} catch (Exception e) {
+			log.error("获取商品分类信息异常:", e);
+            throw new Exception(e);
+		}
+		return respDTOs;
+	}
 }

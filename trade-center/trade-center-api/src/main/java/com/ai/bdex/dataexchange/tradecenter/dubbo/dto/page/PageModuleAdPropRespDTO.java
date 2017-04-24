@@ -1,9 +1,13 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class PageModuleAdPropRespDTO {
-    private Integer attrId;
+public class PageModuleAdPropRespDTO implements Serializable{
+   
+	private static final long serialVersionUID = 1L;
+
+	private Integer attrId;
 
     private String moduleId;
     private Integer showCount;

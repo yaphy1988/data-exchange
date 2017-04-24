@@ -7,7 +7,10 @@ import java.util.Date;
  * Created by yx on 2017/4/18.
  */
 public class PageInfoRespDTO implements Serializable {
-   private Integer infoId;
+
+	private static final long serialVersionUID = 1L;
+
+	private Integer infoId;
 
    private Integer moduleId;
    private String remark;

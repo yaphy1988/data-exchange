@@ -28,7 +28,7 @@
 	    </div>
 	    <div class="menu clearfix">
 	        <!--左侧边栏开始-->
-	        <div class="sidebar floatL">
+	        <div class="sidebar floatL" id="head_sidebar">
 	            <h3>全部商品</h3>
 	            <ul th:class="${ifHiddenCatNav}">
 	                <li><a href="#"><i>&rsaquo;</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
@@ -44,7 +44,7 @@
 	            <!--二级导航开始-->
 	            <div class="sidebar-hidden" style="display: none">
 	                <h4>金融服务</h4>
-	                <div class="sidebar-link">
+	                <div class="sidebar-link" th:remove="all">
 	                    <a href="#">条码查询</a>
 	                    <a href="#">万能小哥</a>
 	                    <a href="#">专利查询</a>

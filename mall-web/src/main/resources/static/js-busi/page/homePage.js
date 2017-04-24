@@ -1,3 +1,4 @@
+var basePath = WEB_ROOT;
 function  showMyModal() {
 	$("#myModal").show();
 }
@@ -32,5 +33,43 @@ function saveMadeData() {
 		data : param,
 		success : function(data) {
 			 alert("保存成功");
+	}});
+}
+/**查询楼层信息，异步加载楼层内容*/
+function queryPageModue(){
+	$.ajax({
+		url : basePath+'/homePage/queryPageModue',
+		type : "POST",
+		dataType : "json",
+		async : false,
+		data : {},
+		success : function(data) {
+			 if(data.success){
+				 if(data.pageModuleList != null && data.pageModuleList != undefined){
+					 $(data.pageModuleList).each(function(i,d){
+						 switch (d.moduleType) {
+						case '01'://01-首页轮播广告；
+							
+							break;
+						case '02'://01-首页轮播广告；
+							
+							break;
+						case '03'://03-首页数据定制；
+							
+							break;
+						case '04'://04-平台动态
+							
+							break;
+						case '05'://05-合作伙伴
+							
+							break;							
+						default:
+							break;
+						}
+					 });
+				 }
+			 }else{
+				 console.error('查询楼层信息异常！');
+			 }
 	}});
 }
