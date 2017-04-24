@@ -102,4 +102,18 @@ public class AuthStaffRSVImpl implements IAuthStaffRSV{
 		}
 	}
 
+	@Override
+	public AuthStaffDTO findAuthStaffInfo(AuthStaffDTO input) throws BusinessException {
+		try {
+			return iAuthStaffSV.findAuthStaffInfo(input);
+		} catch (Exception e) {
+			if (e instanceof BusinessException)
+				throw (BusinessException) e;
+			else {
+				log.error("查询用户信息异常" + e.getMessage());
+				throw new BusinessException("查询用户信息异常:" + e.getMessage());
+			}		
+		}
+	}
+
 }

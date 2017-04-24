@@ -56,7 +56,14 @@ public interface IAuthStaffSV {
 	/**
      * 保存短信校验码
      * @param req
-     * @throws BusinessException
+     * @throws Exception
      */
-    public void insertSmsSeccodelog(SmsSeccodeReqDTO req)throws Exception;
+    public int insertSmsSeccodelog(SmsSeccodeReqDTO req)throws Exception;
+    
+    /**
+	 * 根据手机号或者邮箱号查询用户信息
+	 * @return
+	 * @throws Exception
+	 */
+	public AuthStaffDTO findAuthStaffInfo(AuthStaffDTO input)throws Exception;
 }

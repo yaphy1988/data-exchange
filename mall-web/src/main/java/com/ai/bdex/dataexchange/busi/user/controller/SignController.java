@@ -14,21 +14,29 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.bdex.dataexchange.busi.login.controller.LoginController;
 import com.ai.bdex.dataexchange.busi.user.entity.UserSignVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SignInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SmsSeccodeReqDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ISmsSeccodeRSV;
 
 @Controller
-@RequestMapping(value="/sign")
+@RequestMapping(value="/regist")
 public class SignController {
 	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
 	
 	@SuppressWarnings("SpringJavaAutowiringInspection")
 	@DubboConsumer
 	private IAuthStaffRSV iAuthStaffRSV;
+	
+	@DubboConsumer
+	private ISmsSeccodeRSV iSmsSeccodeRSV;
 	
 	/**
 	 * 注册页面初始化
@@ -38,7 +46,7 @@ public class SignController {
 	 */
 	@RequestMapping(value="/pageInit")
 	public String pageInit(Model model){
-		return "sign/signInfo";
+		return "register";
 	}
 	
 	/**
@@ -89,8 +97,51 @@ public class SignController {
 	/**
 	 * 短信验证码注册
 	 */
-	@RequestMapping(value="/savesign")
-	public void savesign(Model model,UserSignVO signvo){
-		
+	@RequestMapping(value="/savesign",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> savesign(Model model,UserSignVO signvo){
+		Map<String,Object> rMap = new HashMap<String,Object>();
+		//校验短信验证码
+		SmsSeccodeReqDTO smsDto = new SmsSeccodeReqDTO();
+		smsDto.setTocken(signvo.getTocken());
+		smsDto.setPhoneNo(signvo.getPhoneNo());
+		smsDto.setInputSecurityCode(signvo.getSmsCode());
+		boolean codeFlag = false;
+		try {
+			codeFlag = iSmsSeccodeRSV.checkSmsSecCode(smsDto);
+			if(codeFlag){
+				//查询用户名是否重复
+				AuthStaffDTO input1 = new AuthStaffDTO();
+				input1.setStaffId(signvo.getStaffId());
+				AuthStaffDTO phoneResult1 = iAuthStaffRSV.findAuthStaffInfo(input1);
+				if(phoneResult1!=null){
+					rMap.put("success", false);
+					rMap.put("msg", "用户ID已经存在");
+					return rMap;
+				}
+				//查询手机号是否重复
+				AuthStaffDTO input = new AuthStaffDTO();
+				input.setSerialNumber(signvo.getSerialNumber());
+				AuthStaffDTO phoneResult = iAuthStaffRSV.findAuthStaffInfo(input);
+				if(phoneResult!=null){
+					rMap.put("success", false);
+					rMap.put("msg", "手机号已经存在");
+					return rMap;
+				}
+				SignInfoDTO info = new SignInfoDTO();
+				BeanUtils.copyProperties(signvo, info);
+				iAuthStaffRSV.saveSignInfoBysms(info);
+				rMap.put("success", true);
+				rMap.put("msg", "注册成功");
+			}else{
+				rMap.put("success", false);
+				rMap.put("msg", "验证码不正确");
+			}
+		} catch (BusinessException e) {
+			log.error(e.getMessage());
+			rMap.put("success", false);
+			rMap.put("msg", e.getMessage());
+		}
+		return rMap;
 	}
 }

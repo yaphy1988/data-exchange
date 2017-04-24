@@ -76,7 +76,16 @@ public class SignInfoDTO extends BaseInfo{
    private String confirmPass;//确认密码
    private String signpass;//输入密码
    private String smsCode;//短信验证码
-   public String getSmsCode() {
+   private String serialNumber;
+   public String getSerialNumber() {
+	return serialNumber;
+}
+
+public void setSerialNumber(String serialNumber) {
+	this.serialNumber = serialNumber;
+}
+
+public String getSmsCode() {
 	return smsCode;
 }
 

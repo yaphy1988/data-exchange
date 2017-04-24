@@ -1,9 +1,6 @@
 package com.ai.bdex.dataexchange.usercenter.dubbo.impl;
 
-import java.io.IOException;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 import java.util.UUID;
 
@@ -12,17 +9,13 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.exception.BusinessException;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SmsEntyResDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SmsSeccodeReqDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ISmsSeccodeRSV;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffSV;
-import com.ai.bdex.dataexchange.usercenter.util.HttpRequestUtil;
 import com.ai.paas.util.CacheUtil;
-import com.ai.paas.utils.SignUtil;
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.dubbo.common.utils.StringUtils;
-import com.alibaba.fastjson.JSONObject;
 
 @Service("iSmsSeccodeRSV")
 public class SmsSeccodeRSVImpl implements ISmsSeccodeRSV {
@@ -34,7 +27,7 @@ public class SmsSeccodeRSVImpl implements ISmsSeccodeRSV {
     public static String SMS_SECURITY_CODE_KEY = "Sms.Security.Code.String.";
 
 	@Override
-	public String genSmsSecCode(SmsSeccodeReqDTO seccodeInitVO) throws BusinessException {
+	public SmsSeccodeReqDTO genSmsSecCode(SmsSeccodeReqDTO seccodeInitVO) throws BusinessException {
 		
 		if(seccodeInitVO == null){
 			throw new BusinessException("入参对象");
@@ -60,23 +53,21 @@ public class SmsSeccodeRSVImpl implements ISmsSeccodeRSV {
 		info.setSecurityCode(seccode);
 		info.setSendTime(Calendar.getInstance().getTime());
 		info.setTocken(tocken);
-		info.setSecurityCode(seccode);
 		info.setSessionId(seccodeInitVO.getSessionId());
 		info.setBusiType(seccodeInitVO.getBusiType());
 		info.setCreateStaff(seccodeInitVO.getCreateStaff());
-		CacheUtil.addItem(SMS_SECURITY_CODE_KEY+tocken+seccodeInitVO.getPhoneNo(), info, 10*60);
-		CacheUtil.addItem("SMS_RESETPWD_"+seccodeInitVO.getPhoneNo(), seccode,10*60);
+//		CacheUtil.addItem(SMS_SECURITY_CODE_KEY+tocken+seccodeInitVO.getPhoneNo(), info, 10*60);
+//		CacheUtil.addItem("SMS_RESETPWD_"+seccodeInitVO.getPhoneNo(), seccode,10*60);
 		///发送验证码；,如果是 “1” ，表示启用短信发送；其它的时候，不做发送；
 		try{
-			iAuthStaffSV.insertSmsSeccodelog(info);
-			Map<String,Object> rMap = this.getHttpResult(seccodeInitVO.getPhoneNo(), seccode);			
-			if(!("0".equals(rMap.get("result").toString()))){
-				throw new BusinessException("desc");
-			}
+			int count = iAuthStaffSV.insertSmsSeccodelog(info);
+			if(count>0){
+				return info;
+			}			
 		}catch(Exception e){
 			logger.error(e.getMessage());
 		}
-		return tocken;
+		return null;
 
 	}
 
@@ -124,22 +115,4 @@ public class SmsSeccodeRSVImpl implements ISmsSeccodeRSV {
       }
 	  return passWord.toString();
 	}
-	
-	private Map<String, Object> getHttpResult(String phoneNo,String rannum) throws IOException{
-		String time =String.valueOf(Calendar.getInstance().getTimeInMillis() / 1000);//生成时间戳
-		String validate =  SignUtil.MD5("SCXT"+time+"wochuangfu!@#$%^").toUpperCase();//生成md5
-		
-		SmsEntyResDTO sms = new SmsEntyResDTO();
-		sms.setPhones(phoneNo);
-		sms.setUser("SCXT");
-		sms.setTimestamp(time);
-		sms.setTemplet("SCXT001");//模版编码
-		sms.setWords(new String[]{rannum});//模版所需入参
-		sms.setValidate(validate);
-		Map<String, String> params = new HashMap<String,String>();
-		params.put("params", JSONObject.toJSONString(sms).toString());//obj 转json
-        Map<String, String> result = HttpRequestUtil.getResultData("", "http://121.31.40.3/EmallAip/SMS001", "UTF-8", params);
-        Map<String, Object>respResult = JSONObject.parseObject(result.get("respResult"));
-        return respResult;
-        }
 }

@@ -51,4 +51,11 @@ public interface IAuthStaffRSV {
 	 * @throws BusinessException
 	 */
 	public int saveSignInfoBysms(SignInfoDTO info)throws BusinessException;
+	
+	/**
+	 * 根据条件查询用户信息
+	 * @return
+	 * @throws BusinessException
+	 */
+	public AuthStaffDTO findAuthStaffInfo(AuthStaffDTO input)throws BusinessException;
 }

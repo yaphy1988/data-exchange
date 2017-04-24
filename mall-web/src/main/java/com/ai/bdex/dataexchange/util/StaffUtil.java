@@ -74,5 +74,9 @@ public class StaffUtil {
 		}
 		return (StaffInfoDTO)obj;
 	}
+	
+	public static String getStaffId(HttpSession session){
+		return getStaffVO(session).getStaffId();
+	}
 
 }

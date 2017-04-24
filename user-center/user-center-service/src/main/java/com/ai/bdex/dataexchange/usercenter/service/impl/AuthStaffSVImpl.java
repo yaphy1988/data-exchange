@@ -27,9 +27,11 @@ import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffPassSV;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffSV;
 import com.ai.bdex.dataexchange.usercenter.util.SendMailUtil;
 import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
 import com.ai.paas.utils.ObjectCopyUtil;
 import com.ai.paas.utils.SignUtil;
+import com.ai.paas.utils.StringUtil;
 import com.alibaba.dubbo.common.utils.LogUtil;
 
 @Service("iAuthStaffSV")
@@ -250,6 +252,11 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 		BeanUtils.copyProperties(info, record);
 		record.setCreateStaff(info.getStaffId());
 		record.setCreateTime(DateUtil.getNowAsTimestamp());
+		record.setAuthenFlag("0");
+		record.setStartDate(DateUtil.getNowAsTimestamp());
+		record.setEndDate(DateUtil.getFutureTime());
+		record.setCreateFrom("1");
+		record.setLockStatus("1");
 		int count = authStaffMapper.insertSelective(record);
 		if(count>0){
 			AuthStaffPassDTO pass = new AuthStaffPassDTO();
@@ -261,14 +268,37 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 	}
 	
 	@Override
-	public void insertSmsSeccodelog(SmsSeccodeReqDTO req) throws BusinessException {
-        long logId = SeqUtil.getLong("seq_sms_seccode_log");
+	public int insertSmsSeccodelog(SmsSeccodeReqDTO req) throws BusinessException {
+        long logId = SeqUtil.getLong("SEQ_SMS_SECCODE_LOG");
         SmsSeccodeLog record = new SmsSeccodeLog();
         record.setLogId(logId);   
         ObjectCopyUtil.copyObjValue(req, record, null, false);
         record.setCreateTime(DateUtil.getNowAsTimestamp());
-        smsSeccodeLogMapper.insert(record);
+        return smsSeccodeLogMapper.insert(record);
 
     }
+
+	@Override
+	public AuthStaffDTO findAuthStaffInfo(AuthStaffDTO input) throws Exception {
+		AuthStaffExample example = new AuthStaffExample();
+		AuthStaffExample.Criteria sql = example.createCriteria();
+		if(!StringUtil.isBlank(input.getStaffId())){
+			sql.andStaffIdEqualTo(input.getStaffId());
+		}
+		if(!StringUtil.isBlank(input.getEmail())){
+			sql.andEmailEqualTo(input.getEmail());
+		}
+		if(!StringUtil.isBlank(input.getSerialNumber())){
+			sql.andSerialNumberEqualTo(input.getSerialNumber());
+		}
+		List<AuthStaff> datas = authStaffMapper.selectByExample(example);
+		if(!CollectionUtil.isEmpty(datas)){
+			AuthStaffDTO dto = new AuthStaffDTO();
+			AuthStaff bean = datas.get(0);
+			BeanUtils.copyProperties(bean, dto);
+			return dto;
+		}
+		return null;
+	}
 
 }

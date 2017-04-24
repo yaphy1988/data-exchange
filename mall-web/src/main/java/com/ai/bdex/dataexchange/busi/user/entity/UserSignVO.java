@@ -18,7 +18,34 @@ public class UserSignVO implements Serializable{
    private String confirmPass;//确认密码
    private String signpass;//输入密码
    private String smsCode;//短信验证码
-   public String getSmsCode() {
+   private String tocken;//短信验证的tocken
+   private String phoneNo;
+   private String serialNumber;
+   public String getSerialNumber() {
+	return serialNumber;
+}
+
+public void setSerialNumber(String serialNumber) {
+	this.serialNumber = serialNumber;
+}
+
+public String getPhoneNo() {
+	return phoneNo;
+}
+
+public void setPhoneNo(String phoneNo) {
+	this.phoneNo = phoneNo;
+}
+
+public String getTocken() {
+	return tocken;
+}
+
+public void setTocken(String tocken) {
+	this.tocken = tocken;
+}
+
+public String getSmsCode() {
 	return smsCode;
 }
 

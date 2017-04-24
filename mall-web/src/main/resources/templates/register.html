@@ -6,7 +6,7 @@
     <meta name="renderer" content="webkit">
     <meta name="description" content="">
     <meta name="keywords" content="">
-    <title>广州数据中心_用户登录</title>
+    <title>广州数据中心_用户注册</title>
     <link rel="icon" type="../../static/image/png" href="../static/images/favicon.png" th:type="@{/image/png}" th:href="@{/images/favicon.png}">
     <link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}">
     <link rel="stylesheet" href="../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
@@ -14,48 +14,60 @@
     <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
     <script src="../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
     <script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="../static/js-busi/register/register.js" th:src="@{/js-busi/register/register.js}"></script>
+    <script src="../static/js-busi/common/sms.js" th:src="@{/js-busi/common/sms.js}"></script>
+    <script type="text/javascript">
+        var WEB_ROOT = '[[${#httpServletRequest.contextPath}]]';
+    </script>
 </head>
 <body  class="bgf1">
 <div class="header bg-white">
     <div class="wrap1000">
         <div class="logo floatL"><img src="../static/images/logo.png" th:src="@{/images/logo.png}" title="广州数据中心"></div>
-        <div class="register floatR">已有账号， <a href="#">登录</a></div>
+        <div class="register floatR">已有账号， <a href="/login/pageInit">登录</a></div>
     </div>
 </div>
 <div class="main">
     <div class="register-box">
         <h2>用户注册</h2>
         <div class="register-list">
-            <div class="register-input">
+            <div class="register-input" id="staffIdDiv">
                 <label>用户ID</label>
-                <input type="text" class="form-control" placeholder="请填写用户ID，支持字母和数字">
+                <input type="text" class="form-control" placeholder="请填写用户ID，支持字母和数字" id="staffId">
                 <!--error-tip可见或不可见方式请用visibility-->
-                <p class="error-tip" style="visibility: visible;"><i class="icon iconfont icon-cuowu"></i>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</p>
+                <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
             </div>
-            <div class="register-input">
-                <label>邮箱验证</label>
-                <input type="text" class="form-control" placeholder="请填写正确的邮箱，以便接收账号">
+            <div class="register-input" id="phoneNoDiv">
+                <label>手机号码</label>
+                <input type="text" class="form-control" placeholder="请填写手机号码，以便接收验证码" id="phoneNo" maxlength="11">
                 <!--error-tip可见或不可见方式请用visibility-->
-                <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i>请输入正确的邮箱号,邮箱号必须包含@符号</p>
+                <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
             </div>
-            <div class="register-input">
+            <div class="register-input" id="smsCodeDiv">
+                <label>短信验证码</label>
+                <input type="text" class="form-control" placeholder="短信验证码" style="width:50%;display:-webkit-inline-box;" id="smsCode">
+                <!--error-tip可见或不可见方式请用visibility-->
+                <button class="btn btn-primary" onclick="sendSmsCode();" id="getcodebtn">获取验证码</button>
+                <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入短信验证码</span></p>
+            </div>
+            <div class="register-input" id="signpassDiv">
                 <label>设置密码</label>
-                <input type="text" class="form-control" placeholder="请设置密码，最少8个字符">
+                <input type="password" class="form-control" placeholder="请设置密码，最少8个字符" id="signpass" onfouce="hiddenpass();">
                 <!--error-tip可见或不可见方式请用visibility-->
-                <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i>请输入至少8个字符的密码</p>
+                <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入至少8个字符的密码</span></p>
             </div>
-            <div class="register-input">
+            <div class="register-input" id="confirmPassDiv">
                 <label>确认密码</label>
-                <input type="text" class="form-control" placeholder="请确认设置的密码">
+                <input type="password" class="form-control" placeholder="请确认设置的密码" id="confirmPass" onfouce="hiddenpass();">
                 <!--error-tip可见或不可见方式请用visibility-->
-                <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i>确认密码和设置密码不一致，请重新输入</p>
+                <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>确认密码和设置密码不一致，请重新输入</span></p>
             </div>
             <div class="register-checkbox">
-                <input type="checkbox" checked>
+                <input type="checkbox" id="checkAgree">
                 <span>我已阅读并接受<a href="#" data-toggle="modal" data-target="#myModal"> 《广州数据平台交易协议》</a></span>
             </div>
             <div class="register-button">
-                <button class="btn btn-primary">立即注册</button>
+                <button class="btn btn-primary" onclick="saveInfo();">立即注册</button>
             </div>
         </div>
     </div>
@@ -221,7 +233,7 @@
             </div>
             <div class="modal-footer" style="text-align: center;">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">确认</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="agreement();">确认</button>
             </div>
         </div>
     </div>

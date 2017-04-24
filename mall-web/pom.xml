@@ -104,6 +104,11 @@
 			<groupId>com.ai.paas</groupId>
 			<artifactId>captcha-utils</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.ai.bdex.dataexchange</groupId>
+               <artifactId>api-gateway-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
 	</dependencies>
 
 	<build>

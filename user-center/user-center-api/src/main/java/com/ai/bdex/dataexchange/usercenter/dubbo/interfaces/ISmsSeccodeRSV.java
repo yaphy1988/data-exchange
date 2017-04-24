@@ -18,16 +18,16 @@ public interface ISmsSeccodeRSV {
 	 * @param seccodeInitVO
 	 * @return
 	 * @throws BusinessException
-	 * @author yugn
+	 * @author zouwj
 	 */
-	public String genSmsSecCode(SmsSeccodeReqDTO seccodeInitVO) throws BusinessException;
+	public SmsSeccodeReqDTO genSmsSecCode(SmsSeccodeReqDTO seccodeInitVO) throws BusinessException;
 	
 	/**
 	 * 根据传入的tocken校验验证码是否正确；
 	 * @param smsSecurityCheckVO
 	 * @return
 	 * @throws BusinessException
-	 * @author yugn
+	 * @author zouwj
 	 */                                                              
 	public boolean checkSmsSecCode(SmsSeccodeReqDTO smsSecurityCheckVO) throws BusinessException;
 

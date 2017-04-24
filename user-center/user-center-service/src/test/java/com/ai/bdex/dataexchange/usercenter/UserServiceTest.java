@@ -13,6 +13,8 @@ import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SignInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffPassRSV;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
+import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.util.CacheUtil;
 import com.ai.paas.utils.SignUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -50,6 +52,13 @@ public class UserServiceTest {
 //		Map<String,Object> rMap = iAuthStaffRSV.doActiveByEmail("8", "ba82c1c839b257f314a1c4d7e93b6779");
 //		System.out.println(rMap.toString());
 //	}
+	
+	@Test
+	public void textSeq(){
+		CacheUtil.addItem("zouwj1", 1234,60*2);
+		String i = CacheUtil.getItem("zouwj").toString();
+		System.out.print(i);
+	}
 	
 	public static void main(String[] args){
 		System.out.println("lc，SHA-1加密后的结果：" + SignUtil.SHA1("woego.cn"));
