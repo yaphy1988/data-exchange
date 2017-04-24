@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.tradecenter;
 
+import com.ai.paas.sequence.SeqUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,5 +38,10 @@ public class HelloDemoRSVImplTest {
     	 String aa = list.get(0).getSortLevel();
     	 System.out.print("-------------AA chulailai------"+aa+"-----------------");
      }
+
+     @Test
+     public void seqTest(){
+    	System.out.println(SeqUtil.getInt("SEQ_DEMO"));
+	 }
 
 }

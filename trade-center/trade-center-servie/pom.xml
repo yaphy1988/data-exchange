@@ -51,10 +51,10 @@
       <artifactId>druid</artifactId>
       <scope>runtime</scope>
     </dependency>
-      <dependency>
-          <groupId>com.ai.paas</groupId>
-          <artifactId>sequence-engine</artifactId>
-      </dependency>
+    <dependency>
+      <groupId>com.ai.woego.boot</groupId>
+      <artifactId>sequence-spring-boot-autoconfig</artifactId>
+    </dependency>
   </dependencies>
 
 
