@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{fragments/syshead :: syshead}"></div>
 <head>
 	<meta charset="UTF-8">
 	<title>商品搜索</title>
@@ -9,7 +10,7 @@
 	<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
 </head>
-<div th:replace="~{fragments/syshead :: syshead}"></div>
+
 <body>
 	<div class="seconav">
 		<div class="top">
@@ -119,10 +120,9 @@
 
 	<div class="main">
 		<div class="classify edit" id="selectedCondition">
-			<span id="condictionFlag" style="visibility:hidden">
-				<i class="iconfont"></i>
-				<span id="">所有分类：</span>
-			</span>
+			<i class="iconfont"></i>
+			<span id="condictionFlag" style="visibility:hidden">所有分类：</span>
+			<a href="javascript:void(0)" th:remove="all"><em>其他分类:</em><span>数据市场</span><i class="close">×</i></a>
 		</div>
 		<div class="gl_group">
 			<div class="gl_items" th:each="cat,iterStat : ${catList}">
@@ -130,7 +130,7 @@
 					API分类：
 				</div>
 				<div class="bd">
-					<a class="catSelecte" th:each="subcat,iterStat : ${cat.subCatList}" href="javascript:void(0)" th:text="${subcat.catName}" th:attr="catPName=${cat.catName}">生活常用</a>
+					<a class="catSelecte" th:each="subcat,iterStat : ${cat.subCatList}" href="javascript:void(0)" th:text="${subcat.catName}" th:attr="catPName=${cat.catName},catPid=${subcat.catPid},catId=${subcat.catId},catName=${subcat.catName}">生活常用</a>
 					<a href="" th:remove="all">金融服务</a>
 				</div>
 				<div class="fo">
@@ -184,9 +184,9 @@
 		<div class="gl_list">
 			<div class="filter clearfix">
 				<ul>
-					<li class="active"><a href="">综合<i></i></a></li>
-					<li><a href="">最新</a></li>
-					<li><a href="">最热<i></i></a></li>
+					<li class="active sortCondition" sortField="comprehensive"><a href="javascript:void(0)" >综合<i></i></a></li>
+					<li sortField="shelveTime" class="sortCondition"><a href="javascript:void(0)">最新</a></li>
+					<li sortField="hotDegree" class="sortCondition"><a href="javascript:void(0)">最热<i></i></a></li>
 				</ul>
 				<p class="pull-right pr10">为您找到<b class="col_orange"><font id="numFound">1234</font></b>个结果</p>
 			</div>

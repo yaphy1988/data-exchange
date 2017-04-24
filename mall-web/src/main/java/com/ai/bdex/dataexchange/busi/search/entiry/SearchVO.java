@@ -1,6 +1,8 @@
 package com.ai.bdex.dataexchange.busi.search.entiry;
 
 import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
@@ -31,6 +33,51 @@ public class SearchVO extends BaseInfo implements Serializable{
      * 分类id
      */
     private int catId;
+    /**
+     * 排序字段
+     */
+    private String sortField;
+    /**
+     * 排序值。ASC 升序，DES 降序
+     */
+    private String sortValue;
+    /**
+     * 分类map集合
+     */
+    private Map<String,List<String>> catConditionMap;
+    
+    public String getKeyWord() {
+        return keyWord;
+    }
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+    }
+    public int getCatId() {
+        return catId;
+    }
+    public void setCatId(int catId) {
+        this.catId = catId;
+    }
+    public String getSortField() {
+        return sortField;
+    }
+    public void setSortField(String sortField) {
+        this.sortField = sortField;
+    }
+    public String getSortValue() {
+        return sortValue;
+    }
+    public void setSortValue(String sortValue) {
+        this.sortValue = sortValue;
+    }
+    public Map<String, List<String>> getCatConditionMap() {
+        return catConditionMap;
+    }
+    public void setCatConditionMap(Map<String, List<String>> catConditionMap) {
+        this.catConditionMap = catConditionMap;
+    }
+    
+    
     
 }
 
