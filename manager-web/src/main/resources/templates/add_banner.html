@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>新增广告</title>
+	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+</head>
+<body>
+<header class="clearfix m_header">
+	<a href="" class="Logo" target="_blank" >
+		<img width="160" src="../static/images/manage_logo.jpg" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<div  layout:fragment="screen_content">
+	<div class="m_main">
+		<div class="m_con">
+            <!--tab切换内容-->
+            <div class="tab-slide pl20 pr20">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">新增广告</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content pt15">
+                    <div role="tabpanel" class="tab-pane active" id="tab01">
+                        <table class="editTable">
+                            <tr>
+                                <td class="Hint " width="120">
+                                    标识:
+                                </td>
+                                <td width="420">
+                                      <select class="form-control">
+                                          <option>轮播广告</option>
+                                      </select>
+                                </td>
+                            </tr>
+
+                            <tr>
+                                <td class="Hint">
+                                    <span class="col_red">*</span>广告语:
+                                </td>
+                                <td>
+                                        <input type="text" class="form-control" placeholder="xxxx" >
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="Hint tips">
+                                    <span class="col_red">*</span>图片:
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" placeholder="xxxx">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="Hint">
+                                    预览:
+                                </td>
+                                <td>
+                                    <div class="input-group" style="width: 50%; padding-top: 20px;padding-bottom: 5px;">
+                                        <input  type="text" class="form-control" placeholder="" disabled>
+                                        <span class="input-group-btn">
+                                        <button class="btn btn-default" type="button">请选择</button>
+                                      </span>
+                                    </div>
+                                    <span class="col_red">说明：建议选择100*100规格图片</span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="Hint">
+                                    <span class="col_red">*</span>展示顺序:
+                                </td>
+                                <td>
+                                    <select class="form-control">
+                                        <option>1</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="Hint">
+                                    链接内容:
+                                </td>
+                                <td>
+                                    <input type="text" class="form-control" placeholder="xxxx">
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="Hint">
+                                    简略信息:
+                                </td>
+                                <td class="check-link">
+                                    <input type="text" class="form-control" placeholder="xxxx" disabled><a href="#">选择链接内容</a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="Hint">&nbsp;</td>
+                                <td>
+                                    <button class="btn btn-primary">保存</button>
+                                    <button class="btn btn-default">返回</button>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+		</div>
+	</div>
+	<div class="m_nav">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li class="active">
+							<a href=""></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i ></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li >
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+
+</body>
+</html>

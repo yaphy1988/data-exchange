@@ -134,7 +134,7 @@ body{
 .borTable.editTable,
 .borTable{
 	border: solid 1px #eee;
-	
+
 }
 .borTable.editTable,
 .borTable .editTable{
@@ -217,7 +217,7 @@ body{
 
 /*商品管理添加*/
 .top-table{
-    padding: 20px;
+    padding: 30px 20px 20px;
 }
 
 .top-table .editTable td.Hint.tips{
@@ -238,4 +238,47 @@ body{
 }
 .pop-link i{
     color: #999;
+}
+
+
+/*模块管理*/
+.input-group{
+    width: 100%;
+}
+.radio label{
+    margin-right: 16px;
+}
+.radio input{
+    position: relative;
+    top:-2px
+}
+.edit-title{
+    background: #dee5f3;
+    color: #2b4099;
+    padding: 5px 20px;
+    line-height: 2;
+    font-weight: bold;
+}
+
+.table-banner img{
+    width: 160px;
+    height: 50px;
+}
+
+.left-btn{
+    float: left;
+}
+.left-btn button{
+    background: #dee5f3;
+    border:1px solid #dee5f3;
+    color: #2b4099;
+    padding: 5px 20px;
+}
+
+.check-link input{
+    width: 76%;float:left;
+}
+.check-link a{
+    line-height: 34px;
+    margin-left: 20px;
 }

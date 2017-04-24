@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>模块管理</title>
+	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+</head>
+<body>
+<header class="clearfix m_header">
+	<a href="" class="Logo" target="_blank" >
+		<img width="160" src="../static/images/manage_logo.jpg" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<div  layout:fragment="screen_content">
+	<div class="m_main">
+		<div class="m_con">
+			<div class="top-table">
+                <table class="editTable">
+                    <tr>
+                        <td class="Hint" >
+                            <span class="col_red">*</span>
+                            省份：
+                        </td>
+                        <td width="20%">
+                            <div class="input-group02">
+                                <select class="form-control">
+                                    <option>全部</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td class="Hint">
+                            <span class="col_red">*</span>
+                            模块名称：
+                        </td>
+                        <td width="20%">
+                            <div class="input-group02">
+                                <input type="text" class="form-control" placeholder="商品名称">
+                            </div>
+                        </td>
+
+                        <td class="Hint">
+                            <span class="col_red">*</span>
+                            是否显示：
+                        </td>
+                        <td width="20%">
+                            <div class="input-group02">
+                                <select class="form-control">
+                                    <option>全部</option>
+                                </select>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="input-group02">
+                                <button class="btn btn-primary">查询</button>
+                            </div>
+                        </td>
+                    </tr>
+                </table>
+			</div>
+
+
+            <!--tab切换内容-->
+            <div class="tab-slide pl20 pr20">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">模块管理</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content pt15">
+                    <div role="tabpanel" class="tab-pane active" id="tab01">
+                        <table class="table table-bordered text-center" >
+                            <thead>
+                            <tr class="active">
+                                <th>模块编码</th>
+                                <th width="240">模块名称</th>
+                                <th>父模块</th>
+                                <th>赋予数量</th>
+                                <th>是否展示</th>
+                                <th>类型</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <td>17</td>
+                                <td> 挂壁机</td>
+                                <td>1f手机</td>
+                                <td>6</td>
+                                <td>展示</td>
+                                <td>商品</td>
+                                <td>
+                                    <p class="pop-link">
+                                        <a href="edit_module.html">编辑</a>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td> 挂壁机</td>
+                                <td>1f手机</td>
+                                <td>6</td>
+                                <td>展示</td>
+                                <td>商品</td>
+                                <td>
+                                    <p class="pop-link">
+                                        <a href="#">编辑</a>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td> 挂壁机</td>
+                                <td>1f手机</td>
+                                <td>6</td>
+                                <td>展示</td>
+                                <td>商品</td>
+                                <td>
+                                    <p class="pop-link">
+                                        <a href="#">编辑</a>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td> 挂壁机</td>
+                                <td>1f手机</td>
+                                <td>6</td>
+                                <td>展示</td>
+                                <td>商品</td>
+                                <td>
+                                    <p class="pop-link">
+                                        <a href="#">编辑</a>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td> 挂壁机</td>
+                                <td>1f手机</td>
+                                <td>6</td>
+                                <td>展示</td>
+                                <td>商品</td>
+                                <td>
+                                    <p class="pop-link">
+                                        <a href="#">编辑</a>
+                                    </p>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>17</td>
+                                <td> 挂壁机</td>
+                                <td>1f手机</td>
+                                <td>6</td>
+                                <td>展示</td>
+                                <td>商品</td>
+                                <td>
+                                    <p class="pop-link">
+                                        <a href="#">编辑</a>
+                                    </p>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                        <div class="pagelist">
+                            <nav aria-label="Page navigation">
+                                <ul class="pagination">
+                                    <li >
+                                        <a href="#" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+                                    <li class="active"><a href="#">1</a></li>
+                                    <li><a href="#">2</a></li>
+                                    <li><a href="#">3</a></li>
+                                    <li><a href="#">4</a></li>
+                                    <li><a href="#">5</a></li>
+                                    <li>
+                                        <a href="#" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+		</div>
+	</div>
+	<div class="m_nav">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li class="active">
+							<a href=""></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i ></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li >
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+
+</body>
+</html>

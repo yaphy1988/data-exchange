@@ -478,7 +478,7 @@ fieldset[disabled] .btn-default.focus {
 	.pagelist .pagination > li > span{
 		border: transparent;
 	}
-	
+
 	.pageskip{
 		display: inline-block;
 		line-height: 32px;
