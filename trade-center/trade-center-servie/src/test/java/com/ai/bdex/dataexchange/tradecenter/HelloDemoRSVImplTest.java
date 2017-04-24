@@ -34,9 +34,11 @@ public class HelloDemoRSVImplTest {
     	System.out.print(demoinfo);*/
      	SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
     	sortInfoRespDTO.setStatus("1");
-    	 List<SortInfoRespDTO>  list = iPageInfoRSV.querySortInfos(sortInfoRespDTO);
-    	 String aa = list.get(0).getSortLevel();
-    	 System.out.print("-------------AA chulailai------"+aa+"-----------------");
+    	 //List<SortInfoRespDTO>  list = iPageInfoRSV.querySortInfos(sortInfoRespDTO);
+    	 //String aa = list.get(0).getSortLevel();
+		  int seq =  SeqUtil.getInt("SEQ_DATA_CUSTOMIZATION");
+
+    	 System.out.print("-------------SEQ_DATA_CUSTOMIZATION序列------"+seq+"-----------------");
      }
 
      @Test

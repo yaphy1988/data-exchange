@@ -35,9 +35,7 @@ public class DataCustomizationSVImpl implements IDataCustomizationSV {
 	   public int saveDataCustomization(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception{
 		    DataCustomization record = new DataCustomization();	
 			BeanUtils.copyProperties(record, dataCustomizationRespDTO);
-//			/  (int)(Math.random()*9+1)*10000;// 
 		    int seq =  SeqUtil.getInt("SEQ_DATA_CUSTOMIZATION");
- 			//record.setDczaId(SeqUtil.getInt("SEQ_DATA_CUSTOMIZATION"));
 		    record.setDczaId(seq);
  			record.setCreateStaffId(dataCustomizationRespDTO.getCreateStaffId());
 		 	 record.setCreateTime(DateUtil.getNowAsDate());
