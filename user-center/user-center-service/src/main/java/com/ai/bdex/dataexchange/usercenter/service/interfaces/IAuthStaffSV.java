@@ -52,13 +52,6 @@ public interface IAuthStaffSV {
 	 * @throws Exception
 	 */
 	public int saveSignInfoBysms(SignInfoDTO info)throws Exception;
-	
-	/**
-     * 保存短信校验码
-     * @param req
-     * @throws Exception
-     */
-    public int insertSmsSeccodelog(SmsSeccodeReqDTO req)throws Exception;
     
     /**
 	 * 根据手机号或者邮箱号查询用户信息

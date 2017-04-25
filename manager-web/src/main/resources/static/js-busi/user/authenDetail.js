@@ -11,7 +11,7 @@ function saveCheck(status){
 		return;
 	}
 	$.ajax({
-		url : WEB_ROOT+"/authen/docheck",
+		url : WEB_ROOT+"/authencheck/docheck",
 		type : 'POST',
 		dataType : 'json',
 		data : {
@@ -24,7 +24,7 @@ function saveCheck(status){
 		success : function(obj){
 			if(obj.success){
 				WEB.msg.info('提示','审核成功',function(){
-					window.location.href = WEB_ROOT+"/authen/pageInit";
+					window.location.href = WEB_ROOT+"/authencheck/pageInit";
 				});
 			}else{
 				WEB.msg.info('提示',obj.msg,null);

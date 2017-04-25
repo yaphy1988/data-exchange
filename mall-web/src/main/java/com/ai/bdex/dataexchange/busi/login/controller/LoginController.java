@@ -20,8 +20,8 @@ import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
+import com.ai.bdex.dataexchange.util.CaptchaUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
-import com.ai.paas.captcha.CaptchaServlet;
 import com.ai.paas.utils.InetTool;
 import com.ai.paas.utils.SignUtil;
 
@@ -57,13 +57,13 @@ public class LoginController {
 		staffId = request.getParameter("staffId");
 		String password = request.getParameter("password");
 		String verifyCode = request.getParameter("verifyCode");
-		String veriCodeInSession = CaptchaServlet.getCaptchaCode(request);
-		//验证码注释
-//		if (!CaptchaServlet.verifyCaptcha(request, verifyCode)) {
-//			rMap.put("success", false);
-//			rMap.put("errorMsg", "验证码输入错误");
-//			return rMap;
-//		}
+		String veriCodeInSession = CaptchaUtil.getCaptchaCode(request);
+//		验证码注释
+		if (!CaptchaUtil.verifyCaptcha(request, verifyCode)) {
+			rMap.put("success", false);
+			rMap.put("errorMsg", "验证码输入错误");
+			return rMap;
+		}
 
 		loginInfo = new LoginInfoDTO();
 		loginInfo.setLoginName(staffId);

@@ -100,10 +100,6 @@
             <version>2.6</version>
             <optional>true</optional>
         </dependency>
-        <dependency>
-			<groupId>com.ai.paas</groupId>
-			<artifactId>captcha-utils</artifactId>
-		</dependency>
 		<dependency>
 			<groupId>com.ai.bdex.dataexchange</groupId>
                <artifactId>api-gateway-api</artifactId>

@@ -5,17 +5,12 @@ import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SmsSeccodeReqDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ISmsSeccodeRSV;
-import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffSV;
-import com.ai.bdex.dataexchange.usercenter.service.interfaces.ISmsSeccodeLogSV;
 import com.ai.paas.util.CacheUtil;
-import com.ai.paas.utils.DateUtil;
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.dubbo.common.utils.StringUtils;
@@ -24,10 +19,6 @@ import com.alibaba.dubbo.common.utils.StringUtils;
 public class SmsSeccodeRSVImpl implements ISmsSeccodeRSV {
 	private final static Logger logger = LoggerFactory.getLogger(SmsSeccodeRSVImpl.class);
 	
-	@Resource
-	private IAuthStaffSV iAuthStaffSV;
-	@Resource
-	private ISmsSeccodeLogSV iSmsSeccodeLogSV;
 	// 短信验证码的信息；
     public static String SMS_SECURITY_CODE_KEY = "Sms.Security.Code.String.";
 
@@ -65,10 +56,7 @@ public class SmsSeccodeRSVImpl implements ISmsSeccodeRSV {
 		CacheUtil.addItem("SMS_RESETPWD_"+seccodeInitVO.getPhoneNo(), seccode,10*60);
 		///发送验证码；,如果是 “1” ，表示启用短信发送；其它的时候，不做发送；
 		try{
-			int count = iAuthStaffSV.insertSmsSeccodelog(info);
-			if(count>0){
-				return info;
-			}			
+			return info;		
 		}catch(Exception e){
 			logger.error(e.getMessage());
 		}
@@ -89,40 +77,12 @@ public class SmsSeccodeRSVImpl implements ISmsSeccodeRSV {
 		
 		if(StringUtils.isEmpty(smsSecurityCheckVO.getInputSecurityCode())){
 			throw new BusinessException("输入的验证码不能为空");
-		}
-		
+		}		
 		
 		SmsSeccodeReqDTO info = (SmsSeccodeReqDTO)CacheUtil.getItem(SMS_SECURITY_CODE_KEY+smsSecurityCheckVO.getTocken()+smsSecurityCheckVO.getPhoneNo());
 		if(info == null){
 			throw new BusinessException("验证码过期，请重新获取再验证！");
 		}
-		
-		//从数据库校验
-//		SmsSeccodeReqDTO input = new SmsSeccodeReqDTO();
-//		input.setTocken(smsSecurityCheckVO.getTocken());
-//		input.setPhoneNo(smsSecurityCheckVO.getPhoneNo());
-//		SmsSeccodeReqDTO infoResult = null;
-//		try {
-//			infoResult = iSmsSeccodeLogSV.getSmsSendInfo(input);
-//		} catch (Exception e) {
-//			// 错误信息通过异常抛出
-//			logger.error("checkSmsSecCode verify error:", e);
-//			// 判断是否有业务异常，有则抛BusinessException
-//			if (e instanceof BusinessException)
-//				throw (BusinessException) e;
-//			// 无业务异常有运行异常，抛出GenericException
-//			else {
-//				throw new BusinessException(e.getMessage());
-//			}
-//		}
-//		if(infoResult==null){
-//			throw new BusinessException("请先获取验证码！");
-//		}
-//		Long nowTime = System.currentTimeMillis();
-//		Long createTime = infoResult.getSendTime().getTime();
-//		if(nowTime-createTime>60*1000*10){
-//			throw new BusinessException("验证码过期，请重新获取再验证！");
-//		}
 		
 		///判断验证码是否一致；
 		if(smsSecurityCheckVO.getInputSecurityCode().equalsIgnoreCase(info.getSecurityCode())){

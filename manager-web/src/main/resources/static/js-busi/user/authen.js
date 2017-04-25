@@ -9,7 +9,7 @@ function queryData(index){
 	}
 	var status = $("#status").val();
 	$.ajax({
-		url:WEB_ROOT+'/authen/getcheckdata',
+		url:WEB_ROOT+'/authencheck/getcheckdata',
 		type:'POST',
 		cache:false,
 		async:true,
@@ -34,7 +34,7 @@ function queryData(index){
 					tr.append($("<td></td>").append(data[i].relName));
 					if("10"==data[i].status){
 						tr.append($("<td></td>").append("待审核"));
-						tr.append($("<td></td>").append("<a href='"+WEB_ROOT+"/authen/getdetail/"+data[i].taxId+"'>审核</a>"));
+						tr.append($("<td></td>").append("<a href='"+WEB_ROOT+"/authencheck/getdetail/"+data[i].taxId+"'>审核</a>"));
 					}else if("20"==data[i].status){
 						tr.append($("<td></td>").append("审核通过"));
 						tr.append($("<td></td>").append(""));

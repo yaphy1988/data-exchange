@@ -27,7 +27,7 @@ import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
 @Controller
-@RequestMapping(value="/authen")
+@RequestMapping(value="/authencheck")
 public class AuthenCheckController {
 	private static final Logger log = LoggerFactory.getLogger(AuthenCheckController.class);
 	
