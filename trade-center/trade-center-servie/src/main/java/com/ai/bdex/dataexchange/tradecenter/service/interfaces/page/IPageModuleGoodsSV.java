@@ -3,7 +3,9 @@ package com.ai.bdex.dataexchange.tradecenter.service.interfaces.page;
 
 import java.util.List;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoods;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
 
 /**
  * 
@@ -15,5 +17,5 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoods;
  */
 public interface IPageModuleGoodsSV {
 	public PageModuleGoods queryPageModuleGoodsById(Integer pmgId) throws Exception;
-	public List<PageModuleGoods> queryPageModuleGoodsList(PageModuleGoods pageModuleGoods) throws Exception;
+	public PageResponseDTO<PageModuleGoodsRespDTO>  queryPageModuleGoodsList(PageModuleGoods pageModuleGoods) throws Exception;
 }

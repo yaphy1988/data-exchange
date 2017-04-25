@@ -3,7 +3,10 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 import java.io.Serializable;
 import java.util.Date;
 
-public class DataCustomizationRespDTO implements Serializable {
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+
+
+public class DataCustomizationRespDTO extends BaseInfo {
 	private static final long serialVersionUID = 1L;
 	private Integer dczaId;
 	private String customDescrip;

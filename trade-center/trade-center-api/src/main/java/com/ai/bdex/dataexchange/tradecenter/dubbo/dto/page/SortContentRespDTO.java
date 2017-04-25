@@ -3,7 +3,9 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 import java.io.Serializable;
 import java.util.Date;
 
-public class SortContentRespDTO implements Serializable{
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+
+public class SortContentRespDTO  extends BaseInfo{
 
 	private static final long serialVersionUID = 1L;
 	private Integer sortContentId;

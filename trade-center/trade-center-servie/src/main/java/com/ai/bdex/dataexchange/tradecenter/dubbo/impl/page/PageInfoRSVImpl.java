@@ -13,6 +13,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNav;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHotSearch;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageInfo;
@@ -227,28 +228,22 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
         return ageModuleAdRespDTOList;
 	}
 	@Override
-	public List<PageModuleGoodsRespDTO> queryPageModuleGoodsList(PageModuleGoodsRespDTO pageModuleGoodsRespDTO)
+	public PageResponseDTO<PageModuleGoodsRespDTO> queryPageModuleGoodsList(PageModuleGoodsRespDTO pageModuleGoodsRespDTO)
 			throws Exception {
-		List<PageModuleGoodsRespDTO> ageModuleGoodsRespDTOList = new ArrayList<PageModuleGoodsRespDTO>();
+		PageResponseDTO<PageModuleGoodsRespDTO> queryPageModuleGoodsList = new PageResponseDTO<PageModuleGoodsRespDTO>();
         try{
         	 if (pageModuleGoodsRespDTO ==null ){
                  throw new Exception("查询商品楼层信息异常，入参为空");
              }
          	 PageModuleGoods exam = new PageModuleGoods();
-         	 BeanUtils.copyProperties( pageModuleGoodsRespDTO,exam);
-          	 List<PageModuleGoods> queryPageModuleGoodsList = iPageModuleGoodsSV.queryPageModuleGoodsList(exam);
-          	 if(!CollectionUtils.isEmpty(queryPageModuleGoodsList)){
-          		for (PageModuleGoods pageModuleGoods : queryPageModuleGoodsList){
-          			PageModuleGoodsRespDTO pageModuleGoodsResp = new PageModuleGoodsRespDTO();
-                    BeanUtils.copyProperties(pageModuleGoods, pageModuleGoodsResp); 
-                    ageModuleGoodsRespDTOList.add(pageModuleGoodsResp);
-                }
-          	 }
+         	 BeanUtils.copyProperties( pageModuleGoodsRespDTO,exam); 
+         	queryPageModuleGoodsList = iPageModuleGoodsSV.queryPageModuleGoodsList(exam);
+           
         }catch(Exception e){
         	log.error("获取商品楼层信息异常:", e);
             throw new Exception(e);
         }
-        return ageModuleGoodsRespDTOList;
+        return queryPageModuleGoodsList;
     }
 	@Override
 	public List<PageModuleAdPropRespDTO> queryPageModuleAdPropList(PageModuleAdPropRespDTO pageModuleAdpropRespDTO)

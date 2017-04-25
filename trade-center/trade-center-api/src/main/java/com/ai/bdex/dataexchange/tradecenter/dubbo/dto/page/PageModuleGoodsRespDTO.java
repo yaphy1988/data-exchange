@@ -3,7 +3,10 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 import java.io.Serializable;
 import java.util.Date;
 
-public class PageModuleGoodsRespDTO implements Serializable{
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+
+public class PageModuleGoodsRespDTO   extends BaseResponseDTO {
 
 	private static final long serialVersionUID = 1L;
 

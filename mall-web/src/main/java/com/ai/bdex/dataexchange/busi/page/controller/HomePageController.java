@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
@@ -76,18 +77,22 @@ public class HomePageController {
 	 * @return
 	 */
 	@RequestMapping(value="/queryPageModuleGoods")
-	public String queryPageModuleGoods(Model model,@PathVariable("moduleId") Integer moduleId){
-		
+	@ResponseBody
+	public  Map<String,Object> queryPageModuleGoods(Model model, HttpServletRequest request){
+		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {
+			String moduleIdstr = request.getParameter("moduleId");
+			int moduleId = Integer.parseInt(moduleIdstr);
 			PageModuleGoodsRespDTO pageModuleGoodsRespDTO = new PageModuleGoodsRespDTO();
 			pageModuleGoodsRespDTO.setModuleId(moduleId);
 			pageModuleGoodsRespDTO.setStatus(STATUS_VALID);
-			List<PageModuleGoodsRespDTO> moduleGoodsList = iPageInfoRSV.queryPageModuleGoodsList(pageModuleGoodsRespDTO);
-			model.addAttribute("moduleGoodsList",moduleGoodsList);
+			PageResponseDTO<PageModuleGoodsRespDTO> moduleGoodsList = iPageInfoRSV.queryPageModuleGoodsList(pageModuleGoodsRespDTO);
+			rMap.put("moduleGoodsList",moduleGoodsList);
+ 			rMap.put("success", true);
 		} catch (Exception e) {
 			log.error("查询商品楼层信息："+e.getMessage());
 		}
-		return "";
+		return rMap;
 	}
 	/**
 	 * 通过楼层ID查询广告信息

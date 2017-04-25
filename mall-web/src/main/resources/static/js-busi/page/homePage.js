@@ -13,7 +13,7 @@ function encodeURI2(strinfo) {
 /**
  * 
  */
-/** 获取地市列表 */
+/** 保存数据定制信息 */
 function saveMadeData() {
 	var needTiel    =  encodeURI2($("#needTiel").val());
 	var needcontent =  encodeURI2($("#needcontent").val());
@@ -52,10 +52,10 @@ function queryPageModue(){
 					 $(data.pageModuleList).each(function(i,d){
 						 switch (d.moduleId) {
 						case 101://01-首页轮播广告；
-							queryModue101(d.moduleId);
+							//queryModue101(d.moduleId);
 							break;
 						case 102://01-首页数据推荐；
-							queryModue102(d.moduleId);
+							querydata_recommend102(d.moduleId);
 							break;
 						case 103://03-首页数据定制；1
 							
@@ -77,26 +77,28 @@ function queryPageModue(){
 	}});
 }
 //查询推荐楼层信息
-function queryModue102(moduleId){
-	$.ajax({
-		url : basePath+'/homePage/queryPageModuleGoods',
-		type : "POST",
-		dataType : "json",
-		async : true,
-		data : {moduleId:moduleId},
-		success : function(data) {
-			 if(data.success){
-				 var html = "";
- 			        if(data.success){
-						$(data.hotSearchList).each(function(i,d){
-							//WEB_ROOT+d.searchUrl
-							//html +='<li><a href='+1+' target="_blank"><img src='+d.searchUrl+'><span>'+d.searchKey+'</span></a></li>';
-							html +='<li><a href='+1+' target="_blank"><img src=11><span>推荐数据</span></a></li>';
-						});
-					}
-					$('#data_recommend').html(html);
-			 }
-	}});
+function querydata_recommend102(moduleId){
+	var url = basePath+'/homePage/queryPageModuleGoods';
+	var callBack =function(data){
+		var html = "";
+		if(data.success){
+	        if(data.success){
+	        	if(data.moduleGoodsList.count > 0)
+	        	{
+ 
+	        			var obj = data.moduleGoodsList ;
+	        			for(var i = 0 ; i < obj.result.length; i++)
+		        		{
+	        				var name =  obj.result[i].recommendName;
+	        				var gdsid =  obj.result[i].gdsId;
+	 					    html +='<li><a href='+gdsid+' target="_blank"><img src=11><span>'+name+'</span></a></li>';
+	        		   }
+	        	} 
+			}
+		 }
+		$('#data_recommend').html(html);
+	};
+	doAjax(url,moduleId,callBack);
 }
 //查询推荐楼层信息
 function queryModue101(moduleId){

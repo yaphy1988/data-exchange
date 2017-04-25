@@ -54,7 +54,7 @@
       <dependency>
           <groupId>com.ai.paas</groupId>
           <artifactId>sequence-engine</artifactId>
-      </dependency>
+      </dependency> 
   </dependencies>
 
 

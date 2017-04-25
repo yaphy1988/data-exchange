@@ -3,10 +3,12 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+
 /**
  * Created by yx on 2017/4/18.
  */
-public class PageInfoRespDTO implements Serializable {
+public class PageInfoRespDTO  extends BaseInfo {
 
 	private static final long serialVersionUID = 1L;
 
