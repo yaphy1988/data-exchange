@@ -9,8 +9,6 @@ import javax.servlet.http.HttpSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,14 +23,13 @@ import com.ai.bdex.dataexchange.system.StaffUtil;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ChnlInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IChnlInvoiceTaxRSV;
-import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
 @Controller
 @RequestMapping(value="/authen")
-public class AuthenController {
-	private static final Logger log = LoggerFactory.getLogger(AuthenController.class);
+public class AuthenCheckController {
+	private static final Logger log = LoggerFactory.getLogger(AuthenCheckController.class);
 	
 	@DubboConsumer
 	private IChnlInvoiceTaxRSV iChnlInvoiceTaxRSV;
