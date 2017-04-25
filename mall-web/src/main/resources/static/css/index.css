@@ -86,7 +86,8 @@ input,button{
 .search{
     margin-right: 220px;
     width: 610px;
-    overflow: hidden;
+    position: relative;
+    z-index: 10;
 }
 .search-input{position: relative;}
 .search-input input{
@@ -105,6 +106,34 @@ input,button{
     z-index: 9;
     font-size: 16px;
 }
+
+/*搜索联想 by liangsx 20170425 add */
+.search_result{
+    position: absolute;
+    width: 493px;
+    max-height: 400px;
+    margin-top: -2px;
+    overflow-y: auto;
+    border: solid 2px #2b4099;
+    background-color: #fff;
+    z-index: 100;
+    font-size: 12px;
+}
+.search_result li a{
+    color: #333;
+    display: block;
+    padding:6px 10px;
+}
+.search_result li:hover{
+    background-color: #eee;
+    cursor: pointer;
+}
+.search_result li:hover a{
+    color: #ec6000;
+}
+
+
+
 
 .search-hot{
     font-size: 12px;
@@ -129,6 +158,7 @@ margin-right: -46px;
 .menu{
     width: 1200px;
     margin: 0 auto;
+   
 }
 .navbar,
 .sidebar h3{

@@ -376,7 +376,7 @@ h3{
 .gl_group .gl_items .bd,
 .gl_group .gl_items .fo{
 	display: table-cell;
-
+	
 }
 .gl_group .gl_items .hd{
 	color: #999;
@@ -390,6 +390,12 @@ h3{
 	width: 960px;
 	line-height: 22px;
 	padding: 10px ;
+	
+}
+.bdheight
+{
+	max-height: 120px;
+	overflow-y: auto;
 }
 .gl_group .gl_items .bd a{
 	padding-left: 10px;
