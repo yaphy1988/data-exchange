@@ -52,12 +52,12 @@ function queryPageModue(){
 					 $(data.pageModuleList).each(function(i,d){
 						 switch (d.moduleId) {
 						case 101://01-首页轮播广告；
-							 
-							break;
-						case 102://01-首页数据推荐；
 							queryModue101(d.moduleId);
 							break;
-						case 103://03-首页数据定制；
+						case 102://01-首页数据推荐；
+							queryModue102(d.moduleId);
+							break;
+						case 103://03-首页数据定制；1
 							
 							break;
 						case 104://04-平台动态
@@ -77,7 +77,7 @@ function queryPageModue(){
 	}});
 }
 //查询推荐楼层信息
-function queryModue01(modoltype){
+function queryModue102(moduleId){
 	$.ajax({
 		url : basePath+'/homePage/queryPageModuleGoods',
 		type : "POST",
@@ -97,4 +97,30 @@ function queryModue01(modoltype){
 					$('#data_recommend').html(html);
 			 }
 	}});
+}
+//查询推荐楼层信息
+function queryModue101(moduleId){
+	var url = basePath+'/homePage/queryPageModuleGoods';
+	var callBack =function(data){
+		var html = "";
+		if(data.success){
+	        if(data.success){
+				$(data.hotSearchList).each(function(i,d){
+//					html +='<li><a href='+1+' target="_blank"><img src=11><span>推荐数据</span></a></li>';
+				});
+			}
+		 }
+		$('#data_recommend').html(html);
+	};
+	doAjax(url,moduleId,callBack);
+}
+function doAjax(url,moduleId,callBack){
+	$.ajax({
+		url : url,
+		type : "POST",
+		dataType : "json",
+		async : true,
+		data : {moduleId:moduleId},
+		success : callBack
+	})
 }
