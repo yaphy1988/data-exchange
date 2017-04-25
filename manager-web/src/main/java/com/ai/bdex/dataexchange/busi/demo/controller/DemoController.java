@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.busi.demo.controller;
 
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.DemoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IDemoRSV;
+import com.ai.paas.util.ImageUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.apache.solr.client.solrj.SolrClient;
 import org.apache.solr.client.solrj.SolrQuery;
@@ -60,5 +61,12 @@ public class DemoController {
         System.out.println("文档数量：" + docs.getNumFound());
         System.out.println("查询花费时间:" + rsp.getQTime());
         return "OK";
+    }
+
+    @RequestMapping("/image")
+    @ResponseBody
+    public String restImageUtil(){
+        String url = ImageUtil.getImageServer();
+        return url;
     }
 }
