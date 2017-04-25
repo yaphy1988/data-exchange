@@ -10,8 +10,8 @@ $(function(){
         $('#siteSearch').autocomplete({
                 //        hints: words,
                 placeholder: 'Search',
-                width: 373,
-                height: 25,
+                width: 500,
+                height: 44,
                 showButton: true,
                 buttonText: '搜索',
                 onSubmit:function(input){

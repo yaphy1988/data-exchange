@@ -9,8 +9,8 @@ https://github.com/lorecioni
 
 .autocomplete-container {
 	position: relative;
-	width: 283px;
-	height: 32px;
+	width: 660px;
+	height: 44px;
 	margin: 0 auto;
 }
 
@@ -27,18 +27,18 @@ https://github.com/lorecioni
 .autocomplete-button {
 	font-family: inherit;
 	border: none;
-	background-color: #990101;
+	background-color: #2b4099;
 	color: white;
-	padding: 8px;
+	padding: 0 30px;
 	float: left;
 	cursor: pointer;
-	border-radius: 0px 3px 3px 0px;
+	border-radius:0;
 	transition: all 0.2s ease-out 0s;
-	margin: 0.5px 0px 0px -1px;
+	font-size: 16px;
 }
 
-.autocomplete-button:HOVER {
-	background-color: #D11E1E;
+.autocomplete-button:hover {
+	background-color: #233890;
 }
 
 .proposal-box {
@@ -61,16 +61,19 @@ https://github.com/lorecioni
 
 .proposal-list li {
 	text-align: left;
-	padding: 5px;
+	padding:10px;
 	font-family: inherit;
 	border-bottom: 1px solid rgba(0, 0, 0, 0.16);
-	height: 25px;
-	line-height: 25px;
 	background-color: rgba(255, 255, 255, 0.8);
 	cursor: pointer;
 }
-
+.proposal-list li .search-num{
+	float: right;
+}
+.proposal-list li:hover{
+	background-color: #eee;
+}
 li.proposal.selected {
-	background-color: rgba(175, 42, 0, 0.52);
-	color: white;
+	background-color: #eee;
+	color: #333;
 }

@@ -14,8 +14,8 @@ Author: Lorenzo Cioni - https://github.com/lorecioni
 		params = $.extend({
 			hints: [],
 			placeholder: 'Search',
-			width: 200,
-			height: 16,
+			width: 600,
+			height: 44,
             maxlength:255,
 			showButton: true,
 			buttonText: 'Search',
@@ -30,7 +30,7 @@ Author: Lorenzo Cioni - https://github.com/lorecioni
 			//Container
 			var searchContainer = $('<div></div>')
 				.addClass('autocomplete-container')
-				.css('height', params.height * 2);	
+				.css('height', params.height * 2);
 				
 			//Text input		
 			var input = $('<input type="text" id="searchTxt" autocomplete="off" name="query">')
@@ -43,13 +43,13 @@ Author: Lorenzo Cioni - https://github.com/lorecioni
 				});
 			
 			if(params.showButton){
-				input.css('border-radius', '3px 0 0 3px');
+				input.css('border-radius', '0');
 			}
 
 			//Proposals
 			var proposals = $('<div></div>')
 				.addClass('proposal-box')
-				.css('width', params.width + 18)
+				.css('width', params.width + 0)
 				.css('top', input.height() + 20);
 			var proposalList = $('<ul></ul>')
 				.addClass('proposal-list');
@@ -162,7 +162,7 @@ Author: Lorenzo Cioni - https://github.com/lorecioni
 					.addClass('autocomplete-button')
 					.html(params.buttonText)
 					.css({
-						'height': params.height + 2,
+						'height': params.height + 0,
 						'line-height': params.height + 'px'
 					})
 					.click(function(){
