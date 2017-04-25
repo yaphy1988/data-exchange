@@ -14,6 +14,10 @@ spring:
     cache: false
     suffix: .html
     encoding: UTF-8
+  data:
+   solr:
+     host: http://112.74.163.29:8983/solr
+ ##    zk-host:
 
 ## woego-frame框架包配置
 application:

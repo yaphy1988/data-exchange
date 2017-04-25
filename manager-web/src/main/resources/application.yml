@@ -10,6 +10,10 @@ spring:
     registry: zookeeper://127.0.0.1:2181
     protocol: dubbo
     group: devGroup
+  data:
+   solr:
+     host: http://112.74.163.29:8983/solr
+ ##    zk-host:
 
 application:
   cache:
