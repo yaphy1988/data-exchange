@@ -34,8 +34,22 @@
 		        <div class="logo floatL"><img src="../static/images/logo.png" title="广州数据中心" th:src="@{/images/logo.png}"></div>
 		        <div class="search floatR">
 		            <div class="search-input">
-		                <input type="text">
-		                <button class="btn btn-primary">搜索</button>
+		            	<div id="siteSearch"></div>
+<!-- 		                <input type="text"> -->
+<!-- 		                <button class="btn btn-primary">搜索</button> -->
+<!-- 		                <ul class="search_result"> -->
+<!-- 		                	<li><a href="">搜索结果</a></li> -->
+<!-- 		                	<li><a href="">搜索结果</a></li> -->
+<!-- 		                	<li><a href="">搜索结果</a></li> -->
+<!-- 		                	<li><a href="">搜索结果</a></li> -->
+<!-- 		                	<li><a href="">搜索结果</a></li> -->
+<!-- 		                	<li><a href="">搜索结果</a></li> -->
+<!-- 		                	<li><a href="">搜索结果</a></li> -->
+<!-- 		                	<li><a href="">搜索结果</a></li> -->
+<!-- 		                	<li><a href="">搜索结果</a></li> -->
+<!-- 		                	<li><a href="">搜索结果</a></li> -->
+		                	
+<!-- 		                </ul> -->
 		            </div>
 		            <div class="search-hot">
 		                <a href="#" class="more floatR">更多&nbsp;&gt;</a>
@@ -140,10 +154,14 @@
 	</div>
 	<!-- footer -->
 	<div th:replace="~{fragments/footer :: footer}"><!-- footer --></div>
-	<script src="../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
-	<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
-	<script type="text/javascript" src="$JS_PATH/jquery/jquery.metadata.js" th:src="@{/js/jquery.metadata.js}"></script>
-	<script type="text/javascript" src="$JS_PATH/jquery/jquery-migrate-1.2.1.min.js" th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
-	<script th:src="@{/js-busi/search/search.js}"></script>
+	<link rel="stylesheet" href="../static/js/autocomplete/autocomplete.css" th:href="@{/js/autocomplete/autocomplete.css}">
+	
+	<script type="text/javascript" src="../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
+	<script type="text/javascript" src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" src="../static/js/jquery.metadata.js" th:src="@{/js/jquery.metadata.js}"></script>
+	<script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js" th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
+	<script type="text/javascript" src="../static/js/autocomplete/autocomplete.js" th:src="@{/js/autocomplete/autocomplete.js}"></script>
+	<script type="text/javascript" src="../static/js-busi/search/searchUtil.js" th:src="@{/js-busi/search/searchUtil.js}"></script>
+	<script type="text/javascript" th:src="@{/js-busi/search/search.js}"></script>
 </body>
 </html>
