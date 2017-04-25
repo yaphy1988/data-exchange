@@ -105,37 +105,30 @@ public class SignController {
 		smsDto.setTocken(signvo.getTocken());
 		smsDto.setPhoneNo(signvo.getPhoneNo());
 		smsDto.setInputSecurityCode(signvo.getSmsCode());
-		boolean codeFlag = true;
 		try {
-			codeFlag = iSmsSeccodeRSV.checkSmsSecCode(smsDto);
-			if(codeFlag){
-				//查询用户名是否重复
-				AuthStaffDTO input1 = new AuthStaffDTO();
-				input1.setStaffId(signvo.getStaffId());
-				AuthStaffDTO phoneResult1 = iAuthStaffRSV.findAuthStaffInfo(input1);
-				if(phoneResult1!=null){
-					rMap.put("success", false);
-					rMap.put("msg", "用户ID已经存在");
-					return rMap;
-				}
-				//查询手机号是否重复
-				AuthStaffDTO input = new AuthStaffDTO();
-				input.setSerialNumber(signvo.getSerialNumber());
-				AuthStaffDTO phoneResult = iAuthStaffRSV.findAuthStaffInfo(input);
-				if(phoneResult!=null){
-					rMap.put("success", false);
-					rMap.put("msg", "手机号已经存在");
-					return rMap;
-				}
-				SignInfoDTO info = new SignInfoDTO();
-				BeanUtils.copyProperties(signvo, info);
-				iAuthStaffRSV.saveSignInfoBysms(info);
-				rMap.put("success", true);
-				rMap.put("msg", "注册成功");
-			}else{
+			//查询用户名是否重复
+			AuthStaffDTO input1 = new AuthStaffDTO();
+			input1.setStaffId(signvo.getStaffId());
+			AuthStaffDTO phoneResult1 = iAuthStaffRSV.findAuthStaffInfo(input1);
+			if(phoneResult1!=null){
 				rMap.put("success", false);
-				rMap.put("msg", "验证码不正确");
+				rMap.put("msg", "用户ID已经存在");
+				return rMap;
 			}
+			//查询手机号是否重复
+			AuthStaffDTO input = new AuthStaffDTO();
+			input.setSerialNumber(signvo.getSerialNumber());
+			AuthStaffDTO phoneResult = iAuthStaffRSV.findAuthStaffInfo(input);
+			if(phoneResult!=null){
+				rMap.put("success", false);
+				rMap.put("msg", "手机号已经存在");
+				return rMap;
+			}
+			SignInfoDTO info = new SignInfoDTO();
+			BeanUtils.copyProperties(signvo, info);
+			iAuthStaffRSV.saveSignInfoBysms(info);
+			rMap.put("success", true);
+			rMap.put("msg", "注册成功");
 		} catch (BusinessException e) {
 			log.error(e.getMessage());
 			rMap.put("success", false);

@@ -15,11 +15,6 @@ function saveInfo(){
 		showwarm('phoneNoDiv','手机号码格式不正确');
 		return;
 	}
-	var smsCode = $("#smsCode").val();
-	if(!smsCode){
-		showwarm('smsCodeDiv','短信验证码不能为空');
-		return;
-	}
 	var signpass = $("#signpass").val();
 	if(!signpass){
 		showwarm('signpassDiv','请输入密码');
@@ -32,7 +27,7 @@ function saveInfo(){
 	}
 	if(signpass!=confirmPass){
 		showwarm('confirmPassDiv','两次输入的密码不一致');
-		return
+		return;
 	}
 	var checkFlag = $("input[type='checkbox'][id='checkAgree']:checked");
 	if(checkFlag.length==0){
@@ -43,7 +38,6 @@ function saveInfo(){
 	var param = {
 			staffId : staffId,
 			serialNumber : serialNumber,
-			smsCode : smsCode,
 			signpass : signpass,
 			confirmPass : confirmPass
 		};
@@ -117,6 +111,24 @@ function agreement(){
 function sendSmsCode(){
 	var phoneNo = $("#phoneNo").val();
 	$.smsDialogPlugin.sendSmsSecurity(phoneNo,'10',null,afterSend);
+}
+
+//验证短信验证码
+function checkSmsCode(){
+	var smsCode = $("#smsCode").val();
+	var phoneNo = $("#phoneNo").val();
+	if(!smsCode){
+		showwarm('smsCodeDiv','短信验证码不能为空');
+		return;
+	}
+	if(!phoneNo){
+		showwarm('phoneNoDiv','手机号码不能为空');
+		return;
+	}else if(!isMobile(phoneNo)){
+		showwarm('phoneNoDiv','手机号码格式不正确');
+		return;
+	}
+	$.smsDialogPlugin.checkSmsSecurity(smsCode,phoneNo,saveInfo);
 }
 
 function afterSend(){

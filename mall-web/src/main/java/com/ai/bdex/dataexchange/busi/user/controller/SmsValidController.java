@@ -102,7 +102,7 @@ public class SmsValidController{
            	 }
             }
         	//获取4位验证码，和tocken ;
-    		String seccode = this.getRandom(4);
+    		String seccode = this.getRandom(6);
     		String tocken = UUID.randomUUID().toString().replaceAll("-", "");
     		///将对象加入Redis的缓存；
     		SmsSeccodeInfoVO info = new SmsSeccodeInfoVO();
@@ -159,13 +159,13 @@ public class SmsValidController{
 			SmsSeccodeInfoVO info = (SmsSeccodeInfoVO)CacheUtil.getItem(SMS_SECURITY_CODE_KEY+tocken+phoneNo);
 			if(info == null){
 				vo.put("success",false);
-				vo.put("error_msg","验证码过期，请重新获取再验证！");
+				vo.put("error_msg","验证码已过期或失效，请重新获取再验证！");
 				return vo;
 			}			
 			///判断验证码是否一致；
 			if(inputSecurityCode.equalsIgnoreCase(info.getSecurityCode())){
 				vo.put("success",true);
-				vo.put("error_msg","验证码正确！");
+				vo.put("error_msg","验证码正确！");				
 				return vo;
 			} else {
 				vo.put("success",false);

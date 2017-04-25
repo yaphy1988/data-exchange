@@ -46,7 +46,7 @@
             </div>
             <div class="register-input" id="smsCodeDiv">
                 <label>短信验证码</label>
-                <input type="text" class="form-control" placeholder="短信验证码" style="width:50%;display:-webkit-inline-box;" id="smsCode" maxlength="4">
+                <input type="text" class="form-control" placeholder="短信验证码" style="width:50%;display:-webkit-inline-box;" id="smsCode" maxlength="6">
                 <!--error-tip可见或不可见方式请用visibility-->
                 <button class="btn btn-primary" onclick="sendSmsCode();" id="getcodebtn">获取验证码</button>
                 <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入短信验证码</span></p>
@@ -73,7 +73,7 @@
         </div>
     </div>
 </div>
-
+<input type="hidden" id="tocken">
 <div class="footer bg-white">
     <div class="wrap1000 ptb30">
         <div class="right floatR">

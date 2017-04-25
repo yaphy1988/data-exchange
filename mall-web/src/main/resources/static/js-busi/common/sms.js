@@ -35,7 +35,7 @@
 	        //验证短信验证码
 			$.ajax({
 				url : WEB_ROOT+"/security/checkSecurityCode",
-				async : true,
+				async : false,
 				type : "POST",
 				data : {"tocken" : smsWin.tocken,"inputSecurityCode":seccode,"phoneNo":phoneNo},
 				dataType : 'json',
