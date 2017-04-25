@@ -41,11 +41,9 @@ public class PageModuleGoodsSVImpl implements IPageModuleGoodsSV {
 		}
 		if(!StringUtils.isBlank(pageModuleGoods.getStatus())){
 			criteria.andStatusEqualTo(pageModuleGoods.getStatus());
-		}
-		//example.setOrderByClause("ORDER_NO DESC");
-		
+		} 
 		List<PageModuleGoods> listGds =  pageModuleGoodsMapper.selectByExample(example);
-		   //使用PageInfo对结果进行包装
+		//使用PageInfo对结果进行包装
         PageInfo pageInfo = new PageInfo(listGds);
         PageResponseDTO<PageModuleGoodsRespDTO> respDTO = PageResponseFactory.genPageResponse(pageInfo,PageModuleGoodsRespDTO.class);
         return respDTO;

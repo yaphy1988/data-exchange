@@ -1,4 +1,5 @@
 var basePath = WEB_ROOT;
+var imgPath = "http://112.74.163.29:14751/ImageServer/image/"; 
 $(function(){
 	queryPageModue();
 })
@@ -63,8 +64,8 @@ function queryPageModue(){
 						case 104://04-平台动态
 							queryModue104(d.moduleId);
 							break;
-						case 105://05-合作伙伴
-							
+						case 105://109-合作伙伴
+							queryPartner109(d.moduleId);
 							break;							
 						default:
 							break;
@@ -84,14 +85,14 @@ function querydata_recommend102(moduleId){
 		if(data.success){
 	        if(data.success){
 	        	if(data.moduleGoodsList.count > 0)
-	        	{
- 
+	        	{ 
 	        			var obj = data.moduleGoodsList ;
 	        			for(var i = 0 ; i < obj.result.length; i++)
 		        		{
 	        				var name =  obj.result[i].recommendName;
-	        				var gdsid =  obj.result[i].gdsId;
-	 					    html +='<li><a href='+gdsid+' target="_blank"><img src=11><span>'+name+'</span></a></li>';
+	        				var gdsid =  obj.result[i].gdsId; 
+	        				var gdsdetailurl = basePath+"/goods/details/"+gdsid;
+	 					    html +='<li><a href='+gdsdetailurl+' target="_blank"><img src="http://112.74.163.29:14751/ImageServer/image/58fef10a1d17873197dbc2ef.jpg"><span>'+name+'</span></a></li>';
 	        		   }
 	        	} 
 			}
@@ -151,6 +152,24 @@ function queryModue104(moduleId){
 		$('#carousel-example-generic>ol').html(htmlOl);
 		$('#carousel-example-generic>div').html(htmDiv);
 		$('#carousel-example-generic').carousel('cycle');
+	};
+	doAjax(url,moduleId,callBack);
+}
+
+
+//查询推荐楼层信息
+function queryPartner109(moduleId){
+	var url = basePath+'/homePage/queryPartner109';
+	var callBack =function(data){
+		var html = "";
+		if(data.success){
+	        if(data.success){
+				$(data.hotSearchList).each(function(i,d){
+//					html +='<li><a href='+1+' target="_blank"><img src=11><span>推荐数据</span></a></li>';
+				});
+			}
+		 }
+		$('#data_recommend').html(html);
 	};
 	doAjax(url,moduleId,callBack);
 }

@@ -88,6 +88,9 @@ public class HomePageController {
 			pageModuleGoodsRespDTO.setModuleId(moduleId);
 			pageModuleGoodsRespDTO.setStatus(STATUS_VALID);
 			PageResponseDTO<PageModuleGoodsRespDTO> moduleGoodsList = iPageInfoRSV.queryPageModuleGoodsList(pageModuleGoodsRespDTO);
+			//通过商品id去搜索商品信息，获取到商品的图片ID
+	/*		IGdsInfoRSV.queryGdsInfoList(GdsInfoReqDTO gdsInfoReqDTO);
+			IGdsInfoRSV.queryGdsInfo(GdsInfoReqDTO gdsInfoReqDTO);*/
 			rMap.put("moduleGoodsList",moduleGoodsList);
  			rMap.put("success", true);
 		} catch (Exception e) {
