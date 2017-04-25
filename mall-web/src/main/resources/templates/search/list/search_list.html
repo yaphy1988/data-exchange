@@ -34,5 +34,5 @@
 <!-- 分页-->
 <div th:replace="~{fragments/pager :: pager}"></div>
 <script type="text/javascript">
-$("#numFound").text([[${pageInfo.pageCount}]]);
+$("#numFound").text([[${pageInfo.count}]]);
 </script>

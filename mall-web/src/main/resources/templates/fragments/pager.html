@@ -14,7 +14,7 @@
     <script type="text/javascript" src="../../static/js-busi/common/pager.js" th:src="@{/js-busi/common/pager.js}"></script>
     <span data-toggle="pager" id="pagerId" data-count="" data-size="" data-currentindex="" ></span>
 	<script th:inline="javascript">
-        var total = '[[${pageInfo.pageCount}]]';
+        var total = '[[${pageInfo.count}]]';
 	    var pageNum = '[[${pageInfo.pageNo}]]';
 	    var pageSize = '[[${pageInfo.pageSize}]]';
 

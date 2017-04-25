@@ -83,7 +83,7 @@ public class SearchController{
         try {
             GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
             gdsInfoReqDTO.setPageNo(searchVO.getPageNo());
-            gdsInfoReqDTO.setPageSize(10);
+            gdsInfoReqDTO.setPageSize(20);
             PageResponseDTO<GdsInfoRespDTO> pageInfo = iGdsInfoQueryRSV.queryGdsInfoListPage(gdsInfoReqDTO);
             if(pageInfo != null){
                 model.addAttribute("pageInfo", pageInfo);

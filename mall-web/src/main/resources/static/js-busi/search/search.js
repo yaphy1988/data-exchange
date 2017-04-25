@@ -38,11 +38,27 @@ var Search = {
 			//排序事件绑定
 			$(".sortCondition").die().live('click',function(e){
 				var $this = $(this);
+				var $glyphicon = $(".glyphicon",$this);
+				if($glyphicon.hasClass("glyphicon-arrow-down")){
+					$glyphicon.removeClass("glyphicon-arrow-down");
+					$glyphicon.addClass("glyphicon-arrow-up");
+				}else if($glyphicon.hasClass("glyphicon-arrow-up")){
+					$glyphicon.removeClass("glyphicon-arrow-up");
+					$glyphicon.addClass("glyphicon-arrow-down");
+				}else{
+					$glyphicon.removeClass("glyphicon-arrow-up");
+					$glyphicon.addClass("glyphicon-arrow-down");
+				}
 				$this.addClass('active');
 				$this.siblings().removeClass('active');
+				$this.siblings().each(function(){
+					var _glyphicon = $(".glyphicon",$(this));
+					_glyphicon.removeClass("glyphicon-arrow-down");
+					_glyphicon.removeClass("glyphicon-arrow-up");
+				});
 				//搜索商品列表
 				var param = Search.generSearchParam();
-				Search.gridGdsInfo(param);
+//				Search.gridGdsInfo(param);
 				e.preventDefault();
 			});
 			
@@ -50,15 +66,16 @@ var Search = {
 			$(".btn_more").die().live('click',function(e){
 				var $this = $(this);
 				if($this.children('i').hasClass('glyphicon-menu-up')){
-//					$this.removeClass('selected');
+					$this.removeClass('selected');
+					$this.parents(".gl_items").children(".bd").removeClass('selected');
 					$this.children('font').text("更多");
 					$this.children('i').removeClass('glyphicon-menu-up').addClass("glyphicon-menu-down");
 				}else{
-//					$this.addClass('selected');
+					$this.addClass('selected');
+					$this.parents(".gl_items").children(".bd").addClass('selected');
 					$this.children('font').text("收起");
 					$this.children('i').removeClass('glyphicon-menu-down').addClass("glyphicon-menu-up");
 				}
-				
 				e.preventDefault();
 			});
 		},
@@ -103,7 +120,14 @@ var Search = {
 			//排序字段
 			param.sortField = $(".gl_list .active").attr('sortField');
 			//排序值。ASC 升序，DESC 降序
-			param.sortValue = "DESC";
+			var $glyphicon = $(".glyphicon",$(".sortCondition.active"));
+			var sortValue = "DESC";
+			if($glyphicon.hasClass("glyphicon-arrow-down")){
+				sortValue = "DESC";
+			}else if($glyphicon.hasClass("glyphicon-arrow-up")){
+				sortValue = "ASC";
+			}
+			param.sortValue = sortValue;
 			return param;
 		}
 };
