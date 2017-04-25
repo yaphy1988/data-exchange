@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>个人中心-企业认证</title>
+	<link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/manage.css" th:remove="all">
+</head>
+<body>
+<header class="clearfix m_header">
+	<a href="" class="Logo" target="_blank" >
+		<img width="160" src="../../static/images/manage_logo.jpg" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<div  layout:fragment="screen_content">
+	<div class="m_main">
+		<div class="m_con">
+			<div class="classify">
+				<i class="iconfont"></i>
+				<span>当前位置：</span>
+				<a href=""><span>数据市场</span></a>
+				<a href=""><span>生活服务</span></a>
+				<span class="col_999">常用快递</span>
+			</div>
+			<div class="title">企业认证管理</div>
+				<div class="top-table">
+	                <table class="editTable">
+	                    <tr>
+	                        <td class="Hint " width="120">
+	                            <span class="col_red">*</span>
+	                            审核状态：
+	                        </td>
+	                        <td >
+	                            <div class="input-group02">
+	                                <input type="text" class="form-control" placeholder="商品名称">
+	                            </div>
+	                        </td>
+	                        <td>
+	                            <button class="btn btn-primary">查询</button>
+	                        </td>
+	                    </tr>
+	                </table>
+				</div>
+		
+			<table class="table table-bordered" >
+				<thead>
+				<tr class="active">
+					<th>序号</th>
+					<th>公司名称</th>
+					<th>公司地址</th>
+					<th>营业执照编号</th>
+					<th>税务登记证编号</th>
+					<th>组织机构编号</th>
+					<th>联系人姓名</th>
+					<th>审核状态</th>
+					<th>操作</th>
+				</tr>
+				</thead>
+				<tbody>
+				<tr>
+					<td>1</td>
+					<td>广州开拓投资公司</td>
+					<td>广州天河区XXXXX</td>
+					<td>9145010201010</td>
+					<td>有</td>
+					<td>有</td>
+					<td>黄显</td>
+					<td>未审核</td>
+					<td><a href="">审核</a></td>
+				</tr>
+				<tr>
+					<td>1</td>
+					<td>广州开拓投资公司</td>
+					<td>广州天河区XXXXX</td>
+					<td>9145010201010</td>
+					<td>有</td>
+					<td>有</td>
+					<td>黄显</td>
+					<td>审核不通过</td>
+					<td></td>
+				</tr>
+				
+				</tbody>
+			</table>
+			
+			<div class="pagelist">
+				<nav aria-label="Page navigation">
+				  <ul class="pagination">
+				    <li >
+				      <a href="#" aria-label="Previous">
+				        <span aria-hidden="true">上一页</span>
+				      </a>
+				    </li>
+				    <li class="active"><a href="#">1</a></li>
+				    <li><a href="#">2</a></li>
+				    <li><a href="#">3</a></li>
+				    <li><a href="#">4</a></li>
+				    <li><a href="#">5</a></li>
+				    <li>
+				      <a href="#" aria-label="Next">
+				        <span aria-hidden="true">下一页</span>
+				      </a>
+				    </li>
+				    <div class="pageskip">
+				  	<span class="pr10">到第<input type="text" class="pageskip_box">页</span>
+				  	<a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+				  </div>
+				  </ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<div class="m_nav">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li class="active">
+							<a href=""></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i ></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li >
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+	
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+
+</body>
+</html>
