@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.busi.gds.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -11,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -177,14 +179,24 @@ public class GdsEditController {
     	GdsJsonBean jsonBean = new GdsJsonBean();
     	GdsLabelQuikReqDTO labelReqDTO = new GdsLabelQuikReqDTO();
         try {
+        	int labId=0;
+        	if(gdsLabelQuikVO.getLabId()!=null){
+        		labId=gdsLabelQuikVO.getLabId();
+        	}
         	labelReqDTO.setLabName(gdsLabelQuikVO.getLabName());
         	labelReqDTO.setLabColor(gdsLabelQuikVO.getLabColor());
         	labelReqDTO.setCatFirst(gdsLabelQuikVO.getCatFirst());
-        	int labId = gdsInfoRSV.insertGdsLabelQuik(labelReqDTO);
+        	GdsLabelQuikRespDTO respDTO =  gdsInfoRSV.queryGdsLabelQuikByName(labelReqDTO);
+        	if(respDTO.getLabId()==null){
+            	 labId = gdsInfoRSV.insertGdsLabelQuik(labelReqDTO);
+        	}else{
+        		labId=respDTO.getLabId();
+        	}
         	//商品标签信息
             jsonBean.setSuccess("true");
             jsonBean.setMsg("商品标签快速选择数据录入成功！");
             jsonBean.setObject(labId);
+
         } catch (Exception e) {
             jsonBean.setSuccess("false");
             jsonBean.setMsg(e.getMessage());
@@ -478,7 +490,8 @@ public class GdsEditController {
      * @param response
      */
     @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
-    public void uploadImage(HttpServletRequest request, HttpServletResponse response) {
+    @ResponseBody
+    public void uploadImage(HttpServletRequest request, HttpServletResponse response,String isSizeLimit,String witdh,String heigth) {
         response.setContentType("text/html;charset=UTF-8");
         Map<String, Object> resultMap = new HashMap<String, Object>();
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
@@ -513,6 +526,27 @@ public class GdsEditController {
                 resultMap.put("error", "请选择图片文件(.jpg,.png,.jpeg,.gif,.bmp)!");
                 out.print(JSONObject.toJSONString(resultMap));
                 return;
+            }
+            BufferedImage sourceImg = ImageIO.read(file.getInputStream());
+            int imgWidth = sourceImg.getWidth();
+            int imgHeight = sourceImg.getHeight();
+            if(!StringUtil.isBlank(isSizeLimit)){//是否限制图片大小在100k
+            	if("true".equals(isSizeLimit)){
+            		if(file.getSize()>102400){
+            			resultMap.put("flag", false);
+            			resultMap.put("error", "请上传小于"+isSizeLimit+"k的图片。");
+            			out.print(JSONObject.toJSONString(resultMap));
+            			return;
+            		}
+            	}
+            }
+            if(StringUtil.isNotBlank(witdh)&&StringUtil.isNotBlank(heigth)){
+            	if(Integer.parseInt(witdh)>imgWidth||Integer.parseInt(heigth)>imgHeight){
+            		resultMap.put("flag", false);
+            		resultMap.put("error", "请上传"+witdh+"*"+heigth+"的图片。");
+            		out.print(JSONObject.toJSONString(resultMap));
+            		return;
+            	}
             }
             byte[] datas = inputStream2Bytes(file.getInputStream());
             String imageId = ImageUtil.upLoadImage(datas, fileName);

@@ -77,5 +77,5 @@ public interface IGdsInfoRSV {
 	
 	public int insertGdsInfo(GdsInfoReqDTO gdsInfoReqDTO) throws Exception;
 	public int insertGdsLabelQuik(GdsLabelQuikReqDTO gdsLabelQuikReqDTO) throws Exception;
-
+    public GdsLabelQuikRespDTO queryGdsLabelQuikByName(GdsLabelQuikReqDTO gdsLabelQuikReqDTO) throws Exception;
 }

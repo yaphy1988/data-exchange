@@ -8,7 +8,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelQuikRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelQuikSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
-
+import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import org.springframework.stereotype.Service;
 
@@ -93,11 +93,13 @@ public class GdsLabelQuikSVImpl implements IGdsLabelQuikSV{
         if (gdsLabelQuikReqDTO ==null){
             throw new Exception("插入商品便签快速配置信息入参为空");
         }
+        int labId=SeqUtil.getInt("SEQ_GDS_LABEL_QUICK");
         GdsLabelQuik gdsLabelQuik = new GdsLabelQuik();
         ObjectCopyUtil.copyObjValue(gdsLabelQuikReqDTO,gdsLabelQuik,null,false);
+        gdsLabelQuik.setLabId(labId);
 //        BeanUtils.copyProperties(gdsLabelQuikReqDTO,gdsLabelQuik);
         int code = gdsLabelQuikMapper.insert(gdsLabelQuik);
-        return code;
+        return labId;
     }
 
     @Override
@@ -120,4 +122,36 @@ public class GdsLabelQuikSVImpl implements IGdsLabelQuikSV{
         int code = gdsLabelQuikMapper.deleteByPrimaryKey(labId);
         return code;
     }
+    public GdsLabelQuikRespDTO queryGdsLabelQuikByName(GdsLabelQuikReqDTO gdsLabelQuikReqDTO) throws Exception {
+        if (gdsLabelQuikReqDTO ==null){
+            throw new Exception("查询商品便签快速配置信息列表入参为空");
+        }
+        GdsLabelQuikExample example = new GdsLabelQuikExample();
+        GdsLabelQuikExample.Criteria criteria = example.createCriteria();
+        if (gdsLabelQuikReqDTO.getLabId()!=null && gdsLabelQuikReqDTO.getLabId().intValue()>0){
+            criteria.andLabIdEqualTo(gdsLabelQuikReqDTO.getLabId());
+        }
+        if (!StringUtil.isBlank(gdsLabelQuikReqDTO.getLabName())){
+            criteria.andLabNameEqualTo(gdsLabelQuikReqDTO.getLabName());
+        }
+        if (!StringUtil.isBlank(gdsLabelQuikReqDTO.getLabColor())){
+            criteria.andLabColorEqualTo(gdsLabelQuikReqDTO.getLabColor());
+        }
+        if(gdsLabelQuikReqDTO.getCatFirst()!=null && gdsLabelQuikReqDTO.getCatFirst().intValue()>0){
+            criteria.andCatFirstEqualTo(gdsLabelQuikReqDTO.getCatFirst());
+        }
+        if (gdsLabelQuikReqDTO.getShowOrder()!=null && gdsLabelQuikReqDTO.getShowOrder().intValue()>0){
+            criteria.andShowOrderEqualTo(gdsLabelQuikReqDTO.getShowOrder());
+        }
+        if(!StringUtil.isBlank(gdsLabelQuikReqDTO.getStatus())){
+            criteria.andStatusEqualTo(gdsLabelQuikReqDTO.getStatus());
+        }        
+        List<GdsLabelQuik> gdsLabelQuiks = gdsLabelQuikMapper.selectByExample(example);
+		GdsLabelQuikRespDTO respDTO = new GdsLabelQuikRespDTO();
+        if(!CollectionUtil.isEmpty(gdsLabelQuiks)){
+        	ObjectCopyUtil.copyObjValue(gdsLabelQuiks.get(0),respDTO,null,false);
+        }
+        return respDTO;
+    }
+    
 }

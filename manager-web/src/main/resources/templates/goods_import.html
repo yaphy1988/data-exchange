@@ -11,7 +11,8 @@
 	<link rel="stylesheet" href="../static/css/manage.css"   th:href="@{/css/manage.css}">
 	<script type="text/javascript" src="../../static/js-busi/gds/gdsEdit.js" th:src="@{/js-busi/gds/gdsEdit.js}"></script>
 	<script type="text/javascript" src="../../static/component/ckeditor/ckeditor.js" th:src="@{/component/ckeditor/ckeditor.js}"></script>
-	<script type="text/javascript" src="../../static/js-busi/common/uploadimg.js" th:src="@{/js-busi/common/uploadimg.js}"></script>
+	<!-- <script type="text/javascript" src="../../static/js-busi/common/uploadimg.js" th:src="@{/js-busi/common/uploadimg.js}"></script> -->
+	<script type="text/javascript" src="../../static/js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
 </head>
 <body>
 <header class="clearfix m_header" th:remove="all">
@@ -173,11 +174,9 @@
 					<td class="Hint">
 						商品标签:
 					</td>
-					<td>
-						<span class="label label-primary">API</span>
-						<span class="label label-warning">支持HTTPS</span>
-						<span class="label label-warning">免费体验</span>
-						<a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" data-toggle="modal" data-target="#myModal2" >请选择</a>
+					<td  id="gdsLabelList">
+						<span class="label label-primary" th:remove="all">API</span>
+						<a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsLabelModal()'" >请选择</a>
 					</td>
 					<td>
 
@@ -189,7 +188,7 @@
 					</td>
 					<td>
 						<span>
-							<img src="" width="120" height="120">
+							<img src="" width="120" height="120" name="gdsPicUrl">
 						</span>
 					</td>
 				</tr>
@@ -197,11 +196,11 @@
 					<td class="Hint"></td>
 					<td>
 						<div class="input-group" style="width: 50%; padding-top: 20px;">
-							<input  type="text" class="form-control" placeholder="">
-							<span class="input-group-btn">
-							<input type="file" class="float_File" name="picUpLoad" id="picUpLoad">
+							<input  type="text" class="form-control" placeholder="" id="gdsPic">
+							<!--  <span class="input-group-btn">
 					        <button class="btn btn-default" type="button">请选择</button>
-					      </span>
+					        </span>-->
+					        <input type="file" class="float_File" name="picUpLoad" id="picUpLoad">
 						</div>
 						<span class="col_red">说明：建议选择100*100规格图片</span>
 					</td>
@@ -361,9 +360,8 @@
 							<td width="120">
 								<select class="form-control" id="selGdsLabColor">
 									<optgroup>
-										<option>1</option>
-										<option>2</option>
-										<option>3</option>
+										<option value="#ccc">蓝色</option>
+										<option value="#ddd">绿色</option>
 									</optgroup>
 								</select>
 							</td>
@@ -372,11 +370,8 @@
 							<td class="Hint">
 								商品标签:
 							</td>
-							<td>
-								<span class="label label-primary">API</span>
-								<span class="label label-warning">支持HTTPS</span>
-								<span class="label label-warning">免费体验</span>
-								<span class="label label-warning">免费体验</span>
+							<td >
+								<span class="label label-primary"  th:remove="all">API</span>
 
 							</td>
 						</tr>
@@ -387,7 +382,7 @@
 						<div class="tit">
 							<h2>快速选择</h2>
 							<div class="input-group">
-								<input type="text" class="form-control" placeholder="">
+								<input type="text" class="form-control" placeholder="" id="qryLabName">
 								<span class="input-group-btn">
 							        <button class="btn btn-default" type="button" th:onclick="'queryGdsLabelQuikList()'">查询</button>
 							      </span>

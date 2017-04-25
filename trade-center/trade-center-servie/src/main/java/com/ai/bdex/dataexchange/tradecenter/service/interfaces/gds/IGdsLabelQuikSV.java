@@ -20,4 +20,11 @@ public interface IGdsLabelQuikSV {
 
     public int deleteGdsLabelQuikById(Integer labId) throws Exception;
     public List<GdsLabelQuikRespDTO> queryGdsLabelQuikListDTO(GdsLabelQuikReqDTO gdsLabelQuikReqDTO) throws Exception;
+    /**
+     * 根据标签名称完全匹配查询
+     * @param gdsLabelQuikReqDTO
+     * @return
+     * @throws Exception
+     */
+    public GdsLabelQuikRespDTO queryGdsLabelQuikByName(GdsLabelQuikReqDTO gdsLabelQuikReqDTO) throws Exception;
 }

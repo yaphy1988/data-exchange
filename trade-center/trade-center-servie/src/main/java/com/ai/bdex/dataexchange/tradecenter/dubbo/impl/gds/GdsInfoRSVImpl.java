@@ -237,4 +237,14 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
 		}
 		return labelId;
 	}
+    public GdsLabelQuikRespDTO queryGdsLabelQuikByName(GdsLabelQuikReqDTO gdsLabelQuikReqDTO) throws Exception{
+    	GdsLabelQuikRespDTO resp = new GdsLabelQuikRespDTO();
+    	try {
+    		resp = iGdsLabelQuikSV.queryGdsLabelQuikByName(gdsLabelQuikReqDTO);
+		} catch (Exception e) {
+			log.error("新增商品基本信息异常:", e);
+			throw new Exception(e);
+		}
+    	return resp;
+    }
 }
