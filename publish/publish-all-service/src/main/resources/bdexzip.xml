@@ -6,6 +6,16 @@
     <formats>
         <format>zip</format>
     </formats>
+    <files>
+        <file>
+            <source>${project.parent.parent.basedir}/manager-web/target/manager-web-0.0.1-SNAPSHOT.war</source>
+            <outputDirectory>/webs</outputDirectory>
+        </file>
+        <file>
+            <source>${project.parent.parent.basedir}/mall-web/target/mall-web-0.0.1-SNAPSHOT.war</source>
+            <outputDirectory>/webs</outputDirectory>
+        </file>
+    </files>
     <fileSets>
         <fileSet>
             <directory>${project.basedir}/src/main/resources/devconfig</directory>
