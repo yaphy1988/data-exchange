@@ -51,19 +51,19 @@ function queryPageModue(){
 				 if(data.pageModuleList != null && data.pageModuleList != undefined){
 					 $(data.pageModuleList).each(function(i,d){
 						 switch (d.moduleId) {
-						case '01'://01-首页轮播广告；
+						case 101://01-首页轮播广告；
 							 
 							break;
-						case '02'://01-首页轮播广告；
-							queryDateModue(d.moduleId);
+						case 102://01-首页数据推荐；
+							queryModue101(d.moduleId);
 							break;
-						case '03'://03-首页数据定制；
+						case 103://03-首页数据定制；
 							
 							break;
-						case '04'://04-平台动态
+						case 104://04-平台动态
 							
 							break;
-						case '05'://05-合作伙伴
+						case 105://05-合作伙伴
 							
 							break;							
 						default:
@@ -77,8 +77,7 @@ function queryPageModue(){
 	}});
 }
 //查询推荐楼层信息
-function queryDateModue(modoltype){
-	debugger;
+function queryModue01(modoltype){
 	$.ajax({
 		url : basePath+'/homePage/queryPageModuleGoods',
 		type : "POST",
@@ -96,8 +95,6 @@ function queryDateModue(modoltype){
 						});
 					}
 					$('#data_recommend').html(html);
-			 }else{
-				 console.error('查询推荐楼层信息异常！');
 			 }
 	}});
 }
