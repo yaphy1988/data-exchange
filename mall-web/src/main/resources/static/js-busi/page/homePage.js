@@ -156,20 +156,24 @@ function queryModue104(moduleId){
 	doAjax(url,moduleId,callBack);
 }
 
-
-//查询推荐楼层信息
+//查询合作伙伴
 function queryPartner109(moduleId){
-	var url = basePath+'/homePage/queryPartner109';
+	var url = basePath+'/homePage/queryPageModuleAd';
 	var callBack =function(data){
-		var html = "";
+		var htmlOl = '<li>';
 		if(data.success){
-	        if(data.success){
-				$(data.hotSearchList).each(function(i,d){
-//					html +='<li><a href='+1+' target="_blank"><img src=11><span>推荐数据</span></a></li>';
-				});
-			}
-		 }
-		$('#data_recommend').html(html);
+			$(data.moduleAdList).each(function(i,d){
+				//向下取整--
+				htmlOl +='<a href="'+d.link_page+'"><img src="'+imgPath+d.vfs_id+'_150x150.jpg"></a>';
+ 			   /*if(Math.floor(i/5)){
+					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="active"></li>';
+					htmDiv +='<div class="item active">'+
+	                '<img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'">'+
+	            '</div>';
+				} */
+			});
+		}
+		$('#partnert_div').html(htmlOl); 
 	};
 	doAjax(url,moduleId,callBack);
 }

@@ -174,22 +174,15 @@
     </div>
     <ul class="date-list"  id="data_recommend">
         <li th:remove="all"><a href="#" th:href="@{}"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>全国基站信息 全国基站信息 全国基站信息</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>股票每日市值数据</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>亚太区企业数据</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>进口贸易数据</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>重点行业数据</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>全国行政村届图层</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>广东省行业GDP</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>广州书大数据企业</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>全国污染源行业排放数据</span></a></li>
-        <li><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>2015年广东汽车零部件生产企业状况 2015年广东汽车零部件生产企业状况</span></a></li>
-        <!--<li th:each="data:${dataList}">
-            <a href="#" th:href="@{data.href}">
-                <img src="../static/images/dateIcon.png" th:src="@{${data.imageUrl}}">
-                <span th:text="${data.info}">2015年广东汽车零部件生产企业状况 2015年广东汽车零部件生产企业状况</span>
-            </a>
-        </li>-->
-        <!-- TODO: 从后台返回数据后使用th:each动态加载数据 -->
+        <li th:remove="all"><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>股票每日市值数据</span></a></li>
+        <li th:remove="all"><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>亚太区企业数据</span></a></li>
+        <li th:remove="all"><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>进口贸易数据</span></a></li>
+        <li th:remove="all"><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>重点行业数据</span></a></li>
+        <li th:remove="all"><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>全国行政村届图层</span></a></li>
+        <li th:remove="all"><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>广东省行业GDP</span></a></li>
+        <li th:remove="all"><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>广州书大数据企业</span></a></li>
+        <li th:remove="all"><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>全国污染源行业排放数据</span></a></li>
+        <li th:remove="all"><a href="#"><img src="../static/images/dateIcon.png" th:src="@{/images/dataIcon.png}"><span>2015年广东汽车零部件生产企业状况 2015年广东汽车零部件生产企业状况</span></a></li>
     </ul>
 	</div>
 
@@ -200,7 +193,7 @@
             <p class="col_666">申请即送免费调用次数</p>
         </div>
         <div class="individuation-main ">
-            <div class="individuation-left floatL"><img src="http://112.74.163.29:14751/ImageServer/image/58fef10a1d17873197dbc2ef.jpg"> </div>
+            <div class="individuation-left floatL"><img src="http://112.74.163.29:14751/ImageServer/image/58fef10a1d17873197dbc2ef_150x150.jpg"> </div>
             <div class="individuation-right floatR">
                 <p class="col_666"><i class="icon-phone"></i>留下您的联系方式免费获取定制服务信息</p>
                 <p class="col_666"><i class="icon-auto"></i>数据免费调用，免费使用API接口工具；</p>
@@ -278,15 +271,15 @@
     <div class="wrap1200 pt60 pb60">
     <div class="parter">
         <h3 class="title"><i class="point"></i>合作伙伴</h3>
-        <ul>
-            <li>
+        <ul id="partnert_div">
+            <li th:remove="all">
                 <a href="#"><img src="../static/images/partner/partner-img01.png" th:src="@{/images/partner/partner-img01.png}"> </a>
                 <a href="#"><img src="../static/images/partner/partner-img02.png" th:src="@{/images/partner/partner-img02.png}"></a>
                 <a href="#"><img src="../static/images/partner/partner-img03.png" th:src="@{/images/partner/partner-img03.png}"></a>
                 <a href="#"><img src="../static/images/partner/partner-img04.png" th:src="@{/images/partner/partner-img04.png}"></a>
                 <a href="#"><img src="../static/images/partner/partner-img05.png" th:src="@{/images/partner/partner-img05.png}"></a>
             </li>
-            <li>
+            <li th:remove="all">
                 <a href="#"><img src="../static/images/partner/partner-img06.jpg" th:src="@{/images/partner/partner-img06.jpg}"> </a>
                 <a href="#"><img src="../static/images/partner/partner-img07.png" th:src="@{/images/partner/partner-img07.png}"></a>
                 <a href="#"><img src="../static/images/partner/partner-img08.png" th:src="@{/images/partner/partner-img08.png}"></a>
