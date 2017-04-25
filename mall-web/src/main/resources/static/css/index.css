@@ -111,7 +111,7 @@ input,button{
 .search_result{
     position: absolute;
     width: 493px;
-    max-height: 400px;
+    max-height: 300px;
     margin-top: -2px;
     overflow-y: auto;
     border: solid 2px #2b4099;
