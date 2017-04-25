@@ -8,20 +8,20 @@
     </formats>
     <fileSets>
         <fileSet>
-            <directory>${project.basedir}\src\main\resources\devconfig</directory>
+            <directory>${project.basedir}/src/main/resources/devconfig</directory>
             <!--&lt;!&ndash; 过滤 &ndash;&gt;-->
             <!--<excludes>-->
                 <!--<exclude>*.xml</exclude>-->
             <!--</excludes>-->
-            <outputDirectory>\config</outputDirectory>
+            <outputDirectory>/config</outputDirectory>
         </fileSet>
         <fileSet>
-            <directory>${project.build.directory}\lib</directory>
+            <directory>${project.build.directory}/lib</directory>
             <!--&lt;!&ndash; 过滤 &ndash;&gt;-->
             <!--<excludes>-->
                 <!--<exclude>*.xml</exclude>-->
             <!--</excludes>-->
-            <outputDirectory>\lib</outputDirectory>
+            <outputDirectory>/lib</outputDirectory>
         </fileSet>
     </fileSets>
 
