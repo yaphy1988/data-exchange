@@ -373,6 +373,10 @@ fieldset[disabled] .btn-default.focus {
 	width: 1200px;  /* by liangsx 20170425 modify */
 	margin: 0px auto;
 }
+.wrap1200:after
+{
+	content:"."; display:block; height:0; clear:both; visibility:hidden;
+}
 .floatL{float: left;}
 .floatR{float: right;}
 .form-control{
