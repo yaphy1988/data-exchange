@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.bdex.dataexchange.busi.search.entiry.SearchVO;
+import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
@@ -85,8 +86,6 @@ public class SearchController{
             gdsInfoReqDTO.setPageSize(10);
             PageResponseDTO<GdsInfoRespDTO> pageInfo = iGdsInfoQueryRSV.queryGdsInfoListPage(gdsInfoReqDTO);
             if(pageInfo != null){
-                pageInfo.setPageCount(2);
-                pageInfo.setCount(1000);
                 model.addAttribute("pageInfo", pageInfo);
             }
         } catch (Exception e) {
@@ -96,22 +95,25 @@ public class SearchController{
     }
     /**
      * 
-     * suggestKeyWord:(搜索关键词联想建议suggest). <br/> 
+     * suggest:(搜索关键词联想建议suggest). <br/> 
      * 
      * @author gxq 
      * @param model
      * @return 
      * @since JDK 1.6
      */
-    @RequestMapping(value="/suggestkeyword")
+    @RequestMapping(value="/suggest")
     @ResponseBody
-    public Model suggestKeyWord(Model model){
+    public AjaxJson suggest(Model model,SearchVO searchVO){
+        AjaxJson json = new AjaxJson();
         try {
-            
+            json.setObj(null);
+            json.setSuccess(true);
         } catch (Exception e) {
             logger.error("关键词联想失败！原因是："+e.getMessage());
+            json.setSuccess(false);
         }
-        return model;
+        return json;
     }
 }
 

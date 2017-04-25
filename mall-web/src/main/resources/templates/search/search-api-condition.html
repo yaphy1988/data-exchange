@@ -12,8 +12,10 @@
 				API分类：
 			</div>
 			<div class="bd">
-				<a class="catSelecte" th:each="subcat,iterStat : ${cat.subCatList}" href="javascript:void(0)" th:text="${subcat.catName}" th:attr="catPName=${cat.catName},catPid=${subcat.catPid},catId=${subcat.catId},catName=${subcat.catName}">生活常用</a>
-				<a href="" th:remove="all">金融服务</a>
+				<div class="bdheight">
+					<a class="catSelecte" th:each="subcat,iterStat : ${cat.subCatList}" href="javascript:void(0)" th:text="${subcat.catName}" th:attr="catPName=${cat.catName},catPid=${subcat.catPid},catId=${subcat.catId},catName=${subcat.catName}">生活常用</a>
+					<a href="" th:remove="all">金融服务</a>
+				</div>
 			</div>
 			<div class="fo">
 				<a href="javascript:void(0)" class="btn btn_rec btn_more tr_icon">
