@@ -8,7 +8,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
-
+import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import org.springframework.stereotype.Service;
 
@@ -75,6 +75,8 @@ public class GdsLabelSVImpl implements IGdsLabelSV {
             throw new Exception("插入商品标签信息入参为空");
         }
         GdsLabel gdsLabel = new GdsLabel();
+        int labId=SeqUtil.getInt("SEQ_GDS_LABEL");
+        gdsLabelReqDTO.setLabId(labId);
         ObjectCopyUtil.copyObjValue(gdsLabelReqDTO,gdsLabel,null,false);
 //        BeanUtils.copyProperties(gdsLabelReqDTO,gdsLabel);
         int code = gdsLabelMapper.insert(gdsLabel);

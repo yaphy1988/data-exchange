@@ -7,6 +7,8 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2CatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfo2CatSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.sequence.SeqUtil;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -66,10 +68,11 @@ public class GdsInfo2CatSVImpl implements IGdsInfo2CatSV {
             throw  new Exception("插入商品与分类信息入参为空");
         }
         GdsInfo2Cat gdsInfo2Cat = new GdsInfo2Cat();
+        int gcId=SeqUtil.getInt("SEQ_GDS_INFO_2_CAT");
+        gdsInfo2CatReqDTO.setGcId(gcId);
         ObjectCopyUtil.copyObjValue(gdsInfo2CatReqDTO,gdsInfo2Cat,null,false);
-//        BeanUtils.copyProperties(gdsInfo2CatReqDTO,gdsInfo2Cat);
         int code = gdsInfo2CatMapper.insert(gdsInfo2Cat);
-        return code;
+        return gcId;
     }
 
     @Override

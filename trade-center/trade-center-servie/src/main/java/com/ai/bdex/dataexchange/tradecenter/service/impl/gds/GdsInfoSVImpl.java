@@ -15,7 +15,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
-
+import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -66,11 +66,13 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         if (gdsInfoReqDTO ==null){
             throw new Exception("插入商品信息入参为空");
         }
+        int gdsId=SeqUtil.getInt("SEQ_GDS_INFO");
         GdsInfo gdsInfo = new GdsInfo();
+        gdsInfoReqDTO.setGdsId(gdsId);
         ObjectCopyUtil.copyObjValue(gdsInfoReqDTO,gdsInfo,null,false);
 //        BeanUtils.copyProperties(gdsInfoReqDTO,gdsInfo);
         int code = gdsInfoMapper.insert(gdsInfo);
-        return code;
+        return gdsId;
     }
 
     @Override

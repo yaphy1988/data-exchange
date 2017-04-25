@@ -13,6 +13,8 @@
 	<script type="text/javascript" src="../../static/component/ckeditor/ckeditor.js" th:src="@{/component/ckeditor/ckeditor.js}"></script>
 	<!-- <script type="text/javascript" src="../../static/js-busi/common/uploadimg.js" th:src="@{/js-busi/common/uploadimg.js}"></script> -->
 	<script type="text/javascript" src="../../static/js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
+	<script type="text/javascript" src="../../static/js/jquery-validation/1.11.1/jquery.validate.min.js" th:src="@{/js/jquery-validation/1.11.1/jquery.validate.min.js}"></script>
+
 </head>
 <body>
 <header class="clearfix m_header" th:remove="all">
@@ -64,6 +66,7 @@
 							<input type="hidden" class="form-control" id="catFirst" >
 							<input type="hidden" class="form-control" id="catId" >
 							<input type="hidden" class="form-control" id="catName" >
+							<input type="hidden" class="form-control" id="gdsId" >
 						<div class="input-group">
 							<input type="text" class="form-control" placeholder="/API/" id="catText" disabled>
 							<span class="input-group-btn">
@@ -71,6 +74,10 @@
 					      </span>
 						</div>
 					</td>
+				</tr>
+				<tr th:style="'display:none'" th:name="catFirstError">
+					<td></td>
+					<td class="pt5"><span class="col_999 ">请选择商品分类</span></td>
 				</tr>
 				<tr th:remove="all">
 					<td class="Hint">
@@ -127,7 +134,7 @@
 					</td>
 					<td width="520">
 						
-							<select class="form-control" id="gdsApiId">
+							<select class="form-control" id="apiId">
 									<optgroup>
 										<option>1</option>
 									</optgroup>
@@ -136,7 +143,7 @@
 						
 					</td>
 				</tr>
-				<tr>
+				<tr th:style="'display:none'" th:name="apiIdError">
 					<td></td>
 					<td class="pt5"><span class="col_999 ">计费方式：按照请求次数统计</span></td>
 				</tr>
@@ -150,12 +157,11 @@
 						商品名称:
 					</td>
 					<td width="520">
-						
-							<input type="text" class="form-control" placeholder="VIN车架号查询详细版">
+							<input type="text" class="form-control" placeholder="VIN车架号查询详细版" id="gdsName">
 					</td>
 
 				</tr>
-				<tr>
+				<tr th:style="'display:none'" th:name="gdsNameError">
 					<td></td>
 					<td class="pt5"><span class="col_999 ">请录入商品名称</span></td>
 				</tr>
@@ -166,9 +172,13 @@
 					</td>
 					<td>
 						
-							<input type="text" class="form-control" placeholder="根据传递17位的车架号进行详细信息查询">
+							<input type="text" class="form-control" placeholder="根据传递17位的车架号进行详细信息查询" id="gdsSubTitle">
 						
 					</td>
+				</tr>
+				<tr th:style="'display:none'" th:name="gdsSubTitleError">
+					<td></td>
+					<td class="pt5"><span class="col_999 ">请录入商品副标题</span></td>
 				</tr>
 				<tr>
 					<td class="Hint">
@@ -196,7 +206,7 @@
 					<td class="Hint"></td>
 					<td>
 						<div class="input-group" style="width: 50%; padding-top: 20px;">
-							<input  type="text" class="form-control" placeholder="" id="gdsPic">
+							<input  type="hidden" class="form-control" placeholder="" id="gdsPic">
 							<!--  <span class="input-group-btn">
 					        <button class="btn btn-default" type="button">请选择</button>
 					        </span>-->
@@ -204,6 +214,10 @@
 						</div>
 						<span class="col_red">说明：建议选择100*100规格图片</span>
 					</td>
+				</tr>
+				<tr th:style="'display:none'" th:name="gdsPicError">
+					<td></td>
+					<td class="pt5"><span class="col_999 ">请录入商品副标题</span></td>
 				</tr>
 			</table>
 			<div  th:style="'display:none'" th:name="DivAPI">
@@ -226,7 +240,7 @@
 				</tr>
 				</tbody>
 			</table>
-			<div class="clearfix"><a href="" class="btn btn-default btn-sm pull-right"  th:onclick="'addPackAgeOne()'">新增套餐</a></div>
+			<div class="clearfix"><a href="javascript:void(0);" class="btn btn-default btn-sm pull-right"  th:onclick="'addPackAgeOne()'">新增套餐</a></div>
 			</div>
 			<div class="title" th:remove="all">套餐介绍</div>
 
@@ -257,9 +271,9 @@
 			
 			<!-- 按钮 -->
 			<div class="p20 text-center ">
-				<a href="" class="btn-primary btn mr10">保存</a>
-				<a href="" class="btn-default btn">清空/重置/……</a>
-			</div>
+					<a href="javascript:void(0)" class="btn-primary btn mr10" th:onclick="'saveGds()'" >保存</a>
+					<a href="javascript:void(0)" class="btn-default btn">清空/重置/……</a>
+				</div>
 		</div>
 	</div>
 

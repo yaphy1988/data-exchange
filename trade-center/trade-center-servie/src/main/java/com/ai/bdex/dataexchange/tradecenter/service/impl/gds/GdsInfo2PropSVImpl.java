@@ -7,6 +7,8 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfo2PropSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.sequence.SeqUtil;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -73,10 +75,12 @@ public class GdsInfo2PropSVImpl implements IGdsInfo2PropSV {
             throw new Exception("插入商品属性关系信息入参为空");
         }
         GdsInfo2Prop gdsInfo2Prop = new GdsInfo2Prop();
+        int gpId=SeqUtil.getInt("SEQ_GDS_INFO_2_PROP");
+        gdsInfo2PropReqDTO.setGpId(gpId);
         ObjectCopyUtil.copyObjValue(gdsInfo2PropReqDTO,gdsInfo2Prop,null,false);
 //        BeanUtils.copyProperties(gdsInfo2PropReqDTO,gdsInfo2Prop);
         int code = gdsInfo2PropMapper.insert(gdsInfo2Prop);
-        return code;
+        return gpId;
     }
 
     @Override

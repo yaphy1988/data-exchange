@@ -7,6 +7,8 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.sequence.SeqUtil;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -50,11 +52,14 @@ public class GdsSkuSVImpl implements IGdsSkuSV {
         if (gdsSkuReqDTO ==null){
             throw new Exception("插入单品信息入参为空");
         }
+        int skuId=SeqUtil.getInt("SEQ_GDS_SKU");
+
         GdsSku gdsSku = new GdsSku();
+        gdsSkuReqDTO.setSkuId(skuId);
         ObjectCopyUtil.copyObjValue(gdsSkuReqDTO,gdsSku,null,false);
 //        BeanUtils.copyProperties(gdsSkuReqDTO,gdsSku);
         int code = gdsSkuMapper.insert(gdsSku);
-        return code;
+        return skuId;
     }
 
     @Override

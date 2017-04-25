@@ -47,27 +47,27 @@ function saveGdsLabelQuik(){
 		$("#myModal2").modal('hide');
 		return;
 	}
-	var params={
-			labId:labId,
-			labName:labName,
-			labColor:labColor,
-			catFirst:catFirst
-	}
-	var url="/gdsEdit/saveGdsLabelQuik";
-	$.ajax({
-		url : url,
-		type : "POST",
-		dataType : "json",
-		async : false,
-		data : params,
-        success : function(data) {
-        	if (data.success=="true"){
-        		var labAppend='<span class="label" style="border:solid 1px '+labColor+';color:'+labColor+'; " labId="'+data.object+'" labColor="'+labColor+'">'+labName+'</span>';
+//	var params={
+//			labId:labId,
+//			labName:labName,
+//			labColor:labColor,
+//			catFirst:catFirst
+//	}
+//	var url="/gdsEdit/saveGdsLabelQuik";
+//	$.ajax({
+//		url : url,
+//		type : "POST",
+//		dataType : "json",
+//		async : false,
+//		data : params,
+//        success : function(data) {
+//        	if (data.success=="true"){
+        		var labAppend='<span class="label" style="border:solid 1px '+labColor+';color:'+labColor+'; " labId="" labName="'+labName+'" labColor="'+labColor+'">'+labName+'</span>';
         		$("#gdsLabelList").append(labAppend);
         		$("#myModal2").modal('hide');
-        	}
-         },
-     });
+//        	}
+//         },
+//     });
 
 }
 /**
@@ -75,10 +75,10 @@ function saveGdsLabelQuik(){
  */
 function addPackAgeOne(){
 	var html='';
-	html +='<td><input type="text" name="skuName"></td>'
+	html +='<tr><td><input type="text" name="skuName"></td>'
 		   +'<td><input type="text" name="packPrice"></td>'
 		   +'<td><input type="text" name="packTimes"></td>'
-		   +'<td><input type="text" name="packDay"></td>';
+		   +'<td><input type="text" name="packDay"></td></tr>';
 	$("#APIPackage").find("tbody").append(html);
 }
 /**
@@ -118,9 +118,9 @@ function addProp(layout) {
 //		case 1:
 			//套餐介绍
 	if(proType=="2"){
-		addCkedit(proId,proName);
+		addCkedit(proId,proName,proType);
 	}else{
-		addEditor(proId,proName);
+		addEditor(proId,proName,proType);
 	}
 			
 //			break;
@@ -153,6 +153,7 @@ function queryGdsLabelQuikList(){
 		async : false,
 		data : params,
         success : function(data) {
+        	$("#gdsLabelQuikTable").find("tbody").empty();
         	 var html=$("#gdsLabelQuikTable").find("tbody");
         	 var append="";
  			if(data.object != null && data.object != ""){
@@ -173,6 +174,7 @@ function queryGdsLabelQuikList(){
 function querySubCatNodes(obj){
 	var $this = $(obj);
 	$this.parent().siblings().find(".active").removeClass('active');
+	$this.parent().siblings().find(".active").removeClass('warning');
 	$this.addClass("warning")
 	$this.addClass("active");
 	//商品分类：API、数据定制、解决方案
@@ -269,6 +271,7 @@ function selectCatCallback(catId, catName, catFirst, catFirstName) {
 		$("#APIPackage").find("tbody").empty();
 		$("#otherInfo").find("tbody").empty();
 	}	
+	$("#addProp").empty();
 	var oldCatFirst = $('#catFirst').val();
 	if (oldCatFirst != catFirst) {
 		$("#addProp").empty();
@@ -283,14 +286,69 @@ function selectCatCallback(catId, catName, catFirst, catFirstName) {
 
 // 保存商品信息
 function saveGds(){
-	var catId = $("catId").val();
-	var catFirst = $("#catFirst").val();
+	var gdsInfo2CatVO=creategdsInfo2CatObj();
+	var gdsInfoVO=createGdsInfoObj(); 
+	var gdsLabelVOList=createGdsLabelList();
+	var gdsSkuVOList = createGdsSkuList();
+	var gdsInfo2PropVOList = createGdsInfo2PropList();
+	if(gdsInfo2CatVO==undefined||gdsInfoVO==undefined){
+		return;
+	}
+	//整个活动信息的结构
+	var gdsInfoObj={
+			gdsInfoVO:{},//商品基本信息
+			gdsInfo2CatVO:{},//商品分类关联
+			gdsLabelVOList:[],// 商品标签
+			gdsSkuVOList:[],//单品信息
+			gdsInfo2PropVOList:[],// 属性信息
+		
+	}
+	//逐一赋值
+	gdsInfoObj.gdsInfoVO=JSON.stringify(gdsInfoVO);
+	gdsInfoObj.gdsInfo2CatVO=JSON.stringify(gdsInfo2CatVO);
+	if(gdsLabelVOList!=undefined){
+		gdsInfoObj.gdsLabelVOList=JSON.stringify(gdsLabelVOList);	
+	}
+	if(gdsSkuVOList!=undefined){
+		gdsInfoObj.gdsSkuVOList=JSON.stringify(gdsSkuVOList);	
+	}
+	if(gdsInfo2PropVOList!=undefined){
+		gdsInfoObj.gdsInfo2PropVOList=JSON.stringify(gdsInfo2PropVOList);	
+	}
+	
+	var url="/gdsEdit/addGds";
+	$.ajax({
+		url : url,
+		type : "POST",
+		dataType : "json",
+		async : false,
+		data : gdsInfoObj,
+        success : function(data) {
+            if (data.success=="true") {
+            	alert("保存成功")
+            }
+        }
+    });
+}
+function creategdsInfo2CatObj(){
 	var gdsId = $("#gdsId").val();
-	var gdsInfo2CatVO={
+	var catId = $("#catId").val();
+	var catFirst = $("#catFirst").val();
+	gdsInfo2CatVO={
 			catId:catId,
 			catFirst:catFirst,
 			gdsId:gdsId,
 	};
+	if(catFirst==""){
+		$('tr[name="catFirstError"]').css("display","");
+		return;
+	}
+	return gdsInfo2CatVO;
+}
+function createGdsInfoObj(){
+	var catFirst = $("#catFirst").val();
+	var catId = $("#catId").val();
+	var gdsId = $("#gdsId").val();
 	var gdsName = $("#gdsName").val();
 	var gdsSubTitle = $("#gdsSubTitle").val();
 	var apiId = $("#apiId").val();
@@ -298,47 +356,125 @@ function saveGds(){
 	var ifRecommend = $("#ifRecommend").val();
 	var funIntroduction = $("#funIntroduction").val();
 	var commpanyName = $("#commpanyName").val();
+	if(ifRecommend==undefined){
+		ifRecommend="";
+	}
+	if(funIntroduction==undefined){
+		funIntroduction="";
+	}
+	if(commpanyName==undefined){
+		commpanyName="";
+	}
 	var gdsInfoVO={
 			gdsId:gdsId,
 			gdsName:gdsName,
 			gdsSubTitle:gdsSubTitle,
 			catFirst:catFirst,
+			catId:catId,
 			apiId:apiId,
 			gdsPic:gdsPic,
 			ifRecommend:ifRecommend,
 			funIntroduction:funIntroduction,
 			commpanyName:commpanyName
 	}
-	var labId = $("#labId").val();
-	var labName = $("#labName").val();
-	var labColor = $("#labColor").val();
-	var gdsLabelVO={
-			labId:labId,
-			labName:labName,
-			labColor:labColor,
-			showOrder:1
-	};
-	var params={
-			gdsInfoVO:gdsInfoVO,
-			gdsInfo2CatVO:gdsInfo2CatVO,
-	};
-	var url="/gdsEdit/addGds";
-	$.ajax({
-        url : url,
-        data : params,
-        async : true,
-        dataType : 'json',
-        success : function(data) {
-            if (data.success&&data.object.length>0) {
-               for(var i=0 ;i<data.object.length;i++){
-               	var prop=data.object[i];
-               	addmodular(prop);
-               }
-            }
-        },
-        error : function() {
-        }
-    });
+	//API分类
+	if(catFirst=="1"){
+		if(apiId==""){
+			$('tr[name="apiIdError"]').css("display","");
+			return;
+		}
+	}
+	if(gdsName==""){
+		$('tr[name="gdsNameError"]').css("display","");
+		return;
+	}
+	if(gdsSubTitle==""){
+		$('tr[name="gdsSubTitleError"]').css("display","");
+		return;
+	}
+//	if(gdsPic==""){
+//		$('tr[name="gdsPicError"]').css("display","");
+//		return;
+//	}
+   return gdsInfoVO;
+}
+function createGdsLabelList(){
+	var gdsLabelVOList=new Array();
+	$("#gdsLabelList").find("span").each(function(){
+		var labId=$(this).attr("labId");
+		var labName =$(this).attr("labName");
+		var labColor =$(this).attr("labColor");
+		var gdsLabelVO={
+				labId:labId,
+				labName:labName,
+				labColor:labColor
+		}
+		gdsLabelVOList.push(gdsLabelVO);
+	});
+	return gdsLabelVOList;
+}
+function createGdsSkuList(){
+	var gdsSkuVOList=new Array();
+	$("#APIPackage").find("tbody tr").each(function(){
+		var skuName=$(this).find('[name="skuName"]').val();
+		var packPrice =$(this).find('[name="packPrice"]').val();
+		var packTimes =$(this).find('[name="packTimes"]').val();
+		var packDay =$(this).find('[name="packDay"]').val();
+		var gdsSkuVO={
+				skuName:skuName,
+				packPrice:packPrice,
+				packTimes:packTimes,
+				packDay:packDay
+		}
+		gdsSkuVOList.push(gdsSkuVO);
+	});
+	return gdsSkuVOList;
+}
+function createGdsInfo2PropList(){
+	var gdsSkuVOList=new Array();
+	$('tr[name="dataProps"]').each(function(){
+		var proId=$(this).attr("proId");
+		var proName=$(this).attr("proName");
+		var proType=$(this).attr("proType");
+		var propValue=$(this).find("dataProp").val();
+		if(propValue!=""){
+			var gdsInfo2PropVO ={
+					proId:proId,
+					proName:proName,
+					propValue:propValue,
+					proType:proType	
+			}
+			gdsSkuVOList.push(gdsInfo2PropVO);
+		}
+	});
+	$("#addProp").find(".ckeditName").each(function(){
+		var proId=$(this).attr("proId");
+		var proName=$(this).attr("proName");
+		var proType=$(this).attr("proType");
+		var proValue=""
+		var ckeditName=$(this).attr("id");
+		if(ckeditName=="editorPackage"){
+			proValue=ckeditPackage.getData()
+		}else if(ckeditName=="editorDataDetail"){
+			proValue=ckeditDataDetail.getData()
+		}else if(ckeditName=="editorDataExample"){
+			proValue=ckeditDataExample.getData()
+		}else if(ckeditName=="editorCase"){
+			proValue=ckeditCase.getData()
+		}else if(ckeditName=="editorCompany"){
+			proValue=ckeditCompany.getData()
+		}
+		if(propValue!=""){
+			var gdsInfo2PropVO ={
+					proId:proId,
+					proName:proName,
+					proValue:proValue,
+					proType:proType	
+			}
+			gdsSkuVOList.push(gdsInfo2PropVO);
+		}
+	});
+	return gdsSkuVOList;
 }
 /**
  * 上传图片
@@ -403,7 +539,7 @@ function ajaxFileUpload(url, secureuri, fileElementId, type, dataType, callback)
 				}
 			});
 }
-function addCkedit(proId,proName){
+function addCkedit(proId,proName,proType){
 	var modular=$("#addProp");
 	var html="";
 	html +='<div class="title">'+proName+'</div>';
@@ -419,14 +555,14 @@ function addCkedit(proId,proName){
 	}else if(proId==8){
 		ckeditId="editorCompany";
 	}
-	html +='<div id='+ckeditId+'></div>';
+	html +='<div id="'+ckeditId+'" class="ckeditName" proName="'+proName+'" proType="'+proType+'" proId="'+proId+'"></div>';
 	modular.append(html);
 	createEditor(ckeditId);
 }
-function addEditor(proId,proName){
+function addEditor(proId,proName,proType){
 	var name="";
-	var html='<tr>'
-				+'<td class="Hint tips" width="120"><span class="col_red">*</span>'+proName
+	var html='<tr name="dataProps">'
+				+'<td class="Hint tips" width="120" proName="'+proName+'" proType="'+proType+'" proId="'+proId+'"><span class="col_red">*</span>'+proName
 				+'</td><td width="520" class="pb20"><textarea class="form-control" rows="5" name="dataProp"></textarea>'
 				+'</td></tr>';
 	$("#otherInfo").find("tbody").append(html);
@@ -468,5 +604,43 @@ function createEditor(id) {
 	}else if(id=="editorCompany"){
 		ckeditCompany=CKEDITOR.replace(id, config);
 	}
-		
+}
+/**
+ * 提交校验
+ * @param {} rules
+ * @param {} messages
+ */
+function formValidate(rules, messages) {
+	$('#productWriteId').validate({
+		rules : rules,
+		messages : messages,
+		errorPlacement : function(error, element) {
+			if (element.attr("name") == "spuName") {
+				error.appendTo(element.parent());
+			} else if (element.attr("name") == "brandSel") {
+				error.appendTo(element.parent());
+			} else if (element.attr("name") == "modelSel") {
+				error.appendTo(element.parent());
+			} else if (element.attr("name") == "serviceMonth") {
+				error.appendTo(element.parent());
+			} else if (element.attr("name") == "marketDate") {
+				error.appendTo(element.parent());
+			} else if (element.attr("name") == "lowPrice") {
+				error.appendTo(element.parent());
+			} else if (element.attr("name") == "highPrice") {
+				error.appendTo(element.parent());
+			} else if (element.parent().parent().attr('class')=='parameterListAll_con') {
+				error.appendTo(element.parent().parent().prev());
+			} else if (element.parent().get(0).tagName.toUpperCase()=='TD') {
+				error.appendTo(element.parent());
+			} else {
+				error.appendTo(element.parent());
+			}
+		},
+		submitHandler : function(form) {
+			addGdsSpu();
+		},
+		errorClass : 'valaditeError'
+	});
+
 }

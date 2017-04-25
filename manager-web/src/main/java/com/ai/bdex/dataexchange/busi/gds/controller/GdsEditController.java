@@ -25,6 +25,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.util.HtmlUtils;
+import org.thymeleaf.util.StringUtils;
 
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsCatVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
@@ -53,6 +55,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsLabelRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.util.ImageUtil;
+import com.ai.paas.util.MongoFileUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.alibaba.dubbo.rpc.service.GenericException;
@@ -218,8 +221,7 @@ public class GdsEditController {
      */
     @RequestMapping(value = "/addGds")
     @ResponseBody
-    public GdsJsonBean addGds(HttpServletRequest req, HttpServletResponse rep,
-    		GdsManageInfoVO gdsManageInfoVO) throws BusinessException, GenericException {
+    public GdsJsonBean addGds(HttpServletRequest req, HttpServletResponse rep) throws BusinessException, GenericException {
     	GdsJsonBean jsonBean = new GdsJsonBean();
     	GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
         try {
@@ -227,10 +229,11 @@ public class GdsEditController {
     		JSONObject gdsInfoVO=JSONObject.parseObject(req.getParameter("gdsInfoVO"));
 			this.setGdsInfo(gdsInfoReqDTO, gdsInfoVO);
         	int gdsId=gdsInfoRSV.insertGdsInfo(gdsInfoReqDTO);
+        	//商品分类属性关联信息
         	GdsInfo2CatReqDTO gdsInfo2CatReqDTO = new GdsInfo2CatReqDTO();
        		JSONObject gdsInfo2CatVO=JSONObject.parseObject(req.getParameter("gdsInfo2CatVO"));
     		this.setGdsInfo2Cat(gdsInfo2CatReqDTO, gdsInfo2CatVO);
-        	
+    		gdsInfoRSV.insertGdsInfo2Cat(gdsInfo2CatReqDTO);
         	//商品标签信息
         	JSONArray gdsLabelVOList=JSONArray.parseArray(req.getParameter("gdsLabelVOList"));
         	List<GdsLabelReqDTO> gdsLabelReqDTOList =  new ArrayList<>();
@@ -243,7 +246,7 @@ public class GdsEditController {
         		}
         	}
         	//获取商品单品信息
-        	JSONArray gdsSkuVOList=JSONArray.parseArray(req.getParameter("gdsSkuList"));
+        	JSONArray gdsSkuVOList=JSONArray.parseArray(req.getParameter("gdsSkuVOList"));
         	List<GdsSkuReqDTO> gdsSkuReqDTOList =  new ArrayList<>();
         	this.setGdsSkuInfo(gdsSkuReqDTOList, gdsSkuVOList);
         	//保存单品信息
@@ -254,7 +257,7 @@ public class GdsEditController {
         		}
         	}
         	//获取商品属性配置信息
-        	JSONArray gdsInfo2PropVOList=JSONArray.parseArray(req.getParameter("gdsInfo2PropList"));
+        	JSONArray gdsInfo2PropVOList=JSONArray.parseArray(req.getParameter("gdsInfo2PropVOList"));
         	List<GdsInfo2PropReqDTO> gdsInfo2PropReqDTOList =  new ArrayList<>();
         	this.setGdsInfo2PropInfo(gdsInfo2PropReqDTOList, gdsInfo2PropVOList);
         	//保存商品属性配置信息
@@ -336,13 +339,15 @@ public class GdsEditController {
 			    vo.setGdsId(Integer.parseInt(baseInfoJson.getString("gdsId")));
 			}
 			vo.setGdsName(baseInfoJson.getString("gdsName"));
+			vo.setGdsSubtitle(baseInfoJson.getString("gdsSubTitle"));
 			vo.setCatFirst(Integer.parseInt(baseInfoJson.getString("catFirst")));
+			vo.setCatId(Integer.parseInt(baseInfoJson.getString("catId")));
 			vo.setApiId(Integer.parseInt(baseInfoJson.getString("apiId")));
 			vo.setGdsPic(baseInfoJson.getString("gdsPic"));
 			vo.setIfRecommend(baseInfoJson.getString("ifRecommend"));
 			vo.setFunIntroduction(baseInfoJson.getString("funIntroduction"));
 			vo.setCommpanyName(baseInfoJson.getString("commpanyName"));
-		} catch (Exception e) {
+			} catch (Exception e) {
 			logger.error(e.getMessage());
 		}
 	}
@@ -433,6 +438,7 @@ public class GdsEditController {
 			for (int i = 0; i < jsonArray.size(); i++) {
 				JSONObject propVOJson = (JSONObject) jsonArray.get(i);
 				GdsInfo2PropReqDTO propReqDTO = new GdsInfo2PropReqDTO();
+				String popType=propVOJson.getString("proType");
 				if (StringUtil.isNotBlank(propVOJson.getString("gpId"))) {
 					propReqDTO.setGpId(Integer.parseInt(propVOJson.getString("gpId")));
 				}
@@ -442,11 +448,22 @@ public class GdsEditController {
 				if (StringUtil.isNotBlank(propVOJson.getString("proId"))) {
 					propReqDTO.setProId(Integer.parseInt(propVOJson.getString("proId")));
 				}
-				if (StringUtil.isNotBlank(propVOJson.getString("proType"))) {
-					propReqDTO.setProType(propVOJson.getString("proType"));
+				if (StringUtil.isNotBlank(popType)) {
+					propReqDTO.setProType(popType);
 				}
 				propReqDTO.setProName(propVOJson.getString("proName"));
-				propReqDTO.setProValue(propVOJson.getString("proValue"));
+				//富文本
+				if("2".equals(popType)){
+					String propValuehtml=propVOJson.getString("proValue");
+					if(StringUtil.isNotBlank(propValuehtml)){
+						String htmlData=HtmlUtils.htmlUnescape(propValuehtml);
+						  //保存静态文件到静态文件服务器
+						String infoUrl = MongoFileUtil.saveFile(htmlData.getBytes("utf-8"),"gdsContent", ".html");
+						propReqDTO.setProValue(infoUrl);
+					}
+				}else{
+					propReqDTO.setProValue(propVOJson.getString("proValue"));
+				}
 				//展示顺序
 				if (StringUtil.isNotBlank(propVOJson.getString("showOrder"))) {
 					propReqDTO.setShowOrder(Integer.parseInt(propVOJson.getString("showOrder")));

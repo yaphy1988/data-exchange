@@ -8,6 +8,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSku;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.*;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfo2CatSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelQuikSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
@@ -50,6 +51,9 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
     private IGdsLabelQuikSV iGdsLabelQuikSV;
     @Resource
     private IGdsPropSV iGdsPropSV;
+    
+    @Resource
+    private IGdsInfo2CatSV iGdsInfo2CatSV;
     
     @Override
     public GdsInfoRespDTO queryGdsInfoDetails(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
@@ -247,4 +251,14 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
 		}
     	return resp;
     }
+    public int insertGdsInfo2Cat(GdsInfo2CatReqDTO gdsInfo2CatReqDTO) throws Exception {
+		int gcId =0;
+		try {
+			gcId = iGdsInfo2CatSV.insertGdsInfo2Cat(gdsInfo2CatReqDTO);
+		} catch (Exception e) {
+			log.error("新增商品基本信息异常:", e);
+			throw new Exception(e);
+		}
+		return gcId;
+	}
 }

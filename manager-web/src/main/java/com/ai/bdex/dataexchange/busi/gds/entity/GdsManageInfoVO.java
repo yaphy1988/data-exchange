@@ -5,14 +5,11 @@ import java.util.List;
 
 public class GdsManageInfoVO {
 	private GdsInfoVO gdsInfoVO;
+    private GdsInfo2CatVO gdsInfo2CatVO;//商品分类配置关联表
     //json串
     private String jsonStr;
     
-    private GdsPropVO gdsPropVO;//分类属性表
-    
     private List<GdsLabelVO> gdsLabelVOList;//商品标签
-    
-    private GdsInfo2CatVO gdsInfo2CatVO;//商品分类配置关联表
     
     private List<GdsInfo2PropVO>  gdsInfo2PropVOList;//商品属性配置
     
@@ -25,14 +22,7 @@ public class GdsManageInfoVO {
 		this.jsonStr = jsonStr;
 	}
 
-	public GdsPropVO getGdsPropVO() {
-		return gdsPropVO;
-	}
-
-	public void setGdsPropVO(GdsPropVO gdsPropVO) {
-		this.gdsPropVO = gdsPropVO;
-	}
-
+	
 
 	public GdsInfo2CatVO getGdsInfo2CatVO() {
 		return gdsInfo2CatVO;
