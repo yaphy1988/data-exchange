@@ -66,6 +66,14 @@
 		</dependency>
 		<dependency>
 			<groupId>com.ai.woego.boot</groupId>
+			<artifactId>cache-engine-spring-boot-autoconfigure</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ai.woego.boot</groupId>
+			<artifactId>file-engine-spring-boot-autoconfigure</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ai.woego.boot</groupId>
 			<artifactId>image-engine-spring-boot-autoconfigure</artifactId>
 		</dependency>
 		<!--<dependency>
