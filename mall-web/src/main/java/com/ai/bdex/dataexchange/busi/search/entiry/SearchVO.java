@@ -42,6 +42,10 @@ public class SearchVO extends BaseInfo implements Serializable{
      */
     private String sortValue;
     /**
+     * 一级分类
+     */
+    private int catFirst;
+    /**
      * 分类map集合
      */
     private Map<String,List<String>> catConditionMap;
@@ -75,6 +79,12 @@ public class SearchVO extends BaseInfo implements Serializable{
     }
     public void setCatConditionMap(Map<String, List<String>> catConditionMap) {
         this.catConditionMap = catConditionMap;
+    }
+    public int getCatFirst() {
+        return catFirst;
+    }
+    public void setCatFirst(int catFirst) {
+        this.catFirst = catFirst;
     }
     
     

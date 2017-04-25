@@ -9,13 +9,13 @@ import com.alibaba.dubbo.common.utils.StringUtils;
 /**
  * 
  * Title: ECP <br>
- * Project Name:ecp-services-search <br>
+ * Project Name:mall-web <br>
  * Description: <br>
- * Date:2015年8月14日下午2:09:38 <br>
- * Copyright (c) 2015 asia All Rights Reserved <br>
+ * Date:2017年4月25日下午1:47:04  <br>
+ * Copyright (c) 2017 asia All Rights Reserved <br>
  * 
- * @author huangdf
- * @version
+ * @author gxq
+ * @version @param <T> 
  * @since JDK 1.6
  */
 public class SearchResult<T> implements Serializable {

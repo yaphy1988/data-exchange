@@ -1,22 +1,22 @@
 //package com.ai.ecp.search.dubbo.search;
 //
+//import java.util.ArrayList;
+//import java.util.List;
+//
 //import com.ai.ecp.search.dubbo.search.util.ELang;
 //import com.ai.ecp.search.dubbo.search.util.EOperator;
 //import com.ai.ecp.search.dubbo.search.util.EQOp;
 //
-//import java.util.ArrayList;
-//import java.util.List;
-//
 ///**
 // * 
 // * Title: ECP <br>
-// * Project Name:ecp-services-search <br>
+// * Project Name:mall-web <br>
 // * Description: <br>
-// * Date:2015年8月14日上午11:09:43 <br>
-// * Copyright (c) 2015 asia All Rights Reserved <br>
+// * Date:2017年4月25日下午1:46:55  <br>
+// * Copyright (c) 2017 asia All Rights Reserved <br>
 // * 
-// * @author huangdf
-// * @version
+// * @author gxq
+// * @version  
 // * @since JDK 1.6
 // */
 //public class SearchParam {

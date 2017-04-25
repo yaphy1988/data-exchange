@@ -6,13 +6,13 @@ import java.util.List;
 /**
  * 
  * Title: ECP <br>
- * Project Name:ecp-services-search <br>
- * Description: this is a mark inter<br>
- * Date:2015年8月12日上午11:37:22 <br>
- * Copyright (c) 2015 asia All Rights Reserved <br>
+ * Project Name:mall-web <br>
+ * Description: <br>
+ * Date:2017年4月25日下午1:46:28  <br>
+ * Copyright (c) 2017 asia All Rights Reserved <br>
  * 
- * @author huangdf
- * @version
+ * @author gxq
+ * @version  
  * @since JDK 1.6
  */
 public interface QueryFilter {

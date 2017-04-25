@@ -45,6 +45,22 @@ var Search = {
 				Search.gridGdsInfo(param);
 				e.preventDefault();
 			});
+			
+			//分类更多事件绑定
+			$(".btn_more").die().live('click',function(e){
+				var $this = $(this);
+				if($this.children('i').hasClass('glyphicon-menu-up')){
+//					$this.removeClass('selected');
+					$this.children('font').text("更多");
+					$this.children('i').removeClass('glyphicon-menu-up').addClass("glyphicon-menu-down");
+				}else{
+//					$this.addClass('selected');
+					$this.children('font').text("收起");
+					$this.children('i').removeClass('glyphicon-menu-down').addClass("glyphicon-menu-up");
+				}
+				
+				e.preventDefault();
+			});
 		},
 		/**
 		 * 查询商品列表
