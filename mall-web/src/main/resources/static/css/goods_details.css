@@ -390,10 +390,16 @@ h3{
 	width: 960px;
 	line-height: 22px;
 	padding: 10px ;
-	
 }
+
 .bdheight
 {
+	height: 22px;
+	overflow-y: hidden;
+}
+.selected .bdheight
+{	
+	height:auto;
 	max-height: 120px;
 	overflow-y: auto;
 }
