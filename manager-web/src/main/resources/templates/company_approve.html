@@ -8,7 +8,8 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
+	<script type="text/javascript" src="../static/js-busi/user/authen.js" th:src="@{/js-busi/user/authen.js}"></script>
 </head>
 <body>
 <header class="clearfix m_header">
@@ -53,8 +54,8 @@
 				<i class="iconfont"></i>
 				<span>当前位置：</span>
 				<a href=""><span>数据市场</span></a>
-				<a href=""><span>生活服务</span></a>
-				<span class="col_999">常用快递</span>
+				<a href=""><span>用户管理</span></a>
+				<span class="col_999">企业认证管理</span>
 			</div>
 			<div class="title">企业认证管理</div>
 				<div class="top-table">
@@ -66,11 +67,16 @@
 	                        </td>
 	                        <td >
 	                            <div class="input-group02">
-	                                <input type="text" class="form-control" placeholder="商品名称">
+	                                <select class="form-control" id="status">
+	                                <option value="">全部</option>
+	                                <option value="10">待审核</option>
+	                                <option value="20">审核通过</option>
+	                                <option value="30">审核不通过</option>
+	                                </select>
 	                            </div>
 	                        </td>
 	                        <td>
-	                            <button class="btn btn-primary">查询</button>
+	                            <button class="btn btn-primary" onclick="queryData();">查询</button>
 	                        </td>
 	                    </tr>
 	                </table>
@@ -90,58 +96,14 @@
 					<th>操作</th>
 				</tr>
 				</thead>
-				<tbody>
-				<tr>
-					<td>1</td>
-					<td>广州开拓投资公司</td>
-					<td>广州天河区XXXXX</td>
-					<td>9145010201010</td>
-					<td>有</td>
-					<td>有</td>
-					<td>黄显</td>
-					<td>未审核</td>
-					<td><a href="">审核</a></td>
-				</tr>
-				<tr>
-					<td>1</td>
-					<td>广州开拓投资公司</td>
-					<td>广州天河区XXXXX</td>
-					<td>9145010201010</td>
-					<td>有</td>
-					<td>有</td>
-					<td>黄显</td>
-					<td>审核不通过</td>
-					<td></td>
-				</tr>
-				
+				<tbody id="authdatas">
 				</tbody>
 			</table>
 			
-			<div class="pagelist">
-				<nav aria-label="Page navigation">
-				  <ul class="pagination">
-				    <li >
-				      <a href="#" aria-label="Previous">
-				        <span aria-hidden="true">上一页</span>
-				      </a>
-				    </li>
-				    <li class="active"><a href="#">1</a></li>
-				    <li><a href="#">2</a></li>
-				    <li><a href="#">3</a></li>
-				    <li><a href="#">4</a></li>
-				    <li><a href="#">5</a></li>
-				    <li>
-				      <a href="#" aria-label="Next">
-				        <span aria-hidden="true">下一页</span>
-				      </a>
-				    </li>
-				    <div class="pageskip">
-				  	<span class="pr10">到第<input type="text" class="pageskip_box">页</span>
-				  	<a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
-				  </div>
-				  </ul>
-				</nav>
-			</div>
+			<div th:fragment="pager" class="pagerBar pagelist" style="margin-top:0px;" >
+    <script type="text/javascript" src="../static/js-busi/common/pager.js" th:src="@{/js-busi/common/pager.js}"></script>
+    <span data-toggle="pager" id="pagerId" data-count="" data-size="" data-currentindex="" ></span>
+</div>
 		</div>
 	</div>
 	<div class="m_nav">

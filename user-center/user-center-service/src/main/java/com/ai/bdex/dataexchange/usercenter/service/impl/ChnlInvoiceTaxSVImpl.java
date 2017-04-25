@@ -66,12 +66,14 @@ public class ChnlInvoiceTaxSVImpl implements IChnlInvoiceTaxSV {
 		ChnlInvoiceTax bean = chnlInvoiceTaxMapper.selectByPrimaryKey(info.getTaxId());
 		if(bean==null){
 			throw new BusinessException("审核异常：无此数据!");
+		}else if(!"10".equals(bean.getStatus())){
+			throw new BusinessException("审核状态异常：该记录审核状态为非待审核!");
 		}
 		ChnlInvoiceTax record = new ChnlInvoiceTax();
 		BeanUtils.copyProperties(record, info);
 		record.setUpdateTime(DateUtil.getNowAsDate());
 		int count = chnlInvoiceTaxMapper.updateByPrimaryKeySelective(record);
-		if("10".equals(info.getStatus())){
+		if("20".equals(info.getStatus())){
 			//更新authStaff表的认证状态
 			AuthStaff recordStaff = new AuthStaff();
 			recordStaff.setStaffId(bean.getStaffId());
@@ -91,7 +93,7 @@ public class ChnlInvoiceTaxSVImpl implements IChnlInvoiceTaxSV {
 		//查询条件赋值
 		ChnlInvoiceTaxExample example = new ChnlInvoiceTaxExample();
 		ChnlInvoiceTaxExample.Criteria criteria = example.createCriteria();
-		example.setOrderByClause(taxDTO.getGridQuerySortName() +" "+taxDTO.getGridQuerySortOrder());
+		example.setOrderByClause("create_time");
 		if(!StringUtils.isBlank(taxDTO.getStatus())){
 			criteria.andStatusEqualTo(taxDTO.getStatus());
 		}

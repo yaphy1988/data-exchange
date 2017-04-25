@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.bdex.dataexchange.busi.user.entity.InvoiceTaxVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
@@ -98,6 +99,7 @@ public class AuthenController {
 	 * @return
 	 */
 	@RequestMapping(value="/getcheckdata")
+	@ResponseBody
 	public Map<String,Object> getcheckdata(Model model,String status,String pageNo){
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		ReqInvoiceTaxDTO taxDTO = new ReqInvoiceTaxDTO();

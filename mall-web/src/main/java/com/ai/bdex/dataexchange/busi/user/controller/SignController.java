@@ -16,8 +16,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.ai.bdex.dataexchange.busi.login.controller.LoginController;
 import com.ai.bdex.dataexchange.busi.user.entity.UserSignVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
@@ -25,11 +23,12 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SignInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SmsSeccodeReqDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ISmsSeccodeRSV;
+import com.ai.paas.util.CacheUtil;
 
 @Controller
 @RequestMapping(value="/regist")
 public class SignController {
-	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
+	private static final Logger log = LoggerFactory.getLogger(SignController.class);
 	
 	@SuppressWarnings("SpringJavaAutowiringInspection")
 	@DubboConsumer

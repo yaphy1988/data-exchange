@@ -91,6 +91,20 @@
 	    			  opts.okCallBack.call();
 		          }
 	    	  }
+	    	  var hieobj = $('.modal-backdrop');
+	    		if(hieobj.length>0){
+	    			for(var i=0;i<hieobj.length;i++){
+	    				if(!$(hieobj[i]).hasClass('fade')){
+	    					$(hieobj[i]).remove();
+	    				}	    				
+	    			}
+	    		}
+	    	  window.setTimeout(function(){
+	    			 var obj = $(".modal-backdrop");
+	    				if(obj.length>0){
+	    					$("body").addClass('modal-open');
+	    				}
+	    	        },100);
 	    	}).modal({
 	    	  "backdrop":'static',
 	    	  "keyboard":false
