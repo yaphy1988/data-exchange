@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -101,17 +102,23 @@ public class HomePageController {
 	 * @return
 	 */
 	@RequestMapping(value="/queryPageModuleAd")
-	public String queryPageModuleAd(Model model,@PathVariable("moduleId") Integer moduleId){
+	@ResponseBody
+	public Map<String,Object> queryPageModuleAd(Model model,HttpServletRequest request){
+		String moduleId = request.getParameter("moduleId");
+		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {
 			PageModuleAdRespDTO pageModuleAdRespDTO = new PageModuleAdRespDTO();
-			pageModuleAdRespDTO.setModuleId(moduleId);
+			if(!StringUtils.isBlank(moduleId)){
+				pageModuleAdRespDTO.setModuleId(Integer.valueOf(moduleId));
+			}
 			pageModuleAdRespDTO.setStatus(STATUS_VALID);
 			List<PageModuleAdRespDTO> moduleAdList = iPageInfoRSV.queryPageModuleAdList(pageModuleAdRespDTO);
-			model.addAttribute("moduleAdList",moduleAdList);
+			rMap.put("moduleAdList", moduleAdList);
+			rMap.put("success", true);
 		} catch (Exception e) {
-			log.error("查询广告楼层信息出错："+e.getMessage());
+			log.error("查询广告楼层信息出错：楼层ID="+moduleId+","+e.getMessage());
 		}
-		return "";
+		return rMap;
 	}
 	/**
 	 * 查询商品分类信息
@@ -221,6 +228,25 @@ public class HomePageController {
 		}
 		return newstrinfo;
 	}
-
+	/**
+	 * 查询平台公告信息
+	 * @return
+	 */
+	@RequestMapping(value="/queryPageInfoList")
+	@ResponseBody
+	private Map<String,Object>  queryPageInfoList(){
+		Map<String,Object> rMap = new HashMap<String,Object>();
+		try {
+			PageInfoRespDTO sortInfoRespDTO = new PageInfoRespDTO();
+			sortInfoRespDTO.setStatus(STATUS_VALID);
+			List<PageInfoRespDTO> pageInfoList = iPageInfoRSV.queryPageInfoList(sortInfoRespDTO);
+			rMap.put("pageInfoList", pageInfoList);
+			rMap.put("success", true);
+		} catch (Exception e) {
+			rMap.put("success", false);
+			log.error("查询首页导航信息信息异常："+e.getMessage());
+		}
+		return rMap;
+	}
 
 }

@@ -93,7 +93,7 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
         List<PageInfoRespDTO> PageInfoRespList = new ArrayList<PageInfoRespDTO>();
         try{
         	 if (pageInfoRespDTO ==null ){
-                 throw new Exception("查询商品分类信息异常，入参为空");
+                 throw new Exception("查询热点信息异常，入参为空");
              }
         	 PageInfo exam = new PageInfo();
          	 BeanUtils.copyProperties( pageInfoRespDTO,exam);
@@ -106,7 +106,7 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
                     }
                  }   
         }catch(Exception e){
-        	log.error("获取商品分类信息异常:", e);
+        	log.error("获取热点信息异常:", e);
             throw new Exception(e);
         }
         return PageInfoRespList;
@@ -195,6 +195,18 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
           			PageModuleRespDTO pageModuleResp = new PageModuleRespDTO();
                     BeanUtils.copyProperties(pageModule, pageModuleResp); 
                     pageModuleRespDTOList.add(pageModuleResp);
+                    //查询子楼层
+                    exam.setModulePid(pageModule.getModuleId());
+                    List<PageModule> suPageModules = iPageModuleSV.queryPageModuleList(exam);
+                    if(!CollectionUtils.isEmpty(suPageModules)){
+                    	List<PageModuleRespDTO> subPageModuleList = new ArrayList<>();
+                    	for(PageModule subModule: suPageModules){
+                    		PageModuleRespDTO subPageModuleResp = new PageModuleRespDTO();
+                    		BeanUtils.copyProperties(subModule, subPageModuleResp); 
+                    		subPageModuleList.add(subPageModuleResp);
+                    	}
+                    	pageModuleResp.setSubPageModuleList(subPageModuleList);
+                    }
                 }
           	 }
         }catch(Exception e){

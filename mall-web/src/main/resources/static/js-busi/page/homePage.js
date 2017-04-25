@@ -61,7 +61,7 @@ function queryPageModue(){
 							
 							break;
 						case 104://04-平台动态
-							
+							queryModue104(d.moduleId);
 							break;
 						case 105://05-合作伙伴
 							
@@ -100,19 +100,57 @@ function querydata_recommend102(moduleId){
 	};
 	doAjax(url,moduleId,callBack);
 }
-//查询推荐楼层信息
+//查询轮播广告信息
 function queryModue101(moduleId){
-	var url = basePath+'/homePage/queryPageModuleGoods';
+	var url = basePath+'/homePage/queryPageModuleAd';
 	var callBack =function(data){
-		var html = "";
+		var htmlOl = '';
+		var htmDiv = '';
 		if(data.success){
-	        if(data.success){
-				$(data.hotSearchList).each(function(i,d){
-//					html +='<li><a href='+1+' target="_blank"><img src=11><span>推荐数据</span></a></li>';
-				});
-			}
-		 }
-		$('#data_recommend').html(html);
+			$(data.moduleAdList).each(function(i,d){
+				if(i==0){
+					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="active"></li>';
+					htmDiv +='<div class="item active">'+
+	                '<img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'">'+
+	            '</div>';
+				}else{
+					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'"></li>';
+					htmDiv +='<div class="item">'+
+		                '<img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'">'+
+		            '</div>';
+				}
+			});
+		}
+		$('#carousel-example-generic>ol').html(htmlOl);
+		$('#carousel-example-generic>div').html(htmDiv);
+		$('#carousel-example-generic').carousel('cycle');
+	};
+	doAjax(url,moduleId,callBack);
+}
+//查询平台动态公告信息
+function queryModue104(moduleId){
+	var url = basePath+'/homePage/queryPageModuleAd';
+	var callBack =function(data){
+		var htmlOl = '';
+		var htmDiv = '';
+		if(data.success){
+			$(data.moduleAdList).each(function(i,d){
+				if(i==0){
+					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="active"></li>';
+					htmDiv +='<div class="item active">'+
+	                '<img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'">'+
+	            '</div>';
+				}else{
+					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'"></li>';
+					htmDiv +='<div class="item">'+
+		                '<img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'">'+
+		            '</div>';
+				}
+			});
+		}
+		$('#carousel-example-generic>ol').html(htmlOl);
+		$('#carousel-example-generic>div').html(htmDiv);
+		$('#carousel-example-generic').carousel('cycle');
 	};
 	doAjax(url,moduleId,callBack);
 }

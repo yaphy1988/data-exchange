@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
@@ -33,7 +34,17 @@ public class PageModuleRespDTO  extends BaseInfo{
 
     private Date updateTime;
 
-    public Integer getModuleId() {
+    private List<PageModuleRespDTO> subPageModuleList;
+    
+	public List<PageModuleRespDTO> getSubPageModuleList() {
+		return subPageModuleList;
+	}
+
+	public void setSubPageModuleList(List<PageModuleRespDTO> subPageModuleList) {
+		this.subPageModuleList = subPageModuleList;
+	}
+
+	public Integer getModuleId() {
         return moduleId;
     }
 
