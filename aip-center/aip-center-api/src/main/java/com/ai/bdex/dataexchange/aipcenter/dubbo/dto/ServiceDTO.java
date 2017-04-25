@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.aipcenter.dubbo.dto;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 public class ServiceDTO implements Serializable{
 	private static final long serialVersionUID = 1L;
@@ -321,5 +322,42 @@ public class ServiceDTO implements Serializable{
 	public void setProviderStatus(String providerStatus) {
 		this.providerStatus = providerStatus;
 	}
+   private List<AipServiceInParaDTO> serviceInParas;
+   private List<AipServiceOutParaDTO> serviceOutParas;
+   private List<AipServiceErrorInfoDTO> serviceErrores;
+   private List<AipServiceCodeInfoDTO> serviceCodeInfoes;
+
+public List<AipServiceInParaDTO> getServiceInParas() {
+	return serviceInParas;
+}
+
+public void setServiceInParas(List<AipServiceInParaDTO> serviceInParas) {
+	this.serviceInParas = serviceInParas;
+}
+
+public List<AipServiceOutParaDTO> getServiceOutParas() {
+	return serviceOutParas;
+}
+
+public void setServiceOutParas(List<AipServiceOutParaDTO> serviceOutParas) {
+	this.serviceOutParas = serviceOutParas;
+}
+
+public List<AipServiceErrorInfoDTO> getServiceErrores() {
+	return serviceErrores;
+}
+
+public void setServiceErrores(List<AipServiceErrorInfoDTO> serviceErrores) {
+	this.serviceErrores = serviceErrores;
+}
+
+public List<AipServiceCodeInfoDTO> getServiceCodeInfoes() {
+	return serviceCodeInfoes;
+}
+
+public void setServiceCodeInfoes(List<AipServiceCodeInfoDTO> serviceCodeInfoes) {
+	this.serviceCodeInfoes = serviceCodeInfoes;
+}
+   
    
 }
