@@ -5,7 +5,7 @@
 
 	<groupId>com.ai.bdex.dataexchange</groupId>
 	<artifactId>mall-web</artifactId>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
 	<name>mall-web</name>
 	<description>mall-web</description>
