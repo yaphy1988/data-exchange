@@ -53,7 +53,7 @@ function queryPageModue(){
 					 $(data.pageModuleList).each(function(i,d){
 						 switch (d.moduleId) {
 						case 101://01-首页轮播广告；
-							//queryModue101(d.moduleId);
+							queryModue101(d.moduleId);
 							break;
 						case 102://01-首页数据推荐；
 							querydata_recommend102(d.moduleId);
@@ -124,7 +124,7 @@ function queryModue101(moduleId){
 		}
 		$('#carousel-example-generic>ol').html(htmlOl);
 		$('#carousel-example-generic>div').html(htmDiv);
-		$('#carousel-example-generic').carousel('cycle');
+		$('#carousel-example-generic').carousel({interval: 3000});
 	};
 	doAjax(url,moduleId,callBack);
 }
@@ -132,26 +132,11 @@ function queryModue101(moduleId){
 function queryModue104(moduleId){
 	var url = basePath+'/homePage/queryPageModuleAd';
 	var callBack =function(data){
-		var htmlOl = '';
-		var htmDiv = '';
 		if(data.success){
 			$(data.moduleAdList).each(function(i,d){
-				if(i==0){
-					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="active"></li>';
-					htmDiv +='<div class="item active">'+
-	                '<img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'">'+
-	            '</div>';
-				}else{
-					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'"></li>';
-					htmDiv +='<div class="item">'+
-		                '<img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'">'+
-		            '</div>';
-				}
+				
 			});
 		}
-		$('#carousel-example-generic>ol').html(htmlOl);
-		$('#carousel-example-generic>div').html(htmDiv);
-		$('#carousel-example-generic').carousel('cycle');
 	};
 	doAjax(url,moduleId,callBack);
 }

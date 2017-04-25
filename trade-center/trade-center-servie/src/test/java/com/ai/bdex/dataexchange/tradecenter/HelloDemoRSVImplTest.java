@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.IDemoSV;
 
 import java.util.List;
@@ -24,7 +24,7 @@ public class HelloDemoRSVImplTest {
 	 @Autowired
 	    private IDemoSV demoRSV;
 	 @Autowired
-	    private IPageInfoRSV iPageInfoRSV;
+	    private IPageDisplayRSV iPageNewsInfoRSV;
 	 
     @Test
     public void helloWorld() throws Exception { 
@@ -33,7 +33,7 @@ public class HelloDemoRSVImplTest {
     	System.out.print(demoinfo);*/
      	SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
     	sortInfoRespDTO.setStatus("1");
-    	 List<SortInfoRespDTO>  list = iPageInfoRSV.querySortInfos(sortInfoRespDTO);
+    	 List<SortInfoRespDTO>  list = iPageNewsInfoRSV.querySortInfos(sortInfoRespDTO);
     	 String aa = list.get(0).getSortLevel();
     	 System.out.print("-------------AA chulailai------"+aa+"-----------------");
      }

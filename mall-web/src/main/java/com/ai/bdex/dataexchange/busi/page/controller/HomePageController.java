@@ -5,24 +5,29 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
-
-import javax.servlet.http.HttpServletResponse;
 
 
 /**
@@ -42,7 +47,7 @@ public class HomePageController {
 	private static final Logger log = LoggerFactory.getLogger(HomePageController.class);
 
 	@DubboConsumer
-	IPageInfoRSV iPageInfoRSV;
+	IPageDisplayRSV iPageDisplayRSV;
 	@RequestMapping(value="/pageInit")
 	public ModelAndView  pageInit(){
 		ModelAndView modelAndView = new ModelAndView("index");
@@ -61,7 +66,7 @@ public class HomePageController {
 		try {
 			PageModuleRespDTO pageModuleRespDTO = new PageModuleRespDTO();
 			pageModuleRespDTO.setStatus(STATUS_VALID);
-			List<PageModuleRespDTO> pageModuleList = iPageInfoRSV.queryPageModuleList(pageModuleRespDTO);
+			List<PageModuleRespDTO> pageModuleList = iPageDisplayRSV.queryPageModuleList(pageModuleRespDTO);
 			rMap.put("pageModuleList", pageModuleList);
 			rMap.put("success", true);
 		} catch (Exception e) {
@@ -87,10 +92,10 @@ public class HomePageController {
 			PageModuleGoodsRespDTO pageModuleGoodsRespDTO = new PageModuleGoodsRespDTO();
 			pageModuleGoodsRespDTO.setModuleId(moduleId);
 			pageModuleGoodsRespDTO.setStatus(STATUS_VALID);
-			PageResponseDTO<PageModuleGoodsRespDTO> moduleGoodsList = iPageInfoRSV.queryPageModuleGoodsList(pageModuleGoodsRespDTO);
 			//通过商品id去搜索商品信息，获取到商品的图片ID
 	/*		IGdsInfoRSV.queryGdsInfoList(GdsInfoReqDTO gdsInfoReqDTO);
 			IGdsInfoRSV.queryGdsInfo(GdsInfoReqDTO gdsInfoReqDTO);*/
+			PageResponseDTO<PageModuleGoodsRespDTO> moduleGoodsList = iPageDisplayRSV.queryPageModuleGoodsList(pageModuleGoodsRespDTO);
 			rMap.put("moduleGoodsList",moduleGoodsList);
  			rMap.put("success", true);
 		} catch (Exception e) {
@@ -115,7 +120,7 @@ public class HomePageController {
 				pageModuleAdRespDTO.setModuleId(Integer.valueOf(moduleId));
 			}
 			pageModuleAdRespDTO.setStatus(STATUS_VALID);
-			List<PageModuleAdRespDTO> moduleAdList = iPageInfoRSV.queryPageModuleAdList(pageModuleAdRespDTO);
+			List<PageModuleAdRespDTO> moduleAdList = iPageDisplayRSV.queryPageModuleAdList(pageModuleAdRespDTO);
 			rMap.put("moduleAdList", moduleAdList);
 			rMap.put("success", true);
 		} catch (Exception e) {
@@ -146,7 +151,7 @@ public class HomePageController {
 			if(!StringUtils.isBlank(sortLever)){
 				sortInfoRespDTO.setSortLevel(sortLever);
 			}
-			List<SortInfoRespDTO> sortInfos = iPageInfoRSV.querySortInfos(sortInfoRespDTO);
+			List<SortInfoRespDTO> sortInfos = iPageDisplayRSV.querySortInfos(sortInfoRespDTO);
 			rMap.put("success", true);
 			rMap.put("sortInfos",sortInfos);
 		} catch (Exception e) {
@@ -165,7 +170,7 @@ public class HomePageController {
 		try {
 			PageHotSearchRespDTO pageHotSearchRespDTO = new PageHotSearchRespDTO();
 			pageHotSearchRespDTO.setStatus(STATUS_VALID);
-			List<PageHotSearchRespDTO> hotSearchList = iPageInfoRSV.queryPageHotSearchList(pageHotSearchRespDTO);
+			List<PageHotSearchRespDTO> hotSearchList = iPageDisplayRSV.queryPageHotSearchList(pageHotSearchRespDTO);
 			rMap.put("hotSearchList", hotSearchList);
 			rMap.put("success", true);
 		} catch (Exception e) {
@@ -184,7 +189,7 @@ public class HomePageController {
 		try {
 			PageHeaderNavRespDTO pageHeaderNavRespDTO = new PageHeaderNavRespDTO();
 			pageHeaderNavRespDTO.setStatus(STATUS_VALID);
-			List<PageHeaderNavRespDTO> searchNavList = iPageInfoRSV.queryPageHeaderNavList(pageHeaderNavRespDTO);
+			List<PageHeaderNavRespDTO> searchNavList = iPageDisplayRSV.queryPageHeaderNavList(pageHeaderNavRespDTO);
 			rMap.put("searchNavList", searchNavList);
 			rMap.put("success", true);
 		} catch (Exception e) {
@@ -216,7 +221,7 @@ public class HomePageController {
 			dataCustomizationRespDTO.setCustomMail(lnkemail);
 			dataCustomizationRespDTO.setCreateStaffId("chuangjianren");
  			dataCustomizationRespDTO.setStatus(CUSTOMDATA_STATUS_VALID);
-			int count = iPageInfoRSV.saveDataCustomizationRsv(dataCustomizationRespDTO);
+			int count = iPageDisplayRSV.saveDataCustomizationRsv(dataCustomizationRespDTO);
 			model.addAttribute("savecount",count);
 		} catch (Exception e) {
 			log.error("查询首页导航信息信息异常："+e.getMessage());
@@ -237,12 +242,20 @@ public class HomePageController {
 	 */
 	@RequestMapping(value="/queryPageInfoList")
 	@ResponseBody
-	private Map<String,Object>  queryPageInfoList(){
+	private Map<String,Object>  queryPageInfoList(HttpServletRequest request){
+		String pageNo =request.getParameter("pageNo");
+		String pageSize =request.getParameter("pageSize");
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {
-			PageInfoRespDTO sortInfoRespDTO = new PageInfoRespDTO();
+			PageNewsInfoRespDTO sortInfoRespDTO = new PageNewsInfoRespDTO();
 			sortInfoRespDTO.setStatus(STATUS_VALID);
-			List<PageInfoRespDTO> pageInfoList = iPageInfoRSV.queryPageInfoList(sortInfoRespDTO);
+			if(!StringUtils.isBlank(pageNo)){
+//				sortInfoRespDTO.
+			}
+			if(!StringUtils.isBlank(pageSize)){
+				
+			}
+			PageResponseDTO<PageNewsInfoRespDTO> pageInfoList = iPageDisplayRSV.queryPageNewsInfoList(sortInfoRespDTO);
 			rMap.put("pageInfoList", pageInfoList);
 			rMap.put("success", true);
 		} catch (Exception e) {
