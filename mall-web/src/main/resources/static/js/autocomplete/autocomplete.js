@@ -30,7 +30,7 @@ Author: Lorenzo Cioni - https://github.com/lorecioni
 			//Container
 			var searchContainer = $('<div></div>')
 				.addClass('autocomplete-container')
-				.css('height', params.height * 2);
+				.css('height', params.height);
 				
 			//Text input		
 			var input = $('<input type="text" id="searchTxt" autocomplete="off" name="query">')
@@ -50,7 +50,7 @@ Author: Lorenzo Cioni - https://github.com/lorecioni
 			var proposals = $('<div></div>')
 				.addClass('proposal-box')
 				.css('width', params.width + 0)
-				.css('top', input.height() + 20);
+				.css('top', input.height() + 0);
 			var proposalList = $('<ul></ul>')
 				.addClass('proposal-list');
 
@@ -180,7 +180,7 @@ Author: Lorenzo Cioni - https://github.com/lorecioni
 			
 			if(params.showButton){
 				//Width fix
-				searchContainer.css('width', params.width + button.width() + 50);
+				searchContainer.css('width', params.width + button.width() + 60);
 			}
 		});
 
