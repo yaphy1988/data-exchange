@@ -10,7 +10,6 @@ import com.ai.bdex.dataexchange.usercenter.dao.mapper.DemoMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.BaseSysCfgMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.model.Demo;
 import com.ai.bdex.dataexchange.usercenter.dao.model.DemoExample;
-import com.ai.bdex.dataexchange.usercenter.util.SpringBeanUtils;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.bdex.dataexchange.usercenter.dao.model.BaseSysCfg;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqDemoDTO;
@@ -85,15 +84,15 @@ public class DemoSVImpl implements IDemoSV {
 	}
 
     private void insertTest(){
-		Demo model = new Demo();
-		Object test = CacheUtil.getItem("fangyfkey1");
-		SequenceFactory sequenceFactory = SpringBeanUtils.getBean(SequenceFactory.class);
-		model.setId(SeqUtil.getInt("SEQ_DEMO"));
-		model.setUserName("fangyf_"+model.getId());
-		model.setAddr("gx");
-		//model.set
-		//插入
-		demoMapper.insert(model);
+//		Demo model = new Demo();
+//		Object test = CacheUtil.getItem("fangyfkey1");
+//		SequenceFactory sequenceFactory = SpringBeanUtils.getBean(SequenceFactory.class);
+//		model.setId(SeqUtil.getInt("SEQ_DEMO"));
+//		model.setUserName("fangyf_"+model.getId());
+//		model.setAddr("gx");
+//		//model.set
+//		//插入
+//		demoMapper.insert(model);
 	}
 
 	private void updateByPrimaryKeyTest(){
