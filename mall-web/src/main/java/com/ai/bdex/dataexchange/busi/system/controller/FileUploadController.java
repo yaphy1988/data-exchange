@@ -49,13 +49,13 @@ public class FileUploadController {
 						return this.toJsonString(result);
 					}
 					String fileId = ImageUtil.upLoadImage(fileios, fileName);
-					String imageUrl = ImageUtil.getImageUrl(fileId);
+//					String imageUrl = ImageUtil.getImageUrl(fileId);
 	        	    
 	        	    result.put("status", "1");
 	        	    result.put("fileId", fileId);
 	        	    result.put("fileName", fileName);
 	        	    result.put("fileType", fileType);
-	        	    result.put("imageUrl", imageUrl);
+//	        	    result.put("imageUrl", imageUrl);
 	        	    
 	        	    return this.toJsonString(result);
 				}

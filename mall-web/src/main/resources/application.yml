@@ -26,7 +26,7 @@ application:
   session:
     confpath: /com/ai/paas/session/conf
   image:
-    confpath: /com/ai/paas/image/conf
+    confpath: /com/ai/paas/gmimage/conf
   file:
     confpath: /com/ai/paas/file/conf
   captcha:

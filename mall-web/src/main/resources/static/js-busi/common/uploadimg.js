@@ -30,7 +30,6 @@ function uploadImage($file,callback){
 				callback(data);
 			}else{
 				WEB.msg.info('提示',data.msg,null);
-				$("#"+fileElementId).val("");
 			}
 		}, // 服务器成功响应处理函数
 		error : function(data, status, e) // 服务器响应失败处理函数

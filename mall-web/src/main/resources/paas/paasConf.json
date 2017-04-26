@@ -35,33 +35,33 @@
     "userName": "sa",
     "password": "f938d82df85971d2"
   },
-  "/com/ai/paas/image/conf": {
-    "gmMode": "true",
-    "gmPath": "/usr/local/bin/gm",
-    "imageType": ".jpg,.png,.gif",
-    "maxActive": "150",
-    "maxIdle": "20",
-    "maxWait": "1000",
-    "testOnBorrow": "false",
-    "testOnReturn": "true",
-    "originalPath": "woegoimage/images/",
-    "thumbnailPath": "woegoimage/thumbnail/",
-    "reserveImage": "woegoimage/fallback/",
-    "upPath": "woegoimage/upload/",
-    "upPathNew": "woegoimage/images/",
-    "uploadUrl": "http://112.74.163.29/imageServer",
-    "extent": "false",
-    "redisKeyPrefix": "static-",
-    "varnishServer": [
-      {
-        "host": "127.0.0.1",
-        "port": "8000"
-      }
-    ],
-    "commandSize": "20",
-    "primaryParam": "productId",
-    "serverUrl": "http://112.74.163.29/imageServer"
-  },
+ "/com/ai/paas/gmimage/conf": {
+  "gmMode": "true",
+  "gmPath": "/opt/freeware/GraphicsMagick/bin/gm",
+  "imageType": ".jpg,.png,.gif",
+  "maxActive": "150",
+  "maxIdle": "20",
+  "maxWait": "1000",
+  "testOnBorrow": "false",
+  "testOnReturn": "true",
+  "originalPath": "woegoimage/images/",
+  "thumbnailPath": "woegoimage/thumbnail/",
+  "reserveImage": "woegoimage/fallback/",
+  "upPath": "woegoimage/upload/",
+  "upPathNew": "woegoimage/images/",
+  "uploadUrl": "http://112.74.163.29:14751/ImageServer",
+  "extent": "false",
+  "redisKeyPrefix": "static-",
+  "varnishServer": [
+   {
+    "host": "127.0.0.1",
+    "port": "8000"
+   }
+  ],
+  "commandSize": "20",
+  "primaryParam": "productId",
+  "serverUrl": "http://112.74.163.29:14751/ImageServer"
+ },
   "/com/ai/paas/qrcode/conf": {
     "codePrefix": "http://abc.woego.cn/c?",
     "codeSurfix": "",
