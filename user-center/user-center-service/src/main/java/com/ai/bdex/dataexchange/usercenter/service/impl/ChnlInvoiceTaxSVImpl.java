@@ -130,4 +130,17 @@ public class ChnlInvoiceTaxSVImpl implements IChnlInvoiceTaxSV {
 		return null;
 	}
 
+	@Override
+	public int updateCheckInfo(ChnlInvoiceTaxDTO info) throws Exception {
+		ChnlInvoiceTax record = new ChnlInvoiceTax();
+		BeanUtils.copyProperties(record, info);
+		record.setUpdateStaff(info.getStaffId());
+		record.setUpdateTime(DateUtil.getNowAsTimestamp());
+		ChnlInvoiceTaxExample example = new ChnlInvoiceTaxExample();
+		ChnlInvoiceTaxExample.Criteria sql = example.createCriteria();
+		sql.andStaffIdEqualTo(info.getStaffId());
+		return chnlInvoiceTaxMapper.updateByExampleSelective(record, example);
+		
+	}
+
 }

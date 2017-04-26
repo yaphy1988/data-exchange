@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
@@ -59,11 +58,11 @@ public class LoginController {
 		String verifyCode = request.getParameter("verifyCode");
 		String veriCodeInSession = CaptchaUtil.getCaptchaCode(request);
 //		验证码注释
-		if (!CaptchaUtil.verifyCaptcha(request, verifyCode)) {
-			rMap.put("success", false);
-			rMap.put("errorMsg", "验证码输入错误");
-			return rMap;
-		}
+//		if (!CaptchaUtil.verifyCaptcha(request, verifyCode)) {
+//			rMap.put("success", false);
+//			rMap.put("errorMsg", "验证码输入错误");
+//			return rMap;
+//		}
 
 		loginInfo = new LoginInfoDTO();
 		loginInfo.setLoginName(staffId);
@@ -95,7 +94,7 @@ public class LoginController {
 		staffInfoVO = iLoginRSV.loginVerify(loginInfo);
 		Map<String,Object> result = new HashMap<String,Object>();
 		try{
-//			result = saveStaffInfotoSession(staffInfoVO, response,request,session);
+			result = saveStaffInfotoSession(staffInfoVO, response,request,session);
 			iLoginRSV.updateLastLogin(staffInfoVO.getStaffId());
 		}catch (Exception e){
 			log.error(e.getMessage());

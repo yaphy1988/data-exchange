@@ -24,7 +24,7 @@ function doLogin(){
 			},
 		success : function(obj){
 			if(obj.success){
-				window.location.href = WEB_ROOT + "/main/pageInit";
+				window.location.href = WEB_ROOT + "/homePage/pageInit";
 			}else{
 				//刷新验证码
 				alert(obj.errorMsg);

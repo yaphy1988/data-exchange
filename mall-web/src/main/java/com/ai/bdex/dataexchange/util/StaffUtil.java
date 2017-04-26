@@ -70,7 +70,7 @@ public class StaffUtil {
 	public static StaffInfoDTO getStaffVO(HttpSession session){
 		Object obj = session.getAttribute(STAFF_INFO);
 		if(obj == null){
-			return null;
+			return new StaffInfoDTO();
 		}
 		return (StaffInfoDTO)obj;
 	}

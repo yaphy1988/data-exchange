@@ -46,4 +46,12 @@ public interface IChnlInvoiceTaxRSV {
 	 * @throws Exception
 	 */
 	PageResponseDTO<ChnlInvoiceTaxDTO> queryTaxPage(ReqInvoiceTaxDTO taxDTO) throws BusinessException;
+	
+	/**
+	 * 更新审核记录
+	 * @param info
+	 * @return
+	 * @throws BusinessException
+	 */
+	public int updateCheckInfo(ChnlInvoiceTaxDTO info)throws BusinessException;
 }

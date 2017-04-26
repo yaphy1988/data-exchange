@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{fragments/layout}">
-<head>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{fragments/syshead :: syshead}"></div>
+<link rel="stylesheet" href="../../static/css/manage.css" th:href="@{/css/manage.css}">
+<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+<head th:remove="all">
 	<meta charset="UTF-8">
 	<title>个人中心-企业认证审核详情</title>
 	<link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
@@ -11,7 +12,8 @@
 	<link rel="stylesheet" href="../../static/css/manage.css" th:remove="all">
 </head>
 <body>
-<header class="clearfix m_header">
+<div th:replace="~{fragments/top :: top}"></div>
+<header class="clearfix m_header" th:remove="all">
 	<a href="" class="Logo" target="_blank" >
 		<img width="160" src="../../static/images/manage_logo.jpg" alt="广州数据" >
 	</a>
@@ -58,14 +60,14 @@
 			</div>
 			<hr>
 			<!-- <div class="title">实名认证</div> -->
-			<h4 class="alert alert-info btn_rec " role="alert">
-				<i class="glyphicon glyphicon-exclamation-sign pr10"></i>正在认证中，请耐心等待！
+			<h4 class="alert alert-info btn_rec " role="alert" th:if="${status=='10'}" >
+				<i class="glyphicon glyphicon-exclamation-sign pr10"></i><span>正在认证中，请耐心等待！</span>
 			</h4>
-			<h4 class="alert alert-success btn_rec" role="alert">
-				<i class="glyphicon glyphicon-ok-sign pr10"></i>恭喜您，已认证成功！
+			<h4 class="alert alert-success btn_rec" role="alert" th:if="${status=='20'}" >
+				<i class="glyphicon glyphicon-ok-sign pr10"></i><span>恭喜您，已认证成功！</span>
 			</h4>
-			<h4 class="alert alert-danger" role="alert">
-				<i class="glyphicon glyphicon-remove-sign pr10"></i>认证失败，……
+			<h4 class="alert alert-danger" role="alert" th:if="${status=='30'}" >
+				<i class="glyphicon glyphicon-remove-sign pr10"></i><span th:text="${msg}">认证失败，……</span>
 			</h4>
 			<div class="borTable">
 				<table class="editTable table-hover ">
@@ -76,24 +78,24 @@
 						<td  width="35%">
 							企业认证
 						</td>
-						<td class="Hint">
+						<td class="Hint" >
 							营业执照编号:
 						</td>
-						<td width="35%">
+						<td width="35%" th:text="${data.taxpayerNo}">
 							92482482391301
 						</td>
 					</tr>
 					<tr>
-						<td class="Hint">
+						<td class="Hint" >
 							公司名称:
 						</td>
-						<td >
+						<td th:text="${data.invoiceTitle}">
 							广西奥博啊实打实大
 						</td>
 						<td class="Hint">
 							税务登记编号:
 						</td>
-						<td >
+						<td th:text="${data.taxNo}">
 							92482482391301
 						</td>
 					</tr>
@@ -101,13 +103,13 @@
 						<td class="Hint">
 							公司地址:
 						</td>
-						<td >
+						<td th:text="${data.contactInfo}">
 							广西南宁青秀区………………
 						</td>
 						<td class="Hint">
 							组织机构编号:
 						</td>
-						<td >
+						<td th:text="${data.organCode}">
 							
 						</td>
 					</tr>
@@ -115,7 +117,7 @@
 						<td class="Hint">
 							联系人姓名:
 						</td>
-						<td >
+						<td th:text="${data.relName}">
 							阿萨德
 						</td>
 						<td class="Hint">
@@ -123,7 +125,7 @@
 							
 						</td>
 						<td >
-							<img src="" width="80" height="80">
+							<img src="" width="80" height="80" th:src="${data.picSrc}">
 							<a href="" class="btn  btn-sm">预览</a>
 						</td>
 					</tr>
@@ -131,7 +133,7 @@
 						<td class="Hint">
 							联系人电话:
 						</td>
-						<td >
+						<td th:text="${data.phone}">
 							13344456667
 						</td>
 						<td >
@@ -147,7 +149,7 @@
 						</td>
 						<td colspan="3">
 							
-						<textarea rows="5" cols="80" placeholder="tips"></textarea>
+						<textarea rows="5" cols="80" placeholder="tips" disabled th:text="${data.checkDesc}"></textarea>
 						</td>
 					</tr>
 				</table>	
@@ -157,8 +159,8 @@
 		</div>
 		<!-- 按钮 -->
 			<hr>
-			<div class="p20 text-center " style="margin-left: 220px;">
-				<a href="" class="btn-primary btn mr10">重新认证</a>
+			<div class="p20 text-center " style="margin-left: 220px;" th:if="${status=='30'}" >
+				<a href="/authenapply/userinfo?type=reapply" class="btn-primary btn mr10">重新认证</a>
 			</div>
 	</div>
 	<div class="m_nav">
@@ -211,6 +213,9 @@
 	
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+	<script type="text/javascript">
+	$("#mainTopDiv").addClass('clearfix m_header');
+	</script>
 
 </body>
 </html>

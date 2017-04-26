@@ -188,7 +188,16 @@ public class InvoiceTaxVO implements Serializable{
     *
     * @mbg.generated Mon Apr 17 20:36:45 CST 2017
     */
-   public Long getTaxId() {
+   private String picSrc;
+   public String getPicSrc() {
+	return picSrc;
+}
+
+public void setPicSrc(String picSrc) {
+	this.picSrc = picSrc;
+}
+
+public Long getTaxId() {
        return taxId;
    }
 

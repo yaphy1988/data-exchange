@@ -90,4 +90,18 @@ public class ChnlInvoiceTaxRSVImpl implements IChnlInvoiceTaxRSV {
 		}
 	}
 
+	@Override
+	public int updateCheckInfo(ChnlInvoiceTaxDTO info) throws BusinessException {
+		try {
+			return iChnlInvoiceTaxSV.updateCheckInfo(info);
+		} catch (Exception e) {
+			if (e instanceof BusinessException)
+				throw (BusinessException) e;
+			else {
+				log.error("更新审核记录异常：" + e.getMessage());
+				throw new BusinessException("更新审核记录异常:" + e.getMessage());
+			}		
+		}
+	}
+
 }

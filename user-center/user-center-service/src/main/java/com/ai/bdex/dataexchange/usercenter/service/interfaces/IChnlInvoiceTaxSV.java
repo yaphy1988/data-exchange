@@ -47,4 +47,12 @@ public interface IChnlInvoiceTaxSV {
 	 * @throws BusinessException
 	 */
 	public List<ChnlInvoiceTaxDTO> queryInvoiceRecord(ReqInvoiceTaxDTO input)throws Exception;
+	
+	/**
+	 * 更新审核记录
+	 * @param info
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateCheckInfo(ChnlInvoiceTaxDTO info)throws Exception;
 }

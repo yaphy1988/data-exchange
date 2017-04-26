@@ -1,17 +1,36 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{fragments/layout}">
-<head>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{fragments/syshead :: syshead}"></div>
+<link rel="stylesheet" href="../../static/css/manage.css" th:href="@{/css/manage.css}">
+<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+<head th:remove="all">
 	<meta charset="UTF-8">
 	<title>个人中心-企业认证</title>
 	<link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
-	<link rel="stylesheet" href="../../static/css/manage.css" th:remove="all">
+	
 </head>
+<script type="text/javascript" th:src="@{/js-busi/authenapply/authenapply.js}"></script>
+<script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
+<style type="text/css">
+	.error-tip{
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    padding: 0px 8px;
+    margin-bottom: 4px;
+    background: #f9e4d6;
+    color: #ec6000;
+}
+.error-tip i{
+    font-size: 12px;
+    margin-right: 4px;
+}
+	</style>
 <body>
-<header class="clearfix m_header">
+<div th:replace="~{fragments/top :: top}"></div>
+<header class="clearfix m_header" th:remove="all">
 	<a href="" class="Logo" target="_blank" >
 		<img width="160" src="../../static/images/manage_logo.jpg" alt="广州数据" >
 	</a>
@@ -60,7 +79,7 @@
 			
 			<div class="title">基本信息填写</div>
 			<table class="editTable ">
-					<tr>
+					<tr style="display:none;">
 						<td class="Hint" width="140">
 							认证类型:
 						</td>
@@ -80,11 +99,12 @@
 						
 					</tr>
 					<tr>
-						<td class="Hint">
+						<td class="Hint" width="140">
 							<span class="col_red">*</span>公司名称:
 						</td>
-						<td width="520">
-							<input class="form-control" placeholder="" type="text">
+						<td width="520" id="invoiceTitle_td">
+							<input class="form-control" placeholder="" type="text" id="invoiceTitle" maxlength="128">
+							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
 						</td>
 					</tr>
 					<tr>
@@ -94,23 +114,26 @@
 						<td >
 							<form class="form-inline">
 							  <div class="form-group">
-							    <select  class="form-control" >
-							    	 <option>省份</option>
-							    	 <option>1</option>
-							    	 <option>2</option>
-							    	 <option>3</option>
+							    <select  class="form-control" id="province">
+							    	 <option value="">省份</option>
+							    	 <option value="59">广西</option>
+							    	 <option value="71">湖南</option>
+							    	 <option value="74">广东</option>
 							    </select>
-							    <select  class="form-control">
-							    	<option>地级市</option>
-							    	 <option>1</option>
-							    	 <option>2</option>
-							    	 <option>3</option>
+							    <select  class="form-control" id="city">
+							    	<option value="">地级市</option>
+							    	 <option value="59">广西</option>
+							    	 <option value="71">湖南</option>
+							    	 <option value="74">广东</option>
 							    </select>
-							    <select  class="form-control"><option>市、县级市、县</option>
-							    	 <option>1</option>
-							    	 <option>2</option>
-							    	 <option>3</option></select>
+							    <select  class="form-control" id="country">
+							         <option>市、县级市、县</option>
+							    	 <option value="59">广西</option>
+							    	 <option value="71">湖南</option>
+							    	 <option value="74">广东</option>
+							    </select>
 							  </div>
+							  <p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
 							  </form>
 						</td>
 						
@@ -120,7 +143,8 @@
 							<span class="col_red">*</span>详细地址:
 						</td>
 						<td >
-							<input class="form-control" placeholder="" type="text">
+							<input class="form-control" placeholder="" type="text" id="detailAddress" maxlength="256">
+							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
 						</td>
 					</tr>
 			</table>	
@@ -131,7 +155,8 @@
 							<span class="col_red">*</span>营业执照编号:
 						</td>
 						<td >
-							<input class="form-control" placeholder="" type="text">
+							<input class="form-control" placeholder="" type="text" id="taxpayerNo" maxlength=64>
+							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
 						</td>
 						
 					</tr>
@@ -140,7 +165,8 @@
 							税务登记证编号:
 						</td>
 						<td width="520">
-							<input class="form-control" placeholder="" type="text">
+							<input class="form-control" placeholder="" type="text" id="taxNo" maxlength="64">
+							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
 						</td>
 					</tr>
 					<tr>
@@ -148,7 +174,8 @@
 							组织机构编号:
 						</td>
 						<td >
-							<input class="form-control" placeholder="" type="text">
+							<input class="form-control" placeholder="" type="text" id="organCode">
+							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
 						</td>
 						
 					</tr>
@@ -173,7 +200,8 @@
 							<span class="col_red">*</span>联系人姓名:
 						</td>
 						<td >
-							<input class="form-control" placeholder="" type="text">
+							<input class="form-control" placeholder="" type="text" id="relName" maxlength="16">
+							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
 							 
 						</td>
 					</tr>
@@ -183,8 +211,10 @@
 							<span class="col_red">*</span>联系人电话:
 						</td>
 						<td width="520">
-							<input class="form-control" placeholder="" type="text">
+							<input class="form-control" placeholder="" type="text" id="phone" maxlength="11">
+							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
 						</td>
+						
 					</tr>
 			</table>
 
@@ -193,7 +223,7 @@
 		<!-- 按钮 -->
 			<hr>
 			<div class="p20 text-center " style="margin-left: 220px;">
-				<a href="" class="btn-primary btn mr10">提交认证</a>
+				<a href="javascript:;" class="btn-primary btn mr10" onclick="saveapply();" id="savebtn">提交认证</a>
 			</div>
 	</div>
 
@@ -248,6 +278,12 @@
 	
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+	<script type="text/javascript">
+	$("#mainTopDiv").addClass('clearfix m_header');
+	</script>
+	<style type="text/css">
+	.m_header{height:auto;}
+	</style>
 
 </body>
 </html>
