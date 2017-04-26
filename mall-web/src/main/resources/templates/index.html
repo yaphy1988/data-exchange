@@ -272,15 +272,45 @@
     <div class="wrap1200 pt60 pb60">
     <div class="parter">
         <h3 class="title"><i class="point"></i>合作伙伴</h3>
-        <ul id="partnert_div">
-            <li th:remove="all">
+        <div id="partnertCarousel" class="carousel slide vertical">
+			<!-- Carousel items -->
+			<div class="carousel-inner" th:remove="body">
+				<div class="active itemv parter-sub">
+					<a href="#"><img src="../static/images/partner/partner-img01.png" th:src="@{/images/partner/partner-img01.png}"> </a>
+	                <a href="#"><img src="../static/images/partner/partner-img02.png" th:src="@{/images/partner/partner-img02.png}"></a>
+	                <a href="#"><img src="../static/images/partner/partner-img03.png" th:src="@{/images/partner/partner-img03.png}"></a>
+	                <a href="#"><img src="../static/images/partner/partner-img04.png" th:src="@{/images/partner/partner-img04.png}"></a>
+	                <a href="#"><img src="../static/images/partner/partner-img05.png" th:src="@{/images/partner/partner-img05.png}"></a>
+				</div>
+				<div class="item parter-sub">
+					<a href="#"><img src="../static/images/partner/partner-img01.png" th:src="@{/images/partner/partner-img01.png}"> </a>
+                	<a href="#"><img src="../static/images/partner/partner-img02.png" th:src="@{/images/partner/partner-img02.png}"></a>
+                	<a href="#"><img src="../static/images/partner/partner-img03.png" th:src="@{/images/partner/partner-img03.png}"></a>
+                	<a href="#"><img src="../static/images/partner/partner-img04.png" th:src="@{/images/partner/partner-img04.png}"></a>
+                	<a href="#"><img src="../static/images/partner/partner-img05.png" th:src="@{/images/partner/partner-img05.png}"></a>
+				</div>
+				<div class="item parter-sub">
+					<a href="#"><img src="../static/images/partner/partner-img01.png" th:src="@{/images/partner/partner-img01.png}"> </a>
+                	<a href="#"><img src="../static/images/partner/partner-img02.png" th:src="@{/images/partner/partner-img02.png}"></a>
+                	<a href="#"><img src="../static/images/partner/partner-img03.png" th:src="@{/images/partner/partner-img03.png}"></a>
+                	<a href="#"><img src="../static/images/partner/partner-img04.png" th:src="@{/images/partner/partner-img04.png}"></a>
+                	<a href="#"><img src="../static/images/partner/partner-img05.png" th:src="@{/images/partner/partner-img05.png}"></a>
+				</div>
+			</div>
+			<!-- Carousel nav -->
+			<a class="carousel-control left" href="#partnertCarousel" data-slide="prev" style="top:35px">‹</a>
+			<a class="carousel-control right" href="#partnertCarousel" data-slide="next"  style="top:35px">›</a>
+		</div>
+		  <!-- 
+        <ul id="partnert_div"th:remove="body">
+            <li>
                 <a href="#"><img src="../static/images/partner/partner-img01.png" th:src="@{/images/partner/partner-img01.png}"> </a>
                 <a href="#"><img src="../static/images/partner/partner-img02.png" th:src="@{/images/partner/partner-img02.png}"></a>
                 <a href="#"><img src="../static/images/partner/partner-img03.png" th:src="@{/images/partner/partner-img03.png}"></a>
                 <a href="#"><img src="../static/images/partner/partner-img04.png" th:src="@{/images/partner/partner-img04.png}"></a>
                 <a href="#"><img src="../static/images/partner/partner-img05.png" th:src="@{/images/partner/partner-img05.png}"></a>
             </li>
-            <li th:remove="all">
+            <li>
                 <a href="#"><img src="../static/images/partner/partner-img06.jpg" th:src="@{/images/partner/partner-img06.jpg}"> </a>
                 <a href="#"><img src="../static/images/partner/partner-img07.png" th:src="@{/images/partner/partner-img07.png}"></a>
                 <a href="#"><img src="../static/images/partner/partner-img08.png" th:src="@{/images/partner/partner-img08.png}"></a>
@@ -288,6 +318,7 @@
                 <a href="#"><img src="../static/images/partner/partner-img10.png" th:src="@{/images/partner/partner-img10.png}"></a>
             </li>
         </ul>
+         -->
     </div>
 </div>
     <!--定制数据弹窗-->

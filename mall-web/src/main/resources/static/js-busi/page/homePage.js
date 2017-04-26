@@ -111,12 +111,12 @@ function queryModue101(moduleId){
 				if(i==0){
 					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="active"></li>';
 					htmDiv +='<div class="item active">'+
-	                '<img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'">'+
+	                '<a href="'+setLinkUrk(d.linkPage)+'" target="_blank"><img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'"></a>'+
 	            '</div>';
 				}else{
 					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'"></li>';
 					htmDiv +='<div class="item">'+
-		                '<img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'">'+
+		                '<a href="'+setLinkUrk(d.linkPage)+'" target="_blank"><img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'"></a>'+
 		            '</div>';
 				}
 			});
@@ -176,22 +176,22 @@ function queryPartner109(moduleId){
 	var url = basePath+'/homePage/queryPageModuleAd';
 	var params={moduleId:moduleId};
 	var callBack =function(data){
-		var htmlOl = '<li>';
+		var	html ='<div class="active item parter-sub">';
 		if(data.success){
 			$(data.moduleAdList).each(function(i,d){
-				//向下取整--
- 				htmlOl +='<a href="'+d.linkPage+'" target="_blank"><img src="'+imgPath+d.vfsId+'_100x100.jpg"></a>';
- 				var addli = false;
-  			   /*if(Math.floor(i/5)){
-					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="active"></li>';
-					htmDiv +='<div class="item active">'+
-	                '<img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'">'+
-	            '</div>';
-				} */
+ 				html +='<a href="'+setLinkUrk(d.linkPage)+'"><img src="'+basePath+'/images/partner/partner-img01.png" "> </a>';
+ 				if(parseInt(i+1)%5 == 0){
+					if(parseInt(i+1)== data.moduleAdList.length){
+						html +='</div>';
+						
+					}else{
+						html +='</div><div class="item parter-sub">';
+					}
+				} 
 			});
 		}
-		var htmlOl = '</li>';
-		$('#partnert_div').html(htmlOl); 
+		$('#partnertCarousel>div').html(html); 
+		$('#partnertCarousel').carousel({interval: 4000});
 	};
 	doAjax(url,params,callBack);
 }
