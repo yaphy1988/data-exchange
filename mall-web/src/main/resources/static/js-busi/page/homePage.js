@@ -42,7 +42,7 @@ function saveMadeData() {
 /**查询楼层信息，异步加载楼层内容*/
 function queryPageModue(){
 	var url = basePath+'/homePage/queryPageModue';
-	var params={moduleId:moduleId};
+	var params={};
 	var callBack = function(data) {
 		 if(data.success){
 			 if(data.pageModuleList != null && data.pageModuleList != undefined){
@@ -58,7 +58,7 @@ function queryPageModue(){
 						
 						break;
 					case 104://04-平台动态
-						queryModue104('105',1,10);
+						queryModue104(d.subPageModuleList);
 						break;
 					case 109://109-合作伙伴
 						queryPartner109(d.moduleId);
@@ -72,6 +72,7 @@ function queryPageModue(){
 			 alert('查询楼层信息异常！');
 		 }
 	};
+	doAjax(url,params,callBack);
 }
 //查询推荐楼层信息
 function querydata_recommend102(moduleId){
@@ -127,18 +128,44 @@ function queryModue101(moduleId){
 	doAjax(url,params,callBack);
 }
 //查询平台动态公告信息
-function queryModue104(moduleId,pageNo,pageSize){
-	var url = basePath+'/homePage/queryPageModuleAd';
+function queryModue104(subPageModuleList){
+	if(subPageModuleList != undefined && subPageModuleList != null){
+		$(subPageModuleList).each(function(i,d){
+			querysubPageModuleList(d.moduleId,1);
+		});
+	}
+}
+//查询平台动态公告子楼层信息
+function querysubPageModuleList(moduleId,pageNo){
+	var url = basePath+'/homePage/queryPageInfoList';
 	var params={
 		moduleId:moduleId,
-		pageNo:pageNo,
-		pageSize:pageSize
+		pageNo:pageNo
 	};
 	var callBack =function(data){
+		var html='';
 		if(data.success){
-			$(data.moduleAdList).each(function(i,d){
-				
+			var pageModule = data.moduleRespDTO;
+			html +='<dt>'+pageModule.moduleName+'</dt>';
+			$(data.pageInfoList).each(function(i,d){
+                html+='<dd><a href="'+setLinkUrk(d.infoUrl)+'" target="_blank">'+d.infoTitle+'</a> </dd>';
 			});
+		}
+		switch (moduleId) {
+		case 105://平台资讯
+			$('#news_info').html(html);
+			break;
+		case 106://平台公告
+			$('#news_adverse').html(html);
+			break;
+		case 107://平台活动
+			$('#news_activity').html(html);
+			break;
+		case 108://常见问题
+			$('#news_question').html(html);
+			break;			
+		default:
+			break;
 		}
 	};
 	doAjax(url,params,callBack);
@@ -177,4 +204,11 @@ function doAjax(url,params,callBack){
 		data : params,
 		success : callBack
 	})
+}
+function setLinkUrk(linkUrl){
+	if(new RegExp('http').test(linkUrl)){
+		return  linkUrl;
+	}else{
+		return basePath+linkUrl;
+	}
 }

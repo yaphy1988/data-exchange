@@ -12,6 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
@@ -20,6 +21,7 @@ import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
@@ -27,6 +29,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
+import com.ai.paas.util.ImageUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
 
@@ -116,13 +119,36 @@ public class HomePageController {
 		String moduleId = request.getParameter("moduleId");
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {
+			//查询楼层信息
+			PageModuleRespDTO pageModuleRespDTO = new PageModuleRespDTO();
+			if(!StringUtils.isBlank(moduleId)){
+				pageModuleRespDTO.setModuleId(Integer.valueOf(moduleId));
+			}
+			pageModuleRespDTO.setStatus(STATUS_VALID);
+			List<PageModuleRespDTO> pageModuleList = iPageDisplayRSV.queryPageModuleList(pageModuleRespDTO);
+			PageModuleRespDTO moduleRespDTO = new PageModuleRespDTO();
+			if(!CollectionUtils.isEmpty(pageModuleList)){
+				moduleRespDTO = pageModuleList.get(0);
+			}
+			Integer count = moduleRespDTO.getModuleCount();
 			PageModuleAdRespDTO pageModuleAdRespDTO = new PageModuleAdRespDTO();
 			if(!StringUtils.isBlank(moduleId)){
 				pageModuleAdRespDTO.setModuleId(Integer.valueOf(moduleId));
 			}
+			if(moduleRespDTO.getModuleCount() != null){
+				pageModuleAdRespDTO.setPageSize(count);
+			}
 			pageModuleAdRespDTO.setStatus(STATUS_VALID);
-			List<PageModuleAdRespDTO> moduleAdList = iPageDisplayRSV.queryPageModuleAdList(pageModuleAdRespDTO);
-			rMap.put("moduleAdList", moduleAdList);
+			PageResponseDTO<PageModuleAdDTO> moduleAdPageInfo = iPageDisplayRSV.queryPageModulePageInfo(pageModuleAdRespDTO);
+			List<PageModuleAdDTO> moduleAResult = moduleAdPageInfo.getResult();
+			if(!CollectionUtils.isEmpty(moduleAResult)){
+				for(PageModuleAdDTO moduleAdDTO : moduleAResult){
+					if(moduleAdDTO.getVfsId()!=null){
+//						moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()));
+					}
+				}
+			}
+			rMap.put("moduleAdList", moduleAdPageInfo.getResult());
 			rMap.put("success", true);
 		} catch (Exception e) {
 			log.error("查询广告楼层信息出错：楼层ID="+moduleId+","+e.getMessage());
@@ -245,23 +271,35 @@ public class HomePageController {
 	@ResponseBody
 	private Map<String,Object>  queryPageInfoList(HttpServletRequest request){
 		String pageNo =request.getParameter("pageNo");
-		String pageSize =request.getParameter("pageSize");
 		String moduleId =request.getParameter("moduleId");
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {
+			//查询楼层信息
+			PageModuleRespDTO pageModuleRespDTO = new PageModuleRespDTO();
+			if(!StringUtils.isBlank(moduleId)){
+				pageModuleRespDTO.setModuleId(Integer.valueOf(moduleId));
+			}
+			pageModuleRespDTO.setStatus(STATUS_VALID);
+			List<PageModuleRespDTO> pageModuleList = iPageDisplayRSV.queryPageModuleList(pageModuleRespDTO);
+			PageModuleRespDTO moduleRespDTO = new PageModuleRespDTO();
+			if(!CollectionUtils.isEmpty(pageModuleList)){
+				moduleRespDTO = pageModuleList.get(0);
+			}
+			Integer count = moduleRespDTO.getModuleCount();
 			PageNewsInfoRespDTO sortInfoRespDTO = new PageNewsInfoRespDTO();
 			sortInfoRespDTO.setStatus(STATUS_VALID);
 			if(!StringUtils.isBlank(pageNo)){
 				sortInfoRespDTO.setPageNo(Integer.valueOf(pageNo));
 			}
-			if(!StringUtils.isBlank(pageSize)){
-				sortInfoRespDTO.setPageSize(Integer.valueOf(pageSize));
+			if(count != null){
+				sortInfoRespDTO.setPageSize(Integer.valueOf(count));
 			}
 			if(!StringUtils.isBlank(moduleId)){
 				sortInfoRespDTO.setModuleId(Integer.valueOf(moduleId));
 			}
 			PageResponseDTO<PageNewsInfoDTO> pageInfoList = iPageDisplayRSV.queryPageNewsInfoList(sortInfoRespDTO);
-			rMap.put("pageInfoList", pageInfoList);
+			rMap.put("pageInfoList", pageInfoList.getResult());
+			rMap.put("moduleRespDTO", moduleRespDTO);
 			rMap.put("success", true);
 		} catch (Exception e) {
 			rMap.put("success", false);

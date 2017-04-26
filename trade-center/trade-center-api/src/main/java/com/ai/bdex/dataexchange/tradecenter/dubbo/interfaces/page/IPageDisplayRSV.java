@@ -7,6 +7,7 @@ import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdPropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
@@ -38,4 +39,6 @@ public interface    IPageDisplayRSV {
     public int saveDataCustomizationRsv(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception;
     
     public List<SortContentRespDTO> querysortContenList(SortContentRespDTO sortContentRespDTO) throws Exception;
+
+    public PageResponseDTO<PageModuleAdDTO> queryPageModulePageInfo(PageModuleAdRespDTO moduleAdRespDTO) throws Exception;
 }

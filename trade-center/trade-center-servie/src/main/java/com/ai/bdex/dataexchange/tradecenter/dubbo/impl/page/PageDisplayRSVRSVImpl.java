@@ -24,6 +24,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdPropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
@@ -309,5 +310,17 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
             throw new Exception(e);
 		}
 		return respDTOs;
+	}
+	@Override
+	public PageResponseDTO<PageModuleAdDTO> queryPageModulePageInfo(PageModuleAdRespDTO moduleAdRespDTO)
+			throws Exception {
+		PageResponseDTO<PageModuleAdDTO> moduleAdPageInfo = new PageResponseDTO<>();
+		try {
+			moduleAdPageInfo = iPageModuleAdSV.queryPageModulePageInfo(moduleAdRespDTO);
+		} catch (Exception e) {
+			log.error("分页获取楼层广告信息异常:", e);
+            throw new Exception(e);
+		}
+		return moduleAdPageInfo;
 	}
 }
