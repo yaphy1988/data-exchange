@@ -10,11 +10,15 @@ import com.ai.bdex.dataexchange.usercenter.dao.mapper.DemoMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.BaseSysCfgMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.model.Demo;
 import com.ai.bdex.dataexchange.usercenter.dao.model.DemoExample;
+import com.ai.bdex.dataexchange.usercenter.util.SpringBeanUtils;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.bdex.dataexchange.usercenter.dao.model.BaseSysCfg;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqDemoDTO;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
+import com.ai.paas.sequence.SequenceFactory;
+import com.ai.paas.util.CacheUtil;
 import com.github.pagehelper.PageInfo;
+import org.apache.solr.client.solrj.SolrClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +40,9 @@ public class DemoSVImpl implements IDemoSV {
 
 	@Autowired
 	BaseSysCfgMapper baseSysCfgMapper;
+
+	@Autowired
+	private SolrClient solrClient;
 	
     @Override
     public String callDemo(DemoDTO demoDTO) {
@@ -79,6 +86,8 @@ public class DemoSVImpl implements IDemoSV {
 
     private void insertTest(){
 		Demo model = new Demo();
+		Object test = CacheUtil.getItem("fangyfkey1");
+		SequenceFactory sequenceFactory = SpringBeanUtils.getBean(SequenceFactory.class);
 		model.setId(SeqUtil.getInt("SEQ_DEMO"));
 		model.setUserName("fangyf_"+model.getId());
 		model.setAddr("gx");
