@@ -208,11 +208,6 @@
 						<exclude>*.properties</exclude>
 						<exclude>*.xml</exclude>
 					</excludes>
-					<!--<includes>-->
-						<!--<include>com/ai/ecp/*/dubbo/**</include>-->
-						<!--<include>dubbo/client/ecp-*.xml</include>-->
-						<!--<include>message/**/*.properties</include>-->
-					<!--</includes>-->
 				</configuration>
 			</plugin>
 		</plugins>

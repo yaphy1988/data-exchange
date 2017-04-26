@@ -1,5 +1,7 @@
 package com.ai.bdex.dataexchange.usercenter;
 
+import com.ai.bdex.dataexchange.usercenter.dao.mapper.DemoMapper;
+import com.ai.bdex.dataexchange.usercenter.dao.model.Demo;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.DemoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IDemoRSV;
@@ -22,12 +24,24 @@ public class HelloDemoRSVImplTest {
 
     @Autowired
     private IDemoRSV demoRSV;
+
+    @Autowired
+    private DemoMapper demoMapper;
 	
     @Test
     public void helloWorld() throws Exception {
-        DemoDTO demoDTO = new DemoDTO();
-        demoDTO.setAddr("gx");
-        demoRSV.callDemoApi(demoDTO);
+        Demo demo = new Demo();
+        demo.setId(SeqUtil.getInt("SEQ_DEMO"));
+        //demo.setId(10081);
+        demo.setUserName("方云峰");
+        demo.setAddr("广西");
+        demoMapper.insert(demo);
+    }
+
+    @Test
+    public void queryDemo(){
+        Demo demo = demoMapper.selectByPrimaryKey(10085);
+        System.out.println("name="+demo.getUserName()+",addr="+demo.getAddr());
     }
 
     @Test

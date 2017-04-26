@@ -74,9 +74,10 @@
                             <goal>single</goal><!--只运行一次-->
                         </goals>
                         <configuration>
-                            <finalName>bdex</finalName>
+                            <finalName>bdex-all</finalName>
+                            <appendAssemblyId>false</appendAssemblyId>
                             <descriptors><!--描述文件路径-->
-                                <descriptor>src/main/resources/bdexzip.xml</descriptor>
+                                <descriptor>assembly/assembly.xml</descriptor>
                             </descriptors>
                         </configuration>
                     </execution>
