@@ -1,9 +1,6 @@
 package com.ai.bdex.dataexchange.busi.gds.controller;
 
-import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfo2PropVO;
-import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
-import com.ai.bdex.dataexchange.busi.gds.entity.GdsLabelVO;
-import com.ai.bdex.dataexchange.busi.gds.entity.GdsSkuVO;
+import com.ai.bdex.dataexchange.busi.gds.entity.*;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.*;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.*;
@@ -47,7 +44,7 @@ public class GdsController {
     @DubboConsumer
     private IGdsSkuRSV iGdsSkuRSV;
 
-    @RequestMapping(value = "/pageInit/{gdsId}-{skuId}")
+    @RequestMapping(value = "/details/{gdsId}-{skuId}")
     public String pageInit(HttpServletRequest request, HttpServletResponse response, @PathVariable Integer gdsId,@PathVariable Integer skuId){
 
         if (gdsId == null || gdsId.intValue()<=0){
@@ -100,13 +97,22 @@ public class GdsController {
                 gdsInfo2PropReqDTO.setGdsId(gdsInfoRespDTO.getGdsId());
                 gdsInfo2PropReqDTO.setStatus("1");
                 List<GdsInfo2PropRespDTO> gdsInfo2PropRespDTOList = iGdsInfo2PropRSV.queryGdsInfo2PropList(gdsInfo2PropReqDTO);
+                List<GdsDetailTabContent> tabContentList = new ArrayList<GdsDetailTabContent>();
                 if (!CollectionUtil.isEmpty(gdsInfo2PropRespDTOList)){
                     for (GdsInfo2PropRespDTO gdsInfo2PropRespDTO : gdsInfo2PropRespDTOList){
                         GdsInfo2PropVO gdsInfo2PropVO = new GdsInfo2PropVO();
                         ObjectCopyUtil.copyObjValue(gdsInfo2PropRespDTO,gdsInfo2PropVO,null,false);
 //                        BeanUtils.copyProperties(gdsInfo2PropRespDTO,gdsInfo2PropVO);
                         gdsInfo2PropVOList.add(gdsInfo2PropVO);
+                        if ("2".equals(gdsInfo2PropVO.getProType())){
+                            GdsDetailTabContent gdsDetailTabContent = new GdsDetailTabContent();
+                            gdsDetailTabContent.setTabName(gdsInfo2PropVO.getProName());
+                            gdsDetailTabContent.setTabContentType("2");
+                            gdsDetailTabContent.setTabContentId(gdsInfo2PropVO.getProValue());
+                            tabContentList.add(gdsDetailTabContent);
+                        }
                     }
+                    gdsInfoVO.setTabContentList(tabContentList);
                     gdsInfoVO.setGdsInfo2PropVOList(gdsInfo2PropVOList);
                 }
 
@@ -149,13 +155,33 @@ public class GdsController {
                     //错误代码参照接口调用
 
                     //实例代码接口调用
+
+                    viewName = "/goods_details";
+
                 }else if (CUSTOM_CAT_ID.equals(gdsInfoRespDTO.getCatFirst())){
+                    if (!CollectionUtil.isEmpty(gdsInfoVO.getGdsInfo2PropVOList())){
+                        for (GdsInfo2PropVO gdsInfo2PropVO : gdsInfoVO.getGdsInfo2PropVOList()){
+                            if (gdsInfo2PropVO.getProId() == 2){//数据描述
+                                gdsInfoVO.setDataDescription(gdsInfo2PropVO.getProValue());
+                            }
+                        }
+                    }
 
                     viewName = "/goods_custom";
                 }else if (SOLUTION_CAT_ID.equals(gdsInfoRespDTO.getCatFirst())){
+                    if (!CollectionUtil.isEmpty(gdsInfoVO.getGdsInfo2PropVOList())){
+                        for (GdsInfo2PropVO gdsInfo2PropVO : gdsInfoVO.getGdsInfo2PropVOList()){
+                            if (gdsInfo2PropVO.getProId() == 5){//适用范围
+                                gdsInfoVO.setAdaptRange(gdsInfo2PropVO.getProValue());
+                            }
+                            if (gdsInfo2PropVO.getProId() == 6){//特点
+                                gdsInfoVO.setFeature(gdsInfo2PropVO.getProValue());
+                            }
+                        }
+                    }
                     viewName = "/goods_solution";
                 }
-                viewName = "/goods_details";
+
             }
         } catch (Exception e) {
             log.error("查询商品详情异常：",e);

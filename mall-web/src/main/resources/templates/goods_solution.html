@@ -8,8 +8,7 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/index.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/goods_details.css" th:remove="all">
-	<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>
+
 </head>
 <body>
 
@@ -117,7 +116,9 @@
 	    </div>
 	</div>
 
-	<div class="main">
+	<div class="main" layout:fragment="screen_content">
+		<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
+		<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>
 		<div class="classify">
 			<i class="iconfont"></i>
 			<span>当前位置：</span>
@@ -129,7 +130,7 @@
 			<div class="gd_Left">
 				<div class="gd_hd clearfix">
 					<div class="imgBox">
-						<span class="img">
+						<span class="img" style="overflow: hidden">
 							<img src="../static/images/img.jpg" th:src="'http://'+${gdsInfo.gdsPic}">
 						</span>
 						<a class="active collect">
@@ -145,9 +146,9 @@
 							</div>
 							<div class="label_box ">
 								<p th:each="gdsLabel,gdsLabelStat : ${gdsInfo.gdsLabelVOList}" th:text="${gdsLabel.labName}" th:style="'color:'+${gdsLabel.labColor}+';border-color:'+${gdsLabel.labColor}">免费体验</p>
-								<p th:remove="">API</p>
-								<p th:remove="">支持HTTPS</p>
-								<p class="lable_blue" th:remove="">
+								<p th:remove="all">API</p>
+								<p th:remove="all">支持HTTPS</p>
+								<p class="lable_blue" th:remove="all">
 									<span>广交所</span>
 									<i>接入服务商</i>
 								</p>
@@ -157,19 +158,19 @@
 							<div class="explain">
 								<dl >
 									<dt>适用范围：</dt>
-									<dd>
+									<dd th:text="${gdsInfo.adaptRange}">
 										汽车生产流程中零部件供应商的状态，分部情况，方便协会管理，促进行业发展
 									</dd>
 								</dl>
 								<dl >
 									<dt>特点：</dt>
-									<dd>
+									<dd th:text="${gdsInfo.feature}">
 										移动性 支持多种浏览器操作，支持移动办公 易管理性 基于J2EE的纯B/S架构 安全性 提供完善的用户管理、权限管理和安全管理机制 大数据性 支持百亿级数据的分析处理
 									</dd>
 								</dl>
 								<dl >
 									<dt>公司名称：</dt>
-									<dd>
+									<dd th:text="${gdsInfo.commpanyName}">
 										XXXX公司
 									</dd>
 								</dl>
@@ -183,18 +184,18 @@
 					</div>
 				</div>
 				<div class="gd_Tabs mt20" >
-					<ul class="nav nav-tabs" > 
+					<ul class="nav nav-tabs" >
 						<li class="active">
-							<a href="#tab1"  data-toggle="tab" >API</a></li>
-						<li class="">
-							<a href="#tab2"  data-toggle="tab">错误代码参照</a></li>
-						<li class="">
+							<a href="#tab1"  data-toggle="tab">功能介绍</a></li>
+						<li class="active"   th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:attr="htmlFileId=${tabContent.tabContentId},proType=2" th:class="${tabContentStat.count}==1? 'active':''">
+							<a href="#tab2"  data-toggle="tab"  th:text="${tabContent.tabName}" th:href="'#tab2-'+${tabContentStat.count}">功能介绍</a></li>
+						<li class="" th:remove="all">
 							<a href="#tab3" data-toggle="tab" >实例代码</a></li>
-						<li class="">
+						<li class="" th:remove="all">
 							<a href="#tab4" data-toggle="tab" >套餐介绍</a></li>
 					</ul>
 					<div class="tab-content gd_info">
-						<div class=" tab-pane fade active in" role="tabpanel" id="tab1" aria-labelledby="tab1">
+						<div class=" tab-pane fade active in" role="tabpanel" id="tab1" aria-labelledby="tab1" th:text="${gdsInfo.funIntroduction}">
 							<ul class="piclist clearfix">
 								<li><img src="../static/images/img.jpg"></li>
 								<li><img src="../static/images/img.jpg"></li>
@@ -206,7 +207,7 @@
 								<li><img src="../static/images/img.jpg"></li>
 							</ul>
 						</div>
-						<div class=" tab-pane fade" role="tabpanel" id="tab2">
+						<div class="tab-pane fade"  role="tabpanel" id="tab2" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:id="'tab2-'+${tabContentStat.count}">
 							<h3>系统错误代码参照2222：</h3>
 							<table class="table table-bordered ">
 								<thead>
@@ -225,10 +226,10 @@
 								</tbody>
 							</table>
 						</div>
-						<div class=" tab-pane fade" role="tabpanel" id="tab3">
+						<div class=" tab-pane fade" th:remove="all" role="tabpanel" id="tab3">
 							33
 						</div>
-						<div class=" tab-pane fade" role="tabpanel" id="tab4">44</div>
+						<div class=" tab-pane fade" th:remove="all" role="tabpanel" id="tab4">44</div>
 					</div>
 				</div>
 				

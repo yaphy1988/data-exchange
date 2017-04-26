@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN" lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{fragments/layout}">
 <head>
@@ -8,8 +8,6 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/index.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/goods_details.css" th:remove="all">
-	<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>
 </head>
 <body>
 
@@ -117,7 +115,10 @@
 	    </div>
 	</div>
 
-	<div class="main">
+	<div class="main"  layout:fragment="screen_content">
+
+		<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
+		<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>
 		<div class="classify">
 			<i class="iconfont"></i>
 			<span>当前位置：</span>
@@ -129,7 +130,7 @@
 			<div class="gd_Left">
 				<div class="gd_hd clearfix">
 					<div class="imgBox">
-						<span class="img">
+						<span class="img" style="overflow: hidden">
 							<img src="../static/images/img.jpg" th:src="'http://'+${gdsInfo.gdsPic}">
 						</span>
 						<a class="active collect">
@@ -145,9 +146,9 @@
 							</div>
 							<div class="label_box ">
 								<p th:each="gdsLabel,gdsLabelStat : ${gdsInfo.gdsLabelVOList}" th:text="${gdsLabel.labName}" th:style="'color:'+${gdsLabel.labColor}+';border-color:'+${gdsLabel.labColor}">免费体验</p>
-								<p th:remove="">API</p>
-								<p th:remove="">支持HTTPS</p>
-								<p class="lable_blue" th:remove="">
+								<p th:remove="all">API</p>
+								<p th:remove="all">支持HTTPS</p>
+								<p class="lable_blue" th:remove="all">
 									<span>广交所</span>
 									<i>接入服务商</i>
 								</p>
@@ -156,7 +157,7 @@
 						<div class="info_bd">
 							<dl class="explain clearfix">
 								<dt>数据描述：</dt>
-								<dd>
+								<dd th:text="${gdsInfo.dataDescription}">
 									1、收集整理广州市大数据产业相关企业信息，重点信息包括：企业名称、大数据产业链类型、规模、主营业务等； 2、基于广州市地图信息系统，统计展示大数据分类企业数量（如按区域的整体统计、按大数据产业链类型的分类统计展示等）、具体单点企业信息展现（企业名称、大数据产业链类型、规模、主营业务等） 2、基于广州市地图信息系统，统计展示大数据分类企业数量（如按区域的整体统计、按大数据产业链类型的分类统计展示等）、具体单点企业信息展现（企业名称、大数据产业链类型、规模、主营业务等） 2、基于广州市地图信息系统，统计展示大数据分类企业数量（如按区域的整体统计、按大数据产业链类型的分类统计展示等）、具体单点企业信息展现（企业名称、大数据产业链类型、规模、主营业务等）
 								</dd>
 							</dl>
@@ -172,17 +173,17 @@
 				</div>
 				<div class="gd_Tabs mt20" >
 					<ul class="nav nav-tabs" > 
-						<li class="active">
-							<a href="#tab1"  data-toggle="tab" >API</a></li>
+						<li class="active"  th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:attr="htmlFileId=${tabContent.tabContentId},proType=2" th:class="${tabContentStat.count}==1? 'active':''">
+							<a href="#tab1"  data-toggle="tab" th:text="${tabContent.tabName}" th:href="'#tab'+${tabContentStat.count}">API</a></li>
 						<li class="">
-							<a href="#tab2"  data-toggle="tab">错误代码参照</a></li>
-						<li class="">
-							<a href="#tab3" data-toggle="tab" >实例代码</a></li>
-						<li class="">
-							<a href="#tab4" data-toggle="tab" >套餐介绍</a></li>
+							<a href="#tab2"  data-toggle="tab" th:remove="all">错误代码参照</a></li>
+						<li class="" th:remove="all">
+							<a href="#tab3" data-toggle="tab" th:remove="all">实例代码</a></li>
+						<li class="" th:remove="all">
+							<a href="#tab4" data-toggle="tab" th:remove="all">套餐介绍</a></li>
 					</ul>
 					<div class="tab-content gd_info">
-						<div class=" tab-pane fade active in" role="tabpanel" id="tab1" aria-labelledby="tab1">
+						<div class=" tab-pane fade active in" role="tabpanel" id="tab1" aria-labelledby="tab1"  th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:class="${tabContentStat.count}==1? 'tab-pane fade active in':'tab-pane fade'" th:id="'tab'+${tabContentStat.count}">
 							<ul class="piclist clearfix">
 								<li><img src="../static/images/img.jpg"></li>
 								<li><img src="../static/images/img.jpg"></li>
@@ -194,7 +195,7 @@
 								<li><img src="../static/images/img.jpg"></li>
 							</ul>
 						</div>
-						<div class=" tab-pane fade" role="tabpanel" id="tab2">
+						<div class=" tab-pane fade" role="tabpanel" th:remove="all" id="tab2">
 							<h3>系统错误代码参照2222：</h3>
 							<table class="table table-bordered ">
 								<thead>
@@ -213,10 +214,10 @@
 								</tbody>
 							</table>
 						</div>
-						<div class=" tab-pane fade" role="tabpanel" id="tab3">
+						<div class=" tab-pane fade" role="tabpanel" th:remove="all" id="tab3">
 							33
 						</div>
-						<div class=" tab-pane fade" role="tabpanel" id="tab4">44</div>
+						<div class=" tab-pane fade" role="tabpanel" id="tab4" th:remove="all">44</div>
 					</div>
 				</div>
 				
@@ -272,7 +273,7 @@
 		</div>
 	</div>
 	<div class="footer" th:remove="all">
-    <div class="wrap1200 ptb40 clearfix">
+    <div class="wrap1200 ptb40">
         <div class="left floatL">
             <img src="../static/images/logo-footer.png" >
             <p class="">本网站所列开源项目的中文版文档全部由Bootstrap中文网成员翻译整理，并全部遵循 CC BY 3.0协议发布</p>

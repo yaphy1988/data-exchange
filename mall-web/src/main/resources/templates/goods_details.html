@@ -8,8 +8,8 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all" >
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/index.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
-	<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>
+	<!--<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">-->
+	<!--<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>-->
 </head>
 <body>
 
@@ -118,6 +118,8 @@
 	</div>
 
 	<div class="main" layout:fragment="screen_content">
+		<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
+		<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>
 		<div class="classify">
 			<i class="iconfont"></i>
 			<span>当前位置：</span>
@@ -129,7 +131,7 @@
 			<div class="gd_Left">
 				<div class="gd_hd clearfix">
 					<div class="imgBox">
-						<span class="img">
+						<span class="img" style="overflow: hidden">
 							<img src="../static/images/img.jpg" th:src="'http://'+${gdsInfo.gdsPic}">
 						</span>
 						<a class="active collect">
@@ -190,15 +192,16 @@
 					</div>
 				</div>
 				<div class="gd_Tabs mt20" >
-					<ul class="nav nav-tabs" > 
+					<ul class="nav nav-tabs" id="tabContentUl">
 						<li class="active">
 							<a href="#tab1"  data-toggle="tab" >API</a></li>
 						<li class="">
 							<a href="#tab2"  data-toggle="tab">错误代码参照</a></li>
 						<li class="">
 							<a href="#tab3" data-toggle="tab" >实例代码</a></li>
-						<li class="">
-							<a href="#tab4" data-toggle="tab" >套餐介绍</a></li>
+						<li class="" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:attr="'htmlFileId='+$tabContent.tabContentId+',proType=2'" >
+							<a href="#tab4" data-toggle="tab" th:href="'#tab4-'+$tabContentStat.count" >套餐介绍</a>
+						</li>
 					</ul>
 					<div class="tab-content gd_info">
 						<div class=" tab-pane fade active in" role="tabpanel" id="tab1" aria-labelledby="tab1">
@@ -279,7 +282,7 @@
 						<div class=" tab-pane fade" role="tabpanel" id="tab3">
 							33
 						</div>
-						<div class=" tab-pane fade" role="tabpanel" id="tab4">44</div>
+						<div class=" tab-pane fade" role="tabpanel" id="tab4" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:id="'tab4-'+$tabContentStat.count">44</div>
 					</div>
 				</div>
 				

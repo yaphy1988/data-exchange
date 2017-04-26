@@ -52,6 +52,22 @@ public class GdsInfoVO implements Serializable {
 
     private List<GdsInfo2PropVO> gdsInfo2PropVOList;//商品属性列表
 
+    private String dataDescription;//数据描述，客户定制分类商品详情使用
+
+    private String adaptRange;//适用范围，解决方案分类商品详情使用
+
+    private String feature;//特点，解决方案分类商品详情使用
+
+    private List<GdsDetailTabContent> tabContentList;//商品详情下方详情tab页内容页面ID
+
+    public List<GdsDetailTabContent> getTabContentList() {
+        return tabContentList;
+    }
+
+    public void setTabContentList(List<GdsDetailTabContent> tabContentList) {
+        this.tabContentList = tabContentList;
+    }
+
     public Integer getGdsId() {
         return gdsId;
     }
@@ -226,5 +242,29 @@ public class GdsInfoVO implements Serializable {
 
     public void setCatName(String catName) {
         this.catName = catName;
+    }
+
+    public String getDataDescription() {
+        return dataDescription;
+    }
+
+    public void setDataDescription(String dataDescription) {
+        this.dataDescription = dataDescription;
+    }
+
+    public String getAdaptRange() {
+        return adaptRange;
+    }
+
+    public void setAdaptRange(String adaptRange) {
+        this.adaptRange = adaptRange;
+    }
+
+    public String getFeature() {
+        return feature;
+    }
+
+    public void setFeature(String feature) {
+        this.feature = feature;
     }
 }
