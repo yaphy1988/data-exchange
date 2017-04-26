@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ImportResource;
 
@@ -12,8 +13,8 @@ import org.springframework.context.annotation.ImportResource;
  * @author yafei
  * @since 2017/4/4
  */
-@ImportResource({"classpath:/dubbo/dubboContext.xml","/spring/*-db-config.xml"})
-@SpringBootApplication
+@ImportResource({"classpath*:/dubbo/*.xml","classpath*:/spring/*.xml"})
+@SpringBootApplication(exclude = MongoAutoConfiguration.class)
 public class ApiGatewayServiceStart {
     private static Logger logger = LoggerFactory.getLogger(ApiGatewayServiceStart.class);
 
