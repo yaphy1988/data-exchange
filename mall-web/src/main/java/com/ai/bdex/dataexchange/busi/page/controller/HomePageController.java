@@ -337,5 +337,38 @@ public class HomePageController {
 		}
 		return rMap;
 	}
+	/**
+	 * 公司简介
+	 */
+	@RequestMapping(value="/company")
+	private String company(){ 
+		String viewName = "/companyprofile"; 
+		return viewName;	 
+	}
+	/**
+	 * 新闻动态
+	 */
+	@RequestMapping(value="/companynews")
+	private String companynews(){ 
+		String viewName = "/companynews"; 
+		return viewName;	 
+	}
+	/**
+	 * 常见问题
+	 */
+	@RequestMapping(value="/commonproblem")
+	private String commonproblem(){ 
+		String viewName = "/commonproblem"; 
+		return viewName;	 
+	}
+	/**
+	 * 帮助中心
+	 */
+	@RequestMapping(value="/commonHelp")
+	private String commonHelp(){ 
+		String viewName = "/commonHelp"; 
+		return viewName;	 
+	}
+	
 
 }

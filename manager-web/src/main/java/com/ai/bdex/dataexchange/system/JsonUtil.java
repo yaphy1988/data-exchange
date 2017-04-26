@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.system;
+/*package com.ai.bdex.dataexchange.system;
 
 import java.text.SimpleDateFormat;
 import java.util.List;
@@ -9,9 +9,9 @@ import org.codehaus.jackson.map.DeserializationConfig;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.SerializationConfig;
 import org.codehaus.jackson.map.annotate.JsonSerialize.Inclusion;
-/**
+*//**
  *JsonUtil
- */
+ *//*
 public class JsonUtil {
     private static ObjectMapper mapper = new ObjectMapper();
     
@@ -37,11 +37,11 @@ public class JsonUtil {
         return mapper;
     }
     
-    /**
+    *//**
      * 将json字符串转换成JsonNode
      * @param json
      * @return
-     */
+     *//*
     public static JsonNode toJsonNode(String json){
         try {
             return mapper.readTree(json);
@@ -50,11 +50,11 @@ public class JsonUtil {
         }
     }
 
-    /**
+    *//**
      * 将Object转化成JSON String
      * @param obj
      * @return
-     */
+     *//*
     public static String toJSONString(Object obj){
         try {
             return mapper.writeValueAsString(obj);
@@ -63,11 +63,11 @@ public class JsonUtil {
         }
     }
     
-    /**
+    *//**
      * 将Object转化成JSON byte[]
      * @param obj
      * @return
-     */
+     *//*
     public static byte[] toJSONBytes(Object obj){
         try {
             return mapper.writeValueAsBytes(obj);
@@ -76,12 +76,12 @@ public class JsonUtil {
         }
     }
 
-    /**
+    *//**
      * 将json字符串转换到Object
      * @param json json字符串
      * @param clazz 返回类型
      * @return 转换结果
-     */
+     *//*
     public static <T> T toObject(String json, Class<T> clazz) {
         try {
             mapper.configure(Feature.ALLOW_UNQUOTED_CONTROL_CHARS, true) ;  
@@ -92,12 +92,12 @@ public class JsonUtil {
         }
     }
     
-    /**
+    *//**
      * 将byte[]字符串转换到Object
      * @param json byte[]
      * @param clazz 返回类型
      * @return 转换结果
-     */
+     *//*
     public static <T> T toObject(byte[] json, Class<T> clazz){
         try {
             return mapper.readValue(json, clazz);
@@ -106,12 +106,12 @@ public class JsonUtil {
         }
     }
     
-    /**
+    *//**
      * 将JsonNode转换到Object
      * @param jsonNode jsonNode
      * @param clazz 返回类型
      * @return 转换结果
-     */
+     *//*
     public static <T> T toObject(JsonNode jsonNode, Class<T> clazz){
         try {
             return mapper.readValue(jsonNode, clazz);
@@ -120,12 +120,12 @@ public class JsonUtil {
         }
     }
 
-    /**
+    *//**
      * 将json字符串转换到Object List
      * @param json json字符串
      * @param clazz 返回类型
      * @return 转换结果
-     */
+     *//*
     public static <T> List<T> toObjectList(String json, Class<T> clazz){
         try {
             return mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, clazz));
@@ -134,12 +134,12 @@ public class JsonUtil {
         }
     }
     
-    /**
+    *//**
      * 将byte[]字符串转换到Object List
      * @param json byte[]
      * @param clazz 返回类型
      * @return 转换结果
-     */
+     *//*
     public static <T> List<T> toObjectList(byte[] json, Class<T> clazz){
         try {
             return mapper.readValue(json, mapper.getTypeFactory().constructCollectionType(List.class, clazz));
@@ -148,12 +148,12 @@ public class JsonUtil {
         }
     }
     
-    /**
+    *//**
      * 将JsonNode转换到Object List
      * @param jsonNode jsonNode
      * @param clazz 返回类型
      * @return 转换结果
-     */
+     *//*
     public static <T> List<T> toObjectList(JsonNode jsonNode, Class<T> clazz){
         try {
             return mapper.readValue(jsonNode, mapper.getTypeFactory().constructCollectionType(List.class, clazz));
@@ -162,12 +162,12 @@ public class JsonUtil {
         }
     }
 
-    /**
+    *//**
      * 将json字符串转换到Object Array
      * @param json json字符串
      * @param clazz 返回类型
      * @return 转换结果
-     */
+     *//*
     public static <T> T[] toObjectArray(String json, Class<T> clazz){
         try {
             return mapper.readValue(json, mapper.getTypeFactory().constructArrayType(clazz));
@@ -176,12 +176,12 @@ public class JsonUtil {
         }
     }
     
-    /**
+    *//**
      * 将byte[]字符串转换到Object Array
      * @param json byte[]
      * @param clazz 返回类型
      * @return Object
-     */
+     *//*
     public static <T> T[] toObjectArray(byte[] json, Class<T> clazz){
         try {
             return mapper.readValue(json, mapper.getTypeFactory().constructArrayType(clazz));
@@ -190,12 +190,12 @@ public class JsonUtil {
         }
     }
     
-    /**
+    *//**
      * 将jJsonNode转换到Object Array
      * @param json jsonNode
      * @param clazz 返回类型
      * @return 转换结果
-     */
+     *//*
     public static <T> T[] toObjectArray(JsonNode jsonNode, Class<T> clazz){
         try {
             return mapper.readValue(jsonNode, mapper.getTypeFactory().constructArrayType(clazz));
@@ -204,12 +204,12 @@ public class JsonUtil {
         }
     }
     
-    /**
+    *//**
      * JSON字符串特殊字符处理，比如：“\A1;1300”
      * 
      * @param s
      * @return String
-     */
+     *//*
     public static String string2Json(String s) {
         StringBuffer sb = new StringBuffer();
         for (int i = 0; i < s.length(); i++) {
@@ -244,3 +244,4 @@ public class JsonUtil {
 
     }
 }
+*/
