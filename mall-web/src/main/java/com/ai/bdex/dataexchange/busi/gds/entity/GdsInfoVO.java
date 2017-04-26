@@ -1,5 +1,7 @@
 package com.ai.bdex.dataexchange.busi.gds.entity;
 
+import com.ai.bdex.dataexchange.busi.api.entity.ServiceVO;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
@@ -19,6 +21,10 @@ public class GdsInfoVO implements Serializable {
     private String catFirstName;
 
     private Integer apiId;
+
+    private String apiStatus;//api接口状态
+
+    private String apiProviderName;//api提供者名称
 
     private String gdsPic;
 
@@ -59,6 +65,16 @@ public class GdsInfoVO implements Serializable {
     private String feature;//特点，解决方案分类商品详情使用
 
     private List<GdsDetailTabContent> tabContentList;//商品详情下方详情tab页内容页面ID
+
+    private ServiceVO serviceVO;
+
+    public ServiceVO getServiceVO() {
+        return serviceVO;
+    }
+
+    public void setServiceVO(ServiceVO serviceVO) {
+        this.serviceVO = serviceVO;
+    }
 
     public List<GdsDetailTabContent> getTabContentList() {
         return tabContentList;
@@ -266,5 +282,21 @@ public class GdsInfoVO implements Serializable {
 
     public void setFeature(String feature) {
         this.feature = feature;
+    }
+
+    public String getApiStatus() {
+        return apiStatus;
+    }
+
+    public void setApiStatus(String apiStatus) {
+        this.apiStatus = apiStatus;
+    }
+
+    public String getApiProviderName() {
+        return apiProviderName;
+    }
+
+    public void setApiProviderName(String apiProviderName) {
+        this.apiProviderName = apiProviderName;
     }
 }

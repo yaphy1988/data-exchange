@@ -90,6 +90,11 @@
 			<version>${project.version}</version>
 		</dependency>
 		<dependency>
+			<groupId>com.ai.bdex.dataexchange</groupId>
+			<artifactId>aip-center-api</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>spring-boot-starter-dubbo</artifactId>
 		</dependency>

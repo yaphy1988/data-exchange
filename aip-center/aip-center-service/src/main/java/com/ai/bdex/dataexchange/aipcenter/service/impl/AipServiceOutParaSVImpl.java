@@ -10,7 +10,9 @@ import com.ai.bdex.dataexchange.aipcenter.dao.mapper.AipServiceOutParaMapper;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipServiceOutParaExample;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipServiceOutPara;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipServiceOutParaSV;
+import org.springframework.stereotype.Service;
 
+@Service("aipServiceOutParaSV")
 public class AipServiceOutParaSVImpl implements IAipServiceOutParaSV{
 	private static final Logger log = LoggerFactory.getLogger(AipServiceOutParaSVImpl.class);
 	@Autowired

@@ -10,7 +10,9 @@ import com.ai.bdex.dataexchange.aipcenter.dao.mapper.AipServiceErrorInfoMapper;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipServiceErrorInfo;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipServiceErrorInfoExample;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipServiceErrorInfoSV;
+import org.springframework.stereotype.Service;
 
+@Service("aipServiceErrorInfoSV")
 public class AipServiceErrorInfoSVImpl implements IAipServiceErrorInfoSV{
 	private static final Logger log = LoggerFactory.getLogger(AipServiceErrorInfoSVImpl.class);
 	@Autowired

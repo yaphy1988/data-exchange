@@ -1,5 +1,8 @@
 package com.ai.bdex.dataexchange.busi.gds.controller;
 
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.*;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IServiceMessageRSV;
+import com.ai.bdex.dataexchange.busi.api.entity.*;
 import com.ai.bdex.dataexchange.busi.gds.entity.*;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.*;
@@ -43,6 +46,8 @@ public class GdsController {
     private IGdsInfo2PropRSV iGdsInfo2PropRSV;
     @DubboConsumer
     private IGdsSkuRSV iGdsSkuRSV;
+    @DubboConsumer
+    private IServiceMessageRSV iServiceMessageRSV;
 
     @RequestMapping(value = "/details/{gdsId}-{skuId}")
     public String pageInit(HttpServletRequest request, HttpServletResponse response, @PathVariable Integer gdsId,@PathVariable Integer skuId){
@@ -151,10 +156,55 @@ public class GdsController {
                         gdsInfoVO.setGdsSkuVOList(gdsSkuVOList);
                     }
                     //API信息接口调用
+                    String serviceVersion = "";
+                    String serviceId = gdsInfoVO.getApiId()+"";
+                    ServiceDTO serviceDTO = iServiceMessageRSV.getServiceMessage(serviceId,serviceVersion);
+                    ServiceVO serviceVO = new ServiceVO();
+                    if (serviceDTO!=null){
+                        ObjectCopyUtil.copyObjValue(serviceDTO,serviceVO,null,false);
+                        //aip接口入参信息
+                        if(!CollectionUtil.isEmpty(serviceDTO.getServiceInParas())){
+                            List<AipServiceInParaVO> aipServiceInParaVOs = new ArrayList<AipServiceInParaVO>();
+                            for (AipServiceInParaDTO aipServiceInParaDTO : serviceDTO.getServiceInParas()){
+                                AipServiceInParaVO aipServiceInParaVO = new AipServiceInParaVO();
+                                ObjectCopyUtil.copyObjValue(aipServiceInParaDTO,aipServiceInParaVO,null,false);
+                                aipServiceInParaVOs.add(aipServiceInParaVO);
+                            }
+                            serviceVO.setServiceInParas(aipServiceInParaVOs);
+                        }
+                        //aip接口出参信息
+                        if (!CollectionUtil.isEmpty(serviceDTO.getServiceOutParas())){
+                            List<AipServiceOutParaVO> aipServiceOutParaVOs = new ArrayList<AipServiceOutParaVO>();
+                            for (AipServiceOutParaDTO aipServiceOutParaDTO : serviceDTO.getServiceOutParas()){
+                                AipServiceOutParaVO aipServiceOutParaVO = new AipServiceOutParaVO();
+                                ObjectCopyUtil.copyObjValue(aipServiceOutParaDTO,aipServiceOutParaVO,null,false);
+                                aipServiceOutParaVOs.add(aipServiceOutParaVO);
+                            }
+                            serviceVO.setServiceOutParas(aipServiceOutParaVOs);
+                        }
+                        //错误码定义
+                        if (!CollectionUtil.isEmpty(serviceDTO.getServiceErrores())){
+                            List<AipServiceErrorInfoVO> aipServiceErrorInfoVOs = new ArrayList<AipServiceErrorInfoVO>();
+                            for (AipServiceErrorInfoDTO aipServiceErrorInfoDTO : serviceDTO.getServiceErrores()){
+                                AipServiceErrorInfoVO aipServiceErrorInfoVO = new AipServiceErrorInfoVO();
+                                ObjectCopyUtil.copyObjValue(aipServiceErrorInfoDTO,aipServiceErrorInfoVO,null,false);
+                                aipServiceErrorInfoVOs.add(aipServiceErrorInfoVO);
+                            }
+                            serviceVO.setServiceErrores(aipServiceErrorInfoVOs);
+                        }
+                        //接口demo信息
+                        if (!CollectionUtil.isEmpty(serviceDTO.getServiceCodeInfoes())){
+                            List<AipServiceCodeInfoVO> aipServiceCodeInfoVOs = new ArrayList<AipServiceCodeInfoVO>();
+                            for (AipServiceCodeInfoDTO aipServiceCodeInfoDTO : serviceDTO.getServiceCodeInfoes()){
+                                AipServiceCodeInfoVO aipServiceCodeInfoVO = new AipServiceCodeInfoVO();
+                                ObjectCopyUtil.copyObjValue(aipServiceCodeInfoDTO,aipServiceCodeInfoVO,null,false);
+                                aipServiceCodeInfoVOs.add(aipServiceCodeInfoVO);
+                            }
+                            serviceVO.setServiceCodeInfoes(aipServiceCodeInfoVOs);
+                        }
+                        gdsInfoVO.setServiceVO(serviceVO);
+                    }
 
-                    //错误代码参照接口调用
-
-                    //实例代码接口调用
 
                     viewName = "/goods_details";
 
