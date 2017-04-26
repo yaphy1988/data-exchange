@@ -1,11 +1,12 @@
 package com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds;
 
+import java.util.List;
+
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsResultVO;
-
-import java.util.List;
 
 /**
  * Created by yx on 2017/4/17.
@@ -27,4 +28,6 @@ public interface IGdsInfoSV {
 	public GdsResultVO editGds(GdsInfoReqDTO reqDTO) throws Exception;
 	
 	public GdsInfoRespDTO queryGdsInfo(GdsInfoReqDTO gdsInfoReqDTO) throws Exception;
+	
+	public long count(GdsInfoReqDTO gdsInfoReqDTO) throws BusinessException;
 }

@@ -1,5 +1,13 @@
 package com.ai.bdex.dataexchange.tradecenter.service.impl.gds;
 
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.GdsInfoMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfoExample;
@@ -18,13 +26,6 @@ import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
-
-import javax.annotation.Resource;
 
 /**
  * Created by yx on 2017/4/17.
@@ -228,5 +229,13 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
 		}
 		return respDTO;
 	}
+
+    @Override
+    public long count(GdsInfoReqDTO gdsInfoReqDTO) throws BusinessException {
+        GdsInfoExample example = new GdsInfoExample();
+        GdsInfoExample.Criteria criteria = example.createCriteria();
+        initCriteria(criteria, gdsInfoReqDTO);
+        return gdsInfoMapper.countByExample(example);
+    }
 	
 }
