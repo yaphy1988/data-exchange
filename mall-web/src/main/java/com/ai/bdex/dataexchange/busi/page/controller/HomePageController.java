@@ -23,6 +23,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
@@ -245,17 +246,21 @@ public class HomePageController {
 	private Map<String,Object>  queryPageInfoList(HttpServletRequest request){
 		String pageNo =request.getParameter("pageNo");
 		String pageSize =request.getParameter("pageSize");
+		String moduleId =request.getParameter("moduleId");
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {
 			PageNewsInfoRespDTO sortInfoRespDTO = new PageNewsInfoRespDTO();
 			sortInfoRespDTO.setStatus(STATUS_VALID);
 			if(!StringUtils.isBlank(pageNo)){
-//				sortInfoRespDTO.
+				sortInfoRespDTO.setPageNo(Integer.valueOf(pageNo));
 			}
 			if(!StringUtils.isBlank(pageSize)){
-				
+				sortInfoRespDTO.setPageSize(Integer.valueOf(pageSize));
 			}
-			PageResponseDTO<PageNewsInfoRespDTO> pageInfoList = iPageDisplayRSV.queryPageNewsInfoList(sortInfoRespDTO);
+			if(!StringUtils.isBlank(moduleId)){
+				sortInfoRespDTO.setModuleId(Integer.valueOf(moduleId));
+			}
+			PageResponseDTO<PageNewsInfoDTO> pageInfoList = iPageDisplayRSV.queryPageNewsInfoList(sortInfoRespDTO);
 			rMap.put("pageInfoList", pageInfoList);
 			rMap.put("success", true);
 		} catch (Exception e) {

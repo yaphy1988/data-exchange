@@ -5,10 +5,12 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageNewsInfoMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfoExample;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageNewsInfoSV;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
@@ -32,10 +34,10 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 	        return pageInfo;
 	    }
 	  @Override
-	   public  PageResponseDTO<PageNewsInfoRespDTO>  queryPageNewsInfoList(PageNewsInfo exam) throws Exception{
+	   public  PageResponseDTO<PageNewsInfoDTO>  queryPageNewsInfoList(PageNewsInfoRespDTO exam) throws Exception{
 		  //分页信息赋值
-	      int page = 1;
-	      int rows = 10;
+	      int page = exam.getPageNo();
+	      int rows = exam.getPageSize();
 	      PageHelper.startPage(page, rows, "ORDER_NO desc");
 		  PageNewsInfoExample example = new PageNewsInfoExample();
 		  PageNewsInfoExample.Criteria criteria = example.createCriteria(); 
@@ -53,7 +55,7 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 			  List<PageNewsInfo> pageList = pageNewsInfoMapper.selectByExample(example);
 		   //使用PageInfo对结果进行包装
 	        PageInfo pageInfo = new PageInfo(pageList);
-	        PageResponseDTO<PageNewsInfoRespDTO> respDTO = PageResponseFactory.genPageResponse(pageInfo,PageNewsInfoRespDTO.class);
-	        return respDTO;
+	        PageResponseDTO<PageNewsInfoDTO> pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,PageNewsInfoDTO.class);
+	        return pageResponseDTO;
 		  }  
 }

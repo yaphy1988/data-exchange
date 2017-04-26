@@ -28,6 +28,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdPropRespD
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
@@ -106,15 +107,13 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
     }
     //查询热点信息 列表
     @Override
-    public PageResponseDTO<PageNewsInfoRespDTO> queryPageNewsInfoList(PageNewsInfoRespDTO pageInfoRespDTO) throws Exception {
-    	PageResponseDTO<PageNewsInfoRespDTO> PageNewsInfoRespPageInfo = new PageResponseDTO<>();
+    public PageResponseDTO<PageNewsInfoDTO> queryPageNewsInfoList(PageNewsInfoRespDTO pageInfoRespDTO) throws Exception {
+    	PageResponseDTO<PageNewsInfoDTO> PageNewsInfoRespPageInfo = new PageResponseDTO<>();
         try{
         	 if (pageInfoRespDTO ==null ){
                  throw new Exception("查询热点信息异常，入参为空");
              }
-        	 PageNewsInfo exam = new PageNewsInfo();
-         	 BeanUtils.copyProperties( pageInfoRespDTO,exam);
-         	 PageNewsInfoRespPageInfo = iPageNewsInfoSV.queryPageNewsInfoList(exam);
+         	 PageNewsInfoRespPageInfo = iPageNewsInfoSV.queryPageNewsInfoList(pageInfoRespDTO);
         }catch(Exception e){
         	log.error("获取热点信息异常:", e);
             throw new Exception(e);

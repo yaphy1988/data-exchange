@@ -41,45 +41,42 @@ function saveMadeData() {
 }
 /**查询楼层信息，异步加载楼层内容*/
 function queryPageModue(){
-	$.ajax({
-		url : basePath+'/homePage/queryPageModue',
-		type : "POST",
-		dataType : "json",
-		async : true,
-		data : {},
-		success : function(data) {
-			 if(data.success){
-				 if(data.pageModuleList != null && data.pageModuleList != undefined){
-					 $(data.pageModuleList).each(function(i,d){
-						 switch (d.moduleId) {
-						case 101://01-首页轮播广告；
-							queryModue101(d.moduleId);
-							break;
-						case 102://01-首页数据推荐；
-							querydata_recommend102(d.moduleId);
-							break;
-						case 103://03-首页数据定制；1
-							
-							break;
-						case 104://04-平台动态
-							queryModue104(d.moduleId);
-							break;
-						case 105://109-合作伙伴
-							queryPartner109(d.moduleId);
-							break;							
-						default:
-							break;
-						}
-					 });
-				 }
-			 }else{
-				 alert('查询楼层信息异常！');
+	var url = basePath+'/homePage/queryPageModue';
+	var params={moduleId:moduleId};
+	var callBack = function(data) {
+		 if(data.success){
+			 if(data.pageModuleList != null && data.pageModuleList != undefined){
+				 $(data.pageModuleList).each(function(i,d){
+					 switch (d.moduleId) {
+					case 101://01-首页轮播广告；
+						queryModue101(d.moduleId);
+						break;
+					case 102://01-首页数据推荐；
+						querydata_recommend102(d.moduleId);
+						break;
+					case 103://03-首页数据定制；1
+						
+						break;
+					case 104://04-平台动态
+						queryModue104('105',1,10);
+						break;
+					case 105://109-合作伙伴
+						queryPartner109(d.moduleId);
+						break;							
+					default:
+						break;
+					}
+				 });
 			 }
-	}});
+		 }else{
+			 alert('查询楼层信息异常！');
+		 }
+	};
 }
 //查询推荐楼层信息
 function querydata_recommend102(moduleId){
 	var url = basePath+'/homePage/queryPageModuleGoods';
+	var params={moduleId:moduleId};
 	var callBack =function(data){
 		var html = "";
 		if(data.success){
@@ -99,11 +96,12 @@ function querydata_recommend102(moduleId){
 		 }
 		$('#data_recommend').html(html);
 	};
-	doAjax(url,moduleId,callBack);
+	doAjax(url,params,callBack);
 }
 //查询轮播广告信息
 function queryModue101(moduleId){
 	var url = basePath+'/homePage/queryPageModuleAd';
+	var params={moduleId:moduleId};
 	var callBack =function(data){
 		var htmlOl = '';
 		var htmDiv = '';
@@ -126,11 +124,16 @@ function queryModue101(moduleId){
 		$('#carousel-example-generic>div').html(htmDiv);
 		$('#carousel-example-generic').carousel({interval: 3000});
 	};
-	doAjax(url,moduleId,callBack);
+	doAjax(url,params,callBack);
 }
 //查询平台动态公告信息
-function queryModue104(moduleId){
+function queryModue104(moduleId,pageNo,pageSize){
 	var url = basePath+'/homePage/queryPageModuleAd';
+	var params={
+		moduleId:moduleId,
+		pageNo:pageNo,
+		pageSize:pageSize
+	};
 	var callBack =function(data){
 		if(data.success){
 			$(data.moduleAdList).each(function(i,d){
@@ -138,12 +141,13 @@ function queryModue104(moduleId){
 			});
 		}
 	};
-	doAjax(url,moduleId,callBack);
+	doAjax(url,params,callBack);
 }
 
 //查询合作伙伴
 function queryPartner109(moduleId){
 	var url = basePath+'/homePage/queryPageModuleAd';
+	var params={moduleId:moduleId};
 	var callBack =function(data){
 		var htmlOl = '<li>';
 		if(data.success){
@@ -160,15 +164,15 @@ function queryPartner109(moduleId){
 		}
 		$('#partnert_div').html(htmlOl); 
 	};
-	doAjax(url,moduleId,callBack);
+	doAjax(url,params,callBack);
 }
-function doAjax(url,moduleId,callBack){
+function doAjax(url,params,callBack){
 	$.ajax({
 		url : url,
 		type : "POST",
 		dataType : "json",
 		async : true,
-		data : {moduleId:moduleId},
+		data : params,
 		success : callBack
 	})
 }
