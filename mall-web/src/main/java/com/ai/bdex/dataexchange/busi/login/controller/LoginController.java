@@ -58,11 +58,11 @@ public class LoginController {
 		String verifyCode = request.getParameter("verifyCode");
 		String veriCodeInSession = CaptchaServlet.getCaptchaCode(request);
 //		验证码注释
-//		if (!CaptchaUtil.verifyCaptcha(request, verifyCode)) {
-//			rMap.put("success", false);
-//			rMap.put("errorMsg", "验证码输入错误");
-//			return rMap;
-//		}
+		if (!CaptchaServlet.verifyCaptcha(request, verifyCode)) {
+			rMap.put("success", false);
+			rMap.put("errorMsg", "验证码输入错误");
+			return rMap;
+		}
 
 		loginInfo = new LoginInfoDTO();
 		loginInfo.setLoginName(staffId);
