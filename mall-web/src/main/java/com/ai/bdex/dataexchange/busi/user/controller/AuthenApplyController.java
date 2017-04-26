@@ -13,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.ai.bdex.dataexchange.busi.user.entity.InvoiceTaxVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ChnlInvoiceTaxDTO;
@@ -93,7 +96,8 @@ public class AuthenApplyController {
 	 * 提交认证审核
 	 * @return
 	 */
-	@RequestMapping(value="/saveauthen")
+	@RequestMapping(value="/saveauthen",method=RequestMethod.POST)
+	@ResponseBody
 	public Map<String,Object> saveAuthenInfo(Model model,HttpSession session,InvoiceTaxVO vo){
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {

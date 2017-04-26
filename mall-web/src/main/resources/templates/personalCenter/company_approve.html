@@ -105,9 +105,9 @@
 						<td class="Hint" width="140">
 							<span class="col_red">*</span>公司名称:
 						</td>
-						<td width="520" id="invoiceTitle_td">
-							<input class="form-control" placeholder="" type="text" id="invoiceTitle" maxlength="128">
-							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
+						<td width="520" >
+							<input class="form-control" placeholder="" type="text" id="invoiceTitle" maxlength="128" onfocus="hiddenwarm('invoiceTitle');">
+							<p class="error-tip" style="display:none;" id="invoiceTitle_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
 						</td>
 					</tr>
 					<tr>
@@ -117,26 +117,26 @@
 						<td >
 							<form class="form-inline">
 							  <div class="form-group">
-							    <select  class="form-control" id="province">
+							    <select  class="form-control" id="province" onfocus="hiddenwarm('areainfo');">
 							    	 <option value="">省份</option>
 							    	 <option value="59">广西</option>
 							    	 <option value="71">湖南</option>
 							    	 <option value="74">广东</option>
 							    </select>
-							    <select  class="form-control" id="city">
+							    <select  class="form-control" id="city" onfocus="hiddenwarm('areainfo');">
 							    	<option value="">地级市</option>
 							    	 <option value="59">广西</option>
 							    	 <option value="71">湖南</option>
 							    	 <option value="74">广东</option>
 							    </select>
-							    <select  class="form-control" id="country">
-							         <option>市、县级市、县</option>
+							    <select  class="form-control" id="country" onfocus="hiddenwarm('areainfo');">
+							         <option value="">市、县级市、县</option>
 							    	 <option value="59">广西</option>
 							    	 <option value="71">湖南</option>
 							    	 <option value="74">广东</option>
 							    </select>
 							  </div>
-							  <p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
+							  <p class="error-tip" style="display:none;" id="areainfo_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
 							  </form>
 						</td>
 						
@@ -146,8 +146,8 @@
 							<span class="col_red">*</span>详细地址:
 						</td>
 						<td >
-							<input class="form-control" placeholder="" type="text" id="detailAddress" maxlength="256">
-							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
+							<input class="form-control" placeholder="" type="text" id="detailAddress" maxlength="256" onfocus="hiddenwarm('detailAddress');">
+							<p class="error-tip" style="display:none;" id="detailAddress_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
 						</td>
 					</tr>
 			</table>	
@@ -158,8 +158,8 @@
 							<span class="col_red">*</span>营业执照编号:
 						</td>
 						<td >
-							<input class="form-control" placeholder="" type="text" id="taxpayerNo" maxlength=64>
-							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
+							<input class="form-control" placeholder="" type="text" id="taxpayerNo" maxlength=64 onfocus="hiddenwarm('taxpayerNo');">
+							<p class="error-tip" style="display:none;" id="taxpayerNo_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
 						</td>
 						
 					</tr>
@@ -168,8 +168,8 @@
 							税务登记证编号:
 						</td>
 						<td width="520">
-							<input class="form-control" placeholder="" type="text" id="taxNo" maxlength="64">
-							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
+							<input class="form-control" placeholder="" type="text" id="taxNo" maxlength="64" onfocus="hiddenwarm('taxNo');">
+							<p class="error-tip" style="display:none;" id="taxNo_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
 						</td>
 					</tr>
 					<tr>
@@ -177,8 +177,8 @@
 							组织机构编号:
 						</td>
 						<td >
-							<input class="form-control" placeholder="" type="text" id="organCode">
-							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
+							<input class="form-control" placeholder="" type="text" id="organCode" onfocus="hiddenwarm('organCode');">
+							<p class="error-tip" style="display:none;" id="organCode_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
 						</td>
 						
 					</tr>
@@ -203,8 +203,8 @@
 							<span class="col_red">*</span>联系人姓名:
 						</td>
 						<td >
-							<input class="form-control" placeholder="" type="text" id="relName" maxlength="16">
-							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
+							<input class="form-control" placeholder="" type="text" id="relName" maxlength="16" onfocus="hiddenwarm('relName');">
+							<p class="error-tip" style="display:none;" id="relName_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
 							 
 						</td>
 					</tr>
@@ -214,8 +214,8 @@
 							<span class="col_red">*</span>联系人电话:
 						</td>
 						<td width="520">
-							<input class="form-control" placeholder="" type="text" id="phone" maxlength="11">
-							<p class="error-tip" style="display:none;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
+							<input class="form-control" placeholder="" type="text" id="phone" maxlength="11" onfocus="hiddenwarm('phone');">
+							<p class="error-tip" style="display:none;" id="phone_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
 						</td>
 						
 					</tr>

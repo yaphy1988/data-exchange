@@ -82,7 +82,7 @@ function saveapply(){
 		cache : false,
 		success : function(obj){
 			if(obj.success){
-				WEB.msg.info('提示','提交审核成功',function(){
+				WEB.msg.info('提示','提交认证成功',function(){
 					windows.location.href=WEB_ROOT+'/authenapply/userinfo';
 				});
 			}else{
@@ -96,10 +96,10 @@ function saveapply(){
 
 //显示提示
 function showwarm(id,msg){
-	$("#"+id+"_td").find("p").css('visibility','visible');
-	$("#"+id).find("span").html(msg);
+	$("#"+id+"_msg").css('display','');
+	$("#"+id+"_msg").find("span").html(msg);
 }
 //隐藏提示
 function hiddenwarm(id){
-	$("#"+id+"_td").find("p").css('visibility','hidden');
+	$("#"+id+"_msg").css('display','none');
 }
