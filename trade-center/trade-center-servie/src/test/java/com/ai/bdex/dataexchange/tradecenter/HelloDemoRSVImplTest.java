@@ -9,9 +9,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.solr.IDeltaIndexServiceRSV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.IDemoSV;
 import com.ai.paas.sequence.SeqUtil;
 
 /**
@@ -22,10 +20,7 @@ import com.ai.paas.sequence.SeqUtil;
 @SpringBootTest
 @ImportResource({"classpath:/dubbo/dubboContext.xml"})
 public class HelloDemoRSVImplTest {
-	 @Autowired
-	    private IDemoSV demoRSV;
-	 @Autowired
-	    private IPageInfoRSV iPageInfoRSV;
+
 	 @Autowired
 	 private IDeltaIndexServiceRSV iDeltaIndexServiceRSV;
     @Test
