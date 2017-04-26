@@ -76,6 +76,14 @@
 			<groupId>com.ai.woego.boot</groupId>
 			<artifactId>image-engine-spring-boot-autoconfigure</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>com.ai.woego.boot</groupId>
+			<artifactId>captcha-engine-spring-boot-autoconfigure</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.ai.paas</groupId>
+			<artifactId>captcha-utils</artifactId>
+		</dependency>
 		<!--<dependency>
 			<groupId>com.ai.woego.boot</groupId>
 			<artifactId>dubbo-spring-boot-autoconfigure</artifactId>

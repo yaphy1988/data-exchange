@@ -61,5 +61,12 @@
   "commandSize": "20",
   "primaryParam": "productId",
   "serverUrl": "http://112.74.163.29:14751/ImageServer"
+ },
+ "/com/ai/paas/qrcode/conf": {
+  "codePrefix": "http://abc.woego.cn/c?",
+  "codeSurfix": "",
+  "codeSize": 12,
+  "bufferSize": 500,
+  "imageWidth": 200
  }
 }

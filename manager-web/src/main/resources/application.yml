@@ -24,3 +24,5 @@ application:
     confpath: /com/ai/paas/gmimage/conf
   file:
     confpath: /com/ai/paas/file/conf
+  captcha:
+    confpath: /com/ai/paas/qrcode/conf
