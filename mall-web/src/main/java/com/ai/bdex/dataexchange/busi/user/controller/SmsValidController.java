@@ -20,7 +20,7 @@ import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ISmsSeccodeRSV;
-import com.ai.bdex.dataexchange.util.CaptchaUtil;
+import com.ai.paas.captcha.CaptchaServlet;
 import com.ai.paas.util.CacheUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.logger.Logger;
@@ -67,7 +67,7 @@ public class SmsValidController{
 		
 		/** 图片验证码 */
 		if(!StringUtils.isBlank(picVerifyCode)){
-			if (CaptchaUtil.verifyCaptcha(request, picVerifyCode.trim()) == false) {
+			if (CaptchaServlet.verifyCaptcha(request, picVerifyCode.trim()) == false) {
 				rMap.put("error_msg","图片验证码不正确，请重新输入！");
 				rMap.put("success",false);
 				return rMap;

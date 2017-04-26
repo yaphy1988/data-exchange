@@ -153,6 +153,11 @@
 			<artifactId>solr-solrj</artifactId>
 		</dependency>
 		<!-- solr end -->
+		<dependency>
+            <groupId>com.ai.paas</groupId>
+            <artifactId>captcha-utils</artifactId>
+            <optional>true</optional>
+        </dependency>
 	</dependencies>
 
 	<build>

@@ -19,8 +19,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
-import com.ai.bdex.dataexchange.util.CaptchaUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
+import com.ai.paas.captcha.CaptchaServlet;
 import com.ai.paas.utils.InetTool;
 import com.ai.paas.utils.SignUtil;
 
@@ -56,7 +56,7 @@ public class LoginController {
 		staffId = request.getParameter("staffId");
 		String password = request.getParameter("password");
 		String verifyCode = request.getParameter("verifyCode");
-		String veriCodeInSession = CaptchaUtil.getCaptchaCode(request);
+		String veriCodeInSession = CaptchaServlet.getCaptchaCode(request);
 //		验证码注释
 //		if (!CaptchaUtil.verifyCaptcha(request, verifyCode)) {
 //			rMap.put("success", false);

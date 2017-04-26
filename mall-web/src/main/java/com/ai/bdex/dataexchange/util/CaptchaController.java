@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
+import com.ai.paas.captcha.CaptchaServlet;
 import com.ai.paas.util.CacheUtil;
   
 @Controller  
@@ -22,7 +23,7 @@ public class CaptchaController{
 //		captcha.genCaptcha(request, response);
 		HttpSession session = request.getSession();
 		StaffInfoDTO info = StaffUtil.getStaffVO(session);
-		String code = CaptchaUtil.getCaptchaCode(request);
+		String code = CaptchaServlet.getCaptchaCode(request);
 		CacheUtil.addItem("123", "ozou",60);
 		System.out.println(code);
 		return null;
