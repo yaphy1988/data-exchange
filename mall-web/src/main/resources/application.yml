@@ -29,6 +29,8 @@ application:
     confpath: /com/ai/paas/image/conf
   file:
     confpath: /com/ai/paas/file/conf
+  captcha:
+    confpath: /com/ai/paas/qrcode/conf
   configcenter:
     runmode: D
     zkaddress: 127.0.0.1:2181
