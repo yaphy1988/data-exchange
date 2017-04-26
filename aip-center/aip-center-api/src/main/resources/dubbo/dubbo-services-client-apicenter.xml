@@ -10,4 +10,5 @@
 
     <dubbo:reference id="aipCenterDemoRSV" interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IDemoRSV"/>
 	<dubbo:reference id="serviceMessageRSV" interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IServiceMessageRSV"/>
+	<dubbo:reference id="aipServiceInfoRSV" interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV"/>
 </beans>

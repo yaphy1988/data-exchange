@@ -9,7 +9,6 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.ai.bdex.dataexchange</groupId>
   <artifactId>aip-center-service</artifactId>
   <dependencies>
     <dependency>
@@ -77,6 +76,12 @@
       <groupId>javax.mail</groupId>
       <artifactId>com.springsource.javax.mail</artifactId>
     </dependency>
+    <!-- 分页插件 -->
+	<dependency>
+	  <groupId>com.github.pagehelper</groupId>
+	  <artifactId>pagehelper</artifactId>
+	</dependency>
+
   </dependencies>
 
 
