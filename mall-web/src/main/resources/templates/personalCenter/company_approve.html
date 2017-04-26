@@ -11,6 +11,9 @@
 	<link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
 	
 </head>
+<script type="text/javascript">
+        var WEB_ROOT = '[[${#httpServletRequest.contextPath}]]';
+    </script>
 <script type="text/javascript" th:src="@{/js-busi/authenapply/authenapply.js}"></script>
 <script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
 <style type="text/css">
