@@ -12,7 +12,7 @@ import org.springframework.context.annotation.ImportResource;
  * @author yafei
  * @since 2017/4/4
  */
-@ImportResource({"classpath:/dubbo/service/*.xml","/spring/*-db-config.xml"})
+@ImportResource({"classpath*:/spring/*-db-config.xml","classpath*:/dubbo/service/*.xml"})
 @SpringBootApplication
 public class TradeCenterServiceStart {
     private static Logger logger = LoggerFactory.getLogger(TradeCenterServiceStart.class);
