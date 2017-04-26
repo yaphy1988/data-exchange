@@ -24,4 +24,6 @@ public interface IGdsSkuRSV {
      * @throws Exception
      */
     public int insertGdsSku(GdsSkuReqDTO gdsSkuReqDTO) throws Exception;
+    public int deleteGdsSkuByGdsId(GdsSkuReqDTO gdsSkuReqDTO) throws Exception;
+    public int updataGdsSkuByGdsId(GdsSkuReqDTO gdsSkuReqDTO) throws Exception;
 }

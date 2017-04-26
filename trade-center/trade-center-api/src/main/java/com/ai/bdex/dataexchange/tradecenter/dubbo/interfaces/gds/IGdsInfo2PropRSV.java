@@ -12,4 +12,5 @@ public interface IGdsInfo2PropRSV {
 
     public List<GdsInfo2PropRespDTO> queryGdsInfo2PropList(GdsInfo2PropReqDTO gdsInfo2PropReqDTO) throws Exception;
     public int insertGdsInfo2Prop(GdsInfo2PropReqDTO gdsInfo2PropReqDTO) throws Exception;
+    public int updateGdsInfo2Prop(GdsInfo2PropReqDTO gdsInfo2PropReqDTO) throws Exception;
 }

@@ -8,6 +8,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfo2CatS
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.utils.DateUtil;
 
 import org.springframework.stereotype.Service;
 
@@ -70,6 +71,7 @@ public class GdsInfo2CatSVImpl implements IGdsInfo2CatSV {
         GdsInfo2Cat gdsInfo2Cat = new GdsInfo2Cat();
         int gcId=SeqUtil.getInt("SEQ_GDS_INFO_2_CAT");
         gdsInfo2CatReqDTO.setGcId(gcId);
+        gdsInfo2CatReqDTO.setCreateTime(DateUtil.getNowAsDate());
         ObjectCopyUtil.copyObjValue(gdsInfo2CatReqDTO,gdsInfo2Cat,null,false);
         int code = gdsInfo2CatMapper.insert(gdsInfo2Cat);
         return gcId;
@@ -84,7 +86,7 @@ public class GdsInfo2CatSVImpl implements IGdsInfo2CatSV {
         ObjectCopyUtil.copyObjValue(gdsInfo2CatReqDTO,gdsInfo2Cat,null,false);
 //        BeanUtils.copyProperties(gdsInfo2CatReqDTO,gdsInfo2Cat);
         int code = gdsInfo2CatMapper.updateByPrimaryKey(gdsInfo2Cat);
-        return code;
+        return gdsInfo2CatReqDTO.getGcId();
     }
 
     @Override

@@ -15,6 +15,8 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 /**
  * Created by yx on 2017/4/20.
  */
@@ -23,7 +25,7 @@ public class GdsInfo2PropRSVImpl implements IGdsInfo2PropRSV {
 
     private final static Logger log = LoggerFactory.getLogger(GdsInfo2PropRSVImpl.class);
 
-    @Reference
+    @Resource
     private IGdsInfo2PropSV iGdsInfo2PropSV;
 
     @Override

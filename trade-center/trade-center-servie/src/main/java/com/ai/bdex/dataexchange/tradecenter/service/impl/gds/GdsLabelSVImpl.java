@@ -10,6 +10,8 @@ import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
+import com.ai.paas.utils.DateUtil;
+
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -77,6 +79,7 @@ public class GdsLabelSVImpl implements IGdsLabelSV {
         GdsLabel gdsLabel = new GdsLabel();
         int labId=SeqUtil.getInt("SEQ_GDS_LABEL");
         gdsLabelReqDTO.setLabId(labId);
+        gdsLabelReqDTO.setCreateTime(DateUtil.getNowAsDate());
         ObjectCopyUtil.copyObjValue(gdsLabelReqDTO,gdsLabel,null,false);
 //        BeanUtils.copyProperties(gdsLabelReqDTO,gdsLabel);
         int code = gdsLabelMapper.insert(gdsLabel);
@@ -112,6 +115,24 @@ public class GdsLabelSVImpl implements IGdsLabelSV {
         GdsLabelExample.Criteria criteria = gdsLabelExample.createCriteria();
         initCriteria(criteria, gdsLabelReqDTO);
         int code = gdsLabelMapper.deleteByExample(gdsLabelExample);
+        return code;
+    }
+    public int updataGdslabelByGdsId(GdsLabelReqDTO gdsLabelReqDTO) throws Exception {
+        if (gdsLabelReqDTO.getGdsId()==null || gdsLabelReqDTO.getGdsId()<=0){
+            throw new Exception("删除商品标签入参为空");
+        }
+        GdsLabelExample gdsLabelExample = new GdsLabelExample();
+        GdsLabelExample.Criteria criteria = gdsLabelExample.createCriteria();
+        if (gdsLabelReqDTO.getLabId()!=null && gdsLabelReqDTO.getLabId().intValue()>0){
+            criteria.andLabIdEqualTo(gdsLabelReqDTO.getLabId());
+        }
+        if(gdsLabelReqDTO.getGdsId()!=null && gdsLabelReqDTO.getGdsId().intValue()>0){
+            criteria.andGdsIdEqualTo(gdsLabelReqDTO.getGdsId());
+        }
+        GdsLabel gdsLabel = new GdsLabel();
+        gdsLabelReqDTO.setUpdateTime(DateUtil.getNowAsDate());
+        ObjectCopyUtil.copyObjValue(gdsLabelReqDTO,gdsLabel,null,false);
+        int code = gdsLabelMapper.updateByExampleSelective(gdsLabel,gdsLabelExample);
         return code;
     }
     private void initCriteria(GdsLabelExample.Criteria criteria , GdsLabelReqDTO gdsLabelReqDTO){

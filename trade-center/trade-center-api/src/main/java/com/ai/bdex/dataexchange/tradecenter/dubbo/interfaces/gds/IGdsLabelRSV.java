@@ -13,6 +13,7 @@ public interface IGdsLabelRSV {
     public List<GdsLabelRespDTO> queryGdsLabelList(GdsLabelReqDTO gdsLabelReqDTO) throws Exception;
 	
     public int insertGdsLabel(GdsLabelReqDTO gdsLabelReqDTO) throws Exception ;
-    
+    public int updateGdsLabel(GdsLabelReqDTO gdsLabelReqDTO) throws Exception ;    
     public int deleteGdslabelByGdsId(GdsLabelReqDTO gdsLabelReqDTO) throws Exception;
+    public int updataGdslabelByGdsId(GdsLabelReqDTO gdsLabelReqDTO) throws Exception;
 }

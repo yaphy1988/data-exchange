@@ -5,173 +5,243 @@ import java.util.Date;
 import java.util.List;
 
 public class GdsInfoVO implements Serializable{
-    private Integer gdsId;
+	 private Integer gdsId;
 
-    private String gdsName;
+	    private String gdsName;
 
-    private String gdsSubtitle;
+	    private String gdsSubtitle;
 
-    private Integer catFirst;
+	    private Integer catFirst;
 
-    private Integer apiId;
+	    private String catFirstName;
 
-    private String gdsPic;
+	    private Integer apiId;
 
-    private String ifRecommend;
+	    private String gdsPic;
 
-    private String funIntroduction;
+	    private String ifRecommend;
 
-    private String commpanyName;
+	    private String funIntroduction;
 
-    private String status;
+	    private String commpanyName;
 
-    private String shelveUser;
+	    private String status;
 
-    private Date shelveTime;
+	    private String shelveUser;
 
-    private String createUser;
+	    private Date shelveTime;
 
-    private Date createTime;
+	    private String createUser;
 
-    private String updateUser;
+	    private Date createTime;
 
-    private Date updateTime;
-    // 是否查看详情
-    private String isView;
-    
-	public String getIsView() {
-		return isView;
-	}
+	    private String updateUser;
 
-	public void setIsView(String isView) {
-		this.isView = isView;
-	}
+	    private Date updateTime;
 
-	public Integer getGdsId() {
-        return gdsId;
-    }
+	    private Integer catId;
 
-    public void setGdsId(Integer gdsId) {
-        this.gdsId = gdsId;
-    }
+	    private String catName;
 
-    public String getGdsName() {
-        return gdsName;
-    }
+	    private String isView;//查看
+	    
+	    private String gdsPicUrl;//图片链接
+	    
+	    private List<GdsLabelVO> gdsLabelVOList;//商品标签信息列表
 
-    public void setGdsName(String gdsName) {
-        this.gdsName = gdsName;
-    }
+	    private List<GdsSkuVO> gdsSkuVOList;//单品列表
 
-    public String getGdsSubtitle() {
-        return gdsSubtitle;
-    }
+	    private List<GdsInfo2PropVO> gdsInfo2PropVOList;//商品属性列表
 
-    public void setGdsSubtitle(String gdsSubtitle) {
-        this.gdsSubtitle = gdsSubtitle;
-    }
+	    public String getGdsPicUrl() {
+			return gdsPicUrl;
+		}
 
-    public Integer getCatFirst() {
-        return catFirst;
-    }
+		public void setGdsPicUrl(String gdsPicUrl) {
+			this.gdsPicUrl = gdsPicUrl;
+		}
 
-    public void setCatFirst(Integer catFirst) {
-        this.catFirst = catFirst;
-    }
+		public String getIsView() {
+			return isView;
+		}
 
-    public Integer getApiId() {
-        return apiId;
-    }
+		public void setIsView(String isView) {
+			this.isView = isView;
+		}
 
-    public void setApiId(Integer apiId) {
-        this.apiId = apiId;
-    }
+		public Integer getGdsId() {
+	        return gdsId;
+	    }
 
-    public String getGdsPic() {
-        return gdsPic;
-    }
+	    public void setGdsId(Integer gdsId) {
+	        this.gdsId = gdsId;
+	    }
 
-    public void setGdsPic(String gdsPic) {
-        this.gdsPic = gdsPic;
-    }
+	    public String getGdsName() {
+	        return gdsName;
+	    }
 
-    public String getIfRecommend() {
-        return ifRecommend;
-    }
+	    public void setGdsName(String gdsName) {
+	        this.gdsName = gdsName;
+	    }
 
-    public void setIfRecommend(String ifRecommend) {
-        this.ifRecommend = ifRecommend;
-    }
+	    public String getGdsSubtitle() {
+	        return gdsSubtitle;
+	    }
 
-    public String getFunIntroduction() {
-        return funIntroduction;
-    }
+	    public void setGdsSubtitle(String gdsSubtitle) {
+	        this.gdsSubtitle = gdsSubtitle;
+	    }
 
-    public void setFunIntroduction(String funIntroduction) {
-        this.funIntroduction = funIntroduction;
-    }
+	    public Integer getCatFirst() {
+	        return catFirst;
+	    }
 
-    public String getCommpanyName() {
-        return commpanyName;
-    }
+	    public void setCatFirst(Integer catFirst) {
+	        this.catFirst = catFirst;
+	    }
 
-    public void setCommpanyName(String commpanyName) {
-        this.commpanyName = commpanyName;
-    }
+	    public Integer getApiId() {
+	        return apiId;
+	    }
 
-    public String getStatus() {
-        return status;
-    }
+	    public void setApiId(Integer apiId) {
+	        this.apiId = apiId;
+	    }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+	    public String getGdsPic() {
+	        return gdsPic;
+	    }
 
-    public String getShelveUser() {
-        return shelveUser;
-    }
+	    public void setGdsPic(String gdsPic) {
+	        this.gdsPic = gdsPic;
+	    }
 
-    public void setShelveUser(String shelveUser) {
-        this.shelveUser = shelveUser;
-    }
+	    public String getIfRecommend() {
+	        return ifRecommend;
+	    }
 
-    public Date getShelveTime() {
-        return shelveTime;
-    }
+	    public void setIfRecommend(String ifRecommend) {
+	        this.ifRecommend = ifRecommend;
+	    }
 
-    public void setShelveTime(Date shelveTime) {
-        this.shelveTime = shelveTime;
-    }
+	    public String getFunIntroduction() {
+	        return funIntroduction;
+	    }
 
-    public String getCreateUser() {
-        return createUser;
-    }
+	    public void setFunIntroduction(String funIntroduction) {
+	        this.funIntroduction = funIntroduction;
+	    }
 
-    public void setCreateUser(String createUser) {
-        this.createUser = createUser;
-    }
+	    public String getCommpanyName() {
+	        return commpanyName;
+	    }
 
-    public Date getCreateTime() {
-        return createTime;
-    }
+	    public void setCommpanyName(String commpanyName) {
+	        this.commpanyName = commpanyName;
+	    }
 
-    public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
-    }
+	    public String getStatus() {
+	        return status;
+	    }
 
-    public String getUpdateUser() {
-        return updateUser;
-    }
+	    public void setStatus(String status) {
+	        this.status = status;
+	    }
 
-    public void setUpdateUser(String updateUser) {
-        this.updateUser = updateUser;
-    }
+	    public String getShelveUser() {
+	        return shelveUser;
+	    }
 
-    public Date getUpdateTime() {
-        return updateTime;
-    }
+	    public void setShelveUser(String shelveUser) {
+	        this.shelveUser = shelveUser;
+	    }
 
-    public void setUpdateTime(Date updateTime) {
-        this.updateTime = updateTime;
-    }
+	    public Date getShelveTime() {
+	        return shelveTime;
+	    }
+
+	    public void setShelveTime(Date shelveTime) {
+	        this.shelveTime = shelveTime;
+	    }
+
+	    public String getCreateUser() {
+	        return createUser;
+	    }
+
+	    public void setCreateUser(String createUser) {
+	        this.createUser = createUser;
+	    }
+
+	    public Date getCreateTime() {
+	        return createTime;
+	    }
+
+	    public void setCreateTime(Date createTime) {
+	        this.createTime = createTime;
+	    }
+
+	    public String getUpdateUser() {
+	        return updateUser;
+	    }
+
+	    public void setUpdateUser(String updateUser) {
+	        this.updateUser = updateUser;
+	    }
+
+	    public Date getUpdateTime() {
+	        return updateTime;
+	    }
+
+	    public void setUpdateTime(Date updateTime) {
+	        this.updateTime = updateTime;
+	    }
+
+	    public String getCatFirstName() {
+	        return catFirstName;
+	    }
+
+	    public void setCatFirstName(String catFirstName) {
+	        this.catFirstName = catFirstName;
+	    }
+
+	    public List<GdsLabelVO> getGdsLabelVOList() {
+	        return gdsLabelVOList;
+	    }
+
+	    public void setGdsLabelVOList(List<GdsLabelVO> gdsLabelVOList) {
+	        this.gdsLabelVOList = gdsLabelVOList;
+	    }
+
+	    public List<GdsSkuVO> getGdsSkuVOList() {
+	        return gdsSkuVOList;
+	    }
+
+	    public void setGdsSkuVOList(List<GdsSkuVO> gdsSkuVOList) {
+	        this.gdsSkuVOList = gdsSkuVOList;
+	    }
+
+	    public List<GdsInfo2PropVO> getGdsInfo2PropVOList() {
+	        return gdsInfo2PropVOList;
+	    }
+
+	    public void setGdsInfo2PropVOList(List<GdsInfo2PropVO> gdsInfo2PropVOList) {
+	        this.gdsInfo2PropVOList = gdsInfo2PropVOList;
+	    }
+
+	    public Integer getCatId() {
+	        return catId;
+	    }
+
+	    public void setCatId(Integer catId) {
+	        this.catId = catId;
+	    }
+
+	    public String getCatName() {
+	        return catName;
+	    }
+
+	    public void setCatName(String catName) {
+	        this.catName = catName;
+	    }
 }

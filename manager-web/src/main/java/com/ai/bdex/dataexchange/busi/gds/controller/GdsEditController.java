@@ -5,6 +5,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -29,33 +30,41 @@ import org.springframework.web.util.HtmlUtils;
 import org.thymeleaf.util.StringUtils;
 
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsCatVO;
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfo2PropVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsJsonBean;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsLabelQuikVO;
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsLabelVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsManageInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsPropVO;
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsSkuVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2CatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2CatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelQuikReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelQuikRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsPropReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsPropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfo2PropRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsLabelRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.util.MongoFileUtil;
+import com.ai.paas.utils.CollectionUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.alibaba.dubbo.rpc.service.GenericException;
@@ -69,6 +78,12 @@ public class GdsEditController {
      * 记录日志
      */
     private final Log logger = LogFactory.getLog(getClass());
+    private final static Integer AIP_CAT_ID = 1;//aip的catId
+    private final static Integer CUSTOM_CAT_ID = 2;//定制需求catId
+    private final static Integer SOLUTION_CAT_ID = 3;//解决方案catId
+    private final static String GDS_VALID = "1";//商品状态-有效
+    private final static String GDS_INVALID = "0";//商品状态-失效
+
     @DubboConsumer
     private IGdsInfoRSV gdsInfoRSV;
     @DubboConsumer
@@ -92,8 +107,59 @@ public class GdsEditController {
         	if(gdsInfoVO.getGdsId()!=null){
         		isEdit = true;
         		gdsInfoReqDTO.setGdsId(gdsInfoVO.getGdsId());
-        		gdsInfoRespDTO=gdsInfoRSV.queryGdsInfoDetails(gdsInfoReqDTO);
-        		
+                gdsInfoRespDTO = gdsInfoRSV.queryGdsInfo(gdsInfoReqDTO);
+                if (gdsInfoRespDTO!=null){
+                    ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,gdsInfoVO,null,false);
+                    if(gdsInfoRespDTO.getGdsPic()!=null){
+                    	//gdsInfoVO.setGdsPicUrl(ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_100x100"));
+                    }
+                    //设置分类名称
+                    if (gdsInfoRespDTO.getCatId()!=null && gdsInfoRespDTO.getCatId().intValue()>0){
+                        GdsCatRespDTO gdsCatRespDTO = iGdsCatRSV.queryGdsCatByCatId(gdsInfoRespDTO.getCatId());
+                        if (gdsCatRespDTO!=null){
+                            gdsInfoVO.setCatName(gdsCatRespDTO.getCatName());
+                        }
+                    }
+                    if (gdsInfoRespDTO.getCatFirst()!=null && gdsInfoRespDTO.getCatId().intValue()>0){
+                        GdsCatRespDTO gdsCatRespDTO = iGdsCatRSV.queryGdsCatByCatId(gdsInfoRespDTO.getCatFirst());
+                        if (gdsCatRespDTO!=null){
+                            gdsInfoVO.setCatFirstName(gdsCatRespDTO.getCatName());
+                        }
+                    }
+                    //设置商品标签列表
+                    List<GdsLabelVO> gdsLabelVOList = new ArrayList<GdsLabelVO>();
+                    GdsLabelReqDTO gdsLabelReqDTO = new GdsLabelReqDTO();
+                    gdsLabelReqDTO.setStatus(GDS_VALID);
+                    gdsLabelReqDTO.setGdsId(gdsInfoRespDTO.getGdsId());
+                    List<GdsLabelRespDTO> gdsLabelRespDTOList = iGdsLabelRSV.queryGdsLabelList(gdsLabelReqDTO);
+                    if (!CollectionUtil.isEmpty(gdsLabelRespDTOList)){
+                        for (GdsLabelRespDTO gdsLabelRespDTO : gdsLabelRespDTOList){
+                            GdsLabelVO gdsLabelVO = new GdsLabelVO();
+                            ObjectCopyUtil.copyObjValue(gdsLabelRespDTO,gdsLabelVO,null,false);
+                            gdsLabelVOList.add(gdsLabelVO);
+                        }
+                        gdsInfoVO.setGdsLabelVOList(gdsLabelVOList);
+                    }
+                    if (AIP_CAT_ID.equals(gdsInfoRespDTO.getCatFirst())){
+                        //api的分类要设置单品列表信息
+                        List<GdsSkuVO> gdsSkuVOList = new ArrayList<GdsSkuVO>();
+                        GdsSkuReqDTO gdsSkuReqDTO = new GdsSkuReqDTO();
+                        gdsSkuReqDTO.setGdsId(gdsInfoRespDTO.getGdsId());
+                        gdsSkuReqDTO.setStatus(GDS_VALID);
+                        List<GdsSkuRespDTO> gdsSkuRespDTOList = iGdsSkuRSV.queryGdsSkuList(gdsSkuReqDTO);
+                        if (!CollectionUtil.isEmpty(gdsSkuRespDTOList)){
+                            for (GdsSkuRespDTO gdsSkuRespDTO : gdsSkuRespDTOList){
+                                GdsSkuVO gdsSkuVO = new GdsSkuVO();
+                                ObjectCopyUtil.copyObjValue(gdsSkuRespDTO,gdsSkuVO,null,false);
+                                if (gdsSkuVO.getPackPrice()!=null && gdsSkuVO.getPackPrice().intValue()>0){
+                                	gdsSkuVO.setPackPrice(gdsSkuVO.getPackPrice()/100);
+                                }
+                                gdsSkuVOList.add(gdsSkuVO);
+                            }
+                            gdsInfoVO.setGdsSkuVOList(gdsSkuVOList);
+                        }
+                    }
+                }
         	}
         	if (gdsInfoVO.getIsView() != null && gdsInfoVO.getIsView().equals("true")) {// 查看详情
         		isView=true;
@@ -105,7 +171,7 @@ public class GdsEditController {
     	}catch(Exception e){
             logger.error("查询商品录入信息失败,原因："+e.getMessage(),e);
         }
-    	
+    	model.addAttribute("gdsInfoVO", gdsInfoVO);
         model.addAttribute("isView", isView);
     	model.addAttribute("isEdit", isEdit);
     	model.addAttribute("gdsInfoRespDTO", gdsInfoRespDTO);
@@ -226,14 +292,19 @@ public class GdsEditController {
     	GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
         try {
         	//商品基本信息
+        	String staffId="admin";
     		JSONObject gdsInfoVO=JSONObject.parseObject(req.getParameter("gdsInfoVO"));
 			this.setGdsInfo(gdsInfoReqDTO, gdsInfoVO);
-        	int gdsId=gdsInfoRSV.insertGdsInfo(gdsInfoReqDTO);
+			gdsInfoReqDTO.setStatus(GDS_VALID);
+			gdsInfoReqDTO.setCreateUser(staffId);
+			int  gdsId=gdsInfoRSV.insertGdsInfo(gdsInfoReqDTO);
         	//商品分类属性关联信息
         	GdsInfo2CatReqDTO gdsInfo2CatReqDTO = new GdsInfo2CatReqDTO();
        		JSONObject gdsInfo2CatVO=JSONObject.parseObject(req.getParameter("gdsInfo2CatVO"));
     		this.setGdsInfo2Cat(gdsInfo2CatReqDTO, gdsInfo2CatVO);
-    		gdsInfoRSV.insertGdsInfo2Cat(gdsInfo2CatReqDTO);
+    		gdsInfo2CatReqDTO.setStatus(GDS_VALID);
+    		gdsInfo2CatReqDTO.setCreateUser(staffId);
+        	gdsInfoRSV.insertGdsInfo2Cat(gdsInfo2CatReqDTO);
         	//商品标签信息
         	JSONArray gdsLabelVOList=JSONArray.parseArray(req.getParameter("gdsLabelVOList"));
         	List<GdsLabelReqDTO> gdsLabelReqDTOList =  new ArrayList<>();
@@ -242,6 +313,8 @@ public class GdsEditController {
         	if(CollectionUtils.isNotEmpty(gdsLabelReqDTOList)){
         		for(GdsLabelReqDTO labelReq : gdsLabelReqDTOList){
         			labelReq.setGdsId(gdsId);
+        			labelReq.setStatus(GDS_VALID);
+        			labelReq.setCreateUser(staffId);
         			iGdsLabelRSV.insertGdsLabel(labelReq);
         		}
         	}
@@ -253,6 +326,8 @@ public class GdsEditController {
         	if(CollectionUtils.isNotEmpty(gdsSkuReqDTOList)){
         		for(GdsSkuReqDTO skuReq : gdsSkuReqDTOList){
         			skuReq.setGdsId(gdsId);
+        			skuReq.setStatus(GDS_VALID);
+        			skuReq.setCreateUser(staffId);
         			iGdsSkuRSV.insertGdsSku(skuReq);
         		}
         	}
@@ -264,6 +339,8 @@ public class GdsEditController {
         	if(CollectionUtils.isNotEmpty(gdsInfo2PropReqDTOList)){
         		for(GdsInfo2PropReqDTO propReq : gdsInfo2PropReqDTOList){
         			propReq.setGdsId(gdsId);
+        			propReq.setStatus(GDS_VALID);
+        			propReq.setCreateUser(staffId);
         			iGdsInfo2PropRSV.insertGdsInfo2Prop(propReq);
         		}
         	}
@@ -286,42 +363,71 @@ public class GdsEditController {
     }
     @RequestMapping(value = "/editGds")
     @ResponseBody
-    public GdsJsonBean editGds(HttpServletRequest req, HttpServletResponse rep,
-    		GdsManageInfoVO gdsManageInfoVO) throws  BusinessException, GenericException {
+    public GdsJsonBean editGds(HttpServletRequest req, HttpServletResponse rep) throws  BusinessException, GenericException {
     	GdsJsonBean jsonBean = new GdsJsonBean();
     	GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
-    	GdsLabelReqDTO gdsLabelReqDTO = new GdsLabelReqDTO();
         try {
-        	if(gdsManageInfoVO.getGdsInfoVO().getGdsId()!=0){
-            	gdsInfoReqDTO.setGdsId(gdsManageInfoVO.getGdsInfoVO().getGdsId());
+        	//商品基本信息
+        	String staffId="admin";
+    		JSONObject gdsInfoVO=JSONObject.parseObject(req.getParameter("gdsInfoVO"));
+			this.setGdsInfo(gdsInfoReqDTO, gdsInfoVO);
+			gdsInfoReqDTO.setStatus(GDS_VALID);
+			gdsInfoReqDTO.setCreateUser(staffId);
+			int gdsId=0;
+			gdsInfoRSV.updateGdsInfo(gdsInfoReqDTO);
+        	
+        	//商品标签信息
+        	JSONArray gdsLabelVOList=JSONArray.parseArray(req.getParameter("gdsLabelVOList"));
+        	List<GdsLabelReqDTO> gdsLabelReqDTOList =  new ArrayList<>();
+        	this.setGdsLabel(gdsLabelReqDTOList, gdsLabelVOList);
+        	//先删除在保持
+        	GdsLabelReqDTO oldLabelReqDTO = new GdsLabelReqDTO();
+        	oldLabelReqDTO.setGdsId(gdsInfoReqDTO.getGdsId());
+        	oldLabelReqDTO.setStatus(GDS_INVALID);
+        	oldLabelReqDTO.setUpdateUser(staffId);
+        	iGdsLabelRSV.updataGdslabelByGdsId(oldLabelReqDTO);
+        	//保存商品标签
+        	if(CollectionUtils.isNotEmpty(gdsLabelReqDTOList)){
+        		for(GdsLabelReqDTO labelReq : gdsLabelReqDTOList){
+        			labelReq.setGdsId(gdsId);
+        			labelReq.setStatus(GDS_VALID);
+        			labelReq.setCreateUser(staffId);
+        			iGdsLabelRSV.insertGdsLabel(labelReq);
+        		}
         	}
-        	if(StringUtil.isNotBlank(gdsManageInfoVO.getGdsInfoVO().getGdsName())){
-            	gdsInfoReqDTO.setGdsName(gdsManageInfoVO.getGdsInfoVO().getGdsName());
+        	//获取商品单品信息
+        	JSONArray gdsSkuVOList=JSONArray.parseArray(req.getParameter("gdsSkuVOList"));
+        	List<GdsSkuReqDTO> gdsSkuReqDTOList =  new ArrayList<>();
+        	this.setGdsSkuInfo(gdsSkuReqDTOList, gdsSkuVOList);
+        	GdsSkuReqDTO oldSkuReqDTO = new GdsSkuReqDTO();
+        	oldSkuReqDTO.setGdsId(gdsInfoReqDTO.getGdsId());
+        	oldSkuReqDTO.setStatus(GDS_INVALID);
+        	oldSkuReqDTO.setUpdateUser(staffId);
+        	iGdsSkuRSV.updataGdsSkuByGdsId(oldSkuReqDTO);
+        	//保存单品信息
+        	if(CollectionUtils.isNotEmpty(gdsSkuReqDTOList)){
+        		for(GdsSkuReqDTO skuReq : gdsSkuReqDTOList){
+        			skuReq.setGdsId(gdsId);
+        			skuReq.setStatus(GDS_VALID);
+        			skuReq.setCreateUser(staffId);
+        			iGdsSkuRSV.insertGdsSku(skuReq);
+        		}
         	}
-        	if(StringUtil.isNotBlank(gdsManageInfoVO.getGdsInfoVO().getGdsSubtitle())){
-            	gdsInfoReqDTO.setGdsSubtitle(gdsManageInfoVO.getGdsInfoVO().getGdsSubtitle());
-        	}	
-        	if(gdsManageInfoVO.getGdsInfoVO().getCatFirst()!=0){
-            	gdsInfoReqDTO.setCatFirst(gdsManageInfoVO.getGdsInfoVO().getCatFirst());
+        	//获取商品属性配置信息
+        	JSONArray gdsInfo2PropVOList=JSONArray.parseArray(req.getParameter("gdsInfo2PropVOList"));
+        	List<GdsInfo2PropReqDTO> gdsInfo2PropReqDTOList =  new ArrayList<>();
+        	this.setGdsInfo2PropInfo(gdsInfo2PropReqDTOList, gdsInfo2PropVOList);
+        	//保存商品属性配置信息
+        	if(CollectionUtils.isNotEmpty(gdsInfo2PropReqDTOList)){
+        		for(GdsInfo2PropReqDTO propReq : gdsInfo2PropReqDTOList){
+        			propReq.setGdsId(gdsId);
+        			propReq.setStatus(GDS_VALID);
+        			propReq.setUpdateUser(staffId);
+        			iGdsInfo2PropRSV.updateGdsInfo2Prop(propReq);
+        		}
         	}
-        	if(StringUtil.isNotBlank(gdsManageInfoVO.getGdsInfoVO().getGdsPic())){
-            	gdsInfoReqDTO.setGdsPic(gdsManageInfoVO.getGdsInfoVO().getGdsPic());
-        	}
-//        	if(gdsManageInfoVO.getGdsLabelVOList()!=null){
-//        		gdsLabelReqDTO.setLabColor(gdsManageInfoVO.getGdsLabelVO().getLabColor());
-//        		gdsLabelReqDTO.setLabName(gdsManageInfoVO.getGdsLabelVO().getLabName());
-//        		gdsLabelReqDTO.setLabId(gdsManageInfoVO.getGdsLabelVO().getLabId());
-//        		gdsLabelReqDTO.setGdsId(gdsManageInfoVO.getGdsLabelVO().getGdsId());
-//
-//        	}
-        	gdsInfoRSV.editGds(gdsInfoReqDTO);
-
             jsonBean.setSuccess("true");
-            jsonBean.setMsg("编辑商品录入成功！");
-        } catch (BusinessException e) {
-            jsonBean.setSuccess("false");
-            jsonBean.setMsg(e.getMessage());
-
+            jsonBean.setMsg("编辑商品成功！");
         } catch (GenericException e) {
             jsonBean.setSuccess("false");
             jsonBean.setMsg("系统异常!");
@@ -412,7 +518,7 @@ public class GdsEditController {
 				}
 				skuReqDTO.setSkuName(skuVOJson.getString("skuName"));
 				if (StringUtil.isNotBlank(skuVOJson.getString("packPrice"))) {
-					skuReqDTO.setPackPrice(Integer.parseInt(skuVOJson.getString("packPrice")));
+					skuReqDTO.setPackPrice(Integer.parseInt(skuVOJson.getString("packPrice"))*100);
 				}
 				//次数
 				if (StringUtil.isNotBlank(skuVOJson.getString("packTimes"))) {
@@ -492,6 +598,25 @@ public class GdsEditController {
 			reqDTO.setStatus("1");//有效
 			List<GdsPropRespDTO> propList = gdsInfoRSV.queryGdsPropList(reqDTO);
 			json.setObject(propList);
+			json.setSuccess("true");
+		} catch (Exception e) {
+			json.setSuccess("false");
+			json.setMsg("获取商品分类属性信息失败,原因：" + e.getMessage());
+			logger.error("获取商品分类属性信息失败,原因：" + e.getMessage(), e);
+		}
+		return json;
+	}
+	@RequestMapping(value = "/queryGdsInfo2PropList")
+    @ResponseBody
+	public GdsJsonBean queryGdsInfo2PropList(HttpServletRequest req, HttpServletResponse rep, GdsInfo2PropVO gdsInfo2PropVO) {
+		GdsJsonBean json = new GdsJsonBean();
+		try {
+			List<GdsInfo2PropVO> gdsInfo2PropVOList = new ArrayList<GdsInfo2PropVO>();
+			GdsInfo2PropReqDTO gdsInfo2PropReqDTO = new GdsInfo2PropReqDTO();
+			gdsInfo2PropReqDTO.setGdsId(gdsInfo2PropVO.getGdsId());
+			gdsInfo2PropReqDTO.setStatus("1");
+			List<GdsInfo2PropRespDTO> gdsInfo2PropRespDTOList = iGdsInfo2PropRSV.queryGdsInfo2PropList(gdsInfo2PropReqDTO);
+			json.setObject(gdsInfo2PropRespDTOList);
 			json.setSuccess("true");
 		} catch (Exception e) {
 			json.setSuccess("false");
@@ -617,6 +742,20 @@ public class GdsEditController {
         return ImageUtil.getStaticDocUrl(vfsId, "html");
     }
     
-   
+    /**
+     * 将float保留两位小数
+     * @param num
+     * @return
+     */
+    private String decimalTwo(float num){
+        String returnNum = "0.00";
+        if (num == 0){
+            return returnNum;
+        }
+        DecimalFormat df = new DecimalFormat("0.00");//格式化小数
+        returnNum = df.format(num);//返回的是String类型
+
+        return  returnNum;
+    }
 }
  

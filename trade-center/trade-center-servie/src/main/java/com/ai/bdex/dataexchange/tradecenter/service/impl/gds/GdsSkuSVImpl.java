@@ -8,6 +8,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.utils.DateUtil;
 
 import org.springframework.stereotype.Service;
 
@@ -56,6 +57,7 @@ public class GdsSkuSVImpl implements IGdsSkuSV {
 
         GdsSku gdsSku = new GdsSku();
         gdsSkuReqDTO.setSkuId(skuId);
+        gdsSkuReqDTO.setCreateTime(DateUtil.getNowAsDate());
         ObjectCopyUtil.copyObjValue(gdsSkuReqDTO,gdsSku,null,false);
 //        BeanUtils.copyProperties(gdsSkuReqDTO,gdsSku);
         int code = gdsSkuMapper.insert(gdsSku);
@@ -91,6 +93,25 @@ public class GdsSkuSVImpl implements IGdsSkuSV {
         GdsSkuExample.Criteria criteria = gdsSkuExample.createCriteria();
         initCriteria(criteria, gdsSkuReqDTO);
         int code = gdsSkuMapper.deleteByExample(gdsSkuExample);
+        return code;
+    }
+    @Override
+    public int updataGdsSkuByGdsId(GdsSkuReqDTO gdsSkuReqDTO) throws Exception {
+        if (gdsSkuReqDTO.getGdsId()==null || gdsSkuReqDTO.getGdsId()<=0){
+            throw new Exception("删除单品信息入参为空");
+        }
+        GdsSkuExample gdsSkuExample = new GdsSkuExample();
+        GdsSkuExample.Criteria criteria = gdsSkuExample.createCriteria();
+        if (gdsSkuReqDTO.getSkuId()!=null){
+            criteria.andSkuIdEqualTo(gdsSkuReqDTO.getSkuId());
+        }
+        if(gdsSkuReqDTO.getGdsId()!=null){
+            criteria.andGdsIdEqualTo(gdsSkuReqDTO.getGdsId());
+        }
+        GdsSku gdsSku = new GdsSku();
+        gdsSkuReqDTO.setUpdateTime(DateUtil.getNowAsDate());
+        ObjectCopyUtil.copyObjValue(gdsSkuReqDTO,gdsSku,null,false);
+        int code = gdsSkuMapper.updateByExampleSelective(gdsSku,gdsSkuExample);
         return code;
     }
     private void initCriteria(GdsSkuExample.Criteria criteria,GdsSkuReqDTO gdsSkuReqDTO){

@@ -63,14 +63,18 @@
 						类型:
 					</td>
 					<td width="520">
-							<input type="hidden" class="form-control" id="catFirst" >
-							<input type="hidden" class="form-control" id="catId" >
-							<input type="hidden" class="form-control" id="catName" >
-							<input type="hidden" class="form-control" id="gdsId" >
+							<input type="hidden" class="form-control" id="isEdit" th:value="${isEdit}" >
+							<input type="hidden" class="form-control" id="catFirst" th:value="${gdsInfoVO.catFirst}" >
+							<input type="hidden" class="form-control" id="catId"  th:value="${gdsInfoVO.catId}">
+							<input type="hidden" class="form-control" id="catName" th:value="${gdsInfoVO.catName}">
+							<input type="hidden" class="form-control" id="catFirstName" th:value="${gdsInfoVO.catFirstName}">
+							<input type="hidden" class="form-control" id="gdsId" th:value="${gdsInfoVO.gdsId}" >
+							<input type="hidden" class="form-control" id="gdsFunIntroduction" th:value="${gdsInfoVO.funIntroduction}" >
+							<input type="hidden" class="form-control" id="gdscommpanyName" th:value="${gdsInfoVO.commpanyName}" >
 						<div class="input-group">
 							<input type="text" class="form-control" placeholder="/API/" id="catText" disabled>
 							<span class="input-group-btn">
-					        <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal">请选择</button>
+					        <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal"  th:if="${isEdit==false}">请选择</button>
 					      </span>
 						</div>
 					</td>
@@ -157,7 +161,7 @@
 						商品名称:
 					</td>
 					<td width="520">
-							<input type="text" class="form-control" placeholder="VIN车架号查询详细版" id="gdsName">
+							<input type="text" class="form-control" placeholder="VIN车架号查询详细版" id="gdsName" th:value="${gdsInfoVO.gdsName}">
 					</td>
 
 				</tr>
@@ -172,7 +176,7 @@
 					</td>
 					<td>
 						
-							<input type="text" class="form-control" placeholder="根据传递17位的车架号进行详细信息查询" id="gdsSubTitle">
+							<input type="text" class="form-control" placeholder="根据传递17位的车架号进行详细信息查询" id="gdsSubTitle" th:value="${gdsInfoVO.gdsSubtitle}">
 						
 					</td>
 				</tr>
@@ -184,8 +188,10 @@
 					<td class="Hint">
 						商品标签:
 					</td>
-					<td  id="gdsLabelList">
-						<span class="label label-primary" th:remove="all">API</span>
+					<td  id="gdsLabelList" >
+					
+					<span th:each="gdsLabelVO,catStat:${gdsInfoVO.gdsLabelVOList}"  class="label" th:style="'border:solid 1px '+@{${gdsLabelVO.labColor}}+'; color:'+@{${gdsLabelVO.labColor}}+''" th:labId="${gdsLabelVO.labId}" th:labName="${gdsLabelVO.labName}" th:labColor="${gdsLabelVO.labColor}" th:text="${gdsLabelVO.labName}"></span>
+					<span class="label label-primary" th:remove="all">API</span>
 						<a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsLabelModal()'" >请选择</a>
 					</td>
 					<td>
@@ -198,7 +204,7 @@
 					</td>
 					<td>
 						<span>
-							<img src="" width="120" height="120" name="gdsPicUrl">
+							<img src="" width="120" height="120" name="gdsPicUrl" th:src="${gdsInfoVO.gdsPicUrl}">
 						</span>
 					</td>
 				</tr>
@@ -206,7 +212,7 @@
 					<td class="Hint"></td>
 					<td>
 						<div class="input-group" style="width: 50%; padding-top: 20px;">
-							<input  type="hidden" class="form-control" placeholder="" id="gdsPic">
+							<input  type="hidden" class="form-control" placeholder="" id="gdsPic" th:value="${gdsInfoVO.gdsPic}">
 							<!--  <span class="input-group-btn">
 					        <button class="btn btn-default" type="button">请选择</button>
 					        </span>-->
@@ -232,6 +238,12 @@
 				</tr>
 				</thead>
 				<tbody>
+				<tr th:each="gdSkuVO,catStat:${gdsInfoVO.gdsSkuVOList}" th:skuId=${gdSkuVO.skuId} >
+					<td><input type="text" name="skuName" th:value="${gdSkuVO.skuName}"></td>
+		   			<td><input type="text" name="packPrice" th:value="${gdSkuVO.packPrice}"></td>
+		   			<td><input type="text" name="packTimes" th:value="${gdSkuVO.packTimes}"></td>
+		   			<td><input type="text" name="packDay" th:value="${gdSkuVO.packDay}"></td>
+				</tr>
 				<tr th:remove="all">
 					<td>aaa</td>
 					<td>aaa</td>
@@ -254,7 +266,7 @@
 				<div class="title">其他信息</div>
 				<table class="editTable">
 					<tbody>
-					<tr>
+					<tr th:remove="all">
 						<td class="Hint tips" width="120">
 							<span class="col_red">*</span>
 							数据描述:

@@ -8,6 +8,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfo2Prop
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.utils.DateUtil;
 
 import org.springframework.stereotype.Service;
 
@@ -77,8 +78,8 @@ public class GdsInfo2PropSVImpl implements IGdsInfo2PropSV {
         GdsInfo2Prop gdsInfo2Prop = new GdsInfo2Prop();
         int gpId=SeqUtil.getInt("SEQ_GDS_INFO_2_PROP");
         gdsInfo2PropReqDTO.setGpId(gpId);
+        gdsInfo2PropReqDTO.setCreateTime(DateUtil.getNowAsDate());
         ObjectCopyUtil.copyObjValue(gdsInfo2PropReqDTO,gdsInfo2Prop,null,false);
-//        BeanUtils.copyProperties(gdsInfo2PropReqDTO,gdsInfo2Prop);
         int code = gdsInfo2PropMapper.insert(gdsInfo2Prop);
         return gpId;
     }

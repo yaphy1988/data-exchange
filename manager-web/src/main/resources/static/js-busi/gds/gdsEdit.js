@@ -1,5 +1,25 @@
 var ckeditPackage,ckeditDataDetail,ckeditDataExample,ckeditCase,ckeditCompany;
 $(function(){
+	var isEdit = $("#isEdit").val();
+	var catFirst = $("#catFirst").val();
+	if(isEdit=="true"){
+		var gdsId=$("#gdsId").val();
+		var catText="/";
+		catText += $("#catFirstName").val();
+		catText +="/";
+		if(catFirst=="1"){
+			$('div[name="DivAPI"]').css("display","");
+			catText +=$("#catName").val();;
+		}else if(catFirst=="3"){
+			$("#otherInfo").css("display","");
+			addSolutionText();
+		}else{
+			$("#otherInfo").css("display","");
+		}
+		$("#catText").val(catText);
+		queryGdsInfo2Prop(gdsId);
+	}
+	
 	//图片上传
 	$("#picUpLoad").change(function(){
 	    var path = $(this).val();
@@ -23,11 +43,11 @@ function selectGdsLabelModal(){
  * @returns
  */
 function selectGdsLabel(obj){
-	var labId=$(obj).attr("labId");
+	//var labId=$(obj).attr("labId");
 	var labName=$(obj).attr("labName");
 	var labColor=$(obj).attr("labColor");
 
-	$("#selGdsLabId").val(labId);
+	//$("#selGdsLabId").val(labId);
 	$("#selGdsLabName").val(labName);
 	$("#selGdsLabColor").val(labColor);
 }
@@ -107,27 +127,37 @@ function queryGdsProp(catId){
          }
      });
 }
-
+/**
+ * 查询商品分类属表
+ */
+function queryGdsInfo2Prop(gdsId){
+	//商品分类：API、数据定制、解决方案
+	var url="/gdsEdit/queryGdsInfo2PropList";
+	var params={
+			gdsId:gdsId
+	};
+	 $.ajax({
+         url : url,
+         data : params,
+         async : true,
+         dataType : 'json',
+         success : function(data) {
+             if (data.success&&data.object.length>0) {
+                for(var i=0 ;i<data.object.length;i++){
+                	var prop=data.object[i];
+                	addProp(prop);
+                }
+             }
+         },
+     });
+}
 function addProp(layout) {
 	var proType = layout['proType'];//1文本、2富文本
-	var proId = layout['proId'];
-	var proName = layout['proName'];
-	var sort = layout['showOrder'];
-	var modular=$("#addProp");
-//	switch (proId) {
-//		case 1:
-			//套餐介绍
 	if(proType=="2"){
-		addCkedit(proId,proName,proType);
+		addCkedit(layout);
 	}else{
-		addEditor(proId,proName,proType);
+		addEditor(layout);
 	}
-			
-//			break;
-//		case 2:
-//		default:
-//			break;
-//		}
 }
 /**
  * 查询获取商品标签快速选择数据
@@ -173,8 +203,8 @@ function queryGdsLabelQuikList(){
  */
 function querySubCatNodes(obj){
 	var $this = $(obj);
-	$this.parent().siblings().find(".active").removeClass('active');
 	$this.parent().siblings().find(".active").removeClass('warning');
+	$this.parent().siblings().find(".active").removeClass('active');
 	$this.addClass("warning")
 	$this.addClass("active");
 	//商品分类：API、数据定制、解决方案
@@ -315,8 +345,14 @@ function saveGds(){
 	if(gdsInfo2PropVOList!=undefined){
 		gdsInfoObj.gdsInfo2PropVOList=JSON.stringify(gdsInfo2PropVOList);	
 	}
+	var gdsId=$("#gdsId").val();
+	if(gdsId==""){
+		var url="/gdsEdit/addGds";
+	}else{
+		var url="/gdsEdit/editGds";
+
+	}
 	
-	var url="/gdsEdit/addGds";
 	$.ajax({
 		url : url,
 		type : "POST",
@@ -401,11 +437,11 @@ function createGdsInfoObj(){
 function createGdsLabelList(){
 	var gdsLabelVOList=new Array();
 	$("#gdsLabelList").find("span").each(function(){
-		var labId=$(this).attr("labId");
+		//var labId=$(this).attr("labId");
 		var labName =$(this).attr("labName");
 		var labColor =$(this).attr("labColor");
 		var gdsLabelVO={
-				labId:labId,
+				//labId:labId,
 				labName:labName,
 				labColor:labColor
 		}
@@ -433,24 +469,27 @@ function createGdsSkuList(){
 function createGdsInfo2PropList(){
 	var gdsSkuVOList=new Array();
 	$('tr[name="dataProps"]').each(function(){
-		var proId=$(this).attr("proId");
-		var proName=$(this).attr("proName");
-		var proType=$(this).attr("proType");
-		var propValue=$(this).find("dataProp").val();
-		if(propValue!=""){
+		var proId=$(this).find("td").attr("proId");
+		var proName=$(this).find("td").attr("proName");
+		var proType=$(this).find("td").attr("proType");
+		var proValue=$(this).find("textarea").val();
+		var showOrder=$(this).find("td").attr("showOrder");
+		//if(proValue!=""){
 			var gdsInfo2PropVO ={
 					proId:proId,
 					proName:proName,
-					propValue:propValue,
+					proValue:proValue,
+					showOrder:showOrder,
 					proType:proType	
 			}
 			gdsSkuVOList.push(gdsInfo2PropVO);
-		}
+		//}
 	});
 	$("#addProp").find(".ckeditName").each(function(){
 		var proId=$(this).attr("proId");
 		var proName=$(this).attr("proName");
 		var proType=$(this).attr("proType");
+		var showOrder=$(this).find("td").find("showOrder").val();
 		var proValue=""
 		var ckeditName=$(this).attr("id");
 		if(ckeditName=="editorPackage"){
@@ -464,15 +503,16 @@ function createGdsInfo2PropList(){
 		}else if(ckeditName=="editorCompany"){
 			proValue=ckeditCompany.getData()
 		}
-		if(propValue!=""){
+		//if(proValue!=""){
 			var gdsInfo2PropVO ={
 					proId:proId,
 					proName:proName,
 					proValue:proValue,
+					showOrder:showOrder,
 					proType:proType	
 			}
 			gdsSkuVOList.push(gdsInfo2PropVO);
-		}
+		//}
 	});
 	return gdsSkuVOList;
 }
@@ -539,8 +579,19 @@ function ajaxFileUpload(url, secureuri, fileElementId, type, dataType, callback)
 				}
 			});
 }
-function addCkedit(proId,proName,proType){
+function addCkedit(layout){
 	var modular=$("#addProp");
+	var proType = layout['proType'];
+	var proId = layout['proId'];
+	var proName = layout['proName'];
+	var showOrder = layout['showOrder'];
+	var gdsId=$("#gdsId").val();
+	var gpId="";
+	var proValue="";
+	if(gdsId!=""){
+		var gpId=layout['gpId'];
+		var proValue=layout['proValue'];
+	}
 	var html="";
 	html +='<div class="title">'+proName+'</div>';
 	var ckeditId="";
@@ -555,17 +606,34 @@ function addCkedit(proId,proName,proType){
 	}else if(proId==8){
 		ckeditId="editorCompany";
 	}
-	html +='<div id="'+ckeditId+'" class="ckeditName" proName="'+proName+'" proType="'+proType+'" proId="'+proId+'"></div>';
+	html +='<div id="'+ckeditId+'" class="ckeditName" gpId="'+gpId+'" proName="'+proName+'" proType="'+proType+'" proId="'+proId+'" showOrder="'+showOrder+'"></div>';
 	modular.append(html);
 	createEditor(ckeditId);
+	if(proValue!=""){
+		setCkeditValue(ckeditId,proValue);
+	}
 }
-function addEditor(proId,proName,proType){
+function addEditor(layout){
+	var proType = layout['proType'];
+	var proId = layout['proId'];
+	var proName = layout['proName'];
+	var showOrder = layout['showOrder'];
+	var gdsId=$("#gdsId").val();
+	var gpId="";
+	var proValue="";
+	if(gdsId!=""){
+		var gpId=layout['gpId'];
+		var proValue=layout['proValue'];
+	}
 	var name="";
 	var html='<tr name="dataProps">'
-				+'<td class="Hint tips" width="120" proName="'+proName+'" proType="'+proType+'" proId="'+proId+'"><span class="col_red">*</span>'+proName
-				+'</td><td width="520" class="pb20"><textarea class="form-control" rows="5" name="dataProp"></textarea>'
+				+'<td class="Hint tips" width="120"gpId="'+gpId+'" proName="'+proName+'" proType="'+proType+'" proId="'+proId+'" showOrder="'+showOrder+'"><span class="col_red">*</span>'+proName
+				+'</td><td width="520" class="pb20"><textarea class="form-control" rows="5" name="dataProp'+proId+'"></textarea>'
 				+'</td></tr>';
 	$("#otherInfo").find("tbody").append(html);
+	if(proValue!=""){
+		$("#otherInfo").find('[name="dataProp'+proId+'"]').html(proValue);
+	}
 }
 /**
  * 增加解决方案的功能介绍和公司名称
@@ -575,13 +643,15 @@ function addEditor(proId,proName,proType){
 function addSolutionText(proId,proName){
 	var html='<tr>'
 				+'<td class="Hint tips" width="120"><span class="col_red">*</span>功能介绍'
-				+'</td><td width="520" class="pb20"><textarea class="form-control" rows="5" name="unIntroduction"></textarea>'
+				+'</td><td width="520" class="pb20"><textarea class="form-control" rows="5" id="funIntroduction"></textarea>'
 				+'</td></tr>';
 	html +='<tr>'
 		+'<td class="Hint tips" width="120"><span class="col_red">*</span>公司名称'
-		+'</td><td width="520" class="pb20"><textarea class="form-control" rows="5" name="commpanyName"></textarea>'
+		+'</td><td width="520" class="pb20"><textarea class="form-control" rows="5" id="commpanyName"></textarea>'
 		+'</td></tr>';
 	$("#otherInfo").find("tbody").append(html);
+	$("#funIntroduction").val($("#gdsFunIntroduction").val());
+	$("#commpanyName").val($("#gdscommpanyName").val());
 }
 //创建编辑器
 function createEditor(id) {
@@ -604,6 +674,28 @@ function createEditor(id) {
 	}else if(id=="editorCompany"){
 		ckeditCompany=CKEDITOR.replace(id, config);
 	}
+}
+function setCkeditValue(id, url) {
+	 var obj=url+".html";
+		$.appAjax({
+			url : obj,
+			async : true,
+			dataType : 'jsonp',
+			jsonp :'jsonpCallback',//注意此处写死jsonCallback
+			success: function (data) {
+				if(id=="editorPackage"){
+					ckeditPackage.setData(data.result);
+				}else if(id=="editorDataDetail"){
+					ckeditDataDetail.setData(data.result);
+				}else if(id=="editorDataExample"){
+					ckeditDataExample.setData(data.result);
+				}else if(id=="editorCase"){
+					ckeditCase.setData(data.result);
+				}else if(id=="editorCompany"){
+					ckeditCompany.setData(data.result);
+				}
+		    }
+		});
 }
 /**
  * 提交校验

@@ -66,5 +66,13 @@ public class GdsSkuRSVImpl implements IGdsSkuRSV {
         }	
    	 return code;
     }
-
+    public int updataGdsSkuByGdsId(GdsSkuReqDTO gdsSkuReqDTO) throws Exception{
+    	int code=0;
+   	 try {
+   		 code= iGdsSkuSV.updataGdsSkuByGdsId(gdsSkuReqDTO);
+        }catch (Exception e){
+            log.error("删除单品信息异常：",e);
+        }	
+   	 return code;
+    }
 }

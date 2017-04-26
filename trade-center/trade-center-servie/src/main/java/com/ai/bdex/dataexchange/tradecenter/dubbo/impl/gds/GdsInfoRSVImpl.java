@@ -231,6 +231,16 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
 		}
 		return gdsId;
 	}
+	public int updateGdsInfo(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
+		int gdsId =0;
+		try {
+			gdsId = iGdsInfoSV.updateGdsInfo(gdsInfoReqDTO);
+		} catch (Exception e) {
+			log.error("新增商品基本信息异常:", e);
+			throw new Exception(e);
+		}
+		return gdsId;
+	}
 	public int insertGdsLabelQuik(GdsLabelQuikReqDTO gdsLabelQuikReqDTO) throws Exception {
 		int labelId =0;
 		try {
@@ -255,6 +265,16 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
 		int gcId =0;
 		try {
 			gcId = iGdsInfo2CatSV.insertGdsInfo2Cat(gdsInfo2CatReqDTO);
+		} catch (Exception e) {
+			log.error("新增商品基本信息异常:", e);
+			throw new Exception(e);
+		}
+		return gcId;
+	}
+    public int updateGdsInfo2Cat(GdsInfo2CatReqDTO gdsInfo2CatReqDTO) throws Exception {
+		int gcId =0;
+		try {
+			gcId = iGdsInfo2CatSV.updateGdsInfo2Cat(gdsInfo2CatReqDTO);
 		} catch (Exception e) {
 			log.error("新增商品基本信息异常:", e);
 			throw new Exception(e);

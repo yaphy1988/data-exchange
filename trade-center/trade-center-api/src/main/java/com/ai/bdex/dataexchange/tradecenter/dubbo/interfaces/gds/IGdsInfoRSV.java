@@ -77,7 +77,9 @@ public interface IGdsInfoRSV {
 	public List<GdsPropRespDTO> queryGdsPropList(GdsPropReqDTO gdsPropReqDTO) throws Exception;
 	
 	public int insertGdsInfo(GdsInfoReqDTO gdsInfoReqDTO) throws Exception;
+	public int updateGdsInfo(GdsInfoReqDTO gdsInfoReqDTO) throws Exception;
 	public int insertGdsLabelQuik(GdsLabelQuikReqDTO gdsLabelQuikReqDTO) throws Exception;
     public GdsLabelQuikRespDTO queryGdsLabelQuikByName(GdsLabelQuikReqDTO gdsLabelQuikReqDTO) throws Exception;
     public int insertGdsInfo2Cat(GdsInfo2CatReqDTO gdsInfo2CatReqDTO) throws Exception;
+    public int updateGdsInfo2Cat(GdsInfo2CatReqDTO gdsInfo2CatReqDTO) throws Exception;
 }

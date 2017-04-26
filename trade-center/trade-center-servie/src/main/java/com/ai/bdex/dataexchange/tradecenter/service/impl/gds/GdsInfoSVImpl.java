@@ -17,6 +17,8 @@ import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
+import com.ai.paas.utils.DateUtil;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -69,6 +71,7 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         int gdsId=SeqUtil.getInt("SEQ_GDS_INFO");
         GdsInfo gdsInfo = new GdsInfo();
         gdsInfoReqDTO.setGdsId(gdsId);
+        gdsInfoReqDTO.setCreateTime(DateUtil.getNowAsDate());
         ObjectCopyUtil.copyObjValue(gdsInfoReqDTO,gdsInfo,null,false);
 //        BeanUtils.copyProperties(gdsInfoReqDTO,gdsInfo);
         int code = gdsInfoMapper.insert(gdsInfo);
@@ -82,9 +85,8 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         }
         GdsInfo gdsInfo = new GdsInfo();
         ObjectCopyUtil.copyObjValue(gdsInfoReqDTO,gdsInfo,null,false);
-//        BeanUtils.copyProperties(gdsInfoReqDTO,gdsInfo);
         int code = gdsInfoMapper.updateByPrimaryKey(gdsInfo);
-        return code;
+        return gdsInfoReqDTO.getGdsId();
     }
 
     @Override
@@ -218,8 +220,8 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
 		GdsInfoRespDTO respDTO = new GdsInfoRespDTO();
 		GdsInfoExample example = new GdsInfoExample();
 		GdsInfoExample.Criteria criteria = example.createCriteria();
-		List<GdsInfo> gdsInfoList = gdsInfoMapper.selectByExample(example);
 		initCriteria(criteria, gdsInfoReqDTO);
+		List<GdsInfo> gdsInfoList = gdsInfoMapper.selectByExample(example);
 		if (!CollectionUtil.isEmpty(gdsInfoList)) {
 //			BeanUtils.copyProperties(gdsInfoList.get(0), respDTO);
             ObjectCopyUtil.copyObjValue(gdsInfoList.get(0),respDTO,null,false);
