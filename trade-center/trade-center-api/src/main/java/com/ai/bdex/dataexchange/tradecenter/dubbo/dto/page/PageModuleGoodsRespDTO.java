@@ -27,8 +27,17 @@ public class PageModuleGoodsRespDTO   extends BaseResponseDTO {
     private String updateStaffId;
 
     private String status;
+    private String vfsid;
 
-    public Integer getPmgId() {
+    public String getVfsid() {
+		return vfsid;
+	}
+
+	public void setVfsid(String vfsid) {
+		this.vfsid = vfsid;
+	}
+
+	public Integer getPmgId() {
         return pmgId;
     }
 

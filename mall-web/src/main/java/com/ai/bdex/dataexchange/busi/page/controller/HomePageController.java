@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
@@ -28,8 +31,10 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.paas.util.ImageUtil;
+import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
 
@@ -52,6 +57,9 @@ public class HomePageController {
 
 	@DubboConsumer
 	IPageDisplayRSV iPageDisplayRSV;
+	@DubboConsumer
+	IGdsInfoRSV iGdsInfoRSV;
+	
 	@RequestMapping(value="/pageInit")
 	public ModelAndView  pageInit(){
 		ModelAndView modelAndView = new ModelAndView("index");
@@ -95,13 +103,35 @@ public class HomePageController {
 			int moduleId = Integer.parseInt(moduleIdstr);
 			PageModuleGoodsRespDTO pageModuleGoodsRespDTO = new PageModuleGoodsRespDTO();
 			pageModuleGoodsRespDTO.setModuleId(moduleId);
-			pageModuleGoodsRespDTO.setStatus(STATUS_VALID);
-			//通过商品id去搜索商品信息，获取到商品的图片ID
-	/*		IGdsInfoRSV.queryGdsInfoList(GdsInfoReqDTO gdsInfoReqDTO);
-			IGdsInfoRSV.queryGdsInfo(GdsInfoReqDTO gdsInfoReqDTO);*/
+			pageModuleGoodsRespDTO.setStatus(STATUS_VALID);  
 			PageResponseDTO<PageModuleGoodsRespDTO> moduleGoodsList = iPageDisplayRSV.queryPageModuleGoodsList(pageModuleGoodsRespDTO);
+			if(moduleGoodsList !=null && moduleGoodsList.getCount()>0)
+			{
+				try{
+					   for(int i = 0 ; i < moduleGoodsList.getResult().size();i++) {
+							int gdsid =  moduleGoodsList.getResult().get(i).getGdsId();
+							//通过商品id去搜索商品信息，获取到商品的图片ID
+							GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
+							GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
+							gdsInfoReqDTO.setGdsId(gdsid);
+							gdsInfoRespDTO =  iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO); 
+							if(gdsInfoRespDTO!= null && !StringUtil.isBlank(gdsInfoRespDTO.getGdsPic()) )
+							{
+								 //String vfsid= ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_150x150");
+								 String vfsid= "http://112.74.163.29:14751/ImageServer/image/"+gdsInfoRespDTO.getGdsPic()+"_150x150.jpg";
+								 moduleGoodsList.getResult().get(i).setVfsid(vfsid); 
+							}
+					   }
+					}
+					catch(Exception e1)
+					{
+						log.error("查询推荐商品的图片信息："+e1.getMessage());
+					}
+			}
+		
 			rMap.put("moduleGoodsList",moduleGoodsList);
  			rMap.put("success", true);
+ 		
 		} catch (Exception e) {
 			log.error("查询商品楼层信息："+e.getMessage());
 		}

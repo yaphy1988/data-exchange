@@ -22,6 +22,16 @@ function saveMadeData() {
 	var lnkphone    =  $("#lnkphone").val();
 	var lnkemail    =  $("#lnkemail").val();
 	var url = WEB_ROOT + "/homePage/saveMadeData";
+	if(!WEB.check.isMobile(lnkphone))
+	{
+		WEB.msg.info("提示",'请输入正确的手机号码');
+		return;
+	}
+	if(!WEB.check.isEmail(lnkemail))
+	{
+		WEB.msg.info("提示",'请输入正确的邮箱地址');
+		return;
+	}
 	param = {
 		needTiel : needTiel,
 		needcontent : needcontent,
@@ -89,8 +99,9 @@ function querydata_recommend102(moduleId){
 		        		{
 	        				var name =  obj.result[i].recommendName;
 	        				var gdsid =  obj.result[i].gdsId; 
-	        				var gdsdetailurl = basePath+"/goods/details/"+gdsid;
-	 					    html +='<li><a href='+gdsdetailurl+' target="_blank"><img src="http://112.74.163.29:14751/ImageServer/image/58fef10a1d17873197dbc2ef_80x80.jpg"><span>'+name+'</span></a></li>';
+	        				var gdsdetailurl = basePath+"/goods/details/"+gdsid+"-";
+	        				var vfsid= obj.result[i].vfsid;
+	 					    html +='<li><a href='+gdsdetailurl+' target="_blank"><img src="'+vfsid+'"><span>'+name+'</span></a></li>';
 	        		   }
 	        	} 
 			}
