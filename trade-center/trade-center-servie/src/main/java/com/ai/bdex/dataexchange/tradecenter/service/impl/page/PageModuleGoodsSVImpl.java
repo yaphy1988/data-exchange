@@ -27,11 +27,8 @@ public class PageModuleGoodsSVImpl implements IPageModuleGoodsSV {
 
 	@Override
 	public PageResponseDTO<PageModuleGoodsRespDTO>   queryPageModuleGoodsList(PageModuleGoods pageModuleGoods) throws Exception {
-		  //分页信息赋值
-        int page = 1;
-        int rows = 10;
-        PageHelper.startPage(page, rows, "ORDER_NO desc");
 		PageModuleGoodsExample example = new PageModuleGoodsExample();
+		example.setOrderByClause("ORDER_NO desc");
 		Criteria criteria = example.createCriteria();
 		if(pageModuleGoods.getPmgId() != null && pageModuleGoods.getPmgId() != 0){
 			criteria.andPmgIdEqualTo(pageModuleGoods.getPmgId());
@@ -41,7 +38,12 @@ public class PageModuleGoodsSVImpl implements IPageModuleGoodsSV {
 		}
 		if(!StringUtils.isBlank(pageModuleGoods.getStatus())){
 			criteria.andStatusEqualTo(pageModuleGoods.getStatus());
-		} 
+		}
+		//分页信息赋值
+        int page = 1;
+        int rows = 10;
+        PageHelper.startPage(page, rows);
+
 		List<PageModuleGoods> listGds =  pageModuleGoodsMapper.selectByExample(example);
 		//使用PageInfo对结果进行包装
         PageInfo pageInfo = new PageInfo(listGds);

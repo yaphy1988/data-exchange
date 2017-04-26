@@ -38,11 +38,13 @@ public class GdsInfoQuerySVImpl implements IGdsInfoQuerySV{
     @Override
     public PageResponseDTO<GdsInfoRespDTO> queryGdsInfoListPage(GdsInfoReqDTO gdsInfoReqDTO)
             throws Exception {
+        //TODO: to龚哥，PageHelper.startPage(page, rows)只对mybatis查询有效，后面跟sv无法分页的，请改之
+
         //分页信息赋值
         int page = gdsInfoReqDTO.getPageNo();
         int rows = gdsInfoReqDTO.getPageSize();
         //开启分页查询，使用mybatis-PageHelper分页插件，第三个条件是order by排序子句
-        PageHelper.startPage(page, rows, "update_time desc");
+        PageHelper.startPage(page, rows);
         //执行查询第一个mybatis查询方法，会被进行分页
         List<GdsInfo> lists = iGdsInfoSV.queryGdsInfoList(gdsInfoReqDTO);
         //使用PageInfo对结果进行包装

@@ -74,8 +74,9 @@ public class AipServiceInfoSVImpl implements IAipServiceInfoSV{
 			}else{
 				sql.andStatusEqualTo(req.getStatus());
 			}
+			ex.setOrderByClause("create_time desc");
 			//分页设置
-			PageHelper.startPage(pageNo, pageSize, "create_time desc");
+			PageHelper.startPage(pageNo, pageSize);
 
 			List<AipServiceInfo> list=aipServiceInfoMapper.selectByExample(ex);
 	        PageInfo<AipServiceInfo> pageInfo = new PageInfo<AipServiceInfo>(list);

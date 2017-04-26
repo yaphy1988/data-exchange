@@ -80,13 +80,15 @@ public class SearchGdsBaseSVImpl implements ISearchGdsBaseSV{
         //分页信息赋值
         int page = searchGdsBaseReqDTO.getPageNo();
         int rows = searchGdsBaseReqDTO.getPageSize();
-        //开启分页查询，使用mybatis-PageHelper分页插件，第三个条件是order by排序子句
-        PageHelper.startPage(page, rows, "update_time desc");
-        //执行查询第一个mybatis查询方法，会被进行分页
+
         List<SearchGdsBaseRespDTO> resultList = new ArrayList<SearchGdsBaseRespDTO>();
         SearchGdsBaseExample example = new SearchGdsBaseExample();
+        example.setOrderByClause("update_time desc"); //排序字段放在前面设置
         SearchGdsBaseExample.Criteria criteria = example.createCriteria();
         initCriteria(criteria, searchGdsBaseReqDTO);
+        //开启分页查询，使用mybatis-PageHelper分页插件，第三个条件是order by排序子句
+        PageHelper.startPage(page, rows);
+        //执行查询第一个mybatis查询方法，会被进行分页
         List<SearchGdsBase> searchGdsBaseList = searchGdsBaseMapper.selectByExample(example);
         PageInfo pageInfo = new PageInfo(searchGdsBaseList);
         logger.info("IGdsInfoSV查询完成，总数：" + pageInfo.getTotal() + "当前页内记录数：" + searchGdsBaseList.size());

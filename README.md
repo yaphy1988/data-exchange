@@ -24,10 +24,13 @@ mybatis-PageHelper作者的官方地址[https://github.com/pagehelper/Mybatis-Pa
         int rows = baseInfo.getPageSize();
         //查询条件赋值
         String dataId = baseInfo.getDataId();
-        //开启分页查询，使用mybatis-PageHelper分页插件，第三个条件是order by排序子句
-        PageHelper.startPage(page, rows, "id desc");
+        String example = new DemoExample();
+        example.setOrderByClause("id desc"); //排序字段放在前面设置
+        example.createCriteria().andDataIdEqualTo(dataId);
+        //开启分页查询，使用mybatis-PageHelper分页插件
+        PageHelper.startPage(page, rows);
         //执行查询第一个mybatis查询方法，会被进行分页
-        List<DemoInfo> lists = demoMapper.selectByDataId(dataId);
+        List<DemoInfo> lists = demoMapper.selectByDataId(example);
         //使用PageInfo对结果进行包装
         PageInfo pageInfo = new PageInfo(lists);
         logger.info("IDemoInfoSV查询完成，总数：" + pageInfo.getTotal() + "当前页内记录数：" + lists.size());

@@ -39,11 +39,8 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 
 	@Override
 	public PageResponseDTO<PageNewsInfoDTO> queryPageNewsInfoList(PageNewsInfoRespDTO exam) throws Exception {
-		// 分页信息赋值
-		int page = exam.getPageNo();
-		int rows = exam.getPageSize();
-		PageHelper.startPage(page, rows, "INFO_ORDER desc");
 		PageNewsInfoExample example = new PageNewsInfoExample();
+		example.setOrderByClause("INFO_ORDER desc");
 		PageNewsInfoExample.Criteria criteria = example.createCriteria();
 		if (exam.getModuleId() != null) {
 			criteria.andModuleIdEqualTo(exam.getModuleId());
@@ -53,7 +50,12 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 		}
 		if (!StringUtils.isBlank(exam.getStatus())) {
 			criteria.andStatusEqualTo(exam.getStatus());
-		} 
+		}
+		// 分页信息赋值
+		int page = exam.getPageNo();
+		int rows = exam.getPageSize();
+		PageHelper.startPage(page, rows);
+
 		List<PageNewsInfo> pageList = pageNewsInfoMapper.selectByExample(example);
 		// 使用PageInfo对结果进行包装
 		PageInfo pageInfo = new PageInfo(pageList);
