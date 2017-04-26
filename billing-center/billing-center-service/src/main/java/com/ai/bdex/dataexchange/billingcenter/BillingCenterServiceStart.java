@@ -1,6 +1,7 @@
 package com.ai.bdex.dataexchange.billingcenter;
 
 import com.ai.paas.util.Utils;
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.ImportResource;
  */
 @ImportResource({"classpath:/dubbo/dubboContext.xml"})
 @SpringBootApplication
+@MapperScan("com.ai.bdex.dataexchange.billingcenter.dao.mapper")
 public class BillingCenterServiceStart {
     private static Logger logger = LoggerFactory.getLogger(BillingCenterServiceStart.class);
 
@@ -21,7 +23,7 @@ public class BillingCenterServiceStart {
         ApplicationContext context = SpringApplication.run(BillingCenterServiceStart.class, args);
         Utils.setCtx(context);
 
-        logger.error("ApiGatewayServiceStart 启动成功...");
+        logger.error("BillingCenterServiceStart 启动成功...");
     }
 
 }

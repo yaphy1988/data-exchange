@@ -41,7 +41,8 @@
     <common-dao.version>0.0.1-SNAPSHOT</common-dao.version>
     <alibaba.druid.version>1.0.25</alibaba.druid.version>
     <mysql-connector-java.version>5.1.36</mysql-connector-java.version>
-    <github.pagehelper.version>4.1.6</github.pagehelper.version>
+    <github.pagehelper.version>4.2.1</github.pagehelper.version>
+    <pagehelper.spring-boot.version>1.1.1</pagehelper.spring-boot.version>
     <mybatis.spring-boot.version>1.1.1</mybatis.spring-boot.version>
     <mybatis.version>3.3.1</mybatis.version>
     <commons-beanutils.version>1.9.3</commons-beanutils.version>
@@ -107,14 +108,19 @@
         <version>${mysql-connector-java.version}</version>
       </dependency>
       <dependency>
+        <groupId>org.mybatis.spring.boot</groupId>
+        <artifactId>mybatis-spring-boot-starter</artifactId>
+        <version>${mybatis.spring-boot.version}</version>
+      </dependency>
+      <dependency>
         <groupId>com.github.pagehelper</groupId>
         <artifactId>pagehelper</artifactId>
         <version>${github.pagehelper.version}</version>
       </dependency>
       <dependency>
-        <groupId>org.mybatis.spring.boot</groupId>
-        <artifactId>mybatis-spring-boot-starter</artifactId>
-        <version>${mybatis.spring-boot.version}</version>
+        <groupId>com.github.pagehelper</groupId>
+        <artifactId>pagehelper-spring-boot-starter</artifactId>
+        <version>${pagehelper.spring-boot.version}</version>
       </dependency>
       <dependency>
         <groupId>commons-beanutils</groupId>
@@ -130,11 +136,6 @@
         <groupId>commons-lang</groupId>
         <artifactId>commons-lang</artifactId>
         <version>2.6</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mybatis</groupId>
-        <artifactId>mybatis</artifactId>
-        <version>${mybatis.version}</version>
       </dependency>
       <dependency>
         <groupId>javax.mail</groupId>

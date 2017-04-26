@@ -1,6 +1,7 @@
 package com.ai.bdex.dataexchange.usercenter;
 
 import com.ai.paas.util.Utils;
+import org.mybatis.spring.annotation.MapperScan;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.SpringApplication;
@@ -12,8 +13,9 @@ import org.springframework.context.annotation.ImportResource;
  * @author yafei
  * @since 2017/4/4
  */
-@ImportResource({"classpath*:/spring/*-db-config.xml","classpath*:/dubbo/service/*.xml"})
+@ImportResource({"classpath*:/dubbo/service/*.xml"})
 @SpringBootApplication
+@MapperScan("com.ai.bdex.dataexchange.usercenter.dao.mapper")
 public class UserCenterServiceStart {
     private static Logger logger = LoggerFactory.getLogger(UserCenterServiceStart.class);
 

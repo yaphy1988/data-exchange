@@ -17,12 +17,18 @@ spring:
   data:
    solr:
      host: http://112.74.163.29:8983/solr
-jdbc:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-  url: jdbc:mysql://112.74.163.29:3306/bdex?useUnicode=true&characterEncoding=utf8
-  username: bdex
-  password: bdex1234
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://112.74.163.29:3306/bdex?useUnicode=true&characterEncoding=utf8
+    username: bdex
+    password: bdex1234
+
+mybatis:
+  mapper-locations: classpath:/sqlmapper/**/*.xml
+  type-aliases-package: com.ai.bdex.dataexchange.*.dao.model
+pagehelper:
+  helperDialect: mysql
 
 application:
   configcenter:
