@@ -2,8 +2,13 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 
 import java.util.Date;
 
-public class PageModuleAdPropRespDTO {
-    private Integer attrId;
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+
+public class PageModuleAdPropRespDTO  extends BaseResponseDTO{
+   
+	private static final long serialVersionUID = 1L;
+
+	private Integer attrId;
 
     private String moduleId;
     private Integer showCount;

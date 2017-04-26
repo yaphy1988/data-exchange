@@ -8,7 +8,7 @@
   <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV" ref="gdsInfoRSV"
                  owner="zhaoyf7" timeout="3000"/>
 
-  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV" ref="iPageInfoRSV"
+  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV" ref="iPageDisplayRSV"
                  owner="zhaoyf7" timeout="3000"/>
   <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV" ref="gdsCatRSV"
                  owner="zhaoyf7" timeout="3000"/>

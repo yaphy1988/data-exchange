@@ -1,165 +1,170 @@
 package com.ai.bdex.dataexchange.busi.page.entity;
 
-import java.io.Serializable;
 import java.util.Date;
+
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
 /**
  * Created by yx on 2017/4/18.
  */
-public class PageInfoVO implements Serializable {
-   private Integer infoId;
+public class PageNewsInfoVO extends BaseInfo {
+	private static final long serialVersionUID = 1L;
 
-   private Integer moduleId;
-   private String remark;
+	private Integer infoId;
 
-   private String infoTitle;
+	private Integer moduleId;
+	private String remark;
 
-   private String infoType;
+	private String infoTitle;
 
-   private String status;
+	private String infoType;
 
-   private String infoUrl;
+	private String status;
 
-   private Integer infoOrder;
+	private String infoUrl;
 
-   private Date pubTime;
+	private Integer infoOrder;
 
-   private Date lostTime;
+	private Date pubTime;
 
-   private String vfsId;
+	private Date lostTime;
 
-   private String attachmentName;
+	private String vfsId;
 
-   private String createStaffId;
+	private String attachmentName;
 
-   private Date createTime;
+	private String createStaffId;
 
-   private String updateStaffId;
+	private Date createTime;
 
-   private Date updateTime;
-   public Integer getInfoId() {
-	return infoId;
-	} 
+	private String updateStaffId;
+
+	private Date updateTime;
+
+	public Integer getInfoId() {
+		return infoId;
+	}
+
 	public void setInfoId(Integer infoId) {
 		this.infoId = infoId;
 	}
-	
+
 	public Integer getModuleId() {
 		return moduleId;
 	}
-	
+
 	public void setModuleId(Integer moduleId) {
 		this.moduleId = moduleId;
 	}
-	
+
 	public String getRemark() {
 		return remark;
 	}
-	
+
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	
+
 	public String getInfoTitle() {
 		return infoTitle;
 	}
-	
+
 	public void setInfoTitle(String infoTitle) {
 		this.infoTitle = infoTitle;
 	}
-	
+
 	public String getInfoType() {
 		return infoType;
 	}
-	
+
 	public void setInfoType(String infoType) {
 		this.infoType = infoType;
 	}
-	
+
 	public String getStatus() {
 		return status;
 	}
-	
+
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+
 	public String getInfoUrl() {
 		return infoUrl;
 	}
-	
+
 	public void setInfoUrl(String infoUrl) {
 		this.infoUrl = infoUrl;
 	}
-	
+
 	public Integer getInfoOrder() {
 		return infoOrder;
 	}
-	
+
 	public void setInfoOrder(Integer infoOrder) {
 		this.infoOrder = infoOrder;
 	}
-	
+
 	public Date getPubTime() {
 		return pubTime;
 	}
-	
+
 	public void setPubTime(Date pubTime) {
 		this.pubTime = pubTime;
 	}
-	
+
 	public Date getLostTime() {
 		return lostTime;
 	}
-	
+
 	public void setLostTime(Date lostTime) {
 		this.lostTime = lostTime;
 	}
-	
+
 	public String getVfsId() {
 		return vfsId;
 	}
-	
+
 	public void setVfsId(String vfsId) {
 		this.vfsId = vfsId;
 	}
-	
+
 	public String getAttachmentName() {
 		return attachmentName;
 	}
-	
+
 	public void setAttachmentName(String attachmentName) {
 		this.attachmentName = attachmentName;
 	}
-	
+
 	public String getCreateStaffId() {
 		return createStaffId;
 	}
-	
+
 	public void setCreateStaffId(String createStaffId) {
 		this.createStaffId = createStaffId;
 	}
-	
+
 	public Date getCreateTime() {
 		return createTime;
 	}
-	
+
 	public void setCreateTime(Date createTime) {
 		this.createTime = createTime;
 	}
-	
+
 	public String getUpdateStaffId() {
 		return updateStaffId;
 	}
-	
+
 	public void setUpdateStaffId(String updateStaffId) {
 		this.updateStaffId = updateStaffId;
 	}
-	
+
 	public Date getUpdateTime() {
 		return updateTime;
 	}
-	
+
 	public void setUpdateTime(Date updateTime) {
 		this.updateTime = updateTime;
 	}

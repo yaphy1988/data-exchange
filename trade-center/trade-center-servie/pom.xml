@@ -59,6 +59,10 @@
       <artifactId>druid</artifactId>
       <scope>runtime</scope>
     </dependency>
+      <dependency>
+          <groupId>com.ai.paas</groupId>
+          <artifactId>sequence-engine</artifactId>
+      </dependency> 
   </dependencies>
 
 

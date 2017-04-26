@@ -2,8 +2,13 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 
 import java.util.Date;
 
-public class PageModuleGoodsRespDTO {
-    private Integer pmgId;
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+
+public class PageModuleGoodsRespDTO   extends BaseResponseDTO {
+
+	private static final long serialVersionUID = 1L;
+
+	private Integer pmgId;
 
     private Integer moduleId;
 
@@ -102,4 +107,5 @@ public class PageModuleGoodsRespDTO {
     public void setStatus(String status) {
         this.status = status == null ? null : status.trim();
     }
+    
 }

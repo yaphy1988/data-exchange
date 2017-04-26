@@ -7,8 +7,8 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
  
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.SortInfoMapper;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.PageInfo;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.PageInfoExample;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfo;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;

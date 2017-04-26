@@ -38,7 +38,7 @@
 //    	 //String aa = list.get(0).getSortLevel();
 //		  int seq =  SeqUtil.getInt("SEQ_DATA_CUSTOMIZATION");
 //
-//    	 System.out.print("-------------SEQ_DATA_CUSTOMIZATIONÂ∫èÂàó------"+seq+"-----------------");
+//    	 System.out.print("-------------SEQ_DATA_CUSTOMIZATION–Ú¡–------"+seq+"-----------------");
 //     }
 //
 //     @Test

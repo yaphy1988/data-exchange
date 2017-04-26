@@ -5,38 +5,58 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNav;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHotSearch;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.PageInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModule;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAd;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAdProp;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoods;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContent;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdPropRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IDataCustomizationSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHeaderNavSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHotSearchSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleAdPropSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleAdSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleGoodsSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageNewsInfoSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortContentSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
 
-@Service("iPageInfoRSV")
-public class PageInfoRSVImpl implements IPageInfoRSV {
-    private static final Logger log = LoggerFactory.getLogger(PageInfoRSVImpl.class);
+@Service("iPageDisplayRSV")
+public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
+    private static final Logger log = LoggerFactory.getLogger(PageDisplayRSVRSVImpl.class);
     /*
      * 获取分类数据
-     * @see com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.Page.IPageInfoRSV#querySortInfos(com.ai.bdex.dataexchange.tradecenter.dubbo.dto.Page.SortInfoRespDTO)
      */
     @Resource
     private ISortInfoSV   iSortInfoSV;
     @Resource
     private ISortContentSV   iSortContentSV;
     @Resource
-    private IPageInfoSV   iPageInfoSV;
+    private IPageNewsInfoSV   iPageNewsInfoSV;
     @Resource
     private IPageHotSearchSV   iPageHotSearchSV;
     @Resource
@@ -66,12 +86,18 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
                     for (SortInfo sortInfo : listSortInfo){
                     	SortInfoRespDTO sortInfoResp = new SortInfoRespDTO();
                         BeanUtils.copyProperties(sortInfo, sortInfoResp);
-                        //获取sortContent信息
-                        SortContent sortContentinfo=  iSortContentSV.querysortContenById(sortInfo.getSortId());
-                        SortContentRespDTO sortContentRespDTO =new SortContentRespDTO();
-                        BeanUtils.copyProperties(sortContentinfo, sortContentRespDTO);
-                        sortInfoResp.setSortContentRespDTO(sortContentRespDTO);
                         sortInfoRespLis.add(sortInfoResp);
+                        
+                    	SortContent sortContent = new SortContent();
+                    	sortContent.setSortId(sortInfo.getSortId());
+                    	sortContent.setStatus("1");//有效的
+                        //获取sortContent信息
+                        List<SortContent> sortContenList=  iSortContentSV.querysortContenList(sortContent);
+                        if(!CollectionUtils.isEmpty(sortContenList)){
+                        	SortContentRespDTO sortContentRespDTO =new SortContentRespDTO();
+                        	BeanUtils.copyProperties(sortContenList.get(0), sortContentRespDTO);
+                        	sortInfoResp.setSortContentRespDTO(sortContentRespDTO);
+                        }
                     }
                  }   
         }catch(Exception e){
@@ -82,38 +108,28 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
     }
     //查询热点信息 列表
     @Override
-    public List<PageInfoRespDTO> queryPageInfoList(PageInfoRespDTO pageInfoRespDTO) throws Exception {
-        List<PageInfoRespDTO> PageInfoRespList = new ArrayList<PageInfoRespDTO>();
+    public PageResponseDTO<PageNewsInfoDTO> queryPageNewsInfoList(PageNewsInfoRespDTO pageInfoRespDTO) throws Exception {
+    	PageResponseDTO<PageNewsInfoDTO> PageNewsInfoRespPageInfo = new PageResponseDTO<>();
         try{
         	 if (pageInfoRespDTO ==null ){
-                 throw new Exception("查询商品分类信息异常，入参为空");
+                 throw new Exception("查询热点信息异常，入参为空");
              }
-        	 PageInfo exam = new PageInfo();
-         	 BeanUtils.copyProperties( pageInfoRespDTO,exam);
-          	 List<PageInfo> listPageInfo = iPageInfoSV.queryPageInfoList(exam);
-          	    if(!CollectionUtils.isEmpty(listPageInfo)){
-                    for (PageInfo pageInfo : listPageInfo){
-                    	PageInfoRespDTO pageInfoResp = new PageInfoRespDTO();
-                        BeanUtils.copyProperties(pageInfo, pageInfoResp); 
-                        PageInfoRespList.add(pageInfoResp);
-                    }
-                 }   
+         	 PageNewsInfoRespPageInfo = iPageNewsInfoSV.queryPageNewsInfoList(pageInfoRespDTO);
         }catch(Exception e){
-        	log.error("获取商品分类信息异常:", e);
+        	log.error("获取热点信息异常:", e);
             throw new Exception(e);
         }
-        return PageInfoRespList;
+        return PageNewsInfoRespPageInfo;
     }
     //查询热点信息 明细
     @Override
-    public  PageInfoRespDTO  queryPageInfoBYid(Integer PageInfoid) throws Exception {
-        PageInfoRespDTO  pageInfoResp  = new  PageInfoRespDTO ();
+    public  PageNewsInfoRespDTO  queryPageNewsInfoById(Integer PageInfoid) throws Exception {
+        PageNewsInfoRespDTO  pageInfoResp  = new  PageNewsInfoRespDTO ();
         try{
         	 if (PageInfoid == 0 ){
                  throw new Exception("查询热点信息 明细，入参为空");
              }
-        	 PageInfo exam = new PageInfo(); 
-          	 PageInfo   pageInfo = iPageInfoSV.queryPageInfoById(PageInfoid);
+          	 PageNewsInfo   pageInfo = iPageNewsInfoSV.queryPageNewsInfoById(PageInfoid);
           	    if(pageInfo != null){ 
                         BeanUtils.copyProperties(pageInfo, pageInfoResp); 
                   }   
@@ -188,6 +204,18 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
           			PageModuleRespDTO pageModuleResp = new PageModuleRespDTO();
                     BeanUtils.copyProperties(pageModule, pageModuleResp); 
                     pageModuleRespDTOList.add(pageModuleResp);
+                    //查询子楼层
+                    exam.setModulePid(pageModule.getModuleId());
+                    List<PageModule> suPageModules = iPageModuleSV.queryPageModuleList(exam);
+                    if(!CollectionUtils.isEmpty(suPageModules)){
+                    	List<PageModuleRespDTO> subPageModuleList = new ArrayList<>();
+                    	for(PageModule subModule: suPageModules){
+                    		PageModuleRespDTO subPageModuleResp = new PageModuleRespDTO();
+                    		BeanUtils.copyProperties(subModule, subPageModuleResp); 
+                    		subPageModuleList.add(subPageModuleResp);
+                    	}
+                    	pageModuleResp.setSubPageModuleList(subPageModuleList);
+                    }
                 }
           	 }
         }catch(Exception e){
@@ -201,10 +229,7 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
 	public List<PageModuleAdRespDTO> queryPageModuleAdList(PageModuleAdRespDTO pageModuleAdRespDTO) throws Exception {
 		List<PageModuleAdRespDTO> ageModuleAdRespDTOList = new ArrayList<PageModuleAdRespDTO>();
         try{
-        	 if (ageModuleAdRespDTOList ==null ){
-                 throw new Exception("查询广告楼层信息异常，入参为空");
-             }
-         	 PageModuleAd exam = new PageModuleAd();
+        	 PageModuleAd exam = new PageModuleAd();
          	 BeanUtils.copyProperties( pageModuleAdRespDTO,exam);
           	 List<PageModuleAd> queryPageModuleAdList = iPageModuleAdSV.queryPageModuleAdList(exam);
           	 if(!CollectionUtils.isEmpty(queryPageModuleAdList)){
@@ -221,31 +246,25 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
         return ageModuleAdRespDTOList;
 	}
 	@Override
-	public List<PageModuleGoodsRespDTO> queryPageModuleGoodsList(PageModuleGoodsRespDTO pageModuleGoodsRespDTO)
+	public PageResponseDTO<PageModuleGoodsRespDTO> queryPageModuleGoodsList(PageModuleGoodsRespDTO pageModuleGoodsRespDTO)
 			throws Exception {
-		List<PageModuleGoodsRespDTO> ageModuleGoodsRespDTOList = new ArrayList<PageModuleGoodsRespDTO>();
+		PageResponseDTO<PageModuleGoodsRespDTO> queryPageModuleGoodsList = new PageResponseDTO<PageModuleGoodsRespDTO>();
         try{
         	 if (pageModuleGoodsRespDTO ==null ){
                  throw new Exception("查询商品楼层信息异常，入参为空");
              }
          	 PageModuleGoods exam = new PageModuleGoods();
-         	 BeanUtils.copyProperties( pageModuleGoodsRespDTO,exam);
-          	 List<PageModuleGoods> queryPageModuleGoodsList = iPageModuleGoodsSV.queryPageModuleGoodsList(exam);
-          	 if(!CollectionUtils.isEmpty(queryPageModuleGoodsList)){
-          		for (PageModuleGoods pageModuleGoods : queryPageModuleGoodsList){
-          			PageModuleGoodsRespDTO pageModuleGoodsResp = new PageModuleGoodsRespDTO();
-                    BeanUtils.copyProperties(pageModuleGoods, pageModuleGoodsResp); 
-                    ageModuleGoodsRespDTOList.add(pageModuleGoodsResp);
-                }
-          	 }
+         	 BeanUtils.copyProperties( pageModuleGoodsRespDTO,exam); 
+         	queryPageModuleGoodsList = iPageModuleGoodsSV.queryPageModuleGoodsList(exam);
+           
         }catch(Exception e){
         	log.error("获取商品楼层信息异常:", e);
             throw new Exception(e);
         }
-        return ageModuleGoodsRespDTOList;
+        return queryPageModuleGoodsList;
     }
 	@Override
-	public List<PageModuleAdPropRespDTO> queryPageModuleAdpropList(PageModuleAdPropRespDTO pageModuleAdpropRespDTO)
+	public List<PageModuleAdPropRespDTO> queryPageModuleAdPropList(PageModuleAdPropRespDTO pageModuleAdpropRespDTO)
 			throws Exception {
 		List<PageModuleAdPropRespDTO> ageModuleAdPropRespDTOList = new ArrayList<PageModuleAdPropRespDTO>();
         try{
@@ -272,4 +291,36 @@ public class PageInfoRSVImpl implements IPageInfoRSV {
     {
          return   iDataCustomizationSV.saveDataCustomization(dataCustomizationRespDTO);
     }
+	@Override
+	public List<SortContentRespDTO> querysortContenList(SortContentRespDTO sortContentRespDTO) throws Exception {
+		List<SortContentRespDTO> respDTOs = new ArrayList<SortContentRespDTO>();
+		try {
+			SortContent sortContent = new SortContent();
+			BeanUtils.copyProperties(sortContentRespDTO, sortContent);
+			List<SortContent> contenList = iSortContentSV.querysortContenList(sortContent);
+			if(!CollectionUtils.isEmpty(contenList)){
+				for(SortContent contentVO : contenList){
+					SortContentRespDTO  respDTO = new SortContentRespDTO();
+					BeanUtils.copyProperties(contentVO, respDTO);
+					respDTOs.add(respDTO);
+				}
+			}
+		} catch (Exception e) {
+			log.error("获取商品分类信息异常:", e);
+            throw new Exception(e);
+		}
+		return respDTOs;
+	}
+	@Override
+	public PageResponseDTO<PageModuleAdDTO> queryPageModulePageInfo(PageModuleAdRespDTO moduleAdRespDTO)
+			throws Exception {
+		PageResponseDTO<PageModuleAdDTO> moduleAdPageInfo = new PageResponseDTO<>();
+		try {
+			moduleAdPageInfo = iPageModuleAdSV.queryPageModulePageInfo(moduleAdRespDTO);
+		} catch (Exception e) {
+			log.error("分页获取楼层广告信息异常:", e);
+            throw new Exception(e);
+		}
+		return moduleAdPageInfo;
+	}
 }

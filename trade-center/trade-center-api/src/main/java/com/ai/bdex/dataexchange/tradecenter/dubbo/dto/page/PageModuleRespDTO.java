@@ -1,10 +1,15 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 
 import java.util.Date;
+import java.util.List;
 
-public class PageModuleRespDTO {
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
-    private Integer moduleId;
+public class PageModuleRespDTO  extends BaseResponseDTO{
+
+	private static final long serialVersionUID = 1L;
+
+	private Integer moduleId;
 
     private String moduleName;
 
@@ -28,7 +33,17 @@ public class PageModuleRespDTO {
 
     private Date updateTime;
 
-    public Integer getModuleId() {
+    private List<PageModuleRespDTO> subPageModuleList;
+    
+	public List<PageModuleRespDTO> getSubPageModuleList() {
+		return subPageModuleList;
+	}
+
+	public void setSubPageModuleList(List<PageModuleRespDTO> subPageModuleList) {
+		this.subPageModuleList = subPageModuleList;
+	}
+
+	public Integer getModuleId() {
         return moduleId;
     }
 
