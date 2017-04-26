@@ -29,3 +29,5 @@ application:
     runmode: D
   sequencefactory:
     confpath: /com/ai/db/sequence/conf
+  cache:
+    confpath: /com/ai/paas/cache/conf

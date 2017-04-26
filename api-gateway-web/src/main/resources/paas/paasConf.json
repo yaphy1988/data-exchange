@@ -1,5 +1,5 @@
 {
-  "/com/ai/paas/cache/bdex/conf": {
+  "/com/ai/paas/cache/conf": {
     "hosts": "127.0.0.1:16379",
     "timeOut": "20000",
     "maxActive": "100",
@@ -9,5 +9,19 @@
     "testOnReturn": "true",
     "dbIndex": "0",
     "twemproxy": "false"
+  },
+  "/com/ai/paas/session/conf": {
+    "hosts": "112.74.163.29:26379",
+    "timeOut": "20000",
+    "maxActive": "1024",
+    "maxIdle": "100",
+    "maxWait": "1000",
+    "testOnBorrow": "false",
+    "testOnReturn": "true",
+    "dbIndex": "0",
+    "twemproxy": "false",
+    "expirationUpdateInterval": "300",
+    "maxInactiveInterval": "1800",
+    "domain": ""
   }
 }

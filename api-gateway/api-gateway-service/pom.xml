@@ -24,11 +24,20 @@
     </dependency>
     <dependency>
       <groupId>com.ai.woego.boot</groupId>
+      <artifactId>cache-engine-spring-boot-autoconfigure</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.ai.woego.boot</groupId>
       <artifactId>dubbo-spring-boot-autoconfigure</artifactId>
     </dependency>
     <dependency>
       <groupId>com.ai.woego.boot</groupId>
       <artifactId>sequence-spring-boot-autoconfig</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.ai.paas</groupId>
+      <artifactId>message-engine</artifactId>
+      <version>${woego-frame.version}</version>
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -48,42 +57,29 @@
       <scope>runtime</scope>
     </dependency>
     <dependency>
-      <groupId>com.ai.paas</groupId>
-      <artifactId>cache-engine</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.ai.paas</groupId>
-      <artifactId>message-engine</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.ai.paas</groupId>
-      <artifactId>sequence-engine</artifactId>
-    </dependency>
-    <dependency>
       <groupId>org.mybatis</groupId>
       <artifactId>mybatis</artifactId>
-    </dependency>	
-		<dependency>
-			<groupId>com.alibaba</groupId>
-			<artifactId>fastjson</artifactId>
-		</dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpcore</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.jetty</groupId>
-            <artifactId>jetty-util</artifactId>          
-        </dependency>    
+    </dependency>
+    <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>fastjson</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpcore</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.eclipse.jetty</groupId>
+      <artifactId>jetty-util</artifactId>
+    </dependency>
   </dependencies>
 
 

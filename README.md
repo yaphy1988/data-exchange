@@ -32,7 +32,7 @@ mybatis-PageHelper作者的官方地址[https://github.com/pagehelper/Mybatis-Pa
         PageInfo pageInfo = new PageInfo(lists);
         logger.info("IDemoInfoSV查询完成，总数：" + pageInfo.getTotal() + "当前页内记录数：" + lists.size());
         //按照返回数据结构封装分页数据，本项目中分页统一返回PageResponseDTO。入参pageInfo，返回的数据传输对象DTO的class
-        PageResponseDTO<DemoDTO> respDTO = GenPageResponse.genPageResponse(pageInfo,DemoDTO.class);
+        PageResponseDTO<DemoDTO> respDTO = PageResponseFactory.genPageResponse(pageInfo,DemoDTO.class);
         return respDTO;
     }
 ```

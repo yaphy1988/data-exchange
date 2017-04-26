@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.usercenter;
 
 import java.util.Map;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,6 @@ import com.ai.paas.utils.SignUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@ImportResource({"classpath:/dubbo/dubboContext.xml"})
 public class UserServiceTest {
 
 	@Autowired
@@ -56,8 +56,9 @@ public class UserServiceTest {
 	@Test
 	public void textSeq(){
 		CacheUtil.addItem("zouwj1", 1234,60*2);
-		String i = CacheUtil.getItem("zouwj").toString();
-		System.out.print(i);
+		Object i = CacheUtil.getItem("zouwj1");
+		Assert.assertEquals(1234,i);
+		System.out.println(i);
 	}
 	
 	public static void main(String[] args){

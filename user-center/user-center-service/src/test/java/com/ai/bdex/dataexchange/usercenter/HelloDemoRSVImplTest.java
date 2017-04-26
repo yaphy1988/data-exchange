@@ -18,7 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
-@ImportResource({"classpath:/dubbo/dubboContext.xml"})
 public class HelloDemoRSVImplTest {
 
     @Autowired

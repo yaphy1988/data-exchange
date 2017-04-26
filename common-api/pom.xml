@@ -15,10 +15,6 @@
     <dependencies>
         <dependency>
             <groupId>com.ai.paas</groupId>
-            <artifactId>config-engine</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.ai.paas</groupId>
             <artifactId>common-utils</artifactId>
         </dependency>
         <dependency>
@@ -38,15 +34,14 @@
             <artifactId>fastjson</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+        </dependency>
+        <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <optional>true</optional>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.ai.paas</groupId>
-            <artifactId>captcha-utils</artifactId>
-            <optional>true</optional>
         </dependency>
     </dependencies>
 
