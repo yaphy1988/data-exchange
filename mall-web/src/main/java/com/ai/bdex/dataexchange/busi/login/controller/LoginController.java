@@ -78,6 +78,7 @@ public class LoginController {
 			rMap.put("success", true);
 			rMap.put("data", staffInfoVO);
 		} catch (Exception e) {
+			log.error("登录异常", e);
 			rMap.put("success", false);
 			rMap.put("errorMsg",e.getMessage());
 		}

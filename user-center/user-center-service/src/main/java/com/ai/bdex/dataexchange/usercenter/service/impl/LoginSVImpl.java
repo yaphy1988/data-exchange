@@ -88,7 +88,7 @@ public class LoginSVImpl implements ILoginSV {
         }
         // 账户失效
         Date end_date = staffBean.getEndDate();
-        if (end_date.before(new Timestamp(System.currentTimeMillis()))) {
+        if (end_date!=null&&end_date.before(new Timestamp(System.currentTimeMillis()))) {
             log.error("用户:" + loginName + ",用户超过有效期！", null);
             throw new BusinessException("用户名不存在或密码错误！");
         }

@@ -16,6 +16,8 @@
     </script>
 <script type="text/javascript" th:src="@{/js-busi/authenapply/authenapply.js}"></script>
 <script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
+<script type="text/javascript" src="../js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
+<script src="../static/js-busi/common/uploadimg.js" th:src="@{/js-busi/common/uploadimg.js}"></script>
 <style type="text/css">
 	.error-tip{
     height: 20px;
@@ -188,12 +190,12 @@
 						</td>
 						<td >
 							<!-- <input  type="text" class="form-control" placeholder="" id="gdsPic"> -->
-							<input type="file" class="float_File" name="picUpLoad" id="picUpLoad">
+							<input type="file" class="float_File" name="picUpLoad" id="picUpLoad" onchange="onImageFileChange(this);">
 						</td>
 					</tr>
 					<tr>
 						<td></td>
-						<td><span class="col_999">图片大小不要超过2M，支持PNG、JPG格式</span></td>
+						<td><img id="iamgeTag" src=""><span class="col_999">图片大小不要超过2M，支持PNG、JPG格式</span></td>
 					</tr>
 			</table>
 			<div class="title">联系人信息</div>

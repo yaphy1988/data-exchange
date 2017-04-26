@@ -103,3 +103,25 @@ function showwarm(id,msg){
 function hiddenwarm(id){
 	$("#"+id+"_msg").css('display','none');
 }
+
+function onImageFileChange(obj){
+	
+	uploadImage($(obj),function(data){
+		//上传成功
+		var fileId = data.fileId;
+		var fileName = data.fileName;
+		var fileType = data.fileType;
+		
+//		var iamgeSize = "_80x80";//可不设置
+//		var imageUrl = WEB_SHOW_IMG_PATH + fileId +iamgeSize+"."+ fileType;
+		var imageUrl = data.imageUrl;
+		$("#iamgeTag").attr("src",imageUrl);
+		$("#vfsId1").val(fileId);
+	});
+}
+
+$(function(){
+//	$("#picUpLoad").bind('change',function(){
+//		onImageFileChange(this);
+//	});
+});
