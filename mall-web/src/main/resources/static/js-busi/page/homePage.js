@@ -60,7 +60,7 @@ function queryPageModue(){
 					case 104://04-平台动态
 						queryModue104('105',1,10);
 						break;
-					case 105://109-合作伙伴
+					case 109://109-合作伙伴
 						queryPartner109(d.moduleId);
 						break;							
 					default:
@@ -89,7 +89,7 @@ function querydata_recommend102(moduleId){
 	        				var name =  obj.result[i].recommendName;
 	        				var gdsid =  obj.result[i].gdsId; 
 	        				var gdsdetailurl = basePath+"/goods/details/"+gdsid;
-	 					    html +='<li><a href='+gdsdetailurl+' target="_blank"><img src="http://112.74.163.29:14751/ImageServer/image/58fef10a1d17873197dbc2ef.jpg"><span>'+name+'</span></a></li>';
+	 					    html +='<li><a href='+gdsdetailurl+' target="_blank"><img src="http://112.74.163.29:14751/ImageServer/image/58fef10a1d17873197dbc2ef_80x80.jpg"><span>'+name+'</span></a></li>';
 	        		   }
 	        	} 
 			}
@@ -153,8 +153,9 @@ function queryPartner109(moduleId){
 		if(data.success){
 			$(data.moduleAdList).each(function(i,d){
 				//向下取整--
-				htmlOl +='<a href="'+d.link_page+'"><img src="'+imgPath+d.vfs_id+'_150x150.jpg"></a>';
- 			   /*if(Math.floor(i/5)){
+ 				htmlOl +='<a href="'+d.linkPage+'" target="_blank"><img src="'+imgPath+d.vfsId+'_100x100.jpg"></a>';
+ 				var addli = false;
+  			   /*if(Math.floor(i/5)){
 					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="active"></li>';
 					htmDiv +='<div class="item active">'+
 	                '<img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'">'+
@@ -162,6 +163,7 @@ function queryPartner109(moduleId){
 				} */
 			});
 		}
+		var htmlOl = '</li>';
 		$('#partnert_div').html(htmlOl); 
 	};
 	doAjax(url,params,callBack);
