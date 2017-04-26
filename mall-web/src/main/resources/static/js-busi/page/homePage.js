@@ -205,10 +205,3 @@ function doAjax(url,params,callBack){
 		success : callBack
 	})
 }
-function setLinkUrk(linkUrl){
-	if(new RegExp('http').test(linkUrl)){
-		return  linkUrl;
-	}else{
-		return basePath+linkUrl;
-	}
-}

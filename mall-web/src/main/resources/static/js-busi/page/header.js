@@ -84,9 +84,9 @@ var header = new Object({
 							link =d.sortContentRespDTO.contentLink;
 						}
 						if(sortLever== '2'){//2级导航
-							html +='<a href='+setUrlLink(link)+' target="_blank">'+d.sortName+'</a>';
+							html +='<a href='+setLinkUrk(link)+' target="_blank">'+d.sortName+'</a>';
 						}else{//1级导航
-							html +='<li sortId="'+d.sortId+'"><a href='+setUrlLink(link)+' target="_blank"><i>&rsaquo;</i>'+d.sortName+'</a> </li>';
+							html +='<li sortId="'+d.sortId+'"><a href='+setLinkUrk(link)+' target="_blank"><i>&rsaquo;</i>'+d.sortName+'</a> </li>';
 						}
 					});
 				}
@@ -104,6 +104,11 @@ var header = new Object({
 					},function(){
 						$('#head_sidebar>div').hide();
 					});
+					$('#head_sidebar>div').hover(function(){
+						$(this).show();
+					},function(){
+						$(this).hide();
+					});
 				}
 			}
 		});
@@ -111,10 +116,12 @@ var header = new Object({
 	
 });
 
-function setUrlLink(link){
-	if(link == null || link == undefined){
+function setLinkUrk(linkUrl){
+	if(linkUrl == null || linkUrl == undefined){
 		return 'javascript:void(0);'
+	}else if(new RegExp('http').test(linkUrl)){
+		return  linkUrl;
 	}else{
-		return basePath+link;
+		return basePath+linkUrl;
 	}
 }
