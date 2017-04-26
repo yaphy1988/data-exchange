@@ -22,10 +22,12 @@
       <groupId>com.ai.woego.boot</groupId>
       <artifactId>config-engine-spring-boot-autoconfigure</artifactId>
     </dependency>
+    <!--
     <dependency>
       <groupId>com.ai.woego.boot</groupId>
       <artifactId>cache-engine-spring-boot-autoconfigure</artifactId>
     </dependency>
+    -->
     <dependency>
       <groupId>com.ai.woego.boot</groupId>
       <artifactId>dubbo-spring-boot-autoconfigure</artifactId>
@@ -80,6 +82,11 @@
       <groupId>org.eclipse.jetty</groupId>
       <artifactId>jetty-util</artifactId>
     </dependency>
+    <!-- 分页插件 -->
+	<dependency>
+	  <groupId>com.github.pagehelper</groupId>
+	  <artifactId>pagehelper</artifactId>
+	</dependency>
   </dependencies>
 
 
