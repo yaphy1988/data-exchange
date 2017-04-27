@@ -91,7 +91,6 @@ public class GdsInfo2PropSVImpl implements IGdsInfo2PropSV {
         }
         GdsInfo2Prop gdsInfo2Prop = new GdsInfo2Prop();
         ObjectCopyUtil.copyObjValue(gdsInfo2PropReqDTO,gdsInfo2Prop,null,false);
-//        BeanUtils.copyProperties(gdsInfo2PropReqDTO,gdsInfo2Prop);
         int code = gdsInfo2PropMapper.updateByPrimaryKey(gdsInfo2Prop);
         return code;
     }

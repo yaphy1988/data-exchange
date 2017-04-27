@@ -478,6 +478,7 @@ function createGdsSkuList(){
 function createGdsInfo2PropList(){
 	var gdsSkuVOList=new Array();
 	$('tr[name="dataProps"]').each(function(){
+		var gpId=$(this).find("td").attr("gpId");
 		var proId=$(this).find("td").attr("proId");
 		var proName=$(this).find("td").attr("proName");
 		var proType=$(this).find("td").attr("proType");
@@ -485,6 +486,7 @@ function createGdsInfo2PropList(){
 		var showOrder=$(this).find("td").attr("showOrder");
 		//if(proValue!=""){
 			var gdsInfo2PropVO ={
+					gpId:gpId,
 					proId:proId,
 					proName:proName,
 					proValue:proValue,
@@ -495,10 +497,11 @@ function createGdsInfo2PropList(){
 		//}
 	});
 	$("#addProp").find(".ckeditName").each(function(){
+		var gpId=$(this).attr("gpId");
 		var proId=$(this).attr("proId");
 		var proName=$(this).attr("proName");
 		var proType=$(this).attr("proType");
-		var showOrder=$(this).find("td").find("showOrder").val();
+		var showOrder=$(this).attr("showOrder");
 		var proValue=""
 		var ckeditName=$(this).attr("id");
 		if(ckeditName=="editorPackage"){
@@ -514,6 +517,7 @@ function createGdsInfo2PropList(){
 		}
 		//if(proValue!=""){
 			var gdsInfo2PropVO ={
+					gpId:gpId,
 					proId:proId,
 					proName:proName,
 					proValue:proValue,
@@ -552,7 +556,7 @@ function uploadImage(object, path) {
 		/** 上传成功，隐藏上传组件，并显示该图片 */
 		if (data.flag == true) {
 			$("#gdsPic").val(data.imageId);
-			$("#gdsPicUrl").val(data.imagePath);
+			$("#gdsPicUrl").attr("src",data.imagePath)
 		} else {
 			alert(data.error);
 		}
@@ -685,11 +689,11 @@ function createEditor(id) {
 }
 function setCkeditValue(id, url) {
 	 var obj=url+".html";
-		$.appAjax({
-			url : obj,
+	$.appAjax({
+			url:obj,
 			async : true,
 			dataType : 'jsonp',
-			jsonp :'jsonpCallback',//注意此处写死jsonCallback
+		    jsonp :'jsonpCallback',//注意此处写死jsonCallback
 			success: function (data) {
 				if(id=="editorPackage"){
 					ckeditPackage.setData(data.result);
@@ -713,4 +717,23 @@ function validMessage(obj){
 	if(messageValue.length==length){
 		
 	}
+}
+
+function gridAPIInfoList(index){
+	$.ajax({
+		url:WEB_ROOT+'/gdsEdit/gridAPIInfoList',
+		cache:false,
+		async:true,
+		dataType:'html',
+		data : param,
+		success:function(data){
+			$('#gdsAPIList').html(data);
+			/**
+			 * 分页组件
+			 */
+			$('#pagerId').pager({callback: function(index){
+				gridAPIInfoList(index);
+			}});
+		}
+	});
 }

@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.solr.common.SolrDocumentList;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,10 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.util.HtmlUtils;
 import org.thymeleaf.util.StringUtils;
 
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoReqDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
+import com.ai.bdex.dataexchange.busi.gds.entity.AipServiceInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsCatVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfo2PropVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
@@ -38,6 +43,7 @@ import com.ai.bdex.dataexchange.busi.gds.entity.GdsLabelVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsManageInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsPropVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsSkuVO;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
@@ -96,6 +102,8 @@ public class GdsEditController {
     private IGdsInfo2PropRSV iGdsInfo2PropRSV;
     @DubboConsumer
     private IGdsSkuRSV iGdsSkuRSV;
+   // @DubboConsumer
+   // private IAipServiceInfoRSV iAipServiceInfoRSV;
     
     @RequestMapping("/pageInit")
     public String pageInit(Model model,GdsInfoVO gdsInfoVO) throws Exception{
@@ -113,7 +121,7 @@ public class GdsEditController {
                 if (gdsInfoRespDTO!=null){
                     ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,gdsInfoVO,null,false);
                     if(gdsInfoRespDTO.getGdsPic()!=null){
-                    	//gdsInfoVO.setGdsPicUrl(ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_100x100"));
+                    	gdsInfoVO.setGdsPicUrl(ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_100x100"));
                     }
                     //设置分类名称
                     if (gdsInfoRespDTO.getCatId()!=null && gdsInfoRespDTO.getCatId().intValue()>0){
@@ -343,7 +351,7 @@ public class GdsEditController {
         			propReq.setGdsId(gdsId);
         			propReq.setStatus(GDS_VALID);
         			propReq.setCreateUser(staffId);
-        			iGdsInfo2PropRSV.insertGdsInfo2Prop(propReq);
+        			iGdsInfo2PropRSV.updateGdsInfo2Prop(propReq);
         		}
         	}
             jsonBean.setSuccess("true");
@@ -450,13 +458,24 @@ public class GdsEditController {
 			vo.setGdsSubtitle(baseInfoJson.getString("gdsSubTitle"));
 			vo.setCatFirst(Integer.parseInt(baseInfoJson.getString("catFirst")));
 			vo.setCatId(Integer.parseInt(baseInfoJson.getString("catId")));
-			vo.setApiId(Integer.parseInt(baseInfoJson.getString("apiId")));
-			vo.setGdsPic(baseInfoJson.getString("gdsPic"));
-			vo.setIfRecommend(baseInfoJson.getString("ifRecommend"));
-			vo.setFunIntroduction(baseInfoJson.getString("funIntroduction"));
-			vo.setCommpanyName(baseInfoJson.getString("commpanyName"));
-			} catch (Exception e) {
+			if(StringUtil.isNotBlank(baseInfoJson.getString("apiId"))){
+				vo.setApiId(Integer.parseInt(baseInfoJson.getString("apiId")));
+			}
+			if(StringUtil.isNotBlank(baseInfoJson.getString("gdsPic"))){
+				vo.setGdsPic(baseInfoJson.getString("gdsPic"));
+			}
+			if(StringUtil.isNotBlank(baseInfoJson.getString("ifRecommend"))){
+				vo.setIfRecommend(baseInfoJson.getString("ifRecommend"));
+			}
+			if(StringUtil.isNotBlank(baseInfoJson.getString("funIntroduction"))){
+				vo.setFunIntroduction(baseInfoJson.getString("funIntroduction"));
+			}
+			if(StringUtil.isNotBlank(baseInfoJson.getString("commpanyName"))){
+				vo.setCommpanyName(baseInfoJson.getString("commpanyName"));
+			}
+		} catch (Exception e) {
 			logger.error(e.getMessage());
+			 throw e;
 		}
 	}
 	private void setGdsInfo2Cat(GdsInfo2CatReqDTO vo,JSONObject baseInfoJson){
@@ -503,6 +522,7 @@ public class GdsEditController {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			throw e;
 		}
 	}
 	private void setGdsSkuInfo(List<GdsSkuReqDTO> reqList, JSONArray jsonArray) {
@@ -537,9 +557,10 @@ public class GdsEditController {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			throw e;
 		}
 	}
-	private void setGdsInfo2PropInfo(List<GdsInfo2PropReqDTO> reqList, JSONArray jsonArray) {
+	private void setGdsInfo2PropInfo(List<GdsInfo2PropReqDTO> reqList, JSONArray jsonArray) throws Exception {
 
 		try {
 			// 遍历元素
@@ -580,6 +601,7 @@ public class GdsEditController {
 			}
 		} catch (Exception e) {
 			logger.error(e.getMessage());
+			throw e;
 		}
 	}
 
@@ -620,8 +642,8 @@ public class GdsEditController {
 			List<GdsInfo2PropRespDTO> gdsInfo2PropRespDTOList = iGdsInfo2PropRSV.queryGdsInfo2PropList(gdsInfo2PropReqDTO);
 			if(CollectionUtils.isNotEmpty(gdsInfo2PropRespDTOList)){
 				for(GdsInfo2PropRespDTO resp:gdsInfo2PropRespDTOList){
-					if(resp.getProType()==PRO_TYPE&&resp.getProValue()!=null){
-						//resp.setProValue(getHtmlUrl(resp.getProValue()));
+					if(PRO_TYPE.equals(resp.getProType())&&resp.getProValue()!=null){
+						resp.setProValue(getHtmlUrl(resp.getProValue()));
 					}
 				}
 			}
@@ -704,12 +726,12 @@ public class GdsEditController {
             }
             byte[] datas = inputStream2Bytes(file.getInputStream());
             String imageId = ImageUtil.upLoadImage(datas, fileName);
-            //String imagePath=ImageUtil.getImageUrl(imageId);
+            String imagePath=ImageUtil.getImageUrl(imageId);
             resultMap.put("flag", true);
             resultMap.put("imageId", imageId);
             resultMap.put("imageName", fileName);
             resultMap.put("id", id);
-            resultMap.put("imagePath", "");
+            resultMap.put("imagePath", imagePath);
             out.print(JSONObject.toJSONString(resultMap));
             logger.debug("imageId = " + imageId);
         } catch (Exception e) {
@@ -754,6 +776,25 @@ public class GdsEditController {
     private String getHtmlUrl(String vfsId) {
         return ImageUtil.getStaticDocUrl(vfsId, "html");
     }
-
+//
+//	/**
+//	 * 获取API接口
+//	 * 
+//	 * @param model
+//	 * @param searchVO
+//	 * @return
+//	 */
+//	@RequestMapping(value = "gridAPIInfoList")
+//	public String gridAPIInfoList(Model model, AipServiceInfoVO apiServiceVO) {
+//		try {
+//			AipServiceInfoReqDTO apiReqDTO = new AipServiceInfoReqDTO();
+//			apiReqDTO.setPageNo(apiServiceVO.getPageNo());
+//			apiReqDTO.setPageSize(apiServiceVO.getPageSize());
+//			PageResponseDTO<AipServiceInfoDTO> pageInfo = iAipServiceInfoRSV.selectServiceWithPage(apiReqDTO);
+//			model.addAttribute("pageInfo", pageInfo);
+//		} catch (Exception e) {
+//			logger.error("查询API接口失败！原因是：" + e.getMessage());
+//		}
+//		return "gds/div/gdsEditAPIList";
+//	}
 }
- 

@@ -11,10 +11,8 @@
 	<link rel="stylesheet" href="../static/css/manage.css"   th:href="@{/css/manage.css}">
 	<script type="text/javascript" src="../../static/js-busi/gds/gdsEdit.js" th:src="@{/js-busi/gds/gdsEdit.js}"></script>
 	<script type="text/javascript" src="../../static/component/ckeditor/ckeditor.js" th:src="@{/component/ckeditor/ckeditor.js}"></script>
-	<!-- <script type="text/javascript" src="../../static/js-busi/common/uploadimg.js" th:src="@{/js-busi/common/uploadimg.js}"></script> -->
 	<script type="text/javascript" src="../../static/js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
-	<script type="text/javascript" src="../../static/js/jquery-validation/1.11.1/jquery.validate.min.js" th:src="@{/js/jquery-validation/1.11.1/jquery.validate.min.js}"></script>
-
+	<script type="text/javascript" src="../static/js-busi/common/pager.js" th:src="@{/js-busi/common/pager.js}"></script>
 </head>
 <body>
 <header class="clearfix m_header" th:remove="all">
@@ -137,14 +135,18 @@
 						接口:
 					</td>
 					<td width="520">
-						
-							<select class="form-control" id="apiId" name="apiId">
+						<div class="input-group">
+							<input type="hidden"  id="apiId" name="apiId" >
+							<input type="text" class="form-control" placeholder="/API/" id="apiText" disabled>
+							<span class="input-group-btn">
+					        <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal3" >请选择</button>
+					      </span>
+						</div>
+							<select class="form-control" id="apiId" name="apiId" th:remove="all">
 									<optgroup>
 										<option>1</option>
 									</optgroup>
 								</select>
-								
-						
 					</td>
 					<td class="tip"><span >计费方式：按照请求次数统计</span></td>
 				</tr>
@@ -208,7 +210,7 @@
 					</td>
 					<td>
 						<span>
-							<img src="" width="120" height="120" name="gdsPicUrl" th:src="${gdsInfoVO.gdsPicUrl}">
+							<img src="" width="120" height="120" name="gdsPicUrl" id="gdsPicUrl"  th:src="${gdsInfoVO.gdsPicUrl}">
 						</span>
 						<span class="tip">说明：建议选择100*100规格图片</span>
 					</td>
@@ -433,6 +435,25 @@
 								</tbody>
 							</table>
 						</div>
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" th:onclick="'saveGdsLabelQuik()'">确认</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- API接口选择 modal-->
+	<div class="m_modal modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document" style="width:900px;">
+			<div class="modal-content" >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">API接口</h4>
+				</div>
+				<div class="modal-body clearfix">
+					<div class="listTable" id="gdsAPIList">
 					</div>
 				</div>
 				<div class="modal-footer">
