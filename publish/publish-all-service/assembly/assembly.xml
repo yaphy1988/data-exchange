@@ -16,19 +16,19 @@
             <outputDirectory/>
         </file>
         <file>
-            <source>${project.parent.parent.basedir}/user-center/user-center-service/target/user-center-service.zip</source>
+            <source>${project.parent.parent.basedir}/user-center/user-center-service/target/user-center-service-${project.version}.jar</source>
             <outputDirectory/>
         </file>
         <file>
-            <source>${project.parent.parent.basedir}/trade-center/trade-center-servie/target/trade-center-service.zip</source>
+            <source>${project.parent.parent.basedir}/trade-center/trade-center-servie/target/trade-center-service-${project.version}.jar</source>
             <outputDirectory/>
         </file>
         <file>
-            <source>${project.parent.parent.basedir}/api-gateway/api-gateway-service/target/api-gateway-service.zip</source>
+            <source>${project.parent.parent.basedir}/api-gateway/api-gateway-service/target/api-gateway-service-${project.version}.jar</source>
             <outputDirectory/>
         </file>
         <file>
-            <source>${project.parent.parent.basedir}/aip-center/aip-center-service/target/aip-center-service.zip</source>
+            <source>${project.parent.parent.basedir}/aip-center/aip-center-service/target/aip-center-service-${project.version}.jar</source>
             <outputDirectory/>
         </file>
     </files>
