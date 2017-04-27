@@ -90,6 +90,8 @@ public class GdsEditController {
     private final static String GDS_VALID = "1";//商品状态-有效
     private final static String GDS_INVALID = "0";//商品状态-失效
     private final static String PRO_TYPE = "2";//富文本
+    private final static Integer PAGE_SIZE = 2;//分页查询大小
+
 
 
     @DubboConsumer
@@ -102,8 +104,8 @@ public class GdsEditController {
     private IGdsInfo2PropRSV iGdsInfo2PropRSV;
     @DubboConsumer
     private IGdsSkuRSV iGdsSkuRSV;
-   // @DubboConsumer
-   // private IAipServiceInfoRSV iAipServiceInfoRSV;
+    @DubboConsumer
+    private IAipServiceInfoRSV iAipServiceInfoRSV;
     
     @RequestMapping("/pageInit")
     public String pageInit(Model model,GdsInfoVO gdsInfoVO) throws Exception{
@@ -351,7 +353,7 @@ public class GdsEditController {
         			propReq.setGdsId(gdsId);
         			propReq.setStatus(GDS_VALID);
         			propReq.setCreateUser(staffId);
-        			iGdsInfo2PropRSV.updateGdsInfo2Prop(propReq);
+        			iGdsInfo2PropRSV.insertGdsInfo2Prop(propReq);
         		}
         	}
             jsonBean.setSuccess("true");
@@ -585,7 +587,7 @@ public class GdsEditController {
 				if("2".equals(popType)){
 					String propValuehtml=propVOJson.getString("proValue");
 					if(StringUtil.isNotBlank(propValuehtml)){
-						String htmlData=HtmlUtils.htmlUnescape(propValuehtml);
+						String htmlData=HtmlUtils.htmlUnescape(java.net.URLDecoder.decode(propValuehtml,"UTF-8"));
 						  //保存静态文件到静态文件服务器
 						String infoUrl = MongoFileUtil.saveFile(htmlData.getBytes("utf-8"),"gdsContent", ".html");
 						propReqDTO.setProValue(infoUrl);
@@ -776,25 +778,25 @@ public class GdsEditController {
     private String getHtmlUrl(String vfsId) {
         return ImageUtil.getStaticDocUrl(vfsId, "html");
     }
-//
-//	/**
-//	 * 获取API接口
-//	 * 
-//	 * @param model
-//	 * @param searchVO
-//	 * @return
-//	 */
-//	@RequestMapping(value = "gridAPIInfoList")
-//	public String gridAPIInfoList(Model model, AipServiceInfoVO apiServiceVO) {
-//		try {
-//			AipServiceInfoReqDTO apiReqDTO = new AipServiceInfoReqDTO();
-//			apiReqDTO.setPageNo(apiServiceVO.getPageNo());
-//			apiReqDTO.setPageSize(apiServiceVO.getPageSize());
-//			PageResponseDTO<AipServiceInfoDTO> pageInfo = iAipServiceInfoRSV.selectServiceWithPage(apiReqDTO);
-//			model.addAttribute("pageInfo", pageInfo);
-//		} catch (Exception e) {
-//			logger.error("查询API接口失败！原因是：" + e.getMessage());
-//		}
-//		return "gds/div/gdsEditAPIList";
-//	}
+
+	/**
+	 * 获取API接口
+	 * 
+	 * @param model
+	 * @param searchVO
+	 * @return
+	 */
+	@RequestMapping(value = "gridAPIInfoList")
+	public String gridAPIInfoList(Model model, AipServiceInfoVO apiServiceVO) {
+		try {
+			AipServiceInfoReqDTO apiReqDTO = new AipServiceInfoReqDTO();
+			apiReqDTO.setPageNo(apiServiceVO.getPageNo());
+			apiReqDTO.setPageSize(PAGE_SIZE);
+			PageResponseDTO<AipServiceInfoDTO> pageInfo = iAipServiceInfoRSV.selectServiceWithPage(apiReqDTO);
+			model.addAttribute("pageInfo", pageInfo);
+		} catch (Exception e) {
+			logger.error("查询API接口失败！原因是：" + e.getMessage());
+		}
+		return "gds/div/gdsEditAPIList";
+	}
 }

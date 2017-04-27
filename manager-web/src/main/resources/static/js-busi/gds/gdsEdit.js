@@ -20,15 +20,6 @@ $(function(){
 		queryGdsInfo2Prop(gdsId);
 	}
 	
-	//图片上传
-	$("#picUpLoad").change(function(){
-	    var path = $(this).val();
-	    if(path==""){
-	    	return false;
-	    }else{
-	    	uploadImage(this,path);
-	    }
-	});
 });
 /**
  * 弹出商品标签选择框
@@ -49,11 +40,8 @@ function selectGdsLabelModal(){
  * @returns
  */
 function selectGdsLabel(obj){
-	//var labId=$(obj).attr("labId");
 	var labName=$(obj).attr("labName");
 	var labColor=$(obj).attr("labColor");
-
-	//$("#selGdsLabId").val(labId);
 	$("#selGdsLabName").val(labName);
 	$("#selGdsLabColor").val(labColor);
 	changeLabel();
@@ -81,27 +69,11 @@ function saveGdsLabelQuik(){
 		$("#myModal2").modal('hide');
 		return;
 	}
-//	var params={
-//			labId:labId,
-//			labName:labName,
-//			labColor:labColor,
-//			catFirst:catFirst
-//	}
-//	var url="/gdsEdit/saveGdsLabelQuik";
-//	$.ajax({
-//		url : url,
-//		type : "POST",
-//		dataType : "json",
-//		async : false,
-//		data : params,
-//        success : function(data) {
-//        	if (data.success=="true"){
-        		var labAppend='<span class="label" style="border:solid 1px '+labColor+';color:'+labColor+'; " labId="" labName="'+labName+'" labColor="'+labColor+'">'+labName+'</span>';
-        		$("#gdsLabelList").append(labAppend);
-        		$("#myModal2").modal('hide');
-//        	}
-//         },
-//     });
+	var labAppend = '<span class="label" style="border:solid 1px ' + labColor
+			+ ';color:' + labColor + '; " labId="" labName="' + labName
+			+ '" labColor="' + labColor + '">' + labName + '</span>';
+	$("#gdsLabelList").append(labAppend);
+	$("#myModal2").modal('hide');
 
 }
 /**
@@ -270,12 +242,13 @@ function catIsSubNode(){
             	 isSubNode=false;
              }
              if(!isSubNode){
-            	 WEB.msg.info("提示",'提示','请选择一个没有子级的商品分类');
+            	 WEB.msg.info("提示",'请选择一个没有子级的商品分类');
          		return;
          	}else{
 
          		var catFirst = $('div[name="catDiv"]').eq(0).find('.active').attr('catId');
          		var catFirstName=$('div[name="catDiv"]').eq(0).find('.active').attr('catName');
+         		$('td[name="catFirstError"] span').html("");
          		if(typeof(selectCatCallback)!='undefined'){
          			selectCatCallback(catId,catName,catFirst,catFirstName);
          		}
@@ -296,6 +269,8 @@ function selectCatCallback(catId, catName, catFirst, catFirstName) {
 	if(catFirst=="1"){
 		$('div[name="DivAPI"]').css("display","");
 		$("#otherInfo").css("display","none");
+		addPackAgeOne();
+		gridAPIInfoList(1);
 	}else if(catFirst=="3"){//解决方案
 		$('div[name="DivAPI"]').css("display","none");
 		$("#otherInfo").css("display","");
@@ -319,20 +294,141 @@ function selectCatCallback(catId, catName, catFirst, catFirstName) {
 	$('#catName').val(catName);
 	$('#catId').val(catId);
 	$('#catFirst').val(catFirst);
-	var catText = "/" + catFirstName + "/" + catName;
+	var catText = "/" + catFirstName + "/" ;
+	if(catFirst==1||catFirst==3){
+		catText +=catName;
+	}
 	$("#catText").val(catText);
 }
 
 // 保存商品信息
 function saveGds(){
-	var gdsInfo2CatVO=creategdsInfo2CatObj();
-	var gdsInfoVO=createGdsInfoObj(); 
-	var gdsLabelVOList=createGdsLabelList();
-	var gdsSkuVOList = createGdsSkuList();
-	var gdsInfo2PropVOList = createGdsInfo2PropList();
-	if(gdsInfo2CatVO==undefined||gdsInfoVO==undefined){
+	var gdsId = $("#gdsId").val();
+	var catId = $("#catId").val();
+	var catFirst = $("#catFirst").val();
+	var gdsInfo2CatVO={
+			catId:catId,
+			catFirst:catFirst,
+			gdsId:gdsId,
+	};
+	if(catFirst==""){
+		$('td[name="catFirstError"] span').html("请选择商品分类");
 		return;
 	}
+	var gdsName = $("#gdsName").val();
+	var gdsSubTitle = $("#gdsSubTitle").val();
+	var apiId = $("#apiId").val();
+	var gdsPic = $("#gdsPic").val();
+	var ifRecommend = $("#ifRecommend").val();
+	var funIntroduction = $("#funIntroduction").val();
+	var commpanyName = $("#commpanyName").val();
+	if(ifRecommend==undefined){
+		ifRecommend="";
+	}
+	if(funIntroduction==undefined){
+		funIntroduction="";
+	}else{
+		if(funIntroduction!=""&&funIntroduction.length>1000){
+			$('td[name="funIntroductionError"] span').html("功能介绍不能超过1000个字符");
+			return;
+		}
+	}
+	if(commpanyName==undefined){
+		commpanyName="";
+	}else{
+		if(commpanyName!=""&&commpanyName.length>1000){
+			$('td[name="commpanyNameError"] span').html("公司名称不能超过50个字符");
+			return;
+		}
+	}
+	if(gdsName==""){
+		$('td[name="gdsNameError"] span').html("请录入商品名称");
+		return;
+	}
+	if(gdsName.length>20){
+		$('td[name="gdsNameError"] span').html("商品名称不能超过20个字符");
+		return;
+	}
+	if(gdsSubTitle==""){
+		$('td[name="gdsSubTitleError"] span').html("请录入商品副标题");
+		return;
+	}
+	if(gdsSubTitle.length>20){
+		$('td[name="gdsSubTitleError"] span').html("商品副标题不能超过30个字符");
+		return;
+	}
+	if(gdsPic==""){
+		WEB.msg.error("提示","请上传图片！");
+		return;
+	}
+	var gdsInfoVO={
+			gdsId:gdsId,
+			gdsName:gdsName,
+			gdsSubTitle:gdsSubTitle,
+			catFirst:catFirst,
+			catId:catId,
+			apiId:apiId,
+			gdsPic:gdsPic,
+			ifRecommend:ifRecommend,
+			funIntroduction:funIntroduction,
+			commpanyName:commpanyName
+	}
+	var skuValid = true;
+	var gdsSkuVOList=new Array();
+	$("#APIPackage").find("tbody tr").each(function(){
+		var skuName=$(this).find('[name="skuName"]').val();
+		var packPrice =$(this).find('[name="packPrice"]').val();
+		var packTimes =$(this).find('[name="packTimes"]').val();
+		var packDay =$(this).find('[name="packDay"]').val();
+		if(skuName==""){
+			WEB.msg.error("提示","套餐名称不能为空！");
+			skuValid=false;
+			return;
+		}else if(skuName.length>20){
+			WEB.msg.error("提示","套餐名称不能超过20个字符！");
+			skuValid=false;
+			return;
+		}
+		if(packPrice==""){
+			WEB.msg.error("提示","套餐价格不能为空！");
+			skuValid=false;
+			return;
+		}else if(!WEB.checkNum.isPirce(packPrice)){
+			WEB.msg.error("提示","套餐价格输入错误");
+			skuValid=false;
+			return;
+		}
+		if(packTimes==""){
+			WEB.msg.error("提示","调用次数不能为空！");
+			skuValid=false;
+			return;
+		}else if(!isInteger(packTimes)){
+			WEB.msg.error("提示","调用次数应为整数！");
+			skuValid=false;
+			return;
+		}
+		if(packTimes!="" ){
+			if(!isInteger(packPrice)){
+				WEB.msg.error("提示","有效期应为整数！");
+				skuValid=false;
+				return;
+			}
+
+		}
+		var gdsSkuVO={
+				skuName:skuName,
+				packPrice:packPrice,
+				packTimes:packTimes,
+				packDay:packDay
+		}
+		gdsSkuVOList.push(gdsSkuVO);
+	});
+	if(!skuValid){
+		return;
+	}
+	var gdsLabelVOList=createGdsLabelList();
+	//var gdsSkuVOList = createGdsSkuList();
+	var gdsInfo2PropVOList = createGdsInfo2PropList();
 	//整个活动信息的结构
 	var gdsInfoObj={
 			gdsInfoVO:{},//商品基本信息
@@ -341,6 +437,16 @@ function saveGds(){
 			gdsSkuVOList:[],//单品信息
 			gdsInfo2PropVOList:[],// 属性信息
 		
+	}
+	//API分类
+	if(catFirst=="1"){
+		if(apiId==""){
+			$('td[name="apiIdError"] span').html("请选择API接口");
+			return;
+		}
+		if(gdsSkuVOList.length==0){
+			return;
+		}
 	}
 	//逐一赋值
 	gdsInfoObj.gdsInfoVO=JSON.stringify(gdsInfoVO);
@@ -375,74 +481,7 @@ function saveGds(){
         }
     });
 }
-function creategdsInfo2CatObj(){
-	var gdsId = $("#gdsId").val();
-	var catId = $("#catId").val();
-	var catFirst = $("#catFirst").val();
-	gdsInfo2CatVO={
-			catId:catId,
-			catFirst:catFirst,
-			gdsId:gdsId,
-	};
-	if(catFirst==""){
-		$('tr[name="catFirstError"]').css("display","");
-		return;
-	}
-	return gdsInfo2CatVO;
-}
-function createGdsInfoObj(){
-	var catFirst = $("#catFirst").val();
-	var catId = $("#catId").val();
-	var gdsId = $("#gdsId").val();
-	var gdsName = $("#gdsName").val();
-	var gdsSubTitle = $("#gdsSubTitle").val();
-	var apiId = $("#apiId").val();
-	var gdsPic = $("#gdsPic").val();
-	var ifRecommend = $("#ifRecommend").val();
-	var funIntroduction = $("#funIntroduction").val();
-	var commpanyName = $("#commpanyName").val();
-	if(ifRecommend==undefined){
-		ifRecommend="";
-	}
-	if(funIntroduction==undefined){
-		funIntroduction="";
-	}
-	if(commpanyName==undefined){
-		commpanyName="";
-	}
-	var gdsInfoVO={
-			gdsId:gdsId,
-			gdsName:gdsName,
-			gdsSubTitle:gdsSubTitle,
-			catFirst:catFirst,
-			catId:catId,
-			apiId:apiId,
-			gdsPic:gdsPic,
-			ifRecommend:ifRecommend,
-			funIntroduction:funIntroduction,
-			commpanyName:commpanyName
-	}
-	//API分类
-	if(catFirst=="1"){
-		if(apiId==""){
-			$('tr[name="apiIdError"]').css("display","");
-			return;
-		}
-	}
-	if(gdsName==""){
-		$('tr[name="gdsNameError"]').css("display","");
-		return;
-	}
-	if(gdsSubTitle==""){
-		$('tr[name="gdsSubTitleError"]').css("display","");
-		return;
-	}
-	if(gdsPic==""){
-		$('tr[name="gdsPicError"]').css("display","");
-		return;
-	}
-   return gdsInfoVO;
-}
+
 function createGdsLabelList(){
 	var gdsLabelVOList=new Array();
 	$("#gdsLabelList").find("span").each(function(){
@@ -465,6 +504,31 @@ function createGdsSkuList(){
 		var packPrice =$(this).find('[name="packPrice"]').val();
 		var packTimes =$(this).find('[name="packTimes"]').val();
 		var packDay =$(this).find('[name="packDay"]').val();
+		if(skuName!=undefined&&skuName==""){
+			WEB.msg.error("提示","套餐名称不能为空！");
+			return;
+		}else if(skuName.length>20){
+			WEB.msg.error("提示","套餐名称不能超过20个字符！");
+			return;
+		}
+		if(packPrice!=undefined&&packPrice==""){
+			WEB.msg.error("提示","套餐价格不能为空！");
+			return;
+		}else if(!WEB.checkNum.isPirce(packPrice)){
+			WEB.msg.error("提示","套餐价格输入错误");
+			return;
+		}
+		if(packTimes!=undefined&&packTimes==""){
+			WEB.msg.error("提示","调用次数不能为空！");
+			return;
+		}else if(!isInteger(packTimes)){
+			WEB.msg.error("提示","调用次数应为整数！");
+			return;
+		}
+		if(packTimes!=undefined&&packTimes!="" &&!WEB.checkNum(packPrice)){
+			WEB.msg.error("提示","有效期应为整数！");
+			return;
+		}
 		var gdsSkuVO={
 				skuName:skuName,
 				packPrice:packPrice,
@@ -515,7 +579,9 @@ function createGdsInfo2PropList(){
 		}else if(ckeditName=="editorCompany"){
 			proValue=ckeditCompany.getData()
 		}
-		//if(proValue!=""){
+		if(proValue!=""){
+			proValue=$.trim(encodeURI(proValue));
+		}
 			var gdsInfo2PropVO ={
 					gpId:gpId,
 					proId:proId,
@@ -537,8 +603,11 @@ function createGdsInfo2PropList(){
  * @param {}
  *            path
  */
-function uploadImage(object, path) {
-	var filepath = path;
+function uploadImage(object) {
+    var filepath = $(object).val();
+    if(filepath==""){
+    	return false;
+    }
 	var width=$(object).attr("width");
 	var height=$(object).attr("height"),
 	filepath = (filepath + '').toLowerCase();
@@ -547,7 +616,6 @@ function uploadImage(object, path) {
 	/** 上传图片文件格式验证 */
 	if (!filepath || !filepath.match(regex)) {
 		alert('请选择图片文件(.jpg,.png,.jpeg,.gif,.bmp).');
-		uploadfile.value = "";
 		return;
 	}
 	var url ='/gdsEdit/uploadImage';
@@ -656,11 +724,11 @@ function addSolutionText(proId,proName){
 	var html='<tr>'
 				+'<td class="Hint tips" width="120"><span class="col_red">*</span>功能介绍'
 				+'</td><td width="520" class="pb20"><textarea class="form-control" rows="5" id="funIntroduction"></textarea>'
-				+'</td></tr>';
+				+'</td><td  th:name="funIntroductionError"><span class="tip"></span></td></tr>';
 	html +='<tr>'
 		+'<td class="Hint tips" width="120"><span class="col_red">*</span>公司名称'
 		+'</td><td width="520" class="pb20"><textarea class="form-control" rows="5" id="commpanyName"></textarea>'
-		+'</td></tr>';
+		+'</td><td  th:name="commpanyNameError"><span class="tip"></span></td></tr>';
 	$("#otherInfo").find("tbody").append(html);
 	$("#funIntroduction").val($("#gdsFunIntroduction").val());
 	$("#commpanyName").val($("#gdscommpanyName").val());
@@ -710,16 +778,17 @@ function setCkeditValue(id, url) {
 		});
 }
 //输入校验
-function validMessage(obj){
+function checkLen(obj){
 	var messageValue=$(obj).val();
 	var length=$(obj).attr("maxlength");
-	alert("a");
-	if(messageValue.length==length){
-		
+	var name=$(obj).attr("id");
+	if(messageValue.length<length){
+		$('td[name="'+name+'Error"] span').html("");
 	}
 }
 
 function gridAPIInfoList(index){
+	var param={pageNo:index};
 	$.ajax({
 		url:WEB_ROOT+'/gdsEdit/gridAPIInfoList',
 		cache:false,
@@ -728,12 +797,19 @@ function gridAPIInfoList(index){
 		data : param,
 		success:function(data){
 			$('#gdsAPIList').html(data);
-			/**
-			 * 分页组件
-			 */
-			$('#pagerId').pager({callback: function(index){
-				gridAPIInfoList(index);
-			}});
 		}
 	});
+}
+function selectGdsAPIInfo(obj){
+	var apiId=$(obj).parent().siblings().eq(0).text();
+	var apiName=$(obj).parent().siblings().eq(1).text();
+	$("#apiId").val(apiId);
+	$("#apiText").val(apiName);
+	$("#myModal3").modal('hide');
+	$('td[name="apiIdError"] span').html("");
+}
+//校验输入是否为正整数
+function isInteger(str){
+	 var reg = /^(([1-9][0-9]*))$/;
+	 return reg.test(str);
 }
