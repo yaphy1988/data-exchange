@@ -211,7 +211,18 @@ body{
 	display: inline-block;
 	float: left;
 }
-
+/* 说明文字处在同一行 */
+.tips.input-group > .input-group-btn > .btn{
+ border-top-left-radius: 0;
+ border-bottom-left-radius: 0;
+ margin-left: -1px;
+}
+/* 说明文字 */
+.tip{
+	color: red;
+	vertical-align: middle;
+	padding-left: 15px;
+}
 /* 模态框 */
 .m_modal
 {
@@ -228,6 +239,7 @@ body{
 
 .top-table .editTable td.Hint.tips{
     padding: 0;
+
 }
 .top-table .editTable td{
     padding: 8px;
