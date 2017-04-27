@@ -89,7 +89,7 @@ public class HomePageController {
 		return rMap;
 	}
 	/**
-	 * 通过楼层ID查询商品信息
+	 * 通过楼层ID查询商品信息--数据推荐
 	 * @param model
 	 * @param moduleId
 	 * @return
@@ -117,9 +117,9 @@ public class HomePageController {
 							gdsInfoRespDTO =  iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO); 
 							if(gdsInfoRespDTO!= null && !StringUtil.isBlank(gdsInfoRespDTO.getGdsPic()) )
 							{
-								 //String vfsid= ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_150x150");
-								 String vfsid= "http://112.74.163.29:14751/ImageServer/image/"+gdsInfoRespDTO.getGdsPic()+"_150x150.jpg";
-								 moduleGoodsList.getResult().get(i).setVfsid(vfsid); 
+								  String vfsid= ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_150x150.jpg");
+								// String vfsid= "http://112.74.163.29:14751/ImageServer/image/"+gdsInfoRespDTO.getGdsPic()+"_150x150.jpg";
+								  moduleGoodsList.getResult().get(i).setVfsid(vfsid); 
 							}
 					   }
 					}
@@ -174,7 +174,7 @@ public class HomePageController {
 			if(!CollectionUtils.isEmpty(moduleAResult)){
 				for(PageModuleAdDTO moduleAdDTO : moduleAResult){
 					if(moduleAdDTO.getVfsId()!=null){
-//						moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()));
+ 						moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()));
 					}
 				}
 			}

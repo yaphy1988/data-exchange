@@ -64,8 +64,8 @@ function queryPageModue(){
 					case 102://01-首页数据推荐；
 						querydata_recommend102(d.moduleId);
 						break;
-					case 103://03-首页数据定制；1
-						
+					case 103://03-数据定制；轮播图片获取 
+						queryModue103(d.moduleId);
 						break;
 					case 104://04-平台动态
 						queryModue104(d.subPageModuleList);
@@ -138,6 +138,21 @@ function queryModue101(moduleId){
 	};
 	doAjax(url,params,callBack);
 }
+//获取数据定制的图片
+function queryModue103(moduleId){
+	var url = basePath+'/homePage/queryPageModuleAd';
+	var params={moduleId:moduleId};
+	var callBack =function(data){
+		var htmlOl = '';
+		var htmDiv = '';
+		if(data.success){
+			$(data.moduleAdList).each(function(i,d){
+				$("#datasetImg").attr("src",d.vfsId+"_600x350.jpg"); 
+			});
+		} 
+	};
+	doAjax(url,params,callBack);
+}
 //查询平台动态公告信息
 function queryModue104(subPageModuleList){
 	if(subPageModuleList != undefined && subPageModuleList != null){
@@ -190,11 +205,10 @@ function queryPartner109(moduleId){
 		var	html ='<div class="active item parter-sub">';
 		if(data.success){
 			$(data.moduleAdList).each(function(i,d){
- 				html +='<a href="'+setLinkUrk(d.linkPage)+'"><img src="'+basePath+'/images/partner/partner-img01.png" "> </a>';
+ 				html +='<a href="'+setLinkUrk(d.linkPage)+'"><img src="'+d.vfsId+'" "> </a>';
  				if(parseInt(i+1)%5 == 0){
 					if(parseInt(i+1)== data.moduleAdList.length){
-						html +='</div>';
-						
+						html +='</div>'; 
 					}else{
 						html +='</div><div class="item parter-sub">';
 					}
