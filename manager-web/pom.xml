@@ -6,7 +6,7 @@
   <groupId>com.ai.bdex.dataexchange</groupId>
   <artifactId>manager-web</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <packaging>war</packaging>
+  <packaging>jar</packaging>
 
   <name>manager-web</name>
   <description>manager-web</description>
