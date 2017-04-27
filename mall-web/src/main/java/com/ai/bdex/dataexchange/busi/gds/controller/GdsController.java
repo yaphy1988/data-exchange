@@ -168,6 +168,19 @@ public class GdsController {
                             for (AipServiceInParaDTO aipServiceInParaDTO : serviceDTO.getServiceInParas()){
                                 AipServiceInParaVO aipServiceInParaVO = new AipServiceInParaVO();
                                 ObjectCopyUtil.copyObjValue(aipServiceInParaDTO,aipServiceInParaVO,null,false);
+                                if ("00".equals(aipServiceInParaVO.getParaType())){
+                                    aipServiceInParaVO.setParaTypeName("Object");
+                                }else if ("01".equals(aipServiceInParaVO.getParaType())){
+                                    aipServiceInParaVO.setParaTypeName("String");
+                                }else if ("02".equals(aipServiceInParaVO.getParaType())){
+                                    aipServiceInParaVO.setParaTypeName("Interger");
+                                }else if ("03".equals(aipServiceInParaVO.getParaType())){
+                                    aipServiceInParaVO.setParaTypeName("Double");
+                                }else if ("04".equals(aipServiceInParaVO.getParaType())){
+                                    aipServiceInParaVO.setParaTypeName("Float");
+                                }else if ("05".equals(aipServiceInParaVO.getParaType())){
+                                    aipServiceInParaVO.setParaTypeName("Date");
+                                }
                                 aipServiceInParaVOs.add(aipServiceInParaVO);
                             }
                             serviceVO.setServiceInParas(aipServiceInParaVOs);
@@ -178,6 +191,19 @@ public class GdsController {
                             for (AipServiceOutParaDTO aipServiceOutParaDTO : serviceDTO.getServiceOutParas()){
                                 AipServiceOutParaVO aipServiceOutParaVO = new AipServiceOutParaVO();
                                 ObjectCopyUtil.copyObjValue(aipServiceOutParaDTO,aipServiceOutParaVO,null,false);
+                                if ("00".equals(aipServiceOutParaVO.getParaType())){
+                                    aipServiceOutParaVO.setParaTypeName("Object");
+                                }else if ("01".equals(aipServiceOutParaVO.getParaType())){
+                                    aipServiceOutParaVO.setParaTypeName("String");
+                                }else if ("02".equals(aipServiceOutParaVO.getParaType())){
+                                    aipServiceOutParaVO.setParaTypeName("Interger");
+                                }else if ("03".equals(aipServiceOutParaVO.getParaType())){
+                                    aipServiceOutParaVO.setParaTypeName("Double");
+                                }else if ("04".equals(aipServiceOutParaVO.getParaType())){
+                                    aipServiceOutParaVO.setParaTypeName("Float");
+                                }else if ("05".equals(aipServiceOutParaVO.getParaType())){
+                                    aipServiceOutParaVO.setParaTypeName("Date");
+                                }
                                 aipServiceOutParaVOs.add(aipServiceOutParaVO);
                             }
                             serviceVO.setServiceOutParas(aipServiceOutParaVOs);
@@ -185,12 +211,18 @@ public class GdsController {
                         //错误码定义
                         if (!CollectionUtil.isEmpty(serviceDTO.getServiceErrores())){
                             List<AipServiceErrorInfoVO> aipServiceErrorInfoVOs = new ArrayList<AipServiceErrorInfoVO>();
+                            List<AipServiceErrorInfoVO> aipSystemErrorInfoVOs = new ArrayList<AipServiceErrorInfoVO>();
                             for (AipServiceErrorInfoDTO aipServiceErrorInfoDTO : serviceDTO.getServiceErrores()){
                                 AipServiceErrorInfoVO aipServiceErrorInfoVO = new AipServiceErrorInfoVO();
                                 ObjectCopyUtil.copyObjValue(aipServiceErrorInfoDTO,aipServiceErrorInfoVO,null,false);
-                                aipServiceErrorInfoVOs.add(aipServiceErrorInfoVO);
+                                if ("00".equals(aipServiceErrorInfoVO.getType())){
+                                    aipServiceErrorInfoVOs.add(aipServiceErrorInfoVO);
+                                }else if ("01".equals(aipServiceErrorInfoVO.getType())){
+                                    aipSystemErrorInfoVOs.add(aipServiceErrorInfoVO);
+                                }
                             }
-                            serviceVO.setServiceErrores(aipServiceErrorInfoVOs);
+                            serviceVO.setSystemServiceErrores(aipSystemErrorInfoVOs);
+                            serviceVO.setServiceServiceErrores(aipServiceErrorInfoVOs);
                         }
                         //接口demo信息
                         if (!CollectionUtil.isEmpty(serviceDTO.getServiceCodeInfoes())){

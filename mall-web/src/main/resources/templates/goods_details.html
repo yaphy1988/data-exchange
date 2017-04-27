@@ -210,31 +210,31 @@
 								<tbody>
 									<tr>
 										<td>接口地址：</td>
-										<td></td>
+										<td th:text="${gdsInfo.serviceVO.apiUrl}">test</td>
 									</tr>
 									<tr>
 										<td>支持格式：</td>
-										<td></td>
+										<td th:text="${gdsInfo.serviceVO.supportFormat}">json</td>
 									</tr>
 									<tr>
 										<td>请求方式：</td>
-										<td></td>
+										<td th:text="${gdsInfo.serviceVO.reqType}">post</td>
 									</tr>
 									<tr>
 										<td>请求示例：</td>
-										<td></td>
+										<td th:text="${gdsInfo.serviceVO.exampleUrl}">reqDemo</td>
 									</tr>
 									<tr>
 										<td>在线测试：</td>
-										<td></td>
+										<td><a href="javascript:void(0)" th:href="${gdsInfo.serviceVO.testTool}" target="_blank">在线测试工具</a> </td>
 									</tr>
 									<tr>
 										<td>接口文档：</td>
-										<td></td>
+										<td><a href="javascript:void(0)">下载接口文档</a> </td>
 									</tr>
 									<tr>
 										<td>接口备注：</td>
-										<td></td>
+										<td th:text="${gdsInfo.serviceVO.apiRemark}">XXX接口</td>
 									</tr>
 									<tr>
 										<td colspan="2">请求参数说明：</td>
@@ -251,11 +251,11 @@
 													</tr>
 												</thead>
 												<tbody>
-													<tr>
-														<td></td>
-														<td></td>
-														<td></td>
-														<td></td>
+													<tr th:each=" serviceInPara,serviceInParaStat: ${gdsInfo.serviceVO.serviceInParas}">
+														<td th:text="${serviceInPara.inputId}">id</td>
+														<td th:text="${serviceInPara.paraTypeName}">int</td>
+														<td th:text="${serviceInPara.type == '01'}?'是':'否'">是</td>
+														<td th:text="">主键</td>
 													</tr>
 												</tbody>
 											</table>
@@ -275,10 +275,10 @@
 												</tr>
 												</thead>
 												<tbody>
-												<tr>
-													<td></td>
-													<td></td>
-													<td></td>
+												<tr th:each="serviceOutPara,serviceOutParaStat : ${gdsInfo.serviceVO.serviceOutParas}">
+													<td th:text="${serviceOutPara.outputId}">id</td>
+													<td th:text="${serviceOutPara.paraTypeName}">int</td>
+													<td th:text="">主键</td>
 												</tr>
 												</tbody>
 											</table>
@@ -303,9 +303,9 @@
 									</tr>
 								</thead>
 								<tbody>
-									<tr>
-										<td>100122</td>
-										<td>错误的请求KEY22</td>
+									<tr th:each="serviceError,serviceErrorStat:${gdsInfo.serviceVO.serviceServiceErrores}">
+										<td th:text="${serviceError.errorId}">100122</td>
+										<td th:text="${serviceError.errorMsg}">错误的请求KEY22</td>
 									</tr>
 								</tbody>
 							</table>
@@ -319,10 +319,10 @@
 								</tr>
 								</thead>
 								<tbody>
-								<tr>
-									<td>100122</td>
-									<td>错误的请求KEY22</td>
-									<td>101</td>
+								<tr th:each="systemError,systemErrorStat:${gdsInfo.serviceVO.systemServiceErrores}">
+									<td th:text="${systemError.errorId}">100122</td>
+									<td th:text="${systemError.errorMsg}">错误的请求KEY22</td>
+									<td th:text="${systemError.version}">101</td>
 								</tr>
 								</tbody>
 							</table>
