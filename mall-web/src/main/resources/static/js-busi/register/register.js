@@ -31,7 +31,7 @@ function saveInfo(){
 	}
 	var checkFlag = $("input[type='checkbox'][id='checkAgree']:checked");
 	if(checkFlag.length==0){
-		alert("请先阅读协议");
+		WEB.msg.info("提示","请先阅读协议");
 		return;
 	}
 	var url = WEB_ROOT + "/regist/savesign";
@@ -49,10 +49,10 @@ function saveInfo(){
 		data : param,
 		success : function(data) {
 			if(data.success){
-				alert("注册成功");
+				WEB.msg.info("提示","注册成功");
 				clearData();
 			}else{
-				alert(data.msg);
+				WEB.msg.info("提示",data.msg);
 			}			 
 	}});
 	
@@ -146,7 +146,7 @@ function afterSend(){
       }
     },1000);
     
-    alert("发送验证码成功！");
+    WEB.msg.info("提示","发送验证码成功！");
 }
 
 $(function(){
