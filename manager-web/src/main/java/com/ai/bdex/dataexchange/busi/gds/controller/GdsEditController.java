@@ -83,6 +83,8 @@ public class GdsEditController {
     private final static Integer SOLUTION_CAT_ID = 3;//解决方案catId
     private final static String GDS_VALID = "1";//商品状态-有效
     private final static String GDS_INVALID = "0";//商品状态-失效
+    private final static String PRO_TYPE = "2";//富文本
+
 
     @DubboConsumer
     private IGdsInfoRSV gdsInfoRSV;
@@ -373,14 +375,14 @@ public class GdsEditController {
 			this.setGdsInfo(gdsInfoReqDTO, gdsInfoVO);
 			gdsInfoReqDTO.setStatus(GDS_VALID);
 			gdsInfoReqDTO.setCreateUser(staffId);
-			int gdsId=0;
+			int gdsId=gdsInfoReqDTO.getGdsId();
 			gdsInfoRSV.updateGdsInfo(gdsInfoReqDTO);
         	
         	//商品标签信息
         	JSONArray gdsLabelVOList=JSONArray.parseArray(req.getParameter("gdsLabelVOList"));
         	List<GdsLabelReqDTO> gdsLabelReqDTOList =  new ArrayList<>();
         	this.setGdsLabel(gdsLabelReqDTOList, gdsLabelVOList);
-        	//先删除在保持
+        	//先失效再保存
         	GdsLabelReqDTO oldLabelReqDTO = new GdsLabelReqDTO();
         	oldLabelReqDTO.setGdsId(gdsInfoReqDTO.getGdsId());
         	oldLabelReqDTO.setStatus(GDS_INVALID);
@@ -616,6 +618,13 @@ public class GdsEditController {
 			gdsInfo2PropReqDTO.setGdsId(gdsInfo2PropVO.getGdsId());
 			gdsInfo2PropReqDTO.setStatus("1");
 			List<GdsInfo2PropRespDTO> gdsInfo2PropRespDTOList = iGdsInfo2PropRSV.queryGdsInfo2PropList(gdsInfo2PropReqDTO);
+			if(CollectionUtils.isNotEmpty(gdsInfo2PropRespDTOList)){
+				for(GdsInfo2PropRespDTO resp:gdsInfo2PropRespDTOList){
+					if(resp.getProType()==PRO_TYPE&&resp.getProValue()!=null){
+						//resp.setProValue(getHtmlUrl(resp.getProValue()));
+					}
+				}
+			}
 			json.setObject(gdsInfo2PropRespDTOList);
 			json.setSuccess("true");
 		} catch (Exception e) {
@@ -633,8 +642,11 @@ public class GdsEditController {
      */
     @RequestMapping(value = "/uploadImage", method = RequestMethod.POST)
     @ResponseBody
-    public void uploadImage(HttpServletRequest request, HttpServletResponse response,String isSizeLimit,String witdh,String heigth) {
+    public void uploadImage(HttpServletRequest request, HttpServletResponse response) {
         response.setContentType("text/html;charset=UTF-8");
+        String height=request.getParameter("height");
+        String width=request.getParameter("width");
+        String isSizeLimit=request.getParameter("isSizeLimit");
         Map<String, Object> resultMap = new HashMap<String, Object>();
         MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
         // 获取图片
@@ -682,21 +694,22 @@ public class GdsEditController {
             		}
             	}
             }
-            if(StringUtil.isNotBlank(witdh)&&StringUtil.isNotBlank(heigth)){
-            	if(Integer.parseInt(witdh)>imgWidth||Integer.parseInt(heigth)>imgHeight){
+            if(StringUtil.isNotBlank(width)&&StringUtil.isNotBlank(height)){
+            	if(Integer.parseInt(width)!=imgWidth||Integer.parseInt(height)!=imgHeight){
             		resultMap.put("flag", false);
-            		resultMap.put("error", "请上传"+witdh+"*"+heigth+"的图片。");
+            		resultMap.put("error", "请上传"+width+"*"+height+"的图片。");
             		out.print(JSONObject.toJSONString(resultMap));
             		return;
             	}
             }
             byte[] datas = inputStream2Bytes(file.getInputStream());
             String imageId = ImageUtil.upLoadImage(datas, fileName);
+            //String imagePath=ImageUtil.getImageUrl(imageId);
             resultMap.put("flag", true);
             resultMap.put("imageId", imageId);
             resultMap.put("imageName", fileName);
             resultMap.put("id", id);
-            resultMap.put("imagePath", ImageUtil.getImageUrl(imageId + "_150x150"));
+            resultMap.put("imagePath", "");
             out.print(JSONObject.toJSONString(resultMap));
             logger.debug("imageId = " + imageId);
         } catch (Exception e) {
@@ -741,21 +754,6 @@ public class GdsEditController {
     private String getHtmlUrl(String vfsId) {
         return ImageUtil.getStaticDocUrl(vfsId, "html");
     }
-    
-    /**
-     * 将float保留两位小数
-     * @param num
-     * @return
-     */
-    private String decimalTwo(float num){
-        String returnNum = "0.00";
-        if (num == 0){
-            return returnNum;
-        }
-        DecimalFormat df = new DecimalFormat("0.00");//格式化小数
-        returnNum = df.format(num);//返回的是String类型
 
-        return  returnNum;
-    }
 }
  

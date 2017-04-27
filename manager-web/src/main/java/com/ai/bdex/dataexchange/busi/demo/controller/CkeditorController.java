@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
@@ -44,7 +45,7 @@ public class CkeditorController {
             return;  
         }  
 		MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest) request;
-		CommonsMultipartFile orginalFile = (CommonsMultipartFile) multipartRequest
+		MultipartFile orginalFile = (MultipartFile) multipartRequest
 				.getFile("upload");// 表单中对应的文件名；
 		if (orginalFile != null && !orginalFile.isEmpty()) {// 如果有文章中带有附件
 			InputStream is = null;// 附件输入流

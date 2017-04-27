@@ -35,6 +35,12 @@ $(function(){
  * @returns
  */
 function selectGdsLabelModal(){
+	var  catFirst = $("#catFirst").val();
+	if(catFirst==""){
+		WEB.msg.info("提示","请选择商品分类");
+		$("#myModal2").modal('hide');
+		return;
+	}
 	queryGdsLabelQuikList();
 	$("#myModal2").modal();
 }
@@ -50,8 +56,16 @@ function selectGdsLabel(obj){
 	//$("#selGdsLabId").val(labId);
 	$("#selGdsLabName").val(labName);
 	$("#selGdsLabColor").val(labColor);
+	changeLabel();
 }
+function changeLabel(){
+	var labName=$("#selGdsLabName").val();
+	var labColor=$("#selGdsLabColor").val();
+	var labAppend='<span class="label" style="border:solid 1px '+labColor+';color:'+labColor+'; " labId="" labName="'+labName+'" labColor="'+labColor+'">'+labName+'</span>';
+	$("#addChangeLabel").empty();
+	$("#addChangeLabel").append(labAppend);
 
+}
 /**
  * 配置标签保存
  * @returns
@@ -63,7 +77,7 @@ function saveGdsLabelQuik(){
 	var labColor=$("#selGdsLabColor").val();
 	var catFirst = $("#catFirst").val();
 	if(catFirst==""||catFirst==undefined){
-		alert("请选择商品分类");
+		WEB.msg.info("提示","请选择商品分类");
 		$("#myModal2").modal('hide');
 		return;
 	}
@@ -167,11 +181,6 @@ function queryGdsLabelQuikList(){
 	var  labelName = $("#qryLabName").val();
 	var  catFirst = $("#catFirst").val();
 	var url="/gdsEdit/queryGdsLabelQuikList";
-	if(catFirst==""){
-		alert("请选择商品分类");
-		$("#myModal2").modal('hide');
-		return;
-	}
 	var params={
 			catFirst:catFirst,
 			labelName:labelName
@@ -261,7 +270,7 @@ function catIsSubNode(){
             	 isSubNode=false;
              }
              if(!isSubNode){
-         		alert('提示','请选择一个没有子级的商品分类');
+            	 WEB.msg.info("提示",'提示','请选择一个没有子级的商品分类');
          		return;
          	}else{
 
@@ -361,7 +370,7 @@ function saveGds(){
 		data : gdsInfoObj,
         success : function(data) {
             if (data.success=="true") {
-            	alert("保存成功")
+            	WEB.msg.info("提示","保存成功");
             }
         }
     });
@@ -428,10 +437,10 @@ function createGdsInfoObj(){
 		$('tr[name="gdsSubTitleError"]').css("display","");
 		return;
 	}
-//	if(gdsPic==""){
-//		$('tr[name="gdsPicError"]').css("display","");
-//		return;
-//	}
+	if(gdsPic==""){
+		$('tr[name="gdsPicError"]').css("display","");
+		return;
+	}
    return gdsInfoVO;
 }
 function createGdsLabelList(){
@@ -526,6 +535,8 @@ function createGdsInfo2PropList(){
  */
 function uploadImage(object, path) {
 	var filepath = path;
+	var width=$(object).attr("width");
+	var height=$(object).attr("height"),
 	filepath = (filepath + '').toLowerCase();
 	var regex = new RegExp(
 			'\\.(jpg)$|\\.(png)$|\\.(jpeg)$|\\.(gif)$|\\.(bmp)$', 'gi');
@@ -540,19 +551,17 @@ function uploadImage(object, path) {
 
 		/** 上传成功，隐藏上传组件，并显示该图片 */
 		if (data.flag == true) {
-			// $("#imageFileUpload").hide();
-			var img = "img[name='" + data.id + "']";
-			$(img).attr("src", data.imagePath);
-			var hid_pic_str = "input[type='hidden'][name='" + data.id + "']";
-			var hid_pic_str_name = "input[type='hidden'][name='" + data.id
-					+ "Name']";
 			$("#gdsPic").val(data.imageId);
 			$("#gdsPicUrl").val(data.imagePath);
 		} else {
 			alert(data.error);
 		}
 	};
-	ajaxFileUpload(url, false, $(object).attr('id'), "POST", "json", callback);
+	var params={
+			width:width,
+			height:height
+	}
+	ajaxFileUpload(url, false, $(object).attr('id'), "POST", "json",params, callback);
 }
 /**
  * 上传文件
@@ -563,14 +572,13 @@ function uploadImage(object, path) {
  * @param {} dataType
  * @param {} callback
  */
-function ajaxFileUpload(url, secureuri, fileElementId, type, dataType, callback) {
+function ajaxFileUpload(url, secureuri, fileElementId, type, dataType,params, callback) {
 	$.ajaxFileUpload({
 				url : url, // 用于文件上传的服务器端请求地址
 				secureuri : secureuri, // 一般设置为false
 				fileElementId : fileElementId, // 文件上传空间的id属性 <input
-				// type="file" id="imageFile"
-				// name="imageFile" />
 				type : type, // get 或 post
+				data:params,
 				dataType : dataType, // 返回值类型
 				success : callback, // 服务器成功响应处理函数
 				error : function(data, status, e) // 服务器响应失败处理函数
@@ -609,7 +617,7 @@ function addCkedit(layout){
 	html +='<div id="'+ckeditId+'" class="ckeditName" gpId="'+gpId+'" proName="'+proName+'" proType="'+proType+'" proId="'+proId+'" showOrder="'+showOrder+'"></div>';
 	modular.append(html);
 	createEditor(ckeditId);
-	if(proValue!=""){
+	if(proValue!=""&&proValue!=null){
 		setCkeditValue(ckeditId,proValue);
 	}
 }
@@ -697,42 +705,12 @@ function setCkeditValue(id, url) {
 		    }
 		});
 }
-/**
- * 提交校验
- * @param {} rules
- * @param {} messages
- */
-function formValidate(rules, messages) {
-	$('#productWriteId').validate({
-		rules : rules,
-		messages : messages,
-		errorPlacement : function(error, element) {
-			if (element.attr("name") == "spuName") {
-				error.appendTo(element.parent());
-			} else if (element.attr("name") == "brandSel") {
-				error.appendTo(element.parent());
-			} else if (element.attr("name") == "modelSel") {
-				error.appendTo(element.parent());
-			} else if (element.attr("name") == "serviceMonth") {
-				error.appendTo(element.parent());
-			} else if (element.attr("name") == "marketDate") {
-				error.appendTo(element.parent());
-			} else if (element.attr("name") == "lowPrice") {
-				error.appendTo(element.parent());
-			} else if (element.attr("name") == "highPrice") {
-				error.appendTo(element.parent());
-			} else if (element.parent().parent().attr('class')=='parameterListAll_con') {
-				error.appendTo(element.parent().parent().prev());
-			} else if (element.parent().get(0).tagName.toUpperCase()=='TD') {
-				error.appendTo(element.parent());
-			} else {
-				error.appendTo(element.parent());
-			}
-		},
-		submitHandler : function(form) {
-			addGdsSpu();
-		},
-		errorClass : 'valaditeError'
-	});
-
+//输入校验
+function validMessage(obj){
+	var messageValue=$(obj).val();
+	var length=$(obj).attr("maxlength");
+	alert("a");
+	if(messageValue.length==length){
+		
+	}
 }
