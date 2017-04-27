@@ -108,16 +108,35 @@ public class HomePageController {
 			int moduleId = Integer.parseInt(moduleIdstr);
 			PageModuleGoodsRespDTO pageModuleGoodsRespDTO = new PageModuleGoodsRespDTO();
 			pageModuleGoodsRespDTO.setModuleId(moduleId);
-			pageModuleGoodsRespDTO.setStatus(STATUS_VALID);
-			// 通过商品id去搜索商品信息，获取到商品的图片ID
-			/*
-			 * IGdsInfoRSV.queryGdsInfoList(GdsInfoReqDTO gdsInfoReqDTO);
-			 * IGdsInfoRSV.queryGdsInfo(GdsInfoReqDTO gdsInfoReqDTO);
-			 */
-			PageResponseDTO<PageModuleGoodsRespDTO> moduleGoodsList = iPageDisplayRSV
-					.queryPageModuleGoodsList(pageModuleGoodsRespDTO);
-			rMap.put("moduleGoodsList", moduleGoodsList);
-			rMap.put("success", true);
+			pageModuleGoodsRespDTO.setStatus(STATUS_VALID);  
+			PageResponseDTO<PageModuleGoodsRespDTO> moduleGoodsList = iPageDisplayRSV.queryPageModuleGoodsList(pageModuleGoodsRespDTO);
+			if(moduleGoodsList !=null && moduleGoodsList.getCount()>0)
+			{
+				try{
+					   for(int i = 0 ; i < moduleGoodsList.getResult().size();i++) {
+							int gdsid =  moduleGoodsList.getResult().get(i).getGdsId();
+							//通过商品id去搜索商品信息，获取到商品的图片ID
+							GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
+							GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
+							gdsInfoReqDTO.setGdsId(gdsid);
+							gdsInfoRespDTO =  iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO); 
+							if(gdsInfoRespDTO!= null && !StringUtil.isBlank(gdsInfoRespDTO.getGdsPic()) )
+							{
+								  String vfsid= ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_150x150");
+								// String vfsid= "http://112.74.163.29:14751/ImageServer/image/"+gdsInfoRespDTO.getGdsPic()+"_150x150.jpg";
+								  moduleGoodsList.getResult().get(i).setVfsid(vfsid); 
+							}
+					   }
+					}
+					catch(Exception e1)
+					{
+						log.error("查询推荐商品的图片信息："+e1.getMessage());
+					}
+			}
+		
+			rMap.put("moduleGoodsList",moduleGoodsList);
+ 			rMap.put("success", true);
+ 		
 		} catch (Exception e) {
 			log.error("查询商品楼层信息：" + e.getMessage());
 		}
@@ -163,7 +182,15 @@ public class HomePageController {
 			if (!CollectionUtils.isEmpty(moduleAResult)) {
 				for (PageModuleAdRespDTO moduleAdDTO : moduleAResult) {
 					if (moduleAdDTO.getVfsId() != null) {
-						 moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()));
+						 if(moduleId.equals("103")){
+							//数据定制
+							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_800x350"));
+						}
+						else{
+							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_80x80"));
+
+						}
+
 					}
 				}
 			}

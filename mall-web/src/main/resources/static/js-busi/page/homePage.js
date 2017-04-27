@@ -147,7 +147,7 @@ function queryModue103(moduleId){
 		var htmDiv = '';
 		if(data.success){
 			$(data.moduleAdList).each(function(i,d){
-				$("#datasetImg").attr("src",d.vfsId+"_600x350.jpg"); 
+				$("#datasetImg").attr("src",d.vfsId); 
 			});
 		} 
 	};
