@@ -1,8 +1,7 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{fragments/layout}">
-<head>
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head  th:remove="all">
 	<meta charset="UTF-8">
 	<title>新闻资讯列表_广州数据交易</title>
 	<link rel="stylesheet" href="../static/css/bootstrap.css"  th:remove="all">
@@ -15,110 +14,6 @@
 	
 </head>
 <body>
-	<div class="top" th:remove="all">
-	    <div class="wrap1200">
-	        <div class="top-left floatL">
-	            <span>欢迎来到广州数据中心</span>
-	            <span>2017年4月20日&nbsp;&nbsp;12：00：30</span>
-	        </div>
-	        <div class="top-right floatR">
-	            <a href="#"><b>请登录</b></a>
-	            <a href="#">免费注册</a>
-	            <i>|</i>
-	            <a href="#">关注广数</a>
-	            <a href="#">常见问题</a>
-	            <a href="#">联系我们</a>
-	        </div>
-	    </div>
-	</div>
-	<div class="header" th:remove="all">
-	    <div class="wrap1200 clearfix">
-	        <div class="logo floatL"><img src="../static/images/logo.png" title="广州数据中心"></div>
-	        <div class="search floatR">
-	            <div class="search-input">
-	                <input type="text">
-	                <button class="btn btn-primary">搜索</button>
-	            </div>
-	            <div class="search-hot">
-	                <a href="#" class="more floatR">更多&nbsp;&gt;</a>
-	                <a href="#">手机号码归属地</a>
-	                <a href="#">常用快递</a>
-	                <a href="#">快递</a>
-	                <a href="#">手机号码归属地</a>
-	                <a href="#">全国车辆违章</a>
-	                <a href="#">身份证实名认证</a>
-	                <a href="#">短信API服务</a>
-	                <a href="#">短信API服务</a>
-	            </div>
-	        </div>
-	    </div>
-	    <div class="menuBg seconav">
-	    	<div class="menu clearfix">
-	        <!--左侧边栏开始-->
-	        <div class="sidebar floatL">
-	            <h3>全部商品<i class="glyphicon glyphicon-list"></i></h3>
-	            <ul class="hidden">
-	                <li><a href="#"><i>&rsaquo;</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>交通运输</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>气象环保</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>生活服务</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>生活服务</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>时空数据</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>健康医疗</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>更多服务</a> </li>
-	            </ul>
-
-	            <!--二级导航开始-->
-	            <div class="sidebar-hidden" style="display: none">
-	                <h4>金融服务</h4>
-	                <div class="sidebar-link">
-	                    <a href="#">条码查询</a>
-	                    <a href="#">万能小哥</a>
-	                    <a href="#">专利查询</a>
-	                    <a href="#">全国违章直连查询</a>
-	                    <a href="#">H5在线电影票</a>
-	                    <a href="#">常用快递</a>
-	                    <a href="#">快递在线下单</a>
-	                    <a href="#">名片识别</a>
-	                    <a href="#">条码查询</a>
-	                    <a href="#">万能小哥</a>
-	                    <a href="#">专利查询</a>
-	                    <a href="#">全国违章直连查询</a>
-	                    <a href="#">H5在线电影票</a>
-	                    <a href="#">常用快递</a>
-	                    <a href="#">快递在线下单</a>
-	                    <a href="#">名片识别</a>
-	                    <a href="#">条码查询</a>
-	                    <a href="#">万能小哥</a>
-	                    <a href="#">专利查询</a>
-	                    <a href="#">全国违章直连查询</a>
-	                    <a href="#">H5在线电影票</a>
-	                    <a href="#">常用快递</a>
-	                </div>
-
-	                <div class="ad-list clearfix">
-	                    <div class="item floatL"></div>
-	                    <div class="item floatL"></div>
-	                    <div class="item floatL"></div>
-	                </div>
-	            </div>
-	            <!--二级导航结束-->
-	        </div>
-	        <!--左侧边栏结束-->
-
-	        <!--菜单栏开始-->
-	        <ul class="navbar floatL clearfix">
-	            <li><a href="#">首页</a> </li>
-	            <li><a href="#">API</a> </li>
-	            <li><a href="#">定制数据</a> </li>
-	            <li><a href="#">解决方案</a> </li>
-	            <li><a href="#">新闻动态</a> </li>
-	        </ul>
-	        <!--菜单栏结束-->
-	    	</div>
-	    </div>
-	</div>
-	
 
 	<div class="main" layout:fragment="screen_content">
 		<input type="hidden" id="news_moduleId" th:value="${moduleId}"/>

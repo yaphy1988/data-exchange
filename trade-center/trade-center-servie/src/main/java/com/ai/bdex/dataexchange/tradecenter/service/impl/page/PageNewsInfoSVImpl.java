@@ -6,12 +6,11 @@ import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
 
-import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageNewsInfoMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfoExample;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageNewsInfoSV;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
@@ -33,12 +32,19 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 		if (PageInfoid == null) {
 			throw new Exception("根据ID查询 数据定制 信息入参为空");
 		}
-		PageNewsInfo pageInfo = pageNewsInfoMapper.selectByPrimaryKey(PageInfoid);
-		return pageInfo;
+		return pageNewsInfoMapper.selectByPrimaryKey(PageInfoid);
 	}
 
 	@Override
+<<<<<<< Upstream, based on origin/develop
 	public PageResponseDTO<PageNewsInfoDTO> queryPageNewsInfoList(PageNewsInfoRespDTO exam) throws Exception {
+=======
+	public PageResponseDTO<PageNewsInfoRespDTO> queryPageNewsInfoList(PageNewsInfoReqDTO exam) throws Exception {
+		// 分页信息赋值
+		int page = exam.getPageNo();
+		int rows = exam.getPageSize();
+		
+>>>>>>> b7b6d59 新闻资讯详情页、列表页
 		PageNewsInfoExample example = new PageNewsInfoExample();
 		example.setOrderByClause("INFO_ORDER desc");
 		PageNewsInfoExample.Criteria criteria = example.createCriteria();
@@ -50,17 +56,23 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 		}
 		if (!StringUtils.isBlank(exam.getStatus())) {
 			criteria.andStatusEqualTo(exam.getStatus());
+<<<<<<< Upstream, based on origin/develop
 		}
 		// 分页信息赋值
 		int page = exam.getPageNo();
 		int rows = exam.getPageSize();
 		PageHelper.startPage(page, rows);
 
+=======
+		} 
+		example.setOrderByClause( "INFO_ORDER asc,update_time desc");
+		PageHelper.startPage(page, rows);
+>>>>>>> b7b6d59 新闻资讯详情页、列表页
 		List<PageNewsInfo> pageList = pageNewsInfoMapper.selectByExample(example);
 		// 使用PageInfo对结果进行包装
 		PageInfo pageInfo = new PageInfo(pageList);
-		PageResponseDTO<PageNewsInfoDTO> pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,
-				PageNewsInfoDTO.class);
+		PageResponseDTO<PageNewsInfoRespDTO> pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,
+				PageNewsInfoRespDTO.class);
 		return pageResponseDTO;
 	}
 }

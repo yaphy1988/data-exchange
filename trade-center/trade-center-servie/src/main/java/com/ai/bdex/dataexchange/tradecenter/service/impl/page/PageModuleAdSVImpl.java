@@ -10,9 +10,8 @@ import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageModuleAdMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAd;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAdExample;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAdExample.Criteria;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleAdSV;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.alibaba.dubbo.common.utils.StringUtils;
@@ -45,29 +44,40 @@ public class PageModuleAdSVImpl implements IPageModuleAdSV {
 	}
 
 	@Override
-	public PageResponseDTO<PageModuleAdDTO> queryPageModulePageInfo(PageModuleAdRespDTO moduleAdRespDTO)
+	public PageResponseDTO<PageModuleAdRespDTO> queryPageModulePageInfo(PageModuleAdReqDTO moduleAdDTO)
 			throws Exception {
+<<<<<<< Upstream, based on origin/develop
+=======
+		Integer pageNo = moduleAdDTO.getPageNo();
+		Integer pageSize = moduleAdDTO.getPageSize();
+				
+>>>>>>> b7b6d59 新闻资讯详情页、列表页
 		PageModuleAdExample example = new PageModuleAdExample();
 		example.setOrderByClause("AD_ORDER desc");
 		Criteria criteria = example.createCriteria();
-		if(moduleAdRespDTO.getAdId() !=null && moduleAdRespDTO.getAdId() != 0){
-			criteria.andAdIdEqualTo(moduleAdRespDTO.getAdId());
+		if(moduleAdDTO.getAdId() !=null && moduleAdDTO.getAdId() != 0){
+			criteria.andAdIdEqualTo(moduleAdDTO.getAdId());
 		}
-		if(moduleAdRespDTO.getModuleId() != null && moduleAdRespDTO.getModuleId() !=0){
-			criteria.andModuleIdEqualTo(moduleAdRespDTO.getModuleId());
+		if(moduleAdDTO.getModuleId() != null && moduleAdDTO.getModuleId() !=0){
+			criteria.andModuleIdEqualTo(moduleAdDTO.getModuleId());
 		}
-		if(!StringUtils.isBlank(moduleAdRespDTO.getStatus())){
-			criteria.andStatusEqualTo(moduleAdRespDTO.getStatus());
+		if(!StringUtils.isBlank(moduleAdDTO.getStatus())){
+			criteria.andStatusEqualTo(moduleAdDTO.getStatus());
 		}
+<<<<<<< Upstream, based on origin/develop
 		Integer pageNo = moduleAdRespDTO.getPageNo();
 		Integer pageSize = moduleAdRespDTO.getPageSize();
 		PageHelper.startPage(pageNo, pageSize);
 
+=======
+		example.setOrderByClause(" AD_ORDER desc ");
+		PageHelper.startPage(pageNo, pageSize);
+>>>>>>> b7b6d59 新闻资讯详情页、列表页
 		List<PageModuleAd> pageModuleAdList = moduleAdMapper.selectByExample(example);
 		// 使用PageInfo对结果进行包装
 		PageInfo pageInfo = new PageInfo(pageModuleAdList);
-		PageResponseDTO<PageModuleAdDTO> pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,
-				PageModuleAdDTO.class);
+		PageResponseDTO<PageModuleAdRespDTO> pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,
+				PageModuleAdRespDTO.class);
 		return pageResponseDTO;
 	}
 

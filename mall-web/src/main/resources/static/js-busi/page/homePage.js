@@ -174,7 +174,7 @@ function querysubPageModuleList(moduleId,pageNo){
 			var pageModule = data.moduleRespDTO;
 			html +='<dt>'+pageModule.moduleName+'</dt>';
 			$(data.pageInfoList).each(function(i,d){
-                html+='<dd><a href="'+setLinkUrk(d.infoUrl)+'" target="_blank">'+d.infoTitle+'</a> </dd>';
+                html+='<dd><a href="'+basePath+'/homePage/pageNewsDetail?infoId='+d.infoId+'" target="_blank">'+d.infoTitle+'</a> </dd>';
 			});
 		}
 		switch (moduleId) {
@@ -220,13 +220,4 @@ function queryPartner109(moduleId){
 	};
 	doAjax(url,params,callBack);
 }
-function doAjax(url,params,callBack){
-	$.ajax({
-		url : url,
-		type : "POST",
-		dataType : "json",
-		async : true,
-		data : params,
-		success : callBack
-	})
-}
+

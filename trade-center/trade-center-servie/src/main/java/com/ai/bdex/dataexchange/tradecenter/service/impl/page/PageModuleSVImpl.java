@@ -25,7 +25,7 @@ public class PageModuleSVImpl implements IPageModuleSV {
 	public List<PageModule> queryPageModuleList(PageModule pageModule) throws Exception {
 		PageModuleExample example = new PageModuleExample();
 		Criteria criteria = example.createCriteria();
-		if(   pageModule.getModuleId() != null && pageModule.getModuleId() != 0){
+		if(pageModule.getModuleId() != null && pageModule.getModuleId() != 0){
 			criteria.andModuleIdEqualTo(pageModule.getModuleId());
 		}
 		if(!StringUtil.isBlank( pageModule.getModuleType())){
@@ -37,7 +37,7 @@ public class PageModuleSVImpl implements IPageModuleSV {
 		if(pageModule.getModulePid() != null && pageModule.getModulePid() != 0){
 			criteria.andModulePidEqualTo(pageModule.getModulePid());
 		}
-		example.setOrderByClause("UPDATE_TIME ASC");
+		example.setOrderByClause("ORDER_NO ASC");
 		return pageModuleMapper.selectByExample(example);
 	}
 

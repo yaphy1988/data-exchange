@@ -1,5 +1,16 @@
 var basePath = WEB_ROOT;
 $(document).ready(function(){
+	var currentUrl = window.location.href;
+	if(currentUrl.match(/\/homePage\/pageInit/)){//首页
+		$('#head_sidebar>ul').show();
+	}else{
+		$('#head_sidebar>ul').hide();
+		$('#head_sidebar').hover(function(){
+			$('#head_sidebar>ul').show();
+		},function(){
+			$('#head_sidebar>ul').hide();
+		});
+	}
 	header.queryHotSearch();
 	header.queryHeaderNav();
 	header.setSpanDate();
@@ -124,4 +135,15 @@ function setLinkUrk(linkUrl){
 	}else{
 		return basePath+linkUrl;
 	}
+}
+
+function doAjax(url,params,callBack){
+	$.ajax({
+		url : url,
+		type : "POST",
+		dataType : "json",
+		async : true,
+		data : params,
+		success : callBack
+	})
 }

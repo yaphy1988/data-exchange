@@ -1,17 +1,21 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
 <head>
 	<meta charset="UTF-8">
-	<title>信息列表</title>
-	<link rel="stylesheet" href="../static/css/bootstrap.css">
-	<link rel="stylesheet" href="../static/css/global.css">
-	<link rel="stylesheet" href="../static/css/index.css">
-	<link rel="stylesheet" href="../static/css/info.css">
-	<link rel="stylesheet" href="../static/fonts/iconfont.css">
+	<title>新闻资讯详情_广州数据交易</title>
+	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/index.css" th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
+    <link type="text/css" rel="stylesheet" href="../static/css/info.css" th:href="@{/css/info.css}"/>
+	<script src="../static/js-busi/page/infoDetails.js" th:src="@{/js-busi/page/infoDetails.js}"></script>
+	
 </head>
 <body>
 	
-	<div class="top">
+	<div class="top" th:remove="all">
 	    <div class="wrap1200">
 	        <div class="top-left floatL">
 	            <span>欢迎来到广州数据中心</span>
@@ -27,9 +31,8 @@
 	        </div>
 	    </div>
 	</div>
-	<div class="header">
+	<div class="header" th:remove="all">
 	    <div class="wrap1200 clearfix">
-	        <div class="logo floatL"><img src="../static/images/logo.png" title="广州数据中心"></div>
 	        <div class="search floatR">
 	            <div class="search-input">
 	                <input type="text">
@@ -116,8 +119,9 @@
 	</div>
 	
 
-	<div class="wrap1200">
-		<div class="classify">
+	<div class="wrap1200" layout:fragment="screen_content">
+	<input type="hidden" id="news_infoUrl" th:value="${pageNewsInfo.infoUrl}">
+		<div class="classify" th:remove="body">
 			<i class="iconfont"></i>
 			<span>当前位置：</span>
 			<a href=""><span>数据市场</span></a>
@@ -129,19 +133,20 @@
 				<div class="infoLeft_inner">
 					<div class="con">
 						<h1 class="info_d_tit">
-							<span>五一来了，大数据教你如何安全出行五一来了，大数据教你如何安全出行五一来了，大数据教你如何安全出行五一来了，大数据教你如何安全出行五一来了，大数据教你如何安全出行五一来了，大数据教你如何安全出行五一来了，大数据教你如何安全出行</span>
+							<span th:text="${pageNewsInfo.infoTitle}">五一来了，大数据教你如何安全出行五一来了，大数据教你如何安全出行五一来了，大数据教你如何安全出行五一来了，大数据教你如何安全出行五一来了，大数据教你如何安全出行五一来了，大数据教你如何安全出行五一来了，大数据教你如何安全出行</span>
 							<div class="info_panel">
 								<span class="pr20">发布方:广州数据交易：www.gzbdex.com</span>
-								<span>发布时间:2017-04-17</span>
+								<span th:text="${#dates.format(pageNewsInfo.pubTime, 'yyyy-MM-dd')}">发布时间:2017-04-17</span>
+								<!-- th:text="${#dates.format(pageNewsInfo.pubTime, 'yyyy-MM-dd')}" -->
 							</div>
 						</h1>
-						<div class="info_d_con">
+						<div class="info_d_con" id="news_content">
 							#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$#$@#%#^$%@$                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  
 						</div>
 					</div>
 				</div>
 			</div>
-			<div class="infoRight">
+			<div class="infoRight" id="news_list" th:remove="body">
 				<div class="sidebarImg">
 					<img src="" width="200" height="200">
 				</div>
@@ -201,7 +206,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="footer">
+	<div class="footer" th:remove="all">
 	    <div class="wrap1200 ptb40">
 	        <div class="left floatL">
 	            <img src="../static/images/logo-footer.png" >
@@ -245,7 +250,7 @@
 	    </div>
 	    <div class="copyright"> © 2016 版权所有 亚信科技(中国)有限公司 京ICP备11005544号-15 京公网安备 11010802022324号</div>
 	</div>
-	<script src="../static/js/jquery-1.12.4.js"></script>
-	<script src="../static/js/bootstrap.min.js"></script>
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
 </body>
 </html>

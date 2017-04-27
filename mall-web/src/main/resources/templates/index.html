@@ -2,19 +2,22 @@
 <html lang="zh" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
       layout:decorate="~{fragments/layout}">
-<head lang="en" th:remove="all">
-    <meta charset="UTF-8" th:remove="all">
+<head lang="en">
+    <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="renderer" content="webkit">
     <meta name="description" content="">
     <meta name="keywords" content="">
     <title>广州数据中心</title>
-    <link rel="icon" type="../static/image/png" href="../static/images/favicon.png">
-    <link rel="stylesheet" href="../static/css/bootstrap.css">
-    <link rel="stylesheet" href="../static/css/global.css">
-    <link rel="stylesheet" href="../static/css/index.css">
-    <script src="../static/js/jquery-1.12.4.js"></script>
-    <script src="../static/component/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="icon" type="../static/image/png" href="../static/images/favicon.png"  th:remove="all">
+    <link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
+    <link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+    <link rel="stylesheet" href="../static/css/index.css" th:remove="all">
+    <script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+    <script src="../static/component/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
+    <script src="../static/js-busi/page/homePage.js" th:src="@{/js-busi/page/homePage.js}"></script>
+    <script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
+    
 </head>
 <body class="bgf1">
 <div class="top" th:remove="all">
@@ -122,9 +125,6 @@
 </div>
 
 <div layout:fragment="screen_content">
-    <script src="../static/js-busi/page/homePage.js" th:src="@{/js-busi/page/homePage.js}"></script>
-    <script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
-     
     <div class="banner wrap1200">
     <div class="banner-box">
         <div id="carousel-example-generic" class="carousel slide">
