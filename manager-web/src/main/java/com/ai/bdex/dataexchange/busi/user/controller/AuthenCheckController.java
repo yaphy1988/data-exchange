@@ -23,6 +23,7 @@ import com.ai.bdex.dataexchange.system.StaffUtil;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ChnlInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IChnlInvoiceTaxRSV;
+import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
@@ -136,7 +137,7 @@ public class AuthenCheckController {
 			BeanUtils.copyProperties(dto, vo);
 			model.addAttribute("data", vo);
 			if(!StringUtil.isBlank(vo.getVfsId1())){
-//				vo.setPicSrc(ImageUtil.getImageUrl(vo.getVfsId1()+"_80x80!"));
+				vo.setPicSrc(ImageUtil.getImageUrl(vo.getVfsId1()+"_80x80!"));
 			}			
 		}else{
 			throw new Exception("查询数据异常！");

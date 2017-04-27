@@ -22,6 +22,7 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ChnlInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IChnlInvoiceTaxRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
+import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
@@ -55,7 +56,7 @@ public class AuthenApplyController {
 		if(datas!=null&&datas.size()>0){
 			BeanUtils.copyProperties(datas.get(0), vodata);
 			if(!StringUtil.isBlank(vodata.getVfsId1())){
-//				vodata.setPicSrc(ImageUtil.getImageUrl(vo.getVfsId1()+"_80x80!"));
+				vodata.setPicSrc(ImageUtil.getImageUrl(vodata.getVfsId1()+"_80x80!"));
 			}
 			model.addAttribute("data", vodata);
 			model.addAttribute("status","10");
@@ -68,7 +69,7 @@ public class AuthenApplyController {
 		if(datas!=null&&datas.size()>0){
 			BeanUtils.copyProperties(datas.get(0), vodata);
 			if(!StringUtil.isBlank(vodata.getVfsId1())){
-//				vodata.setPicSrc(ImageUtil.getImageUrl(vo.getVfsId1()+"_80x80!"));
+				vodata.setPicSrc(ImageUtil.getImageUrl(vodata.getVfsId1()+"_80x80!"));
 			}
 			model.addAttribute("data", vodata);
 			model.addAttribute("status","20");
@@ -81,7 +82,7 @@ public class AuthenApplyController {
 			if(datas!=null&&datas.size()>0){
 				BeanUtils.copyProperties(datas.get(0), vodata);
 				if(!StringUtil.isBlank(vodata.getVfsId1())){
-//					vodata.setPicSrc(ImageUtil.getImageUrl(vo.getVfsId1()+"_80x80!"));
+					vodata.setPicSrc(ImageUtil.getImageUrl(vodata.getVfsId1()+"_80x80!"));
 				}
 				model.addAttribute("data", vodata);
 				model.addAttribute("status","30");
