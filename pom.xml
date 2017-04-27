@@ -192,27 +192,5 @@
     </snapshotRepository>
   </distributionManagement>
 
-	<build>
-		<plugins>
-			<plugin>
-				<artifactId>maven-jar-plugin</artifactId>
-				<configuration>
-					<archive>
-						<manifest>
-							<useUniqueVersions>false</useUniqueVersions>
-						</manifest>
-					</archive>
-					<excludes>
-						<exclude>spring/*</exclude>
-						<exclude>paas/*</exclude>
-						<exclude>*.yml</exclude>
-						<exclude>*.properties</exclude>
-						<exclude>*.xml</exclude>
-					</excludes>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-
 
 </project>
