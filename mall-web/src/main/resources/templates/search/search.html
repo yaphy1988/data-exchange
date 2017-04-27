@@ -133,6 +133,7 @@
 	</div>
 	<!-- 搜索页内容 -->
 	<div class="main">
+	<input type="hidden" th:attr="value=${searchVO.keyWord}" id="keyWord"/>
 		<div class="classify edit" id="selectedCondition">
 			<i class="iconfont"></i>
 			<span id="condictionFlag" style="visibility:hidden">所有分类：</span>

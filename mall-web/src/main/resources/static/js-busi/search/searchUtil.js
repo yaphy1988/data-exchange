@@ -77,5 +77,6 @@ $(function(){
                 }
             }
         );
+        $('#searchTxt').val($("#keyWord").val());
     }
 });

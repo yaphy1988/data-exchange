@@ -1,5 +1,7 @@
 package com.ai.bdex.dataexchange.busi.search.controller;
 
+import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrClient;
@@ -15,12 +17,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ai.bdex.dataexchange.busi.search.entiry.SearchVO;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.solrutil.SearchField;
+import com.ai.bdex.dataexchange.solrutil.SearchParam;
+import com.ai.bdex.dataexchange.solrutil.SolrCoreEnum;
 import com.ai.bdex.dataexchange.solrutil.SolrSearchUtil;
+import com.ai.bdex.dataexchange.solrutil.SortField;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoQueryRSV;
+import com.ai.bdex.dataexchange.util.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 /**
  * 
@@ -55,7 +62,7 @@ public class SearchController{
      * @since JDK 1.6
      */
     @RequestMapping()
-    public String init(Model model){
+    public String init(Model model,SearchVO searchVO){
         try {
             GdsCatReqDTO gdsCatReqDTO = new GdsCatReqDTO();
             gdsCatReqDTO.setCatPid(1);
@@ -68,6 +75,7 @@ public class SearchController{
                 }
             }
             model.addAttribute("catList", catList);
+            generGdsList(model,searchVO);
         } catch (Exception e) {
             // TODO: handle exception
         }
@@ -82,33 +90,49 @@ public class SearchController{
      * @return 
      * @since JDK 1.6
      */
+    @SuppressWarnings("rawtypes")
     @RequestMapping(value="gridgdsinfo")
     public String gridGdsInfo(Model model,SearchVO searchVO){
+        generGdsList(model,searchVO);
+        return "search/list/search_list";
+    }
+    
+    public void generGdsList(Model model,SearchVO searchVO){
         try {
-//            GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
-//            gdsInfoReqDTO.setPageNo(searchVO.getPageNo());
-//            gdsInfoReqDTO.setPageSize(20);
-//            PageResponseDTO<GdsInfoRespDTO> pageInfo = iGdsInfoQueryRSV.queryGdsInfoListPage(gdsInfoReqDTO);
-//            if(pageInfo != null){
-//                model.addAttribute("pageInfo", pageInfo);
-//            }
-            String[] field = new String[]{"*"};
-            String[] key = new String[]{"*"};
-            String[] sortfield =  new String[]{"hotDegree"};
-            Boolean[] flag = new Boolean[]{false};
-            SolrDocumentList result = SolrSearchUtil.Search(field, key, searchVO.getPageNo(), 20, sortfield, flag, true, solrClient);
+            SearchParam searchParam = new SearchParam();
+            searchParam.setCollectionName(SolrCoreEnum.GDS.getCode());
+            searchParam.setSolrClient(solrClient);
+            //查询字段
+            List<SearchField> searchFieldList = new ArrayList<SearchField>();
+            if(StringUtil.isNotBlank(searchVO.getKeyWord())){
+                searchVO.setKeyWord(URLDecoder.decode(searchVO.getKeyWord()));
+                SearchField searchField = new SearchField();
+                searchField.setName("name");
+                searchField.setValue(searchVO.getKeyWord());
+                searchFieldList.add(searchField);
+            }
+            searchParam.setSearchField(searchFieldList);
+            //排序字段
+            List<SortField> sortFieldList = new ArrayList<SortField>();
+            searchParam.setSortField(sortFieldList);
+            searchParam.setPageNo(searchVO.getPageNo());
+            searchParam.setPageSize(20);
+            searchParam.setIfHightlight(true);
+            SolrDocumentList result = SolrSearchUtil.Search(searchParam);
             PageResponseDTO<GdsInfoRespDTO> pageInfo = new PageResponseDTO<GdsInfoRespDTO>();
             model.addAttribute("resultList", result);
-            pageInfo.setCount(result.getNumFound());
+            if(result != null){
+                pageInfo.setCount(result.getNumFound());
+                pageInfo.setPageNo(searchVO.getPageNo());
+                String pageCount = (result.getNumFound() % 20 == 0) ? (result.getNumFound() / 20)+"" : (result.getNumFound()/ 20 + 1)+"";
+                pageInfo.setPageCount(Integer.parseInt(pageCount));
+            }
             pageInfo.setPageSize(20);
-            pageInfo.setPageNo(searchVO.getPageNo());
-            String pageCount = (result.getNumFound() % 20 == 0) ? (result.getNumFound() / 20)+"" : (result.getNumFound()/ 20 + 1)+"";
-            pageInfo.setPageCount(Integer.parseInt(pageCount));
             model.addAttribute("pageInfo", pageInfo);
+            model.addAttribute("searchVO", searchVO);
         } catch (Exception e) {
             logger.error("查询商品列表失败！原因是："+e.getMessage());
         }
-        return "search/list/search_list";
     }
     /**
      * 
@@ -119,12 +143,21 @@ public class SearchController{
      * @return 
      * @since JDK 1.6
      */
+    @SuppressWarnings("rawtypes")
     @RequestMapping(value="/suggest")
     @ResponseBody
     public AjaxJson suggest(Model model,SearchVO searchVO){
         AjaxJson json = new AjaxJson();
         try {
-            json.setObj(null);
+            SearchParam searchParam = new SearchParam();
+            searchParam.setCollectionName(SolrCoreEnum.GDS.getCode());
+            searchParam.setSolrClient(solrClient);
+            //查询字段
+            searchParam.setPageNo(searchVO.getPageNo());
+            searchParam.setPageSize(10);
+            searchParam.setKeyWord(searchVO.getKeyWord());
+            SolrDocumentList result = SolrSearchUtil.suggest(searchParam);
+            json.setObj(result);
             json.setSuccess(true);
         } catch (Exception e) {
             logger.error("关键词联想失败！原因是："+e.getMessage());
