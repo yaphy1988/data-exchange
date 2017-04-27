@@ -130,6 +130,13 @@ body{
 	border-bottom: solid 1px #eee;
 	margin-bottom: 20px;
 }
+/* 控件 */
+.float_File.form-control{
+	box-shadow: none;
+	border: none;
+	padding: 0;
+	height: 26px;
+}
 /* 编辑表格 */
 .borTable.editTable,
 .borTable{
@@ -204,7 +211,6 @@ body{
 	display: inline-block;
 	float: left;
 }
-
 
 /* 模态框 */
 .m_modal
