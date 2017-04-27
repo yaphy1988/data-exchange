@@ -6,17 +6,30 @@
 	<meta name="renderer" content="webkit">
 </head>
 <body>
-	<div class="gl_group mt20" th:fragment="search-solution-condition">
-		<div class="gl_items">
-			<div class="hd">
-				分类：
+	<div  th:fragment="search-solution-condition">
+		<div class="classify edit" id="selectedCondition">
+			<i class="iconfont"></i>
+			<span id="condictionFlag" style="visibility:hidden">所有分类：</span>
+			<a href="javascript:void(0)" th:remove="all"><em>其他分类:</em><span>数据市场</span><i class="close">×</i></a>
+		</div>
+		<div class="gl_group mt20">
+			<div class="gl_items" th:each="cat,iterStat : ${catList}">
+				<div class="hd" th:text="${cat.catName+'：'}" th:attr="catId=${cat.catId}">
+					API分类：
+				</div>
+				<div class="bd">
+					<div class="bdheight">
+						<a class="catSelecte" th:each="subcat,iterStat : ${cat.subCatList}" href="javascript:void(0)" th:text="${subcat.catName}" th:attr="catPName=${cat.catName},catPid=${subcat.catPid},catId=${subcat.catId},catName=${subcat.catName}">生活常用</a>
+						<a href="" th:remove="all">金融服务</a>
+					</div>
+				</div>
+				<div class="fo">
+					<a href="javascript:void(0)" class="btn btn_rec btn_more tr_icon">
+						<font>更多</font>
+						<i class="glyphicon glyphicon-menu-down"></i>
+					</a>
+				</div>
 			</div>
-			<div class="bd">
-				<a class="active" href="" >全部</a>
-				<a href="" >产品</a>
-				<a href="" >解决方案</a>
-			</div>
-			<div class="fo"></div>
 		</div>
 	</div>
 </body>

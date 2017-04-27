@@ -13,43 +13,13 @@
 
 <body>
 	<div class="seconav">
-		<div class="top">
-		    <div class="wrap1200">
-		        <div class="top-left floatL">
-		            <span>欢迎来到广州数据中心</span>
-		            <span>2017年4月20日&nbsp;&nbsp;12：00：30</span>
-		        </div>
-		        <div class="top-right floatR">
-		            <a href="#"><b>请登录</b></a>
-		            <a href="#">免费注册</a>
-		            <i>|</i>
-		            <a href="#">关注广数</a>
-		            <a href="#">常见问题</a>
-		            <a href="#">联系我们</a>
-		        </div>
-		    </div>
-		</div>
+		<div th:replace="~{fragments/top :: top}"></div>
 		<div class="header">
 		    <div class="wrap1200">
 		        <div class="logo floatL"><img src="../static/images/logo.png" title="广州数据中心" th:src="@{/images/logo.png}"></div>
 		        <div class="search floatR">
 		            <div class="search-input">
 		            	<div id="siteSearch"></div>
-<!-- 		                <input type="text"> -->
-<!-- 		                <button class="btn btn-primary">搜索</button> -->
-<!-- 		                <ul class="search_result"> -->
-<!-- 		                	<li><a href="">搜索结果</a></li> -->
-<!-- 		                	<li><a href="">搜索结果</a></li> -->
-<!-- 		                	<li><a href="">搜索结果</a></li> -->
-<!-- 		                	<li><a href="">搜索结果</a></li> -->
-<!-- 		                	<li><a href="">搜索结果</a></li> -->
-<!-- 		                	<li><a href="">搜索结果</a></li> -->
-<!-- 		                	<li><a href="">搜索结果</a></li> -->
-<!-- 		                	<li><a href="">搜索结果</a></li> -->
-<!-- 		                	<li><a href="">搜索结果</a></li> -->
-<!-- 		                	<li><a href="">搜索结果</a></li> -->
-		                	
-<!-- 		                </ul> -->
 		            </div>
 		            <div class="search-hot">
 		                <a href="#" class="more floatR">更多&nbsp;&gt;</a>
@@ -119,13 +89,7 @@
 		        <!--左侧边栏结束-->
 
 		        <!--菜单栏开始-->
-		        <ul class="navbar floatL clearfix">
-		            <li><a href="#">首页</a> </li>
-		            <li><a href="#">API</a> </li>
-		            <li><a href="#">定制数据</a> </li>
-		            <li><a href="#">解决方案</a> </li>
-		            <li><a href="#">新闻动态</a> </li>
-		        </ul>
+		        <div th:replace="~{fragments/navigation :: navigation}"></div>
 		        <!--菜单栏结束-->
 		    	</div>
 		    </div>
@@ -133,19 +97,18 @@
 	</div>
 	<!-- 搜索页内容 -->
 	<div class="main">
-	<input type="hidden" th:attr="value=${searchVO.keyWord}" id="keyWord"/>
-		<div class="classify edit" id="selectedCondition">
-			<i class="iconfont"></i>
-			<span id="condictionFlag" style="visibility:hidden">所有分类：</span>
-			<a href="javascript:void(0)" th:remove="all"><em>其他分类:</em><span>数据市场</span><i class="close">×</i></a>
-		</div>
-		<div th:replace="~{search/search-api-condition :: search-api-condition}"></div>
+		<input type="hidden" th:attr="value=${searchVO.keyWord}" id="keyWord"/>
+		<input type="hidden" th:attr="value=${searchVO.catFirst}" id="catFirst"/>
+		<!-- 不同一级分类页面展示的筛选条件不一样 -->
+		<div th:if="${searchVO.catFirst == 1}"><div th:replace="~{search/search-api-condition :: search-api-condition}"></div></div>
+		<div th:if="${searchVO.catFirst == 2}"><div th:replace="~{search/search-custom-condition :: search-custom-condition}"></div></div>
+		<div th:if="${searchVO.catFirst == 3}"><div th:replace="~{search/search-api-condition :: search-api-condition}"></div></div>
 		<div class="gl_list">
 			<div class="filter clearfix">
 				<ul>
-					<li class="active sortCondition" sortField="comprehensive"><a href="javascript:void(0)" >综合<i class="glyphicon glyphicon-arrow-down"></i></a></li>
+					<li class="active sortCondition" sortField="hotDegree"><a href="javascript:void(0)" >综合<i class="glyphicon glyphicon-arrow-down"></i></a></li>
 					<li sortField="shelveTime" class="sortCondition"><a href="javascript:void(0)">最新<i class="glyphicon"></i></a></li>
-					<li sortField="hotDegree" class="sortCondition"><a href="javascript:void(0)">最热<i class="glyphicon"></i></a></li>
+					<li sortField="gdsSale" class="sortCondition"><a href="javascript:void(0)">最热<i class="glyphicon"></i></a></li>
 				</ul>
 				<p class="pull-right pr10">为您找到<b class="col_orange"><font id="numFound">1234</font></b>个结果</p>
 			</div>

@@ -36,10 +36,15 @@ public class SearchParam {
     private boolean ifHightlight=true;
 
     /**
-     * 查询字段
+     * 查询字段.and
      */
     @SuppressWarnings("rawtypes")
     private List<SearchField> searchField;
+    
+    /**
+     * 查询字段.or
+     */
+    private List<SearchField> searchOrField;
     /**
      * 字段排序List
      */
@@ -119,6 +124,14 @@ public class SearchParam {
 
     public void setKeyWord(String keyWord) {
         this.keyWord = keyWord;
+    }
+
+    public List<SearchField> getSearchOrField() {
+        return searchOrField;
+    }
+
+    public void setSearchOrField(List<SearchField> searchOrField) {
+        this.searchOrField = searchOrField;
     }
     
 }

@@ -1,6 +1,6 @@
 $(function(){
 	//初始化查询商品列表
-	var param = {};
+	var param = Search.generSearchParam();
 	Search.gridGdsInfo(param);
 	//初始化事件绑定信息
 	Search.init();
@@ -58,7 +58,7 @@ var Search = {
 				});
 				//搜索商品列表
 				var param = Search.generSearchParam();
-//				Search.gridGdsInfo(param);
+				Search.gridGdsInfo(param);
 				e.preventDefault();
 			});
 			
@@ -107,14 +107,17 @@ var Search = {
 		 */
 		generSearchParam : function (){
 			var param = {};
+			if($("#catFirst").val()!=""){
+				param.catFirst = $("#catFirst").val();
+			}
 			//分类
-			var catList =  new Array();
+			var selectedCondition =  new Array();
 			$(".close",$("#selectedCondition")).each(function(){
 				var $this = $(this);
-				catList.push($this.attr('id'));
+				selectedCondition.push($this.attr('id'));
 				
 			});
-//			param.catConditionMap = catList;
+			param.selectedCondition = selectedCondition.join(",");
 			//搜索关键词
 			param.keyWord = $.trim($("#keyWord").val());
 			//排序字段

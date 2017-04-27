@@ -1,9 +1,14 @@
 package com.ai.bdex.dataexchange.solrutil;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrQuery;
+import org.apache.solr.client.solrj.SolrRequest.METHOD;
+import org.apache.solr.client.solrj.response.FacetField;
 import org.apache.solr.client.solrj.response.QueryResponse;
+import org.apache.solr.common.SolrDocument;
 import org.apache.solr.common.SolrDocumentList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,7 +34,7 @@ public class SolrSearchUtil {
         SolrQuery query = null;  
         try {  
             // 初始化查询对象  
-            query = new SolrQuery("*:*");  
+            query = new SolrQuery("* : *");
             for (SearchField searchField : searchfield) {  
                 if(searchField.getValue() == null){
                     continue;
@@ -42,15 +47,14 @@ public class SolrSearchUtil {
             // 设置排序  
             if (null != sortfield || sortfield.size() >= 1) {  
                 for (SortField sortField : sortfield) { 
-                    query.addSort(sortField.getName(),  SolrQuery.ORDER.valueOf(sortField.getValue().toString()));  
+                    query.addSort(sortField.getName(),  SolrQuery.ORDER.valueOf(sortField.getValue().getSort()));  
                 }  
             }
-            
             // 设置高亮  
             if (searchParam.isIfHightlight()) {  
                 query.setHighlight(true); // 开启高亮组件  
                 query.addHighlightField("gdsName");// 高亮字段  
-                query.addHighlightField("gdsSubtitle");// 高亮字段  
+//                query.addHighlightField("gdsSubtitle");// 高亮字段  
                 query.setHighlightSimplePre("<font color=\"red\">");// 标记  
                 query.setHighlightSimplePost("</font>");  
                 query.setHighlightSnippets(1);// 结果分片数，默认为1  
@@ -65,6 +69,15 @@ public class SolrSearchUtil {
         try {  
             rsp = searchParam.getSolrClient().query(searchParam.getCollectionName(),query);
             docs = rsp.getResults();
+            Map<String, Map<String, List<String>>> map = rsp.getHighlighting();
+            //Item即为上面定义的bean类
+            for (SolrDocument solrDocument  : docs) {
+                   //hightlight的键为Item的id，值唯一，我们设置的高亮字段为gdsName
+                   List<String> hlString = map.get(solrDocument.get("id")).get("gdsName");
+                   if (null != hlString) {
+                       solrDocument.put("gdsName", hlString.toString());
+                   }    
+            }
             logger.info("查询内容:" + query);
             logger.info("文档数量：" + docs.getNumFound());
             logger.info("查询花费时间:" + rsp.getQTime());
@@ -100,10 +113,49 @@ public class SolrSearchUtil {
         QueryResponse rsp = null;
         SolrDocumentList docs = new SolrDocumentList();
         try {  
-            rsp = searchParam.getSolrClient().query(searchParam.getCollectionName(),query);
+            rsp = searchParam.getSolrClient().query(searchParam.getCollectionName(),query, METHOD.POST);
             docs = rsp.getResults();
             logger.info("查询内容:" + query);
             logger.info("文档数量：" + docs.getNumFound());
+            logger.info("查询花费时间:" + rsp.getQTime());
+        } catch (Exception e) {  
+            logger.error("查询失败！", e);
+            return null;  
+        }  
+        // 返回查询结果  
+        return docs;  
+    }  
+    
+    @SuppressWarnings("rawtypes")
+    public static List<FacetField> facetSuggest(SearchParam searchParam) {
+        if(searchParam.getSolrClient()==null){
+            return null;
+        }
+        if(StringUtil.isBlank(searchParam.getCollectionName())){
+            return null;
+        }
+        SolrQuery query = null;  
+        try {  
+            // 初始化查询对象  
+            query = new SolrQuery("*:*");
+            String keyWord = "*";
+            if (!StringUtil.isBlank(searchParam.getKeyWord())) {
+                keyWord = searchParam.getKeyWord();
+            }
+            query.setFacet(true);
+            query.addFacetField("facetName");
+            query.setFacetPrefix(keyWord);
+            query.setFacetLimit(searchParam.getPageSize());
+            query.setFacetMinCount(1);
+        } catch (Exception e) {  
+            e.printStackTrace();  
+        }  
+        QueryResponse rsp = null;
+        List<FacetField> docs = new ArrayList<FacetField>();
+        try {  
+            rsp = searchParam.getSolrClient().query(searchParam.getCollectionName(),query, METHOD.POST);
+            docs = rsp.getFacetFields();
+            logger.info("查询内容:" + query);
             logger.info("查询花费时间:" + rsp.getQTime());
         } catch (Exception e) {  
             logger.error("查询失败！", e);

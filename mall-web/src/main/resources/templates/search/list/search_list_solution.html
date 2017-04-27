@@ -1,0 +1,36 @@
+<div class="goods_so_list">
+	<ul>
+		<li th:each="list : ${resultList}" th:unless="${#lists.isEmpty(resultList)}">
+			<div class="pic">
+				<a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:attr="title=${list.gdsNameSrc}">
+					<img src="" width="200" height="200" th:src="'http://'+${list.gdsPic}">
+				</a>
+			</div>
+			<dl>
+				<dt class="clearfix">
+					<h2 th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:text="${list.gdsName}">2015年广东省汽车零部件生产企业状况</h2>
+					<div class="label_box">
+						<p>免费体验</p>
+						<p >免费体验</p>
+						<p >免费体验</p>
+					</div>
+				</dt>
+				<dd class="intro" th:href="@{'/goods/pageInit/'+${list.id}+'-'}">功能介绍按照《GMT 0021-2012_动态口令密码应用 技术规范》执行动态令牌种子密钥生成、种子密钥传输、种子密钥安全存储、种子密钥使用安全均有硬件密码设备保护；功能介绍按照《GMT 0021-2012_动态口令密码应用 技术规范》执行动态令牌种子密钥生成、种子密钥传输、种子密钥安全存储、种子密钥使用安全均有硬件密码设备保护；功能介绍按照《GMT 0021-2012_动态口令密码应用 技术规范》执行动态令牌种子密钥生成、种子密钥传输、种子密钥安全存储、种子密钥使用安全均有硬件密码设备保护；功能介绍按照《GMT 0021-2012_动态口令密码应用 技术规范》执行动态令牌种子密钥生成、种子密钥传输、种子密钥安全存储、种子密钥使用安全均有硬件密码设备保护；</dd>
+				
+			</dl>
+			<div class="bar">
+				<a href="" class="btn btn-primary pl30 pr30"><i class="icon-dianhua iconfont pr5"></i>在线咨询</a>
+				<a href="" class="btn btn-orange"><i class="icon-xingxing iconfont pr5"></i>收藏</a>
+			</div>
+			<div class="info">
+				<span>发布方江南天安科技有限公司</span>
+				<span>发布时间：2017-03-20</span>
+			</div>
+		</li>
+	</ul>
+</div>
+<!-- 分页-->
+<div th:replace="~{fragments/pager :: pager}"></div>
+<script type="text/javascript">
+$("#numFound").text([[${pageInfo.count}]]);
+</script>

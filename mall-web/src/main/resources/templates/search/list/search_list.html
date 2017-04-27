@@ -15,8 +15,8 @@
 				<div class="info">
 					<div class="pirce">
 						<small>￥</small>
-						<strong th:text="${#numbers.formatDecimal(1000, 1, 2)}">499.00</strong>
-						<small>/10000次</small>
+						<strong th:text="${#numbers.formatDecimal(list.packPrice, 1, 2)}">499.00</strong>
+						<small th:text="'/'+${list.packTimes}+'次'">/10000次</small>
 					</div>
 					<div class="sale">
 						<a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:attr="title=${list.gdsSubtitle}" th:text="${list.gdsSubtitle}">
