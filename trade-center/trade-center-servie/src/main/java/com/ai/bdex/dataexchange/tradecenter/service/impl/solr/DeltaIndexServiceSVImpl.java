@@ -57,7 +57,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
     public void deltaImport(String collectionName, String gdsId) throws BusinessException {
         try {
             solrClient.add("gdscollection",generDeltaImportGdsInfo(gdsId));
-            solrClient.commit();
+            solrClient.commit("gdscollection");
         } catch (Exception e) {
             logger.error("增量刷索引失败！", e);
         } finally {
@@ -86,7 +86,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                     break;
                 }
                 solrClient.add("gdscollection",generDeltaFullImportGdsInfo(pageNo,PAGE_SIZE).iterator());
-                solrClient.commit();
+                solrClient.commit("gdscollection");
                 pageNo ++;
             }
         } catch (Exception e) {
@@ -104,9 +104,8 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
     @Override
     public void delteDelta(String gdsId) throws BusinessException {
         try {
-//            solrClient.deleteById("gdscollection",gdsId);
-            solrClient.deleteByQuery("gdscollection", "id:"+gdsId);
-            solrClient.commit();
+            solrClient.deleteById("gdscollection",gdsId);
+            solrClient.commit("gdscollection");
         } catch (Exception e) {
             logger.error("删除索引记录失败！", e);
         } finally {
@@ -122,7 +121,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
     public void deleteDeltaBatch(List<String> gdsIds) throws BusinessException {
         try {
             solrClient.deleteById("gdscollection",gdsIds);
-            solrClient.commit();
+            solrClient.commit("gdscollection");
         } catch (Exception e) {
             logger.error("批量删除索引记录失败！", e);
         } finally {
@@ -140,7 +139,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
         query.setQuery("*:*");
         try {
             solrClient.deleteByQuery("gdscollection",query.toString());
-            solrClient.commit();
+            solrClient.commit("gdscollection");
         } catch (SolrServerException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -178,9 +177,16 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
             //获取商品主表信息
             GdsInfo gdsInfo = iGdsInfoSV.queryGdsInfoById(Integer.parseInt(gdsId));
             if(gdsInfo != null){
+                List<String> spellList = new ArrayList<String>();
+                spellList.add(gdsInfo.getGdsName());
+                spellList.add(gdsInfo.getGdsSubtitle());
+                spellList.add(gdsInfo.getCommpanyName());
+                solrInputDocument.addField("spell", spellList);
                 solrInputDocument.addField("id", gdsInfo.getGdsId(), 1.0f);
                 solrInputDocument.addField("gdsName", gdsInfo.getGdsName(), 1.0f);
+                solrInputDocument.addField("gdsNameSrc", gdsInfo.getGdsName(), 1.0f);
                 solrInputDocument.addField("gdsSubtitle", gdsInfo.getGdsSubtitle(), 1.0f);
+                solrInputDocument.addField("gdsSubtitleSrc", gdsInfo.getGdsSubtitle(), 1.0f);
                 solrInputDocument.addField("catFirst", gdsInfo.getGdsSubtitle());
                 solrInputDocument.addField("apiId", gdsInfo.getApiId());
                 solrInputDocument.addField("gdsPic", gdsInfo.getGdsPic());
@@ -198,6 +204,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
             List<GdsSku> skuInfo = iGdsSkuSV.queryGdsSkuList(gdsSkuReqDTO);
             if(skuInfo != null && skuInfo.size() >= 1){
                 GdsSku sku = skuInfo.get(0);
+                solrInputDocument.addField("skuId", sku.getSkuId());
                 solrInputDocument.addField("packPrice", sku.getPackPrice());
                 solrInputDocument.addField("packTimes", sku.getPackTimes());
             }
@@ -238,13 +245,19 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                 for(GdsInfoRespDTO gdsInfoRespDTO : pageInfo.getResult()){
                     solrInputDocument = new SolrInputDocument();
                     solrInputDocument.addField("id", gdsInfoRespDTO.getGdsId(), 1.0f);
+                    List<String> spellList = new ArrayList<String>();
+                    spellList.add(gdsInfoRespDTO.getGdsName());
+                    spellList.add(gdsInfoRespDTO.getGdsSubtitle());
+                    spellList.add(gdsInfoRespDTO.getCommpanyName());
+                    solrInputDocument.addField("spell", spellList);
                     solrInputDocument.addField("gdsName", gdsInfoRespDTO.getGdsName(), 1.0f);
+                    solrInputDocument.addField("gdsNameSrc", gdsInfoRespDTO.getGdsName(), 1.0f);
                     solrInputDocument.addField("gdsSubtitle", gdsInfoRespDTO.getGdsSubtitle(), 1.0f);
+                    solrInputDocument.addField("gdsSubtitleSrc", gdsInfoRespDTO.getGdsSubtitle(), 1.0f);
                     solrInputDocument.addField("catFirst", gdsInfoRespDTO.getCatFirst());
                     if(gdsInfoRespDTO.getApiId() != null){
                         solrInputDocument.addField("apiId", gdsInfoRespDTO.getApiId());
                     }
-                    
                     solrInputDocument.addField("gdsPic", gdsInfoRespDTO.getGdsPic());
                     solrInputDocument.addField("ifRecommend", gdsInfoRespDTO.getIfRecommend());
                     solrInputDocument.addField("funIntroduction", gdsInfoRespDTO.getFunIntroduction());
