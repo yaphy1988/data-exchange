@@ -46,12 +46,9 @@ public class PageModuleAdSVImpl implements IPageModuleAdSV {
 	@Override
 	public PageResponseDTO<PageModuleAdRespDTO> queryPageModulePageInfo(PageModuleAdReqDTO moduleAdDTO)
 			throws Exception {
-<<<<<<< Upstream, based on origin/develop
-=======
 		Integer pageNo = moduleAdDTO.getPageNo();
 		Integer pageSize = moduleAdDTO.getPageSize();
 				
->>>>>>> b7b6d59 新闻资讯详情页、列表页
 		PageModuleAdExample example = new PageModuleAdExample();
 		example.setOrderByClause("AD_ORDER desc");
 		Criteria criteria = example.createCriteria();
@@ -64,15 +61,8 @@ public class PageModuleAdSVImpl implements IPageModuleAdSV {
 		if(!StringUtils.isBlank(moduleAdDTO.getStatus())){
 			criteria.andStatusEqualTo(moduleAdDTO.getStatus());
 		}
-<<<<<<< Upstream, based on origin/develop
-		Integer pageNo = moduleAdRespDTO.getPageNo();
-		Integer pageSize = moduleAdRespDTO.getPageSize();
-		PageHelper.startPage(pageNo, pageSize);
-
-=======
 		example.setOrderByClause(" AD_ORDER desc ");
 		PageHelper.startPage(pageNo, pageSize);
->>>>>>> b7b6d59 新闻资讯详情页、列表页
 		List<PageModuleAd> pageModuleAdList = moduleAdMapper.selectByExample(example);
 		// 使用PageInfo对结果进行包装
 		PageInfo pageInfo = new PageInfo(pageModuleAdList);

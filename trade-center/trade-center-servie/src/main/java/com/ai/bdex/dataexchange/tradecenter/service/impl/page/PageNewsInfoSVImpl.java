@@ -36,15 +36,11 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 	}
 
 	@Override
-<<<<<<< Upstream, based on origin/develop
-	public PageResponseDTO<PageNewsInfoDTO> queryPageNewsInfoList(PageNewsInfoRespDTO exam) throws Exception {
-=======
 	public PageResponseDTO<PageNewsInfoRespDTO> queryPageNewsInfoList(PageNewsInfoReqDTO exam) throws Exception {
 		// 分页信息赋值
 		int page = exam.getPageNo();
 		int rows = exam.getPageSize();
 		
->>>>>>> b7b6d59 新闻资讯详情页、列表页
 		PageNewsInfoExample example = new PageNewsInfoExample();
 		example.setOrderByClause("INFO_ORDER desc");
 		PageNewsInfoExample.Criteria criteria = example.createCriteria();
@@ -56,18 +52,9 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 		}
 		if (!StringUtils.isBlank(exam.getStatus())) {
 			criteria.andStatusEqualTo(exam.getStatus());
-<<<<<<< Upstream, based on origin/develop
-		}
-		// 分页信息赋值
-		int page = exam.getPageNo();
-		int rows = exam.getPageSize();
-		PageHelper.startPage(page, rows);
-
-=======
 		} 
 		example.setOrderByClause( "INFO_ORDER asc,update_time desc");
 		PageHelper.startPage(page, rows);
->>>>>>> b7b6d59 新闻资讯详情页、列表页
 		List<PageNewsInfo> pageList = pageNewsInfoMapper.selectByExample(example);
 		// 使用PageInfo对结果进行包装
 		PageInfo pageInfo = new PageInfo(pageList);
