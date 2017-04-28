@@ -1,6 +1,6 @@
 <div class="goodslist clearfix">
 	<ul >
-		<li th:each="list : ${resultList}" th:unless="${#lists.isEmpty(resultList)}">
+		<li th:each="list : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
 			<div class="glist_items">
 				<div class="collect active">
 					<span class="bg"></span>
@@ -11,7 +11,7 @@
 						<img src="" style="width:80px;height:80px" th:src="'http://'+${list.gdsPic}">
 					</a>
 				</div>
-				<div class="tit"><a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:text="${list.gdsName}">我是商品名称最长配置十四字我|是多余的文字</a></div>
+				<div class="tit"><a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:utext="${list.gdsName}">我是商品名称最长配置十四字我|是多余的文字</a></div>
 				<div class="info">
 					<div class="pirce">
 						<small>￥</small>
@@ -19,7 +19,7 @@
 						<small th:text="'/'+${list.packTimes}+'次'">/10000次</small>
 					</div>
 					<div class="sale">
-						<a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:attr="title=${list.gdsSubtitle}" th:text="${list.gdsSubtitle}">
+						<a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:attr="title=${list.gdsSubtitle}" th:utext="${list.gdsSubtitle}">
 							首次申请赠送50次
 						</a>
 					</div>

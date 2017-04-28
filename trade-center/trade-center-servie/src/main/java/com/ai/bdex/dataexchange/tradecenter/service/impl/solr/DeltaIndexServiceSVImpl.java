@@ -177,11 +177,6 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
             //获取商品主表信息
             GdsInfo gdsInfo = iGdsInfoSV.queryGdsInfoById(Integer.parseInt(gdsId));
             if(gdsInfo != null){
-                List<String> spellList = new ArrayList<String>();
-                spellList.add(gdsInfo.getGdsName());
-                spellList.add(gdsInfo.getGdsSubtitle());
-                spellList.add(gdsInfo.getCommpanyName());
-                solrInputDocument.addField("spell", spellList);
                 solrInputDocument.addField("id", gdsInfo.getGdsId(), 1.0f);
                 solrInputDocument.addField("gdsName", gdsInfo.getGdsName(), 1.0f);
                 solrInputDocument.addField("gdsNameSrc", gdsInfo.getGdsName(), 1.0f);
@@ -245,11 +240,6 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                 for(GdsInfoRespDTO gdsInfoRespDTO : pageInfo.getResult()){
                     solrInputDocument = new SolrInputDocument();
                     solrInputDocument.addField("id", gdsInfoRespDTO.getGdsId(), 1.0f);
-                    List<String> spellList = new ArrayList<String>();
-                    spellList.add(gdsInfoRespDTO.getGdsName());
-                    spellList.add(gdsInfoRespDTO.getGdsSubtitle());
-                    spellList.add(gdsInfoRespDTO.getCommpanyName());
-                    solrInputDocument.addField("spell", spellList);
                     solrInputDocument.addField("gdsName", gdsInfoRespDTO.getGdsName(), 1.0f);
                     solrInputDocument.addField("gdsNameSrc", gdsInfoRespDTO.getGdsName(), 1.0f);
                     solrInputDocument.addField("gdsSubtitle", gdsInfoRespDTO.getGdsSubtitle(), 1.0f);
@@ -272,6 +262,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                     List<GdsSku> skuInfo = iGdsSkuSV.queryGdsSkuList(gdsSkuReqDTO);
                     if(skuInfo != null && skuInfo.size() >= 1){
                         GdsSku sku = skuInfo.get(0);
+                        solrInputDocument.addField("skuId", sku.getSkuId());
                         solrInputDocument.addField("packPrice", sku.getPackPrice());
                         solrInputDocument.addField("packTimes", sku.getPackTimes());
                     }

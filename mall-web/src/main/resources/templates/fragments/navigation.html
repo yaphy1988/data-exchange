@@ -11,11 +11,30 @@
 </head>
 <body class="bgf1">
  <ul class="navbar floatL clearfix" th:fragment="navigation">
-         <li><a class="navigationBar" href="#" th:href="@{'/homePage/pageInit'}">首页</a> </li>
-         <li><a class="navigationBar" href="#" th:href="@{'/search/api'}">API</a> </li>
-         <li><a class="navigationBar" href="#" th:href="@{'/search/custom'}">定制数据</a> </li>
-         <li><a class="navigationBar" href="#" th:href="@{'/search/solution'}">解决方案</a> </li>
-         <li><a class="navigationBar" href="#">新闻动态</a> </li>
-     </ul>
-</body>
+      <li><a class="navigationBar" href="#" th:href="@{'/homePage/pageInit'}">首页</a> </li>
+      <li><a class="navigationBar" href="#" th:href="@{'/search/api'}">API</a> </li>
+      <li><a class="navigationBar" href="#" th:href="@{'/search/custom'}">定制数据</a> </li>
+      <li><a class="navigationBar" href="#" th:href="@{'/search/solution'}">解决方案</a> </li>
+      <li><a class="navigationBar" href="#">新闻动态</a> </li>
+      <script type="text/javascript">
+      $(function(){
+    	  $(".navigationBar").die().live('click',function(e){
+    		  $(this).parents("li").addClass('active').siblings().removeClass("active");
+    		  var url = $(this).attr('href');
+ 		   	  $.cookie('gjs_navigation', url, {path : '/'});
+ 		   	  
+ 		   	  window.location.href=WEB_ROOT+url;
+ 		   	e.preventDefault();
+    	  });
+    	  var url = $.cookie('gjs_navigation');
+    	  $(".navigationBar").each(function(){
+    		  if($(this).attr('href')==url){
+    			  $(this).parents("li").addClass('active');
+    		  }
+    	  });
+    	  
+  		});
+      </script>
+  </ul>
+  
 </html>

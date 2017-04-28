@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.response.FacetField;
-import org.apache.solr.client.solrj.response.FacetField.Count;
-import org.apache.solr.common.SolrDocumentList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +20,7 @@ import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.solrutil.ESort;
 import com.ai.bdex.dataexchange.solrutil.FacetRespVO;
+import com.ai.bdex.dataexchange.solrutil.ResultRespVO;
 import com.ai.bdex.dataexchange.solrutil.SearchField;
 import com.ai.bdex.dataexchange.solrutil.SearchParam;
 import com.ai.bdex.dataexchange.solrutil.SolrCoreEnum;
@@ -30,7 +28,6 @@ import com.ai.bdex.dataexchange.solrutil.SolrSearchUtil;
 import com.ai.bdex.dataexchange.solrutil.SortField;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoQueryRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.solr.IDeltaIndexServiceRSV;
@@ -167,6 +164,7 @@ public class SearchController{
             SearchParam searchParam = new SearchParam();
             searchParam.setCollectionName(SolrCoreEnum.GDS.getCode());
             searchParam.setSolrClient(solrClient);
+            searchParam.setKeyWord(searchVO.getKeyWord());
             //查询字段 and
             List<SearchField> searchFieldList = new ArrayList<SearchField>();
             if(StringUtil.isNotBlank(searchVO.getKeyWord())){
@@ -209,16 +207,7 @@ public class SearchController{
             searchParam.setPageNo(searchVO.getPageNo());
             searchParam.setPageSize(20);
             searchParam.setIfHightlight(true);
-            SolrDocumentList result = SolrSearchUtil.Search(searchParam);
-            PageResponseDTO<GdsInfoRespDTO> pageInfo = new PageResponseDTO<GdsInfoRespDTO>();
-            model.addAttribute("resultList", result);
-            if(result != null){
-                pageInfo.setCount(result.getNumFound());
-                pageInfo.setPageNo(searchVO.getPageNo());
-                String pageCount = (result.getNumFound() % 20 == 0) ? (result.getNumFound() / 20)+"" : (result.getNumFound()/ 20 + 1)+"";
-                pageInfo.setPageCount(Integer.parseInt(pageCount));
-            }
-            pageInfo.setPageSize(20);
+            PageResponseDTO<ResultRespVO> pageInfo = SolrSearchUtil.Search(searchParam);
             model.addAttribute("pageInfo", pageInfo);
             model.addAttribute("searchVO", searchVO);
         } catch (Exception e) {
@@ -250,18 +239,10 @@ public class SearchController{
             searchParam.setPageNo(searchVO.getPageNo());
             searchParam.setPageSize(10);
             searchParam.setKeyWord(searchVO.getKeyWord());
-            List<FacetField> result = SolrSearchUtil.facetSuggest(searchParam);
-            List<FacetRespVO> resultCount = new ArrayList<FacetRespVO>(); 
-            for (FacetField facet : result) {
-                FacetRespVO facetRespVO = null;
-                for(Count c : facet.getValues()){
-                    facetRespVO = new FacetRespVO();
-                    facetRespVO.setCount(c.getCount());
-                    facetRespVO.setName(c.getName());
-                    resultCount.add(facetRespVO);
-                }
-            }
-            json.setObj(resultCount);
+            List<FacetRespVO> result = SolrSearchUtil.facetSuggest(searchParam);
+//            List<ResultRespVO> result = SolrSearchUtil.suggest(searchParam);
+           
+            json.setObj(result);
             json.setSuccess(true);
         } catch (Exception e) {
             logger.error("关键词联想失败！原因是："+e.getMessage());
