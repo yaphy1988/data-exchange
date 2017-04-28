@@ -80,7 +80,9 @@ public class SolrSearchUtil {
             //Item即为上面定义的bean类
             for (ResultRespVO resultRespVO  : resultlist) {
                    //hightlight的键为Item的id，值唯一，我们设置的高亮字段为gdsName
-                
+                    if(!StringUtil.isBlank(resultRespVO.getGdsPic())){
+                        resultRespVO.setGdsPic(resultRespVO.getGdsPic());
+                    }
                    List<String> hlString = map.get(resultRespVO.getId()).get("gdsName");
                    if (null != hlString) {
                        StringBuffer sbf = new StringBuffer();

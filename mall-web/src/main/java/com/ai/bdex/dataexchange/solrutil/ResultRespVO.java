@@ -6,6 +6,7 @@ import java.util.Date;
 import org.apache.solr.client.solrj.beans.Field;
 
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+import com.ai.paas.util.ImageUtil;
 
 public class ResultRespVO  extends BaseResponseDTO implements Serializable{
     /** 
@@ -107,7 +108,12 @@ public class ResultRespVO  extends BaseResponseDTO implements Serializable{
         return gdsPic;
     }
     public void setGdsPic(String gdsPic) {
-        this.gdsPic = gdsPic;
+        try {
+            this.gdsPic = ImageUtil.getImageUrl(gdsPic + "_80x80");
+        } catch (Exception e) {
+            this.gdsPic = gdsPic;
+        }
+        
     }
     public String getIfRecommend() {
         return ifRecommend;

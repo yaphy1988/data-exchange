@@ -60,11 +60,11 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
         } catch (Exception e) {
             logger.error("增量刷索引失败！", e);
         } finally {
-            try {
-                solrClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                solrClient.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 
@@ -91,11 +91,11 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
         } catch (Exception e) {
             logger.error("全量刷索引失败！", e);
         } finally {
-            try {
-                solrClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                solrClient.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
         logger.info("全量刷索引消耗："+(System.currentTimeMillis() - start)+" ms");
     }
@@ -108,11 +108,11 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
         } catch (Exception e) {
             logger.error("删除索引记录失败！", e);
         } finally {
-            try {
-                solrClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                solrClient.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 
@@ -124,11 +124,11 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
         } catch (Exception e) {
             logger.error("批量删除索引记录失败！", e);
         } finally {
-            try {
-                solrClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                solrClient.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
     }
 
@@ -142,11 +142,11 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            try {
-                solrClient.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+//            try {
+//                solrClient.close();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
         }
     }
     

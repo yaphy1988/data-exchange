@@ -15,7 +15,12 @@ $(function(){
                 showButton: true,
                 buttonText: '搜索',
                 onSubmit:function(input){
-                	location.href = WEB_ROOT+"/search?keyWord="+encodeURI(encodeURI(input.val()))+"&catFirst="+$("#catFirst").val();
+                	if($("#catFirst").val()!=undefined){
+                		location.href = WEB_ROOT+"/search?keyWord="+encodeURI(encodeURI(input.val()))+"&catFirst="+$("#catFirst").val();
+                	}else{
+                		location.href = WEB_ROOT+"/search?keyWord="+encodeURI(encodeURI(input.val()))+"&catFirst=1";
+                	}
+                	
                 	if($("#catFirst").val()=="2"){
                 		$.cookie('gjs_navigation', "/search/custom", {path : '/'});
                 	}else if($("#catFirst").val()=="3"){
