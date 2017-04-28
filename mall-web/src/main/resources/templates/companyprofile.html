@@ -1,17 +1,18 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
 <head>
 	<meta charset="UTF-8">
-	<title>信息列表</title>
-	<link rel="stylesheet" href="../static/css/bootstrap.css">
-	<link rel="stylesheet" href="../static/css/global.css">
-	<link rel="stylesheet" href="../static/css/index.css">
-	<link rel="stylesheet" href="../static/css/info.css">
-	<link rel="stylesheet" href="../static/fonts/iconfont.css">
+	<title>关于我们</title> 
+		<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/index.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/info.css"  th:href="@{/css/info.css}">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css"  th:remove="all">
 </head>
 <body>
-	
-	<div class="top">
+	<div class="top" th:remove="all">
 	    <div class="wrap1200">
 	        <div class="top-left floatL">
 	            <span>欢迎来到广州数据中心</span>
@@ -27,7 +28,7 @@
 	        </div>
 	    </div>
 	</div>
-	<div class="header">
+	<div class="header" th:remove="all">
 	    <div class="wrap1200 clearfix">
 	        <div class="logo floatL"><img src="../static/images/logo.png" title="广州数据中心"></div>
 	        <div class="search floatR">
@@ -116,8 +117,8 @@
 	</div>
 	
 
-	<div class="wrap1200">
-		<div class="classify">
+	<div class="wrap1200"  layout:fragment="screen_content">
+			<div class="classify" th:remove="all">
 			<i class="iconfont"></i>
 			<span>当前位置：</span>
 			<a href=""><span>数据市场</span></a>
@@ -143,9 +144,8 @@
 						<p>2、 独立的第三方市场 广州数据交易服务有限公司不是数据的拥有方，不做数据的加工和服务，只是提供一个独立的市场，实现数据的流通，完成数据买卖双方的数据交易撮合服务。数据的加工和服务是由产业链上的技术、咨询服务公司来完成的。</p><br>
 						<p>3、 撮合买卖双方进行数据交易的市场 广州数据交易服务有限公司提供一个数据交易的平台，供数据源方和数据购买方进行数据的交易、支付和结算，促进跨行业、跨领域的数据流通汇聚，满足数据买卖双方的需要，让数据产生出新的价值。</p><br>
 						<p>4、 全球离岸数据交易重要市场 广州数据交易服务有限公司落户南沙，将用足用好自由贸易试验区先行先试政策优势和开放优势，探索大数据在用好“两个市场、两种资源”方面的通道，促进数据产品进出口贸易，丰富自由贸易试验区内涵，最终参与数据交易、产品国际标准制定。 另外在产业国际资源整合方面，我们将国际知名的技术方案以及产品提供商（Oracle、SAP、IBM等）与数据和模型能力供应商（四大咨询，Forrester,Gartner等）形成产业战略合作联盟，发挥其技术、知识以及人才优势推动大数据交易国际化的进程。并且通过中国国际商会和贸易促进会、各官方以及社会产业联盟组织形成我们的渠道网络进行业务拓展以及交流合作，推进广州大数据交易中心的国际化步伐模式的迭代式演进。 初期基于广州区域的产业优势在跨境贸易电商等领域，将广州、香港、澳门这个中心区域为试点，先期进行相关离岸数据交易的试点。待商业模式、交易模式、运营模式成熟后再推广至全球其他地区，支撑中国国家（一带一路，互联网+）等战略的落地实施，最终形成全球离岸数据交易重要市场。</p><br>
-						<h2>公司简介</h2><br>
-
-						<img src="../static/images/gznew.png">
+						<h2>组织架构</h2><br> 
+						<img src="../static/images/gznew.png" th:src="@{/images/gznew.png}">
 						                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 						</div>
 					</div>
@@ -211,7 +211,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="footer">
+	<div class="footer" th:remove="all">
 	    <div class="wrap1200 ptb40">
 	        <div class="left floatL">
 	            <img src="../static/images/logo-footer.png" >
