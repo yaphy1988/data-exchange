@@ -1,3 +1,5 @@
+//页面点击发送标识
+var sendFlag = "0";
 (function($){
 	
 	var smsWin = {
@@ -23,12 +25,12 @@
 		/*校验登录码*/
 		"checksms" : function(seccode,phoneNo,callback){
 			if(!seccode || seccode =="" || seccode == "undefined"){
-				alert("请输入手机收到的校验码");
+				WEB.msg.info('提示',"请输入手机收到的校验码");
 				return ;
 			}
 			
 			if(smsWin.tocken=="1" || !smsWin.tocken || smsWin.tocken =="" || smsWin.tocken == "undefined"){
-				alert("未获取手机校验码，请先获取之后，再输入校验码");
+				WEB.msg.info('提示',"未获取手机校验码，请先获取之后，再输入校验码");
 				return ;
 			}
 			
@@ -45,7 +47,7 @@
 							callback(smsWin.tocken,seccode,phoneNo);
 						};
 					} else {
-						alert(data.error_msg);
+						WEB.msg.info('提示',data.error_msg);
 					}
 			    }
 			});
@@ -59,16 +61,19 @@
 		 */
 		"sendsms" : function(phoneNo,busiType,callback){
 			if(!phoneNo || phoneNo =="" || phoneNo == "undefined"){
-				alert("接收短信手机号码不能为空，请重新输入");
+				WEB.msg.info('提示',"接收短信手机号码不能为空，请重新输入");
 				return ;
 			}
 			
 			var mobileReg=/^1[34578]\d{9}$/;//简单的正则校验
 		 	if(!mobileReg.test(phoneNo)){ 
-		 	    alert("手机号码格式不正确，请重新输入");
+		 	    WEB.msg.info('提示',"手机号码格式不正确，请重新输入");
 		 	    return ; 
-		 	 } 
-
+		 	 }
+		 	if(sendFlag=="1"){
+		 		return;
+		 	}
+		 	sendFlag = "1";
 			$.ajax({
 				url : WEB_ROOT+"/security/sendSecurity",
 				async : true,
@@ -81,12 +86,12 @@
 						if($.isFunction(callback)){
 							callback();
 						} else {
-							alert("发送验证码成功！");
-						}
-					    
+							WEB.msg.info('提示',"发送验证码成功！");
+						}					    
 					} else {
-						alert(data.error_msg);
+						WEB.msg.info('提示',data.error_msg);
 					}
+					sendFlag = "0";
 			    }
 			});
 		},
@@ -107,7 +112,7 @@
 	          }
 	        },1000);
 	        
-	        alert("发送验证码成功！");
+	        WEB.msg.info('提示',"发送验证码成功！");
 		},
 		
 		///在校验成功之后；
@@ -204,7 +209,7 @@
 		    		//发送短信验证码
 		    		var picVerifyCode = $("#PIC_VERIFY_CODE_UC").val();
 		    		if (picVerifyCode == null || picVerifyCode == "") {
-		    			alert("验证码不能为空！");
+		    			WEB.msg.info('提示',"验证码不能为空！");
 		    			return;
 		    		}
 		    		smsWin.picVerifyCode = picVerifyCode;
