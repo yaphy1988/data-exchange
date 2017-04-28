@@ -106,6 +106,10 @@ public class SearchController{
     
     public void commonInit(SearchVO searchVO,Model model){
         try {
+            if(searchVO.getCatFirst() == 0){
+                //默认搜索API
+                searchVO.setCatFirst(1);
+            }
             if(searchVO.getCatFirst()==1 || searchVO.getCatFirst() == 3){
                 GdsCatReqDTO gdsCatReqDTO = new GdsCatReqDTO();
                 if(searchVO.getCatFirst() == 3){
@@ -256,7 +260,7 @@ public class SearchController{
     @RequestMapping(value="/index")
     public String deltaImport(){
         try {
-            iDeltaIndexServiceRSV.delteDelta("1039");
+            iDeltaIndexServiceRSV.deltaFullImport();
         } catch (BusinessException e) {
             e.printStackTrace();
         }

@@ -8,7 +8,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.SolrQuery;
 import org.apache.solr.client.solrj.SolrServerException;
 import org.apache.solr.common.SolrInputDocument;
 import org.slf4j.Logger;
@@ -135,10 +134,8 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
 
     @Override
     public void deleteAll() throws BusinessException {
-        SolrQuery query = new SolrQuery();
-        query.setQuery("*:*");
         try {
-            solrClient.deleteByQuery("gdscollection",query.toString());
+            solrClient.deleteByQuery("gdscollection","*:*");
             solrClient.commit("gdscollection");
         } catch (SolrServerException e) {
             e.printStackTrace();
