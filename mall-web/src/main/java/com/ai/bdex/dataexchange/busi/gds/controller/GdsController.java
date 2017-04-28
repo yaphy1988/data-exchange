@@ -5,6 +5,7 @@ import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IServiceMessageRSV;
 import com.ai.bdex.dataexchange.busi.api.entity.*;
 import com.ai.bdex.dataexchange.busi.gds.entity.*;
 import com.ai.bdex.dataexchange.common.AjaxJson;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.*;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.*;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -38,17 +40,17 @@ public class GdsController {
     private final static Integer CUSTOM_CAT_ID = 2;//定制需求catId
     private final static Integer SOLUTION_CAT_ID = 3;//解决方案catId
 
-    @DubboConsumer
+    @DubboConsumer(timeout = 30000)
     private IGdsInfoRSV iGdsInfoRSV;
-    @DubboConsumer
+    @DubboConsumer(timeout = 30000)
     private IGdsCatRSV iGdsCatRSV;
-    @DubboConsumer
+    @DubboConsumer(timeout = 30000)
     private IGdsLabelRSV iGdsLabelRSV;
-    @DubboConsumer
+    @DubboConsumer(timeout = 30000)
     private IGdsInfo2PropRSV iGdsInfo2PropRSV;
-    @DubboConsumer
+    @DubboConsumer(timeout = 30000)
     private IGdsSkuRSV iGdsSkuRSV;
-    @DubboConsumer
+    @DubboConsumer(timeout = 30000)
     private IServiceMessageRSV iServiceMessageRSV;
 
     @RequestMapping(value = "/details/{gdsId}-{skuId}")
@@ -118,7 +120,10 @@ public class GdsController {
                             GdsDetailTabContent gdsDetailTabContent = new GdsDetailTabContent();
                             gdsDetailTabContent.setTabName(gdsInfo2PropVO.getProName());
                             gdsDetailTabContent.setTabContentType("2");
-                            gdsDetailTabContent.setTabContentId(gdsInfo2PropVO.getProValue());
+                            if (!StringUtil.isBlank(gdsInfo2PropVO.getProType())){
+                                gdsDetailTabContent.setTabContentId(ImageUtil.getStaticDocUrl(gdsInfo2PropVO.getProValue(),"html"));
+                            }
+//                            gdsDetailTabContent.setTabContentId(gdsInfo2PropVO.getProValue());
                             tabContentList.add(gdsDetailTabContent);
                         }
                     }
@@ -282,24 +287,35 @@ public class GdsController {
     }
 
     @RequestMapping(value = "/queryRecomGdsList")
-    @ResponseBody
-    public AjaxJson queryRecomGdsList(){
-        AjaxJson ajaxJson = new AjaxJson();
+    public ModelAndView queryRecomGdsList(){
+        String viewName = "/goods/details/recomGdsList";
         GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
         gdsInfoReqDTO.setCatFirst(AIP_CAT_ID);
         gdsInfoReqDTO.setStatus("1");
-        List<GdsInfoRespDTO> gdsInfoRespDTOList = new ArrayList<GdsInfoRespDTO>();
+        gdsInfoReqDTO.setPageSize(4);
+        gdsInfoReqDTO.setGridQuerySortName("shelve_time");
+        gdsInfoReqDTO.setGridQuerySortOrder("desc");
+        PageResponseDTO<GdsInfoRespDTO> pageResponseDTO = new PageResponseDTO<GdsInfoRespDTO>();
+        List<GdsInfoVO> gdsInfoVOList = new ArrayList<GdsInfoVO>();
         try{
-            gdsInfoRespDTOList = iGdsInfoRSV.queryGdsInfoList(gdsInfoReqDTO);
+            pageResponseDTO = iGdsInfoRSV.queryGdsInfoPage(gdsInfoReqDTO);
         }catch (Exception e){
             log.error("查询商品信息列表异常",e);
-            ajaxJson.setSuccess(false);
-            ajaxJson.setMsg("查询商品信息列表异常！");
         }
-        ajaxJson.setSuccess(true);
-        ajaxJson.setObj(gdsInfoRespDTOList);
+        if (pageResponseDTO!=null && !CollectionUtil.isEmpty(pageResponseDTO.getResult())){
+            for (GdsInfoRespDTO gdsInfoRespDTO : pageResponseDTO.getResult()){
+                GdsInfoVO gdsInfoVO = new GdsInfoVO();
+                ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,gdsInfoVO,null,false);
+                if (!StringUtil.isBlank(gdsInfoVO.getGdsPic())){
+                    gdsInfoVO.setGdsPic(ImageUtil.getImageUrl(gdsInfoVO.getGdsPic()+"_80x80"));
+                }
+                gdsInfoVOList.add(gdsInfoVO);
+            }
+        }
 
-        return ajaxJson;
+        ModelAndView mv = new ModelAndView(viewName);
+        mv.addObject("recGdsList",gdsInfoVOList);
+        return mv;
     }
 
     /**

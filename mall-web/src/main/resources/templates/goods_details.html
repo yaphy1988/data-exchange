@@ -203,7 +203,7 @@
 							<a href="#tab4" data-toggle="tab" th:href="'#tab4-'+$tabContentStat.count" >套餐介绍</a>
 						</li>
 					</ul>
-					<div class="tab-content gd_info">
+					<div class="tab-content gd_info" id="tabContentDiv">
 						<div class=" tab-pane fade active in" role="tabpanel" id="tab1" aria-labelledby="tab1">
 							<h3>接口名称描述：</h3>
 							<table class="table table-bordered ">
@@ -373,29 +373,29 @@
 					推荐接口/API
 					<i></i>
 				</h3>
-				<div class="gd_list">
-					<a href="" class="item">
+				<div class="gd_list" id="recGdsList">
+					<a href="" class="item" th:remove="all">
 						<span class="img"><img src="../static/images/img.jpg"></span>
 						<dl>
 							<dt class="dt">身份实名认证身份实名认证身份实名认证身份实名认证</dt>
 							<dd class="dd">检测姓名和身份证是否一致检测姓名和身份证是否一致检测姓名和身份证是否一致检测姓名和身份证是否姓名和身份证是否姓名和身份证是否一致</dd>
 						</dl>
 					</a>
-					<a href="" class="item">
+					<a href="" class="item" th:remove="all">
 						<span class="img"><img src="../static/images/img.jpg"></span>
 						<dl>
 							<dt class="dt">身份实名认证</dt>
 							<dd class="dd">检测姓和身份身份证是否一致</dd>
 						</dl>
 					</a>
-					<a href="" class="item">
+					<a href="" class="item" th:remove="all">
 						<span class="img"><img src="../static/images/img.jpg"></span>
 						<dl>
 							<dt class="dt">身份实名认证</dt>
 							<dd class="dd">检测姓和身份身份证是否一致</dd>
 						</dl>
 					</a>
-					<a href="" class="item">
+					<a href="" class="item" th:remove="all">
 						<span class="img"><img src="../static/images/img.jpg"></span>
 						<dl>
 							<dt class="dt">身份实名认证</dt>
