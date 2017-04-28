@@ -49,8 +49,9 @@ function saveInfo(){
 		data : param,
 		success : function(data) {
 			if(data.success){
-				WEB.msg.info("提示","注册成功");
-				windows.location.href = WEB_ROOT+"/login/pageinit";
+				WEB.msg.info("提示","注册成功",function(){
+					window.location.href = WEB_ROOT+"/login/pageinit";
+				});				
 //				clearData();
 			}else{
 				WEB.msg.info("提示",data.msg);

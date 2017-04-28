@@ -83,7 +83,7 @@ function saveapply(){
 		success : function(obj){
 			if(obj.success){
 				WEB.msg.info('提示','提交认证成功',function(){
-					windows.location.href=WEB_ROOT+'/authenapply/userinfo';
+					window.location.href=WEB_ROOT+'/authenapply/userinfo';
 				});
 			}else{
 				WEB.msg.info('提示',obj.msg,null);

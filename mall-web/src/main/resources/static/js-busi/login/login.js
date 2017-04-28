@@ -63,4 +63,13 @@ $(function(){
     $("#bLoginSubmit").bind('click',function(){
     	doLogin();
     });
+    
+    document.onkeydown = function(e){
+	   if(!e){
+	    e = window.event;
+	   }
+	   if((e.keyCode || e.which) == 13){
+		   doLogin();
+	   }
+	  }
 });
