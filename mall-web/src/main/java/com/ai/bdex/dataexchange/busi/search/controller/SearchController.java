@@ -260,7 +260,7 @@ public class SearchController{
     @RequestMapping(value="/index")
     public String deltaImport(){
         try {
-            iDeltaIndexServiceRSV.deltaFullImport();
+            iDeltaIndexServiceRSV.deltaImport("", "1");
         } catch (BusinessException e) {
             e.printStackTrace();
         }

@@ -55,8 +55,8 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
     @Override
     public void deltaImport(String collectionName, String gdsId) throws BusinessException {
         try {
-            solrClient.add("gdscollection",generDeltaImportGdsInfo(gdsId));
-            solrClient.commit("gdscollection");
+            solrClient.add(collectionName,generDeltaImportGdsInfo(gdsId));
+            solrClient.commit(collectionName);
         } catch (Exception e) {
             logger.error("增量刷索引失败！", e);
         } finally {
@@ -69,7 +69,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
     }
 
     @Override
-    public void deltaFullImport() throws BusinessException {
+    public void deltaFullImport(String collectionName) throws BusinessException {
         long start = System.currentTimeMillis();
         try {
             GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
@@ -84,8 +84,8 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                 if(pageNo > pageCount){
                     break;
                 }
-                solrClient.add("gdscollection",generDeltaFullImportGdsInfo(pageNo,PAGE_SIZE).iterator());
-                solrClient.commit("gdscollection");
+                solrClient.add(collectionName,generDeltaFullImportGdsInfo(pageNo,PAGE_SIZE).iterator());
+                solrClient.commit(collectionName);
                 pageNo ++;
             }
         } catch (Exception e) {
@@ -101,10 +101,10 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
     }
 
     @Override
-    public void delteDelta(String gdsId) throws BusinessException {
+    public void delteDelta(String collectionName,String gdsId) throws BusinessException {
         try {
-            solrClient.deleteById("gdscollection",gdsId);
-            solrClient.commit("gdscollection");
+            solrClient.deleteById(collectionName,gdsId);
+            solrClient.commit(collectionName);
         } catch (Exception e) {
             logger.error("删除索引记录失败！", e);
         } finally {
@@ -117,10 +117,10 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
     }
 
     @Override
-    public void deleteDeltaBatch(List<String> gdsIds) throws BusinessException {
+    public void deleteDeltaBatch(String collectionName,List<String> gdsIds) throws BusinessException {
         try {
-            solrClient.deleteById("gdscollection",gdsIds);
-            solrClient.commit("gdscollection");
+            solrClient.deleteById(collectionName,gdsIds);
+            solrClient.commit(collectionName);
         } catch (Exception e) {
             logger.error("批量删除索引记录失败！", e);
         } finally {
@@ -133,10 +133,10 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
     }
 
     @Override
-    public void deleteAll() throws BusinessException {
+    public void deleteAll(String collectionName) throws BusinessException {
         try {
-            solrClient.deleteByQuery("gdscollection","*:*");
-            solrClient.commit("gdscollection");
+            solrClient.deleteByQuery(collectionName,"*:*");
+            solrClient.commit(collectionName);
         } catch (SolrServerException e) {
             e.printStackTrace();
         } catch (IOException e) {
