@@ -50,7 +50,7 @@ function saveInfo(){
 		success : function(data) {
 			if(data.success){
 				WEB.msg.info("提示","注册成功",function(){
-					window.location.href = WEB_ROOT+"/login/pageinit";
+					window.location.href = WEB_ROOT+"/login/pageInit";
 				});				
 //				clearData();
 			}else{
