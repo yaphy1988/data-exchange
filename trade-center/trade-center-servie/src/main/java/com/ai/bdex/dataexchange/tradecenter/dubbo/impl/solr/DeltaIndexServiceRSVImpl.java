@@ -33,20 +33,20 @@ public class DeltaIndexServiceRSVImpl implements IDeltaIndexServiceRSV{
         iDeltaIndexServiceSV.deltaImport(collectionName, gdsId);
     }
     @Override
-    public void deltaFullImport() throws BusinessException {
-        iDeltaIndexServiceSV.deltaFullImport();
+    public void deltaFullImport(String collectionName) throws BusinessException {
+        iDeltaIndexServiceSV.deltaFullImport(collectionName);
     }
     @Override
-    public void delteDelta(String gdsId) throws BusinessException {
-        iDeltaIndexServiceSV.delteDelta(gdsId);
+    public void delteDelta(String collectionName,String gdsId) throws BusinessException {
+        iDeltaIndexServiceSV.delteDelta(collectionName,gdsId);
     }
     @Override
-    public void deleteDeltaBatch(List<String> gdsIds) throws BusinessException {
-        iDeltaIndexServiceSV.deleteDeltaBatch(gdsIds);
+    public void deleteDeltaBatch(String collectionName,List<String> gdsIds) throws BusinessException {
+        iDeltaIndexServiceSV.deleteDeltaBatch(collectionName,gdsIds);
     }
     @Override
-    public void deleteAll() throws BusinessException {
-        iDeltaIndexServiceSV.deleteAll();
+    public void deleteAll(String collectionName) throws BusinessException {
+        iDeltaIndexServiceSV.deleteAll(collectionName);
     }
 }
 
