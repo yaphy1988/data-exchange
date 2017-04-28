@@ -213,8 +213,7 @@ body{
 }
 /* 说明文字处在同一行 */
 .tips.input-group > .input-group-btn > .btn{
- border-top-left-radius: 0;
- border-bottom-left-radius: 0;
+ border-radius: 0;
  margin-left: -1px;
 }
 /* 说明文字 */
@@ -299,4 +298,17 @@ body{
 .check-link a{
     line-height: 34px;
     margin-left: 20px;
+}
+
+/* 控件宽度 */
+.wt100{width: 100px!important;}
+.wt150{width: 150px!important;}
+.wt200{width: 200px!important;}
+.wt300{width: 300px!important;}
+.wt400{width: 400px!important;}
+.wt500{width: 500px!important;}
+
+/* 控件圆角 */
+.form-control{
+	border-radius: 0;
 }

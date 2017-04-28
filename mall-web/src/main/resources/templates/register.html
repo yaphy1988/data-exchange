@@ -48,7 +48,7 @@
                 <label>短信验证码</label>
                 <input type="text" class="form-control" placeholder="短信验证码" style="width:50%;display:-webkit-inline-box;" id="smsCode" maxlength="6">
                 <!--error-tip可见或不可见方式请用visibility-->
-                <button class="btn btn-primary" onclick="sendSmsCode();" id="getcodebtn">获取验证码</button>
+                <button class="btn btn-primary btn_rec" onclick="sendSmsCode();" id="getcodebtn">获取验证码</button>
                 <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入短信验证码</span></p>
             </div>
             <div class="register-input" id="signpassDiv">
@@ -63,9 +63,11 @@
                 <!--error-tip可见或不可见方式请用visibility-->
                 <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>确认密码和设置密码不一致，请重新输入</span></p>
             </div>
-            <div class="register-checkbox">
+            <div class="register-checkbox checkbox">
+            <label>
                 <input type="checkbox" id="checkAgree">
-                <span>我已阅读并接受<a href="#" data-toggle="modal" data-target="#myModal"> 《广州数据平台交易协议》</a></span>
+                我已阅读并接受<a href="#" data-toggle="modal" data-target="#myModal"> 《广州数据平台交易协议》</a>
+            </label>
             </div>
             <div class="register-button">
                 <button class="btn btn-primary" onclick="saveInfo();">立即注册</button>

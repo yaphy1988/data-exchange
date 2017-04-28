@@ -188,7 +188,10 @@ q:before, q:after, blockquote:before, blockquote:after {
 .clearfix:after {content:"."; display:block; height:0; clear:both; visibility:hidden;}
 .clearfix {zoom:1;}
 
-
+/* 按钮圆角 */
+.btn{
+	border-radius: 0;
+}
 /* 橙色btn */
 a.btn-orange,
 .btn-orange {
