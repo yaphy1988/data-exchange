@@ -46,7 +46,7 @@ public class SmsValidController{
     @DubboConsumer
     private IAuthStaffRSV iAuthStaffRSV;
     
-    @DubboConsumer
+    @DubboConsumer(timeout=30000)
     private ISmsSendRSV smsSendByThreadRSV;
 
     /**
