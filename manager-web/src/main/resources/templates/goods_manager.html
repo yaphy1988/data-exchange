@@ -71,7 +71,8 @@
                         </td>
                         <td width="20%">
                             <div class="input-group02">
-                                <select class="form-control" id="gdsStatusSel">
+                                <input type="hidden" id="gdsStatus" value="">
+                                <select class="form-control" id="gdsStatusSel" onchange="changeStatus()">
                                     <option value="">全部</option>
                                     <option value="0">待上架</option>
                                     <option value="1">已上架</option>
@@ -97,7 +98,7 @@
                         </td>
                         <td>
                             <div class="input-group02">
-                                <button class="btn btn-primary">查询</button>
+                                <button class="btn btn-primary" onclick="queryGdsList(1)">查询</button>
                             </div>
                         </td>
                     </tr>

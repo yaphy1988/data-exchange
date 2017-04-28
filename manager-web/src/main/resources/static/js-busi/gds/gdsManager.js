@@ -75,7 +75,7 @@ function queryGdsList(pageNo) {
     }
     var params = {};
     var gdsName = $("#gdsNameInput").val();
-    var status = $("#gdsstatussel").val();
+    var status = $("#gdsStatus").val();
     var catId = $("#catIdSel").attr("catId");
     if (gdsName==undefined || $.trim(gdsName) == ""){
         gdsName = "";
@@ -108,4 +108,17 @@ function queryGdsList(pageNo) {
  */
 function pagerClick(pageNo) {
     queryGdsList(pageNo);
+}
+
+/**
+ * 改变查询状态
+ */
+function changeStatus() {
+    var status = $("#gdsStatusSel").val();
+    $("#gdsStatus").val(status);
+}
+
+function tabClick(status) {
+    $("#gdsStatus").val(status);
+    queryGdsList(1);
 }

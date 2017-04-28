@@ -11,6 +11,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.github.pagehelper.PageInfo;
@@ -125,6 +126,11 @@ public class GdsManageController {
         ModelAndView mv = new ModelAndView(viewName);
 //        mv.addObject("gdsInfoList",pageInfo.getResult());
         mv.addObject("pageInfo",pageInfo);
+        if (StringUtil.isBlank(gdsInfoReqDTO.getStatus())){
+            mv.addObject("status","");
+        }else{
+            mv.addObject("status",gdsInfoReqDTO.getStatus());
+        }
         return mv;
     }
 

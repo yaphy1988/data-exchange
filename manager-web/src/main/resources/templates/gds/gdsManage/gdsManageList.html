@@ -2,11 +2,11 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <!-- Nav tabs -->
 <ul class="nav nav-tabs" role="tablist">
-    <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">全部</a></li>
-    <li><a href="#tab02" aria-controls="profile" role="tab" data-toggle="tab">待上架</a></li>
-    <li><a href="#tab03" aria-controls="messages" role="tab" data-toggle="tab">已上架</a></li>
-    <li><a href="#tab04" aria-controls="settings" role="tab" data-toggle="tab">已下架</a></li>
-    <li><a href="#tab05" aria-controls="settings" role="tab" data-toggle="tab">已删除</a></li>
+    <li class="active" th:class="${status} == ''?'active':''"><a href="javascript:void(0)" onclick="tabClick('')" aria-controls="home" role="tab" data-toggle="tab">全部</a></li>
+    <li th:class="${status} == '0'?'active':''"><a href="javascript:void(0)" onclick="tabClick('0')" aria-controls="profile" role="tab" data-toggle="tab">待上架</a></li>
+    <li th:class="${status} == '1'?'active':''"><a href="javascript:void(0)" onclick="tabClick('1')" aria-controls="messages" role="tab" data-toggle="tab">已上架</a></li>
+    <li th:class="${status} == '2'?'active':''"><a href="javascript:void(0)" onclick="tabClick('2')" aria-controls="settings" role="tab" data-toggle="tab">已下架</a></li>
+    <li th:class="${status} == '9'?'active':''"><a href="javascript:void(0)" onclick="tabClick('9')" aria-controls="settings" role="tab" data-toggle="tab">已删除</a></li>
 </ul>
 
 <!-- Tab panes -->
