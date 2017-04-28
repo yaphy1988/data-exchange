@@ -50,7 +50,8 @@ function saveInfo(){
 		success : function(data) {
 			if(data.success){
 				WEB.msg.info("提示","注册成功");
-				clearData();
+				windows.location.href = WEB_ROOT+"/login/pageinit";
+//				clearData();
 			}else{
 				WEB.msg.info("提示",data.msg);
 			}			 
