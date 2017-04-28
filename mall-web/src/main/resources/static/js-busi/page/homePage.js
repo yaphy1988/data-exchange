@@ -3,7 +3,7 @@ var imgPath = "http://112.74.163.29:14751/ImageServer/image/";
 $(function(){
 	queryPageModue();
 })
-function  showMyModal() {
+function  showData() {
 	$("#myModal").show();
 }
 function encodeURI2(strinfo) {
@@ -46,7 +46,10 @@ function saveMadeData() {
 		async : false,
 		data : param,
 		success : function(data) {
-			 alert("保存成功");
+		   if(data.success)  {
+			    WEB.msg.info("提示",'保存成功');
+			    $("#myModal").hide(); 
+  		   }
 	}});
 }
 /**查询楼层信息，异步加载楼层内容*/

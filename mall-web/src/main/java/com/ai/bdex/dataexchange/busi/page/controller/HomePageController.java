@@ -286,9 +286,10 @@ public class HomePageController {
 	 * 首页数据定制
 	 */
 	@RequestMapping(value = "/saveMadeData")
-	private void saveMadeData(Model model, HttpServletRequest request, HttpServletResponse response) {
-		try {
-
+	@ResponseBody
+	private  Map<String, Object> saveMadeData(Model model, HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		try { 
 			String needTieltmp = request.getParameter("needTiel");
 			String needTiel = uRLDecoderStr(needTieltmp);
 			String needcontent = uRLDecoderStr(request.getParameter("needcontent"));
@@ -306,9 +307,12 @@ public class HomePageController {
 			dataCustomizationRespDTO.setStatus(CUSTOMDATA_STATUS_VALID);
 			int count = iPageDisplayRSV.saveDataCustomizationRsv(dataCustomizationRespDTO);
 			model.addAttribute("savecount", count);
+			rMap.put("success", true);
 		} catch (Exception e) {
 			log.error("查询首页导航信息信息异常：" + e.getMessage());
+			rMap.put("success", false);
 		}
+		return rMap;
 	}
 
 	private String uRLDecoderStr(String strinfo) {
