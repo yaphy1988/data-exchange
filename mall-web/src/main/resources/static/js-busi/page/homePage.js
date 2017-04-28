@@ -31,7 +31,8 @@ function saveMadeData() {
 	{
 		WEB.msg.info("提示",'请输入正确的邮箱地址');
 		return;
-	}
+	} 
+	$("#commitData").attr("disabled", true);
 	param = {
 		needTiel : needTiel,
 		needcontent : needcontent,
@@ -49,9 +50,15 @@ function saveMadeData() {
 		   if(data.success)  {
 			    WEB.msg.info("提示",'保存成功');
 			    $("#myModal").hide(); 
+				$("#commitData").attr("disabled", false);
+
   		   }
 	}});
 }
+function hideMadeData()
+{
+	  $("#myModal").hide(); 
+ }
 /**查询楼层信息，异步加载楼层内容*/
 function queryPageModue(){
 	var url = basePath+'/homePage/queryPageModue';
