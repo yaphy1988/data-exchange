@@ -7,7 +7,7 @@
 					<i class="iconfont icon-xingxing"></i>
 				</div>
 				<div class="pic">
-					<a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:attr="title=${list.gdsName}">
+					<a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:attr="title=${list.gdsNameSrc}">
 						<img src="" style="width:80px;height:80px" th:src="${list.gdsPic}">
 					</a>
 				</div>
@@ -19,7 +19,7 @@
 						<small th:text="'/'+${list.packTimes}+'次'">/10000次</small>
 					</div>
 					<div class="sale">
-						<a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:attr="title=${list.gdsSubtitle}" th:utext="${list.gdsSubtitle}">
+						<a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:attr="title=${list.gdsSubtitleSrc}" th:utext="${list.gdsSubtitle}">
 							首次申请赠送50次
 						</a>
 					</div>
