@@ -534,3 +534,30 @@ fieldset[disabled] .btn-default.focus {
 	.modal-body{
 	    font-size: 14px;
 	}
+
+	
+	/* 标签 */
+	.label_box > p{
+		display: inline-block;
+		border: solid 1px;
+		border-color: #ec6000;
+		padding: 3px 5px;
+		color: #ec6000;
+		border-radius: 3px;
+		margin-bottom: 5px;
+		margin-left: 3px;
+	}
+.label_box .colse{
+	color: #ec6000;
+}
+.label_box .colse:hover{
+	text-decoration: none;
+}
+.label_box p:hover{
+	background-color: #ec6000;
+	color: #fff;
+	cursor: pointer;
+}
+.label_box p:hover .colse{
+	color: #fff;
+}

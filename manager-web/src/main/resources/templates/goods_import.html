@@ -177,11 +177,23 @@
 						商品标签:
 					</td>
 					<td >
-					<span id="gdsLabelList" >
-						<span th:each="gdsLabelVO,catStat:${gdsInfoVO.gdsLabelVOList}"  class="label" th:style="'border:solid 1px '+@{${gdsLabelVO.labColor}}+'; color:'+@{${gdsLabelVO.labColor}}+''" th:labId="${gdsLabelVO.labId}" th:labName="${gdsLabelVO.labName}" th:labColor="${gdsLabelVO.labColor}" th:text="${gdsLabelVO.labName}"></span>
-						<span class="label label-primary" th:remove="all">API</span>
-					</span>
-						<a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsLabelModal()'" >请选择</a>
+					<div class="label_box">
+						<p id="gdsLabelList" >
+							<span th:each="gdsLabelVO,catStat:${gdsInfoVO.gdsLabelVOList}"  class="label" th:style="'border:solid 1px '+@{${gdsLabelVO.labColor}}+'; color:'+@{${gdsLabelVO.labColor}}+''" th:labId="${gdsLabelVO.labId}" th:labName="${gdsLabelVO.labName}" th:labColor="${gdsLabelVO.labColor}" th:text="${gdsLabelVO.labName}"></span>
+							<span th:remove="all">API	
+								<a class=" pl5 colse">×</a>
+							</span>
+						</p>
+						<p  >
+							
+							<span th:remove="all">API	
+								<a class=" pl5 colse">×</a>
+							</span>
+						</p>
+						<a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsLabelModal()'"   >请选择</a>
+					</div>
+					
+						
 					</td>
 					<td>
 
@@ -215,13 +227,15 @@
 			</table>
 			<div  th:style="'display:none'" th:name="DivAPI">
 			<div class="title">价格信息</div>
-			<table class="table table-bordered" id="APIPackage" >
+			<table class="table table-bordered text-center" id="APIPackage" >
 				<thead>
 				<tr class="active">
 					<th><span class="col_red">*</span>套餐名称</th>
 					<th><span class="col_red">*</span>套餐价格(元)</th>
 					<th><span class="col_red">*</span>调用次数(次)</th>
 					<th>有效期（天）</th>
+					<th>操作</th>
+					
 				</tr>
 				</thead>
 				<tbody>
@@ -230,16 +244,23 @@
 		   			<td><input type="text" name="packPrice" th:value="${gdSkuVO.packPrice}"></td>
 		   			<td><input type="text" name="packTimes" th:value="${gdSkuVO.packTimes}"></td>
 		   			<td><input type="text" name="packDay" th:value="${gdSkuVO.packDay}"></td>
+		   			<td><a href="">删除</a></td>
+		   			
 				</tr>
 				<tr th:remove="all">
 					<td>aaa</td>
 					<td>aaa</td>
 					<td>aaa</td>
 					<td>aaa</td>
+					<td><a href="">删除</a></td>
 				</tr>
 				</tbody>
 			</table>
-			<div class="clearfix"><a href="javascript:void(0);" class="btn btn-default btn-sm pull-right"  th:onclick="'addPackAgeOne()'">新增套餐</a></div>
+			<div class="clearfix">
+			<a href="" class="btn btn-default btn-sm pull-right " >删除</a>
+			<a href="javascript:void(0);" class="btn btn-primary btn-sm pull-right mr5"  th:onclick="'addPackAgeOne()'">新增套餐</a>
+			</div>
+		
 			</div>
 			<div class="title" th:remove="all">套餐介绍</div>
 
