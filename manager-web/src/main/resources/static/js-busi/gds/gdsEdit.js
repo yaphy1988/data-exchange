@@ -101,7 +101,7 @@ function addPackAgeOne(){
  */
 function queryGdsProp(catId){
 	//商品分类：API、数据定制、解决方案
-	var url="/gdsEdit/queryGdsPropList";
+	var url=WEB_ROOT+"/gdsEdit/queryGdsPropList";
 	var params={
 			catId:catId
 	};
@@ -127,7 +127,7 @@ function queryGdsProp(catId){
  */
 function queryGdsInfo2Prop(gdsId){
 	//商品分类：API、数据定制、解决方案
-	var url="/gdsEdit/queryGdsInfo2PropList";
+	var url=WEB_ROOT+"/gdsEdit/queryGdsInfo2PropList";
 	var params={
 			gdsId:gdsId
 	};
@@ -161,7 +161,7 @@ function queryGdsLabelQuikList(){
 	//商品分类：API、数据定制、解决方案
 	var  labName = $("#qryLabName").val();
 	var  catFirst = $("#catFirst").val();
-	var url="/gdsEdit/queryGdsLabelQuikList";
+	var url=WEB_ROOT+"/gdsEdit/queryGdsLabelQuikList";
 	var params={
 			catFirst:catFirst,
 			labName:labName
@@ -203,7 +203,7 @@ function querySubCatNodes(obj){
 	//当前操作的节点层级
 	var nodeLevel = Number($this.attr('level'));
 
-	var url="/gdsEdit/querySubCatNodes";
+	var url=WEB_ROOT+"/gdsEdit/querySubCatNodes";
 	var params={
 			catId:catId
 	};
@@ -237,7 +237,7 @@ function catIsSubNode(){
 	var catId=lastCatDiv.attr("catId");
 	var catName=lastCatDiv.attr("catName");
 	var level =  Number(lastCatDiv.attr("level"));
-	var url="/gdsEdit/querySubCatNodes";
+	var url=WEB_ROOT+"/gdsEdit/querySubCatNodes";
 	var params={
 			catId:catId
 	};
@@ -351,9 +351,9 @@ function saveGds(){
 	}
 	var gdsId=$("#gdsId").val();
 	if(gdsId==""){
-		var url="/gdsEdit/addGds";
+		var url=WEB_ROOT+"/gdsEdit/addGds";
 	}else{
-		var url="/gdsEdit/editGds";
+		var url=WEB_ROOT+"/gdsEdit/editGds";
 
 	}
 	$.ajax({
@@ -365,6 +365,7 @@ function saveGds(){
         success : function(data) {
             if (data.success=="true") {
             	WEB.msg.info("提示","保存成功");
+            	window.location.href = WEB_ROOT+"/gdsManage/index";
             }
         }
     });
@@ -633,7 +634,7 @@ function uploadImage(object) {
 		alert('请选择图片文件(.jpg,.png,.jpeg,.gif,.bmp).');
 		return;
 	}
-	var url ='/gdsEdit/uploadImage';
+	var url =WEB_ROOT+'/gdsEdit/uploadImage';
 	var callback = function(data, status) {
 
 		/** 上传成功，隐藏上传组件，并显示该图片 */
