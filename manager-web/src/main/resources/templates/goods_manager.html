@@ -440,18 +440,18 @@
 	</div>
 
     <!-- 上架弹窗-->
-    <div class="m_modal modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="m_modal modal fade" id="doGdsStatusModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document" style="width:400px;">
             <div class="modal-content" >
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">商品上架</h4>
+                    <h4 class="modal-title" id="doGdsStatusModalTitle">商品上架</h4>
                 </div>
-                <div class="modal-body clearfix pt20 pb20">
+                <div class="modal-body clearfix pt20 pb20" id="doGdsStatusModalContent">
                     确认上架该商品？
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">确认</button>
+                    <button id="doGdsStatusModalConfirm" type="button" class="btn btn-primary" onclick="doGdsStatus(this)" gdsId="" targetStatus="" oldStatus="">确认</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>

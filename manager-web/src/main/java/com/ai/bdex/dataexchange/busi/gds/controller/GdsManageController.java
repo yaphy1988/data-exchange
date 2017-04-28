@@ -134,6 +134,97 @@ public class GdsManageController {
         return mv;
     }
 
+    /**
+     * 上下架、删除、启用
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/doGdsStatus")
+    @ResponseBody
+    public AjaxJson doGdsStatus(HttpServletRequest request,HttpServletResponse response){
+        AjaxJson ajaxJson = new AjaxJson();
+
+        String gdsId = request.getParameter("gdsId");
+        String targetStatus = request.getParameter("targetStatus");
+        String oldStatus = request.getParameter("oldStatus");
+        try {
+
+            GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
+            gdsInfoReqDTO.setGdsId(Integer.parseInt(gdsId));
+            GdsInfoRespDTO gdsInfoRespDTO = iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO);
+            if (gdsInfoRespDTO!=null){
+                GdsInfoReqDTO updateReqDTO = new GdsInfoReqDTO();
+                ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,updateReqDTO,null,false);
+                updateReqDTO.setStatus(targetStatus);
+                iGdsInfoRSV.updateGdsInfo(updateReqDTO);
+            }else{
+                ajaxJson.setSuccess(false);
+                ajaxJson.setMsg("操作失败，查询不到该商品信息！");
+                return ajaxJson;
+            }
+
+            ajaxJson.setSuccess(true);
+        }catch (Exception e){
+           if ("1".equals(targetStatus)){
+               log.error("商品上架失败：",e);
+               ajaxJson.setMsg("商品上架失败！");
+           }else if ("2".equals(targetStatus)){
+               if ("9".equals(oldStatus)){
+                   log.error("商品重新启用失败：",e);
+                   ajaxJson.setMsg("商品重新启用失败！");
+               }else{
+                   log.error("商品下架失败：",e);
+                   ajaxJson.setMsg("商品下架失败！");
+               }
+           }else if ("9".equals(targetStatus)){
+               log.error("商品删除失败：",e);
+               ajaxJson.setMsg("商品删除失败！");
+           }
+            ajaxJson.setSuccess(false);
+        }
+
+        return ajaxJson;
+    }
+
+    @RequestMapping(value = "/dealGdsRec")
+    @ResponseBody
+    public AjaxJson dealGdsRec(HttpServletRequest request,HttpServletResponse response){
+        AjaxJson ajaxJson = new AjaxJson();
+
+        String gdsId = request.getParameter("gdsId");
+        String ifRecGds = request.getParameter("ifRecGds");
+        String errorMsg = "";
+        if ("1".equals(ifRecGds)){
+            errorMsg = "商品推荐失败";
+        }else{
+            errorMsg = "取消商品推荐失败";
+        }
+        try {
+
+            GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
+            gdsInfoReqDTO.setGdsId(Integer.parseInt(gdsId));
+            GdsInfoRespDTO gdsInfoRespDTO = iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO);
+            if (gdsInfoRespDTO!=null){
+                GdsInfoReqDTO updateReqDTO = new GdsInfoReqDTO();
+                ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,updateReqDTO,null,false);
+                updateReqDTO.setIfRecommend(ifRecGds);
+                iGdsInfoRSV.updateGdsInfo(updateReqDTO);
+            }else{
+                ajaxJson.setSuccess(false);
+                ajaxJson.setMsg(errorMsg+"，查询不到该商品信息！");
+                return ajaxJson;
+            }
+            ajaxJson.setSuccess(true);
+        }catch (Exception e){
+            log.error(errorMsg+"：",e);
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg(errorMsg+"！");
+        }
+
+        return ajaxJson;
+    }
+
     private String traslateStatusToName(String status){
         String statusName = "";
         if("0".equals(status)){

@@ -19,26 +19,31 @@
                 <th width="240">商品名称</th>
                 <th>上架状态</th>
                 <th>商品类型</th>
-                <th>上/下架时间</th>
+                <th>是否推荐</th>
                 <th>操作</th>
             </tr>
             </thead>
             <tbody id="gdsListTbody">
-                <tr th:if="${#lists.size(pageInfo.result) lt 1}">
+                <tr th:if="!${pageInfo} or !${pageInfo.result} or ${#lists.size(pageInfo.result) lt 1}">
                     <td colspan="6">暂无数据</td>
                 </tr>
-                <tr th:if="${#lists.size(pageInfo.result) gt 0}" th:each="gdsInfo,gdsInfoStat : ${pageInfo.result}">
+                <tr th:if="${pageInfo} and ${pageInfo.result} and ${#lists.size(pageInfo.result) gt 0}" th:each="gdsInfo,gdsInfoStat : ${pageInfo.result}">
                     <td th:text="${gdsInfo.gdsId}">12345</td>
                     <td th:text="${gdsInfo.gdsName}"> 2015年广东省汽车零部件生产企业状况</td>
                     <td th:text="${gdsInfo.statusName}">待上架</td>
                     <td th:text="${gdsInfo.catName}">API</td>
-                    <td th:text="${#calendars.format(gdsInfo.shelveTime,'yyyy-MM-dd HH:mm:ss')}">2017-04-10 12:25:23</td>
+                    <td >
+                        <input type="checkbox" th:checked="${gdsInfo.ifRecommend} == '1'" onclick="checkRecGds(this)" th:attr="gdsId=${gdsInfo.gdsId}" >
+                    </td>
+                    <!--<td th:text="${#calendars.format(gdsInfo.shelveTime,'yyyy-MM-dd HH:mm:ss')}">2017-04-10 12:25:23</td>-->
                     <td>
                         <p class="pop-link">
-                            <a href="#"  data-toggle="modal" data-target="#myModal2">上架</a><i>|</i>
-                            <a href="#">编辑</a><i>|</i>
-                            <a href="#">查看</a><i>|</i>
-                            <a href="#">删除</a>
+                            <a href="javascript:void(0)" data-toggle="modal" data-target="#doGdsStatusModal" th:if="${gdsInfo.status}=='0' or ${gdsInfo.status} == '2'" targetStatus="1" th:attr="gdsId=${gdsInfo.gdsId}" onclick="doGdsStatusModal(this)">上架</a><i th:if="${gdsInfo.status}=='0' or ${gdsInfo.status }== '2'">|</i>
+                            <a href="javascript:void(0)" th:if="${gdsInfo.status == '1'}" targetStatus="2" th:attr="gdsId=${gdsInfo.gdsId}" onclick="doGdsStatusModal(this)">下架</a><i th:if="${gdsInfo.status == '1'}">|</i>
+                            <a href="javascript:void(0)" th:if="${gdsInfo.status == '9'}" targetStatus="2" oldStatus="9" th:attr="gdsId=${gdsInfo.gdsId}" onclick="doGdsStatusModal(this)">启用</a><i th:if="${gdsInfo.status == '9'}">|</i>
+                            <a href="javascript:void(0)" th:if="${gdsInfo.status == '0'} or ${gdsInfo.status == '2'} or ${gdsInfo.status == '9'}">编辑</a><i  th:if="${gdsInfo.status == '0'} or ${gdsInfo.status == '2'} or ${gdsInfo.status == '9'}">|</i>
+                            <a href="javascript:void(0)" >查看</a><i th:if="${gdsInfo.status == '0'} or ${gdsInfo.status == '2'}">|</i>
+                            <a href="javascript:void(0)" th:if="${gdsInfo.status == '0'} or ${gdsInfo.status == '2'}" targetStatus="9" th:attr="gdsId=${gdsInfo.gdsId}" onclick="doGdsStatusModal(this)">删除</a>
                         </p>
                     </td>
                 </tr>
