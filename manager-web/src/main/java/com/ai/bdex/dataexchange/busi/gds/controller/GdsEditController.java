@@ -602,7 +602,7 @@ public class GdsEditController {
 				if("2".equals(popType)){
 					String propValuehtml=propVOJson.getString("proValue");
 					if(StringUtil.isNotBlank(propValuehtml)){
-						String dd=HtmlUtils.htmlUnescape(java.net.URLDecoder.decode(propValuehtml,"UTF-8"));
+						//String dd=HtmlUtils.htmlUnescape(java.net.URLDecoder.decode(propValuehtml,"UTF-8"));
 						String htmlData=HtmlUtils.htmlUnescape(propValuehtml);
 						  //保存静态文件到静态文件服务器
 						String infoUrl = MongoFileUtil.saveFile(htmlData.getBytes("utf-8"),"gdsContent", ".html");

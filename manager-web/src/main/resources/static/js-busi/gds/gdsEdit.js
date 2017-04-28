@@ -594,9 +594,9 @@ function createGdsInfo2PropList(){
 		}else if(ckeditName=="editorCompany"){
 			proValue=ckeditCompany.getData()
 		}
-		if(proValue!=""){
-			proValue=$.trim(encodeURI(proValue));
-		}
+//		if(proValue!=""){
+//			proValue=$.trim(encodeURI(proValue));
+//		}
 			var gdsInfo2PropVO ={
 					gpId:gpId,
 					proId:proId,
