@@ -1,6 +1,7 @@
 package com.ai.bdex.dataexchange.busi.page.entity;
 
 import java.util.Date;
+import java.util.List;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
@@ -40,6 +41,26 @@ public class PageNewsInfoVO extends BaseInfo {
 	private String updateStaffId;
 
 	private Date updateTime;
+
+	private PageModuleVO pageModuleVO;
+	
+	private List<PageNewsInfoVO> newsInfoList;
+	
+	public List<PageNewsInfoVO> getNewsInfoList() {
+		return newsInfoList;
+	}
+
+	public void setNewsInfoList(List<PageNewsInfoVO> newsInfoList) {
+		this.newsInfoList = newsInfoList;
+	}
+
+	public PageModuleVO getPageModuleVO() {
+		return pageModuleVO;
+	}
+
+	public void setPageModuleVO(PageModuleVO pageModuleVO) {
+		this.pageModuleVO = pageModuleVO;
+	}
 
 	public Integer getInfoId() {
 		return infoId;

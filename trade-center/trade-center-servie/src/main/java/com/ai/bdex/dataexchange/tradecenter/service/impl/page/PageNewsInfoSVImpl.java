@@ -42,7 +42,6 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 		int rows = exam.getPageSize();
 		
 		PageNewsInfoExample example = new PageNewsInfoExample();
-		example.setOrderByClause("INFO_ORDER desc");
 		PageNewsInfoExample.Criteria criteria = example.createCriteria();
 		if (exam.getModuleId() != null) {
 			criteria.andModuleIdEqualTo(exam.getModuleId());
