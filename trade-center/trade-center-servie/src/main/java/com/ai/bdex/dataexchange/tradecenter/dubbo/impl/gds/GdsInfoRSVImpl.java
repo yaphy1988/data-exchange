@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.impl.gds;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsCat;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabel;
@@ -16,6 +17,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsPropSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.paas.utils.CollectionUtil;
+import com.github.pagehelper.Page;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -281,4 +283,15 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
 		}
 		return gcId;
 	}
+
+    @Override
+    public PageResponseDTO<GdsInfoRespDTO> queryGdsInfoPage(GdsInfoReqDTO gdsInfoReqDTO) {
+        PageResponseDTO<GdsInfoRespDTO> pageResponseDTO = new PageResponseDTO<GdsInfoRespDTO>();
+        try {
+            pageResponseDTO = iGdsInfoSV.queryGdsInfoPage(gdsInfoReqDTO);
+        }catch (Exception e){
+            log.error("查询商品列表分页信息异常:",e);
+        }
+        return pageResponseDTO;
+    }
 }

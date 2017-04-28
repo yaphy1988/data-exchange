@@ -4,6 +4,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.util.PageResponseFactory;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -237,5 +241,26 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         initCriteria(criteria, gdsInfoReqDTO);
         return gdsInfoMapper.countByExample(example);
     }
-	
+
+    @Override
+    public PageResponseDTO<GdsInfoRespDTO> queryGdsInfoPage(GdsInfoReqDTO gdsInfoReqDTO) {
+        PageResponseDTO<GdsInfoRespDTO> page = null;
+
+        int pageNo = gdsInfoReqDTO.getPageNo();
+        int pageSize = gdsInfoReqDTO.getPageSize();
+
+        GdsInfoExample gdsInfoExample = new GdsInfoExample();
+        GdsInfoExample.Criteria criteria = gdsInfoExample.createCriteria();
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getGridQuerySortOrder()) && !StringUtil.isBlank(gdsInfoReqDTO.getGridQuerySortName())){
+            gdsInfoExample.setOrderByClause(gdsInfoReqDTO.getGridQuerySortName() + " " + gdsInfoReqDTO.getGridQuerySortOrder());
+        }
+        initCriteria(criteria,gdsInfoReqDTO);
+        PageHelper.startPage(pageNo,pageSize);
+        List<GdsInfo> lists = gdsInfoMapper.selectByExample(gdsInfoExample);
+        PageInfo pageInfo = new PageInfo(lists);
+        page = PageResponseFactory.genPageResponse(pageInfo,GdsInfoRespDTO.class);
+
+        return page;
+    }
+
 }

@@ -8,6 +8,8 @@ import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.*;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.*;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.slf4j.Logger;
@@ -65,6 +67,9 @@ public class GdsController {
             gdsInfoRespDTO = iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO);
             if (gdsInfoRespDTO!=null){
                 ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,gdsInfoVO,null,false);
+                if (!StringUtil.isBlank(gdsInfoVO.getGdsPic())){
+                    gdsInfoVO.setGdsPic(ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_260x260"));
+                }
 //                BeanUtils.copyProperties(gdsInfoRespDTO,gdsInfoVO);
                 //设置分类名称
                 if (gdsInfoRespDTO.getCatId()!=null && gdsInfoRespDTO.getCatId().intValue()>0){

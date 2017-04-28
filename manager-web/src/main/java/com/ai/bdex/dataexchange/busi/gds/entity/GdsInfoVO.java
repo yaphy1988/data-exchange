@@ -1,10 +1,13 @@
 package com.ai.bdex.dataexchange.busi.gds.entity;
 
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
-public class GdsInfoVO implements Serializable{
+public class GdsInfoVO extends BaseResponseDTO implements Serializable{
 	 private Integer gdsId;
 
 	    private String gdsName;
@@ -26,6 +29,8 @@ public class GdsInfoVO implements Serializable{
 	    private String commpanyName;
 
 	    private String status;
+
+		private String statusName;
 
 	    private String shelveUser;
 
@@ -244,4 +249,12 @@ public class GdsInfoVO implements Serializable{
 	    public void setCatName(String catName) {
 	        this.catName = catName;
 	    }
+
+	public String getStatusName() {
+		return statusName;
+	}
+
+	public void setStatusName(String statusName) {
+		this.statusName = statusName;
+	}
 }
