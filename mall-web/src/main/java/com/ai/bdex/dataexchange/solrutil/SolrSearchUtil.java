@@ -23,6 +23,7 @@ public class SolrSearchUtil {
      */  
     @SuppressWarnings("rawtypes")
     public static PageResponseDTO<ResultRespVO> Search(SearchParam searchParam) {
+        long start = System.currentTimeMillis();
         if(searchParam.getSolrClient()==null){
             return null;
         }
@@ -118,6 +119,7 @@ public class SolrSearchUtil {
             logger.info("查询内容:" + query);
             logger.info("文档数量：" + rsp.getResults().getNumFound());
             logger.info("查询花费时间:" + rsp.getQTime());
+            logger.info("查询到返回数据封装花费时间:" + (System.currentTimeMillis() - start));
         } catch (Exception e) {  
             logger.error("查询失败！", e);
             return null;  
