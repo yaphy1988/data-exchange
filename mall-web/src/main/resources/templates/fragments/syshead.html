@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="../../static/css/global.css" th:href="@{/css/global.css}"/>
     <link type="text/css" rel="stylesheet" href="../../static/js/frameajax/frameajax.css" th:href="@{/js/frameajax/frameajax.css}"/>
     <link rel="stylesheet" href="../../static/css/index.css" th:href="@{/css/index.css}"/>
-     <script type="text/javascript">
+    <script type="text/javascript">
         var WEB_ROOT = '[[${#httpServletRequest.contextPath}]]';
     </script>
     <!-- js -->
@@ -31,7 +31,9 @@
 	<script type="text/javascript" src="../static/js-busi/search/searchUtil.js" th:src="@{/js-busi/search/searchUtil.js}"></script>
 	<script type="text/javascript" src="../../static/js/jquery.cookie.js" th:src="@{/js/jquery.cookie.js}"></script>
 
-
+    <script th:inline="javascript">
+        var staffInfoDTO = [[${session.staffInfoDTO}]];
+    </script>
 </head>
 <body class="bgf1" th:remove="all">
 </body>
