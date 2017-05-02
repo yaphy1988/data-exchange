@@ -41,6 +41,13 @@ function encodeURI2(strinfo) {
  */
 /** 保存数据定制信息 */
 function saveMadeData() {
+	
+/*	var staff_id = $("#staff_id").val();
+	if(staff_id == "")
+	{
+	    WEB.msg.info("提示",'请先登录');
+	    return;
+	}*/
 	var needTiel    =  encodeURI2($("#needTiel").val());
 	var needcontent =  encodeURI2($("#needcontent").val());
 	var lnkposen    =  encodeURI2($("#lnkposen").val());
@@ -86,7 +93,7 @@ function saveMadeData() {
 		data : param,
 		success : function(data) {
 		   if(data.success)  {
-			   // WEB.msg.info("提示",'保存成功');
+			    WEB.msg.info("提示",'保存成功');
 			    $("#myModal").hide(); 
 				$("#commitData").attr("disabled", false);
 
@@ -253,7 +260,7 @@ function queryPartner109(moduleId){
 		var	html ='<div class="active item parter-sub">';
 		if(data.success){
 			$(data.moduleAdList).each(function(i,d){
- 				html +='<a href="'+setLinkUrk(d.linkPage)+'"><img src="'+d.vfsId+'" "> </a>';
+ 				html +='<a href="'+setLinkUrk(d.linkPage)+'"  target="_blank"><img src="'+d.vfsId+'" "> </a>';
  				if(parseInt(i+1)%5 == 0){
 					if(parseInt(i+1)== data.moduleAdList.length){
 						html +='</div>'; 

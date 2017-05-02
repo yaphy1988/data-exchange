@@ -7,7 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.Session;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,6 +39,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.DateUtil;
 import com.ai.paas.utils.StringUtil;
@@ -300,20 +303,24 @@ public class HomePageController {
 			String lnkposen = uRLDecoderStr(request.getParameter("lnkposen"));
 			String lnkphone = request.getParameter("lnkphone");
 			String lnkemail = request.getParameter("lnkemail");
-
+			HttpSession hpptsesion = request.getSession(); 
+			String staff_id = StaffUtil.getStaffId(hpptsesion);
 			DataCustomizationRespDTO dataCustomizationRespDTO = new DataCustomizationRespDTO();
 			dataCustomizationRespDTO.setCustomName(needTiel);
 			dataCustomizationRespDTO.setCustomDescrip(needcontent);
 			dataCustomizationRespDTO.setLinkPerson(lnkposen);
 			dataCustomizationRespDTO.setLinkPhnoe(lnkphone);
 			dataCustomizationRespDTO.setCustomMail(lnkemail);
-			dataCustomizationRespDTO.setCreateStaffId("chuangjianren");
+			if(!StringUtil.isBlank(staff_id) )
+			{
+				dataCustomizationRespDTO.setCreateStaffId(staff_id); 
+			}
 			dataCustomizationRespDTO.setStatus(CUSTOMDATA_STATUS_VALID);
 			int count = iPageDisplayRSV.saveDataCustomizationRsv(dataCustomizationRespDTO);
 			model.addAttribute("savecount", count);
 			rMap.put("success", true);
 		} catch (Exception e) {
-			log.error("查询首页导航信息信息异常：" + e.getMessage());
+			log.error("保存数据定制异常：" + e.getMessage());
 			rMap.put("success", false);
 		}
 		return rMap;
