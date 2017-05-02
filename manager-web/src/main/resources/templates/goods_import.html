@@ -178,6 +178,7 @@
 					</td>
 					<td >
 					<div class="label_box">
+					<!-- <div style="display: inline"> -->
 						<p id="gdsLabelList" >
 							<span th:each="gdsLabelVO,catStat:${gdsInfoVO.gdsLabelVOList}"  class="label" th:style="'border:solid 1px '+@{${gdsLabelVO.labColor}}+'; color:'+@{${gdsLabelVO.labColor}}+''" th:labId="${gdsLabelVO.labId}" th:labName="${gdsLabelVO.labName}" th:labColor="${gdsLabelVO.labColor}" th:text="${gdsLabelVO.labName}"></span>
 							<span th:remove="all">API	
@@ -190,9 +191,10 @@
 								<a class=" pl5 colse">×</a>
 							</span>
 						</p>
-						<a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsLabelModal()'"   >请选择</a>
-					</div>
 					
+						
+					</div>
+					<a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsLabelModal()'"   >请选择</a>
 						
 					</td>
 					<td>
