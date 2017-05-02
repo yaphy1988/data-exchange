@@ -38,7 +38,7 @@
                     <!--<td th:text="${#calendars.format(gdsInfo.shelveTime,'yyyy-MM-dd HH:mm:ss')}">2017-04-10 12:25:23</td>-->
                     <td>
                         <p class="pop-link">
-                            <a href="javascript:void(0)" data-toggle="modal" data-target="#doGdsStatusModal" th:if="${gdsInfo.status}=='0' or ${gdsInfo.status} == '2'" targetStatus="1" th:attr="gdsId=${gdsInfo.gdsId}" onclick="doGdsStatusModal(this)">上架</a><i th:if="${gdsInfo.status}=='0' or ${gdsInfo.status }== '2'">|</i>
+                            <a href="javascript:void(0)" th:if="${gdsInfo.status}=='0' or ${gdsInfo.status} == '2'" targetStatus="1" th:attr="gdsId=${gdsInfo.gdsId}" onclick="doGdsStatusModal(this)">上架</a><i th:if="${gdsInfo.status}=='0' or ${gdsInfo.status }== '2'">|</i>
                             <a href="javascript:void(0)" th:if="${gdsInfo.status == '1'}" targetStatus="2" th:attr="gdsId=${gdsInfo.gdsId}" onclick="doGdsStatusModal(this)">下架</a><i th:if="${gdsInfo.status == '1'}">|</i>
                             <a href="javascript:void(0)" th:if="${gdsInfo.status == '9'}" targetStatus="2" oldStatus="9" th:attr="gdsId=${gdsInfo.gdsId}" onclick="doGdsStatusModal(this)">启用</a><i th:if="${gdsInfo.status == '9'}">|</i>
                             <a href="javascript:void(0)" targetStatus="edit" onclick="doGdsStatusModal(this)" th:attr="gdsId=${gdsInfo.gdsId}"  th:if="${gdsInfo.status == '0'} or ${gdsInfo.status == '2'} or ${gdsInfo.status == '9'}">编辑</a><i  th:if="${gdsInfo.status == '0'} or ${gdsInfo.status == '2'} or ${gdsInfo.status == '9'}">|</i>

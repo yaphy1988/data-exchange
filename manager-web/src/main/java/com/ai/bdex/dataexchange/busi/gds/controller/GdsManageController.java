@@ -157,7 +157,7 @@ public class GdsManageController {
                 GdsInfoReqDTO updateReqDTO = new GdsInfoReqDTO();
                 ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,updateReqDTO,null,false);
                 updateReqDTO.setStatus(targetStatus);
-                iGdsInfoRSV.updateGdsInfo(updateReqDTO);
+                iGdsInfoRSV.updateGdsInfoManager(updateReqDTO);
 
             }else{
                 ajaxJson.setSuccess(false);

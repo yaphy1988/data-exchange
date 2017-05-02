@@ -304,23 +304,24 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
     public int updateGdsInfoManager(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
         int gdsId =0;
         try {
-            gdsId = iGdsInfoSV.insertGdsInfo(gdsInfoReqDTO);
-            try{
-                if (gdsId!=0){
-                    if ("1".equals(gdsInfoReqDTO.getStatus())){
-                        iDeltaIndexServiceSV.deltaImport(SolrCoreEnum.GDS.getCode(),gdsId);
-                    }else if ("2".equals(gdsInfoReqDTO.getStatus())){
-                        List<Integer> gdsIds = new ArrayList<Integer>();
-                        gdsIds.add(gdsId);
-                        iDeltaIndexServiceSV.deleteDeltaBatch(SolrCoreEnum.GDS.getCode(),gdsIds);
-                    }
-                }
-            }catch (Exception e){
-                log.error("调用solr服务更新异常：",e);
-            }
+            gdsId = iGdsInfoSV.updateGdsInfo(gdsInfoReqDTO);
+
         } catch (Exception e) {
             log.error("跟新商品基本信息异常:", e);
             throw new Exception(e);
+        }
+        try{
+            if (gdsId!=0){
+                if ("1".equals(gdsInfoReqDTO.getStatus())){
+                    iDeltaIndexServiceSV.deltaImport(SolrCoreEnum.GDS.getCode(),gdsId);
+                }else if ("2".equals(gdsInfoReqDTO.getStatus())){
+                    List<Integer> gdsIds = new ArrayList<Integer>();
+                    gdsIds.add(gdsId);
+                    iDeltaIndexServiceSV.deleteDeltaBatch(SolrCoreEnum.GDS.getCode(),gdsIds);
+                }
+            }
+        }catch (Exception e){
+            log.error("调用solr服务更新异常：",e);
         }
         return gdsId;
     }

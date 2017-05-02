@@ -149,7 +149,7 @@ function doGdsStatus(obj) {
         data:params,
         async:true,
         success:function(jsonObj){
-            $("#doGdsStatusModal").hide();
+            $("#doGdsStatusModal").modal('hide');
             if (jsonObj){
                 if (jsonObj.success){
                     if (targetStatus == "1"){
@@ -215,7 +215,7 @@ function doGdsStatusModal(obj) {
     $("#doGdsStatusModalConfirm").attr("gdsId",gdsId);
     $("#doGdsStatusModalConfirm").attr("targetStatus",targetStatus);
     $("#doGdsStatusModalConfirm").attr("oldStatus",oldStatus);
-    $("#doGdsStatusModal").modal();
+    $("#doGdsStatusModal").modal('show');
 }
 
 function checkRecGds(obj){
