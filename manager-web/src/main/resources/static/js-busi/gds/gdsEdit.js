@@ -1,4 +1,5 @@
 var ckeditPackage,ckeditDataDetail,ckeditDataExample,ckeditCase,ckeditCompany;
+var saveValid=true;
 $(function(){
 	var isEdit = $("#isEdit").val();
 	var catFirst = $("#catFirst").val();
@@ -54,6 +55,7 @@ function changeLabel(){
 	$("#addChangeLabel").append(labAppend);
 
 }
+
 /**
  * 配置标签保存
  * @returns
@@ -69,12 +71,29 @@ function saveGdsLabelQuik(){
 		$("#myModal2").modal('hide');
 		return;
 	}
-	var labAppend = '<span class="label" style="border:solid 1px ' + labColor
-			+ ';color:' + labColor + '; " labId="" labName="' + labName
-			+ '" labColor="' + labColor + '">' + labName + '</span>';
+	if(labName==""){
+		WEB.msg.info("提示","标签名称不能为空");
+		return;
+	}
+	if(labName.length>20){
+		WEB.msg.info("提示","标签名称不能超过20个字符");
+		return;
+	}
+	var labAppend = '<p style="border:solid 1px ' + labColor+ ';color:' 
+					+ labColor + '; " labId="" labName="' + labName+ '" labColor="' 
+					+ labColor + '"><span><label>' 
+					+ labName + '</label><a class=" pl5 colse"  onclick="deleteGdsLabel(this)">×</a></span></p>';
 	$("#gdsLabelList").append(labAppend);
 	$("#myModal2").modal('hide');
-
+}
+/**
+ * 删除标签
+ * @param obj
+ */
+function deleteGdsLabel(obj){
+	WEB.msg.warn("提示","确定要删除该标签吗？",function(){
+		$(obj).parent().parent().remove();
+	});
 }
 /**
  * 新增套餐
@@ -84,15 +103,24 @@ function addPackAgeOne(){
 	html +='<tr><td><input type="text" name="skuName"></td>'
 		   +'<td><input type="text" name="packPrice"></td>'
 		   +'<td><input type="text" name="packTimes"></td>'
-		   +'<td><input type="text" name="packDay"></td></tr>';
+		   +'<td><input type="text" name="packDay"></td>'
+		   +'<td><a href="javascript:void(0);" onclick="deleteGdsSku(this)">删除</a></td></tr>';
 	$("#APIPackage").find("tbody").append(html);
+}
+/**
+ * 删除套餐
+ */
+function deleteGdsSku(obj){
+	WEB.msg.warn("提示","确定要删除该套餐吗？",function(){
+		$(obj).parent().parent().remove();
+	});
 }
 /**
  * 查询分类属表
  */
 function queryGdsProp(catId){
 	//商品分类：API、数据定制、解决方案
-	var url="/gdsEdit/queryGdsPropList";
+	var url=WEB_ROOT+"/gdsEdit/queryGdsPropList";
 	var params={
 			catId:catId
 	};
@@ -118,7 +146,7 @@ function queryGdsProp(catId){
  */
 function queryGdsInfo2Prop(gdsId){
 	//商品分类：API、数据定制、解决方案
-	var url="/gdsEdit/queryGdsInfo2PropList";
+	var url=WEB_ROOT+"/gdsEdit/queryGdsInfo2PropList";
 	var params={
 			gdsId:gdsId
 	};
@@ -150,12 +178,12 @@ function addProp(layout) {
  */
 function queryGdsLabelQuikList(){
 	//商品分类：API、数据定制、解决方案
-	var  labelName = $("#qryLabName").val();
+	var  labName = $("#qryLabName").val();
 	var  catFirst = $("#catFirst").val();
-	var url="/gdsEdit/queryGdsLabelQuikList";
+	var url=WEB_ROOT+"/gdsEdit/queryGdsLabelQuikList";
 	var params={
 			catFirst:catFirst,
-			labelName:labelName
+			labName:labName
 	};
 	$.ajax({
 		url : url,
@@ -170,7 +198,8 @@ function queryGdsLabelQuikList(){
  			if(data.object != null && data.object != ""){
 				for(var i=0;i<data.object.length;i++){
 					var prop=data.object[i];
-                	append +='<tr><td labId="'+prop.labId+'" labColor="'+prop.labColor+'"  labName="'+prop.labName+'" onclick="selectGdsLabel(this)">'+prop.labName+'</td></tr>';
+                	append +='<tr><td><span class="label" labId="'+prop.labId+'" labColor="'+prop.labColor+'"  labName="'+prop.labName+'" onclick="selectGdsLabel(this)"'
+                			+'style="border:solid 1px '+prop.labColor+';color:'+prop.labColor+'; ">'+prop.labName+'</span></td></tr>';
 				}
 				html.append(append);
              }
@@ -193,7 +222,7 @@ function querySubCatNodes(obj){
 	//当前操作的节点层级
 	var nodeLevel = Number($this.attr('level'));
 
-	var url="/gdsEdit/querySubCatNodes";
+	var url=WEB_ROOT+"/gdsEdit/querySubCatNodes";
 	var params={
 			catId:catId
 	};
@@ -227,7 +256,7 @@ function catIsSubNode(){
 	var catId=lastCatDiv.attr("catId");
 	var catName=lastCatDiv.attr("catName");
 	var level =  Number(lastCatDiv.attr("level"));
-	var url="/gdsEdit/querySubCatNodes";
+	var url=WEB_ROOT+"/gdsEdit/querySubCatNodes";
 	var params={
 			catId:catId
 	};
@@ -303,6 +332,65 @@ function selectCatCallback(catId, catName, catFirst, catFirstName) {
 
 // 保存商品信息
 function saveGds(){
+	saveValid=true;
+	var gdsInfo2CatVO = createGdsInfo2CatVO();
+	var gdsInfoVO=createGdsInfoVO();
+	if(!saveValid){
+		return;
+	}
+	var gdsLabelVOList=createGdsLabelList();
+	var gdsSkuVOList = createGdsSkuList();
+	if(!saveValid){
+		return;
+	}
+	var gdsInfo2PropVOList = createGdsInfo2PropList();
+	if(!saveValid){
+		return;
+	}
+	//整个活动信息的结构
+	var gdsInfoObj={
+			gdsInfoVO:{},//商品基本信息
+			gdsInfo2CatVO:{},//商品分类关联
+			gdsLabelVOList:[],// 商品标签
+			gdsSkuVOList:[],//单品信息
+			gdsInfo2PropVOList:[],// 属性信息
+		
+	}
+	//逐一赋值
+	gdsInfoObj.gdsInfoVO=JSON.stringify(gdsInfoVO);
+	gdsInfoObj.gdsInfo2CatVO=JSON.stringify(gdsInfo2CatVO);
+	if(gdsLabelVOList!=undefined){
+		gdsInfoObj.gdsLabelVOList=JSON.stringify(gdsLabelVOList);	
+	}
+	if(gdsSkuVOList!=undefined){
+		gdsInfoObj.gdsSkuVOList=JSON.stringify(gdsSkuVOList);	
+	}
+	if(gdsInfo2PropVOList!=undefined){
+		gdsInfoObj.gdsInfo2PropVOList=JSON.stringify(gdsInfo2PropVOList);	
+	}
+	var gdsId=$("#gdsId").val();
+	if(gdsId==""){
+		var url=WEB_ROOT+"/gdsEdit/addGds";
+	}else{
+		var url=WEB_ROOT+"/gdsEdit/editGds";
+
+	}
+	$.ajax({
+		url : url,
+		type : "POST",
+		dataType : "json",
+		async : false,
+		data : gdsInfoObj,
+        success : function(data) {
+            if (data.success=="true") {
+            	WEB.msg.info("提示","保存成功",function(){
+                	window.location.href = WEB_ROOT+"/gdsManage/index";
+            	});
+            }
+        }
+    });
+}
+function createGdsInfo2CatVO(){
 	var gdsId = $("#gdsId").val();
 	var catId = $("#catId").val();
 	var catFirst = $("#catFirst").val();
@@ -313,8 +401,15 @@ function saveGds(){
 	};
 	if(catFirst==""){
 		$('td[name="catFirstError"] span').html("请选择商品分类");
+		saveValid=false;
 		return;
 	}
+	return gdsInfo2CatVO;
+}
+function createGdsInfoVO(){
+	var gdsId = $("#gdsId").val();
+	var catId = $("#catId").val();
+	var catFirst = $("#catFirst").val();
 	var gdsName = $("#gdsName").val();
 	var gdsSubTitle = $("#gdsSubTitle").val();
 	var apiId = $("#apiId").val();
@@ -323,13 +418,14 @@ function saveGds(){
 	var funIntroduction = $("#funIntroduction").val();
 	var commpanyName = $("#commpanyName").val();
 	if(ifRecommend==undefined){
-		ifRecommend="";
+		ifRecommend="0";
 	}
 	if(funIntroduction==undefined){
 		funIntroduction="";
 	}else{
 		if(funIntroduction!=""&&funIntroduction.length>1000){
 			$('td[name="funIntroductionError"] span').html("功能介绍不能超过1000个字符");
+			saveValid=false;
 			return;
 		}
 	}
@@ -338,27 +434,41 @@ function saveGds(){
 	}else{
 		if(commpanyName!=""&&commpanyName.length>1000){
 			$('td[name="commpanyNameError"] span').html("公司名称不能超过50个字符");
+			saveValid=false;
+			return;
+		}
+	}
+	//API分类
+	if(catFirst=="1"){
+		if(apiId==""){
+			$('td[name="apiIdError"] span').html("请选择API接口");
+			saveValid=false;
 			return;
 		}
 	}
 	if(gdsName==""){
 		$('td[name="gdsNameError"] span').html("请录入商品名称");
+		saveValid=false;
 		return;
 	}
 	if(gdsName.length>20){
 		$('td[name="gdsNameError"] span').html("商品名称不能超过20个字符");
+		saveValid=false;
 		return;
 	}
 	if(gdsSubTitle==""){
 		$('td[name="gdsSubTitleError"] span').html("请录入商品副标题");
+		saveValid=false;
 		return;
 	}
 	if(gdsSubTitle.length>20){
 		$('td[name="gdsSubTitleError"] span').html("商品副标题不能超过30个字符");
+		saveValid=false;
 		return;
 	}
 	if(gdsPic==""){
 		WEB.msg.error("提示","请上传图片！");
+		saveValid=false;
 		return;
 	}
 	var gdsInfoVO={
@@ -373,8 +483,30 @@ function saveGds(){
 			funIntroduction:funIntroduction,
 			commpanyName:commpanyName
 	}
-	var skuValid = true;
+	return gdsInfoVO;
+}
+function createGdsLabelList(){
+	var gdsLabelVOList=new Array();
+	$("#gdsLabelList").find("p").each(function(){
+		var labName =$(this).attr("labName");
+		var labColor =$(this).attr("labColor");
+		var gdsLabelVO={
+				labName:labName,
+				labColor:labColor
+		}
+		gdsLabelVOList.push(gdsLabelVO);
+	});
+	return gdsLabelVOList;
+}
+function createGdsSkuList(){
 	var gdsSkuVOList=new Array();
+	var catFirst = $("#catFirst").val();
+	var length=$("#APIPackage").find("tbody tr").length;
+	if(length<1&&catFirst=="1"){
+		WEB.msg.error("提示","请添加套餐！");
+		saveValid=false;
+		return;
+	}
 	$("#APIPackage").find("tbody tr").each(function(){
 		var skuName=$(this).find('[name="skuName"]').val();
 		var packPrice =$(this).find('[name="packPrice"]').val();
@@ -382,29 +514,29 @@ function saveGds(){
 		var packDay =$(this).find('[name="packDay"]').val();
 		if(skuName==""){
 			WEB.msg.error("提示","套餐名称不能为空！");
-			skuValid=false;
+			saveValid=false;
 			return;
 		}else if(skuName.length>20){
 			WEB.msg.error("提示","套餐名称不能超过20个字符！");
-			skuValid=false;
+			saveValid=false;
 			return;
 		}
 		if(packPrice==""){
 			WEB.msg.error("提示","套餐价格不能为空！");
-			skuValid=false;
+			saveValid=false;
 			return;
 		}else if(!WEB.checkNum.isPirce(packPrice)){
 			WEB.msg.error("提示","套餐价格输入错误");
-			skuValid=false;
+			saveValid=false;
 			return;
 		}
 		if(packTimes==""){
 			WEB.msg.error("提示","调用次数不能为空！");
-			skuValid=false;
+			saveValid=false;
 			return;
 		}else if(!isInteger(packTimes)){
 			WEB.msg.error("提示","调用次数应为整数！");
-			skuValid=false;
+			saveValid=false;
 			return;
 		}
 		if(packTimes!="" ){
@@ -423,124 +555,10 @@ function saveGds(){
 		}
 		gdsSkuVOList.push(gdsSkuVO);
 	});
-	if(!skuValid){
-		return;
-	}
-	var gdsLabelVOList=createGdsLabelList();
-	//var gdsSkuVOList = createGdsSkuList();
-	var gdsInfo2PropVOList = createGdsInfo2PropList();
-	//整个活动信息的结构
-	var gdsInfoObj={
-			gdsInfoVO:{},//商品基本信息
-			gdsInfo2CatVO:{},//商品分类关联
-			gdsLabelVOList:[],// 商品标签
-			gdsSkuVOList:[],//单品信息
-			gdsInfo2PropVOList:[],// 属性信息
-		
-	}
-	//API分类
-	if(catFirst=="1"){
-		if(apiId==""){
-			$('td[name="apiIdError"] span').html("请选择API接口");
-			return;
-		}
-		if(gdsSkuVOList.length==0){
-			return;
-		}
-	}
-	//逐一赋值
-	gdsInfoObj.gdsInfoVO=JSON.stringify(gdsInfoVO);
-	gdsInfoObj.gdsInfo2CatVO=JSON.stringify(gdsInfo2CatVO);
-	if(gdsLabelVOList!=undefined){
-		gdsInfoObj.gdsLabelVOList=JSON.stringify(gdsLabelVOList);	
-	}
-	if(gdsSkuVOList!=undefined){
-		gdsInfoObj.gdsSkuVOList=JSON.stringify(gdsSkuVOList);	
-	}
-	if(gdsInfo2PropVOList!=undefined){
-		gdsInfoObj.gdsInfo2PropVOList=JSON.stringify(gdsInfo2PropVOList);	
-	}
-	var gdsId=$("#gdsId").val();
-	if(gdsId==""){
-		var url="/gdsEdit/addGds";
-	}else{
-		var url="/gdsEdit/editGds";
-
-	}
-	
-	$.ajax({
-		url : url,
-		type : "POST",
-		dataType : "json",
-		async : false,
-		data : gdsInfoObj,
-        success : function(data) {
-            if (data.success=="true") {
-            	WEB.msg.info("提示","保存成功");
-            }
-        }
-    });
-}
-
-function createGdsLabelList(){
-	var gdsLabelVOList=new Array();
-	$("#gdsLabelList").find("span").each(function(){
-		//var labId=$(this).attr("labId");
-		var labName =$(this).attr("labName");
-		var labColor =$(this).attr("labColor");
-		var gdsLabelVO={
-				//labId:labId,
-				labName:labName,
-				labColor:labColor
-		}
-		gdsLabelVOList.push(gdsLabelVO);
-	});
-	return gdsLabelVOList;
-}
-function createGdsSkuList(){
-	var gdsSkuVOList=new Array();
-	$("#APIPackage").find("tbody tr").each(function(){
-		var skuName=$(this).find('[name="skuName"]').val();
-		var packPrice =$(this).find('[name="packPrice"]').val();
-		var packTimes =$(this).find('[name="packTimes"]').val();
-		var packDay =$(this).find('[name="packDay"]').val();
-		if(skuName!=undefined&&skuName==""){
-			WEB.msg.error("提示","套餐名称不能为空！");
-			return;
-		}else if(skuName.length>20){
-			WEB.msg.error("提示","套餐名称不能超过20个字符！");
-			return;
-		}
-		if(packPrice!=undefined&&packPrice==""){
-			WEB.msg.error("提示","套餐价格不能为空！");
-			return;
-		}else if(!WEB.checkNum.isPirce(packPrice)){
-			WEB.msg.error("提示","套餐价格输入错误");
-			return;
-		}
-		if(packTimes!=undefined&&packTimes==""){
-			WEB.msg.error("提示","调用次数不能为空！");
-			return;
-		}else if(!isInteger(packTimes)){
-			WEB.msg.error("提示","调用次数应为整数！");
-			return;
-		}
-		if(packTimes!=undefined&&packTimes!="" &&!WEB.checkNum(packPrice)){
-			WEB.msg.error("提示","有效期应为整数！");
-			return;
-		}
-		var gdsSkuVO={
-				skuName:skuName,
-				packPrice:packPrice,
-				packTimes:packTimes,
-				packDay:packDay
-		}
-		gdsSkuVOList.push(gdsSkuVO);
-	});
 	return gdsSkuVOList;
 }
 function createGdsInfo2PropList(){
-	var gdsSkuVOList=new Array();
+	var gdsInfo2PropVOList=new Array();
 	$('tr[name="dataProps"]').each(function(){
 		var gpId=$(this).find("td").attr("gpId");
 		var proId=$(this).find("td").attr("proId");
@@ -548,18 +566,40 @@ function createGdsInfo2PropList(){
 		var proType=$(this).find("td").attr("proType");
 		var proValue=$(this).find("textarea").val();
 		var showOrder=$(this).find("td").attr("showOrder");
-		//if(proValue!=""){
-			var gdsInfo2PropVO ={
-					gpId:gpId,
-					proId:proId,
-					proName:proName,
-					proValue:proValue,
-					showOrder:showOrder,
-					proType:proType	
+		if(proId=="2"){//数据描述
+			if(proValue.length>300){
+				WEB.msg.error("提示","数据描述不能超过300个字符！");
+				saveValid=false;
+				return;
 			}
-			gdsSkuVOList.push(gdsInfo2PropVO);
-		//}
+		}
+		if(proId=="5"){//数据描述
+			if(proValue.length>300){
+				WEB.msg.error("提示","适用范围不能超过200个字符！");
+				saveValid=false;
+				return;
+			}
+		}
+		if(proId=="6"){//特点
+			if(proValue.length>300){
+				WEB.msg.error("提示","特点不能超过200个字符！");
+				saveValid=false;
+				return;
+			}
+		}
+		var gdsInfo2PropVO = {
+			gpId : gpId,
+			proId : proId,
+			proName : proName,
+			proValue : proValue,
+			showOrder : showOrder,
+			proType : proType
+		}
+		gdsInfo2PropVOList.push(gdsInfo2PropVO);
 	});
+	if(!saveValid){
+		return;
+	}
 	$("#addProp").find(".ckeditName").each(function(){
 		var gpId=$(this).attr("gpId");
 		var proId=$(this).attr("proId");
@@ -579,9 +619,6 @@ function createGdsInfo2PropList(){
 		}else if(ckeditName=="editorCompany"){
 			proValue=ckeditCompany.getData()
 		}
-		if(proValue!=""){
-			proValue=$.trim(encodeURI(proValue));
-		}
 			var gdsInfo2PropVO ={
 					gpId:gpId,
 					proId:proId,
@@ -590,10 +627,9 @@ function createGdsInfo2PropList(){
 					showOrder:showOrder,
 					proType:proType	
 			}
-			gdsSkuVOList.push(gdsInfo2PropVO);
-		//}
+			gdsInfo2PropVOList.push(gdsInfo2PropVO);
 	});
-	return gdsSkuVOList;
+	return gdsInfo2PropVOList;
 }
 /**
  * 上传图片
@@ -618,7 +654,7 @@ function uploadImage(object) {
 		alert('请选择图片文件(.jpg,.png,.jpeg,.gif,.bmp).');
 		return;
 	}
-	var url ='/gdsEdit/uploadImage';
+	var url =WEB_ROOT+'/gdsEdit/uploadImage';
 	var callback = function(data, status) {
 
 		/** 上传成功，隐藏上传组件，并显示该图片 */

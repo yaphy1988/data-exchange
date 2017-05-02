@@ -1,4 +1,5 @@
 @charset "UTF-8";
+
 /* CSS Document 更改测试*/
 html{
 	font-family:"microsoft yahei",Helvetica,Arial,Verdana,sans-serif;
@@ -104,6 +105,7 @@ q:before, q:after, blockquote:before, blockquote:after {
 
 .hidden{ display:none;}
 .show{ display:block;}
+.overflow-hidden{overflow:hidden;}
 
 .col_000{color: #000;}
 .col_333{color: #333;}
@@ -188,7 +190,10 @@ q:before, q:after, blockquote:before, blockquote:after {
 .clearfix:after {content:"."; display:block; height:0; clear:both; visibility:hidden;}
 .clearfix {zoom:1;}
 
-
+/* 按钮圆角 */
+.btn{
+	border-radius: 0;
+}
 /* 橙色btn */
 a.btn-orange,
 .btn-orange {
@@ -531,3 +536,352 @@ fieldset[disabled] .btn-default.focus {
 	.modal-body{
 	    font-size: 14px;
 	}
+
+	
+	/* 标签 */
+	.label_box {
+		display: inline-block;
+	}
+	.label_box > p{
+		display: inline-block;
+		border: solid 1px;
+		border-color: #ec6000;
+		padding: 3px 5px;
+		color: #ec6000;
+		border-radius: 3px;
+		margin-bottom: 5px;
+		margin-left: 3px;
+	}
+	.label_box .colse{
+		color: #ec6000;
+	}
+	.label_box .colse:hover{
+		text-decoration: none;
+	}
+	.label_box p:hover{
+		/* background-color: #ec6000;
+		color: #fff; */
+		cursor: pointer;
+	}
+	.label_box p:hover .colse{
+		/* color: #fff; */
+	}
+
+body{
+	}
+
+/* 布局 */
+.m_main{
+	width: 100%;
+	float: left;
+}
+.m_con{
+	margin-left: 220px;
+	font-size: 12px;
+	padding: 20px;
+	padding-top: 70px;
+}
+.m_nav{
+	width: 220px; 
+	float: left; 
+	margin-left: -100%; 
+	font-size: 12px;
+}
+.m_nav .nav{
+	width:220px;
+	position: fixed;
+	height: 100%;
+	background-color: #32363c;
+	left: 0;
+	top: 0;
+	z-index: 10;
+	padding-top: 70px;
+	overflow-y: auto;
+	color: #a8afb9;
+}
+/* header */
+.m_header{
+	height: 60px;
+	border-bottom: solid 1px #eee;
+	background-color: #fbfbfb;
+	z-index: 100;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+}
+.m_header .Logo{
+	margin-top: 10px;
+	margin-left: 10px;
+	display: inline-block;
+	text-align: center;
+	line-height: 35px;
+}
+.m_hdlist{
+	float: right; 
+	width: 60%;
+}
+.m_hdlist > li{
+	float:right;
+	border-right: solid 1px #eee;
+}
+.m_hdlist > li:last-child{
+	border-left: solid 1px #eee;
+}
+.m_hdlist li a.item{
+	height: 60px;
+	line-height: 60px;
+	padding: 0 20px;
+	display: inline-block;
+	color: #666;
+	color: #333;
+	cursor: pointer;
+
+}
+.m_hdlist li i{
+	font-size: 12px;
+	color: #999;
+}
+
+.m_hdlist li a:hover{
+	color: #0064dc;
+	text-decoration: none;
+}
+.m_hdlist .dropdown-menu.QRcode{
+	min-width: 110px;
+}
+.m_hdlist .dropdown-menu.QRcode li{
+	padding-left: 5px;
+}
+
+/* nav */
+.m_nav .nav > ul{
+	padding: 15px;
+}
+
+.m_nav .navTit{
+	height: 50px;
+	font-size: 14px;
+	margin-bottom: 10px;
+	border-bottom: 2px solid #393e45;
+
+}
+.m_nav .nav a{
+	color: #a8afb9;
+}
+.m_nav .nav li{
+	color: #a8afb9;
+	padding: 10px;
+	cursor: pointer;
+	overflow-x: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.m_nav .nav li.active a,
+.m_nav .nav li.active a:hover,
+.m_nav .nav li a:hover{
+	color: #ec6000;
+}
+.infoItem{
+	padding-left: 5px;
+	padding-top: 10px;
+}
+.m_nav .nav .infoItem li{
+	padding: 8px;
+}
+
+/* con */
+.m_con .title{
+	font-size: 14px;
+	color: #666;
+	font-weight: bold;
+	line-height: 50px;
+	border-bottom: solid 1px #eee;
+	margin-bottom: 20px;
+}
+/* 控件 */
+.float_File.form-control{
+	box-shadow: none;
+	border: none;
+	padding: 0;
+	height: 26px;
+}
+/* 编辑表格 */
+.borTable.editTable,
+.borTable{
+	border: solid 1px #eee;
+
+}
+.borTable.editTable,
+.borTable .editTable{
+	width: 100%;
+}
+.editTable.table-hover td{
+	padding: 10px 0;
+}
+
+.editTable td.Hint{
+	padding:20px;
+
+	text-align: right;
+	color: #999;
+}
+.editTable td.Hint.tips{
+	padding:0 20px;
+}
+.editTable .label{
+	margin-bottom: 3px;
+	display: inline-block;
+}
+/* 列表表格 */
+.listTable{
+	width: 100%;
+}
+.listTable .tit{
+	background-color:#fbfbfb;
+	padding:10px;
+	border: solid 1px #eee;
+	border-bottom: transparent;
+}
+.listTable h2{
+	font-size: 14px;
+	display: inline-block;
+	line-height: 36px;
+}
+.listTable .input-group{
+	float: right;
+	width: 60%;
+}
+.listTable .con{
+	width: 100%;
+	padding:10px;
+	border: solid 1px #eee;
+	overflow-y:auto;
+}
+
+.listTable table.listitem td{
+	border: transparent;
+}
+.listTable .listitem td{
+	padding: 10px;
+	cursor: pointer;
+}
+.listTable .table > thead > tr > th,
+.listTable .table > tbody > tr > th,
+.listTable .table > tfoot > tr > th,
+.listTable .table > thead > tr > td,
+.listTable .table > tbody > tr > td,
+.listTable .table > tfoot > tr > td{
+	vertical-align: middle;
+}
+
+/* 多个层级分类选择 */
+.ClassItem{
+	display: inline-block;
+	float: left;
+}
+/* 说明文字处在同一行 */
+.tips.input-group > .input-group-btn > .btn{
+ border-radius: 0;
+ margin-left: -1px;
+}
+/* 说明文字 */
+.tip{
+	color: red;
+	vertical-align: middle;
+	padding-left: 15px;
+}
+/* 模态框 */
+.m_modal
+{
+	font-size: 12px;
+}
+.m_modal .modal-footer{
+	text-align: center;
+}
+
+/*商品管理添加*/
+.top-table{
+    padding: 30px 20px 20px;
+}
+
+.top-table .editTable td.Hint.tips{
+    padding: 0;
+
+}
+.top-table .editTable td{
+    padding: 8px;
+}
+.text-center th{
+    text-align: center;
+}
+.pop-link{
+    line-height: 1.8;
+}
+.pop-link i,.pop-link a{
+    margin: 0px 3px;
+    outline: none;
+}
+.pop-link i{
+    color: #999;
+}
+
+
+/*模块管理*/
+.input-group{
+    width: 100%;
+}
+.radio label{
+    margin-right: 16px;
+}
+.radio input{
+    position: relative;
+    top:-2px
+}
+.edit-title{
+    background: #dee5f3;
+    color: #2b4099;
+    padding: 5px 20px;
+    line-height: 2;
+    font-weight: bold;
+}
+
+.table-banner img{
+    width: 160px;
+    height: 50px;
+}
+
+.left-btn{
+    float: left;
+}
+.left-btn button{
+    background: #dee5f3;
+    border:1px solid #dee5f3;
+    color: #2b4099;
+    padding: 5px 20px;
+}
+
+.check-link input{
+    width: 76%;float:left;
+}
+.check-link a{
+    line-height: 34px;
+    margin-left: 20px;
+}
+
+/* 控件宽度 */
+.wt100{width: 100px!important;}
+.wt150{width: 150px!important;}
+.wt200{width: 200px!important;}
+.wt300{width: 300px!important;}
+.wt400{width: 400px!important;}
+.wt500{width: 500px!important;}
+
+/* 控件圆角 */
+.form-control{
+	border-radius: 0;
+}
+
+
+/*强制去除table表格边线 tangyk*/
+.ClearSideline td{ border:0px !important;}

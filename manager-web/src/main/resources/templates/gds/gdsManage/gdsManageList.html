@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<!-- Nav tabs -->
+<ul class="nav nav-tabs" role="tablist">
+    <li class="active" th:class="${status} == ''?'active':''"><a href="javascript:void(0)" onclick="tabClick('')" aria-controls="home" role="tab" data-toggle="tab">全部</a></li>
+    <li th:class="${status} == '0'?'active':''"><a href="javascript:void(0)" onclick="tabClick('0')" aria-controls="profile" role="tab" data-toggle="tab">待上架</a></li>
+    <li th:class="${status} == '1'?'active':''"><a href="javascript:void(0)" onclick="tabClick('1')" aria-controls="messages" role="tab" data-toggle="tab">已上架</a></li>
+    <li th:class="${status} == '2'?'active':''"><a href="javascript:void(0)" onclick="tabClick('2')" aria-controls="settings" role="tab" data-toggle="tab">已下架</a></li>
+    <li th:class="${status} == '9'?'active':''"><a href="javascript:void(0)" onclick="tabClick('9')" aria-controls="settings" role="tab" data-toggle="tab">已删除</a></li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content pt15">
+    <div role="tabpanel" class="tab-pane active" id="tab01">
+        <table class="table table-bordered text-center" >
+            <thead>
+            <tr class="active">
+                <th>商品编码</th>
+                <th width="240">商品名称</th>
+                <th>上架状态</th>
+                <th>商品类型</th>
+                <th>是否推荐</th>
+                <th>操作</th>
+            </tr>
+            </thead>
+            <tbody id="gdsListTbody">
+                <tr th:if="!${pageInfo} or !${pageInfo.result} or ${#lists.size(pageInfo.result) lt 1}">
+                    <td colspan="6">暂无数据</td>
+                </tr>
+                <tr th:if="${pageInfo} and ${pageInfo.result} and ${#lists.size(pageInfo.result) gt 0}" th:each="gdsInfo,gdsInfoStat : ${pageInfo.result}">
+                    <td th:text="${gdsInfo.gdsId}">12345</td>
+                    <td th:text="${gdsInfo.gdsName}"> 2015年广东省汽车零部件生产企业状况</td>
+                    <td th:text="${gdsInfo.statusName}">待上架</td>
+                    <td th:text="${gdsInfo.catName}">API</td>
+                    <td >
+                        <input type="checkbox" th:checked="${gdsInfo.ifRecommend} == '1'" onclick="checkRecGds(this)" th:attr="gdsId=${gdsInfo.gdsId}" >
+                    </td>
+                    <!--<td th:text="${#calendars.format(gdsInfo.shelveTime,'yyyy-MM-dd HH:mm:ss')}">2017-04-10 12:25:23</td>-->
+                    <td>
+                        <p class="pop-link">
+                            <a href="javascript:void(0)" th:if="${gdsInfo.status}=='0' or ${gdsInfo.status} == '2'" targetStatus="1" th:attr="gdsId=${gdsInfo.gdsId}" onclick="doGdsStatusModal(this)">上架</a><i th:if="${gdsInfo.status}=='0' or ${gdsInfo.status }== '2'">|</i>
+                            <a href="javascript:void(0)" th:if="${gdsInfo.status == '1'}" targetStatus="2" th:attr="gdsId=${gdsInfo.gdsId}" onclick="doGdsStatusModal(this)">下架</a><i th:if="${gdsInfo.status == '1'}">|</i>
+                            <a href="javascript:void(0)" th:if="${gdsInfo.status == '9'}" targetStatus="2" oldStatus="9" th:attr="gdsId=${gdsInfo.gdsId}" onclick="doGdsStatusModal(this)">启用</a><i th:if="${gdsInfo.status == '9'}">|</i>
+                            <a href="javascript:void(0)" targetStatus="edit" onclick="doGdsStatusModal(this)" th:attr="gdsId=${gdsInfo.gdsId}"  th:if="${gdsInfo.status == '0'} or ${gdsInfo.status == '2'} or ${gdsInfo.status == '9'}">编辑</a><i  th:if="${gdsInfo.status == '0'} or ${gdsInfo.status == '2'} or ${gdsInfo.status == '9'}">|</i>
+                            <a href="javascript:void(0)" targetStatus="look" onclick="doGdsStatusModal(this)" th:attr="gdsId=${gdsInfo.gdsId}" >查看</a><i th:if="${gdsInfo.status == '0'} or ${gdsInfo.status == '2'}">|</i>
+                            <a href="javascript:void(0)" th:if="${gdsInfo.status == '0'} or ${gdsInfo.status == '2'}" targetStatus="9" th:attr="gdsId=${gdsInfo.gdsId}" onclick="doGdsStatusModal(this)">删除</a>
+                        </p>
+                    </td>
+                </tr>
+                <tr th:remove="all">
+                    <td>12345</td>
+                    <td> 2015年广东省汽车零部件生产企业状况</td>
+                    <td>待上架</td>
+                    <td>API</td>
+                    <td>2017-04-10 12:25:23</td>
+                    <td>
+                        <p class="pop-link">
+                            <a href="#">上架</a><i>|</i>
+                            <a href="#">编辑</a><i>|</i>
+                            <a href="#">查看</a><i>|</i>
+                            <a href="#">删除</a>
+                        </p>
+                    </td>
+                </tr>
+                <tr th:remove="all">
+                    <td>12345</td>
+                    <td> 2015年广东省汽车零部件生产企业状况</td>
+                    <td>待上架</td>
+                    <td>API</td>
+                    <td>2017-04-10 12:25:23</td>
+                    <td>
+                        <p class="pop-link">
+                            <a href="#">上架</a><i>|</i>
+                            <a href="#">编辑</a><i>|</i>
+                            <a href="#">查看</a><i>|</i>
+                            <a href="#">删除</a>
+                        </p>
+                    </td>
+                </tr>
+                <tr th:remove="all">
+                    <td>12345</td>
+                    <td> 2015年广东省汽车零部件生产企业状况</td>
+                    <td>待上架</td>
+                    <td>API</td>
+                    <td>2017-04-10 12:25:23</td>
+                    <td>
+                        <p class="pop-link">
+                            <a href="#">上架</a><i><i>|</i></i>
+                            <a href="#">编辑</a><i>|</i>
+                            <a href="#">查看</a><i>|</i>
+                            <a href="#">删除</a>
+                        </p>
+                    </td>
+                </tr>
+                <tr th:remove="all">
+                    <td>12345</td>
+                    <td> 2015年广东省汽车零部件生产企业状况</td>
+                    <td>待上架</td>
+                    <td>API</td>
+                    <td>2017-04-10 12:25:23</td>
+                    <td>
+                        <p class="pop-link">
+                            <a href="#">上架</a><i>|</i>
+                            <a href="#">编辑</a><i>|</i>
+                            <a href="#">查看</a><i>|</i>
+                            <a href="#">删除</a>
+                        </p>
+                    </td>
+                </tr>
+                <tr th:remove="all">
+                    <td>12345</td>
+                    <td> 2015年广东省汽车零部件生产企业状况</td>
+                    <td>待上架</td>
+                    <td>API</td>
+                    <td>2017-04-10 12:25:23</td>
+                    <td>
+                        <p class="pop-link">
+                            <a href="#">上架</a><i>|</i>
+                            <a href="#">编辑</a><i>|</i>
+                            <a href="#">查看</a><i>|</i>
+                            <a href="#">删除</a>
+                        </p>
+                    </td>
+                </tr>
+                <tr th:remove="all">
+                    <td>12345</td>
+                    <td> 2015年广东省汽车零部件生产企业状况</td>
+                    <td>待上架</td>
+                    <td>API</td>
+                    <td>2017-04-10 12:25:23</td>
+                    <td>
+                        <p class="pop-link">
+                            <a href="#">上架</a><i>|</i>
+                            <a href="#">编辑</a><i>|</i>
+                            <a href="#">查看</a><i>|</i>
+                            <a href="#">删除</a>
+                        </p>
+                    </td>
+                </tr>
+                <tr th:remove="all">
+                    <td>12345</td>
+                    <td> 2015年广东省汽车零部件生产企业状况</td>
+                    <td>待上架</td>
+                    <td>API</td>
+                    <td>2017-04-10 12:25:23</td>
+                    <td>
+                        <p class="pop-link">
+                            <a href="#">上架</a><i>|</i>
+                            <a href="#">编辑</a><i>|</i>
+                            <a href="#">查看</a><i>|</i>
+                            <a href="#">删除</a>
+                        </p>
+                    </td>
+                </tr>
+                <tr th:remove="all">
+                    <td>12345</td>
+                    <td> 2015年广东省汽车零部件生产企业状况</td>
+                    <td>待上架</td>
+                    <td>API</td>
+                    <td>2017-04-10 12:25:23</td>
+                    <td>
+                        <p class="pop-link">
+                            <a href="#">上架</a><i>|</i>
+                            <a href="#">编辑</a><i>|</i>
+                            <a href="#">查看</a><i>|</i>
+                            <a href="#">删除</a>
+                        </p>
+                    </td>
+                </tr>
+                <tr th:remove="all">
+                    <td>12345</td>
+                    <td> 2015年广东省汽车零部件生产企业状况</td>
+                    <td>待上架</td>
+                    <td>API</td>
+                    <td>2017-04-10 12:25:23</td>
+                    <td>
+                        <p class="pop-link">
+                            <a href="#">上架</a><i>|</i>
+                            <a href="#">编辑</a><i>|</i>
+                            <a href="#">查看</a><i>|</i>
+                            <a href="#">删除</a>
+                        </p>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- 分页-->
+
+        <div class="pagelist" th:remove="all" th:replace="/fragments/pager :: pager">
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li >
+                        <a href="#" aria-label="Previous">
+                            <span aria-hidden="true">上一页</span>
+                        </a>
+                    </li>
+                    <li class="active"><a href="#">1</a></li>
+                    <li><a href="#">2</a></li>
+                    <li><a href="#">3</a></li>
+                    <li><a href="#">4</a></li>
+                    <li><a href="#">5</a></li>
+                    <li>
+                        <a href="#" aria-label="Next">
+                            <span aria-hidden="true">下一页</span>
+                        </a>
+                    </li>
+                    <div class="pageskip">
+                        <span class="pr10">到第<input type="text" class="pageskip_box">页</span>
+                        <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+                    </div>
+                </ul>
+
+            </nav>
+        </div>
+    </div>
+</div>
+</html>

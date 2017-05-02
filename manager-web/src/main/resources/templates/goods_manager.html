@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+    <link rel="stylesheet" href="../static/component/ztree/css/zTreeStyle/zTreeStyle.css" th:remove="all">
 </head>
 <body>
 <header class="clearfix m_header">
@@ -47,6 +48,9 @@
 	</ul>
 </header>
 <div  layout:fragment="screen_content">
+    <link rel="stylesheet" href="../static/component/ztree/css/zTreeStyle/zTreeStyle.css" th:href="@{/component/ztree/css/zTreeStyle/zTreeStyle.css}">
+    <link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
+    <script th:src="@{/js-busi/gds/gdsManager.js}"></script>
 	<div class="m_main">
 		<div class="m_con">
 			<div class="top-table">
@@ -58,7 +62,7 @@
                         </td>
                         <td width="20%">
                             <div class="input-group02">
-                                <input type="text" class="form-control" placeholder="商品名称">
+                                <input type="text" class="form-control" placeholder="商品名称" id="gdsNameInput">
                             </div>
                         </td>
                         <td class="Hint" >
@@ -67,8 +71,13 @@
                         </td>
                         <td width="20%">
                             <div class="input-group02">
-                                <select class="form-control">
-                                    <option>全部</option>
+                                <input type="hidden" id="gdsStatus" value="">
+                                <select class="form-control" id="gdsStatusSel" onchange="changeStatus()">
+                                    <option value="">全部</option>
+                                    <option value="0">待上架</option>
+                                    <option value="1">已上架</option>
+                                    <option value="2">已下架</option>
+                                    <option value="9">已删除</option>
                                 </select>
                             </div>
                         </td>
@@ -78,14 +87,18 @@
                         </td>
                         <td width="20%">
                             <div class="input-group02">
-                                <select class="form-control">
-                                    <option>定制需求</option>
-                                </select>
+                                <input id="catIdSel" catId="" onclick="showCatSel(this)" type="text" class="form-control" readonly="readonly" placeholder="商品类型" />
+                                <div style="width:15%;height:auto;position: absolute;display: none;background: #EEE;border: solid 1px;" id="catZTree" class="ztree">
+
+                                </div>
+                                <!--<select class="form-control">-->
+                                    <!--<option>定制需求</option>-->
+                                <!--</select>-->
                             </div>
                         </td>
                         <td>
                             <div class="input-group02">
-                                <button class="btn btn-primary">查询</button>
+                                <button class="btn btn-primary" onclick="queryGdsList(1)">查询</button>
                             </div>
                         </td>
                     </tr>
@@ -94,10 +107,10 @@
 
 
             <!--tab切换内容-->
-            <div class="tab-slide pl20 pr20">
+            <div class="tab-slide pl20 pr20" id="gdsListContent">
 
                 <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
+                <ul class="nav nav-tabs" role="tablist" th:remove="all">
                     <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">全部</a></li>
                     <li><a href="#tab02" aria-controls="profile" role="tab" data-toggle="tab">待上架</a></li>
                     <li><a href="#tab03" aria-controls="messages" role="tab" data-toggle="tab">已上架</a></li>
@@ -106,7 +119,7 @@
                 </ul>
 
                 <!-- Tab panes -->
-                <div class="tab-content pt15">
+                <div class="tab-content pt15" th:remove="all">
                     <div role="tabpanel" class="tab-pane active" id="tab01">
                         <table class="table table-bordered text-center" >
                             <thead>
@@ -119,8 +132,8 @@
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
+                            <tbody id="gdsListTbody">
+                            <tr th:remove="all">
                                 <td>12345</td>
                                 <td> 2015年广东省汽车零部件生产企业状况</td>
                                 <td>待上架</td>
@@ -135,7 +148,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>12345</td>
                                 <td> 2015年广东省汽车零部件生产企业状况</td>
                                 <td>待上架</td>
@@ -150,7 +163,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>12345</td>
                                 <td> 2015年广东省汽车零部件生产企业状况</td>
                                 <td>待上架</td>
@@ -165,7 +178,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>12345</td>
                                 <td> 2015年广东省汽车零部件生产企业状况</td>
                                 <td>待上架</td>
@@ -180,7 +193,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>12345</td>
                                 <td> 2015年广东省汽车零部件生产企业状况</td>
                                 <td>待上架</td>
@@ -195,7 +208,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>12345</td>
                                 <td> 2015年广东省汽车零部件生产企业状况</td>
                                 <td>待上架</td>
@@ -210,7 +223,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>12345</td>
                                 <td> 2015年广东省汽车零部件生产企业状况</td>
                                 <td>待上架</td>
@@ -225,7 +238,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>12345</td>
                                 <td> 2015年广东省汽车零部件生产企业状况</td>
                                 <td>待上架</td>
@@ -240,7 +253,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>12345</td>
                                 <td> 2015年广东省汽车零部件生产企业状况</td>
                                 <td>待上架</td>
@@ -255,7 +268,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>12345</td>
                                 <td> 2015年广东省汽车零部件生产企业状况</td>
                                 <td>待上架</td>
@@ -272,8 +285,9 @@
                             </tr>
                             </tbody>
                         </table>
+                        <!-- 分页-->
 
-                        <div class="pagelist">
+                        <div class="pagelist" th:remove="all" >
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
                                     <li >
@@ -301,10 +315,6 @@
                         </div>
 
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="tab02">...</div>
-                    <div role="tabpanel" class="tab-pane" id="tab03">...</div>
-                    <div role="tabpanel" class="tab-pane" id="tab04">...</div>
-                    <div role="tabpanel" class="tab-pane" id="tab05">...</div>
                 </div>
 
             </div>
@@ -430,18 +440,18 @@
 	</div>
 
     <!-- 上架弹窗-->
-    <div class="m_modal modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="m_modal modal fade" id="doGdsStatusModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document" style="width:400px;">
             <div class="modal-content" >
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">商品上架</h4>
+                    <h4 class="modal-title" id="doGdsStatusModalTitle">商品上架</h4>
                 </div>
-                <div class="modal-body clearfix pt20 pb20">
+                <div class="modal-body clearfix pt20 pb20" id="doGdsStatusModalContent">
                     确认上架该商品？
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary">确认</button>
+                    <button id="doGdsStatusModalConfirm" type="button" class="btn btn-primary" onclick="doGdsStatus(this)" gdsId="" targetStatus="" oldStatus="">确认</button>
                     <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
                 </div>
             </div>
@@ -450,6 +460,70 @@
 
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+    <script src="../static/component/ztree/js/jquery.ztree.all.min.js" th:src="@{/component/ztree/js/jquery.ztree.all.min.js}"></script>
+    <script th:remove="all">
+        var zTreeObj;
+        var setting = {
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            }
+        };
+        var nodes = [
+            { id:1, pId:0, name:"父节点1 - 展开", open:true},
+            { id:11, pId:1, name:"父节点11 - 折叠"},
+            { id:111, pId:11, name:"叶子节点111"},
+            { id:112, pId:11, name:"叶子节点112"},
+            { id:113, pId:11, name:"叶子节点113"},
+            { id:114, pId:11, name:"叶子节点114"},
+            { id:12, pId:1, name:"父节点12 - 折叠"},
+            { id:121, pId:12, name:"叶子节点121"},
+            { id:122, pId:12, name:"叶子节点122"},
+            { id:123, pId:12, name:"叶子节点123"},
+            { id:124, pId:12, name:"叶子节点124"},
+            { id:13, pId:1, name:"父节点13 - 没有子节点", isParent:true},
+            { id:2, pId:0, name:"父节点2 - 折叠"},
+            { id:21, pId:2, name:"父节点21 - 展开", open:true},
+            { id:211, pId:21, name:"叶子节点211"},
+            { id:212, pId:21, name:"叶子节点212"},
+            { id:213, pId:21, name:"叶子节点213"},
+            { id:214, pId:21, name:"叶子节点214"},
+            { id:22, pId:2, name:"父节点22 - 折叠"},
+            { id:221, pId:22, name:"叶子节点221"},
+            { id:222, pId:22, name:"叶子节点222"},
+            { id:223, pId:22, name:"叶子节点223"},
+            { id:224, pId:22, name:"叶子节点224"},
+            { id:23, pId:2, name:"父节点23 - 折叠"},
+            { id:231, pId:23, name:"叶子节点231"},
+            { id:232, pId:23, name:"叶子节点232"},
+            { id:233, pId:23, name:"叶子节点233"},
+            { id:234, pId:23, name:"叶子节点234"},
+            { id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}
+        ];
+        $(function(){
+            zTreeObj = $.fn.zTree.init($("#catZTree"),setting,nodes);
+        })
 
+        function showCatSel(obj){
+
+            $("#catZTree").parent().find(".ztree").show();
+            $("body").bind("mousedown", onBodyDown);
+        }
+
+        /**
+         * 隐藏父类的节点属性结构菜单
+         */
+        var hideMenu = function () {
+            $("#catZTree").fadeOut("fast");
+            $("body").unbind("mousedown", onBodyDown);
+        };
+
+        var onBodyDown = function () {
+            if (!(event.target.id == "catIdSel" || $(event.target).parents("#catZTree").length>0)) {
+                hideMenu();
+            }
+        };
+    </script>
 </body>
 </html>

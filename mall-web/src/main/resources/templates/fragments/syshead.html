@@ -12,8 +12,9 @@
     <link rel="stylesheet" href="../../static/css/global.css" th:href="@{/css/global.css}"/>
     <link type="text/css" rel="stylesheet" href="../../static/js/frameajax/frameajax.css" th:href="@{/js/frameajax/frameajax.css}"/>
     <link rel="stylesheet" href="../../static/css/index.css" th:href="@{/css/index.css}"/>
-     <script type="text/javascript">
-        var WEB_ROOT = '[[${#httpServletRequest.contextPath}]]';
+    <script th:inline="javascript">
+        var WEB_ROOT = [[${#httpServletRequest.contextPath}]];
+        var staffInfoDTO = [[${session.staffInfoDTO}]];
     </script>
     <!-- js -->
     <script src="../../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
@@ -22,9 +23,14 @@
     <script type="text/javascript" src="../../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
     <script type="text/javascript" src="../../static/js/jquery.blockUI.js" th:src="@{/js/jquery.blockUI.js}"></script>
     <script type="text/javascript" src="../../static/js/frameajax/frameajax.js" th:src="@{/js/frameajax/frameajax.js}"></script>
-   
-
-
+   	<link rel="stylesheet" href="../static/js/autocomplete/autocomplete.css" th:href="@{/js/autocomplete/autocomplete.css}">
+	<script type="text/javascript" src="../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
+	<script type="text/javascript" src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+	<script type="text/javascript" src="../static/js/jquery.metadata.js" th:src="@{/js/jquery.metadata.js}"></script>
+	<script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js" th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
+	<script type="text/javascript" src="../static/js/autocomplete/autocomplete.js" th:src="@{/js/autocomplete/autocomplete.js}"></script>
+	<script type="text/javascript" src="../static/js-busi/search/searchUtil.js" th:src="@{/js-busi/search/searchUtil.js}"></script>
+	<script type="text/javascript" src="../../static/js/jquery.cookie.js" th:src="@{/js/jquery.cookie.js}"></script>
 </head>
 <body class="bgf1" th:remove="all">
 </body>

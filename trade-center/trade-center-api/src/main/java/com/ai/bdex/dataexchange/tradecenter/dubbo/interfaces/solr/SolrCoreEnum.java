@@ -16,7 +16,7 @@ public enum SolrCoreEnum {
 	/**
 	 * 商品集合
 	 */
-	GDS("gdsCollection");
+	GDS("gdscollection");
 
 	/**
 	 * 集合名词

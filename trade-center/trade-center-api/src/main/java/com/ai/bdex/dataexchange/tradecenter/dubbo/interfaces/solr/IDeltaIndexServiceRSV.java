@@ -15,7 +15,19 @@ public interface IDeltaIndexServiceRSV {
      * @throws BusinessException 
      * @since JDK 1.6
      */
-    public void deltaImport(String collectionName,String gdsId) throws BusinessException;
+    public void deltaImport(String collectionName,Integer gdsId) throws BusinessException;
+    
+    /**
+     * 
+     * deltaImportBatch:(批量增量刷索引). <br/> 
+     * 
+     * @author gxq 
+     * @param collectionName
+     * @param gdsId
+     * @throws BusinessException 
+     * @since JDK 1.6
+     */
+    public void deltaImportBatch(String collectionName,List<Integer> gdsId) throws BusinessException;
     /**
      * 
      * deltaFullImport:(全量刷索引). <br/> 
@@ -24,7 +36,7 @@ public interface IDeltaIndexServiceRSV {
      * @throws BusinessException 
      * @since JDK 1.6
      */
-    public void deltaFullImport() throws BusinessException;
+    public void deltaFullImport(String collectionName,Boolean removeAll) throws BusinessException;
     /**
      * 
      * delteDelta:(删除单条索引记录). <br/> 
@@ -34,7 +46,7 @@ public interface IDeltaIndexServiceRSV {
      * @throws BusinessException 
      * @since JDK 1.6
      */
-    public void delteDelta(String gdsId) throws BusinessException;
+    public void delteDelta(String collectionName,Integer gdsId) throws BusinessException;
     /**
      * 
      * deleteDeltaBatch:(批量删除索引记录). <br/> 
@@ -44,7 +56,7 @@ public interface IDeltaIndexServiceRSV {
      * @throws BusinessException 
      * @since JDK 1.6
      */
-    public void deleteDeltaBatch(List<String> gdsIds) throws BusinessException;
+    public void deleteDeltaBatch(String collectionName,List<Integer> gdsIds) throws BusinessException;
     /**
      * 
      * deleteAll:(清楚全部索引). <br/> 
@@ -53,7 +65,7 @@ public interface IDeltaIndexServiceRSV {
      * @throws BusinessException 
      * @since JDK 1.6
      */
-    public void deleteAll() throws BusinessException;
+    public void deleteAll(String collectionName) throws BusinessException;
     
 }
 

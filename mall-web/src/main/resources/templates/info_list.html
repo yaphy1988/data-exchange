@@ -185,7 +185,8 @@
                         </div>
 				</div>
 			</div>
-			<div class="infoRight" id="news_list" th:remove="body">
+			<div th:replace="~{fragments/rightNewslist :: rightNewslist}"></div>
+			<div class="infoRight" th:remove="all">
 				<div class="sidebarImg">
 					<img src="" width="200" height="200">
 				</div>

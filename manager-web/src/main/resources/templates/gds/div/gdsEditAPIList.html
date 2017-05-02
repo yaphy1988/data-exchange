@@ -1,0 +1,34 @@
+<table class="table table-bordered table-hover" id="gdsLabelQuikTable" >
+	<thead>
+		<tr class="active">
+			<th>接口Id</th>
+       	 	<th>接口名字</th>
+        	<th >操作</th>				
+   	 	</tr>
+	</thead>
+	<tbody>
+    	<tr th:each="list : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
+    		<td th:text="${list.serviceId}"></td>
+    		<td th:text="${list.serviceName}"></td>
+    		<td><a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsAPIInfo(this)'">选择</a></td>
+   		</tr>
+	</tbody>
+</table>
+<!-- 分页-->
+<div th:fragment="pager" class="pagerBar pagelist" style="margin-top:0px;" >
+    <script type="text/javascript" src="../static/js-busi/common/pager.js" th:src="@{/js-busi/common/pager.js}"></script>
+    <span data-toggle="pager" id="pagerId" th:data-count="${pageInfo.count}" th:data-size="${pageInfo.pageSize}" th:data-currentindex="${pageInfo.pageNo}" ></span>
+<script th:inline="javascript">
+
+        var total = '[[${pageInfo.count}]]';
+	    var pageNum = '[[${pageInfo.pageNo}]]';
+	    var pageSize = '[[${pageInfo.pageSize}]]';
+
+	    if (typeof pagerClick === "undefined") {
+	        pagerClick = function (index) {
+	        	gridAPIInfoList(index);
+	        }
+	    }
+	    $('#pagerId').pager({callback: pagerClick});
+	</script>
+</div>

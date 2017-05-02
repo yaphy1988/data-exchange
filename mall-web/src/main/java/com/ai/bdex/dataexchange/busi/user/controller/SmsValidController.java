@@ -46,7 +46,7 @@ public class SmsValidController{
     @DubboConsumer
     private IAuthStaffRSV iAuthStaffRSV;
     
-    @DubboConsumer
+    @DubboConsumer(timeout=30000)
     private ISmsSendRSV smsSendByThreadRSV;
 
     /**
@@ -169,7 +169,7 @@ public class SmsValidController{
 				return vo;
 			} else {
 				vo.put("success",false);
-				vo.put("error_msg","验证码过错误！");
+				vo.put("error_msg","验证码错误！");
 				return vo;
 			}
 		} catch(Exception err){

@@ -14,7 +14,7 @@ var Search = {
 				var catId = $this.attr('id');
 				$(".gl_group").find("a[catId="+catId+"]").parents(".gl_items").show();
 				if($("#selectedCondition").children("a").length==0){
-					$("#condictionFlag").attr('style',"visibility:hidden");
+					$("#condictionFlag").hide();
 				}
 				//搜索商品列表
 				var param = Search.generSearchParam();
@@ -28,7 +28,7 @@ var Search = {
 				var html = "<a href='javascript:void(0)'><em>"+$this.attr('catPName')+":</em><span>"+$this.attr('catName')+"</span><i class='close' catPid="+$this.attr('catPid')+" id="+$this.attr('catId')+">×</i></a>";
 				$("#selectedCondition").append(html);
 				$this.parents(".gl_items").hide();
-				$("#condictionFlag").attr('style',"visibility:visiable");
+				$("#condictionFlag").show();
 				//搜索商品列表
 				var param = Search.generSearchParam();
 				Search.gridGdsInfo(param);

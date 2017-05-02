@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>我的收藏</title>
+	<link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/manage.css" th:remove="all">
+    <link rel="stylesheet" href="../../static/component/ztree/css/zTreeStyle/zTreeStyle.css" th:remove="all">
+</head>
+<body>
+<header class="clearfix m_header">
+	<a href="" class="Logo" target="_blank" >
+		<img width="160" src="../../static/images/manage_logo.jpg" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<div  layout:fragment="screen_content">
+    <link rel="stylesheet" href="../static/component/ztree/css/zTreeStyle/zTreeStyle.css" th:href="@{/component/ztree/css/zTreeStyle/zTreeStyle.css}">
+    <link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
+    <script th:src="@{/js-busi/gds/gdsManager.js}"></script>
+	<div class="m_main">
+		<div class="m_con">
+			<div class="top-table">
+                <table class="editTable">
+                    <tr>
+                       <!--  <td class="Hint">
+                            <span class="col_red">*</span>
+                            商品名称：
+                        </td> -->
+                        <td >
+                            <input type="text" class="form-control" placeholder="" >
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" >查询</button>
+                        </td>
+                    </tr>
+                </table>
+			</div>
+
+
+            <!--tab切换内容-->
+            <div class="tab-slide pl20 pr20" id="gdsListContent">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist" th:remove="all">
+                    <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">全部</a></li>
+                    <li><a href="#tab02" aria-controls="profile" role="tab" data-toggle="tab">待上架</a></li>
+                    <li><a href="#tab03" aria-controls="messages" role="tab" data-toggle="tab">已上架</a></li>
+                    <li><a href="#tab04" aria-controls="settings" role="tab" data-toggle="tab">已下架</a></li>
+                    <li><a href="#tab05" aria-controls="settings" role="tab" data-toggle="tab">已删除</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content pt15" th:remove="all">
+                    <div role="tabpanel" class="tab-pane active" id="tab01">
+                        <table class="table table-bordered text-center" >
+                            <thead>
+                            <tr class="active">
+                                <th>商品图片</th>
+                                <th>商品名称</th>
+                                <th>商品类型</th>
+                                <th>收藏时间</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody >
+                            <tr th:remove="all">
+                                <td><img src="" width="80" height="80"></td>
+                                <td> 2015年广东省汽车零部件生产企业状况</td>
+                                <td>API</td>
+                                <td>2017-04-10 12:25:23</td>
+                                <td>
+                                    <p class="pop-link">
+                                        <a href="#">购买</a>
+                                        <a href="#">删除</a>
+                                    </p>
+                                </td>
+                            </tr>
+                          
+                            </tbody>
+                        </table>
+                    </div>
+                    <div role="tabpanel" class="tab-pane " id="tab02">
+                        <table class="table table-bordered text-center" >
+                            <thead>
+                            <tr class="active">
+                                <th>商品图片2</th>
+                                <th>商品名称2</th>
+                                <th>商品类型22</th>
+                                <th>收藏时间</th>
+                                <th>操作2</th>
+                            </tr>
+                            </thead>
+                            <tbody >
+                            <tr th:remove="all">
+                                <td><img src="" width="80" height="80"></td>
+                                <td> 2015年广东省汽车零部件生产企业状况</td>
+                                <td>API</td>
+                                <td>2017-04-10 12:25:23</td>
+                                <td>
+                                    <p class="pop-link">
+                                        <a href="#">购买</a>
+                                        <a href="#">删除</a>
+                                    </p>
+                                </td>
+                            </tr>
+                          
+                            </tbody>
+                        </table>
+                    </div>
+                     <!-- 分页-->
+                    <div class="pagelist" th:remove="all" >
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination">
+                                <li >
+                                    <a href="#" aria-label="Previous">
+                                        <span aria-hidden="true">上一页</span>
+                                    </a>
+                                </li>
+                                <li class="active"><a href="#">1</a></li>
+                                <li><a href="#">2</a></li>
+                                <li><a href="#">3</a></li>
+                                <li><a href="#">4</a></li>
+                                <li><a href="#">5</a></li>
+                                <li>
+                                    <a href="#" aria-label="Next">
+                                        <span aria-hidden="true">下一页</span>
+                                    </a>
+                                </li>
+                                <div class="pageskip">
+                                    <span class="pr10">到第<input type="text" class="pageskip_box">页</span>
+                                    <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+                                </div>
+                            </ul>
+
+                        </nav>
+                    </div>
+                </div>
+
+            </div>
+		</div>
+	</div>
+	<div class="m_nav">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li class="active">
+							<a href=""></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i ></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li >
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+   
+
+	<script src="../../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../../static/js/bootstrap.min.js" th:remove="all"></script>
+    <script src="../../static/component/ztree/js/jquery.ztree.all.min.js" th:src="@{/component/ztree/js/jquery.ztree.all.min.js}"></script>
+    <script th:remove="all">
+        var zTreeObj;
+        var setting = {
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            }
+        };
+        var nodes = [
+            { id:1, pId:0, name:"父节点1 - 展开", open:true},
+            { id:11, pId:1, name:"父节点11 - 折叠"},
+            { id:111, pId:11, name:"叶子节点111"},
+            { id:112, pId:11, name:"叶子节点112"},
+            { id:113, pId:11, name:"叶子节点113"},
+            { id:114, pId:11, name:"叶子节点114"},
+            { id:12, pId:1, name:"父节点12 - 折叠"},
+            { id:121, pId:12, name:"叶子节点121"},
+            { id:122, pId:12, name:"叶子节点122"},
+            { id:123, pId:12, name:"叶子节点123"},
+            { id:124, pId:12, name:"叶子节点124"},
+            { id:13, pId:1, name:"父节点13 - 没有子节点", isParent:true},
+            { id:2, pId:0, name:"父节点2 - 折叠"},
+            { id:21, pId:2, name:"父节点21 - 展开", open:true},
+            { id:211, pId:21, name:"叶子节点211"},
+            { id:212, pId:21, name:"叶子节点212"},
+            { id:213, pId:21, name:"叶子节点213"},
+            { id:214, pId:21, name:"叶子节点214"},
+            { id:22, pId:2, name:"父节点22 - 折叠"},
+            { id:221, pId:22, name:"叶子节点221"},
+            { id:222, pId:22, name:"叶子节点222"},
+            { id:223, pId:22, name:"叶子节点223"},
+            { id:224, pId:22, name:"叶子节点224"},
+            { id:23, pId:2, name:"父节点23 - 折叠"},
+            { id:231, pId:23, name:"叶子节点231"},
+            { id:232, pId:23, name:"叶子节点232"},
+            { id:233, pId:23, name:"叶子节点233"},
+            { id:234, pId:23, name:"叶子节点234"},
+            { id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}
+        ];
+        $(function(){
+            zTreeObj = $.fn.zTree.init($("#catZTree"),setting,nodes);
+        })
+
+        function showCatSel(obj){
+
+            $("#catZTree").parent().find(".ztree").show();
+            $("body").bind("mousedown", onBodyDown);
+        }
+
+        /**
+         * 隐藏父类的节点属性结构菜单
+         */
+        var hideMenu = function () {
+            $("#catZTree").fadeOut("fast");
+            $("body").unbind("mousedown", onBodyDown);
+        };
+
+        var onBodyDown = function () {
+            if (!(event.target.id == "catIdSel" || $(event.target).parents("#catZTree").length>0)) {
+                hideMenu();
+            }
+        };
+    </script>
+</body>
+</html>

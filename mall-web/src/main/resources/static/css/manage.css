@@ -152,9 +152,17 @@
 .editTable td.Hint.tips{
 	padding:0 20px;
 }
+
 .editTable .label{
 	margin-bottom: 3px;
 	display: inline-block;
+}
+
+/* 说明文字 */
+.tip{
+	color: red;
+	vertical-align: middle;
+	padding-left: 15px;
 }
 /* 列表表格 */
 .listTable{
@@ -281,3 +289,38 @@
     line-height: 34px;
     margin-left: 20px;
 }
+
+/* 控件宽度 */
+.wt100{width: 100px!important;}
+.wt150{width: 150px!important;}
+.wt200{width: 200px!important;}
+.wt300{width: 300px!important;}
+.wt400{width: 400px!important;}
+.wt500{width: 500px!important;}
+
+/* 控件圆角 */
+.form-control{
+	border-radius: 0;
+}
+/*tab切换*/
+	.nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus{
+	    border-color: transparent;
+	    border-bottom: 3px solid #2b4099;
+	    color:#2b4099 ;
+	}
+	.nav > li > a:hover, .nav > li > a:focus{
+	    background: transparent;
+	    border-color: transparent;
+	}
+	.nav-tabs > li > a:hover{
+	}
+	.nav-tabs > li > a{
+	    font-size: 14px;
+	    color: #333;
+	    padding-left: 26px;
+	    padding-right: 26px;
+	}
+	.nav-tabs{
+	border-bottom: 2px solid #eee;
+	}
+	

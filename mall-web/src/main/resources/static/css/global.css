@@ -188,7 +188,10 @@ q:before, q:after, blockquote:before, blockquote:after {
 .clearfix:after {content:"."; display:block; height:0; clear:both; visibility:hidden;}
 .clearfix {zoom:1;}
 
-
+/* 按钮圆角 */
+.btn{
+	border-radius: 0;
+}
 /* 橙色btn */
 a.btn-orange,
 .btn-orange {
@@ -397,7 +400,6 @@ fieldset[disabled] .btn-default.focus {
     width: 600px\9;
 }
 .modal-content{
-   /* box-shadow: none;*/
     border: none;
     border-radius: 0;
 
@@ -414,12 +416,9 @@ fieldset[disabled] .btn-default.focus {
     padding: 15px 30px;
 }
 .modal-footer{
-    border: none;
     text-align: center;
 }
-.modal-footer button{
-    border-radius: 0;
-}
+
 
 
 /* liangsx add */

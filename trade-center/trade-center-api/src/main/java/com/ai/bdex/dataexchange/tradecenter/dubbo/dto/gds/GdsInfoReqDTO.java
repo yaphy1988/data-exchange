@@ -59,6 +59,8 @@ public class GdsInfoReqDTO extends BaseInfo implements Serializable{
 
     private Integer catId;
     
+    private List<Integer> gdsIds;
+    
     public GdsInfo2PropReqDTO getGdsInfo2PropReqDTO() {
 		return GdsInfo2PropReqDTO;
 	}
@@ -218,5 +220,13 @@ public class GdsInfoReqDTO extends BaseInfo implements Serializable{
 
     public void setCatId(Integer catId) {
         this.catId = catId;
+    }
+
+    public List<Integer> getGdsIds() {
+        return gdsIds;
+    }
+
+    public void setGdsIds(List<Integer> gdsIds) {
+        this.gdsIds = gdsIds;
     }
 }

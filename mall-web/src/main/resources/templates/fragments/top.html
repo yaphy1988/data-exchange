@@ -18,16 +18,16 @@
 	            <span>欢迎来到广州数据中心</span>
 	            <span id="clockdate">2017年4月20日&nbsp;&nbsp;12：00：30</span>
 	        </div>
-	        <div class="top-right floatR">
-	            <a href="#" th:href="@{/login/pageInit}"><b>请登录</b></a>
-	            <a href="#" th:href="@{/regist/pageInit}">免费注册</a>
+	        <div class="top-right floatR" th:with="staffInfoDTO=${session.staffInfoDTO}">
+	            <a href="#" th:href="${staffInfoDTO}?'#' : @{/login/pageInit}"><b th:text="${staffInfoDTO}? ${staffInfoDTO.staffId}:'请登录'">请登录</b></a>
+	            <a th:text="${staffInfoDTO}? '退出':'免费注册'" href="#" th:href="${staffInfoDTO}?'#':@{/regist/pageInit}">免费注册</a>
 	            <i>|</i>
                 <a href="#" class="follow">关注广数<i class="glyphicon glyphicon-menu-down"></i>
                 	<div class="guangshu"><i></i><img src="../static/images/wexin.jpg" th:src="@{/images/wexin.jpg}"></div>
             	</a>
 	            <a href="#" th:href="@{/homePage/pageNewsInfolist?moduleId=108}">常见问题</a>
 	            <a href="#" th:href="@{/gzbdex/contact}">联系我们</a>
-	        </div>
+ 	        </div>
 	    </div>
 	</div>
 </body>

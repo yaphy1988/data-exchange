@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.solr.client.solrj.SolrClient;
-import org.apache.solr.client.solrj.response.FacetField;
-import org.apache.solr.client.solrj.response.FacetField.Count;
-import org.apache.solr.common.SolrDocumentList;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +20,7 @@ import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.solrutil.ESort;
 import com.ai.bdex.dataexchange.solrutil.FacetRespVO;
+import com.ai.bdex.dataexchange.solrutil.ResultRespVO;
 import com.ai.bdex.dataexchange.solrutil.SearchField;
 import com.ai.bdex.dataexchange.solrutil.SearchParam;
 import com.ai.bdex.dataexchange.solrutil.SolrCoreEnum;
@@ -30,9 +28,11 @@ import com.ai.bdex.dataexchange.solrutil.SolrSearchUtil;
 import com.ai.bdex.dataexchange.solrutil.SortField;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoQueryRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageHotSearchRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.solr.IDeltaIndexServiceRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
@@ -60,6 +60,8 @@ public class SearchController{
     private IGdsInfoQueryRSV iGdsInfoQueryRSV;
     @Autowired
     private SolrClient solrClient;
+    @DubboConsumer
+    private IPageHotSearchRSV iPageHotSearchRSV;
     /**
      * 
      * init:(搜索页初始化入口). <br/> 
@@ -109,6 +111,10 @@ public class SearchController{
     
     public void commonInit(SearchVO searchVO,Model model){
         try {
+            if(searchVO.getCatFirst() == 0){
+                //默认搜索API
+                searchVO.setCatFirst(1);
+            }
             if(searchVO.getCatFirst()==1 || searchVO.getCatFirst() == 3){
                 GdsCatReqDTO gdsCatReqDTO = new GdsCatReqDTO();
                 if(searchVO.getCatFirst() == 3){
@@ -167,6 +173,7 @@ public class SearchController{
             SearchParam searchParam = new SearchParam();
             searchParam.setCollectionName(SolrCoreEnum.GDS.getCode());
             searchParam.setSolrClient(solrClient);
+            searchParam.setKeyWord(searchVO.getKeyWord());
             //查询字段 and
             List<SearchField> searchFieldList = new ArrayList<SearchField>();
             if(StringUtil.isNotBlank(searchVO.getKeyWord())){
@@ -209,16 +216,7 @@ public class SearchController{
             searchParam.setPageNo(searchVO.getPageNo());
             searchParam.setPageSize(20);
             searchParam.setIfHightlight(true);
-            SolrDocumentList result = SolrSearchUtil.Search(searchParam);
-            PageResponseDTO<GdsInfoRespDTO> pageInfo = new PageResponseDTO<GdsInfoRespDTO>();
-            model.addAttribute("resultList", result);
-            if(result != null){
-                pageInfo.setCount(result.getNumFound());
-                pageInfo.setPageNo(searchVO.getPageNo());
-                String pageCount = (result.getNumFound() % 20 == 0) ? (result.getNumFound() / 20)+"" : (result.getNumFound()/ 20 + 1)+"";
-                pageInfo.setPageCount(Integer.parseInt(pageCount));
-            }
-            pageInfo.setPageSize(20);
+            PageResponseDTO<ResultRespVO> pageInfo = SolrSearchUtil.Search(searchParam);
             model.addAttribute("pageInfo", pageInfo);
             model.addAttribute("searchVO", searchVO);
         } catch (Exception e) {
@@ -250,18 +248,10 @@ public class SearchController{
             searchParam.setPageNo(searchVO.getPageNo());
             searchParam.setPageSize(10);
             searchParam.setKeyWord(searchVO.getKeyWord());
-            List<FacetField> result = SolrSearchUtil.facetSuggest(searchParam);
-            List<FacetRespVO> resultCount = new ArrayList<FacetRespVO>(); 
-            for (FacetField facet : result) {
-                FacetRespVO facetRespVO = null;
-                for(Count c : facet.getValues()){
-                    facetRespVO = new FacetRespVO();
-                    facetRespVO.setCount(c.getCount());
-                    facetRespVO.setName(c.getName());
-                    resultCount.add(facetRespVO);
-                }
-            }
-            json.setObj(resultCount);
+            List<FacetRespVO> result = SolrSearchUtil.facetSuggest(searchParam);
+//            List<ResultRespVO> result = SolrSearchUtil.suggest(searchParam);
+           
+            json.setObj(result);
             json.setSuccess(true);
         } catch (Exception e) {
             logger.error("关键词联想失败！原因是："+e.getMessage());
@@ -270,12 +260,40 @@ public class SearchController{
         return json;
     }
     
+    /**
+     * 
+     * generHotKey:(这里用一句话描述这个方法的作用). <br/> 
+     * 
+     * @author gxq 
+     * @param searchVO
+     * @return 
+     * @since JDK 1.6
+     */
+    @RequestMapping(value="/generhotkey")
+    @ResponseBody
+    public AjaxJson generHotKey(SearchVO searchVO){
+        AjaxJson json = new AjaxJson();
+        try {
+            PageHotSearchReqDTO pageHotSearchReqDTO = new PageHotSearchReqDTO();
+            pageHotSearchReqDTO.setPageNo(1);
+            pageHotSearchReqDTO.setPageSize(8);
+            PageResponseDTO<PageHotSearchRespDTO> list = iPageHotSearchRSV.queryPageHotSearchPageInfo(pageHotSearchReqDTO);
+            json.setObj(list);
+            json.setSuccess(true);
+        } catch (Exception e) {
+            logger.error("获取商品标签失败！原因是："+e.getMessage());
+            json.setSuccess(false);
+        }
+        return json;
+    }
+    
+    
     @DubboConsumer
     private IDeltaIndexServiceRSV iDeltaIndexServiceRSV;
     @RequestMapping(value="/index")
     public String deltaImport(){
         try {
-            iDeltaIndexServiceRSV.delteDelta("1039");
+            iDeltaIndexServiceRSV.deltaFullImport(SolrCoreEnum.GDS.getCode(), true);
         } catch (BusinessException e) {
             e.printStackTrace();
         }

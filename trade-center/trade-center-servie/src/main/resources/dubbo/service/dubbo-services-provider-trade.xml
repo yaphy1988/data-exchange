@@ -24,4 +24,7 @@
                  owner="zhaoyf7" timeout="3000"/>
   <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.solr.IDeltaIndexServiceRSV" ref="deltaIndexServiceRSV"
                  owner="zhaoyf7" timeout="3000"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageHotSearchRSV" ref="pageHotSearchRSV"
+                 owner="zhaoyf7" timeout="3000"/>
+                 
 </beans>

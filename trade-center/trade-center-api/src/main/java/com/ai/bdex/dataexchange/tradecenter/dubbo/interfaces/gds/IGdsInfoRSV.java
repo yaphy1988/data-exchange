@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds;
 
 import java.util.List;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2CatReqDTO;
@@ -14,6 +15,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsPropReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsPropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsResultVO;
+import com.github.pagehelper.Page;
 
 /**
  * Created by yx on 2017/4/18.
@@ -82,4 +84,19 @@ public interface IGdsInfoRSV {
     public GdsLabelQuikRespDTO queryGdsLabelQuikByName(GdsLabelQuikReqDTO gdsLabelQuikReqDTO) throws Exception;
     public int insertGdsInfo2Cat(GdsInfo2CatReqDTO gdsInfo2CatReqDTO) throws Exception;
     public int updateGdsInfo2Cat(GdsInfo2CatReqDTO gdsInfo2CatReqDTO) throws Exception;
+
+	/**
+	 * 分页查询商品信息列表
+	 * @param gdsInfoReqDTO
+	 * @return
+     */
+	public PageResponseDTO<GdsInfoRespDTO> queryGdsInfoPage(GdsInfoReqDTO gdsInfoReqDTO);
+
+	/**
+	 * 商品上下架调用
+	 * @param gdsInfoReqDTO
+	 * @return
+	 * @throws Exception
+     */
+	public int updateGdsInfoManager(GdsInfoReqDTO gdsInfoReqDTO) throws Exception;
 }

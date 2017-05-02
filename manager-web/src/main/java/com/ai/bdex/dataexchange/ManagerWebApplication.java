@@ -1,32 +1,62 @@
 package com.ai.bdex.dataexchange;
 
 import com.ai.bdex.dataexchange.filter.LoginAuthFilter;
+import com.ai.paas.session.filter.CacheSessionFilter;
+import com.ai.paas.util.MongoFileUtil;
+import com.ai.paas.util.Utils;
 import com.alibaba.boot.dubbo.annotation.EnableDubboConfiguration;
+import com.alibaba.fastjson.JSONObject;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @SpringBootApplication(exclude = MongoAutoConfiguration.class)
 @EnableDubboConfiguration
 public class ManagerWebApplication {
 
+	private final static String ignoreSuffix = ".ico,.swf,.flv,.png,.jpg,.jpeg,.gif,.css,.js,.html,.htm,.eot,.svg,.ttf,.woff,.mp4,.woff2,.map";
+
 	public static void main(String[] args) {
-		SpringApplication.run(ManagerWebApplication.class, args);
-		System.out.println("-----------------恭喜你启动ManagerWeb成功了！-----------------"); 
+		ApplicationContext context = SpringApplication.run(ManagerWebApplication.class, args);
+		Utils.setCtx(context);
+		System.out.println("-----------------恭喜你启动ManagerWeb成功了！-----------------");
 	}
 
+	/**
+	 * session过滤器
+	 * @return
+	 */
+	@Bean
+	public FilterRegistrationBean SessionFilterRegistrationBean(){
+		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new CacheSessionFilter());
+		filterRegistrationBean.setOrder(1);
+		filterRegistrationBean.setEnabled(true);
+		filterRegistrationBean.addUrlPatterns("/*");
+		filterRegistrationBean.addInitParameter("ignore_suffix", ignoreSuffix);
+		return filterRegistrationBean;
+	}
+
+	/**
+	 * 登陆过滤器
+	 * @return
+     */
 	@Bean
 	public FilterRegistrationBean filterRegistrationBean(){
-		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean();
-		LoginAuthFilter authFilter = new LoginAuthFilter();
-		filterRegistrationBean.setFilter(authFilter);
-		List<String> urlPatterns = new ArrayList<>();
-		urlPatterns.add("/**");
-		filterRegistrationBean.setUrlPatterns(urlPatterns);
+		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new LoginAuthFilter());
+		filterRegistrationBean.setOrder(2);
+		filterRegistrationBean.setEnabled(false);
+		filterRegistrationBean.addUrlPatterns("/*");
+		filterRegistrationBean.addInitParameter("ignore_suffix", ignoreSuffix);
+		filterRegistrationBean.addInitParameter("login_page", "http://localhost:8081/login/pageInit");
 		return filterRegistrationBean;
 	}
 }

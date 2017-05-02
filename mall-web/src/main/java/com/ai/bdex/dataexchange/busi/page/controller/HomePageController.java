@@ -1,15 +1,19 @@
 package com.ai.bdex.dataexchange.busi.page.controller;
 
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import org.apache.catalina.Session;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
@@ -17,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
+import com.ai.bdex.dataexchange.busi.page.entity.PageNewsInfoVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
@@ -33,6 +39,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.DateUtil;
 import com.ai.paas.utils.StringUtil;
@@ -286,29 +293,37 @@ public class HomePageController {
 	 * 首页数据定制
 	 */
 	@RequestMapping(value = "/saveMadeData")
-	private void saveMadeData(Model model, HttpServletRequest request, HttpServletResponse response) {
-		try {
-
+	@ResponseBody
+	private  Map<String, Object> saveMadeData(Model model, HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		try { 
 			String needTieltmp = request.getParameter("needTiel");
 			String needTiel = uRLDecoderStr(needTieltmp);
 			String needcontent = uRLDecoderStr(request.getParameter("needcontent"));
 			String lnkposen = uRLDecoderStr(request.getParameter("lnkposen"));
 			String lnkphone = request.getParameter("lnkphone");
 			String lnkemail = request.getParameter("lnkemail");
-
+			HttpSession hpptsesion = request.getSession(); 
+			String staff_id = StaffUtil.getStaffId(hpptsesion);
 			DataCustomizationRespDTO dataCustomizationRespDTO = new DataCustomizationRespDTO();
 			dataCustomizationRespDTO.setCustomName(needTiel);
 			dataCustomizationRespDTO.setCustomDescrip(needcontent);
 			dataCustomizationRespDTO.setLinkPerson(lnkposen);
 			dataCustomizationRespDTO.setLinkPhnoe(lnkphone);
 			dataCustomizationRespDTO.setCustomMail(lnkemail);
-			dataCustomizationRespDTO.setCreateStaffId("chuangjianren");
+			if(!StringUtil.isBlank(staff_id) )
+			{
+				dataCustomizationRespDTO.setCreateStaffId(staff_id); 
+			}
 			dataCustomizationRespDTO.setStatus(CUSTOMDATA_STATUS_VALID);
 			int count = iPageDisplayRSV.saveDataCustomizationRsv(dataCustomizationRespDTO);
 			model.addAttribute("savecount", count);
+			rMap.put("success", true);
 		} catch (Exception e) {
-			log.error("查询首页导航信息信息异常：" + e.getMessage());
+			log.error("保存数据定制异常：" + e.getMessage());
+			rMap.put("success", false);
 		}
+		return rMap;
 	}
 
 	private String uRLDecoderStr(String strinfo) {
@@ -370,8 +385,8 @@ public class HomePageController {
 	@RequestMapping(value = "/pageNewsInfolist")
 	public ModelAndView pageNewsInfoList(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("info_list");
-		String infoType = request.getParameter("infoType");
-		modelAndView.addObject("infoType", infoType);
+		String moduleId = request.getParameter("moduleId");
+		modelAndView.addObject("moduleId", moduleId);
 		return modelAndView;
 	}
 
@@ -384,8 +399,8 @@ public class HomePageController {
 			if (!StringUtils.isBlank(infoId)) {
 				PageNewsInfoRespDTO pageNewsInfo = iPageDisplayRSV.queryPageNewsInfoById(Integer.valueOf(infoId));
 				if (pageNewsInfo != null) {
-//					 String docUrl = ImageUtil.getStaticDocUrl(pageNewsInfo.getVfsId(),"html");
-//					 pageNewsInfo.setInfoUrl(docUrl);
+					 String docUrl = ImageUtil.getStaticDocUrl(pageNewsInfo.getVfsId(),"html");
+					 pageNewsInfo.setInfoUrl(docUrl);
 				}
 				modelAndView.addObject("pageNewsInfo", pageNewsInfo);
 			}
@@ -402,35 +417,54 @@ public class HomePageController {
 		String pageNo = request.getParameter("pageNo");
 		String moduleId = request.getParameter("moduleId");
 		Map<String, Object> rMap = new HashMap<String, Object>();
+		PageResponseDTO<PageNewsInfoRespDTO> pageInfoList = new PageResponseDTO<>();
+		PageModuleRespDTO moduleRespDTO = null;
 		try {
-			
-			PageNewsInfoReqDTO newsInfoReqDTO = new PageNewsInfoReqDTO();
-			newsInfoReqDTO.setStatus(STATUS_VALID);
-			if (!StringUtils.isBlank(pageNo)) {
-				newsInfoReqDTO.setPageNo(Integer.valueOf(pageNo));
-			}
-			newsInfoReqDTO.setPageSize(5);
 			if (!StringUtils.isBlank(moduleId)) {
-				newsInfoReqDTO.setModuleId(Integer.valueOf(moduleId));
-			}
-			PageResponseDTO<PageNewsInfoRespDTO> pageInfoList = iPageDisplayRSV.queryPageNewsInfoList(newsInfoReqDTO);
-			List<PageNewsInfoRespDTO> newsList = pageInfoList.getResult();
-			if(!CollectionUtils.isEmpty(pageInfoList.getResult())){
-				for(PageNewsInfoRespDTO infoRespDTO : newsList){
-					if (infoRespDTO.getVfsId() != null) {
-//					 String docUrl = ImageUtil.getStaticDocUrl(pageNewsInfo.getVfsId(),"html");
-//					 pageNewsInfo.setInfoUrl(docUrl);
+				// 查询楼层信息
+				PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
+				pageModuleReqDTO.setModuleId(Integer.valueOf(moduleId));
+				pageModuleReqDTO.setStatus(STATUS_VALID);
+				List<PageModuleRespDTO> pageModuleList = iPageDisplayRSV.queryPageModuleList(pageModuleReqDTO);
+				moduleRespDTO = pageModuleList.get(0);
+				if(moduleRespDTO != null){
+					PageNewsInfoReqDTO newsInfoReqDTO = new PageNewsInfoReqDTO();
+					newsInfoReqDTO.setStatus(STATUS_VALID);
+					if(!StringUtils.isBlank(pageNo)){
+						newsInfoReqDTO.setPageNo(Integer.valueOf(pageNo));
 					}
-					DateUtil.format(infoRespDTO.getPubTime(), "yyyy-MM-dd");
-					PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
-					if(infoRespDTO.getModuleId() != null){
-						pageModuleReqDTO.setModuleId(Integer.valueOf(infoRespDTO.getModuleId()));
+					newsInfoReqDTO.setPageSize(3);
+					newsInfoReqDTO.setModuleId(moduleRespDTO.getModuleId());
+					pageInfoList = iPageDisplayRSV.queryPageNewsInfoList(newsInfoReqDTO);
+					List<PageNewsInfoRespDTO> result = pageInfoList.getResult();
+					if(!CollectionUtils.isEmpty(result)){
+						for(PageNewsInfoRespDTO infoRespDTO : result){
+							infoRespDTO.setInfoType(moduleRespDTO.getModuleName());
+						}
 					}
-					pageModuleReqDTO.setStatus(STATUS_VALID);
-					List<PageModuleRespDTO> pageModuleList = iPageDisplayRSV.queryPageModuleList(pageModuleReqDTO);
-					PageModuleRespDTO moduleRespDTO = pageModuleList.get(0);
-					infoRespDTO.setInfoType(moduleRespDTO.getModuleName());
-					
+				
+				}
+			}else{
+				PageNewsInfoReqDTO newsInfoReqDTO = new PageNewsInfoReqDTO();
+				newsInfoReqDTO.setStatus(STATUS_VALID);
+				if(!StringUtils.isBlank(pageNo)){
+					newsInfoReqDTO.setPageNo(Integer.valueOf(pageNo));
+				}
+				newsInfoReqDTO.setPageSize(3);
+				pageInfoList = iPageDisplayRSV.queryPageNewsInfoList(newsInfoReqDTO);
+				List<PageNewsInfoRespDTO> result = pageInfoList.getResult();
+				if(!CollectionUtils.isEmpty(result)){
+					for(PageNewsInfoRespDTO infoRespDTO : result){
+						// 查询楼层信息
+						PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
+						pageModuleReqDTO.setModuleId(infoRespDTO.getModuleId());
+						pageModuleReqDTO.setStatus(STATUS_VALID);
+						PageModuleRespDTO moduleDTO = iPageDisplayRSV.queryPageModuleList(pageModuleReqDTO).get(0);
+						infoRespDTO.setInfoType(moduleDTO.getModuleName());
+						//设置文本路劲
+						String docUrl = ImageUtil.getStaticDocUrl(infoRespDTO.getVfsId(), "html");
+						infoRespDTO.setInfoUrl(docUrl);
+					}
 				}
 			}
 			rMap.put("pageInfo", pageInfoList);
@@ -472,5 +506,76 @@ public class HomePageController {
 	private String commonHelp(){ 
 		String viewName = "/commonHelp"; 
 		return viewName;	 
+	}
+	
+	/**
+	 * 查询新闻资讯列表（页面右侧模块）
+	 * 
+	 * @return
+	 */
+	@RequestMapping(value = "/queryRightNewslist")
+	@ResponseBody
+	private Map<String, Object> queryRightNewslist(HttpServletRequest request) {
+		String moduleType = request.getParameter("moduleType");
+		String modulePid = request.getParameter("modulePid");
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		List<PageNewsInfoVO> resultList = new ArrayList<>();
+		try {
+			
+			// 查询楼层信息
+			PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
+			if (!StringUtils.isBlank(modulePid)) {
+				pageModuleReqDTO.setModulePid(Integer.valueOf(modulePid));
+			}
+			if(!StringUtils.isBlank(moduleType)){
+				pageModuleReqDTO.setModuleType(moduleType);
+			}
+			pageModuleReqDTO.setStatus(STATUS_VALID);
+			List<PageModuleRespDTO> pageModuleList = iPageDisplayRSV.queryPageModuleList(pageModuleReqDTO);
+			PageModuleRespDTO moduleRespDTO = pageModuleList.get(0);
+			List<PageModuleRespDTO> subPageModuleList = new ArrayList<>();
+			if(moduleRespDTO !=null){
+				subPageModuleList = moduleRespDTO.getSubPageModuleList();
+			}
+			
+			if(!CollectionUtils.isEmpty(subPageModuleList)){
+				for(PageModuleRespDTO pageModuleRespDTO: subPageModuleList){
+					PageNewsInfoVO newsInfoVO = new PageNewsInfoVO();
+					PageModuleVO pageModuleVO = new PageModuleVO();
+					BeanUtils.copyProperties(pageModuleRespDTO, pageModuleVO);
+					newsInfoVO.setPageModuleVO(pageModuleVO);
+					
+					PageNewsInfoReqDTO newsInfoReqDTO = new PageNewsInfoReqDTO();
+					newsInfoReqDTO.setStatus(STATUS_VALID);
+					if (pageModuleRespDTO.getModuleCount() != null) {
+						newsInfoReqDTO.setPageSize(Integer.valueOf(pageModuleRespDTO.getModuleCount()));
+					}
+					if (pageModuleRespDTO.getModuleId() != null) {
+						newsInfoReqDTO.setModuleId(Integer.valueOf(pageModuleRespDTO.getModuleId()));
+					}
+					PageResponseDTO<PageNewsInfoRespDTO> pageInfoList = iPageDisplayRSV.queryPageNewsInfoList(newsInfoReqDTO);
+					if(!CollectionUtils.isEmpty(pageInfoList.getResult())){
+						List<PageNewsInfoVO> subNewsInfoList = new ArrayList<>();
+						for(PageNewsInfoRespDTO infoRespDTO : pageInfoList.getResult()){
+							PageNewsInfoVO infoVO = new PageNewsInfoVO();
+							BeanUtils.copyProperties(infoRespDTO, infoVO);
+							subNewsInfoList.add(infoVO);
+							//设置文本路劲
+							String docUrl = ImageUtil.getStaticDocUrl(infoRespDTO.getVfsId(), "html");
+							infoRespDTO.setInfoUrl(docUrl);
+						}
+						newsInfoVO.setNewsInfoList(subNewsInfoList);
+					}
+					resultList.add(newsInfoVO);
+				}
+			}
+			
+			rMap.put("rightNewsList", resultList);
+			rMap.put("success", true);
+		} catch (Exception e) {
+			rMap.put("success", false);
+			log.error("查询首页导航信息信息异常：" + e.getMessage());
+		}
+		return rMap;
 	}
 }

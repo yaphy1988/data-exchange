@@ -15,8 +15,8 @@
     <span data-toggle="pager" id="pagerId" data-count="" data-size="" data-currentindex="" ></span>
 
 	<script th:inline="javascript">
-        var total = '[[${pageInfo.total}]]';
-	    var pageNum = '[[${pageInfo.pageNum}]]';
+        var total = '[[${pageInfo.count}]]';
+	    var pageNum = '[[${pageInfo.pageNo}]]';
 	    var pageSize = '[[${pageInfo.pageSize}]]';
 
 	    if (typeof pagerClick === "undefined") {

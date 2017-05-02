@@ -50,7 +50,7 @@ public class GdsCatRSVImpl implements IGdsCatRSV {
     public List<GdsCatRespDTO> queryGdsCatList(GdsCatReqDTO gdsCatReqDTO) throws Exception {
         List<GdsCatRespDTO> respDTOList = new ArrayList<GdsCatRespDTO>();
         try{
-        	 if (gdsCatReqDTO ==null || gdsCatReqDTO.getCatPid()==null){
+        	 if (gdsCatReqDTO ==null){
                  throw new Exception("查询商品分类信息异常，入参为空");
              }
              List<GdsCat> catList= iGdsCatSV.queryGdsCatList(gdsCatReqDTO);

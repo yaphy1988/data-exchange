@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.GdsInfoMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
@@ -22,10 +23,13 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 /**
  * Created by yx on 2017/4/17.
@@ -127,6 +131,10 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         if (!StringUtil.isBlank(gdsInfoReqDTO.getStatus())){
             criteria.andStatusEqualTo(gdsInfoReqDTO.getStatus());
         }
+        if (!CollectionUtil.isEmpty(gdsInfoReqDTO.getGdsIds())){
+            criteria.andGdsIdIn(gdsInfoReqDTO.getGdsIds());
+        }
+        
     }
     /**
      * 新增商品
@@ -237,5 +245,26 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         initCriteria(criteria, gdsInfoReqDTO);
         return gdsInfoMapper.countByExample(example);
     }
-	
+
+    @Override
+    public PageResponseDTO<GdsInfoRespDTO> queryGdsInfoPage(GdsInfoReqDTO gdsInfoReqDTO) {
+        PageResponseDTO<GdsInfoRespDTO> page = null;
+
+        int pageNo = gdsInfoReqDTO.getPageNo();
+        int pageSize = gdsInfoReqDTO.getPageSize();
+
+        GdsInfoExample gdsInfoExample = new GdsInfoExample();
+        GdsInfoExample.Criteria criteria = gdsInfoExample.createCriteria();
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getGridQuerySortOrder()) && !StringUtil.isBlank(gdsInfoReqDTO.getGridQuerySortName())){
+            gdsInfoExample.setOrderByClause(gdsInfoReqDTO.getGridQuerySortName() + " " + gdsInfoReqDTO.getGridQuerySortOrder());
+        }
+        initCriteria(criteria,gdsInfoReqDTO);
+        PageHelper.startPage(pageNo,pageSize);
+        List<GdsInfo> lists = gdsInfoMapper.selectByExample(gdsInfoExample);
+        PageInfo pageInfo = new PageInfo(lists);
+        page = PageResponseFactory.genPageResponse(pageInfo,GdsInfoRespDTO.class);
+
+        return page;
+    }
+
 }

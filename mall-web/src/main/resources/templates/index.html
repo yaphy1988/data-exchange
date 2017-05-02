@@ -17,6 +17,11 @@
     <script src="../static/component/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
     <script src="../static/js-busi/page/homePage.js" th:src="@{/js-busi/page/homePage.js}"></script>
     <script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
+    <script src="../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
+     <!--[if lt IE 9]>
+            <script src="../static/js/respond.min.js" ></script>
+            <script src="../static/js/html5shiv.min.js" ></script>
+    <![endif]-->   
     
 </head>
 <body class="bgf1">
@@ -72,7 +77,7 @@
                 <li><a href="#"><i>&rsaquo;</i>时空数据</a> </li>
                 <li><a href="#"><i>&rsaquo;</i>健康医疗</a> </li>
                 <li><a href="#"><i>&rsaquo;</i>更多服务</a> </li>
-            </ul>
+            </ul> 
 
             <!--二级导航开始-->
             <div class="sidebar-hidden" style="display: none">
@@ -202,9 +207,8 @@
                 <div class="fill-massage clearfix">
                     <i class="creta"></i>
                     <div class="left floatL">
-                        <label>如需定制个性化服务：</label>
-                          <label></label>
-                        <button class="btn btn-orange"  data-toggle="modal" data-target="#myModal"  >立即定制</button>
+                        <label>如需定制个性化服务：</label> 
+                        <button class="btn btn-orange"  th:onclick="'showData()'" >立即定制</button>
                         <p>如果你有使用问题想咨询，可直接在<a href="#">常见问题</a>查看 </p>
                     </div>
                     <div class="right floatR">
@@ -215,6 +219,44 @@
                 </div>
             </div>
         </div>
+            <!--定制数据弹窗-->
+        <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                     <h4 class="modal-title" id="myModalLabel">个性化数据定制</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="date-box">
+                        <div class="date-input"  id="needTielDiv">
+                            <label>需求名称</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写需求名称"  id="needTiel">
+                               <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
+                              </div>
+                        <div class="date-input"  id="needcontentDiv">
+                            <label>需求描述</label><textarea class="form-control" rows="5" maxlength="624"  placeholder="请填写需求描述"  id="needcontent"></textarea>
+                           <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
+                        </div>
+                        <div class="date-input"  id="lnkposenDiv">
+                            <label>联系人</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系人"  id="lnkposen">
+                            <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
+                        </div>
+                        <div class="date-input"  id="lnkphoneDiv">
+                            <label>手机号码</label><input type="text" class="form-control" maxlength="11"  placeholder="请填写手机号码"  id="lnkphone">
+                            <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
+                          </div>
+                        <div class="date-input"  id="lnkemailDiv">
+                            <label>联系邮箱</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系邮箱"  id="lnkemail">
+                             <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary wt120" th:onclick="'saveMadeData()'" id="commitData">提交</button>
+                     <button type="button" class="btn btn-primary wt120" th:onclick="'hideMadeData()'" id="hidetData">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
     </div>
 </div>
 
@@ -323,39 +365,7 @@
          -->
     </div>
 </div>
-    <!--定制数据弹窗-->
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="myModalLabel">个性化数据定制</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="date-box">
-                        <div class="date-input">
-                            <label>需求名称</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写需求名称"  id="needTiel">
-                        </div>
-                        <div class="date-input">
-                            <label>需求描述</label><textarea class="form-control" rows="5" maxlength="624"  placeholder="请填写需求描述"  id="needcontent"></textarea>
-                        </div>
-                        <div class="date-input">
-                            <label>联系人</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系人"  id="lnkposen">
-                        </div>
-                        <div class="date-input">
-                            <label>手机号码</label><input type="text" class="form-control" maxlength="11"  placeholder="请填写手机号码"  id="lnkphone">
-                        </div>
-                        <div class="date-input">
-                            <label>联系邮箱</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系邮箱"  id="lnkemail">
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary wt120" th:onclick="'saveMadeData()'">提交</button>
-                </div>
-            </div>
-        </div>
-    </div>
+
 </div>
 <div class="footer" th:remove="all">
     <div class="wrap1200 ptb40">

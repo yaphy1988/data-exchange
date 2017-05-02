@@ -8,6 +8,7 @@
       This element was generated on Thu Apr 20 19:25:10 CST 2017.
     -->
     <id column="INFO_ID" jdbcType="DECIMAL" property="infoId" />
+    <result column="MODULE_ID" jdbcType="VARCHAR" property="moduleId" />
     <result column="REMARK" jdbcType="VARCHAR" property="remark" />
     <result column="INFO_TITLE" jdbcType="VARCHAR" property="infoTitle" />
     <result column="INFO_TYPE" jdbcType="VARCHAR" property="infoType" />

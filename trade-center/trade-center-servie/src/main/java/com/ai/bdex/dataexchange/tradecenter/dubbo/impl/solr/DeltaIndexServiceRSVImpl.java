@@ -29,24 +29,30 @@ public class DeltaIndexServiceRSVImpl implements IDeltaIndexServiceRSV{
     @Resource
     private IDeltaIndexServiceSV iDeltaIndexServiceSV;
     @Override
-    public void deltaImport(String collectionName, String gdsId) throws BusinessException {
+    public void deltaImport(String collectionName, Integer gdsId) throws BusinessException {
         iDeltaIndexServiceSV.deltaImport(collectionName, gdsId);
     }
     @Override
-    public void deltaFullImport() throws BusinessException {
-        iDeltaIndexServiceSV.deltaFullImport();
+    public void deltaImportBatch(String collectionName, List<Integer> gdsIds)
+            throws BusinessException {
+        iDeltaIndexServiceSV.deleteDeltaBatch(collectionName, gdsIds);
     }
     @Override
-    public void delteDelta(String gdsId) throws BusinessException {
-        iDeltaIndexServiceSV.delteDelta(gdsId);
+    public void deltaFullImport(String collectionName,Boolean removeAll) throws BusinessException {
+        iDeltaIndexServiceSV.deltaFullImport(collectionName,removeAll);
     }
     @Override
-    public void deleteDeltaBatch(List<String> gdsIds) throws BusinessException {
-        iDeltaIndexServiceSV.deleteDeltaBatch(gdsIds);
+    public void delteDelta(String collectionName,Integer gdsId) throws BusinessException {
+        iDeltaIndexServiceSV.delteDelta(collectionName,gdsId);
     }
     @Override
-    public void deleteAll() throws BusinessException {
-        iDeltaIndexServiceSV.deleteAll();
+    public void deleteDeltaBatch(String collectionName,List<Integer> gdsIds) throws BusinessException {
+        iDeltaIndexServiceSV.deleteDeltaBatch(collectionName,gdsIds);
     }
+    @Override
+    public void deleteAll(String collectionName) throws BusinessException {
+        iDeltaIndexServiceSV.deleteAll(collectionName);
+    }
+    
 }
 
