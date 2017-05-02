@@ -10,30 +10,51 @@
 	<link rel="stylesheet" href="../../static/css/index.css">
 </head>
 <body class="bgf1">
- <ul class="navbar floatL clearfix" th:fragment="navigation">
-      <li><a class="navigationBar" href="#" th:href="@{'/homePage/pageInit'}">首页</a> </li>
-      <li><a class="navigationBar" href="#" th:href="@{'/search/api'}">API</a> </li>
-      <li><a class="navigationBar" href="#" th:href="@{'/search/custom'}">定制数据</a> </li>
-      <li><a class="navigationBar" href="#" th:href="@{'/search/solution'}">解决方案</a> </li>
-      <li><a class="navigationBar" href="#">新闻动态</a> </li>
+ <ul class="navbar floatL clearfix" th:fragment="navigation" id="head_navbar">
+<!--       <li><a class="navigationBar" href="#" th:href="@{'/homePage/pageInit'}">首页</a> </li> -->
+<!--       <li><a class="navigationBar" href="#" th:href="@{'/search/api'}">API</a> </li> -->
+<!--       <li><a class="navigationBar" href="#" th:href="@{'/search/custom'}">定制数据</a> </li> -->
+<!--       <li><a class="navigationBar" href="#" th:href="@{'/search/solution'}">解决方案</a> </li> -->
+<!--       <li><a class="navigationBar" href="#">新闻动态</a> </li> -->
       <script type="text/javascript">
       $(function(){
-    	  $(".navigationBar").die().live('click',function(e){
-    		  $(this).parents("li").addClass('active').siblings().removeClass("active");
-    		  var url = $(this).attr('href');
- 		   	  $.cookie('gjs_navigation', url, {path : '/'});
- 		   	  
- 		   	  window.location.href=WEB_ROOT+url;
- 		   	e.preventDefault();
-    	  });
-    	  var url = $.cookie('gjs_navigation');
-    	  $(".navigationBar").each(function(){
-    		  if($(this).attr('href')==url){
-    			  $(this).parents("li").addClass('active');
-    		  }
-    	  });
-    	  
+    	  $.ajax({
+  			url:WEB_ROOT+'/homePage/queryHeaderNav',
+  			cache:false,
+  			async:true,
+  			dataType:'json',
+  			success:function(data){
+  				var html;
+  				if(data.success){
+  					var html='';
+  					if(data.success){
+  						$(data.searchNavList).each(function(i,d){
+  							html +='<li><a class="navigationBar" href='+WEB_ROOT+d.navLink+' target="_blank">'+d.navName+'</a>';
+  						});
+  					}
+  				}
+  				$('#head_navbar').html(html);
+  				$(".navigationBar").die().live('click',function(e){
+    	    		  $(this).parents("li").addClass('active').siblings().removeClass("active");
+    	    		  var url = $(this).attr('href');
+    	 		   	  $.cookie('gjs_navigation', url, {path : '/'});
+    	 		   	  window.location.href=WEB_ROOT+url;
+    	 		   	  e.preventDefault();
+   	    	    });
+  				var url = $.cookie('gjs_navigation');
+  				var thisUrl = window.location.pathname;
+ 	  	    	$(".navigationBar").each(function(){
+ 	  	    		if($(this).attr("href")==thisUrl){
+ 	  	    			$(this).parents("li").addClass('active');
+ 	  	    		}else if($(this).attr('href')==url){
+ 	  	    			$(this).parents("li").addClass('active');
+ 	  	    		}
+ 	  	    		
+ 	  	    	});
+  			  }
+  	  		});
   		});
+    	  
       </script>
   </ul>
   
