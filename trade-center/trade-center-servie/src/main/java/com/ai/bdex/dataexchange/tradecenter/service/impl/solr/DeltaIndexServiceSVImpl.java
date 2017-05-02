@@ -20,14 +20,17 @@ import org.springframework.stereotype.Service;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsLabel;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSku;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.search.SearchGdsBaseReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.search.SearchGdsBaseRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoQuerySV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.search.ISearchGdsBaseSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.solr.IDeltaIndexServiceSV;
@@ -54,6 +57,9 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
     
     @Autowired
     private IGdsInfoSV iGdsInfoSV;
+    
+    @Autowired
+    private IGdsLabelSV iGdsLabelSV;
     
     @Override
     public void deltaImport(String collectionName, Integer gdsId) throws BusinessException {
@@ -209,6 +215,22 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                 //最热
                 solrInputDocument.addField("hotDegree", searchGdsBase.getWeiScore());
             }
+            //标签
+            try {
+                GdsLabelReqDTO gdsLabelReqDTO = new GdsLabelReqDTO();
+                gdsLabelReqDTO.setGdsId(gdsId);
+                gdsLabelReqDTO.setStatus("1");
+                List<GdsLabel> list = iGdsLabelSV.queryGdsLabelList(gdsLabelReqDTO);
+                if(!CollectionUtil.isEmpty(list)){
+                    List<String> gdsLabelList = new ArrayList<String>();
+                    for(GdsLabel gdsLabel : list){
+                        gdsLabelList.add(gdsLabel.getLabName()+"_"+gdsLabel.getLabColor());
+                    }
+                    solrInputDocument.addField("gdsLabel", gdsLabelList);
+                }
+            } catch (Exception e) {
+                logger.error("获取标签失败！", e);
+            }
         } catch (Exception e) {
             logger.error("获取增量信息失败！", e);
         }
@@ -263,6 +285,23 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                         //最热
                         solrInputDocument.addField("hotDegree", searchGdsBase.getWeiScore());
                     }
+                    //标签
+                    try {
+                        GdsLabelReqDTO gdsLabelReqDTO = new GdsLabelReqDTO();
+                        gdsLabelReqDTO.setGdsId(gdsInfo.getGdsId());
+                        gdsLabelReqDTO.setStatus("1");
+                        List<GdsLabel> Labellist = iGdsLabelSV.queryGdsLabelList(gdsLabelReqDTO);
+                        if(!CollectionUtil.isEmpty(Labellist)){
+                            List<String> gdsLabelList = new ArrayList<String>();
+                            for(GdsLabel gdsLabel : Labellist){
+                                gdsLabelList.add(gdsLabel.getLabName()+"_"+gdsLabel.getLabColor());
+                            }
+                            solrInputDocument.addField("gdsLabel", gdsLabelList);
+                        }
+                    } catch (Exception e) {
+                        logger.error("获取标签失败！", e);
+                    }
+                    collection.add(solrInputDocument);
                 }
             }
         } catch (Exception e) {
@@ -320,12 +359,28 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                     }
                     //获取其他系数参数
                     SearchGdsBaseReqDTO searchGdsBaseReqDTO = new SearchGdsBaseReqDTO();
-                    searchGdsBaseReqDTO.setGdsId( gdsInfoRespDTO.getGdsId());
+                    searchGdsBaseReqDTO.setGdsId(gdsInfoRespDTO.getGdsId());
                     SearchGdsBaseRespDTO searchGdsBase = iSearchGdsBaseSV.querySearchGdsBaseInfo(searchGdsBaseReqDTO);
                     if(searchGdsBase != null){
                         solrInputDocument.addField("gdsSale", searchGdsBase.getGdsSale());
                         //最热
                         solrInputDocument.addField("hotDegree", searchGdsBase.getWeiScore());
+                    }
+                    //标签
+                    try {
+                        GdsLabelReqDTO gdsLabelReqDTO = new GdsLabelReqDTO();
+                        gdsLabelReqDTO.setGdsId(gdsInfoRespDTO.getGdsId());
+                        gdsLabelReqDTO.setStatus("1");
+                        List<GdsLabel> Labellist = iGdsLabelSV.queryGdsLabelList(gdsLabelReqDTO);
+                        if(!CollectionUtil.isEmpty(Labellist)){
+                            List<String> gdsLabelList = new ArrayList<String>();
+                            for(GdsLabel gdsLabel : Labellist){
+                                gdsLabelList.add(gdsLabel.getLabName()+"_"+gdsLabel.getLabColor());
+                            }
+                            solrInputDocument.addField("gdsLabel", gdsLabelList);
+                        }
+                    } catch (Exception e) {
+                        logger.error("获取标签失败！", e);
                     }
                     docs.add(solrInputDocument);
                 }

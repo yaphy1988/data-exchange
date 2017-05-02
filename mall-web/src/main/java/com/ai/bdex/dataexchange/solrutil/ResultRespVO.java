@@ -1,11 +1,15 @@
 package com.ai.bdex.dataexchange.solrutil;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.solr.client.solrj.beans.Field;
 
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelRespDTO;
+import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.util.ImageUtil;
 
 public class ResultRespVO  extends BaseResponseDTO implements Serializable{
@@ -56,6 +60,10 @@ public class ResultRespVO  extends BaseResponseDTO implements Serializable{
     private int packTimes;
     @Field
     private int gdsSale;
+    @Field
+    private List<String> gdsLabel;
+    
+    private List<GdsLabelRespDTO> gdsLabelParse;
     public String getId() {
         return id;
     }
@@ -186,6 +194,32 @@ public class ResultRespVO  extends BaseResponseDTO implements Serializable{
     }
     public void setGdsSale(int gdsSale) {
         this.gdsSale = gdsSale;
+    }
+    public List<String> getGdsLabel() {
+        return gdsLabel;
+    }
+    public void setGdsLabel(List<String> gdsLabel) {
+        this.gdsLabel = gdsLabel;
+        if(gdsLabel != null && gdsLabel.size() >= 1){
+            List<GdsLabelRespDTO> list = null;
+            for(String str : gdsLabel){
+                list = new ArrayList<GdsLabelRespDTO>();
+                if(StringUtil.isNotBlank(str) &&str.split("_").length>=2){
+                    String[] strArr = str.split("_");
+                    GdsLabelRespDTO gdsLabelRespDTO = new GdsLabelRespDTO();
+                    gdsLabelRespDTO.setLabName(strArr[0]);
+                    gdsLabelRespDTO.setLabColor(strArr[1]);
+                    list.add(gdsLabelRespDTO);
+                }
+            }
+            this.gdsLabelParse = list;
+        }
+    }
+    public List<GdsLabelRespDTO> getGdsLabelParse() {
+        return gdsLabelParse;
+    }
+    public void setGdsLabelParse(List<GdsLabelRespDTO> gdsLabelParse) {
+        this.gdsLabelParse = gdsLabelParse;
     }
 
     

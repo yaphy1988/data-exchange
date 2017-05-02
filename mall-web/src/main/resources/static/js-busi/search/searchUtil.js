@@ -1,4 +1,36 @@
 $(function(){
+	/*
+	 * 获取hotkey   start
+	 */
+	var generHotKey = function (){
+		$.ajax({
+			url:WEB_ROOT+'/search/generhotkey',
+			async:true,
+			dataType: "json",
+			data : {},
+			success:function(data){
+    			if (data.success) {
+    				var list = data.obj;
+    				if(list != null && list.result != null &&　list.result.length >=1){
+    					var html = "";
+    					if(list.length >8){
+    						html += "<a href='"+WEB_ROOT+"/search' class='more floatR'>更多&nbsp;&gt;</a>";
+    					}
+    					var result = list.result;
+    					for(var index in result){
+        					var v = result[index];
+    						html += "<a href='"+v.searchUrl+"' target='_blank'>"+v.searchKey+"</a>";
+    					}
+    					$("#search_hot").html(html);
+    				}
+    			}
+			}
+		});
+	}
+	generHotKey();
+	/*
+	 * 获取hotkey  end
+	 */
 	if($('#siteSearch').size()>0){
         $(document).on('click.hideAutocomplete',function () {
             var event = event || window.event;

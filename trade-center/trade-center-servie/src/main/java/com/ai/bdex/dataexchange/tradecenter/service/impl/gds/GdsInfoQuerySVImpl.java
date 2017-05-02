@@ -9,12 +9,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.tradecenter.dao.mapper.GdsInfoMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoQuerySV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
+import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.utils.CollectionUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 /**
@@ -33,7 +36,7 @@ import com.github.pagehelper.PageInfo;
 public class GdsInfoQuerySVImpl implements IGdsInfoQuerySV{
     private static final Logger logger = LoggerFactory.getLogger(GdsInfoQuerySVImpl.class.getName());
     @Resource
-    private IGdsInfoSV iGdsInfoSV;
+    private GdsInfoMapper gdsInfoMapper;
     
     @Override
     public PageResponseDTO<GdsInfoRespDTO> queryGdsInfoListPage(GdsInfoReqDTO gdsInfoReqDTO)
@@ -46,7 +49,10 @@ public class GdsInfoQuerySVImpl implements IGdsInfoQuerySV{
         //开启分页查询，使用mybatis-PageHelper分页插件，第三个条件是order by排序子句
         PageHelper.startPage(page, rows);
         //执行查询第一个mybatis查询方法，会被进行分页
-        List<GdsInfo> lists = iGdsInfoSV.queryGdsInfoList(gdsInfoReqDTO);
+        GdsInfoExample example = new GdsInfoExample();
+        GdsInfoExample.Criteria criteria = example.createCriteria();
+        initCriteria(criteria, gdsInfoReqDTO);
+        List<GdsInfo> lists = gdsInfoMapper.selectByExample(example);
         //使用PageInfo对结果进行包装
         PageInfo pageInfo = new PageInfo(lists);
         logger.info("IGdsInfoSV查询完成，总数：" + pageInfo.getTotal() + "当前页内记录数：" + lists.size());
@@ -54,7 +60,39 @@ public class GdsInfoQuerySVImpl implements IGdsInfoQuerySV{
         PageResponseDTO<GdsInfoRespDTO> resultDTO = PageResponseFactory.genPageResponse(pageInfo,GdsInfoRespDTO.class);
         return resultDTO;
     }
-
+    private void initCriteria(GdsInfoExample.Criteria criteria, GdsInfoReqDTO gdsInfoReqDTO){
+        if(gdsInfoReqDTO.getGdsId()!=null && gdsInfoReqDTO.getGdsId().intValue()>0){
+            criteria.andGdsIdEqualTo(gdsInfoReqDTO.getGdsId());
+        }
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getGdsName())){
+            criteria.andGdsNameLike("%"+ gdsInfoReqDTO.getGdsName()+"%");
+        }
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getGdsSubtitle())){
+            criteria.andGdsSubtitleLike("%"+ gdsInfoReqDTO.getGdsSubtitle()+"%");
+        }
+        if (gdsInfoReqDTO.getCatFirst()!=null && gdsInfoReqDTO.getCatFirst().intValue()>0){
+            criteria.andCatFirstEqualTo(gdsInfoReqDTO.getCatFirst());
+        }
+        if (gdsInfoReqDTO.getApiId()!=null && gdsInfoReqDTO.getApiId().intValue()>0){
+            criteria.andApiIdEqualTo(gdsInfoReqDTO.getApiId());
+        }
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getIfRecommend())){
+            criteria.andIfRecommendEqualTo(gdsInfoReqDTO.getIfRecommend());
+        }
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getFunIntroduction())){
+            criteria.andFunIntroductionEqualTo(gdsInfoReqDTO.getFunIntroduction());
+        }
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getCommpanyName())){
+            criteria.andCommpanyNameLike("%"+ gdsInfoReqDTO.getCommpanyName()+"%");
+        }
+        if (!StringUtil.isBlank(gdsInfoReqDTO.getStatus())){
+            criteria.andStatusEqualTo(gdsInfoReqDTO.getStatus());
+        }
+        if (!CollectionUtil.isEmpty(gdsInfoReqDTO.getGdsIds())){
+            criteria.andGdsIdIn(gdsInfoReqDTO.getGdsIds());
+        }
+        
+    }
 
 }
 

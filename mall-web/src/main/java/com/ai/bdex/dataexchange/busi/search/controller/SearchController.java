@@ -28,8 +28,11 @@ import com.ai.bdex.dataexchange.solrutil.SolrSearchUtil;
 import com.ai.bdex.dataexchange.solrutil.SortField;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoQueryRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageHotSearchRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.solr.IDeltaIndexServiceRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
@@ -57,6 +60,8 @@ public class SearchController{
     private IGdsInfoQueryRSV iGdsInfoQueryRSV;
     @Autowired
     private SolrClient solrClient;
+    @DubboConsumer
+    private IPageHotSearchRSV iPageHotSearchRSV;
     /**
      * 
      * init:(搜索页初始化入口). <br/> 
@@ -255,12 +260,40 @@ public class SearchController{
         return json;
     }
     
+    /**
+     * 
+     * generHotKey:(这里用一句话描述这个方法的作用). <br/> 
+     * 
+     * @author gxq 
+     * @param searchVO
+     * @return 
+     * @since JDK 1.6
+     */
+    @RequestMapping(value="/generhotkey")
+    @ResponseBody
+    public AjaxJson generHotKey(SearchVO searchVO){
+        AjaxJson json = new AjaxJson();
+        try {
+            PageHotSearchReqDTO pageHotSearchReqDTO = new PageHotSearchReqDTO();
+            pageHotSearchReqDTO.setPageNo(1);
+            pageHotSearchReqDTO.setPageSize(8);
+            PageResponseDTO<PageHotSearchRespDTO> list = iPageHotSearchRSV.queryPageHotSearchPageInfo(pageHotSearchReqDTO);
+            json.setObj(list);
+            json.setSuccess(true);
+        } catch (Exception e) {
+            logger.error("获取商品标签失败！原因是："+e.getMessage());
+            json.setSuccess(false);
+        }
+        return json;
+    }
+    
+    
     @DubboConsumer
     private IDeltaIndexServiceRSV iDeltaIndexServiceRSV;
     @RequestMapping(value="/index")
     public String deltaImport(){
         try {
-            iDeltaIndexServiceRSV.deltaImport(SolrCoreEnum.GDS.getCode(), 1);
+            iDeltaIndexServiceRSV.deltaFullImport(SolrCoreEnum.GDS.getCode(), true);
         } catch (BusinessException e) {
             e.printStackTrace();
         }

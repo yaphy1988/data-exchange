@@ -84,6 +84,7 @@ public class SolrSearchUtil {
                     if(!StringUtil.isBlank(resultRespVO.getGdsPic())){
                         resultRespVO.setGdsPic(resultRespVO.getGdsPic());
                     }
+                    resultRespVO.setGdsLabel(resultRespVO.getGdsLabel());
                    List<String> hlString = map.get(resultRespVO.getId()).get("gdsName");
                    if (null != hlString) {
                        StringBuffer sbf = new StringBuffer();
