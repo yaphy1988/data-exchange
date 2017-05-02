@@ -79,11 +79,17 @@ function saveGdsLabelQuik(){
 		WEB.msg.info("提示","标签名称不能超过20个字符");
 		return;
 	}
-	var labAppend = '<p><span class="label" style="border:solid 1px ' + labColor
-			+ ';color:' + labColor + '; " labId="" labName="' + labName
-			+ '" labColor="' + labColor + '">' + labName + '<a class=" pl5 colse"  onclick="deleteGdsLabel(this)">×</a></span></p>';
+	var labAppend = '<p style="border:solid 1px ' + labColor+ ';color:' 
+					+ labColor + '; " labId="" labName="' + labName+ '" labColor="' 
+					+ labColor + '"><span>' 
+					+ labName + '<a class=" pl5 colse"  onclick="deleteGdsLabel(this)">×</a></span></p>';
 	$("#gdsLabelList").append(labAppend);
 	$("#myModal2").modal('hide');
+}
+function deleteGdsLabel(obj){
+	WEB.msg.warn("提示","确定要删除该标签吗？",function(){
+		$(obj).parent().parent().remove();
+	});
 }
 /**
  * 新增套餐
@@ -101,8 +107,9 @@ function addPackAgeOne(){
  * 删除套餐
  */
 function deleteGdsSku(obj){
-	$(obj).parent().paren()
-	$("#APIPackage").find("tbody").append(html);
+	WEB.msg.warn("提示","确定要删除该套餐吗？",function(){
+		$(obj).parent().parent().remove();
+	});
 }
 /**
  * 查询分类属表
@@ -433,10 +440,6 @@ function createGdsInfoVO(){
 			saveValid=false;
 			return;
 		}
-		if(gdsSkuVOList.length==0){
-			saveValid=false;
-			return;
-		}
 	}
 	if(gdsName==""){
 		$('td[name="gdsNameError"] span').html("请录入商品名称");
@@ -479,7 +482,7 @@ function createGdsInfoVO(){
 }
 function createGdsLabelList(){
 	var gdsLabelVOList=new Array();
-	$("#gdsLabelList").find("span").each(function(){
+	$("#gdsLabelList").find("p").each(function(){
 		var labName =$(this).attr("labName");
 		var labColor =$(this).attr("labColor");
 		var gdsLabelVO={
@@ -492,6 +495,14 @@ function createGdsLabelList(){
 }
 function createGdsSkuList(){
 	var gdsSkuVOList=new Array();
+	var catFirst = $("#catFirst").val();
+	var length=$("#APIPackage").find("tbody tr").length;
+	if(length<1&&catFirst=="1"){
+		WEB.msg.error("提示","请添加套餐！");
+		saveValid=false;
+		return;
+	}
+	if(catFirst==1)
 	$("#APIPackage").find("tbody tr").each(function(){
 		var skuName=$(this).find('[name="skuName"]').val();
 		var packPrice =$(this).find('[name="packPrice"]').val();

@@ -177,12 +177,6 @@
 						商品标签:
 					</td>
 					<td >
-<<<<<<< Upstream, based on origin/develop
-					<div class="label_box">
-					<!-- <div style="display: inline"> -->
-						<p id="gdsLabelList" >
-							<span th:each="gdsLabelVO,catStat:${gdsInfoVO.gdsLabelVOList}"  class="label" th:style="'border:solid 1px '+@{${gdsLabelVO.labColor}}+'; color:'+@{${gdsLabelVO.labColor}}+''" th:labId="${gdsLabelVO.labId}" th:labName="${gdsLabelVO.labName}" th:labColor="${gdsLabelVO.labColor}" th:text="${gdsLabelVO.labName}"></span>
-=======
 					<div class="label_box" id="gdsLabelList" >
 						<p th:each="gdsLabelVO,catStat:${gdsInfoVO.gdsLabelVOList}" >
 							<span  class="label" th:style="'border:solid 1px '+@{${gdsLabelVO.labColor}}+'; color:'+@{${gdsLabelVO.labColor}}+''" th:labId="${gdsLabelVO.labId}" th:labName="${gdsLabelVO.labName}" th:labColor="${gdsLabelVO.labColor}" th:text="${gdsLabelVO.labName}">
@@ -190,27 +184,12 @@
 							</span>
 						</p>
 						<p th:remove="all" >
->>>>>>> e63593e 商品录入
 							<span th:remove="all">API	
 								<a class=" pl5 colse">×</a>
 							</span>
 						</p>
-<<<<<<< Upstream, based on origin/develop
-						<p  >
-							
-							<span th:remove="all">API	
-								<a class=" pl5 colse">×</a>
-							</span>
-						</p>
-					
-						
 					</div>
 					<a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsLabelModal()'"   >请选择</a>
-						
-=======
-					</div>
-						<a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsLabelModal()'"   >请选择</a>
->>>>>>> e63593e 商品录入
 					</td>
 					<td>
 

@@ -90,7 +90,7 @@ public class GdsEditController {
     private final static String GDS_VALID = "1";//商品状态-有效
     private final static String GDS_INVALID = "0";//商品状态-失效
     private final static String PRO_TYPE = "2";//富文本
-    private final static Integer PAGE_SIZE = 2;//分页查询大小
+    private final static Integer PAGE_SIZE = 10;//分页查询大小
 
 
 
