@@ -8,7 +8,10 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
+	<script src="../static/js-busi/page/info-details.js" th:src="@{/js-busi/page/info-details.js}"></script>
+	<script type="text/javascript" src="../../static/component/ckeditor/ckeditor.js" th:src="@{/component/ckeditor/ckeditor.js}"></script>
+    <script type="text/javascript" src="../static/js-busi/page/pager.js" th:src="@{/js-busi/page/pager.js}"></script>
 </head>
 <body>
 <header class="clearfix m_header">
@@ -67,38 +70,44 @@
                     <tbody><tr>
                         <td class="Hint">
                             <span class="col_red">*</span>
-                            标题：
+                           	 标题：
                         </td>
                         <td width="20%">
                             <div class="input-group02">
-                                <input class="form-control" placeholder="商品名称" type="text">
+                                <input class="form-control" type="text" id="news_title">
                             </div>
                         </td>
                         <td class="Hint">
                             <span class="col_red">*</span>
-                           状态：
+                           	状态：
                         </td>
                         <td width="20%">
                             <div class="input-group02">
-                                <select class="form-control">
-                                    <option>全部</option>
+                                <select class="form-control" id="news_status">
+                                    <option value="">全部</option>
+                                    <option value="1">生效</option>
+                                    <option value="0">失效</option>
                                 </select>
                             </div>
                         </td>
                         <td class="Hint">
                             <span class="col_red">*</span>
-                            信息类型：
+                           	 信息类型：
                         </td>
                         <td width="20%">
                             <div class="input-group02">
-                                <select class="form-control">
-                                    <option>定制需求</option>
+                                <select class="form-control" id="news_infotype">
+                                    <option value="">全部</option>
+                                    <option value="1">行业资讯</option>
+                                    <option value="2">平台公告</option>
+                                    <option value="3">平台活动</option>
+                                    <option value="4">常见问题</option>
                                 </select>
                             </div>
                         </td>
                         <td>
                             <div class="input-group02">
-                                <button class="btn btn-primary">查询</button>
+                                <button class="btn btn-primary" th:onclick="'queryNewsPageInfo(1);'">查询</button>
                             </div>
                         </td>
                     </tr>
@@ -109,7 +118,7 @@
                             <tr class="active">
                                <td>序号</td>
                                 <td>标题</td>
-                                <td>摘要</td>
+                                <td th:remove="all">摘要</td>
                                 <td>信息类型</td>
                                 <td>生效时间</td>
                                 <td>失效时间</td>
@@ -118,7 +127,7 @@
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>1</td>
                                 <td> <div style="max-width:200px;" class="text_overflow">标题长长长长标题长长长长标题长长长长标题长长长长标题长长长长标题长长长长标题长长长长标题长长长长标题长长长长标题长长长长</div></td>
                                 <td width="300">
@@ -126,8 +135,9 @@
                                  </td>
                                 <td>行业新闻</td>
                                 <td></td>
-                                 <td></td>
+                                <td></td>
                                 <td>失效</td>
+                                <td>生效</td>
                                 <td>
                                     <p class="pop-link">
                                         <a href="">编辑</a><i>|</i>
@@ -135,7 +145,7 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>2</td>
                                 <td> <div style="max-width:200px;" class="text_overflow">标题长</div></td>
                                 <td width="300">
@@ -155,7 +165,11 @@
                             </tr>
                             </tbody>
                         </table>
-                        <div class="pagelist">
+                 		<!-- 分页-->
+						<div  class="pagelist" style="margin-top:0px;" >
+							<span data-toggle="pager" id="pagerId" data-count="" data-size="" data-currentindex=""></span>
+						</div>
+                        <div class="pagelist" th:remove="all">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
                                     <li>

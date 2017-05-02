@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNav;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHotSearch;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModule;
@@ -45,6 +46,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleS
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageNewsInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortContentSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
+import com.alibaba.dubbo.common.utils.StringUtils;
 
 @Service("iPageDisplayRSV")
 public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
@@ -324,5 +326,16 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
             throw new Exception(e);
 		}
 		return moduleAdPageInfo;
+	}
+	@Override
+	public long insertPageNewsInfo(PageNewsInfoReqDTO newsInfoReqDTO) throws Exception {
+		return iPageNewsInfoSV.insertPageNewsInfo(newsInfoReqDTO);
+	}
+	@Override
+	public long updatePageNewsInfoByKey(PageNewsInfoReqDTO newsInfoReqDTO) throws Exception {
+		if(newsInfoReqDTO.getInfoId() == null || newsInfoReqDTO.getInfoId() == 0 ){
+			throw new BusinessException("新闻消息主键不能为空：infoId="+newsInfoReqDTO.getInfoId());
+		}
+		return iPageNewsInfoSV.updatePageNewsInfoByKey(newsInfoReqDTO);
 	}
 }

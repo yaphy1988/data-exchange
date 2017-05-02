@@ -9,4 +9,8 @@ public interface IPageNewsInfoSV {
 	   public PageNewsInfo queryPageNewsInfoById(Integer PageNewsInfoid) throws Exception;
 
 	   public PageResponseDTO<PageNewsInfoRespDTO> queryPageNewsInfoList(PageNewsInfoReqDTO exam) throws Exception;
+	   
+	   public long insertPageNewsInfo(PageNewsInfoReqDTO exam)throws Exception;
+	   
+	   public long updatePageNewsInfoByKey(PageNewsInfoReqDTO exam)throws Exception;
 }

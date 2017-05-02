@@ -42,4 +42,9 @@ public interface    IPageDisplayRSV {
     public List<SortContentRespDTO> querysortContenList(SortContentRespDTO sortContentRespDTO) throws Exception;
 
     public PageResponseDTO<PageModuleAdRespDTO> queryPageModulePageInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception;
+
+    public long insertPageNewsInfo(PageNewsInfoReqDTO newsInfoReqDTO) throws Exception;
+    
+    public long updatePageNewsInfoByKey(PageNewsInfoReqDTO newsInfoReqDTO) throws Exception;
+
 }
