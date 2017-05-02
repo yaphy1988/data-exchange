@@ -11,7 +11,10 @@
     <link rel="stylesheet" href="../../static/css/global.css" th:href="@{/css/global.css}"/>
     <link type="text/css" rel="stylesheet" href="../../static/js/frameajax/frameajax.css" th:href="@{/js/frameajax/frameajax.css}"/>
     <link rel="stylesheet" href="../../static/css/index.css" th:href="@{/css/index.css}"/>
-    
+    <script th:inline="javascript">
+        var WEB_ROOT = [[${#httpServletRequest.contextPath}]];
+        var staffInfoDTO = [[${session.staffInfoDTO}]];
+    </script>
     <!-- js -->
     <script src="../../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
     <script src="../../static/component/bootstrap/js/bootstrap.min.js" th:src="@{/component/bootstrap/js/bootstrap.min.js}"></script>
@@ -20,12 +23,6 @@
     <script type="text/javascript" src="../../static/js/jquery.blockUI.js" th:src="@{/js/jquery.blockUI.js}"></script>
     <script type="text/javascript" src="../../static/js/frameajax/frameajax.js" th:src="@{/js/frameajax/frameajax.js}"></script>
 	<script type="text/javascript" src="../../static/js/util.js" th:src="@{/js/util.js}"></script>
-
-
-    <script type="text/javascript">
-        var WEB_ROOT = '[[${#httpServletRequest.contextPath}]]';
-    </script>
-
 </head>
 <body class="bgf1" th:remove="all">
 </body>
