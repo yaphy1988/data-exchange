@@ -4,13 +4,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
-import com.ai.bdex.dataexchange.util.PageResponseFactory;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.GdsInfoMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
@@ -26,10 +23,13 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 /**
  * Created by yx on 2017/4/17.
@@ -131,6 +131,10 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         if (!StringUtil.isBlank(gdsInfoReqDTO.getStatus())){
             criteria.andStatusEqualTo(gdsInfoReqDTO.getStatus());
         }
+        if (!CollectionUtil.isEmpty(gdsInfoReqDTO.getGdsIds())){
+            criteria.andGdsIdIn(gdsInfoReqDTO.getGdsIds());
+        }
+        
     }
     /**
      * 新增商品
