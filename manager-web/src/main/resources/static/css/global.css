@@ -554,10 +554,10 @@ fieldset[disabled] .btn-default.focus {
 	text-decoration: none;
 }
 .label_box p:hover{
-	background-color: #ec6000;
-	color: #fff;
+	/* background-color: #ec6000;
+	color: #fff; */
 	cursor: pointer;
 }
 .label_box p:hover .colse{
-	color: #fff;
+	/* color: #fff; */
 }
