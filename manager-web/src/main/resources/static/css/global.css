@@ -105,6 +105,7 @@ q:before, q:after, blockquote:before, blockquote:after {
 
 .hidden{ display:none;}
 .show{ display:block;}
+.overflow-hidden{overflow:hidden;}
 
 .col_000{color: #000;}
 .col_333{color: #333;}
@@ -880,3 +881,7 @@ body{
 .form-control{
 	border-radius: 0;
 }
+
+
+/*强制去除table表格边线 tangyk*/
+.ClearSideline td{ border:0px !important;}
