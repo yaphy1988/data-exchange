@@ -260,7 +260,7 @@ public class SearchController{
     @RequestMapping(value="/index")
     public String deltaImport(){
         try {
-            iDeltaIndexServiceRSV.deltaImport("", "1");
+            iDeltaIndexServiceRSV.deltaImport(SolrCoreEnum.GDS.getCode(), 1);
         } catch (BusinessException e) {
             e.printStackTrace();
         }
