@@ -171,14 +171,12 @@ public class GdsEditController {
                             gdsInfoVO.setGdsSkuVOList(gdsSkuVOList);
                         }
                     }
+                    //根据APIID查找API接口信息
                     if(gdsInfoRespDTO.getApiId()!=null){
-                    	PageResponseDTO<AipServiceInfoDTO> pageInfo = new PageResponseDTO<AipServiceInfoDTO>();
-            			AipServiceInfoReqDTO apiReqDTO = new AipServiceInfoReqDTO();
-            			apiReqDTO.setPageNo(1);
-            			apiReqDTO.setPageSize(1);
-            			apiReqDTO.setProviderId(String.valueOf(gdsInfoRespDTO.getApiId()));
-            			pageInfo = iAipServiceInfoRSV.selectServiceWithPage(apiReqDTO);
-            			gdsInfoVO.setApiIdName(pageInfo.getResult().get(0).getServiceName());
+                    	List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(String.valueOf(gdsInfoRespDTO.getApiId()));
+            			if(CollectionUtils.isNotEmpty(apiServiceList)){
+                        	gdsInfoVO.setApiIdName(apiServiceList.get(0).getServiceName());
+            			}
                     }
                 }
         	}
