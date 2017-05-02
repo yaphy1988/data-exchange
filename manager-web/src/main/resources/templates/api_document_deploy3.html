@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>api接口配置3</title>
+	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	
+</head>
+<body>
+<header class="clearfix m_header" th:remove="all">
+	<a href="" class="Logo" target="_blank" >
+		<img width="160" src="../static/images/manage_logo.jpg" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<div  layout:fragment="screen_content">
+	<div class="m_main">
+		<div class="m_con">
+			<div class="title">示例代码</div>
+				<div class="text-right mb10">
+					 <a href="javascript:void(0)" class="btn-primary btn mr10" ">新增实例</a>
+					 <a href="javascript:void(0)" class="btn-default btn mr10" ">删除</a>
+				</div>
+				<div style="background: #fbfbfb;" class="p10 mb10">
+					<h5 class="">示例</h5>
+					<table class="editTable">
+						<tbody>
+							<tr>
+								<td class="Hint">
+									<span class="col_red">*</span>
+									语言：
+								</td>
+								<td width="300">
+									<input type="text" class="form-control" name="">
+								</td>
+								<td class="Hint">
+									<span class="col_red">*</span>
+									提供者：
+								</td>
+								<td>
+									<input type="text" class="form-control" name="">
+								</td>
+							</tr>
+							<tr>
+								<td class="Hint">
+									<span class="col_red">*</span>
+									标题：
+								</td>
+								<td colspan="3">
+									<input type="text" class="form-control" name="">
+								</td>
+							</tr>
+							<tr>
+								<td class="Hint"><span class="col_red">*</span>示例代码：</td>
+								<td colspan="3">
+									<textarea class="form-control" rows="5" ></textarea>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+
+				<div style="background: #fbfbfb;" class="p10 mb10">
+					<h5 class="">示例</h5>
+					<table class="editTable">
+						<tbody>
+							<tr>
+								<td class="Hint">
+									<span class="col_red">*</span>
+									语言：
+								</td>
+								<td width="300">
+									<input type="text" class="form-control" name="">
+								</td>
+								<td class="Hint">
+									<span class="col_red">*</span>
+									提供者：
+								</td>
+								<td>
+									<input type="text" class="form-control" name="">
+								</td>
+							</tr>
+							<tr>
+								<td class="Hint">
+									<span class="col_red">*</span>
+									标题：
+								</td>
+								<td colspan="3">
+									<input type="text" class="form-control" name="">
+								</td>
+							</tr>
+							<tr>
+								<td class="Hint"><span class="col_red">*</span>示例代码：</td>
+								<td colspan="3">
+									<textarea class="form-control" rows="5" ></textarea>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="text-right ">
+					 <a href="javascript:void(0)" class="btn-primary btn mr10" ">新增实例</a>
+					 <a href="javascript:void(0)" class="btn-default btn mr10" ">删除</a>
+				</div>
+			</div>
+			<hr>
+			<!-- 按钮 -->
+			
+			<div class="p20 text-center " style="margin-left: 220px;">
+				 <a href="javascript:void(0)" class="btn-primary btn mr10" ">保存</a>
+				 <a href="javascript:void(0)" class="btn-default btn mr10" ">返回</a>
+			</div>
+		</div>
+	</div>
+
+	
+	<div class="m_nav" th:remove="all">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li class="active">
+							<a href=""></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i ></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li >
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+</div>
+</body>
+</html>
