@@ -10,7 +10,8 @@ $(function(){
 		catText +="/";
 		if(catFirst=="1"){
 			$('div[name="DivAPI"]').css("display","");
-			catText +=$("#catName").val();;
+			catText +=$("#catName").val();
+			gridAPIInfoList(1);
 		}else if(catFirst=="3"){
 			$("#otherInfo").css("display","");
 			addSolutionText();
