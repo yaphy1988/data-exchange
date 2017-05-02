@@ -46,7 +46,7 @@ public class HelloDemoRSVImplTest {
      public void testDeltaImport(){
          try {
              long a = System.currentTimeMillis();
-            iDeltaIndexServiceRSV.deltaFullImport("gdscollection");
+            iDeltaIndexServiceRSV.deltaFullImport("gdscollection",false);
              
 //             iDeltaIndexServiceRSV.delteDelta("1024");
              System.out.println(a-System.currentTimeMillis());
