@@ -55,6 +55,7 @@ function changeLabel(){
 	$("#addChangeLabel").append(labAppend);
 
 }
+
 /**
  * 配置标签保存
  * @returns
@@ -78,12 +79,11 @@ function saveGdsLabelQuik(){
 		WEB.msg.info("提示","标签名称不能超过20个字符");
 		return;
 	}
-	var labAppend = '<span class="label" style="border:solid 1px ' + labColor
+	var labAppend = '<p><span class="label" style="border:solid 1px ' + labColor
 			+ ';color:' + labColor + '; " labId="" labName="' + labName
-			+ '" labColor="' + labColor + '">' + labName + '</span>';
+			+ '" labColor="' + labColor + '">' + labName + '<a class=" pl5 colse"  onclick="deleteGdsLabel(this)">×</a></span></p>';
 	$("#gdsLabelList").append(labAppend);
 	$("#myModal2").modal('hide');
-
 }
 /**
  * 新增套餐
@@ -93,7 +93,15 @@ function addPackAgeOne(){
 	html +='<tr><td><input type="text" name="skuName"></td>'
 		   +'<td><input type="text" name="packPrice"></td>'
 		   +'<td><input type="text" name="packTimes"></td>'
-		   +'<td><input type="text" name="packDay"></td></tr>';
+		   +'<td><input type="text" name="packDay"></td>'
+		   +'<td><a href="javascript:void(0);" onclick="deleteGdsSku(this)">删除</a></td></tr>';
+	$("#APIPackage").find("tbody").append(html);
+}
+/**
+ * 删除套餐
+ */
+function deleteGdsSku(obj){
+	$(obj).parent().paren()
 	$("#APIPackage").find("tbody").append(html);
 }
 /**
