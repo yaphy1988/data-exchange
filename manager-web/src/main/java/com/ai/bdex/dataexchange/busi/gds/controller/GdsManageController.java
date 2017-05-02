@@ -158,6 +158,7 @@ public class GdsManageController {
                 ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,updateReqDTO,null,false);
                 updateReqDTO.setStatus(targetStatus);
                 iGdsInfoRSV.updateGdsInfo(updateReqDTO);
+
             }else{
                 ajaxJson.setSuccess(false);
                 ajaxJson.setMsg("操作失败，查询不到该商品信息！");

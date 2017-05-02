@@ -91,4 +91,12 @@ public interface IGdsInfoRSV {
 	 * @return
      */
 	public PageResponseDTO<GdsInfoRespDTO> queryGdsInfoPage(GdsInfoReqDTO gdsInfoReqDTO);
+
+	/**
+	 * 商品上下架调用
+	 * @param gdsInfoReqDTO
+	 * @return
+	 * @throws Exception
+     */
+	public int updateGdsInfoManager(GdsInfoReqDTO gdsInfoReqDTO) throws Exception;
 }

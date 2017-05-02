@@ -203,6 +203,12 @@ function doGdsStatusModal(obj) {
     }else if (targetStatus == "9"){
         title = "商品删除";
         content = "确认删除该商品？";
+    }else if (targetStatus == "look"){
+        window.location.href = "/gdsEdit/pageInit?gdsId="+gdsId+"&&isView=true";
+        return;
+    }else if (targetStatus == "edit"){
+        window.location.href = "/gdsEdit/pageInit?gdsId="+gdsId;
+        return;
     }
     $("#doGdsStatusModalTitle").html(title);
     $("#doGdsStatusModalContent").html(content);

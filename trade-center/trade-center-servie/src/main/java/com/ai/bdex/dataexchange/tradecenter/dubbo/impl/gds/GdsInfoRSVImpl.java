@@ -8,6 +8,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsProp;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSku;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.*;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.solr.SolrCoreEnum;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfo2CatSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
@@ -15,6 +16,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelQuik
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsLabelSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsPropSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.solr.IDeltaIndexServiceSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.github.pagehelper.Page;
@@ -56,6 +58,9 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
     
     @Resource
     private IGdsInfo2CatSV iGdsInfo2CatSV;
+
+    @Resource
+    private IDeltaIndexServiceSV iDeltaIndexServiceSV;
     
     @Override
     public GdsInfoRespDTO queryGdsInfoDetails(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
@@ -238,7 +243,7 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
 		try {
 			gdsId = iGdsInfoSV.updateGdsInfo(gdsInfoReqDTO);
 		} catch (Exception e) {
-			log.error("新增商品基本信息异常:", e);
+			log.error("更新商品基本信息异常:", e);
 			throw new Exception(e);
 		}
 		return gdsId;
@@ -293,5 +298,30 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
             log.error("查询商品列表分页信息异常:",e);
         }
         return pageResponseDTO;
+    }
+
+    @Override
+    public int updateGdsInfoManager(GdsInfoReqDTO gdsInfoReqDTO) throws Exception {
+        int gdsId =0;
+        try {
+            gdsId = iGdsInfoSV.insertGdsInfo(gdsInfoReqDTO);
+            try{
+                if (gdsId!=0){
+                    if ("1".equals(gdsInfoReqDTO.getStatus())){
+                        iDeltaIndexServiceSV.deltaImport(SolrCoreEnum.GDS.getCode(),gdsId+"");
+                    }else if ("2".equals(gdsInfoReqDTO.getStatus())){
+                        List<String> gdsIds = new ArrayList<String>();
+                        gdsIds.add(gdsId+"");
+                        iDeltaIndexServiceSV.deleteDeltaBatch(SolrCoreEnum.GDS.getCode(),gdsIds);
+                    }
+                }
+            }catch (Exception e){
+                log.error("调用solr服务更新异常：",e);
+            }
+        } catch (Exception e) {
+            log.error("跟新商品基本信息异常:", e);
+            throw new Exception(e);
+        }
+        return gdsId;
     }
 }
