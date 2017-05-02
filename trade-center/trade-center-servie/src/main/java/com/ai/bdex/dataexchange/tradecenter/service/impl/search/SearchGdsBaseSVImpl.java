@@ -47,8 +47,8 @@ public class SearchGdsBaseSVImpl implements ISearchGdsBaseSV{
         SearchGdsBaseRespDTO respDTO = new SearchGdsBaseRespDTO();
         SearchGdsBaseExample example = new SearchGdsBaseExample();
         SearchGdsBaseExample.Criteria criteria = example.createCriteria();
-        List<SearchGdsBase> searchGdsBaseList = searchGdsBaseMapper.selectByExample(example);
         initCriteria(criteria, searchGdsBaseReqDTO);
+        List<SearchGdsBase> searchGdsBaseList = searchGdsBaseMapper.selectByExample(example);
         if (!CollectionUtil.isEmpty(searchGdsBaseList)) {
             ObjectCopyUtil.copyObjValue(searchGdsBaseList.get(0),respDTO,null,false);
         }
