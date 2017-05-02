@@ -308,10 +308,10 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
             try{
                 if (gdsId!=0){
                     if ("1".equals(gdsInfoReqDTO.getStatus())){
-                        iDeltaIndexServiceSV.deltaImport(SolrCoreEnum.GDS.getCode(),gdsId+"");
+                        iDeltaIndexServiceSV.deltaImport(SolrCoreEnum.GDS.getCode(),gdsId);
                     }else if ("2".equals(gdsInfoReqDTO.getStatus())){
-                        List<String> gdsIds = new ArrayList<String>();
-                        gdsIds.add(gdsId+"");
+                        List<Integer> gdsIds = new ArrayList<Integer>();
+                        gdsIds.add(gdsId);
                         iDeltaIndexServiceSV.deleteDeltaBatch(SolrCoreEnum.GDS.getCode(),gdsIds);
                     }
                 }
