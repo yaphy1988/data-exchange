@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/manage.css"   th:href="@{/css/manage.css}">
+	<!--  <link rel="stylesheet" href="../static/css/manage.css"   th:href="@{/css/manage.css}">-->
 	<script type="text/javascript" src="../../static/js-busi/gds/gdsEdit.js" th:src="@{/js-busi/gds/gdsEdit.js}"></script>
 	<script type="text/javascript" src="../../static/component/ckeditor/ckeditor.js" th:src="@{/component/ckeditor/ckeditor.js}"></script>
 	<script type="text/javascript" src="../../static/js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
@@ -134,10 +134,10 @@
 					</td>
 					<td width="520">
 						<div class="input-group">
-							<input type="hidden"  id="apiId" name="apiId" >
-							<input type="text" class="form-control" placeholder="/API/" id="apiText" disabled>
+							<input type="hidden"  id="apiId" name="apiId"  th:value="${gdsInfoVO.apiId}" >
+							<input type="text" class="form-control" placeholder="/API/" id="apiText" disabled th:value="${gdsInfoVO.apiIdName}">
 							<span class="input-group-btn">
-					        <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal3" >请选择</button>
+					        <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal3"  th:if="${isView==false}">请选择</button>
 					      </span>
 						</div>
 							<select class="form-control" id="apiId" name="apiId" th:remove="all">
@@ -178,8 +178,9 @@
 					</td>
 					<td >
 					<div class="label_box" id="gdsLabelList" >
-						<p th:each="gdsLabelVO,catStat:${gdsInfoVO.gdsLabelVOList}" >
-							<span  class="label" th:style="'border:solid 1px '+@{${gdsLabelVO.labColor}}+'; color:'+@{${gdsLabelVO.labColor}}+''" th:labId="${gdsLabelVO.labId}" th:labName="${gdsLabelVO.labName}" th:labColor="${gdsLabelVO.labColor}" th:text="${gdsLabelVO.labName}">
+						<p th:each="gdsLabelVO,catStat:${gdsInfoVO.gdsLabelVOList}" th:style="'border:solid 1px '+@{${gdsLabelVO.labColor}}+'; color:'+@{${gdsLabelVO.labColor}}+''" th:labId="${gdsLabelVO.labId}" th:labName="${gdsLabelVO.labName}" th:labColor="${gdsLabelVO.labColor}">
+							<span>
+							<label  th:text="${gdsLabelVO.labName}"></label>
 								<a class=" pl5 colse"  th:onclick="'deleteGdsLabel(this)'">×</a>
 							</span>
 						</p>
@@ -189,7 +190,7 @@
 							</span>
 						</p>
 					</div>
-					<a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsLabelModal()'"   >请选择</a>
+					<a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsLabelModal()'" th:if="${isView==false}"  >请选择</a>
 					</td>
 					<td>
 
@@ -240,7 +241,7 @@
 		   			<td><input type="text" name="packPrice" th:value="${gdSkuVO.packPrice}"></td>
 		   			<td><input type="text" name="packTimes" th:value="${gdSkuVO.packTimes}"></td>
 		   			<td><input type="text" name="packDay" th:value="${gdSkuVO.packDay}"></td>
-		   			<td><a href="javascript:void(0);" th:onclick="'deleteGdsSku(this)'">删除</a></td>
+		   			<td><a href="javascript:void(0);" th:onclick="'deleteGdsSku(this)'" th:if="${isView==false}">删除</a></td>
 		   			
 				</tr>
 				<tr th:remove="all">
@@ -254,7 +255,7 @@
 			</table>
 			<div class="clearfix">
 			<!-- <a href="" class="btn btn-default btn-sm pull-right " >删除</a> -->
-			<a href="javascript:void(0);" class="btn btn-primary btn-sm pull-right mr5"  th:onclick="'addPackAgeOne()'">新增套餐</a>
+			<a href="javascript:void(0);" class="btn btn-primary btn-sm pull-right mr5"  th:onclick="'addPackAgeOne()'" th:if="${isView==false}">新增套餐</a>
 			</div>
 		
 			</div>
@@ -286,7 +287,7 @@
 			
 			<!-- 按钮 -->
 			<div class="p20 text-center ">
-					 <a href="javascript:void(0)" class="btn-primary btn mr10" th:onclick="'saveGds()'" >保存</a>
+					 <a href="javascript:void(0)" class="btn-primary btn mr10" th:onclick="'saveGds()'" th:if="${isView==false}">保存</a>
 					<a href="javascript:void(0)" class="btn-default btn" th:href="@{/gdsManage/index}">返回</a>
 				</div>
 		</div>
@@ -363,7 +364,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary" th:onclick="'catIsSubNode()'">确认</button>
+					<button type="button" class="btn btn-primary" th:onclick="'catIsSubNode()'" >确认</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 				</div>
 			</div>

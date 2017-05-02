@@ -57,8 +57,18 @@ public class GdsInfoVO extends BaseResponseDTO implements Serializable{
 	    private List<GdsSkuVO> gdsSkuVOList;//单品列表
 
 	    private List<GdsInfo2PropVO> gdsInfo2PropVOList;//商品属性列表
+	    
+	    private String apiIdName;
+	    
+	    public String getApiIdName() {
+			return apiIdName;
+		}
 
-	    public String getGdsPicUrl() {
+		public void setApiIdName(String apiIdName) {
+			this.apiIdName = apiIdName;
+		}
+
+		public String getGdsPicUrl() {
 			return gdsPicUrl;
 		}
 

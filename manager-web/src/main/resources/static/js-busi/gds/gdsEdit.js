@@ -81,11 +81,15 @@ function saveGdsLabelQuik(){
 	}
 	var labAppend = '<p style="border:solid 1px ' + labColor+ ';color:' 
 					+ labColor + '; " labId="" labName="' + labName+ '" labColor="' 
-					+ labColor + '"><span>' 
-					+ labName + '<a class=" pl5 colse"  onclick="deleteGdsLabel(this)">×</a></span></p>';
+					+ labColor + '"><span><label>' 
+					+ labName + '</label><a class=" pl5 colse"  onclick="deleteGdsLabel(this)">×</a></span></p>';
 	$("#gdsLabelList").append(labAppend);
 	$("#myModal2").modal('hide');
 }
+/**
+ * 删除标签
+ * @param obj
+ */
 function deleteGdsLabel(obj){
 	WEB.msg.warn("提示","确定要删除该标签吗？",function(){
 		$(obj).parent().parent().remove();
@@ -379,8 +383,9 @@ function saveGds(){
 		data : gdsInfoObj,
         success : function(data) {
             if (data.success=="true") {
-            	WEB.msg.info("提示","保存成功");
-            	window.location.href = WEB_ROOT+"/gdsManage/index";
+            	WEB.msg.info("提示","保存成功",function(){
+                	window.location.href = WEB_ROOT+"/gdsManage/index";
+            	});
             }
         }
     });
@@ -413,7 +418,7 @@ function createGdsInfoVO(){
 	var funIntroduction = $("#funIntroduction").val();
 	var commpanyName = $("#commpanyName").val();
 	if(ifRecommend==undefined){
-		ifRecommend="";
+		ifRecommend="0";
 	}
 	if(funIntroduction==undefined){
 		funIntroduction="";
@@ -502,7 +507,6 @@ function createGdsSkuList(){
 		saveValid=false;
 		return;
 	}
-	if(catFirst==1)
 	$("#APIPackage").find("tbody tr").each(function(){
 		var skuName=$(this).find('[name="skuName"]').val();
 		var packPrice =$(this).find('[name="packPrice"]').val();
@@ -551,9 +555,10 @@ function createGdsSkuList(){
 		}
 		gdsSkuVOList.push(gdsSkuVO);
 	});
+	return gdsSkuVOList;
 }
 function createGdsInfo2PropList(){
-	var gdsSkuVOList=new Array();
+	var gdsInfo2PropVOList=new Array();
 	$('tr[name="dataProps"]').each(function(){
 		var gpId=$(this).find("td").attr("gpId");
 		var proId=$(this).find("td").attr("proId");
@@ -590,7 +595,7 @@ function createGdsInfo2PropList(){
 			showOrder : showOrder,
 			proType : proType
 		}
-		gdsSkuVOList.push(gdsInfo2PropVO);
+		gdsInfo2PropVOList.push(gdsInfo2PropVO);
 	});
 	if(!saveValid){
 		return;
@@ -614,9 +619,6 @@ function createGdsInfo2PropList(){
 		}else if(ckeditName=="editorCompany"){
 			proValue=ckeditCompany.getData()
 		}
-//		if(proValue!=""){
-//			proValue=$.trim(encodeURI(proValue));
-//		}
 			var gdsInfo2PropVO ={
 					gpId:gpId,
 					proId:proId,
@@ -625,10 +627,9 @@ function createGdsInfo2PropList(){
 					showOrder:showOrder,
 					proType:proType	
 			}
-			gdsSkuVOList.push(gdsInfo2PropVO);
-		//}
+			gdsInfo2PropVOList.push(gdsInfo2PropVO);
 	});
-	return gdsSkuVOList;
+	return gdsInfo2PropVOList;
 }
 /**
  * 上传图片

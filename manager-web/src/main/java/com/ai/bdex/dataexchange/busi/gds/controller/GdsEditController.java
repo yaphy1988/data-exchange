@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -40,15 +41,14 @@ import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsJsonBean;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsLabelQuikVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsLabelVO;
-import com.ai.bdex.dataexchange.busi.gds.entity.GdsManageInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsPropVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsSkuVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.system.StaffUtil;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2CatReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2CatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
@@ -171,6 +171,15 @@ public class GdsEditController {
                             gdsInfoVO.setGdsSkuVOList(gdsSkuVOList);
                         }
                     }
+                    if(gdsInfoRespDTO.getApiId()!=null){
+                    	PageResponseDTO<AipServiceInfoDTO> pageInfo = new PageResponseDTO<AipServiceInfoDTO>();
+            			AipServiceInfoReqDTO apiReqDTO = new AipServiceInfoReqDTO();
+            			apiReqDTO.setPageNo(1);
+            			apiReqDTO.setPageSize(1);
+            			apiReqDTO.setProviderId(String.valueOf(gdsInfoRespDTO.getApiId()));
+            			pageInfo = iAipServiceInfoRSV.selectServiceWithPage(apiReqDTO);
+            			gdsInfoVO.setApiIdName(pageInfo.getResult().get(0).getServiceName());
+                    }
                 }
         	}
         	if (gdsInfoVO.getIsView() != null && gdsInfoVO.getIsView().equals("true")) {// 查看详情
@@ -256,12 +265,12 @@ public class GdsEditController {
      */
     @RequestMapping(value = "/addGds")
     @ResponseBody
-    public GdsJsonBean addGds(HttpServletRequest req, HttpServletResponse rep) throws BusinessException, GenericException {
+    public GdsJsonBean addGds(HttpServletRequest req, HttpServletResponse rep,HttpSession session) throws BusinessException, GenericException {
     	GdsJsonBean jsonBean = new GdsJsonBean();
     	GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
         try {
         	//商品基本信息
-        	String staffId="admin";
+        	String staffId=StaffUtil.getStaffVO(session).getStaffId();
     		JSONObject gdsInfoVO=JSONObject.parseObject(req.getParameter("gdsInfoVO"));
 			this.setGdsInfo(gdsInfoReqDTO, gdsInfoVO);
 			gdsInfoReqDTO.setStatus(GDS_VALID);
@@ -338,12 +347,12 @@ public class GdsEditController {
     }
     @RequestMapping(value = "/editGds")
     @ResponseBody
-    public GdsJsonBean editGds(HttpServletRequest req, HttpServletResponse rep) throws  BusinessException, GenericException {
+    public GdsJsonBean editGds(HttpServletRequest req, HttpServletResponse rep,HttpSession session) throws  BusinessException, GenericException {
     	GdsJsonBean jsonBean = new GdsJsonBean();
     	GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
         try {
         	//商品基本信息
-        	String staffId="admin";
+        	String staffId=StaffUtil.getStaffVO(session).getStaffId();
     		JSONObject gdsInfoVO=JSONObject.parseObject(req.getParameter("gdsInfoVO"));
 			this.setGdsInfo(gdsInfoReqDTO, gdsInfoVO);
 			gdsInfoReqDTO.setStatus(GDS_VALID);
