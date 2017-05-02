@@ -115,6 +115,12 @@
       <artifactId>solr-solrj</artifactId>
     </dependency>
     <!-- solr end -->
+
+	<dependency>  
+	   <groupId>org.springframework.boot</groupId>  
+	   <artifactId>spring-boot-starter-aop</artifactId>  
+	</dependency>
+
   </dependencies>
 
   <build>

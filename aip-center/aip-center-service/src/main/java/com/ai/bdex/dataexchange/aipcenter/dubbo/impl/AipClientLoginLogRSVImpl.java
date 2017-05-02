@@ -10,6 +10,7 @@ import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientLoginLogDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientLoginLogRSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipClientLoginLogSV;
 import com.ai.paas.utils.ObjectCopyUtil;
+import com.ai.paas.utils.StringUtil;
 
 @Service("aipClientLoginLogRSV")
 public class AipClientLoginLogRSVImpl implements IAipClientLoginLogRSV{
