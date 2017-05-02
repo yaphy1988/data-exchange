@@ -89,6 +89,22 @@ public class AipServiceInfoSVImpl implements IAipServiceInfoSV{
 			throw e;
 		}
 	}
+
+	@Override
+	public List<AipServiceInfo> selectServiceByServiceId(String serviceId)
+			throws Exception {
+		try{
+			AipServiceInfoExample key=new AipServiceInfoExample();
+			AipServiceInfoExample.Criteria sql=key.createCriteria();
+			sql.andServiceIdEqualTo(serviceId);
+			sql.andStatusEqualTo("1");		
+			List<AipServiceInfo> list=aipServiceInfoMapper.selectByExample(key);
+			return list;
+		}catch(Exception e){
+			log.error("query service failted."+serviceId, e);
+			throw e;
+		}
+	}
 	
 	
 	
