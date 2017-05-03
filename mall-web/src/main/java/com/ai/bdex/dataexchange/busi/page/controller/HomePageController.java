@@ -199,6 +199,10 @@ public class HomePageController {
 							//数据定制
 							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_800x350"));
 						}
+						 if(moduleId.equals("101")){
+								//数据定制
+								moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_940x400"));
+							}
 						else{
 							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_80x80"));
 

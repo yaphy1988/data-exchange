@@ -180,12 +180,12 @@ function queryModue101(moduleId){
 				if(i==0){
 					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="active"></li>';
 					htmDiv +='<div class="item active">'+
-	                '<a href="'+setLinkUrk(d.linkPage)+'" target="_blank"><img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'"></a>'+
+	                '<a href="'+setLinkUrk(d.linkPage)+'" target="_blank"><img src="'+d.vfsId+'" alt="'+d.adTitle+'"></a>'+
 	            '</div>';
 				}else{
 					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'"></li>';
 					htmDiv +='<div class="item">'+
-		                '<a href="'+setLinkUrk(d.linkPage)+'" target="_blank"><img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'"></a>'+
+		                '<a href="'+setLinkUrk(d.linkPage)+'" target="_blank"><img  src="'+d.vfsId+'" alt="'+d.adTitle+'"></a>'+
 		            '</div>';
 				}
 			});

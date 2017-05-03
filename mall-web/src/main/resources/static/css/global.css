@@ -166,7 +166,7 @@ q:before, q:after, blockquote:before, blockquote:after {
 .pl30{padding-left: 30px;}
 .pr30{padding-right:30px;}
 
-.ptb40{padding:40px 0px ;}
+.ptb40{padding:20px 20px 20px 20px ;}
 .pt40{padding-top:40px;}
 .pb40{padding-bottom:40px;}
 .pl40{padding-left:40px;}
