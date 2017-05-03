@@ -40,14 +40,18 @@ function encodeURI2(strinfo) {
  * 
  */
 /** 保存数据定制信息 */
-function saveMadeData() {
-	
-/*	var staff_id = $("#staff_id").val();
-	if(staff_id == "")
+function saveMadeData() { 
+	var staff_id = "";
+	if(staffInfoDTO != null)
 	{
-	    WEB.msg.info("提示",'请先登录');
-	    return;
-	}*/
+		 staff_id = staffInfoDTO.staffId;
+	}
+	if(staff_id == null || staff_id =="")
+	{
+		  WEB.msg.info("提示",'亲，请先登录哦，若无账户，请先注册。');
+		  return;
+	}
+
 	var needTiel    =  encodeURI2($("#needTiel").val());
 	var needcontent =  encodeURI2($("#needcontent").val());
 	var lnkposen    =  encodeURI2($("#lnkposen").val());
