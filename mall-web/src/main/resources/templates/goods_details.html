@@ -120,12 +120,15 @@
 	<div class="main" layout:fragment="screen_content">
 		<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
 		<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>
+		<style>
+			.bgf1{background:white}
+		</style>
 		<div class="classify">
 			<i class="iconfont"></i>
 			<span>当前位置：</span>
-			<a href=""><span>数据市场</span></a>
-			<a href=""><span>生活服务</span></a>
-			<span class="col_999">常用快递</span>
+			<a href="#" th:each="ladderCat,ladderCatStat : ${ladderCatList}"><span th:text="${ladderCat.catName}">数据市场</span></a>
+			<a href="" th:remove="all"><span>生活服务</span></a>
+			<span class="col_999" th:remove="all">常用快递</span>
 		</div>
 		<div class="gd_etails clearfix">
 			<div class="gd_Left">

@@ -69,4 +69,33 @@ public class GdsCatRSVImpl implements IGdsCatRSV {
         }
         return respDTOList;
     }
+
+    @Override
+    public List<GdsCatRespDTO> queryLadderCatListByCatId(Integer catId) throws Exception {
+        if (catId == null){
+            throw new Exception("根据当前ID获取从最低级到最高级分类的入参为空");
+        }
+        List<GdsCatRespDTO> list = new ArrayList<GdsCatRespDTO>();
+        try {
+            queryLadderCatList(list,catId);
+        }catch (Exception e){
+            log.error("根据当前ID获取从最低级到最高级分类异常：",e);
+        }
+        return list;
+    }
+
+    private void queryLadderCatList(List<GdsCatRespDTO> list , Integer catId){
+        GdsCatRespDTO gdsCatRespDTO = null;
+        try {
+            gdsCatRespDTO = queryGdsCatByCatId(catId);
+            if (gdsCatRespDTO!=null){
+                list.add(gdsCatRespDTO);
+                if (gdsCatRespDTO.getCatPid().intValue()>0){
+                    queryLadderCatList(list,gdsCatRespDTO.getCatPid());
+                }
+            }
+        }catch (Exception e){
+            log.error("查询分类递进列表异常：",e);
+        }
+    }
 }

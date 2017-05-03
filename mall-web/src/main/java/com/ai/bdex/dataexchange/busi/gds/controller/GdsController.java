@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -79,6 +80,11 @@ public class GdsController {
                     if (gdsCatRespDTO!=null){
                         gdsInfoVO.setCatName(gdsCatRespDTO.getCatName());
                     }
+                    //获取从最高级到最低价的分类列表
+                    List<GdsCatRespDTO> ladderCatList = iGdsCatRSV.queryLadderCatListByCatId(gdsInfoRespDTO.getCatId());
+                    Collections.reverse(ladderCatList);
+                    request.setAttribute("ladderCatList",ladderCatList);
+
                 }
                 if (gdsInfoRespDTO.getCatFirst()!=null && gdsInfoRespDTO.getCatId().intValue()>0){
                     GdsCatRespDTO gdsCatRespDTO = iGdsCatRSV.queryGdsCatByCatId(gdsInfoRespDTO.getCatFirst());
@@ -293,6 +299,7 @@ public class GdsController {
         gdsInfoReqDTO.setCatFirst(AIP_CAT_ID);
         gdsInfoReqDTO.setStatus("1");
         gdsInfoReqDTO.setPageSize(4);
+        gdsInfoReqDTO.setIfRecommend("1");
         gdsInfoReqDTO.setGridQuerySortName("shelve_time");
         gdsInfoReqDTO.setGridQuerySortOrder("desc");
         PageResponseDTO<GdsInfoRespDTO> pageResponseDTO = new PageResponseDTO<GdsInfoRespDTO>();

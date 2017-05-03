@@ -18,4 +18,12 @@ public interface IGdsCatRSV {
      */
     public GdsCatRespDTO queryGdsCatByCatId(Integer catId) throws Exception;
     public List<GdsCatRespDTO> queryGdsCatList(GdsCatReqDTO gdsCatReqDTO) throws Exception;
+
+    /**
+     * 根据当前ID获取从最低级到最高级分类异常
+     * @param catId
+     * @return
+     * @throws Exception
+     */
+    public List<GdsCatRespDTO> queryLadderCatListByCatId(Integer catId) throws Exception;
 }
