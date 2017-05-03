@@ -47,7 +47,7 @@ var header = new Object({
 				var html='';
 				if(data.success){
 					if(sortLever== '2'){//2级导航
-						html +='<h4>金融服务</h4><div class="sidebar-link">';
+						html +='<h4>'+data.infos.sortName+'</h4><div class="sidebar-link">';
 					}
 					$(data.sortInfos).each(function(i,d){
 						var link ;
@@ -56,17 +56,24 @@ var header = new Object({
 						}
 						if(sortLever== '2'){//2级导航
 							html +='<a href='+setLinkUrk(link)+' target="_blank">'+d.sortName+'</a>';
+							if(parseInt(i+1)%5 == 0){
+								if(parseInt(i+1)== data.sortInfos.length){
+									html +='</div>'; 
+								}else{
+									html +='</div><div class="sidebar-link">';
+								}
+							}
 						}else{//1级导航
 							html +='<li sortId="'+d.sortId+'"><a href='+setLinkUrk(link)+' target="_blank"><i>&rsaquo;</i>'+d.sortName+'</a> </li>';
 						}
 					});
 				}
 				if(sortLever== '2'){
-					html+='<div class="ad-list clearfix">'+
-	                    	'<div class="item floatL"></div>'+
-	                    	'<div class="item floatL"></div>'+
-	                    	'<div class="item floatL"></div>'+
-							'</div>';
+//					html+='<div class="ad-list clearfix">'+
+//	                    	'<div class="item floatL"></div>'+
+//	                    	'<div class="item floatL"></div>'+
+//	                    	'<div class="item floatL"></div>'+
+//							'</div>';
 					$('#head_sidebar>div').html(html).show();
 				}else{
 					$('#head_sidebar>ul').html(html);

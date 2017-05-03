@@ -244,6 +244,13 @@ public class HomePageController {
 				sortInfoRespDTO.setSortLevel(sortLever);
 			}
 			List<SortInfoRespDTO> sortInfos = iPageDisplayRSV.querySortInfos(sortInfoRespDTO);
+			if("2".equals(sortLever) && !StringUtils.isBlank(sortParentId)){
+				SortInfoRespDTO sortInfoRespDTO2 = new SortInfoRespDTO();
+				sortInfoRespDTO2.setSortId(Integer.valueOf(sortParentId));
+				sortInfoRespDTO2.setStatus(STATUS_VALID);
+				List<SortInfoRespDTO> infos = iPageDisplayRSV.querySortInfos(sortInfoRespDTO2);
+				rMap.put("infos", infos.get(0));
+			}
 			rMap.put("success", true);
 			rMap.put("sortInfos", sortInfos);
 		} catch (Exception e) {
