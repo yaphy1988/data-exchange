@@ -11,17 +11,17 @@ function checkImgChng(){
 function doLogin(){
 	var staffId = $.trim($("#STAFF_ID").val());
 	if(!staffId){
-		showMsg("用户名不能为空");
+		WEB.msg.info('提示',"用户名不能为空");
 		return;
 	}
 	var password = $("#LOGIN_PASSWORD").val();
 	if(!password){
-		showMsg("密码不能为空");
+		WEB.msg.info('提示',"密码不能为空");
 		return;
 	}
 	var verifyCode = $("#verifyCode").val();
 	if(!verifyCode){
-		showMsg("验证码不能为空");
+		WEB.msg.info('提示',"验证码不能为空");
 		return;
 	}
 	$.ajax({
@@ -39,7 +39,7 @@ function doLogin(){
 				window.location.href = WEB_ROOT + "/homePage/pageInit";
 			}else{
 				//刷新验证码
-				showMsg(obj.errorMsg);
+				WEB.msg.info('提示',obj.errorMsg);
 				checkImgChng();
 			}
 		}

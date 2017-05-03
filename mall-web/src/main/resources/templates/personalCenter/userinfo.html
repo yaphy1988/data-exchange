@@ -86,7 +86,7 @@
 						<td ></td>
 						<td>
 						<span class="col_red" th:if="${userinfo.authenFlag=='1'}">已实名认证</span>
-						<a href="${#httpServletRequest.contextPath}/authenapply/userinfo" th:if="${userinfo.authenFlag=='0'}"><span class="col_red">去实名认证</span></a>
+						<a th:href="@{/authenapply/userinfo}" th:if="${userinfo.authenFlag=='0'}"><span class="col_red">去实名认证</span></a>
 						
 						</td>
 					</tr>

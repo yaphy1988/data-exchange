@@ -163,7 +163,7 @@
 		<!-- 按钮 -->
 			<hr>
 			<div class="p20 text-center " style="margin-left: 220px;" th:if="${status=='30'}" >
-				<a href="/authenapply/userinfo?type=reapply" class="btn-primary btn mr10 btn_rec">重新认证</a>
+				<a th:href="@{/authenapply/userinfo?type=reapply}" class="btn-primary btn mr10 btn_rec">重新认证</a>
 			</div>
 	</div>
 	<div class="m_nav">
