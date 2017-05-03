@@ -74,8 +74,12 @@ function editModuleAd(adId,moduleId){
 
 }
 function queryModulePageAdList(index){
+	var moduleId=$("#moduleId").val();
 	var url=basePath+'/pageManage/queryModulePageAdList';
-	var params={pageNo:index};
+	var params={
+			pageNo:index,
+			moduleId:moduleId
+			};
 
 	$.ajax({
 		url:url,
@@ -167,7 +171,7 @@ function savePageModuleAd(){
 			data : params,
 			success:function(data){
            	 WEB.msg.info("提示","保存成功",function(){
-             	window.location.href = basePath+"/pageManage/editModule";
+             	window.location.href = basePath+"/pageManage/editModule?moduleId="+moduleId;
            	 });
 			}
 		});

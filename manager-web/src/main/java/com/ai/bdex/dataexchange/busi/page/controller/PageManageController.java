@@ -298,6 +298,9 @@ public class PageManageController {
 			PageModuleAdReqDTO adReqDTO = new PageModuleAdReqDTO();
 			adReqDTO.setPageNo(moduleAdVO.getPageNo());
 			adReqDTO.setPageSize(PAGE_SIZE);
+			if(moduleAdVO.getModuleId()!=null){
+				adReqDTO.setModuleId(moduleAdVO.getModuleId());
+			}
 			List<String> statusList=new ArrayList<String>();
 			//查询有效、失效
 			statusList.add(STATUS_VALID);
