@@ -21,12 +21,8 @@ function queryModuleList(pageNo){
                     }else{
                     	html += '<td>'+d.remark+'</td>';
                     }
-					html +='<td>'+d.moduleCount+'</td>';
-					if(d.status == '1'){
-						html +='<td>展示</td>';
-					}else{
-						html +='<td>不展示</td>';
-					}
+					html +='<td>'+d.moduleCount+'</td>'+
+					'<td>'+d.orderNo+'</td>';
 					if(d.moduleType == '01'){
 						html +='<td>商品</td>';
 					}else if(d.moduleType == '02'){
