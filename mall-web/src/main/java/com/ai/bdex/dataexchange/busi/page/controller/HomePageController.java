@@ -1,3 +1,5 @@
+
+
 package com.ai.bdex.dataexchange.busi.page.controller;
 
 import java.net.URLDecoder;
@@ -62,9 +64,9 @@ public class HomePageController {
 	private final static String CUSTOMDATA_STATUS_VALID = "1";// 有效
 	private static final Logger log = LoggerFactory.getLogger(HomePageController.class);
 
-	@DubboConsumer
+	@DubboConsumer(timeout = 30000)
 	IPageDisplayRSV iPageDisplayRSV;
-	@DubboConsumer
+	@DubboConsumer(timeout = 30000)
 	IGdsInfoRSV iGdsInfoRSV;
 	
 	@RequestMapping(value = "/pageInit")
