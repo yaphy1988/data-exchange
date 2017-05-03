@@ -1,19 +1,20 @@
 
 <table class="editTable">
-	<input type="hidden" id="info_id" th:value="${newsInfo.infoId}"/>
-	<input type="hidden" id="info_infoUrl" th:value="${newsInfo.infoUrl}"/>
+	<input type="hidden" id="info_id" th:value="${infoId}"/>
+	<input type="hidden" id="info_moduleId" th:value="${moduleId}"/>
+	<input type="hidden" id="info_infoUrl" th:value="${infoUrl}"/>
 	<tr>
 		<td class="Hint " width="120"><span class="col_red">*</span>标题:</td>
-		<td width="420"><input id="infoTitle" type="text" class="form-control" th:value="${newsInfo.infoTitle}"></td>
+		<td width="420"><input id="infoTitle" type="text" class="form-control" th:value="${infoTitle}"></td>
 	</tr>
 	<tr>
 		<td class="Hint "><span class="col_red">*</span>信息类型:</td>
 		<td>
 		<select class="form-control;width:60%" id="infoType">
-			<option value="1">行业资讯</option>
-            <option value="2">平台公告</option>
-            <option value="3">平台活动</option>
-            <option value="4">常见问题</option>
+			<option value="1" th:selected="(${infoType} == '1')">行业资讯</option>
+            <option value="2" th:selected="(${infoType} == '2')">平台公告</option>
+            <option value="3" th:selected="(${infoType} == '3')">平台活动</option>
+            <option value="4" th:selected="(${infoType} == '4')">常见问题</option>
 		</select></td>
 	</tr>
 	<!--

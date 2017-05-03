@@ -61,7 +61,7 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 		if(!StringUtils.isBlank(exam.getInfoType())){
 			criteria.andInfoTypeEqualTo(exam.getInfoType());
 		}
-		example.setOrderByClause( "INFO_ORDER asc,update_time desc");
+		example.setOrderByClause( "status desc,update_time desc");
 		PageHelper.startPage(page, rows);
 		List<PageNewsInfo> pageList = pageNewsInfoMapper.selectByExample(example);
 		// 使用PageInfo对结果进行包装
@@ -87,6 +87,12 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 	@Override
 	public long updatePageNewsInfoByKey(PageNewsInfoReqDTO exam) throws Exception {
 		PageNewsInfo record = pageNewsInfoMapper.selectByPrimaryKey(exam.getInfoId());
+		if(!StringUtils.isBlank(exam.getInfoTitle())){
+			record.setInfoTitle(exam.getInfoTitle());
+		}
+		if(!StringUtils.isBlank(exam.getInfoUrl())){
+			record.setInfoUrl(exam.getInfoUrl());
+		}
 		record.setStatus(exam.getStatus());
 		record.setUpdateStaffId(exam.getUpdateStaffId());
 		record.setUpdateTime(DateUtil.getNowAsDate());

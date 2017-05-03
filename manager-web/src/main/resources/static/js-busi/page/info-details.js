@@ -1,10 +1,15 @@
 var basePath = WEB_ROOT;
+var ckeditor= null;
 $(function(){
 	queryNewsPageInfo(1);
-
+	$('#editOrAddNewsInfo').bind('click',function(){
+		editOrAddNewsInfo('');
+	});
 })
 
 function saveNewsInfo(){
+	var infoId = $('#info_id').val(); 
+	var moduleId = $('#info_moduleId').val(); 
 	var infoTitle = $.trim($('#infoTitle').val());
 	var infoType = $('#infoType').val();
 	var ckeditContent = ckeditor.getData();
@@ -14,9 +19,13 @@ function saveNewsInfo(){
 		dataType:'json',
 		cacha:false,
 		async:true,
-		data:{infoTitle:infoTitle,infoType:infoType,ckeditContent:ckeditContent},
+		data:{infoId:infoId,moduleId:moduleId,infoTitle:infoTitle,infoType:infoType,ckeditContent:ckeditContent},
 		success:function(data){
-			
+			if(data.success){
+				queryNewsPageInfo(1);
+			}else{
+				alert("删除失败");
+			}
 		}
 	});
 }
@@ -45,7 +54,7 @@ function setCkeditData(url) {
 			dataType : 'jsonp',
 		    jsonp :'jsonpCallback',//注意此处写死jsonCallback
 			success: function (data) {
-				ckeditPackage.setData(data.result);
+				ckeditor.setData(data.result);
 		    }
 		});
 }
@@ -75,7 +84,7 @@ function createEditor() {
 	};
 	ckeditor=CKEDITOR.replace("ckeditor", config);
 	var url = $.trim($('#info_infoUrl').val());
-	if(url != null && url != undefined){
+	if(url != null && url != undefined && url != ''){
 		setCkeditData(url);
 	}
 	//ckeditor.setData(data.result);
@@ -99,10 +108,10 @@ function queryNewsPageInfo(pageNo){
                     '<td>'+parseInt(i+1)+'</td>'+
                     '<td> <div style="max-width:200px;" class="text_overflow">'+d.infoTitle+'</div></td>'+
                     '<td>'+d.infoType+'</td>';
-					var pubTime = new Date(d.pubTime);
+					/*var pubTime = new Date(d.pubTime);
 					html +='<td>'+initDate(pubTime)+'</td>';
 					var lostTime = new Date(d.lostTime);
-					html +='<td>'+initDate(lostTime)+'</td>';
+					html +='<td>'+initDate(lostTime)+'</td>';*/
 					if(d.status =='1'){
 						html +='<td>生效</td>';
 					}else{
@@ -110,11 +119,14 @@ function queryNewsPageInfo(pageNo){
 					}
                     html +='<td>'+
                         '<p class="pop-link">'+
-                            '<a href="javascript:editOrAddNewsInfo('+d.infoId+')">编辑</a><i>|</i>'+
-                            '<a href="javascript:updateNewsPageInfo('+d.infoId+',0)">删除</a>'+
-                        '</p>'+
-                    '</td>'+
-                '</tr>';
+                            '<a href="javascript:editOrAddNewsInfo('+d.infoId+')">编辑</a><i>|</i>';
+                    if(d.status =='1'){
+                    	html+='<a href="javascript:updateNewsPageInfo('+d.infoId+',0)">失效</a>';
+                    }else{
+                    	html+='<a href="javascript:updateNewsPageInfo('+d.infoId+',1)">生效</a>';
+                    }
+                            
+                    html+='</p></td></tr>';
 			});
 			$('#tab01 tbody').eq(1).html(html);
 			$('#tab01').attr('class','tab-pane active');

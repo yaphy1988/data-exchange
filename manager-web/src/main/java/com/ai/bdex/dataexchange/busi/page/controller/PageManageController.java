@@ -29,9 +29,6 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.HtmlUtils;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoReqDTO;
-import com.ai.bdex.dataexchange.busi.gds.entity.AipServiceInfoVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
@@ -115,7 +112,7 @@ public class PageManageController {
 			}else{
 				sortInfoDTO.setPageSize(10);
 			}
-			sortInfoDTO.setStatus(STATUS_VALID);
+			
 			PageResponseDTO<PageNewsInfoRespDTO> newsInfoPageInfo = iPageDisplayRSV.queryPageNewsInfoList(sortInfoDTO);
 			if(!CollectionUtils.isEmpty(newsInfoPageInfo.getResult())){
 				for(PageNewsInfoRespDTO newsInfoRespDTO: newsInfoPageInfo.getResult()){
@@ -144,14 +141,32 @@ public class PageManageController {
 	@RequestMapping(value = "/addNewsPageInfo")
 	public String addNewsPageInfo(Model model, HttpServletRequest request) {
 		String infoId = request.getParameter("infoId");
+		PageNewsInfoRespDTO newsInfo = new PageNewsInfoRespDTO();
+		String moduleId = "";
+		String infoUrl = "";
+		String infoTitle = "";
+		String infoType = "";
 		try {
 			if(!StringUtils.isBlank(infoId)){
-				PageNewsInfoRespDTO newsInfo = iPageDisplayRSV.queryPageNewsInfoById(Integer.valueOf(infoId));
-				request.setAttribute("newsInfo", newsInfo);
+				newsInfo = iPageDisplayRSV.queryPageNewsInfoById(Integer.valueOf(infoId));
+				if(newsInfo != null){
+					if(newsInfo.getInfoUrl()!= null){
+						infoUrl = ImageUtil.getStaticDocUrl(newsInfo.getInfoUrl(), "html");
+						newsInfo.setInfoUrl(infoUrl);
+					}
+					moduleId = String.valueOf(newsInfo.getModuleId());
+					infoTitle = newsInfo.getInfoTitle();
+					infoType = newsInfo.getInfoType();
+				}
 			}
 		} catch (Exception e) {
 			log.error("新闻资讯信息新增出错：" + e.getMessage());
 		}
+		request.setAttribute("infoId", infoId);
+		request.setAttribute("moduleId", moduleId);
+		request.setAttribute("infoUrl", infoUrl);
+		request.setAttribute("infoTitle", infoTitle);
+		request.setAttribute("infoType", infoType);
 		return "page/newsInfo-add";
 	} 
 	@RequestMapping(value="/updateNewsPageInfo")
@@ -288,10 +303,12 @@ public class PageManageController {
 	@RequestMapping(value = "/saveNewsInfo")
 	@ResponseBody
 	public Map<String, Object> saveNewsInfo(HttpServletRequest request){
+		String infoId = request.getParameter("infoId");
+		String moduleId = request.getParameter("moduleId");
 		String infoTitle = request.getParameter("infoTitle");
 		String infoType = request.getParameter("infoType");
 		String ckeditContent = request.getParameter("ckeditContent");
-		ckeditContent = HtmlUtils.htmlEscape(ckeditContent);
+		ckeditContent = HtmlUtils.htmlUnescape(ckeditContent);
 		Map<String, Object> rMap = new HashMap<String, Object>();
 		try {
 			PageNewsInfoReqDTO newsInfoReqDTO = new PageNewsInfoReqDTO();
@@ -300,10 +317,31 @@ public class PageManageController {
 				String infoUrl = MongoFileUtil.saveFile(ckeditContent.getBytes("utf-8"),"gdsContent", ".html");
 				newsInfoReqDTO.setInfoUrl(infoUrl);
 			}
+			if(!StringUtils.isBlank(infoId)){
+				newsInfoReqDTO.setInfoId(Integer.valueOf(infoId));
+			}
+			if(!StringUtils.isBlank(moduleId)){
+				newsInfoReqDTO.setModuleId(Integer.valueOf(moduleId));
+			}else{
+				if("1".equals(infoType)){
+					newsInfoReqDTO.setModuleId(105);
+				}else if("2".equals(infoType)){
+					newsInfoReqDTO.setModuleId(106);
+				}else if("3".equals(infoType)){
+					newsInfoReqDTO.setModuleId(107);
+				}else{
+					newsInfoReqDTO.setModuleId(108);
+				}
+			}
+			newsInfoReqDTO.setStatus(STATUS_VALID);
 			newsInfoReqDTO.setInfoTitle(infoTitle);
 			newsInfoReqDTO.setInfoType(infoType);
-			long newsInfoId = iPageDisplayRSV.insertPageNewsInfo(newsInfoReqDTO);
-			rMap.put("newsInfoId",newsInfoId);
+			if(StringUtils.isBlank(infoId)){
+				iPageDisplayRSV.insertPageNewsInfo(newsInfoReqDTO);
+			}else{
+				long infoByKey = iPageDisplayRSV.updatePageNewsInfoByKey(newsInfoReqDTO);
+				System.out.println(infoByKey);
+			}
 			rMap.put("success",true);
 		} catch (Exception e) {
 			rMap.put("success",false);

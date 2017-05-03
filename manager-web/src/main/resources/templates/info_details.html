@@ -59,7 +59,7 @@
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">信息列表</a></li>
-                    <li class=""><a href="javascript:editOrAddNewsInfo()" aria-controls="home" role="tab" data-toggle="tab">信息新增</a></li>
+                    <li class=""><a href="javascript:void(0)" id="editOrAddNewsInfo" aria-controls="home" role="tab" data-toggle="tab">信息新增</a></li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -120,8 +120,8 @@
                                 <td>标题</td>
                                 <td th:remove="all">摘要</td>
                                 <td>信息类型</td>
-                                <td>生效时间</td>
-                                <td>失效时间</td>
+                                <td th:remove="all">生效时间</td>
+                                <td th:remove="all">失效时间</td>
                                 <td>生效状态</td>
                                 <td>操作</td>
                             </tr>
@@ -141,7 +141,7 @@
                                 <td>
                                     <p class="pop-link">
                                         <a href="">编辑</a><i>|</i>
-                                        <a href="">删除</a>
+                                        <a href="">失效</a>
                                     </p>
                                 </td>
                             </tr>
