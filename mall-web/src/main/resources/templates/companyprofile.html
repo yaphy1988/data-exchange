@@ -151,7 +151,8 @@
 					</div>
 				</div>
 			</div>
-			<div class="infoRight">
+			<div th:replace="~{fragments/rightNewslist :: rightNewslist}"></div>
+			<div class="infoRight" th:remove="all">
 				<div class="sidebarImg">
 					<img src="" width="200" height="200">
 				</div>
@@ -163,6 +164,7 @@
 						<li><a href=""><i class="glyphicon glyphicon-leaf"></i>常见问题</a></li>
 					</ul>
 				</div> -->
+			
 				<div class="sidebarBox" style="border-top:none;">
 					<h3 class="title">
 						<a href="" class="pull-right more">查看全部 »</a>
