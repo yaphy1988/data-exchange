@@ -646,7 +646,7 @@ function uploadImage(object) {
     	return false;
     }
 	var width=$(object).attr("width");
-	var height=$(object).attr("height"),
+	var height=$(object).attr("height");
 	filepath = (filepath + '').toLowerCase();
 	var regex = new RegExp(
 			'\\.(jpg)$|\\.(png)$|\\.(jpeg)$|\\.(gif)$|\\.(bmp)$', 'gi');

@@ -17,6 +17,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleAdSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
+import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
@@ -92,5 +93,21 @@ public class PageModuleAdSVImpl implements IPageModuleAdSV {
 		int code = moduleAdMapper.updateByExampleSelective(modularAd, example);
 		return code;
 	}
-
+	@Override
+	public int insertPageModuleAdInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception {
+		PageModuleAd modularAd = new PageModuleAd();
+		modularAd.setModuleId(moduleAdDTO.getModuleId());
+		List<PageModuleAd> adList=this.queryPageModuleAdList(modularAd);
+		int adOrder=0;
+		if(CollectionUtils.isNotEmpty(adList)){
+			adOrder=adList.get(0).getAdOrder();
+		}
+		int adId=SeqUtil.getInt("SEQ_PAGE_MODULE_AD");
+		moduleAdDTO.setAdId(adId);
+		moduleAdDTO.setAdOrder(adOrder+1);
+		moduleAdDTO.setCreateTime(DateUtil.getNowAsDate());
+		ObjectCopyUtil.copyObjValue(moduleAdDTO, modularAd, null, false);
+		int code = moduleAdMapper.insert(modularAd);
+		return adId;
+	}
 }

@@ -25,7 +25,7 @@
 			<td>
 				<p class="pop-link">
 					<a th:onclick="'updatePageModuleAd('+@{${pageAd.adId}}+','+@{${pageAd.moduleId}}+',0)'" th:if="${pageAd.status=='1'}">失效</a><i th:if="${pageAd.status=='1'}">|</i> 
-					<a href="#" >编辑</a><i>|</i> 
+					<a href="javascript:void(0)"  th:onclick="'editModuleAd('+@{${pageAd.adId}}+','+@{${pageAd.moduleId}}+')'">编辑</a><i>|</i> 
 					<a th:onclick="'updatePageModuleAd('+@{${pageAd.adId}}+','+@{${pageAd.moduleId}}+',2)'" th:if="${pageAd.status!='2'}">删除</a>
 				</p>
 			</td>
@@ -34,7 +34,7 @@
 </table>
 <div class="pagelist clearfix">
 	<div class="left-btn">
-		<button>
+		<button th:onclick="'addModuleAd()'">
 			<i class="glyphicon glyphicon-plus"></i>新增广告
 		</button>
 	</div>

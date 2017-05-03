@@ -20,4 +20,5 @@ public interface IPageModuleAdSV {
 	public List<PageModuleAd> queryPageModuleAdList(PageModuleAd pageModuleAd) throws Exception;
 	public PageResponseDTO<PageModuleAdRespDTO>  queryPageModuleAdPageInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception;
     public int updatePageModuleAdInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception;
+	public int insertPageModuleAdInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception;
 }

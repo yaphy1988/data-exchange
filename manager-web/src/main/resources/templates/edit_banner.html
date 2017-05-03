@@ -9,6 +9,8 @@
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+	<script type="text/javascript" src="../../static/js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
+	<script type="text/javascript" src="../static/js-busi/page/edit_manager.js" th:src="@{/js-busi/page/edit_manager.js}"></script>
 </head>
 <body>
 <header class="clearfix m_header">
@@ -62,10 +64,8 @@
                         	<span class="col_red">*</span>广告版位:
                     </td>
                     <td width="420">
-                         <select class="form-control">
-                             <option>1</option>
-                             <option>1</option>
-                             <option>1</option>
+                         <select class="form-control" id="moduleId" disabled>
+                             <option th:each="pageModule,catStat:${moduleAdList}" th:value="${pageModule.moduleId}" th:selected="(${pageModule.moduleId} == ${moduleId})"th:text="${pageModule.moduleName}"></option>
                          </select>
                     </td>
                 </tr>
@@ -75,7 +75,8 @@
                         <span class="col_red">*</span>广告语:
                     </td>
                     <td>
-                      <input type="text" class="form-control" placeholder="xxxx">
+                      <input type="hidden" class="form-control" placeholder="" id="adId" th:value="${adRespDTO.adId}">
+                      <input type="text" class="form-control" placeholder="" id="adTitle" th:value="${adRespDTO.adTitle}">
                     </td>
                 </tr>
                 <tr>
@@ -83,21 +84,21 @@
                         <span class="col_red">*</span>图片:
                     </td>
                     <td>
-                       
-                            <input type="text" class="form-control wt200 ClassItem" placeholder="xxxx" disabled>
-                            <input class="float_File"  type="file">
+                           <input type="hidden" class="form-control wt200 ClassItem" placeholder="" id="vfsId" th:value="${adRespDTO.vfsId}">
+                            <input type="text" class="form-control wt200 ClassItem" placeholder="" disabled id="bmpName" th:value="${adRespDTO.bmpName}">
+                            <input class="float_File"  type="file" id="picUpLoad" name="picUpLoad"th:onchange="'uploadImage(this)'">
                         
                     </td>
                 </tr>
                 <tr>
                     <td></td>
-                    <td><p class="col_red pt5 pb20">温馨提醒：请上传小于100k的图片(jpg格式),图片必须上传X*X规格</p></td>
+                    <td><p class="col_red pt5 pb20">温馨提醒：请上传小于100k的图片(jpg格式)</p></td>
                 </tr>
                 <tr>
                     <td class="Hint">预览：</td>
-                    <td><img src="" width="80"  height="80"></td>
+                    <td><img src="" width="80"  height="80" id="imgSrcURL"  th:src="${adRespDTO.vfsIdUrl}"></td>
                 </tr>
-                <tr>
+                <tr th:remove="all">
                     <td class="Hint ">
                         <span class="col_red ">*</span>链接类型:
                     </td>
@@ -123,10 +124,10 @@
                         <span class="col_red">*</span>链接内容:
                     </td>
                     <td>
-                      <input type="text" class="form-control">
+                      <input type="text" class="form-control" id="linkPage" th:value="${adRespDTO.linkPage}">
                     </td>
                 </tr>
-                <tr>
+                <tr th:remove="all">
                     <td class="Hint">
                         	简略信息:
                     </td>
@@ -137,8 +138,8 @@
                 <tr>
                     <td class="Hint">&nbsp;</td>
                     <td>
-                        <button class="btn btn-primary">保存</button>
-                        <button class="btn btn-default">返回</button>
+                        <button class="btn btn-primary" th:onclick="'savePageModuleAd()'">保存</button>
+                        <button class="btn btn-default" th:onclick="'javascript :history.back(-1);'" >返回</button>
                     </td>
                 </tr>
             </table>
