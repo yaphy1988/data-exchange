@@ -301,4 +301,25 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 		return authStaffMapper.updateByPrimaryKeySelective(record);
 	}
 
+	@Override
+	public boolean checkInfoByName(String name, String staffId) throws Exception {
+		AuthStaffExample example = new AuthStaffExample();
+		AuthStaffExample.Criteria sql = example.createCriteria();
+		sql.andStaffIdNotEqualTo(staffId);
+		sql.andStaffNameEqualTo(name);
+		List<AuthStaff> result = authStaffMapper.selectByExample(example);
+		if(!CollectionUtil.isEmpty(result)){
+			return true;
+		}
+		AuthStaffExample example1 = new AuthStaffExample();
+		AuthStaffExample.Criteria sql1 = example1.createCriteria();
+		sql1.andStaffIdNotEqualTo(staffId);
+		sql1.andAliasNameEqualTo(name);
+		List<AuthStaff> result1 = authStaffMapper.selectByExample(example1);
+		if(!CollectionUtil.isEmpty(result1)){
+			return true;
+		}
+		return false;
+	}
+
 }

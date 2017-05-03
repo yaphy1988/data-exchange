@@ -13,8 +13,8 @@ function domoify(){
 	if(!oldpasswd){
 		WEB.msg.info('提示',"请输入旧密码！",null);
 		return;
-	}else if(oldpasswd.length<6||oldpasswd.length>16){
-		WEB.msg.info('提示',"密码长度为6-16个字符！",null);
+	}else if(oldpasswd.length<6||oldpasswd.length>18){
+		WEB.msg.info('提示',"密码长度为6-18个字符！",null);
 		return;
 	}
 	var newpasswd = $("#newpassword").val();
@@ -33,7 +33,7 @@ function domoify(){
 		WEB.msg.info('提示',"密码长度为6-16个字符！",null);
 		return;
 	}
-	if(signpass!=confirmPass){
+	if(newpasswd!=confirmPass){
 		WEB.msg.info('提示','两次输入的密码不一致');
 		return;
 	}

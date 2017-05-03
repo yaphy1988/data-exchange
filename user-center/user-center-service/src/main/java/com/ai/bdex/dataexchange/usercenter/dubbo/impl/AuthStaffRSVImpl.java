@@ -144,4 +144,18 @@ public class AuthStaffRSVImpl implements IAuthStaffRSV{
 		}
 	}
 
+	@Override
+	public boolean checkInfoByName(String name, String staffId) throws BusinessException {
+		try {
+			return iAuthStaffSV.checkInfoByName(name, staffId);
+		} catch (Exception e) {
+			if (e instanceof BusinessException)
+				throw (BusinessException) e;
+			else {
+				log.error("校验名字重复性异常：" + e.getMessage());
+				throw new BusinessException("校验名字重复性异常：" + e.getMessage());
+			}		
+		}
+	}
+
 }

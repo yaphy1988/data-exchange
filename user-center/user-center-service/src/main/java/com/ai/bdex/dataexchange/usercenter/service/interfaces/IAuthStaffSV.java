@@ -75,4 +75,13 @@ public interface IAuthStaffSV {
 	 * @throws Exception
 	 */
 	public int updateMobilePhone(AuthStaffDTO input)throws Exception;
+	
+	/**
+	 * 校验用户名或别名的重复性
+	 * @param name
+	 * @param staffId
+	 * @return
+	 * @throws Exception
+	 */
+	public boolean checkInfoByName(String name,String staffId)throws Exception;
 }

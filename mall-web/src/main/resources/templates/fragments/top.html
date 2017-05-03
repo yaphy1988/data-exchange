@@ -19,8 +19,8 @@
 	            <span id="clockdate">2017年4月20日&nbsp;&nbsp;12：00：30</span>
 	        </div>
 	        <div class="top-right floatR" th:with="staffInfoDTO=${session.staffInfoDTO}">
-	            <a href="#" th:href="${staffInfoDTO}?'#' : @{/login/pageInit}"><b th:text="${staffInfoDTO}? ${staffInfoDTO.staffId}:'请登录'">请登录</b></a>
-	            <a th:text="${staffInfoDTO}? '退出':'免费注册'" href="#" th:href="${staffInfoDTO}?'#':@{/regist/pageInit}">免费注册</a>
+	            <a href="#" th:href="${staffInfoDTO}?@{/infomanager/pageInit} : @{/login/pageInit}"><b th:text="${staffInfoDTO}? ${staffInfoDTO.staffId}:'请登录'">请登录</b></a>
+	            <a th:text="${staffInfoDTO}? '退出':'免费注册'" href="#" th:href="${staffInfoDTO}?@{/login/doLogout}:@{/regist/pageInit}">免费注册</a>
 	            <i>|</i>
                 <a href="#" class="follow">关注广数<i class="glyphicon glyphicon-menu-down"></i>
                 	<div class="guangshu"><i></i><img src="../static/images/wexin.jpg" th:src="@{/images/wexin.jpg}"></div>

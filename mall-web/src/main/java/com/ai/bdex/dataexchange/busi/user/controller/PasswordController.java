@@ -8,6 +8,8 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.bdex.dataexchange.busi.user.entity.PassWordVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
@@ -42,7 +44,8 @@ public class PasswordController {
 	 * @param session
 	 * @return
 	 */
-	@RequestMapping(value="/domodify")
+	@RequestMapping(value="/domodify",method=RequestMethod.POST)
+	@ResponseBody
 	public Map<String,Object> domodify(Model model,PassWordVO passWordVO){
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		//校验原密码是否正确

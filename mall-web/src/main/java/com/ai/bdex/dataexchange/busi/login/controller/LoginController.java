@@ -128,19 +128,13 @@ public class LoginController {
 	 * @return
 	 */
 	@RequestMapping(value = "/doLogout")
-	@ResponseBody
-	public Map<String,Object> doLogout(HttpServletResponse response,HttpSession session) {
-		Map<String, Object> map = new HashMap<String, Object>();
+	public String doLogout(HttpServletResponse response,HttpSession session) {
 		try {
 			StaffUtil.removeStaffInfo(session);
-			map.put("success", true);
-			map.put("msg", "注销成功");
 		} catch (Exception e) {
-			log.error("系统异常");
-			map.put("success", false);
-			map.put("msg", "系统异常");
+			log.error("退出异常", e.getMessage());
 		}
-		return map;
+		return "redirect:/login/pageInit";
 	}
 
 }

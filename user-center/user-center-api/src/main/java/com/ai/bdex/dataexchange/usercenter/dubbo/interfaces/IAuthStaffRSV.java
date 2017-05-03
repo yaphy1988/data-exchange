@@ -74,4 +74,13 @@ public interface IAuthStaffRSV {
 	 * @throws BusinessException
 	 */
 	public int updateMobilePhone(AuthStaffDTO input)throws BusinessException;
+	
+	/**
+	 * 校验用户名或别名是否存在
+	 * @param name
+	 * @param staffId
+	 * @return
+	 * @throws BusinessException
+	 */
+	public boolean checkInfoByName(String name,String staffId)throws BusinessException;
 }
