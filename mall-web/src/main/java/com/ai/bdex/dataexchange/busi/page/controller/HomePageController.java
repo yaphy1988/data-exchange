@@ -11,7 +11,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.Session;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +42,6 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.ImageUtil;
-import com.ai.paas.utils.DateUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
@@ -192,7 +190,7 @@ public class HomePageController {
 			}
 			pageModuleAdResDTO.setStatus(STATUS_VALID);
 			PageResponseDTO<PageModuleAdRespDTO> moduleAdPageInfo = iPageDisplayRSV
-					.queryPageModulePageInfo(pageModuleAdResDTO);
+					.queryPageModuleAdPageInfo(pageModuleAdResDTO);
 			List<PageModuleAdRespDTO> moduleAResult = moduleAdPageInfo.getResult();
 			if (!CollectionUtils.isEmpty(moduleAResult)) {
 				for (PageModuleAdRespDTO moduleAdDTO : moduleAResult) {
