@@ -17,10 +17,9 @@ $(function(){
     						html += "<a href='"+WEB_ROOT+"/search' class='more floatR'>更多&nbsp;&gt;</a>";
     					}
     					var result = list.result;
-    					for(var index in result){
-        					var v = result[index];
+    					$(result).each(function(i,v){
     						html += "<a href='"+v.searchUrl+"' target='_blank'>"+v.searchKey+"</a>";
-    					}
+    					});
     					$("#search_hot").html(html);
     				}
     			}

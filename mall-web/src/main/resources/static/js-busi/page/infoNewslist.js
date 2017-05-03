@@ -14,7 +14,7 @@ function queryNewsPageInfo(pageNo,moduleId){
 			$(newsList).each(function(i,d){
 				html +='<div class="info_item"><dl ><dl >'+
 					'<label class="label label-default">';
-				html +=d.infoType+'</label><a href="'+basePath+'/homePage/pageNewsDetail?infoId='+d.infoId+'" target="_blank">';
+				html +=d.infoType+'</label><a href="'+basePath+'/homePage/newsDetail?infoId='+d.infoId+'" target="_blank">';
 				html += d.infoTitle+'</a></dt><dd infoId="'+d.infoId+'" infoUrl="'+d.infoUrl+'">  </dl>';
 				html += '<div class="info_panel">'+
 					'<span class="pr20">发布方:广州数据交易：www.gzbdex.com</span>';
@@ -43,13 +43,13 @@ function queryNewsPageInfo(pageNo,moduleId){
 
 //请求新闻资讯内容
 function queryNewsInfo(infoId,url){
-	$.appAjax({
+	$.ajax({
 		url : url,
 		async : true,
 		dataType : 'jsonp',
 		jsonp :'jsonpCallback',//注意此处写死jsonCallback
 		success: function (data) {
-			$("#news_listcontent").find('dd[infoid="'+infoId+'"]').html(data.result);
+			$("#info_listitem").find('dd[infoid="'+infoId+'"]').html(data.result);
 	    }
 	});
 }

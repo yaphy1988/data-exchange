@@ -1,7 +1,7 @@
 var basePath = WEB_ROOT;
 $(function(){
     var url=$("#news_infoUrl").val()+".html";
-	$.appAjax({
+	$.ajax({
 		url : url,
 		async : true,
 		dataType : 'jsonp',

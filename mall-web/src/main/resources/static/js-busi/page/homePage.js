@@ -232,7 +232,7 @@ function querysubPageModuleList(moduleId,pageNo){
 			var pageModule = data.moduleRespDTO;
 			html +='<dt>'+pageModule.moduleName+'</dt>';
 			$(data.pageInfoList).each(function(i,d){
-                html+='<dd><a href="'+basePath+'/homePage/pageNewsDetail?infoId='+d.infoId+'" target="_blank">'+d.infoTitle+'</a> </dd>';
+                html+='<dd><a href="'+basePath+'/homePage/newsDetail?infoId='+d.infoId+'" target="_blank">'+d.infoTitle+'</a> </dd>';
 			});
 		}
 		switch (moduleId) {

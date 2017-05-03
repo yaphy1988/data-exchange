@@ -391,15 +391,15 @@ public class HomePageController {
 	}
 
 	// 新闻资讯详情
-	@RequestMapping(value = "/pageNewsDetail")
-	public ModelAndView pageNewsDetail(HttpServletRequest request) {
+	@RequestMapping(value = "/newsDetail")
+	public ModelAndView newsDetail(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("info_details");
 		String infoId = request.getParameter("infoId");
 		try {
 			if (!StringUtils.isBlank(infoId)) {
 				PageNewsInfoRespDTO pageNewsInfo = iPageDisplayRSV.queryPageNewsInfoById(Integer.valueOf(infoId));
 				if (pageNewsInfo != null) {
-					 String docUrl = ImageUtil.getStaticDocUrl(pageNewsInfo.getVfsId(),"html");
+					 String docUrl = ImageUtil.getStaticDocUrl(pageNewsInfo.getInfoUrl(),"html");
 					 pageNewsInfo.setInfoUrl(docUrl);
 				}
 				modelAndView.addObject("pageNewsInfo", pageNewsInfo);
@@ -440,7 +440,9 @@ public class HomePageController {
 					if(!CollectionUtils.isEmpty(result)){
 						for(PageNewsInfoRespDTO infoRespDTO : result){
 							infoRespDTO.setInfoType(moduleRespDTO.getModuleName());
+							infoRespDTO.setInfoUrl(ImageUtil.getStaticDocUrl(infoRespDTO.getInfoUrl(), "html"));
 						}
+						
 					}
 				
 				}
@@ -462,7 +464,7 @@ public class HomePageController {
 						PageModuleRespDTO moduleDTO = iPageDisplayRSV.queryPageModuleList(pageModuleReqDTO).get(0);
 						infoRespDTO.setInfoType(moduleDTO.getModuleName());
 						//设置文本路劲
-						String docUrl = ImageUtil.getStaticDocUrl(infoRespDTO.getVfsId(), "html");
+						String docUrl = ImageUtil.getStaticDocUrl(infoRespDTO.getInfoUrl(), "html");
 						infoRespDTO.setInfoUrl(docUrl);
 					}
 				}

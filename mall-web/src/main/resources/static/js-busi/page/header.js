@@ -11,51 +11,11 @@ $(document).ready(function(){
 			$('#head_sidebar>ul').hide();
 		});
 	}
-	header.queryHotSearch();
-	header.queryHeaderNav();
 	header.setSpanDate();
 	header.querySortInfo('','-1','1');
 	window.setInterval("header.setSpanDate()", 1000);
 });
 var header = new Object({
-	queryHotSearch:function(){
-		 $.ajax({
-			url:WEB_ROOT+'/homePage/queryHotSearch',
-			cache:false,
-			async:true,
-			dataType:'json',
-			success:function(data){
-				var html = '<a href="#" class="more floatR">更多&nbsp;&gt;</a>';
-				if(data.success){
-					$(data.hotSearchList).each(function(i,d){
-						html +='<a href='+WEB_ROOT+d.searchUrl+' target="_blank">'+d.searchKey+'</a>';
-					});
-				}
-				$('#search-hot').html(html);
-			}
-		});
-
-	},
-	queryHeaderNav:function(){
-		$.ajax({
-			url:WEB_ROOT+'/homePage/queryHeaderNav',
-			cache:false,
-			async:true,
-			dataType:'json',
-			success:function(data){
-				var html;
-				if(data.success){
-					var html='';
-					if(data.success){
-						$(data.searchNavList).each(function(i,d){
-							html +='<li><a href='+WEB_ROOT+d.navLink+' target="_blank">'+d.navName+'</a></li>';
-						});
-					}
-				}
-				$('#head_navbar').html(html);
-			}
-		});
-	},
 	/*时钟显示*/
 	setSpanDate:function(){    
 		var nowDate = new Date(new Date().getTime());  

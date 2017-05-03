@@ -208,7 +208,7 @@
 		<script type="text/javascript" th:inline="javascript">
 			$(function(){
 			    var url=$("#news_infoUrl").val()+".html";
-				$.appAjax({
+				$.ajax({
 					url : url,
 					async : true,
 					dataType : 'jsonp',
