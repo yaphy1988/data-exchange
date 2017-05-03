@@ -28,7 +28,9 @@ public interface    IPageDisplayRSV {
     public List<PageHotSearchRespDTO> queryPageHotSearchList(PageHotSearchRespDTO pageHotSearchRespDTO) throws Exception;
 
     public List<PageHeaderNavRespDTO> queryPageHeaderNavList(PageHeaderNavRespDTO pageHeaderNavRespDTO) throws Exception;
-    
+	
+    public PageModuleRespDTO queryPageModuleById(Integer moduleId) throws Exception;
+	
     public List<PageModuleRespDTO> queryPageModuleList(PageModuleReqDTO pageModuleReqDTO) throws Exception;
 
     public List<PageModuleRespDTO> queryPageModuleInfoList(PageModuleReqDTO pageModuleReqDTO) throws Exception;
@@ -54,4 +56,5 @@ public interface    IPageDisplayRSV {
 	public int updatePageModuleAdByKey(PageModuleAdReqDTO reqDTO) throws Exception;
 	
 	public int insertPageModuleAdInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception;
+	public int updatePageModule(PageModuleReqDTO reqDTO) throws Exception;
 }

@@ -30,6 +30,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.HtmlUtils;
 
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
+import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
@@ -197,10 +198,62 @@ public class PageManageController {
 	}
 	@RequestMapping(value = "/editModule")
 	public ModelAndView editModule(HttpServletRequest request) {
-		String moduleId=request.getParameter("moduleId");
 		ModelAndView modelAndView = new ModelAndView("edit_module");
+		String moduleId=request.getParameter("moduleId");
+		try {
+			if(StringUtils.isNotEmpty(moduleId)){
+				PageModuleRespDTO moduleRespDTO = iPageDisplayRSV.queryPageModuleById(Integer.parseInt(moduleId));
+				if(STATUS_VALID.equals(moduleRespDTO.getStatus())){
+					moduleRespDTO.setValidStatus(true);
+				}else{
+					moduleRespDTO.setInValidStatus(true);
+				}
+				modelAndView.addObject("moduleRespDTO", moduleRespDTO);
+			}
+		}catch (Exception e) {
+				log.error("查询楼层信息出错：" + e.getMessage());
+		}
 		modelAndView.addObject("moduleId", moduleId);
 		return modelAndView;
+	}
+	/**
+	 * 保存模块信息
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/savePageModule")
+	@ResponseBody
+	public Map<String, Object> savePageModule(Model model, HttpServletRequest request,PageModuleVO pageModuleVO) {
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		try {
+			PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
+			if(pageModuleVO.getModuleId()!=null){
+				pageModuleReqDTO.setModuleId(pageModuleVO.getModuleId());
+			}
+			if(pageModuleVO.getModulePid()!=null){
+				pageModuleReqDTO.setModulePid(pageModuleVO.getModulePid());
+			}
+			if(!StringUtils.isBlank(pageModuleVO.getModuleName())){
+				pageModuleReqDTO.setModuleName(pageModuleVO.getModuleName());
+			}
+			if(!StringUtils.isBlank(pageModuleVO.getStatus())){
+				pageModuleReqDTO.setStatus(pageModuleVO.getStatus());
+			}
+			if(pageModuleVO.getOrderNo()!=null){
+				pageModuleReqDTO.setOrderNo(pageModuleVO.getOrderNo());
+			}
+			if(pageModuleVO.getModuleCount()!=null){
+				pageModuleReqDTO.setModuleCount(pageModuleVO.getModuleCount());
+			}
+			pageModuleReqDTO.setRemark(pageModuleVO.getRemark());
+			iPageDisplayRSV.updatePageModule(pageModuleReqDTO);
+			rMap.put("success",true);
+		} catch (Exception e) {
+			rMap.put("success",false);
+			log.error("保存模块出错：" + e.getMessage());
+		}
+		return rMap;
 	}
 	@RequestMapping(value = "/queryModuleList")
 	@ResponseBody

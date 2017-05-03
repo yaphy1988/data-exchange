@@ -191,7 +191,36 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
         }
         return PageInfoRespList;
     }
-    
+	public PageModuleRespDTO queryPageModuleById(Integer moduleId) throws Exception {
+		PageModuleRespDTO respDTO = new PageModuleRespDTO();
+		 try{
+        	 if (moduleId ==null ){
+                 throw new Exception("查询楼层信息异常，moduleId为空");
+             }
+        	 PageModule pageModule= iPageModuleSV.queryPageModuleById(moduleId);
+          	 if(pageModule!=null&&pageModule.getModuleId()!=null){
+          		 BeanUtils.copyProperties(pageModule, respDTO); 
+             	 PageModule exam = new PageModule();
+          		//查询父模块
+                 exam.setModuleId(pageModule.getModulePid());
+                 List<PageModule> ParPageModules = iPageModuleSV.queryPageModuleList(exam);
+                 if(!CollectionUtils.isEmpty(ParPageModules)){
+                 	List<PageModuleRespDTO> parPageModuleList = new ArrayList<>();
+                 	for(PageModule parModule: ParPageModules){
+                 		PageModuleRespDTO parPageModuleResp = new PageModuleRespDTO();
+                 		BeanUtils.copyProperties(parModule, parPageModuleResp); 
+                 		parPageModuleList.add(parPageModuleResp);
+                 	}
+                 	respDTO.setSubPageModuleList(parPageModuleList);
+                 }
+          	 }
+        }catch(Exception e){
+        	log.error("获取首页楼层信息异常:", e);
+            throw new Exception(e);
+        }
+		 return respDTO;
+	}
+
 	@Override
 	public List<PageModuleRespDTO> queryPageModuleList(PageModuleReqDTO pageModuleReqDTO) throws Exception {
 
@@ -390,5 +419,12 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
 			throw new BusinessException("广告版位不能为空：moduleId="+moduleAdDTO.getModuleId());
 		}
 		return iPageModuleAdSV.insertPageModuleAdInfo(moduleAdDTO);
+	}
+	@Override
+	public int updatePageModule(PageModuleReqDTO reqDTO) throws Exception {
+		if(reqDTO.getModuleId() == null || reqDTO.getModuleId() == 0 ){
+			throw new BusinessException("模块Id不能为空：moduleId="+reqDTO.getModuleId());
+		}
+		return iPageModuleSV.updatePageModule(reqDTO);
 	}
 }

@@ -34,7 +34,27 @@ public class PageModuleRespDTO  extends BaseResponseDTO{
     private Date updateTime;
 
     private List<PageModuleRespDTO> subPageModuleList;
+
+    private boolean validStatus;
+
+    private boolean inValidStatus;
     
+	public boolean isValidStatus() {
+		return validStatus;
+	}
+
+	public void setValidStatus(boolean validStatus) {
+		this.validStatus = validStatus;
+	}
+
+	public boolean isInValidStatus() {
+		return inValidStatus;
+	}
+
+	public void setInValidStatus(boolean inValidStatus) {
+		this.inValidStatus = inValidStatus;
+	}
+
 	public List<PageModuleRespDTO> getSubPageModuleList() {
 		return subPageModuleList;
 	}

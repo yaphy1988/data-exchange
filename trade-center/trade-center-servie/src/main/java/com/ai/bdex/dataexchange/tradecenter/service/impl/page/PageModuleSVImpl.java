@@ -9,7 +9,10 @@ import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageModuleMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModule;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleExample;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleExample.Criteria;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.paas.utils.DateUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.dubbo.common.utils.StringUtils;
 @Service("iPageModuleSV")
@@ -40,5 +43,17 @@ public class PageModuleSVImpl implements IPageModuleSV {
 		example.setOrderByClause("ORDER_NO ASC");
 		return pageModuleMapper.selectByExample(example);
 	}
-
+	@Override
+	public int updatePageModule(PageModuleReqDTO moduleDTO) throws Exception {
+		PageModule pageModular = new PageModule();
+		PageModuleExample example = new PageModuleExample();
+		Criteria criteria = example.createCriteria();
+		if(moduleDTO.getModuleId()!=null){
+			criteria.andModuleIdEqualTo(moduleDTO.getModuleId());
+		}        
+		moduleDTO.setUpdateTime(DateUtil.getNowAsDate());
+		ObjectCopyUtil.copyObjValue(moduleDTO, pageModular, null, false);
+		int code = pageModuleMapper.updateByExampleSelective(pageModular, example);
+		return code;
+	}
 }
