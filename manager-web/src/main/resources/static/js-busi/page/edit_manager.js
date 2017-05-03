@@ -150,7 +150,7 @@ function savePageModuleAd(){
 	}
 	if (linkPage != null && linkPage != 'undefined' && linkPage != '') {
 		if (linkPage.indexOf('http://') == -1) {
-			WEB.msg.info("提示","链接以http://开头！");
+			WEB.msg.info("提示","链接内容以http://开头！");
 			return;
 		}
 	}
