@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import com.ai.paas.util.ImageUtil;
+import com.ai.paas.utils.StringUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 @Controller
@@ -26,7 +27,7 @@ public class FileUploadController {
 		try{
 			//获取文件
 	        MultipartHttpServletRequest multipartRequest = (MultipartHttpServletRequest)request;
-	        
+	        String size = request.getParameter("imgsize");
 	        if(multipartRequest.getFileMap() != null){
 	        	for (MultipartFile file : multipartRequest.getFileMap().values()) {
 	        		
@@ -49,13 +50,16 @@ public class FileUploadController {
 						return this.toJsonString(result);
 					}
 					String fileId = ImageUtil.upLoadImage(fileios, fileName);
-//					String imageUrl = ImageUtil.getImageUrl(fileId);
+					String imageUrl = ImageUtil.getImageUrl(fileId);
+					if(!StringUtil.isBlank(size)){
+						imageUrl = ImageUtil.getImageUrl(fileId+size);
+					}
 	        	    
 	        	    result.put("status", "1");
 	        	    result.put("fileId", fileId);
 	        	    result.put("fileName", fileName);
 	        	    result.put("fileType", fileType);
-//	        	    result.put("imageUrl", imageUrl);
+	        	    result.put("imageUrl", imageUrl);
 	        	    
 	        	    return this.toJsonString(result);
 				}

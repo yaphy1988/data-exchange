@@ -28,5 +28,31 @@ public class AuthStaffPassRSVImpl implements IAuthStaffPassRSV{
 			}		
 		}
 	}
+	@Override
+	public boolean validPasswd(AuthStaffPassDTO pass) throws BusinessException {
+		try {
+			return iAuthStaffPassSV.validPasswd(pass);
+		} catch (Exception e) {
+			if (e instanceof BusinessException)
+				throw (BusinessException) e;
+			else {
+				log.error("校验异常" + e.getMessage());
+				throw new BusinessException("校验异常" + e.getMessage());
+			}		
+		}
+	}
+	@Override
+	public int updatePasswd(AuthStaffPassDTO pass) throws BusinessException {
+		try {
+			return iAuthStaffPassSV.updatePasswd(pass);
+		} catch (Exception e) {
+			if (e instanceof BusinessException)
+				throw (BusinessException) e;
+			else {
+				log.error("修改密码异常" + e.getMessage());
+				throw new BusinessException("修改密码异常" + e.getMessage());
+			}		
+		}
+	}
 
 }

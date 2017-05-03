@@ -11,4 +11,20 @@ public interface IAuthStaffPassRSV {
 	 * @throws BusinessException
 	 */
 	public int savePassInfo(AuthStaffPassDTO pass)throws BusinessException;
+	
+	/**
+	 * 校验密码是否正确
+	 * @param pass
+	 * @return
+	 * @throws BusinessException
+	 */
+	public boolean validPasswd(AuthStaffPassDTO pass)throws BusinessException;
+	
+	/**
+	 * 修改密码
+	 * @param pass
+	 * @return
+	 * @throws BusinessException
+	 */
+	public int updatePasswd(AuthStaffPassDTO pass)throws BusinessException;
 }

@@ -282,4 +282,23 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 		return null;
 	}
 
+	@Override
+	public int updateAuthStaffInfo(AuthStaffDTO input) throws Exception {
+		AuthStaff record = new AuthStaff();
+		BeanUtils.copyProperties(input, record);
+		record.setUpdateStaff(input.getStaffId());
+		record.setUpdateTime(DateUtil.getNowAsTimestamp());		
+		return authStaffMapper.updateByPrimaryKeySelective(record);
+	}
+
+	@Override
+	public int updateMobilePhone(AuthStaffDTO input) throws Exception {
+		AuthStaff record = new AuthStaff();
+		record.setStaffId(input.getStaffId());
+		record.setSerialNumber(input.getSerialNumber());
+		record.setUpdateStaff(input.getStaffId());
+		record.setUpdateTime(DateUtil.getNowAsTimestamp());		
+		return authStaffMapper.updateByPrimaryKeySelective(record);
+	}
+
 }

@@ -116,4 +116,32 @@ public class AuthStaffRSVImpl implements IAuthStaffRSV{
 		}
 	}
 
+	@Override
+	public int updateAuthStaffInfo(AuthStaffDTO input) throws BusinessException {
+		try {
+			return iAuthStaffSV.updateAuthStaffInfo(input);
+		} catch (Exception e) {
+			if (e instanceof BusinessException)
+				throw (BusinessException) e;
+			else {
+				log.error("修改用户信息异常：" + e.getMessage());
+				throw new BusinessException("修改用户信息异常：" + e.getMessage());
+			}		
+		}
+	}
+
+	@Override
+	public int updateMobilePhone(AuthStaffDTO input) throws BusinessException {
+		try {
+			return iAuthStaffSV.updateMobilePhone(input);
+		} catch (Exception e) {
+			if (e instanceof BusinessException)
+				throw (BusinessException) e;
+			else {
+				log.error("修改用户手机号异常：" + e.getMessage());
+				throw new BusinessException("修改用户手机号异常：" + e.getMessage());
+			}		
+		}
+	}
+
 }

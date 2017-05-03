@@ -58,4 +58,20 @@ public interface IAuthStaffRSV {
 	 * @throws BusinessException
 	 */
 	public AuthStaffDTO findAuthStaffInfo(AuthStaffDTO input)throws BusinessException;
+	
+	/**
+	 * 修改用户信息
+	 * @param input
+	 * @return
+	 * @throws BusinessException
+	 */
+	public int updateAuthStaffInfo(AuthStaffDTO input)throws BusinessException;
+	
+	/**
+	 * 修改手机号
+	 * @param input
+	 * @return
+	 * @throws BusinessException
+	 */
+	public int updateMobilePhone(AuthStaffDTO input)throws BusinessException;
 }
