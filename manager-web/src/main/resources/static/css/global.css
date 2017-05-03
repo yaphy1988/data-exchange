@@ -617,6 +617,9 @@ body{
 	text-align: center;
 	line-height: 35px;
 }
+.m_header .Logo img{
+	max-height: 40px;
+}
 .m_hdlist{
 	float: right; 
 	width: 60%;
