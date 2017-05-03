@@ -17,7 +17,7 @@ import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.paas.sequence.SequenceFactory;
 import com.ai.paas.util.CacheUtil;
 import com.github.pagehelper.PageInfo;
-import org.apache.solr.client.solrj.SolrClient;
+//import org.apache.solr.client.solrj.SolrClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,8 +40,8 @@ public class DemoSVImpl implements IDemoSV {
 	@Autowired
 	BaseSysCfgMapper baseSysCfgMapper;
 
-	@Autowired
-	private SolrClient solrClient;
+	/*@Autowired
+	private SolrClient solrClient;*/
 	
     @Override
     public String callDemo(DemoDTO demoDTO) {
