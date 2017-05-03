@@ -1,6 +1,5 @@
 var basePath =  WEB_ROOT;
-var imgPath = "http://112.74.163.29:14751/ImageServer/image/"; 
-$(function(){
+ $(function(){
 	$("#needcontent").focus(function(){
 		hiddenwarm('needcontentDiv');
 	});

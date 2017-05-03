@@ -4,14 +4,60 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="renderer" content="webkit">
+    <link rel="stylesheet" href="../static/css/bootstrap.css" >
+    <link rel="stylesheet" href="../static/css/global.css" >
+    <link rel="stylesheet" href="../static/css/index.css">
+	 <script src="../static/js/jquery-1.12.4.js"></script>
+
 </head>
 <body>
 	<div class="gl_banner" th:fragment="search-custom-condition">
+    <script src="../static/js-busi/page/savecustomdata.js" th:src="@{/js-busi/page/savecustomdata.js}"></script>
+    <script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
+    <script src="../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
 		<img src="../static/images/gl_banner.jpg" th:src="@{/images/gl_banner.jpg}">
 		<div class="btnBox">
-			<a href="" class="btn btn_banner">立即定制</a>
-			<a href="" class="btn btn_banner">在线咨询</a>
+			<a   class="btn btn_banner"  th:onclick="'showData()'" >立即定制</a>
+			<a  class="btn btn_banner">在线咨询</a>
 		</div>
+		            <!--定制数据弹窗-->
+        <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                     <h4 class="modal-title" id="myModalLabel">个性化数据定制</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="date-box">
+                        <div class="date-input"  id="needTielDiv">
+                            <label>需求名称</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写需求名称"  id="needTiel">
+                               <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
+                              </div>
+                        <div class="date-input"  id="needcontentDiv">
+                            <label>需求描述</label><textarea class="form-control" rows="5" maxlength="624"  placeholder="请填写需求描述"  id="needcontent"></textarea>
+                           <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
+                        </div>
+                        <div class="date-input"  id="lnkposenDiv">
+                            <label>联系人</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系人"  id="lnkposen">
+                            <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
+                        </div>
+                        <div class="date-input"  id="lnkphoneDiv">
+                            <label>手机号码</label><input type="text" class="form-control" maxlength="11"  placeholder="请填写手机号码"  id="lnkphone">
+                            <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
+                          </div>
+                        <div class="date-input"  id="lnkemailDiv">
+                            <label>联系邮箱</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系邮箱"  id="lnkemail">
+                             <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary wt120" th:onclick="'saveMadeData()'" id="commitData">提交</button>
+                     <button type="button" class="btn btn-primary wt120" th:onclick="'hideMadeData()'" id="hidetData">取消</button>
+                </div>
+            </div>
+        </div>
+    </div>
 	</div>
 </body>
 </html>
