@@ -544,3 +544,5 @@ fieldset[disabled] .btn-default.focus {
 		margin-left: 3px;
 	}
 
+/*表头不换行*/
+table.table-th-nowrap th{white-space:nowrap; }
