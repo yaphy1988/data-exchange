@@ -7,6 +7,8 @@
 <script type="text/javascript" src="../../static/js-busi/user/infomanager.js" th:src="@{/js-busi/user/infomanager.js}"></script>
 <script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
 <script type="text/javascript" src="../js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
+<script src="../static/js-busi/common/sms.js" th:src="@{/js-busi/common/sms.js}"></script>
+<script src="../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
 <script src="../static/js-busi/common/uploadimg.js" th:src="@{/js-busi/common/uploadimg.js}"></script>
 <script type="text/javascript">
         var WEB_ROOT = '[[${#httpServletRequest.contextPath}]]';
@@ -93,7 +95,7 @@
 							<span class="col_red"></span>别名:
 						</td>
 						<td >
-							<input class="form-control" placeholder="" type="text"  maxlength="128" th:value="${userinfo.aliasName}" id="aliasName">
+							<input class="form-control" placeholder="" type="text"  maxlength="64" th:value="${userinfo.aliasName}" id="aliasName">
 						</td>
 						
 					</tr>
@@ -110,9 +112,9 @@
 							电话:
 						</td>
 						<td >
-						<span th:text="${userinfo.serialNumber}"></span>
-							<input class="form-control" placeholder="" type="hidden"  maxlength="128" value="13100000012" disabled>
-							<button class="btn btn-default btn-sm " data-toggle="modal" data-target="#myModal" style="margin-left:30px;" onclick="getPhone();">修改号码</button>
+						<span th:text="${userinfo.serialNumber}" id="spanphone"></span>
+							<input class="form-control" id="phoneHidden" placeholder="" type="hidden"  maxlength="11" th:value="${userinfo.serialNumber}" disabled>
+							<button class="btn btn-default btn-sm " style="margin-left:30px;" onclick="initModifyPhone();">修改号码</button>
 						</td>
 						<td class="pl5"></td>
 					</tr>
@@ -121,7 +123,7 @@
 							用户头像:
 						</td>
 						<td >
-							<img src="" width="80" height="80" th:src="${userinfo.headVfsid}" id="headVfsid" >
+							<img src="" width="80" height="80" th:src="${userinfo.headSrc}" id="headVfsid" th:vfsId="${userinfo.headVfsid}">
 							<input type="file" class="float_File" name="picUpLoad" id="picUpLoad" imgsize="_80x80!" onchange="onImageFileChange(this);">							
 							<button class="btn btn-default btn-sm" th:remove="all">修改</button>
 						</td>
@@ -132,7 +134,7 @@
 							QQ号:
 						</td>
 						<td >
-							<input class="form-control" placeholder="" type="text"  maxlength="128" th:value="${userinfo.qq}" id="qq" >
+							<input class="form-control" placeholder="" type="text"  maxlength="16" th:value="${userinfo.qq}" id="qq" >
 						</td>
 					</tr>
 					<tr>
@@ -140,7 +142,7 @@
 							微信号:
 						</td>
 						<td >
-							<input class="form-control" placeholder="" type="text"  maxlength="128" th:value="${userinfo.weChat}" id="weChat" >
+							<input class="form-control" placeholder="" type="text"  maxlength="56" th:value="${userinfo.weChat}" id="weChat" >
 						</td>
 					</tr>
 					<tr>
@@ -233,7 +235,7 @@
 	        <h4 class="modal-title" id="myModalLabel">修改手机号码</h4>
 	      </div>
 	      <div class="modal-body">
-	        	<table class="editTable ">
+	        	<table class="editTable " style="width:80%;">
 					
 					
 					
@@ -241,8 +243,8 @@
 						<td class="Hint">
 							原手机号码:
 						</td>
-						<td width="260">
-							<input class="form-control" placeholder="" type="text"  maxlength="128" disabled id="oldphoneNo">
+						<td >
+							<input style="width:50%;" class="form-control" placeholder="" type="text"  maxlength="128" disabled id="oldphoneNo">
 						</td>
 						
 					</tr>
@@ -252,8 +254,8 @@
 						</td>
 						<td >
 							<div class="form-inline">
-								<input class="form-control wt150" placeholder="" type="text"  maxlength="4" >
-								<img  src="" height="30" width="100" id="picCode">
+								<input class="form-control wt150" placeholder="" type="text"  maxlength="4" id="picCode">
+								<img  src="" height="30" width="100" id="imgcaptcha" onclick="checkImgChng();">
 							</div>
 						</td>
 						<td  ></td>
@@ -264,8 +266,66 @@
 						</td>
 						<td >
 						<div class="form-inline">
-							<input class="form-control wt150" placeholder="" type="text"  maxlength="6" id="smsCOde">
-							<button class="btn btn-default btn-sm " >获取短信验证码</button>
+							<input class="form-control wt150" placeholder="" type="text"  maxlength="6" id="smsCode">
+							<button class="btn btn-default btn-sm " onclick="sendSmsCode();" id="getcodebtn">获取短信验证码</button>
+						</div>
+
+						</td>
+					
+					</tr>
+					
+			</table>	
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary" onclick="nextStep();">下一步</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+	<!-- Modal -->
+	<div class="modal fade" id="myModalNew" tabindex="-1" role="dialog" aria-labelledby="myModalLabelNew">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabelNew">修改手机号码</h4>
+	      </div>
+	      <div class="modal-body">
+	        	<table class="editTable " style="width:80%;">
+					
+					
+					
+					<tr>
+						<td class="Hint">
+							新手机号码:
+						</td>
+						<td >
+							<input style="width:50%;" class="form-control" placeholder="" type="text"  maxlength="11" id="newphoneNo">
+						</td>
+						
+					</tr>
+					<tr>
+						<td class="Hint">
+							验证码:
+						</td>
+						<td >
+							<div class="form-inline">
+								<input class="form-control wt150" placeholder="" type="text"  maxlength="4" id="picCodeNew">
+								<img  src="" height="30" width="100" id="imgcaptchaNew" onclick="checkImgChngNew();">
+							</div>
+						</td>
+						<td  ></td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							短信验证码:
+						</td>
+						<td >
+						<div class="form-inline">
+							<input class="form-control wt150" placeholder="" type="text"  maxlength="6" id="smsCodeNew">
+							<button class="btn btn-default btn-sm " onclick="sendSmsCodeNew();" id="getcodebtnNew">获取短信验证码</button>
 						</div>
 
 						</td>

@@ -1,4 +1,3 @@
-var WEB_SHOW_IMG_PATH = "http://112.74.163.29:14751/ImageServer/image/";
 function saveapply(){
 	var invoiceTitle = $("#invoiceTitle").val();
 	if(!invoiceTitle){
@@ -113,8 +112,8 @@ function onImageFileChange(obj){
 		var fileType = data.fileType;
 		
 		var iamgeSize = "_120x120!";//可不设置
-		var imageUrl = WEB_SHOW_IMG_PATH + fileId +iamgeSize+"."+ fileType;
-//		var imageUrl = data.imageUrl;
+//		var imageUrl = WEB_SHOW_IMG_PATH + fileId +iamgeSize+"."+ fileType;
+		var imageUrl = data.imageUrl;
 		$("#iamgeTag").attr("src",imageUrl);
 		$("#vfsId1").val(fileId);
 	});

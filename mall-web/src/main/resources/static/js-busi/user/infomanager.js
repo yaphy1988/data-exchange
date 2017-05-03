@@ -14,3 +14,271 @@ function onImageFileChange(obj){
 		$("#headVfsid").attr('vfsId',fileId);
 	});
 }
+
+function initModifyPhone(){
+	$("#getcodebtn").html("获取验证码");
+    $("#getcodebtn").removeAttr("disabled");
+    $("#smsCode").val('');
+	$.ajax({
+		url : WEB_ROOT+"/infomanager/getphone",
+		type : 'POST',
+		async : true,
+		data : {},
+		dataType : 'json',
+		success : function(obj){	
+			if(obj.success){
+				var phone = obj.phoneNo;
+				$("#oldphoneNo").val(phone);
+				$("#myModal").modal({
+			    	  "backdrop":'static',
+			    	  "keyboard":false
+			    	});
+			}else{
+				WEB.msg.info('提示',obj.msg);
+			}			
+		}
+	});
+	checkImgChng();
+	
+}
+
+/**验证码切换*/
+function checkImgChng(){
+	/*jQuery 包装集IE不兼容,用JS*/
+	//$("#VERIFY_CODE").val("");
+	$("#picCode").val("");
+	$("#picCode").css('color','#999');
+	document.getElementById('imgcaptcha').src = WEB_ROOT + "/captcha/CapthcaImage?a="+ new Date().getTime();
+}
+
+/**验证码切换*/
+function checkImgChngNew(){
+	/*jQuery 包装集IE不兼容,用JS*/
+	//$("#VERIFY_CODE").val("");
+	$("#picCodeNew").val("");
+	$("#picCodeNew").css('color','#999');
+	document.getElementById('imgcaptchaNew').src = WEB_ROOT + "/captcha/CapthcaImage?a="+ new Date().getTime();
+}
+
+//发送短信验证码
+function sendSmsCode(){
+	var picCode = $("#picCode").val();
+	if(!picCode){
+		WEB.msg.info('提示','请输入图片验证码',null);
+		return;
+	}
+	$.ajax({
+		url : WEB_ROOT+"/infomanager/getphone",
+		type : 'POST',
+		async : true,
+		data : {},
+		dataType : 'json',
+		success : function(obj){	
+			if(obj.success){
+				var phoneNo = obj.phoneNo;
+				$.smsDialogPlugin.sendSmsSecurity(phoneNo,'20',picCode,afterSend);	
+			}else{
+				WEB.msg.info('提示',obj.msg);
+			}			
+		}
+	});
+}
+
+function afterSend(){
+	//发送后，80秒效果
+    $("#getcodebtn").attr("disabled",true);
+    var se = 80;
+    $("#getcodebtn").html("重新获取验证码("+se+"秒)");
+    var timer = window.setInterval(function(){
+      se --;
+      $("#getcodebtn").html("重新获取验证码("+se+"秒)");
+      if(se==0){
+        $("#getcodebtn").html("重新获取验证码");
+        $("#getcodebtn").attr("disabled",false);
+        clearInterval(timer);
+      }
+    },1000);
+    
+    WEB.msg.info("提示","发送验证码成功！");
+}
+
+function nextStep(){
+	var smsCode = $("#smsCode").val();
+	if(!smsCode){
+		WEB.msg.info('提示','短信验证码不能为空');
+		return;
+	}
+	$.ajax({
+		url : WEB_ROOT+"/infomanager/getphone",
+		type : 'POST',
+		async : true,
+		data : {},
+		dataType : 'json',
+		success : function(obj){	
+			if(obj.success){
+				var phoneNo = obj.phoneNo;
+				if(!phoneNo){
+					showwarm('phoneNoDiv','手机号码不能为空');
+					return;
+				}else if(!isMobile(phoneNo)){
+					showwarm('phoneNoDiv','手机号码格式不正确');
+					return;
+				}
+				$.smsDialogPlugin.checkSmsSecurity(smsCode,phoneNo,bindNewPhone);
+			}else{
+				WEB.msg.info('提示',obj.msg);
+			}			
+		}
+	});	
+}
+
+function bindNewPhone(){
+	$("#myModal").modal('hide');	
+	checkImgChngNew();
+	$("#myModalNew").modal({
+  	  "backdrop":'static',
+	  "keyboard":false
+	});
+}
+
+//验证手机号码
+var isMobile=function(mobile){
+	    var mobileReg =/^1[34578]\d{9}$/; 
+	    if(!(mobileReg.test(mobile)))
+	    { 
+	        return false; 
+	    } 
+	    else
+	    {return true;}  
+};
+
+
+//发送短信验证码
+function sendSmsCodeNew(){
+	var picCodeNew = $("#picCodeNew").val();
+	if(!picCodeNew){
+		WEB.msg.info('提示','请输入图片验证码！',null);
+		return;
+	}
+	var phoneNo = $("#newphoneNo").val();
+	if(!phoneNo){
+		WEB.msg.info('提示','请输入手机号！',null);
+		return;
+	}else if(!isMobile(phoneNo)){
+		WEB.msg.info('提示','手机号格式不正确！',null);
+		return;
+	}
+	$.smsDialogPlugin.sendSmsSecurity(phoneNo,'10',picCodeNew,afterSendNew);
+}
+
+function afterSendNew(){
+	//发送后，80秒效果
+    $("#getcodebtnNew").attr("disabled",true);
+    var se = 80;
+    $("#getcodebtnNew").html("重新获取验证码("+se+"秒)");
+    var timer = window.setInterval(function(){
+      se --;
+      $("#getcodebtnNew").html("重新获取验证码("+se+"秒)");
+      if(se==0){
+        $("#getcodebtnNew").html("重新获取验证码");
+        $("#getcodebtnNew").attr("disabled",false);
+        clearInterval(timer);
+      }
+    },1000);
+    
+    WEB.msg.info("提示","发送验证码成功！");
+}
+
+function updatePhone(){
+	var smsCode = $("#smsCodeNew").val();
+	var phoneNo = $("#newphoneNo").val();
+	if(!smsCode){
+		WEB.msg.info('提示','短信验证码不能为空');
+		return;
+	}
+	if(!phoneNo){
+		WEB.msg.info('提示','手机号码不能为空');
+		return;
+	}else if(!isMobile(phoneNo)){
+		WEB.msg.info('提示','手机号码格式不正确');
+		return;
+	}
+	$.smsDialogPlugin.checkSmsSecurity(smsCode,phoneNo,doupdatePhone);
+}
+/**
+ * 修改用户手机号
+ * @param tocken
+ * @param seccode
+ * @param phoneNo
+ */
+function doupdatePhone(tocken,seccode,phoneNo){
+	$.ajax({
+		url : WEB_ROOT+"/infomanager/updatephone",
+		type : 'POST',
+		async : true,
+		data : {phoneNo:phoneNo},
+		dataType : 'json',
+		success : function(obj){	
+			if(obj.success){
+				$("#spanphone").html(phoneNo);
+				$("#myModalNew").modal('hide');
+			}else{
+				WEB.msg.info('提示',obj.msg);
+			}			
+		}
+	});
+}
+
+function updateInfo(){
+	var aliasName = $("#aliasName").val();
+	if(aliasName&&WEB.fucCheckLength(aliasName)>64){
+		WEB.msg.info('提示','别名不能超过32个汉字');
+		return;
+	}
+	var staffName = $("#staffName").val();
+	if(staffName&&WEB.fucCheckLength(staffName)>256){
+		WEB.msg.info('提示','别名不能超过128个汉字');
+		return;
+	}
+	var qq = $("#qq").val();
+	var qqReg=/^[0-9]*$/;
+	if(qq&&!qqReg.test(qq)){
+		WEB.msg.info('提示','qq号格式不正确');
+		return;
+	}
+	var weChat = $("#weChat").val();
+	if(weChat&&WEB.fucCheckLength(weChat)>64){
+		WEB.msg.info('提示','微信号太长');
+		return;
+	}
+	var gender = $("#gender").val();
+	var job = $("#job").val();
+	if(job&&WEB.fucCheckLength(job)>256){
+		WEB.msg.info('提示','职业描述太长！');
+		return;
+	}
+	var headVfsid = $("#headVfsid").attr('vfsId');
+	$.ajax({
+		url : WEB_ROOT+"/infomanager/modify",
+		type : 'POST',
+		async : true,
+		data : {
+			aliasName : aliasName,
+			staffName : staffName,
+			qq : qq,
+			weChat : weChat,
+			gender : gender,
+			job : job,
+			headVfsid : headVfsid},
+		dataType : 'json',
+		success : function(obj){	
+			if(obj.success){
+				WEB.msg.info('提示','修改成功',null);
+			}else{
+				WEB.msg.info('提示',obj.msg);
+			}			
+		}
+	});
+	
+}
+$(function(){});

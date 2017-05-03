@@ -31,8 +31,17 @@ public class AuthStaffVO {
    private Date lastLogin;
    private String headVfsid;
    private String staffFlag;
+   private String headSrc;
    
-   public String getStaffId() {
+   public String getHeadSrc() {
+	return headSrc;
+}
+
+public void setHeadSrc(String headSrc) {
+	this.headSrc = headSrc;
+}
+
+public String getStaffId() {
        return staffId;
    }
 

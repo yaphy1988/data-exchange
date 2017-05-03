@@ -10,12 +10,15 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.bdex.dataexchange.busi.user.entity.AuthStaffVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
+import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
@@ -39,6 +42,10 @@ public class UserInfoManagerController {
 		if(authInfo!=null){
 			AuthStaffVO data = new AuthStaffVO();
 			BeanUtils.copyProperties(authInfo, data);
+			String vfsId = data.getHeadVfsid();
+			if(!StringUtil.isBlank(vfsId)){
+				data.setHeadSrc(ImageUtil.getImageUrl(vfsId+"_80x80!"));
+			}
 			model.addAttribute("userinfo", data);
 		}
 		return "personalCenter/userinfo";
@@ -50,7 +57,8 @@ public class UserInfoManagerController {
 	 * @param vo
 	 * @return
 	 */
-	@RequestMapping(value="/modify")
+	@RequestMapping(value="/modify",method=RequestMethod.POST)
+	@ResponseBody
 	public Map<String,Object> modify(Model model,AuthStaffVO vo,HttpSession session){
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		AuthStaffDTO input = new AuthStaffDTO();
@@ -74,12 +82,41 @@ public class UserInfoManagerController {
 	}
 	
 	/**
+	 * 获取手机号
+	 */
+	@RequestMapping(value="/getphone",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> updatephone(Model model,HttpSession session){
+		Map<String,Object> rMap = new HashMap<String,Object>();
+		String staffId = StaffUtil.getStaffId(session);
+		if(StringUtil.isBlank(staffId)){
+			rMap.put("success", false);
+			rMap.put("msg", "请先登录！");
+			return rMap;
+		}
+		AuthStaffDTO input = new AuthStaffDTO();
+		input.setStaffId(staffId);
+		try {
+			AuthStaffDTO result = this.iAuthStaffRSV.findAuthStaffInfo(input);
+			if(result!=null){
+				rMap.put("success", true);
+				rMap.put("phoneNo", result.getSerialNumber());
+			}
+		} catch (BusinessException e) {
+			rMap.put("success", false);
+			rMap.put("msg", e.getMessage());
+		}
+		return rMap;
+	}
+	
+	/**
 	 * 修改用户手机号
 	 * @param model
 	 * @param vo
 	 * @return
 	 */
-	@RequestMapping(value="/updatephone")
+	@RequestMapping(value="/updatephone",method=RequestMethod.POST)
+	@ResponseBody
 	public Map<String,Object> updatephone(Model model,String phoneNo,HttpSession session){
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		AuthStaffDTO input = new AuthStaffDTO();
