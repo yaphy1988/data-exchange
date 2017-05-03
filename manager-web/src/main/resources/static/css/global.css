@@ -886,3 +886,16 @@ body{
 
 /*强制去除table表格边线 tangyk*/
 .ClearSideline td{ border:0px !important;}
+
+/*套餐选中 tangyk*/
+.package_selected{
+	display:inline-block;
+	height:24px;
+	line-height:23px;
+	color:#2b4099;
+	padding:0 10px;
+	vertical-align:middle;
+	border:1px solid #2b4099;
+	margin-right:10px; cursor:pointer; 
+	background:#fff url(../images/icon.png) no-repeat right 8px; 
+}
