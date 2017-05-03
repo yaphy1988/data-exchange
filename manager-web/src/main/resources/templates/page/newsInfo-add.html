@@ -1,18 +1,22 @@
+
 <table class="editTable">
+	<input type="hidden" id="info_id" th:value="${newsInfo.infoId}"/>
+	<input type="hidden" id="info_infoUrl" th:value="${newsInfo.infoUrl}"/>
 	<tr>
 		<td class="Hint " width="120"><span class="col_red">*</span>标题:</td>
-		<td width="420"><input type="text" class="form-control" th:value="${newsInfo.infoTitle}"></td>
+		<td width="420"><input id="infoTitle" type="text" class="form-control" th:value="${newsInfo.infoTitle}"></td>
 	</tr>
 	<tr>
 		<td class="Hint "><span class="col_red">*</span>信息类型:</td>
 		<td>
-		<select class="form-control">
+		<select class="form-control;width:60%" id="infoType">
 			<option value="1">行业资讯</option>
             <option value="2">平台公告</option>
             <option value="3">平台活动</option>
             <option value="4">常见问题</option>
 		</select></td>
 	</tr>
+	<!--
 	<tr>
 		<td class="Hint"><span class="col_red">*</span>生效时间:</td>
 		<td><input class="Wdate form-control dateStyle wt300" type="text" id="pubTime" th:onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" th:value="${#dates.format(newsInfo.pubTime, 'yyyy-MM-dd')}">
@@ -23,7 +27,7 @@
 		<td><input class="Wdate form-control dateStyle wt300" type="text" id="lostTime" th:onClick="WdatePicker({dateFmt:'yyyy-MM-dd'})" th:value="${#dates.format(newsInfo.lostTime, 'yyyy-MM-dd')}" >
 		</td>
 	</tr>
-	<!-- 
+	 
 	<tr>
 		<td class="Hint "><span class="col_red">*</span>附件上传:</td>
 		<td><label>
@@ -41,15 +45,15 @@
 	</tr>
 	 -->
 	<tr>
-		<td class="Hint"><span class="col_red">*</span>摘要:</td>
+		<td class="Hint"><span class="col_red">*</span>内容:</td>
 		<td id="ckeditor"><textarea class="form-control" rows="4"></textarea></td>
 	</tr>
 
 	<tr>
 		<td class="Hint">&nbsp;</td>
 		<td>
-			<button class="btn btn-primary">保存</button>
-			<button class="btn btn-default">返回</button>
+			<button class="btn btn-primary" th:onclick="'saveNewsInfo()'">保存</button>
+			<button class="btn btn-default" th:onclick="'queryNewsPageInfo(1)'">返回</button>
 		</td>
 	</tr>
 </table>

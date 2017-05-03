@@ -14,6 +14,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.util.HtmlUtils;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoReqDTO;
@@ -29,6 +30,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.paas.util.ImageUtil;
+import com.ai.paas.util.MongoFileUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
 
@@ -54,7 +56,7 @@ public class PageManageController {
 	@DubboConsumer(timeout = 30000)
 	IGdsInfoRSV iGdsInfoRSV;
 	
-	@RequestMapping(value = "/pageInit")
+	@RequestMapping(value = "/newsInfo")
 	public ModelAndView pageInit(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("info_details");
 		return modelAndView;
@@ -259,6 +261,32 @@ public class PageManageController {
 		} catch (Exception e) {
 			rMap.put("success", false);
 			log.error("更新广告信息出错：" + e.getMessage());
+		}
+		return rMap;
+	}
+	@RequestMapping(value = "/saveNewsInfo")
+	@ResponseBody
+	public Map<String, Object> saveNewsInfo(HttpServletRequest request){
+		String infoTitle = request.getParameter("infoTitle");
+		String infoType = request.getParameter("infoType");
+		String ckeditContent = request.getParameter("ckeditContent");
+		ckeditContent = HtmlUtils.htmlEscape(ckeditContent);
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		try {
+			PageNewsInfoReqDTO newsInfoReqDTO = new PageNewsInfoReqDTO();
+			 //保存静态文件到静态文件服务器
+			if(!StringUtils.isBlank(ckeditContent)){
+				String infoUrl = MongoFileUtil.saveFile(ckeditContent.getBytes("utf-8"),"gdsContent", ".html");
+				newsInfoReqDTO.setInfoUrl(infoUrl);
+			}
+			newsInfoReqDTO.setInfoTitle(infoTitle);
+			newsInfoReqDTO.setInfoType(infoType);
+			long newsInfoId = iPageDisplayRSV.insertPageNewsInfo(newsInfoReqDTO);
+			rMap.put("newsInfoId",newsInfoId);
+			rMap.put("success",true);
+		} catch (Exception e) {
+			rMap.put("success",false);
+			log.error("查询楼层信息出错：" + e.getMessage());
 		}
 		return rMap;
 	}

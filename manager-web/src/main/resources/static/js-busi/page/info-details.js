@@ -3,6 +3,24 @@ $(function(){
 	queryNewsPageInfo(1);
 
 })
+
+function saveNewsInfo(){
+	var infoTitle = $.trim($('#infoTitle').val());
+	var infoType = $('#infoType').val();
+	var ckeditContent = ckeditor.getData();
+	var url =basePath+ '/pageManage/saveNewsInfo';
+	$.ajax({
+		url:url,
+		dataType:'json',
+		cacha:false,
+		async:true,
+		data:{infoTitle:infoTitle,infoType:infoType,ckeditContent:ckeditContent},
+		success:function(data){
+			
+		}
+	});
+}
+
 function editOrAddNewsInfo(infoId){
 	var url =basePath+ '/pageManage/addNewsPageInfo';
 	$.ajax({
@@ -18,6 +36,18 @@ function editOrAddNewsInfo(infoId){
 			createEditor();
 		}
 	});
+}
+function setCkeditData(url) {
+	 var obj=url+".html";
+	$.appAjax({
+			url:obj,
+			async : true,
+			dataType : 'jsonp',
+		    jsonp :'jsonpCallback',//注意此处写死jsonCallback
+			success: function (data) {
+				ckeditPackage.setData(data.result);
+		    }
+		});
 }
 function updateNewsPageInfo(infoId,status){
 	var url = basePath+'/pageManage/updateNewsPageInfo';
@@ -37,8 +67,6 @@ function updateNewsPageInfo(infoId,status){
 	});
 }
 function createEditor() {
-	// Create a new editor inside the <div id="editor">, setting its value to
-	// html
 
 	var config = {
 		filebrowserImageUploadUrl : "/ck/upload?type=Image",
@@ -46,8 +74,12 @@ function createEditor() {
 		filebrowserFlashUploadUrl :"/ck/upload?type=Flash"
 	};
 	ckeditor=CKEDITOR.replace("ckeditor", config);
-	//ckeditPackage.setData(data.result);
-	//ckeditPackage.getData()
+	var url = $.trim($('#info_infoUrl').val());
+	if(url != null && url != undefined){
+		setCkeditData(url);
+	}
+	//ckeditor.setData(data.result);
+	//ckeditor.getData()
 }
 function queryNewsPageInfo(pageNo){
 	var infoTitle=$.trim($('#news_title').val());
