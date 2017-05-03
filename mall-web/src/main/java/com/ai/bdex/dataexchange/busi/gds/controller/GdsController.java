@@ -298,7 +298,7 @@ public class GdsController {
         GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
         gdsInfoReqDTO.setCatFirst(AIP_CAT_ID);
         gdsInfoReqDTO.setStatus("1");
-        gdsInfoReqDTO.setPageSize(4);
+        gdsInfoReqDTO.setPageSize(8);
         gdsInfoReqDTO.setIfRecommend("1");
         gdsInfoReqDTO.setGridQuerySortName("shelve_time");
         gdsInfoReqDTO.setGridQuerySortOrder("desc");
