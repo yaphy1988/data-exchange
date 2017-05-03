@@ -2,7 +2,9 @@ package com.ai.bdex.dataexchange.busi.page.entity;
 
 import java.util.Date;
 
-public class PageModuleAdVO {
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+
+public class PageModuleAdVO extends BaseInfo{
     private Integer adId;
 
     private Integer moduleId;

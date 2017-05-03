@@ -7,13 +7,18 @@ import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageModuleAdMapper;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAd;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAdExample;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAdExample.Criteria;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleAdSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
+import com.ai.paas.utils.DateUtil;
+import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -44,7 +49,7 @@ public class PageModuleAdSVImpl implements IPageModuleAdSV {
 	}
 
 	@Override
-	public PageResponseDTO<PageModuleAdRespDTO> queryPageModulePageInfo(PageModuleAdReqDTO moduleAdDTO)
+	public PageResponseDTO<PageModuleAdRespDTO> queryPageModuleAdPageInfo(PageModuleAdReqDTO moduleAdDTO)
 			throws Exception {
 		Integer pageNo = moduleAdDTO.getPageNo();
 		Integer pageSize = moduleAdDTO.getPageSize();
@@ -61,6 +66,9 @@ public class PageModuleAdSVImpl implements IPageModuleAdSV {
 		if(!StringUtils.isBlank(moduleAdDTO.getStatus())){
 			criteria.andStatusEqualTo(moduleAdDTO.getStatus());
 		}
+		if(CollectionUtils.isNotEmpty(moduleAdDTO.getStatusList())){
+			criteria.andStatusIn(moduleAdDTO.getStatusList());
+		}
 		example.setOrderByClause(" AD_ORDER desc ");
 		PageHelper.startPage(pageNo, pageSize);
 		List<PageModuleAd> pageModuleAdList = moduleAdMapper.selectByExample(example);
@@ -69,6 +77,20 @@ public class PageModuleAdSVImpl implements IPageModuleAdSV {
 		PageResponseDTO<PageModuleAdRespDTO> pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,
 				PageModuleAdRespDTO.class);
 		return pageResponseDTO;
+	}
+
+	@Override
+	public int updatePageModuleAdInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception {
+		PageModuleAd modularAd = new PageModuleAd();
+		PageModuleAdExample example = new PageModuleAdExample();
+		Criteria criteria = example.createCriteria();
+		if(moduleAdDTO.getAdId()!=null){
+			criteria.andAdIdEqualTo(moduleAdDTO.getAdId());
+		}        
+		moduleAdDTO.setUpdateTime(DateUtil.getNowAsDate());
+		ObjectCopyUtil.copyObjValue(moduleAdDTO, modularAd, null, false);
+		int code = moduleAdMapper.updateByExampleSelective(modularAd, example);
+		return code;
 	}
 
 }

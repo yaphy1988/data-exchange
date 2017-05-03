@@ -18,5 +18,6 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 public interface IPageModuleAdSV {
 	public PageModuleAd queryPageModuleAdById(Integer id) throws Exception;
 	public List<PageModuleAd> queryPageModuleAdList(PageModuleAd pageModuleAd) throws Exception;
-	public PageResponseDTO<PageModuleAdRespDTO>  queryPageModulePageInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception;
+	public PageResponseDTO<PageModuleAdRespDTO>  queryPageModuleAdPageInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception;
+    public int updatePageModuleAdInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception;
 }

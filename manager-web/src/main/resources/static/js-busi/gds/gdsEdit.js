@@ -92,7 +92,7 @@ function saveGdsLabelQuik(){
  * @param obj
  */
 function deleteGdsLabel(obj){
-	WEB.msg.warn("提示","确定要删除该标签吗？",function(){
+	WEB.msg.confirm("提示","确定要删除该标签吗？",function(){
 		$(obj).parent().parent().remove();
 	});
 }
@@ -112,7 +112,7 @@ function addPackAgeOne(){
  * 删除套餐
  */
 function deleteGdsSku(obj){
-	WEB.msg.warn("提示","确定要删除该套餐吗？",function(){
+	WEB.msg.confirm("提示","确定要删除该套餐吗？",function(){
 		$(obj).parent().parent().remove();
 	});
 }
@@ -833,6 +833,7 @@ function gridAPIInfoList(index){
 		dataType:'html',
 		data : param,
 		success:function(data){
+			$('#gdsAPIList').empty();
 			$('#gdsAPIList').html(data);
 		}
 	});

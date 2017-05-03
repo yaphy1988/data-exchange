@@ -34,7 +34,27 @@ public class PageModuleAdRespDTO  extends BaseResponseDTO{
 
     private String updateStaffId;
 
-    public Integer getAdId() {
+    private String vfsIdUrl;//图片链接
+    
+    private PageModuleRespDTO pageModuleRespDTO;
+    
+    public PageModuleRespDTO getPageModuleRespDTO() {
+		return pageModuleRespDTO;
+	}
+
+	public void setPageModuleRespDTO(PageModuleRespDTO pageModuleRespDTO) {
+		this.pageModuleRespDTO = pageModuleRespDTO;
+	}
+
+	public String getVfsIdUrl() {
+		return vfsIdUrl;
+	}
+
+	public void setVfsIdUrl(String vfsIdUrl) {
+		this.vfsIdUrl = vfsIdUrl;
+	}
+
+	public Integer getAdId() {
         return adId;
     }
 

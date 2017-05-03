@@ -9,6 +9,8 @@
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+	<script type="text/javascript" src="../static/js-busi/page/edit_manager.js" th:src="@{/js-busi/page/edit_manager.js}"></script>
+	
 </head>
 <body>
 <header class="clearfix m_header">
@@ -53,7 +55,7 @@
             <div class="tab-slide pl20 pr20">
 
                 <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
+                <ul class="nav nav-tabs" role="tablist" id="tabList">
                     <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">编辑模块</a></li>
                     <li><a href="#tab02" aria-controls="home" role="tab" data-toggle="tab">商品模块</a></li>
                     <li><a href="#tab03" aria-controls="home" role="tab" data-toggle="tab">广告模块</a></li>
@@ -618,8 +620,8 @@
 
 
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="tab03">
-                        <table class="table table-bordered text-center" >
+                    <div role="tabpanel" class="tab-pane" id="tab03" >
+                        <table class="table table-bordered text-center" th:remove="all">
                             <thead>
                             <tr class="active">
                                 <th>广告编号</th>
@@ -649,171 +651,9 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="" title="图片">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
                             </tbody>
                         </table>
-                        <div class="pagelist clearfix">
+                        <div class="pagelist clearfix" th:remove="all">
                             <div class="left-btn">
                                 <button><i class="glyphicon glyphicon-plus"></i>新增广告</button>
                             </div>

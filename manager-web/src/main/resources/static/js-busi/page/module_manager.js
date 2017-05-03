@@ -35,7 +35,7 @@ function queryModuleList(pageNo){
 					
 					html +='<td>'+
                         '<p class="pop-link">'+
-                            '<a href="edit_module.html">编辑</a>'+
+                            '<a href="'+WEB_ROOT+'/pageManage/editModule">编辑</a>'+
                         '</p>'+
                     '</td>'+
                 '</tr>';

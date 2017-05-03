@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.busi.page.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -14,13 +15,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoReqDTO;
+import com.ai.bdex.dataexchange.busi.gds.entity.AipServiceInfoVO;
+import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
+import com.ai.paas.util.ImageUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
 
@@ -37,6 +45,8 @@ import com.alibaba.dubbo.common.utils.StringUtils;
 public class PageManageController {
 
 	private final static String STATUS_VALID = "1";// 有效
+	private final static String STATUS_INVALID = "0";// 失效
+	private final static Integer PAGE_SIZE=10;//
 	private static final Logger log = LoggerFactory.getLogger(PageManageController.class);
 
 	@DubboConsumer(timeout = 30000)
@@ -152,6 +162,11 @@ public class PageManageController {
 		ModelAndView modelAndView = new ModelAndView("module_manager");
 		return modelAndView;
 	}
+	@RequestMapping(value = "/editModule")
+	public ModelAndView editModule(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView("edit_module");
+		return modelAndView;
+	}
 	@RequestMapping(value = "/queryModuleList")
 	@ResponseBody
 	public Map<String, Object> queryModuleList(Model model, HttpServletRequest request) {
@@ -178,6 +193,72 @@ public class PageManageController {
 		} catch (Exception e) {
 			rMap.put("success",false);
 			log.error("查询楼层信息出错：" + e.getMessage());
+		}
+		return rMap;
+	}
+	/**
+	 * 查询广告
+	 * 
+	 * @param model
+	 * @param searchVO
+	 * @return
+	 */
+	@RequestMapping(value = "queryModulePageAdList")
+	public String queryModulePageAdList(Model model, PageModuleAdVO moduleAdVO) {
+		try {
+			PageResponseDTO<PageModuleAdRespDTO> pageInfo = new PageResponseDTO<PageModuleAdRespDTO>();
+			PageModuleAdReqDTO adReqDTO = new PageModuleAdReqDTO();
+			adReqDTO.setPageNo(moduleAdVO.getPageNo());
+			adReqDTO.setPageSize(PAGE_SIZE);
+			List<String> statusList=new ArrayList<String>();
+			//查询有效、失效
+			statusList.add(STATUS_VALID);
+			statusList.add(STATUS_INVALID);
+			adReqDTO.setStatusList(statusList);
+			pageInfo = iPageDisplayRSV.queryPageModuleAdPageInfo(adReqDTO);
+			if(!CollectionUtils.isEmpty(pageInfo.getResult())){
+				for(PageModuleAdRespDTO adRespDTO :pageInfo.getResult()){
+					adRespDTO.setVfsIdUrl(ImageUtil.getImageUrl(adRespDTO.getVfsId() + "_100x100"));
+					//根据modularID查询t_page_modular信息
+					PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
+					pageModuleReqDTO.setModuleId(adRespDTO.getModuleId());
+					PageModuleRespDTO respDTO = iPageDisplayRSV.queryPageModuleInfo(pageModuleReqDTO);
+					adRespDTO.setPageModuleRespDTO(respDTO);
+				}
+			}
+			model.addAttribute("pageInfo", pageInfo);
+		} catch (Exception e) {
+			log.error("查询广告列表失败！原因是：" + e.getMessage());
+		}
+		return "page/modulePageAdList";
+	}
+	/**
+	 * 更新广告信息
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/updatePageModuleAdInfo")
+	@ResponseBody
+	public Map<String,Object> updatePageModuleAdInfo(HttpServletRequest request,PageModuleAdVO moduleAdVO){
+		Map<String,Object>  rMap = new HashMap<>();
+		int adId = moduleAdVO.getAdId();
+		String status = moduleAdVO.getStatus();
+		try {
+			PageModuleAdReqDTO adReqDTO = new PageModuleAdReqDTO();
+			if(!StringUtils.isBlank(status)){
+				adReqDTO.setStatus(status);
+			}
+			if(moduleAdVO.getAdId()!=null){
+				adReqDTO.setAdId(moduleAdVO.getAdId());
+			}
+			if(moduleAdVO.getModuleId()!=null){
+				adReqDTO.setModuleId(moduleAdVO.getModuleId());
+			}
+			iPageDisplayRSV.updatePageModuleAdByKey(adReqDTO);
+			rMap.put("success", true);
+		} catch (Exception e) {
+			rMap.put("success", false);
+			log.error("更新广告信息出错：" + e.getMessage());
 		}
 		return rMap;
 	}

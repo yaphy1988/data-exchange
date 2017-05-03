@@ -230,6 +230,30 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
     
 	}
 	@Override
+	public PageModuleRespDTO queryPageModuleInfo(PageModuleReqDTO pageModuleReqDTO) throws Exception {
+
+        PageModuleRespDTO pageModuleRespDTO = new PageModuleRespDTO();
+        try{
+        	 if (pageModuleReqDTO ==null ){
+                 throw new Exception("查询楼层信息异常，入参为空");
+             }
+         	 PageModule exam = new PageModule();
+         	 BeanUtils.copyProperties( pageModuleReqDTO,exam);
+          	 List<PageModule> queryPageModuleList = iPageModuleSV.queryPageModuleList(exam);
+          	 if(!CollectionUtils.isEmpty(queryPageModuleList)){
+          		for (PageModule pageModule : queryPageModuleList){
+                    BeanUtils.copyProperties(pageModule, pageModuleRespDTO); 
+                    
+                }
+          	 }
+        }catch(Exception e){
+        	log.error("获取首页楼层信息异常:", e);
+            throw new Exception(e);
+        }
+        return pageModuleRespDTO;
+    
+	}
+	@Override
 	public List<PageModuleAdRespDTO> queryPageModuleAdList(PageModuleAdRespDTO pageModuleAdRespDTO) throws Exception {
 		List<PageModuleAdRespDTO> ageModuleAdRespDTOList = new ArrayList<PageModuleAdRespDTO>();
         try{
@@ -316,11 +340,11 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
 		return respDTOs;
 	}
 	@Override
-	public PageResponseDTO<PageModuleAdRespDTO> queryPageModulePageInfo(PageModuleAdReqDTO moduleAdDTO)
+	public PageResponseDTO<PageModuleAdRespDTO> queryPageModuleAdPageInfo(PageModuleAdReqDTO moduleAdDTO)
 			throws Exception {
 		PageResponseDTO<PageModuleAdRespDTO> moduleAdPageInfo = new PageResponseDTO<>();
 		try {
-			moduleAdPageInfo = iPageModuleAdSV.queryPageModulePageInfo(moduleAdDTO);
+			moduleAdPageInfo = iPageModuleAdSV.queryPageModuleAdPageInfo(moduleAdDTO);
 		} catch (Exception e) {
 			log.error("分页获取楼层广告信息异常:", e);
             throw new Exception(e);
@@ -337,5 +361,12 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
 			throw new BusinessException("新闻消息主键不能为空：infoId="+newsInfoReqDTO.getInfoId());
 		}
 		return iPageNewsInfoSV.updatePageNewsInfoByKey(newsInfoReqDTO);
+	}
+	@Override
+	public int updatePageModuleAdByKey(PageModuleAdReqDTO reqDTO) throws Exception {
+		if(reqDTO.getAdId() == null || reqDTO.getAdId() == 0 ){
+			throw new BusinessException("广告主键不能为空：infoId="+reqDTO.getAdId());
+		}
+		return iPageModuleAdSV.updatePageModuleAdInfo(reqDTO);
 	}
 }

@@ -252,7 +252,7 @@ public class GdsEditController {
     }
     /**
      * 
-     * 
+     * 新增商品
      * @param req
      * @param rep
      * @param gdsSpuInfo
@@ -343,6 +343,15 @@ public class GdsEditController {
 
         return jsonBean;
     }
+    /**
+     * 编辑商品
+     * @param req
+     * @param rep
+     * @param session
+     * @return
+     * @throws BusinessException
+     * @throws GenericException
+     */
     @RequestMapping(value = "/editGds")
     @ResponseBody
     public GdsJsonBean editGds(HttpServletRequest req, HttpServletResponse rep,HttpSession session) throws  BusinessException, GenericException {
@@ -611,6 +620,13 @@ public class GdsEditController {
 		}
 		return json;
 	}
+	/**
+	 * 获取商品分类属性信息
+	 * @param req
+	 * @param rep
+	 * @param gdsInfo2PropVO
+	 * @return
+	 */
 	@RequestMapping(value = "/queryGdsInfo2PropList")
     @ResponseBody
 	public GdsJsonBean queryGdsInfo2PropList(HttpServletRequest req, HttpServletResponse rep, GdsInfo2PropVO gdsInfo2PropVO) {
