@@ -30,8 +30,8 @@
 							}else{
 								html +='<div class="sidebarBox"><h3 class="title">';
 							}
-							html +=''+moduleVO.moduleName+'</h3><ul class="sideli">';
 							html +='<a href="'+basePath+'/homePage/pageNewsInfolist?moduleId='+moduleVO.moduleId+'"  class="pull-right more">查看全部 »</a>';
+							html +=''+moduleVO.moduleName+'</h3><ul class="sideli">';
 			                $(infoList).each(function(k,f){
 			                	html+='<li><a href="'+basePath+'/homePage/pageNewsDetail?infoId='+f.infoId+'" target="_blank">'+f.infoTitle+'</a></li>';
 			                });
