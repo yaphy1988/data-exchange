@@ -1,10 +1,13 @@
 package com.ai.bdex.dataexchange.busi.page.entity;
 
-import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class SortInfoVO  implements Serializable{ 
-    private Integer sortId; 
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+
+public class SortInfoVO  extends BaseInfo{ 
+	private static final long serialVersionUID = 1L;
+	private Integer sortId; 
     private String sortType; 
     private String sortLevel;
     private String sortName;
@@ -15,14 +18,24 @@ public class SortInfoVO  implements Serializable{
     private Date createTime;
     private String updateStaffId;
     private Date updateTime;
-    private SortContentVO sortContentRespDTO;
+    private SortContentVO sortContentVO;
+    private List<SortInfoVO> subSortInfoList;
 
-public SortContentVO getSortContentRespDTO() {
-		return sortContentRespDTO;
+    public List<SortInfoVO> getSubSortInfoList() {
+		return subSortInfoList;
 	}
 
-	public void setSortContentRespDTO(SortContentVO sortContentRespDTO) {
-		this.sortContentRespDTO = sortContentRespDTO;
+	public void setSubSortInfoList(List<SortInfoVO> subSortInfoList) {
+		this.subSortInfoList = subSortInfoList;
+	}
+
+
+public SortContentVO getSortContentVO() {
+		return sortContentVO;
+	}
+
+	public void setSortContentVO(SortContentVO sortContentVO) {
+		this.sortContentVO = sortContentVO;
 	}
 
 public Integer getSortId() {
