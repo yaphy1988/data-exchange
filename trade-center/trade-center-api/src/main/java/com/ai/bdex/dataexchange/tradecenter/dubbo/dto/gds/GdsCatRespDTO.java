@@ -4,10 +4,18 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+
 /**
  * Created by yx on 2017/4/18.
  */
-public class GdsCatRespDTO implements Serializable {
+public class GdsCatRespDTO extends BaseResponseDTO implements Serializable {
+    /** 
+     * serialVersionUID:TODO(用一句话描述这个变量表示什么). 
+     * @since JDK 1.6 
+     */ 
+    private static final long serialVersionUID = -9131157960075792281L;
+
     private Integer catId;
 
     private Integer catPid;

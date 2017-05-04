@@ -2,6 +2,8 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds;
 
 import java.util.List;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 
@@ -26,4 +28,15 @@ public interface IGdsCatRSV {
      * @throws Exception
      */
     public List<GdsCatRespDTO> queryLadderCatListByCatId(Integer catId) throws Exception;
+    /**
+     * 
+     * queryCatPageInfo:(根据条件获取分类分页). <br/> 
+     * 
+     * @author gxq 
+     * @param gdsCatReqDTO
+     * @return
+     * @throws Exception 
+     * @since JDK 1.6
+     */
+    public PageResponseDTO<GdsCatRespDTO> queryCatPageInfo(GdsCatReqDTO gdsCatReqDTO) throws BusinessException;
 }
