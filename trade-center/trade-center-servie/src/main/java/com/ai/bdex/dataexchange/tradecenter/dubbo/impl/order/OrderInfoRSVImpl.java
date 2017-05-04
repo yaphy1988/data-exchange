@@ -25,13 +25,17 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 	private IOrdInfoSV iOrdInfoSV;
 
 	@Override
-	public int createOrderInfo(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception {
+    public int createOrderInfo(OrdMainInfoReqDTO ordMainInfoReqDTO,OrdInfoReqDTO ordInfoReqDTO) throws Exception
+    {
+		//从数据库获取商品价格  * 界面数量 是否等于界面的总价格
+		iOrdMainInfoSV.creatOrderByweb(ordMainInfoReqDTO);
+		iOrdInfoSV.creatsubOrderByweb(ordInfoReqDTO);
+		//写日志
+		
+		//需要调用主表和子表的实物
+        // return   iDataCustomizationSV.saveDataCustomization(dataCustomizationRespDTO);
 		return 1;
-		// 需要调用主表和子表的实物
-		// return
-		// iDataCustomizationSV.saveDataCustomization(dataCustomizationRespDTO);
-	}
-
+    }
 	@Override
 	public OrdInfoRespDTO querySubOrderDetail(OrdInfoRespDTO ordInfo) throws Exception {
 		return null;
