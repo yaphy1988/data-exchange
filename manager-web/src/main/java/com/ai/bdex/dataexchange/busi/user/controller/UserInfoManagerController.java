@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.BeanUtils;
@@ -19,6 +20,7 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.ImageUtil;
+import com.ai.paas.util.SystemConfUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
@@ -30,9 +32,11 @@ public class UserInfoManagerController {
 	private IAuthStaffRSV iAuthStaffRSV;
 	
 	@RequestMapping(value="/pageInit")
-	public String pageInit(Model model,HttpSession session) throws Exception{
+	public String pageInit(Model model,HttpSession session,HttpServletRequest request) throws Exception{
 		if(StringUtil.isBlank(StaffUtil.getStaffId(session))){
-			return "redirect:/login/pageInit";
+			String mallurl = SystemConfUtil.getSystemModuleInfo("01","1").genFullUrl();
+			String contextpath = request.getContextPath();
+			return "redirect:"+mallurl+contextpath+"/login/pageInit";
 		}
 		String staffId = StaffUtil.getStaffVO(session).getStaffId();
 		//获取用户信息
