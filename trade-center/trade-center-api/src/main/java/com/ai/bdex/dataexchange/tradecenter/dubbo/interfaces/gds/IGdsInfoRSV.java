@@ -15,7 +15,6 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsPropReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsPropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsResultVO;
-import com.github.pagehelper.Page;
 
 /**
  * Created by yx on 2017/4/18.
