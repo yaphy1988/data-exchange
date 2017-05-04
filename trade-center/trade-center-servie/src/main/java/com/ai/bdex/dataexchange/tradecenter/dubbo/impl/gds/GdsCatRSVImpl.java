@@ -1,21 +1,23 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.impl.gds;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsCat;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
-
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.paas.utils.CollectionUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
 
 /**
  * Created by yx on 2017/4/20.
@@ -97,5 +99,10 @@ public class GdsCatRSVImpl implements IGdsCatRSV {
         }catch (Exception e){
             log.error("查询分类递进列表异常：",e);
         }
+    }
+    @Override
+    public PageResponseDTO<GdsCatRespDTO> queryCatPageInfo(GdsCatReqDTO gdsCatReqDTO)
+            throws BusinessException {
+        return iGdsCatSV.queryCatPageInfo(gdsCatReqDTO);
     }
 }
