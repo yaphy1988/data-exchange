@@ -439,11 +439,13 @@ fieldset[disabled] .btn-default.focus {
 		height: 50px;
 		
 	}
+	i.menuIcon,
 	.seconav.menuBg h3 >i {
 		position: absolute;
 		right: 10px;
 		top: 18px;
 	}
+	
 	/* 子页面分类路径 */
 	.classify{
 		width: 100%;
