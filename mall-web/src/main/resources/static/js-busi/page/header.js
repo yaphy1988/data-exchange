@@ -12,7 +12,7 @@ $(document).ready(function(){
 		});
 	}
 	header.setSpanDate();
-	header.querySortInfo('','-1','1');
+	header.querySortInfo('-1','1');
 	window.setInterval("header.setSpanDate()", 1000);
 });
 var header = new Object({
@@ -35,57 +35,54 @@ var header = new Object({
 		  else        
 			  return num;
 	},
-	querySortInfo:function(sortId,sortParentId,sortLever){
+	querySortInfo:function(sortParentId,sortLever){
 		$.ajax({
 			url:WEB_ROOT+'/homePage/querySortInfo',
-			data:{sortId:sortId,sortParentId:sortParentId,sortLever:sortLever},
+			data:{sortParentId:sortParentId,sortLever:sortLever},
 			cache:false,
 			async:true,
 			type:'post',
 			dataType:'json',
 			success:function(data){
-				var html='';
+				var html ='<h3>全部商品<i class="glyphicon glyphicon-list"></i></h3>'+
+						  '<ul>';
+				var htmlLever1 = '';
+				var htmlLever2 = '';
 				if(data.success){
-					if(sortLever== '2'){//2级导航
-						html +='<h4>'+data.infos.sortName+'</h4><div class="sidebar-link">';
-					}
-					$(data.sortInfos).each(function(i,d){
-						var link ;
-						if(d.sortContentRespDTO!=null && d.sortContentRespDTO!= undefined){
-							link =d.sortContentRespDTO.contentLink;
-						}
-						if(sortLever== '2'){//2级导航
-							html +='<a href='+setLinkUrk(link)+' target="_blank">'+d.sortName+'</a>';
+					var sortInfos = data.sortInfos;
+					$(sortInfos).each(function(i,d){
+						var content = d.sortContentVO;
+						htmlLever1 +='<li pSortId='+d.sortId+'><a href="'+setLinkUrk(content.contentLink)+'"><i>&rsaquo;</i>'+content.contentName+'</a> </li>';
+						var subSortInfoList = d.subSortInfoList;
+						htmlLever2 += '<div pSortId='+d.sortId+' class="sidebar-hidden" style="display: none">'+
+							'<h4>'+content.contentName+'</h4>'+
+							'<div class="sidebar-link">';
+						$(subSortInfoList).each(function(i,d){
+							var subContent = d.sortContentVO;
+							htmlLever2 +='<a href="'+setLinkUrk(subContent.contentLink)+'">'+subContent.contentName+'</a>';
 							if(parseInt(i+1)%5 == 0){
 								if(parseInt(i+1)== data.sortInfos.length){
-									html +='</div>'; 
+									htmlLever2 +='</div>'; 
 								}else{
-									html +='</div><div class="sidebar-link">';
+									htmlLever2 +='</div><div class="sidebar-link">';
 								}
 							}
-						}else{//1级导航
-							html +='<li sortId="'+d.sortId+'"><a href='+setLinkUrk(link)+' target="_blank"><i>&rsaquo;</i>'+d.sortName+'</a> </li>';
-						}
+						});
+						htmlLever2 +='</div></div>'
 					});
-				}
-				if(sortLever== '2'){
-//					html+='<div class="ad-list clearfix">'+
-//	                    	'<div class="item floatL"></div>'+
-//	                    	'<div class="item floatL"></div>'+
-//	                    	'<div class="item floatL"></div>'+
-//							'</div>';
-					$('#head_sidebar>div').html(html).show();
-				}else{
-					$('#head_sidebar>ul').html(html);
+					html += htmlLever1 +'</ul><!--二级导航开始-->'+htmlLever2+'<!--二级导航结束-->';
+					$('#head_sidebar').html(html);
 					$('#head_sidebar>ul').children().hover(function(){
-						header.querySortInfo('',$(this).attr('sortId'),'2');
+						var pSortId = $(this).attr('pSortId');
+						$('#head_sidebar>div').hide();
+						$('#head_sidebar>div[pSortId='+pSortId+']').show();
 					},function(){
 						$('#head_sidebar>div').hide();
 					});
 					$('#head_sidebar>div').hover(function(){
 						$(this).show();
 					},function(){
-						$(this).hide();
+						$('#head_sidebar>div').hide();
 					});
 				}
 			}

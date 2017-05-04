@@ -254,7 +254,7 @@ public class GdsController {
                     }
 
 
-                    viewName = "/goods_details";
+                    viewName = "goods_details";
 
                 }else if (CUSTOM_CAT_ID.equals(gdsInfoRespDTO.getCatFirst())){
                     if (!CollectionUtil.isEmpty(gdsInfoVO.getGdsInfo2PropVOList())){
@@ -265,7 +265,7 @@ public class GdsController {
                         }
                     }
 
-                    viewName = "/goods_custom";
+                    viewName = "goods_custom";
                 }else if (SOLUTION_CAT_ID.equals(gdsInfoRespDTO.getCatFirst())){
                     if (!CollectionUtil.isEmpty(gdsInfoVO.getGdsInfo2PropVOList())){
                         for (GdsInfo2PropVO gdsInfo2PropVO : gdsInfoVO.getGdsInfo2PropVOList()){
@@ -277,7 +277,7 @@ public class GdsController {
                             }
                         }
                     }
-                    viewName = "/goods_solution";
+                    viewName = "goods_solution";
                 }
 
             }
@@ -294,7 +294,7 @@ public class GdsController {
 
     @RequestMapping(value = "/queryRecomGdsList")
     public ModelAndView queryRecomGdsList(){
-        String viewName = "/goods/details/recomGdsList";
+        String viewName = "goods/details/recomGdsList";
         GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
         gdsInfoReqDTO.setCatFirst(AIP_CAT_ID);
         gdsInfoReqDTO.setStatus("1");

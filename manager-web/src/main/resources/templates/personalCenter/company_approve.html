@@ -38,7 +38,7 @@
 <div th:replace="~{fragments/top :: top}"></div>
 <header class="clearfix m_header" th:remove="all">
 	<a href="" class="Logo" target="_blank" >
-		<img  src="../../static/images/manage_logo.png" alt="广州数据" >
+		<img  src="../../static/images/manage_logo.png" th:src="@{/images/manage_logo.png}" alt="广州数据" >
 	</a>
 	<ul class="m_hdlist clearfix">
 		<li>
@@ -235,8 +235,8 @@
 			</div>
 	</div>
 
-
-		<div class="m_nav">
+<div th:replace="~{fragments/nav_left :: nav_left}"></div>
+		<div class="m_nav" th:remove="all">
 		<nav class="nav">
 			<ul>
 				<li class="navTit">

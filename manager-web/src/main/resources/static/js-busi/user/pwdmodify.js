@@ -21,16 +21,16 @@ function domoify(){
 	if(!newpasswd){
 		WEB.msg.info('提示',"请输入新密码！",null);
 		return;
-	}else if(newpasswd.length<6||newpasswd.length>16){
-		WEB.msg.info('提示',"密码长度为6-16个字符！",null);
+	}else if(newpasswd.length<6||newpasswd.length>18){
+		WEB.msg.info('提示',"密码长度为6-18个字符！",null);
 		return;
 	}
 	var confirmPass = $("#confirmpasswd").val();
 	if(!confirmPass){
 		WEB.msg.info('提示',"请输入确认密码！",null);
 		return;
-	}else if(confirmPass.length<6||confirmPass.length>16){
-		WEB.msg.info('提示',"密码长度为6-16个字符！",null);
+	}else if(confirmPass.length<6||confirmPass.length>18){
+		WEB.msg.info('提示',"密码长度为6-18个字符！",null);
 		return;
 	}
 	if(newpasswd!=confirmPass){

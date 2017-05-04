@@ -1,7 +1,7 @@
 /**
  * Created by yx on 2017/4/22.
  */
-
+var basePath =  WEB_ROOT;
 $(function(){
     $("#tabContentUl li").each(function (i,element) {
         if ($(this).attr("proType") == "2"){
@@ -39,7 +39,7 @@ function changeGdsSku(obj) {
 
 function queryRecGdsList() {
     $.ajax({
-        url:"/goods/queryRecomGdsList",
+        url:basePath+"/goods/queryRecomGdsList",
         dataType:'html',
         type:'post',
         async:true,

@@ -122,7 +122,7 @@ public class GdsManageController {
             log.error("查询商品列表异常");
         }
 
-        String viewName = "/gds/gdsManage/gdsManageList";
+        String viewName = "gds/gdsManage/gdsManageList";
         ModelAndView mv = new ModelAndView(viewName);
 //        mv.addObject("gdsInfoList",pageInfo.getResult());
         mv.addObject("pageInfo",pageInfo);
