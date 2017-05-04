@@ -14,11 +14,11 @@
 	<script type="text/javascript" src="../../static/js-busi/page/header.js" th:src="@{/js-busi/page/header.js}"></script>
 		<!-- 搜索框 -->
 	    <div th:replace="~{fragments/search_box :: search_box}"></div>
-	    <div class="menu clearfix">
+	    <div class="menu clearfix" id="head_menu">
 	        <!--左侧边栏开始-->
 	        <div class="sidebar floatL" id="head_sidebar">
-	            <h3>全部商品<i class="glyphicon glyphicon-list"></i></h3>
-	            <ul th:class="${ifHiddenCatNav}" th:remove="body">
+	            <h3>全部商品<i class="glyphicon glyphicon-list menuIcon"></i></h3>
+	            <ul th:class="${ifHiddenCatNav}" th:remove="body" style="display:none">
 	                <li><a href="#"><i>&rsaquo;</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
 	                <li><a href="#"><i>&rsaquo;</i>交通运输</a> </li>
 	                <li><a href="#"><i>&rsaquo;</i>气象环保</a> </li>

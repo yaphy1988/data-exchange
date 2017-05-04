@@ -1,15 +1,12 @@
 var basePath = WEB_ROOT;
+var currentUrl = window.location.href;
 $(document).ready(function(){
-	var currentUrl = window.location.href;
 	if(currentUrl.match(/\/homePage\/pageInit/)){//首页
 		$('#head_sidebar>ul').show();
+		$('#head_menu').attr('class','menu clearfix');
 	}else{
 		$('#head_sidebar>ul').hide();
-		$('#head_sidebar').hover(function(){
-			$('#head_sidebar>ul').show();
-		},function(){
-			$('#head_sidebar>ul').hide();
-		});
+		$('#head_menu').attr('class','menuBg seconav');
 	}
 	header.setSpanDate();
 	header.querySortInfo('-1','1');
@@ -44,7 +41,7 @@ var header = new Object({
 			type:'post',
 			dataType:'json',
 			success:function(data){
-				var html ='<h3>全部商品<i class="glyphicon glyphicon-list"></i></h3>'+
+				var html ='<h3>全部商品<i class="glyphicon glyphicon-list menuIcon"></i></h3>'+
 						  '<ul>';
 				var htmlLever1 = '';
 				var htmlLever2 = '';
@@ -72,6 +69,16 @@ var header = new Object({
 					});
 					html += htmlLever1 +'</ul><!--二级导航开始-->'+htmlLever2+'<!--二级导航结束-->';
 					$('#head_sidebar').html(html);
+					if(currentUrl.match(/\/homePage\/pageInit/)){//首页
+						$('#head_sidebar>ul').show();
+					}else{
+						$('#head_sidebar>ul').hide();
+						$('#head_sidebar').hover(function(){
+							$('#head_sidebar>ul').show();
+						},function(){
+							$('#head_sidebar>ul').hide();
+						});
+					}
 					$('#head_sidebar>ul').children().hover(function(){
 						var pSortId = $(this).attr('pSortId');
 						$('#head_sidebar>div').hide();
