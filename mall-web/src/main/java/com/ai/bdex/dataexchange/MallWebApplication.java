@@ -26,9 +26,6 @@ import java.util.List;
 @EnableDubboConfiguration
 public class MallWebApplication {
 
-	@Value("${application.system.confpath:/com/ai/paas/system/conf}")
-	private String systemConfPath;
-
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(MallWebApplication.class, args);
 		Utils.setCtx(context);

@@ -13,11 +13,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.bdex.dataexchange.busi.user.entity.PassWordVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
-import com.ai.bdex.dataexchange.system.StaffUtil;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffPassDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffPassRSV;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
+import com.ai.bdex.dataexchange.util.StaffUtil;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 
 @Controller
 @RequestMapping(value="/password")
