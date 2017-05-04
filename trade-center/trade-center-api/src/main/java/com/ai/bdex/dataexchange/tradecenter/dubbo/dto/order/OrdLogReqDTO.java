@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
-public class OrdLogRespDTO  extends BaseResponseDTO{
+public class OrdLogReqDTO   extends BaseInfo{
     private Long sysLogId;
     private String orderId;
     private String subOrder;

@@ -3,9 +3,10 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
-public class OrdInfoRespDTO  extends BaseResponseDTO{
+public class OrdInfoReqDTO   extends BaseInfo{
 	    private String subOrder; 
 	    private String orderId;
  	    private Integer orderAmount; 

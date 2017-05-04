@@ -3,21 +3,27 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
-public class OrdInvoiceTaxAddrRespDTO  extends BaseResponseDTO{ 
+public class OrdInvoiceTaxReqDTO   extends BaseInfo{ 
    private Long orderTaxId; 
+   private Long taxId; 
    private String orderId; 
    private String staffId; 
    private String shopId; 
    private String invoiceTitle; 
-   private String phone; 
-   private String province; 
-   private String cityCode; 
-   private String countyCode; 
-   private String townCode; 
+   private String taxpayerNo; 
    private String contactInfo; 
+   private String phone; 
+   private String bankName; 
+   private String acctInfo; 
+   private String vfsId1; 
+   private String vfsId2; 
+   private String vfsId3; 
+   private String vfsId4; 
    private String status; 
+   private String provinceCode; 
    private String createStaff; 
    private Date createTime; 
    private String updateStaff; 
@@ -28,6 +34,12 @@ public class OrdInvoiceTaxAddrRespDTO  extends BaseResponseDTO{
 	}
 	public void setOrderTaxId(Long orderTaxId) {
 		this.orderTaxId = orderTaxId;
+	}
+	public Long getTaxId() {
+		return taxId;
+	}
+	public void setTaxId(Long taxId) {
+		this.taxId = taxId;
 	}
 	public String getOrderId() {
 		return orderId;
@@ -53,35 +65,11 @@ public class OrdInvoiceTaxAddrRespDTO  extends BaseResponseDTO{
 	public void setInvoiceTitle(String invoiceTitle) {
 		this.invoiceTitle = invoiceTitle;
 	}
-	public String getPhone() {
-		return phone;
+	public String getTaxpayerNo() {
+		return taxpayerNo;
 	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-	public String getProvince() {
-		return province;
-	}
-	public void setProvince(String province) {
-		this.province = province;
-	}
-	public String getCityCode() {
-		return cityCode;
-	}
-	public void setCityCode(String cityCode) {
-		this.cityCode = cityCode;
-	}
-	public String getCountyCode() {
-		return countyCode;
-	}
-	public void setCountyCode(String countyCode) {
-		this.countyCode = countyCode;
-	}
-	public String getTownCode() {
-		return townCode;
-	}
-	public void setTownCode(String townCode) {
-		this.townCode = townCode;
+	public void setTaxpayerNo(String taxpayerNo) {
+		this.taxpayerNo = taxpayerNo;
 	}
 	public String getContactInfo() {
 		return contactInfo;
@@ -89,11 +77,59 @@ public class OrdInvoiceTaxAddrRespDTO  extends BaseResponseDTO{
 	public void setContactInfo(String contactInfo) {
 		this.contactInfo = contactInfo;
 	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+	public String getAcctInfo() {
+		return acctInfo;
+	}
+	public void setAcctInfo(String acctInfo) {
+		this.acctInfo = acctInfo;
+	}
+	public String getVfsId1() {
+		return vfsId1;
+	}
+	public void setVfsId1(String vfsId1) {
+		this.vfsId1 = vfsId1;
+	}
+	public String getVfsId2() {
+		return vfsId2;
+	}
+	public void setVfsId2(String vfsId2) {
+		this.vfsId2 = vfsId2;
+	}
+	public String getVfsId3() {
+		return vfsId3;
+	}
+	public void setVfsId3(String vfsId3) {
+		this.vfsId3 = vfsId3;
+	}
+	public String getVfsId4() {
+		return vfsId4;
+	}
+	public void setVfsId4(String vfsId4) {
+		this.vfsId4 = vfsId4;
+	}
 	public String getStatus() {
 		return status;
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	public String getProvinceCode() {
+		return provinceCode;
+	}
+	public void setProvinceCode(String provinceCode) {
+		this.provinceCode = provinceCode;
 	}
 	public String getCreateStaff() {
 		return createStaff;
