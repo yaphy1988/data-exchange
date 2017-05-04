@@ -208,7 +208,7 @@
                     <i class="creta"></i>
                     <div class="left floatL">
                         <label>如需定制个性化服务：</label> 
-                        <button class="btn btn-orange"  th:onclick="'showData()'" >立即定制</button>
+                        <button class="btn btn-orange custom_made" >立即定制</button>
                         <p>如果你有使用问题想咨询，可直接在<a th:href="@{/homePage/pageNewsInfolist?moduleId=108}">常见问题</a>查看 </p>
                     </div>
                     <div class="right floatR">
@@ -220,43 +220,7 @@
             </div>
         </div>
             <!--定制数据弹窗-->
-        <div class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                     <h4 class="modal-title" id="myModalLabel">个性化数据定制</h4>
-                </div>
-                <div class="modal-body">
-                    <div class="date-box">
-                        <div class="date-input"  id="needTielDiv">
-                            <label>需求名称</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写需求名称"  id="needTiel">
-                               <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
-                              </div>
-                        <div class="date-input"  id="needcontentDiv">
-                            <label>需求描述</label><textarea class="form-control" rows="5" maxlength="624"  placeholder="请填写需求描述"  id="needcontent"></textarea>
-                           <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
-                        </div>
-                        <div class="date-input"  id="lnkposenDiv">
-                            <label>联系人</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系人"  id="lnkposen">
-                            <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
-                        </div>
-                        <div class="date-input"  id="lnkphoneDiv">
-                            <label>手机号码</label><input type="text" class="form-control" maxlength="11"  placeholder="请填写手机号码"  id="lnkphone">
-                            <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
-                          </div>
-                        <div class="date-input"  id="lnkemailDiv">
-                            <label>联系邮箱</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系邮箱"  id="lnkemail">
-                             <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary wt120" th:onclick="'saveMadeData()'" id="commitData">提交</button>
-                     <button type="button" class="btn btn-primary wt120" th:onclick="'hideMadeData()'" id="hidetData">取消</button>
-                </div>
-            </div>
-        </div>
-    </div>
+            <div th:replace="~{fragments/custom_made :: custom_made}"></div>
     </div>
 </div>
 

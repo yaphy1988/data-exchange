@@ -41,6 +41,9 @@
     	 		   	  window.location.href=WEB_ROOT+url;
     	 		   	  e.preventDefault();
    	    	    });
+  				if($("#catFirst").val()=="1"){
+  					 $.cookie('gjs_navigation', "/search/api", {path : '/'});
+  				}
   				var url = $.cookie('gjs_navigation');
   				var thisUrl = window.location.pathname;
  	  	    	$(".navigationBar").each(function(){
