@@ -2,20 +2,35 @@ package com.ai.bdex.dataexchange.tradecenter.service.impl.order;
 
 import java.util.List;
 
+import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.OrdInfoMapper;
- import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdInfo;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdInfoExample;
- import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdInfoSV;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfo;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdInfoSV;
+import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.utils.DateUtil;
  
 @Service("iOrdInfoSV")
 public class OrdInfoSVImpl  implements IOrdInfoSV {
 	  private static final Logger log = Logger.getLogger(OrdInfoSVImpl.class);
 	  @Autowired
 	  private OrdInfoMapper ordInfoMapper; 
+	  
+	  @Override
+	 public int creatsubOrderByweb(OrdInfoReqDTO ordInfoReqDTO)throws Exception{
+		  OrdInfo record = new OrdInfo();	
+		 BeanUtils.copyProperties(record, ordInfoReqDTO);
+		 record.setOrderId(Long.toString(SeqUtil.getLong("SEQ_ORD_INFO"))); 
+	 	 record.setCreateTime(DateUtil.getNowAsDate()); 
+   		 return ordInfoMapper.insertSelective(record); 
+   		 //插入子订单-- 放到dubbol层去做
+	 }
       // 查询子订单详情
 	  @Override
 	   public OrdInfo queryOrderDetail(OrdInfo ordInfo) throws Exception{
