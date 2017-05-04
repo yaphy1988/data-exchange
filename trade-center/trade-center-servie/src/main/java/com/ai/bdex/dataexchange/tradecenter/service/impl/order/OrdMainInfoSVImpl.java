@@ -11,8 +11,9 @@ import org.springframework.stereotype.Service;
  import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdMainInfoSV;
+ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdMainInfoSV;
+import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.utils.DateUtil;
  
 @Service("iOrdMainInfoSV")
 public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
@@ -24,8 +25,10 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 	 public int creatOrderByweb(OrdMainInfoReqDTO ordMainInfoRespDTO)throws Exception{
 		 OrdMainInfo record = new OrdMainInfo();	
 		 BeanUtils.copyProperties(record, ordMainInfoRespDTO);
-		 // record.setTaxId(SeqUtil.getLong("SEQ_DATA_CUSTOMIZATION")); 
-  		 return ordMainInfoMapper.insertSelective(record); 
+		 record.setOrderId(Long.toString(SeqUtil.getLong("SEQ_ORD_MAIN_INFO"))); 
+	 	 record.setCreateTime(DateUtil.getNowAsDate()); 
+   		 return ordMainInfoMapper.insertSelective(record); 
+   		 //插入子订单-- 放到dubbol层去做
 	 }
 	 //根据ID查询订单的详细信息
 	  @Override
@@ -69,8 +72,9 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 	  @Override
 	 public int invativeOrderByManager(OrdMainInfo ordInfo)throws Exception{
 		  
+		 // update t-ord-main-info
+		  return 1;
 		  // record.setTaxId(SeqUtil.getLong("SEQ_DATA_CUSTOMIZATION")); 
-	  	  return ordMainInfoMapper.insertSelective(ordInfo); 
-		 
+ 		 
 	 }
 }

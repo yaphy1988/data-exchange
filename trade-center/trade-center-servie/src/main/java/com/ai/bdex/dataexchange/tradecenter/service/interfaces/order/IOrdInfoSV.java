@@ -3,9 +3,12 @@ package com.ai.bdex.dataexchange.tradecenter.service.interfaces.order;
 import java.util.List;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdInfo;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 
 public interface IOrdInfoSV {
 	  
+	 //创建子订单
+	   public int creatsubOrderByweb(OrdInfoReqDTO ordInfoReqDTO)throws Exception;
 	   public OrdInfo queryOrderDetail(OrdInfo ordInfo) throws Exception;
 	   //我的所有子订单
 	   public List<OrdInfo> queryOrderByStaff(OrdInfo ordInfo) throws Exception;
