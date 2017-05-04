@@ -14,23 +14,22 @@
         <script src="../static/js/respond.min.js" ></script>
         <script src="../static/js/html5shiv.min.js" ></script>
 	<![endif]-->
-
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
-
     <!-- 树形菜单 tangyk-->
-    <link rel="stylesheet" href="../static/css/zTreeStyle.css" type="text/css">
-    <!-- 树形菜单 tangyk-->
-    <script type="text/javascript" src="../static/js/jquery.ztree.core.js"></script>
-    <script type="text/javascript" src="../static/js/jquery.ztree.excheck.js"></script>
-
+    <link rel="stylesheet" href="../static/css/zTreeStyle.css" type="text/css" th:href="@{/css/zTreeStyle.css}">
+     <!-- 树形菜单 tangyk-->
+    <script type="text/javascript" src="../static/js/jquery.ztree.core.js" th:src="@{/js/jquery.ztree.core.js}"></script>
+    <script type="text/javascript" src="../static/js/jquery.ztree.excheck.js" th:src="@{/js/jquery.ztree.excheck.js}"></script>
+ 	<script type="text/javascript" src="../static/component/ztree/js/jquery.ztree.all.min.js" th:src="@{/component/ztree/js/jquery.ztree.all.min.js}"></script>
+    
 </head>
 <body>
 
 <!-- 头部 -->
 <header class="clearfix m_header">
 	<a href="" class="Logo" target="_blank" >
-		<img  src="../static/images/manage_logo.png" alt="广州数据" >
+		<img  src="../static/images/manage_logo.png" th:src="@{/images/manage_logo.png}" alt="广州数据" >
 	</a>
 	<ul class="m_hdlist clearfix">
 		<li>
@@ -80,71 +79,20 @@
 
             <!-- Nav tabs -->
             <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab01">产品分类</a></li>
+                <li class="active"><a href="#tab01">商品分类</a></li>
             </ul>
 
 		    <div class="overflow-hidden mt15 row">
                  <div class="col-md-3">
 		                    <!-- 左边树形菜单  --> 
-		                    <SCRIPT type="text/javascript">
-		                      <!--
-		                      var setting = {
-		                        check: {
-		                          enable: true,
-		                          chkStyle: "radio",
-		                          radioType: "level"
-		                        },
-		                        data: {
-		                          simpleData: {
-		                            enable: true
-		                          }
-		                        }
-		                      };
-
-		                      var zNodes =[
-		                        { id:1, pId:0, name:"随意勾选 1", open:true},
-		                        { id:11, pId:1, name:"随意勾选 1-1", open:true},
-		                        { id:111, pId:11, name:"随意勾选 1-1-1"},
-		                        { id:112, pId:11, name:"随意勾选 1-1-2"},
-		                        { id:112, pId:11, name:"随意勾选 1-1-2"},
-		                        { id:12, pId:1, name:"随意勾选 1-2", open:true},
-		                        { id:121, pId:12, name:"随意勾选 1-2-1"},
-		                        { id:122, pId:12, name:"随意勾选 1-2-2"},
-		                        { id:2, pId:0, name:"随意勾选 2", open:true},
-		                        { id:21, pId:2, name:"随意勾选 2-1"},
-		                        { id:22, pId:2, name:"随意勾选 2-2", open:true},
-		                        { id:221, pId:22, name:"随意勾选 2-2-1", checked:true},
-		                        { id:222, pId:22, name:"随意勾选 2-2-2"},
-		                        { id:23, pId:2, name:"随意勾选 2-3"}
-
-		                      ];
-		                      
-		                      var code;   
-		                      function setCheck() {
-		                        var type = $("#level").attr("checked")? "level":"all";
-		                        setting.check.radioType = type;
-		                        showCode('setting.check.radioType = "' + type + '";');
-		                        $.fn.zTree.init($("#treeDemo"), setting, zNodes);
-		                      }
-		                      function showCode(str) {
-		                        if (!code) code = $("#code");
-		                        code.empty();
-		                        code.append("<li>"+str+"</li>");
-		                      }
-		                      
-		                      $(document).ready(function(){
-		                        setCheck();     
-		                        $("#level").bind("change", setCheck);
-		                        $("#all").bind("change", setCheck);
-		                      });
-		                      //-->
-		                    </SCRIPT>
-		                    <div id="treeDemo" class="ztree"></div>
+		                    
+		                    <div id="catZTree" class="ztree"></div>
 		                    <!-- 左边树形菜单  end--> 
 
 		                </div>
 		                <div class="col-md-9">
 			                <table class="editTable" width="100%">
+			                <input type="hidden" value="" id="catId"/>
 			                    <tbody>
 			                        <tr>
 				                        <td class="Hint" width="15%">分类编码：</td>	                            
@@ -168,7 +116,8 @@
 
 		                    <!-- 列表 -->
 		                    <div class="title">下级列表</div>
-		                    <table class="table table-bordered table-striped table-hover text-center table_th_center">
+		                    <div id="childList"></div>
+		                    <table th:remove="all" class="table table-bordered table-striped table-hover text-center table_th_center">
 		                        <thead>
 		                            <tr >
 		                                <th>分类编码</th>
@@ -177,7 +126,7 @@
 		                                <th>操作</th>
 		                            </tr>
 		                        </thead>
-		                        <tbody>
+		                        <tbody th:remove="all">
 		                            <tr>
 		                                <td>111</td>
 		                                <td>标题标题标题标题标题标题1</td>
@@ -298,7 +247,7 @@
 		                          </div>
 
 		                          <!-- pagerBar -->
-			                       <div class="pagelist pull-right">
+	                              <div class="pagelist pull-right" th:remove="all" th:replace="fragments/pager :: pager">
 										<nav aria-label="Page navigation">
 										  <ul class="pagination">
 										    <li >
@@ -455,10 +404,59 @@
 		</nav>
 	</div>
 	<!-- 左边菜单 end-->
+	<SCRIPT type="text/javascript">
+        var setting = {
+          check: {
+            enable: true,
+            chkStyle: "radio",
+            radioType: "level"
+          },
+          data: {
+            simpleData: {
+              enable: true
+            }
+          }
+        };
 
+        var zNodes =[
+          { id:1, pId:0, name:"随意勾选 1", open:true},
+          { id:11, pId:1, name:"随意勾选 1-1", open:true},
+          { id:111, pId:11, name:"随意勾选 1-1-1"},
+          { id:112, pId:11, name:"随意勾选 1-1-2"},
+          { id:112, pId:11, name:"随意勾选 1-1-2"},
+          { id:12, pId:1, name:"随意勾选 1-2", open:true},
+          { id:121, pId:12, name:"随意勾选 1-2-1"},
+          { id:122, pId:12, name:"随意勾选 1-2-2"},
+          { id:2, pId:0, name:"随意勾选 2", open:true},
+          { id:21, pId:2, name:"随意勾选 2-1"},
+          { id:22, pId:2, name:"随意勾选 2-2", open:true},
+          { id:221, pId:22, name:"随意勾选 2-2-1", checked:true},
+          { id:222, pId:22, name:"随意勾选 2-2-2"},
+          { id:23, pId:2, name:"随意勾选 2-3"}
+
+        ];
+        
+//         var code;   
+//         function setCheck() {
+//           var type = $("#level").attr("checked")? "level":"all";
+//           setting.check.radioType = type;
+//           showCode('setting.check.radioType = "' + type + '";');
+//           $.fn.zTree.init($("#catZTree"), setting, zNodes);
+//         }
+//         function showCode(str) {
+//           if (!code) code = $("#code");
+//           code.empty();
+//           code.append("<li>"+str+"</li>");
+//         }
+        
+//         $(document).ready(function(){
+//           setCheck();     
+//           $("#level").bind("change", setCheck);
+//           $("#all").bind("change", setCheck);
+//         });
+      </SCRIPT>
+      <script src="../static/js-busi/gds/gdscat/gdscat.js"  th:src="@{/js-busi/gds/gdscat/gdscat.js}"></script>
 </div>
-
-
-
+	
 </body>
 </html>
