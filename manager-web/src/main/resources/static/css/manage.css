@@ -149,7 +149,7 @@
 .editTable td.Hint{
 	padding:20px;
 
-	text-align: left;
+	text-align: right;
 	color: #999;
 }
 .editTable td.Hint.tips{
