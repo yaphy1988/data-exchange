@@ -10,7 +10,8 @@ import org.springframework.stereotype.Service;
  import com.ai.bdex.dataexchange.tradecenter.dao.mapper.OrdMainInfoMapper;
  import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfoExample;
- import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdMainInfoSV;
  
 @Service("iOrdMainInfoSV")
@@ -20,7 +21,7 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 	  private OrdMainInfoMapper ordMainInfoMapper; 
 	 //创建订单
 	  @Override
-	 public int creatOrderByweb(OrdMainInfoRespDTO ordMainInfoRespDTO)throws Exception{
+	 public int creatOrderByweb(OrdMainInfoReqDTO ordMainInfoRespDTO)throws Exception{
 		 OrdMainInfo record = new OrdMainInfo();	
 		 BeanUtils.copyProperties(record, ordMainInfoRespDTO);
 		 // record.setTaxId(SeqUtil.getLong("SEQ_DATA_CUSTOMIZATION")); 

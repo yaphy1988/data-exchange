@@ -3,11 +3,11 @@ package com.ai.bdex.dataexchange.tradecenter.service.interfaces.order;
 import java.util.List;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfo;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
-
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
+ 
 public interface IOrdMainInfoSV { 
 	 //创建订单
-	 public int creatOrderByweb(OrdMainInfoRespDTO ordMainInfoRespDTO)throws Exception;
+	 public int creatOrderByweb(OrdMainInfoReqDTO ordMainInfoRespDTO)throws Exception;
 	 //根据ID查询订单的详细信息
 	 public OrdMainInfo queryOrderById(OrdMainInfo ordInfo) throws Exception;
 	 //我的订单 （可以根据状态查询是否已经申请开票了）
