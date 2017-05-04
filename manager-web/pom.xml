@@ -71,6 +71,11 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
+      <groupId>com.ai.bdex.dataexchange</groupId>
+      <artifactId>common-web</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
       <groupId>com.ai.woego.boot</groupId>
       <artifactId>config-engine-spring-boot-autoconfigure</artifactId>
     </dependency>
