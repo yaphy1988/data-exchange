@@ -523,21 +523,13 @@ public class HomePageController {
 	private String company(){ 
 		String viewName = "/companyprofile"; 
 		return viewName;	 
-	}
+	} 
 	/**
-	 * 新闻动态
+	 * 联系我们
 	 */
-	@RequestMapping(value="/companynews")
-	private String companynews(){ 
-		String viewName = "/companynews"; 
-		return viewName;	 
-	}
-	/**
-	 * 常见问题
-	 */
-	@RequestMapping(value="/commonproblem")
-	private String commonproblem(){ 
-		String viewName = "/commonproblem"; 
+	@RequestMapping(value="/contactouer")
+	private String contactouer(){ 
+		String viewName = "/contactouer"; 
 		return viewName;	 
 	}
 	/**
