@@ -4,12 +4,16 @@ server:
 spring:
   session:
     store-type: none
-
   dubbo:
     appname: manager-web
     registry: zookeeper://127.0.0.1:2181
     protocol: dubbo
     group: devGroup
+  thymeleaf:
+    enabled: true
+    cache: false
+    suffix: .html
+    encoding: UTF-8
   data:
    solr:
      host: http://112.74.163.29:8983/solr
@@ -28,6 +32,8 @@ application:
     confpath: /com/ai/paas/qrcode/conf
     qrservleturlpattern: /qrcode/*
     captchaservleturlpattern: /captcha/*
+  system:
+    confpath: /com/ai/paas/system/conf
   configcenter:
     runmode: D
     zkaddress: 127.0.0.1:2181

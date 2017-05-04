@@ -33,6 +33,8 @@ application:
     confpath: /com/ai/paas/qrcode/conf
     qrservleturlpattern: /qrcode/*
     captchaservleturlpattern: /captcha/CapthcaImage
+  system:
+    confpath: /com/ai/paas/system/conf
   configcenter:
     runmode: D
     zkaddress: 127.0.0.1:2181
