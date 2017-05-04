@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{fragments/syshead :: syshead}"></div>
+<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+<head th:remove="all">
+	<meta charset="UTF-8">
+	<title>个人中心-数据购买</title>
+	<link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/manage.css" th:href="@{/css/manage.css}">
+	<link rel="stylesheet" href="../../static/css/payChannelSelect.css" >
+	<script src="../../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../../static/js/bootstrap.min.js" th:remove="all"></script>
+	<!--[if lt IE 9]>
+	        <script src="../../static/js/respond.min.js" ></script>
+	        <script src="../../static/js/html5shiv.min.js" ></script>
+	<![endif]-->
+	<script src="../../static/js/payChannelSelect.js" th:remove="all"></script>  <!-- 订单支付 tangyk -->
+</head>
+
+<body>
+<div th:replace="~{fragments/top :: top}"></div>
+<!-- 头部 -->
+<header class="clearfix m_header" th:remove="all">
+	<a href="" class="Logo" target="_blank" >
+		<img width="160" src="../../static/images/manage_logo.png" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<!-- 头部 end-->
+
+
+<div  layout:fragment="screen_content">
+    <!-- 右边内容 --> 
+	<div class="m_main">
+		<div class="m_con">
+			<div class="classify">
+				<i class="iconfont"></i>
+				<span>当前位置：</span>
+				<a href=""><span>个人中心</span></a>
+				<span >数据购买</span>
+			</div>
+			
+			<div class="title">数据购买</div>
+			<table class="editTable ">
+					<tr>
+						<td class="Hint ">
+							选择套餐:
+						</td>
+						<td >
+							 <span class="package_selected">发展套餐(￥299.00/10000次)</span>
+							 <span class="package_selected">起步套餐(￥99.00/3000次)</span>
+						</td>
+						
+					</tr>
+					
+					<tr>
+						<td class="Hint">
+							<span class="col_red"></span>套餐次数:
+						</td>
+						<td >
+							1111次
+						</td>
+						
+					</tr>
+					<tr>
+						<td class="Hint">
+							购买数量:
+						</td>
+						<td >
+							<input class="form-control wt200" placeholder="" type="password"  maxlength="128" >
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							应付金额:
+						</td>
+						<td>
+						<h4 class="col_red">￥299</h4>
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							有效期:
+						</td>
+						<td >
+							2017-10-10 23:59:59
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							付款方式:
+						</td>
+						<td >
+							<input type="radio"  value="">  <span class="ml5">在线支付</span>
+						</td>
+					</tr>
+			</table>
+			<hr>
+			<div class="p20 text-center " >
+				<a href="javascript:;" class="btn-primary btn goBuy" data-toggle="modal" data-target="#confirm_purchase">确认购买</a>
+			</div>
+
+
+		</div>
+	</div>
+	<!-- 右边内容 end--> 
+
+    <!-- 左边菜单 -->
+	<div class="m_nav">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						我的数据
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						我的订单
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						密码修改
+					</a>
+				</li>
+				<li class="active">
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						企业认证
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						发票管理
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						我的收藏
+					</a>
+				</li>
+			</ul>
+		</nav>
+    </div>
+    <!-- 左边菜单 -->
+</div>
+
+
+
+<!-- 确认购买 弹出框 -->
+<div class="modal fade" id="confirm_purchase" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document" style="width:1000px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">订单支付</h4>
+      </div>
+      <div class="modal-body">
+         <!-- 内容 -->
+			<div class="payWrap" style="display:block"> <!-- 引用银行irame时隐藏display: none -->
+
+              <!-- 订单成功 -->
+			  <div class="ding hit90">
+			    <div class="ding01 pull-left">
+			      <ul>
+			        <li class="blackfont"> 您的订单已提交成功！订单号：<span>5917050313579620</span></li>
+			        <li class="f12"> 请您在提交订单后<b class="col_red" id="time01">0小时59分钟</b>内完成支付，否则订单会自动取消。</li>
+			      </ul>
+			    </div>
+			    <div class="ding02 pull-right">
+			      <p class="desc">应付金额 <span class="blackfont col_red">920.00</span> 元</p>
+			      <div id="my_button" class="pull-right dingxq col_red">
+			        <div class="up">收起详情<b class="arrow_up"><s>◇</s></b></div>
+			        <div class="down">展开详情<b class="arrow_down"><s>◇</s></b></div>
+			      </div>
+
+			    </div>
+			  </div>
+			  
+			  <!--展开订单-->
+			  <div class="dingopen">
+			    <ul>
+			      <li>店铺名称：<span>南宁联翔科技有限责任公司</span></li>
+			      <li>订单信息：<span>中兴 醉享 Q806T新老用户99元主推机型*2</span></li>
+			      <li>交易金额：<span>920.00</span>元</li>
+			      <li>订单编号：<span>5917050313579620</span></li>
+			      <li>下单时间：<span>2017年5月3日 14:20:42</span></li>
+			    </ul>
+			  </div>
+
+		      <!--银行卡付款-->
+		      <div class="bankWrap">
+				      <table class="bank" >
+				        <tbody>
+				          <tr>
+				            <td width=25px><input type="radio"  name="payType" value="" ></td>
+				            <td width=120px class="blackfont">银行卡付款</td>
+				            <td >含有银联支付，沃支付，快捷支付，网银支付和银联对公支付</td>
+				            <td class="text-right">
+				            	<div  style="display:block">支付<span class=" blackfont col_red ">9200000.00</span>元</div>
+				            </td>
+				          </tr>
+				        </tbody>
+				      </table>
+
+			          <div class="mybank_title"> 
+			            <h3>个人银行卡支付</h3>
+			            <span class="pull-right">我的银行卡</span>
+			          </div>
+
+				      <div class="pay_select">
+						   <ul>
+	                            <li class="pay_select_imgOn"><img src="../../static/images/pay_fangshi_13.png" ></li>
+	                            <li><img src="../../static/images/img.jpg" class="pay_select_img" ></li>
+	                            <li><img src="../../static/images/pay_fangshi_13.png" ></li>
+	                            <li><img src="../../static/images/pay_fangshi_13.png" ></li>
+								<li><img src="../../static/images/pay_fangshi_13.png" ></li>
+	                            <li><img src="../../static/images/pay_fangshi_13.png" ></li>
+	                            <li><img src="../../static/images/pay_fangshi_13.png" ></li>
+	                            <li><img src="../../static/images/pay_fangshi_13.png" ></li>
+								<li><img src="../../static/images/pay_fangshi_13.png" ></li>
+	                            <li><img src="../../static/images/pay_fangshi_13.png" ></li>
+								<li><img src="../../static/images/pay_fangshi_13.png" ></li>
+	                            <li><img src="../../static/images/pay_fangshi_13.png" ></li>
+                          </ul>
+				      </div>
+		      </div>
+		      <!--银行卡付款 en-->
+			    
+			  <!--去支付按钮--> 
+              <div class="modal-footer blackfont text-center"> <a href="" class="btn btn-primary btn-lg" >去支付</a></div>
+			</div>
+			<!-- 内容 end -->
+
+			<!-- <iframe src="http://www.baidu.com" width=100% height=600px ></iframe> -->  <!-- 银行界面 -->
+         
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- 确认购买 弹出框 end-->
+
+	
+<!-- 支付提示 弹出框 -->
+<div class="modal fade" id="prompt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;top:-10px;overflow: scroll !important;" >
+  <div class="modal-dialog" role="document" style="width:400px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">支付提示</h4>
+      </div>
+      <div class="modal-body">
+              <!-- 内容 -->
+              <div class="blackfont text-center p20"> 
+              		<a href="" class="btn btn-primary btn-lg mr10" >支付成功</a>
+              		<a href="" class="btn btn-primary btn-lg" >遇见问题</a>
+              </div>
+               <!-- 内容 end-->
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 支付提示 弹出框 end-->
+	
+
+</body>
+</html>
