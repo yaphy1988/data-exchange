@@ -45,7 +45,7 @@ public class GdsManageController {
     @RequestMapping(value = "/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
 
-        String viewName = "/goods_manager";
+        String viewName = "goods_manager";
         ModelAndView mv = new ModelAndView(viewName);
         return mv;
     }
