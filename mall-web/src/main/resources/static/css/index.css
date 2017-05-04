@@ -275,8 +275,11 @@ margin-right: -46px;
 
 .banner .banner-box{
     margin-left: 260px;
+    /* height: 400px; */
 }
-
+.banner .banner-box .carousel-inner{
+    height: 400px;
+}
 .carousel-indicators li{
     border: none;
     background: #fff;
