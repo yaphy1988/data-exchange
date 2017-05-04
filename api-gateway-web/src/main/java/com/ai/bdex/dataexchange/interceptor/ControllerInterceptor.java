@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange;
+package com.ai.bdex.dataexchange.interceptor;
 
 import java.lang.reflect.Method;
 import java.util.LinkedHashSet;
@@ -13,14 +13,14 @@ import org.apache.commons.logging.LogFactory;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientAccesstokenDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientAccesstokenRSV;
-import com.ai.bdex.dataexchange.constants.APIConstants;
-import com.ai.paas.util.CacheUtil;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceUsedLogDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceUsedLogRSV;
+import com.ai.bdex.dataexchange.annotation.Security;
+import com.ai.bdex.dataexchange.security.PermissionCheckHandler;
+import com.ai.paas.util.Utils;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
 @Aspect
@@ -28,20 +28,33 @@ import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 public class ControllerInterceptor {
 	 	private final Log logger = LogFactory.getLog(getClass());
 	 	@DubboConsumer
-	 	private IAipClientAccesstokenRSV aipClientAccesstokenRSV;
+	 	private IAipServiceUsedLogRSV aipServiceUsedLogRSV;
 	   /** 
 	     * 定义拦截规则：拦截com.ai.bdex.dataexchange.busi.*.controller包下面的所有类中，有@Path注解的方法。 
 	     */  
-	    @Pointcut("execution(* com.ai.bdex.dataexchange.busi.*.controller..*(..)) and @annotation(javax.ws.rs.Path)")  
-	    public void controllerMethodPointcut(){} 
+//	    @Pointcut("execution(* com.ai.bdex.dataexchange.busi.*.controller..*(..)) && @annotation(org.springframework.web.bind.annotation.RequestMapping) && !execution(* com.ai.bdex.dataexchange.busi.oauth.controller..*(..))")  
+	 	public void controllerMethodPointcut(){} 
+	    
+//	    @Before(value="@annotation(security)", argNames="security")
+	    public String checkPermission(Security security)
+	      throws Exception
+	    {
+	      String result=null;
+	      if ((security.authorCheckType() != null) && (!security.authorCheckType().isInterface()) && (PermissionCheckHandler.class.isAssignableFrom(security.authorCheckType()))) {
+	        PermissionCheckHandler handler = (PermissionCheckHandler)Utils.getCtx().getBean(security.authorCheckType());	        
+	        result=handler.isPermission(security);	        
+	      }
+	      return result;
+	    }
 	    
 	    /** 
 	     * 拦截器具体实现 
 	     * @param pjp 
 	     * @return JsonResult（被拦截方法的执行结果，或需要登录的错误提示。） 
 	     */  
-	    @Around("controllerMethodPointcut()") //指定拦截器规则；也可以直接把“execution(* com.ai.........)”写进这里  
-	    public Object Interceptor(ProceedingJoinPoint pjp){  
+//	    @Around("controllerMethodPointcut()") //指定拦截器规则；也可以直接把“execution(* com.ai.........)”写进这里  
+	    @Around(value="@annotation(security)", argNames="security")
+	    public Object Interceptor(ProceedingJoinPoint pjp,Security security)throws Exception{  
 	        long beginTime = System.currentTimeMillis();  
 	        MethodSignature signature = (MethodSignature) pjp.getSignature();  
 	        Method method = signature.getMethod(); //获取被拦截的方法  
@@ -63,9 +76,7 @@ public class ControllerInterceptor {
 	  
 	                allParams.add(map);  
 	            }else if(arg instanceof HttpServletRequest){  
-	                HttpServletRequest request = (HttpServletRequest) arg;  
-	                result=checkAccessToken(request);
-	                
+	                HttpServletRequest request = (HttpServletRequest) arg;  	              	                
 	                //获取query string 或 posted form data参数  
 	                Map<String, String[]> paramMap = request.getParameterMap();  
 	                if(paramMap!=null && paramMap.size()>0){  
@@ -77,7 +88,7 @@ public class ControllerInterceptor {
 	                //allParams.add(arg);  
 	            }  
 	        }  
-	          
+	        result=checkPermission(security);
 	        try {  
 	            if(result == null){  
 	                // 一切正常的情况下，继续执行被拦截的方法  
@@ -91,26 +102,26 @@ public class ControllerInterceptor {
 	            long costMs = System.currentTimeMillis() - beginTime;  
 //	            logger.info("{}请求结束，耗时：{}ms", methodName, costMs);  
 	        }  
-	          
+
 	        return result;  
 	    }  
 	    
-	    private String checkAccessToken(HttpServletRequest request){
-	    	String accessToken=null;
-	    	String result=null;
-	    	try{
-	    		accessToken=request.getParameter(APIConstants.AIP_PARAM_ACCESSTOKEN);	    	
-	    		if(null==CacheUtil.getItem(APIConstants.AIP_CACHE_ACCESSTOKEN+accessToken)){
-	    			AipClientAccesstokenDTO dto=aipClientAccesstokenRSV.getAipClientAccesstokenByKey(accessToken);
-	    			if(null==dto){
-	    				result= "123";
-	    			}
-	    		}
-	    	}catch(Exception e){
-	    		logger.error("check token failted:"+accessToken, e);
-	    		result= "Exception";
-	    	}
-	    	return result;
-	    }
+//	    private String checkAccessToken(HttpServletRequest request){
+//	    	String accessToken=null;
+//	    	String result=null;
+//	    	try{
+//	    		accessToken=request.getParameter(APIConstants.AIP_PARAM_ACCESSTOKEN);	    	
+//	    		if(null==CacheUtil.getItem(APIConstants.AipToken.AIP_CACHE_ACCESSTOKEN+accessToken)){
+//	    			AipClientAccesstokenDTO dto=aipClientAccesstokenRSV.getAipClientAccesstokenByKey(accessToken);
+//	    			if(null==dto){
+//	    				result= "123";
+//	    			}
+//	    		}
+//	    	}catch(Exception e){
+//	    		logger.error("check token failted:"+accessToken, e);
+//	    		result= "Exception";
+//	    	}
+//	    	return result;
+//	    }
 
 }

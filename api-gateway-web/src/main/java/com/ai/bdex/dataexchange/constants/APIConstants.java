@@ -29,12 +29,32 @@ public class APIConstants {
 	    public static final String AIP_CACHE_ACCESSTOKEN="AIP_CACHE_ACCESSTOKEN_";
 	    public static final String AIP_CACHE_REFRESHTOKEN="AIP_CACHE_REFRESHTOKEN_";
 	    
-	    public static final long AIP_EXPIRE_ACCESSTOKEN=24*3600*1000;//毫秒
-	    public static final long AIP_EXPIRE_REFRESHTOKEN=30*24*3600*1000;//毫秒
+	    public static final long AIP_EXPIRE_ACCESSTOKEN=86400000L;//毫秒(24hour)
+	    public static final long AIP_EXPIRE_REFRESHTOKEN=2592000000L;//毫秒(30day)
 	    
 	    public static final String AIP_EXPIRE_FORMAT_ACCESSTOKEN="yyyy-MM-dd HH:mm:ss";//秒
 	    public static final String AIP_EXPIRE_FORMAT_REFRESHTOKEN="yyyy-MM-dd HH:mm:ss:SSS";//毫秒
 	    
+    }
+    public static class SystemErrorCode{
+    	public static final String CODE_00000 =   "00000";//成功 
+    	public static final String ERRORCODE_10001 =   "10001";//	错误的key
+    	public static final String ERRORCODE_10002 =	"10002";//	该key无请求权限
+    	public static final String ERRORCODE_10003 =	"10003";//	key过期
+    	public static final String ERRORCODE_10004 =	"10004";//	错误的clientId或已无效
+    	public static final String ERRORCODE_10005 =	"10005";//	应用未审核超时，请提交认证
+    	public static final String ERRORCODE_10007 =	"10007";//	未知的请求源
+    	public static final String ERRORCODE_10008 =	"10008";//	被禁止的IP
+    	public static final String ERRORCODE_10009 =	"10009";//	被禁止的key
+    	public static final String ERRORCODE_10010 =	"10010";//	无效请求类型
+    	public static final String ERRORCODE_10011 =	"10011";//	当前IP请求超过限制
+    	public static final String ERRORCODE_10012 =	"10012";//	请求超过次数限制
+    	public static final String ERRORCODE_10013 =	"10013";//	测试KEY超过请求限制
+    	public static final String ERRORCODE_10014 =	"10014";//	系统内部异常(调用充值类业务时，请务必联系客服或通过订单查询接口检测订单，避免造成损失)
+    	public static final String ERRORCODE_10015 =	"10015";//	必填参数为空
+    	public static final String ERRORCODE_10016 =	"10016";//	签名校验失败
+    	public static final String ERRORCODE_10020 =	"10020";//	接口维护
+    	public static final String ERRORCODE_10021 =	"10021";//	接口停用	    
     }
 
 }

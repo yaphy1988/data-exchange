@@ -1,10 +1,10 @@
 package com.ai.bdex.dataexchange.busi.demo.controller;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-
 import org.springframework.http.MediaType;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.paas.util.CacheUtil;
 
@@ -13,15 +13,17 @@ import com.ai.paas.util.CacheUtil;
  * @since 2017/4/3
  */
 
-//@RequestMapping(value = "demo")
-@Path("demo")
+@Controller
+@RequestMapping(value = "/demo")
+//@Path("demo")
 public class DemoRestController {
-    //@RequestMapping(value = "test",method = {RequestMethod.GET},produces={MediaType.TEXT_PLAIN_VALUE})
+
 	
-    @Path("test")
-    @GET
-    @Produces(MediaType.TEXT_PLAIN_VALUE)
-	public String getTest(){
+//    @Path("test")
+//    @GET
+//    @Produces(MediaType.TEXT_PLAIN_VALUE)
+    @RequestMapping(value = "/test",method = {RequestMethod.GET},produces={MediaType.TEXT_PLAIN_VALUE})
+	public @ResponseBody String getTest(){
         Object testValue = CacheUtil.getItem("ABC");
         return "test";
     }

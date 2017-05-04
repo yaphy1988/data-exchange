@@ -11,4 +11,20 @@
                  owner="zhaoyf7" timeout="3000"/>
   <dubbo:service interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV" ref="aipServiceInfoRSV"
                  owner="zhaoyf7" timeout="3000"/>
+
+  <dubbo:service interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientAccesstokenRSV" ref="aipClientAccesstokenRSV"
+                 owner="zhaoyf7" timeout="3000"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientInfoRSV" ref="aipClientInfoRSV"
+                 owner="zhaoyf7" timeout="3000"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientLoginLogRSV" ref="aipClientLoginLogRSV"
+                 owner="zhaoyf7" timeout="3000"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientRefreshtokenRSV" ref="aipClientRefreshtokenRSV"
+                 owner="zhaoyf7" timeout="3000"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientScopeRSV" ref="aipClientScopeRSV"
+                 owner="zhaoyf7" timeout="3000"/>   
+                   
+  <dubbo:service interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceUsedLogRSV" ref="aipServiceUsedLogRSV"
+                 owner="zhaoyf7" timeout="3000"/>                                                                                 
+                 
+                 
 </beans>
