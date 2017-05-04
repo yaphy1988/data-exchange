@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
@@ -14,7 +15,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdMainInfoSV;
-
+@Service("iOrderInfoRSV")
 public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 	private static final Logger log = LoggerFactory.getLogger(OrderInfoRSVImpl.class);
 
