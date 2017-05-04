@@ -61,4 +61,63 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 		   return null;
 		   //distict SKU_ID status = 1 的数据，统计总次数
 	   }
+	   @Override
+		public PageResponseDTO<OrdInfoRespDTO> queryOrdInfoPage(OrdInfoReqDTO ordInfoReqDTO)throws Exception {
+			Integer pageNo = ordInfoReqDTO.getPageNo();
+			Integer pageSize = ordInfoReqDTO.getPageSize();
+		    OrdInfoExample example = new OrdInfoExample();
+			example.setOrderByClause("order_time desc");
+			OrdInfoExample.Criteria  criteria = example.createCriteria();
+			initCriteria(criteria,ordInfoReqDTO);
+			example.setOrderByClause(" AD_ORDER desc ");
+			PageHelper.startPage(pageNo, pageSize);
+			List<OrdInfo> ordInfoList = ordInfoMapper.selectByExample(example);
+			// 使用PageInfo对结果进行包装
+			PageInfo pageInfo = new PageInfo(ordInfoList);
+			PageResponseDTO<OrdInfoRespDTO> pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,
+					OrdInfoRespDTO.class);
+			return pageResponseDTO;
+		}
+
+		private void initCriteria(OrdInfoExample.Criteria criteria, OrdInfoReqDTO ordInfoReqDTO) {
+			if (StringUtil.isNotBlank(ordInfoReqDTO.getSubOrder())) {
+				criteria.andSubOrderEqualTo(ordInfoReqDTO.getSubOrder());
+			}
+			if (StringUtil.isNotBlank(ordInfoReqDTO.getOrderId())) {
+				criteria.andOrderIdEqualTo(ordInfoReqDTO.getOrderId());
+			}
+			if (StringUtil.isNotBlank(ordInfoReqDTO.getShopId())) {
+				criteria.andShopIdEqualTo(ordInfoReqDTO.getShopId());
+			}
+			if (StringUtil.isNotBlank(ordInfoReqDTO.getStaffId())) {
+				criteria.andStaffIdEqualTo(ordInfoReqDTO.getStaffId());
+			}
+			if (ordInfoReqDTO.getBrandId()!=null) {
+				criteria.andBrandIdEqualTo(ordInfoReqDTO.getBrandId());
+			}
+			if (ordInfoReqDTO.getModelId()!=null) {
+				criteria.andModelIdEqualTo(ordInfoReqDTO.getModelId());
+			}
+			if (ordInfoReqDTO.getGdsId()!=null) {
+				criteria.andGdsIdEqualTo(ordInfoReqDTO.getGdsId());
+			}
+			if (StringUtil.isNotBlank(ordInfoReqDTO.getGdsName())) {
+				criteria.andGdsNameLike("%"+ordInfoReqDTO.getGdsName()+"%");
+			}
+			if (StringUtil.isNotBlank(ordInfoReqDTO.getSkuName())) {
+				criteria.andSkuNameLike("%"+ordInfoReqDTO.getSkuName()+"%");
+			}
+			if (StringUtil.isNotBlank(ordInfoReqDTO.getProvinceCode())) {
+				criteria.andProvinceCodeEqualTo(ordInfoReqDTO.getProvinceCode());
+			}
+			if (StringUtil.isNotBlank(ordInfoReqDTO.getStatus())) {
+				criteria.andStatusEqualTo(ordInfoReqDTO.getStatus());
+			}
+			if (StringUtil.isNotBlank(ordInfoReqDTO.getStatus())) {
+				criteria.andStatusEqualTo(ordInfoReqDTO.getStatus());
+			}
+			if (StringUtil.isNotBlank(ordInfoReqDTO.getPayFlag())) {
+				criteria.andPayFlagEqualTo(ordInfoReqDTO.getPayFlag());
+			}
+		}
 }

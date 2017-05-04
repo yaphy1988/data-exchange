@@ -1,11 +1,9 @@
-package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order;
+package com.ai.bdex.dataexchange.busi.order.entity;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import com.ai.bdex.dataexchange.common.dto.BaseInfo;
-
-public class OrdInfoReqDTO extends BaseInfo{
+public class OrdInfoVO implements Serializable{
 	    private String subOrder; 
 	    private String orderId;
  	    private Integer orderAmount; 
