@@ -666,6 +666,40 @@ h3{
 	background-color: #22d18d;
 	position: relative;
 }
+.gl_banner.gysbg{
+	height: 176px;
+	background: #2d4397 url(../images/gysbg.jpg) no-repeat;
+	overflow: hidden;
+}
+.gyslogo{
+	position: absolute;
+	top: 45px;
+	left: 116px;
+}
+.gyslogo img{
+	max-height: 95px;
+}
+.gl_banner.gysbg dl{
+	margin-left: 360px;
+	padding: 20px 70px;
+	
+}
+
+.gl_banner.gysbg dl dt,
+.gl_banner.gysbg dl dd{
+	color: #fff;
+	line-height: 32px;
+	font-size: 12px;
+}
+.gl_banner.gysbg dl dt{
+	font-size: 15px;
+	font-weight: 600;
+	padding-bottom: 10px;
+}
+.gl_banner.gysbg dl dd{
+	height: 100px;
+	overflow-y: auto;
+}
 .gl_banner .btnBox{
 	position: absolute;
 	right: 40px;
