@@ -31,15 +31,27 @@
 				<li >
 					<a href="">
 						<i class=""></i>
+						企业认证
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li >
+							<a th:href="@{/authencheck/pageInit}"></i>认证审核</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
 						商品管理
 						<span class="caret"></span>
 					</a>
 					<ol class="infoItem">
 						<li class="active">
-							<a href="/gdsEdit/pageInit"></i>商品录入</a>
+							<a th:href="@{/gdsEdit/pageInit}"></i>商品录入</a>
 						</li>
 						<li >
-							<a href="/gdsManage/index"></i>商品管理</a>
+							<a th:href="@{/gdsManage/index}"></i>商品管理</a>
 						</li> 
 					</ol>
 				</li>
@@ -51,10 +63,10 @@
 					</a>
 					<ul class="infoItem">
 						<li >
-							<a href="/pageManage/moduleManage">楼层管理</a>
+							<a th:href="@{/pageManage/moduleManage}">楼层管理</a>
 						</li>
 						<li >
-							<a href="/pageManage/newsInfo">新闻管理</a>
+							<a th:href="@{/pageManage/newsInfo}">新闻管理</a>
 						</li>  
 					</ul>
 				</li>

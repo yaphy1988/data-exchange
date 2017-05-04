@@ -45,7 +45,7 @@ public class GdsManageController {
     @RequestMapping(value = "/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
 
-        String viewName = "/goods_manager";
+        String viewName = "goods_manager";
         ModelAndView mv = new ModelAndView(viewName);
         return mv;
     }
@@ -122,7 +122,7 @@ public class GdsManageController {
             log.error("查询商品列表异常");
         }
 
-        String viewName = "/gds/gdsManage/gdsManageList";
+        String viewName = "gds/gdsManage/gdsManageList";
         ModelAndView mv = new ModelAndView(viewName);
 //        mv.addObject("gdsInfoList",pageInfo.getResult());
         mv.addObject("pageInfo",pageInfo);
