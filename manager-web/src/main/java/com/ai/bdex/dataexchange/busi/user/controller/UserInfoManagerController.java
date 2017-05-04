@@ -17,10 +17,10 @@ import com.ai.bdex.dataexchange.busi.user.entity.AuthStaffVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
-import com.ai.bdex.dataexchange.util.StaffUtil;
 
 @Controller
 @RequestMapping(value="/infomanager")

@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ChnlInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IChnlInvoiceTaxRSV;
 import com.ai.paas.util.ImageUtil;
+import com.ai.paas.util.SystemConfUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.ai.bdex.dataexchange.util.StaffUtil;
@@ -41,11 +43,14 @@ public class AuthenApplyController {
 	 * @throws BusinessException 
 	 */
 	@RequestMapping(value="/userinfo")
-	public String userinfo(Model model,HttpSession session,String type) throws Exception{
+	public String userinfo(Model model,HttpServletRequest request,
+			HttpSession session,String type) throws Exception{
 		ReqInvoiceTaxDTO input = new ReqInvoiceTaxDTO();
 		String staffId = StaffUtil.getStaffVO(session).getStaffId();
 		if(StringUtil.isBlank(staffId)){
-			return "redirect:/login/pageInit";
+			String mallurl = SystemConfUtil.getSystemModuleInfo("01","1").genFullUrl();
+			String contextpath = request.getContextPath();
+			return "redirect:"+mallurl+contextpath+"/login/pageInit";
 		}
 		input.setStaffId(staffId);
 		List<ChnlInvoiceTaxDTO> datas = null;
