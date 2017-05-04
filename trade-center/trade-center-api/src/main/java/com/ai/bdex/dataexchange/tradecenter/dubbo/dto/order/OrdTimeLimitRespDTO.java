@@ -3,9 +3,7 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order;
 import java.io.Serializable;
 import java.util.Date;
 
-import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
-
-public class OrdTimeLimitRespDTO  extends BaseResponseDTO{ 
+public class OrdTimeLimitRespDTO implements Serializable{ 
    private Long timeLimitNo; 
    private String provinceCode; 
    private Long cancelTime; 
