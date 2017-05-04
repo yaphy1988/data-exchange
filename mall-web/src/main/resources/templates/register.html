@@ -35,7 +35,7 @@
         <div class="register-list">
             <div class="register-input" id="staffIdDiv">
                 <label>用户ID</label>
-                <input type="text" class="form-control" placeholder="请填写用户ID，支持字母和数字" id="staffId">
+                <input type="text" class="form-control" placeholder="请填写用户ID，支持字母和数字" id="staffId" onblur="checkstaffId(this);">
                 <!--error-tip可见或不可见方式请用visibility-->
                 <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
             </div>
@@ -54,13 +54,13 @@
             </div>
             <div class="register-input" id="signpassDiv">
                 <label>设置密码</label>
-                <input type="password" class="form-control" placeholder="请设置密码，最少8个字符" id="signpass" onfouce="hiddenpass();">
+                <input type="password" class="form-control" placeholder="请设置密码，最少8个字符" id="signpass" onfouce="hiddenpass();" maxlength="18">
                 <!--error-tip可见或不可见方式请用visibility-->
                 <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入至少8个字符的密码</span></p>
             </div>
             <div class="register-input" id="confirmPassDiv">
                 <label>确认密码</label>
-                <input type="password" class="form-control" placeholder="请确认设置的密码" id="confirmPass" onfouce="hiddenpass();">
+                <input type="password" class="form-control" placeholder="请确认设置的密码" id="confirmPass" onfouce="hiddenpass();" maxlength="18">
                 <!--error-tip可见或不可见方式请用visibility-->
                 <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>确认密码和设置密码不一致，请重新输入</span></p>
             </div>
