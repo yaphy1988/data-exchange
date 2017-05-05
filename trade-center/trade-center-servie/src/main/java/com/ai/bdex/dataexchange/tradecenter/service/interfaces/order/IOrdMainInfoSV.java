@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.tradecenter.service.interfaces.order;
 
 import java.util.List;
 
+import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdLog;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfo;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
  
@@ -19,5 +20,7 @@ public interface IOrdMainInfoSV {
 	 //订单管理（失效订单数据）
 	 public int invativeOrderByManager(OrdMainInfo ordInfo)throws Exception;
       
+	 //订单日志
+	 public int saveOrderlog(OrdLog ordLog)throws Exception;
 
 }

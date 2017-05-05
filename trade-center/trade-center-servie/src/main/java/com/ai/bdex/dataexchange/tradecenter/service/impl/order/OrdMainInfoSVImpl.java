@@ -7,11 +7,14 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
- import com.ai.bdex.dataexchange.tradecenter.dao.mapper.OrdMainInfoMapper;
- import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfo;
+import com.ai.bdex.dataexchange.tradecenter.dao.mapper.OrdLogMapper;
+import com.ai.bdex.dataexchange.tradecenter.dao.mapper.OrdMainInfoMapper;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.DataCustomization;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdLog;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
- import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdMainInfoSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdMainInfoSV;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
  
@@ -20,6 +23,8 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 	  private static final Logger log = Logger.getLogger(OrdMainInfoSVImpl.class);
 	  @Autowired
 	  private OrdMainInfoMapper ordMainInfoMapper; 
+	  @Autowired
+	  private OrdLogMapper ordLogMapper; 
 	 //创建订单
 	  @Override
 	 public int creatOrderByweb(OrdMainInfoReqDTO ordMainInfoRespDTO)throws Exception{
@@ -77,4 +82,11 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 		  // record.setTaxId(SeqUtil.getLong("SEQ_DATA_CUSTOMIZATION")); 
  		 
 	 }
+		 //订单日志
+		 public int saveOrderlog(OrdLog record)throws Exception{
+  			    long seq =  SeqUtil.getLong("SEQ_ORD_LOG");
+			    record.setSysLogId(seq);
+			    record.setCreateTime(DateUtil.getNowAsDate());
+	 			return ordLogMapper.insertSelective(record);
+		 }
 }
