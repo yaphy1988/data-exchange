@@ -49,7 +49,7 @@
 /*线下汇款*/
  .offline h2{font-size:16px;padding:20px 0px 10px;border-bottom:#ddd  1px solid;color:#2b4099;}
  .offline .tishi{background: #ebeff8;font-size:12px;margin:15px 0px;padding:10px 15px;line-height:24px;}
- .offline .bank{width:600px;border:#ddd 1px solid;padding:10px;line-height:34px;}
+ .offline .bank{width:600px;border:#ddd 1px solid;padding:10px;line-height:34px;margin-bottom:30px;}
  .offline .bank label,.offline .bank .bank_info{display: inline-block;vertical-align: top}
  .offline .bank label{width:75px;font-weight:bold;}
  .offline .bank .bank_info img{height:28px;border:#eee 1px solid;padding:2px;}
