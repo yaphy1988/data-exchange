@@ -1,0 +1,63 @@
+<table
+	class="table table-bordered table-striped table-hover text-center table-th-nowrap">
+	<thead>
+		<tr>
+			<th>序号</th>
+			<th>订单号</th>
+			<th>购买时间</th>
+			<th>数据名称</th>
+			<th>套餐类别</th>
+			<th>份数</th>
+			<th>剩余次数</th>
+			<th>金额</th>
+			<th>有效期</th>
+			<th>订单状态</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr th:each="list,iterStat : ${pageInfo.result}"
+			th:unless="${#lists.isEmpty(pageInfo.result)}">
+			<td
+				th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
+			<td th:text="${list.orderId}"></td>
+			<td
+				th:text="${#calendars.format(list.ordInfoRespDTO.orderTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+			<td th:text="${list.ordInfoRespDTO.serviceName}"></td>
+			<td th:text="${list.ordInfoRespDTO.skuName}"></td>
+			<td th:text="${list.ordInfoRespDTO.buyAllCount}"></td>
+			<td th:text="${list.ordInfoRespDTO.belanceAllCount}"></td>
+			<td th:text="${list.ordInfoRespDTO.orderMoney}"></td>
+			<td
+				th:text="${#calendars.format(list.ordInfoRespDTO.activeEndTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+			<td th:if="{${list.ordInfoRespDTO.status=='01'}">待支付</td>
+			<td th:if="{${list.ordInfoRespDTO.status=='02'}">已支付</td>
+			<td th:if="{${list.ordInfoRespDTO.status=='03'}">已失效</td>
+			<td th:if="{${list.ordInfoRespDTO.status=='04'}">已完成</td>
+			<td th:if="{${list.ordInfoRespDTO.status=='99'}">已失效</td>
+		</tr>
+
+	</tbody>
+</table>
+
+<div class="overflow-hidden clearfix">
+<!-- 分页-->
+<div th:fragment="pager" class="pagerBar pagelist pull-right">
+	<script type="text/javascript" src="../static/js-busi/common/pager.js"
+		th:src="@{/js-busi/common/pager.js}"></script>
+	<span data-toggle="pager" id="pagerId"
+		th:data-count="${pageInfo.count}" th:data-size="${pageInfo.pageSize}"
+		th:data-currentindex="${pageInfo.pageNo}"></span>
+	<script th:inline="javascript">
+
+        var total = '[[${pageInfo.count}]]';
+	    var pageNum = '[[${pageInfo.pageNo}]]';
+	    var pageSize = '[[${pageInfo.pageSize}]]';
+
+	    if (typeof pagerClick === "undefined") {
+	        pagerClick = function (index) {
+	        	myOrderDataList(index);
+	        }
+	    }
+	    $('#pagerId').pager({callback: pagerClick});
+	</script>
+</div>

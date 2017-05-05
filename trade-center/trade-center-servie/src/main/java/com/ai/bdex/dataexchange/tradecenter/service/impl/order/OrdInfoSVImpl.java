@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.tradecenter.service.impl.order;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -14,9 +15,11 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdInfoExample;
  import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdInfoSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -53,7 +56,7 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 			  }  
 					//订单状态，是否支付
 			   if(ordInfo.getStatus() != null){
-						criteria.andStatusEqualTo(ordInfo.getSubOrder());
+						criteria.andStatusEqualTo(ordInfo.getStatus());
 			   } 
 				return ordInfoMapper.selectByExample(example);	
 	   }
@@ -66,62 +69,75 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 		   return null;
 		   //distict SKU_ID status = 1 的数据，统计总次数
 	   }
-	   @Override
-		public PageResponseDTO<OrdInfoRespDTO> queryOrdInfoPage(OrdInfoReqDTO ordInfoReqDTO)throws Exception {
-			Integer pageNo = ordInfoReqDTO.getPageNo();
-			Integer pageSize = ordInfoReqDTO.getPageSize();
-		    OrdInfoExample example = new OrdInfoExample();
-			OrdInfoExample.Criteria  criteria = example.createCriteria();
-			initCriteria(criteria,ordInfoReqDTO);
-			example.setOrderByClause("ORDER_TIME desc");
-			PageHelper.startPage(pageNo, pageSize);
-			List<OrdInfo> ordInfoList = ordInfoMapper.selectByExample(example);
-			// 使用PageInfo对结果进行包装
-			PageInfo pageInfo = new PageInfo(ordInfoList);
-			PageResponseDTO<OrdInfoRespDTO> pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,
-					OrdInfoRespDTO.class);
-			return pageResponseDTO;
+	public List<OrdInfoRespDTO> queryOrderInfoList(OrdInfoReqDTO ordInfoReqDTO) throws Exception{
+		OrdInfoExample example = new OrdInfoExample();
+		OrdInfoExample.Criteria criteria = example.createCriteria();
+		initCriteria(criteria, ordInfoReqDTO);
+		example.setOrderByClause("ORDER_TIME desc");
+		List<OrdInfo> ordInfoList = ordInfoMapper.selectByExample(example);
+		List<OrdInfoRespDTO> respDTOList = new ArrayList<OrdInfoRespDTO>();
+		if(!CollectionUtil.isEmpty(ordInfoList)){
+			for(OrdInfo ordInfo :ordInfoList){
+				OrdInfoRespDTO respDTO = new OrdInfoRespDTO();
+		        ObjectCopyUtil.copyObjValue(respDTO,ordInfo,null,false);
+		        respDTOList.add(respDTO);
+			}
 		}
+		return respDTOList;
+	}
+	@Override
+	public PageResponseDTO<OrdInfoRespDTO> queryOrdInfoPage(OrdInfoReqDTO ordInfoReqDTO) throws Exception {
+		Integer pageNo = ordInfoReqDTO.getPageNo();
+		Integer pageSize = ordInfoReqDTO.getPageSize();
+		OrdInfoExample example = new OrdInfoExample();
+		OrdInfoExample.Criteria criteria = example.createCriteria();
+		initCriteria(criteria, ordInfoReqDTO);
+		example.setOrderByClause("ORDER_TIME desc");
+		PageHelper.startPage(pageNo, pageSize);
+		List<OrdInfo> ordInfoList = ordInfoMapper.selectByExample(example);
+		// 使用PageInfo对结果进行包装
+		PageInfo pageInfo = new PageInfo(ordInfoList);
+		PageResponseDTO<OrdInfoRespDTO> pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,
+				OrdInfoRespDTO.class);
+		return pageResponseDTO;
+	}
 
-		private void initCriteria(OrdInfoExample.Criteria criteria, OrdInfoReqDTO ordInfoReqDTO) {
-			if (StringUtil.isNotBlank(ordInfoReqDTO.getSubOrder())) {
-				criteria.andSubOrderEqualTo(ordInfoReqDTO.getSubOrder());
-			}
-			if (StringUtil.isNotBlank(ordInfoReqDTO.getOrderId())) {
-				criteria.andOrderIdEqualTo(ordInfoReqDTO.getOrderId());
-			}
-			if (StringUtil.isNotBlank(ordInfoReqDTO.getShopId())) {
-				criteria.andShopIdEqualTo(ordInfoReqDTO.getShopId());
-			}
-			if (StringUtil.isNotBlank(ordInfoReqDTO.getStaffId())) {
-				criteria.andStaffIdEqualTo(ordInfoReqDTO.getStaffId());
-			}
-			if (ordInfoReqDTO.getBrandId()!=null) {
-				criteria.andBrandIdEqualTo(ordInfoReqDTO.getBrandId());
-			}
-			if (ordInfoReqDTO.getModelId()!=null) {
-				criteria.andModelIdEqualTo(ordInfoReqDTO.getModelId());
-			}
-			if (ordInfoReqDTO.getGdsId()!=null) {
-				criteria.andGdsIdEqualTo(ordInfoReqDTO.getGdsId());
-			}
-			if (StringUtil.isNotBlank(ordInfoReqDTO.getGdsName())) {
-				criteria.andGdsNameLike("%"+ordInfoReqDTO.getGdsName()+"%");
-			}
-			if (StringUtil.isNotBlank(ordInfoReqDTO.getSkuName())) {
-				criteria.andSkuNameLike("%"+ordInfoReqDTO.getSkuName()+"%");
-			}
-			if (StringUtil.isNotBlank(ordInfoReqDTO.getProvinceCode())) {
-				criteria.andProvinceCodeEqualTo(ordInfoReqDTO.getProvinceCode());
-			}
-			if (StringUtil.isNotBlank(ordInfoReqDTO.getStatus())) {
-				criteria.andStatusEqualTo(ordInfoReqDTO.getStatus());
-			}
-			if (StringUtil.isNotBlank(ordInfoReqDTO.getStatus())) {
-				criteria.andStatusEqualTo(ordInfoReqDTO.getStatus());
-			}
-			if (StringUtil.isNotBlank(ordInfoReqDTO.getPayFlag())) {
-				criteria.andPayFlagEqualTo(ordInfoReqDTO.getPayFlag());
-			}
+	private void initCriteria(OrdInfoExample.Criteria criteria, OrdInfoReqDTO ordInfoReqDTO) {
+		if (StringUtil.isNotBlank(ordInfoReqDTO.getSubOrder())) {
+			criteria.andSubOrderEqualTo(ordInfoReqDTO.getSubOrder());
 		}
+		if (StringUtil.isNotBlank(ordInfoReqDTO.getOrderId())) {
+			criteria.andOrderIdEqualTo(ordInfoReqDTO.getOrderId());
+		}
+		if (StringUtil.isNotBlank(ordInfoReqDTO.getShopId())) {
+			criteria.andShopIdEqualTo(ordInfoReqDTO.getShopId());
+		}
+		if (StringUtil.isNotBlank(ordInfoReqDTO.getStaffId())) {
+			criteria.andStaffIdEqualTo(ordInfoReqDTO.getStaffId());
+		}
+		if (ordInfoReqDTO.getBrandId() != null) {
+			criteria.andBrandIdEqualTo(ordInfoReqDTO.getBrandId());
+		}
+		if (ordInfoReqDTO.getModelId() != null) {
+			criteria.andModelIdEqualTo(ordInfoReqDTO.getModelId());
+		}
+		if (ordInfoReqDTO.getGdsId() != null) {
+			criteria.andGdsIdEqualTo(ordInfoReqDTO.getGdsId());
+		}
+		if (StringUtil.isNotBlank(ordInfoReqDTO.getGdsName())) {
+			criteria.andGdsNameLike("%" + ordInfoReqDTO.getGdsName() + "%");
+		}
+		if (StringUtil.isNotBlank(ordInfoReqDTO.getSkuName())) {
+			criteria.andSkuNameLike("%" + ordInfoReqDTO.getSkuName() + "%");
+		}
+		if (StringUtil.isNotBlank(ordInfoReqDTO.getProvinceCode())) {
+			criteria.andProvinceCodeEqualTo(ordInfoReqDTO.getProvinceCode());
+		}
+		if (StringUtil.isNotBlank(ordInfoReqDTO.getStatus())) {
+			criteria.andStatusEqualTo(ordInfoReqDTO.getStatus());
+		}
+		if (StringUtil.isNotBlank(ordInfoReqDTO.getPayFlag())) {
+			criteria.andPayFlagEqualTo(ordInfoReqDTO.getPayFlag());
+		}
+	}
 }

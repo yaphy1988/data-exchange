@@ -2,10 +2,11 @@ package com.ai.bdex.dataexchange.tradecenter.service.interfaces.order;
 
 import java.util.List;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdLog;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfo;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
- 
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO; 
 public interface IOrdMainInfoSV { 
 	 //创建订单
 	 public int creatOrderByweb(OrdMainInfoReqDTO ordMainInfoRespDTO)throws Exception;
@@ -22,5 +23,12 @@ public interface IOrdMainInfoSV {
       
 	 //订单日志
 	 public int saveOrderlog(OrdLog ordLog)throws Exception;
+	 /**
+	  * 分页查询我的订单主表信息
+	  * @param ordMainInfoReqDTO
+	  * @return
+	  * @throws Exception
+	  */
+	 public PageResponseDTO<OrdMainInfoRespDTO> queryOrdMainInfoPage(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception;
 
 }

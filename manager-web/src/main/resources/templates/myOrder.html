@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+		<script type="text/javascript" src="../../static/js-busi/order/myOrder.js" th:src="@{/js-busi/order/myOrder.js}"></script>
 	<!--[if lt IE 9]>
 	        <script src="../static/js/respond.min.js" ></script>
 	        <script src="../static/js/html5shiv.min.js" ></script>
@@ -70,6 +71,7 @@
 			</div>
 			
 			<div class="title">非充值服务类订单</div>
+			<div id="myOrderList" th:remove="all">
             <table class="table table-bordered table-striped table-hover text-center table-th-nowrap">
                 <thead>
                     <tr >
@@ -152,7 +154,7 @@
 					</div>
                   <!-- pagerBar end-->
             </div>
-
+ 			</div>
 		</div>
 
 
@@ -160,7 +162,7 @@
 	<!-- 右边内容 end--> 
 
     <!-- 左边菜单 -->
-	<div class="m_nav">
+	<div class="m_nav" th:remove="all">
 		<nav class="nav">
 			<ul>
 				<li class="navTit">

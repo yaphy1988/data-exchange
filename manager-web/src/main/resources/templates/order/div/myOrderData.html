@@ -16,7 +16,7 @@
 			<td th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
 			<td th:text="${list.gdsName}"></td>
 			<td th:text="${list.apiName}"></td>
-			<td  th:text="${#calendars.format(list.orderTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+			<td th:text="${#calendars.format(list.orderTime,'yyyy-MM-dd HH:mm:ss')}"></td>
 			<td th:text="${list.eachCount}"></td>
 			<td><a href="">再次购买</a></td>
 			<td><a href="">接口</a></td>

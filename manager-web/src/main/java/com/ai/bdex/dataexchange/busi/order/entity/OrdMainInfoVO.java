@@ -1,12 +1,12 @@
-package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order;
+package com.ai.bdex.dataexchange.busi.order.entity;
 
 import java.io.Serializable;
 import java.util.Date;
 
-import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
 
-public class OrdMainInfoRespDTO  extends BaseResponseDTO{ 
+public class OrdMainInfoVO  extends BaseInfo{ 
     private String orderId;
     private Integer orderAmount;
     private Long orderMoney; 
@@ -31,14 +31,6 @@ public class OrdMainInfoRespDTO  extends BaseResponseDTO{
     private String payWay;
     private String invoiceModType;
     private String invoiceStatus;
-    private OrdInfoRespDTO ordInfoRespDTO;//子订单 
-    
-	public OrdInfoRespDTO getOrdInfoRespDTO() {
-		return ordInfoRespDTO;
-	}
-	public void setOrdInfoRespDTO(OrdInfoRespDTO ordInfoRespDTO) {
-		this.ordInfoRespDTO = ordInfoRespDTO;
-	}
 	public String getOrderId() {
 		return orderId;
 	}

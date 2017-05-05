@@ -7,6 +7,7 @@ import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.OrdLogMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.OrdMainInfoMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.DataCustomization;
@@ -14,9 +15,14 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdLog;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdMainInfoSV;
+import com.ai.bdex.dataexchange.util.PageResponseFactory;
+import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
  
 @Service("iOrdMainInfoSV")
 public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
@@ -82,11 +88,64 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 		  // record.setTaxId(SeqUtil.getLong("SEQ_DATA_CUSTOMIZATION")); 
  		 
 	 }
-		 //订单日志
-		 public int saveOrderlog(OrdLog record)throws Exception{
-  			    long seq =  SeqUtil.getLong("SEQ_ORD_LOG");
-			    record.setSysLogId(seq);
-			    record.setCreateTime(DateUtil.getNowAsDate());
-	 			return ordLogMapper.insertSelective(record);
-		 }
+
+	// 订单日志
+	public int saveOrderlog(OrdLog record) throws Exception {
+		long seq = SeqUtil.getLong("SEQ_ORD_LOG");
+		record.setSysLogId(seq);
+		record.setCreateTime(DateUtil.getNowAsDate());
+		return ordLogMapper.insertSelective(record);
+	}
+
+	@Override
+	public PageResponseDTO<OrdMainInfoRespDTO> queryOrdMainInfoPage(OrdMainInfoReqDTO ordMainInfoReqDTO)
+			throws Exception {
+		Integer pageNo = ordMainInfoReqDTO.getPageNo();
+		Integer pageSize = ordMainInfoReqDTO.getPageSize();
+		OrdMainInfoExample example = new OrdMainInfoExample();
+		OrdMainInfoExample.Criteria criteria = example.createCriteria();
+		initCriteria(criteria, ordMainInfoReqDTO);
+		example.setOrderByClause("ORDER_TIME desc");
+		PageHelper.startPage(pageNo, pageSize);
+		List<OrdMainInfo> ordMainInfoList = ordMainInfoMapper.selectByExample(example);
+		// 使用PageInfo对结果进行包装
+		PageInfo pageInfo = new PageInfo(ordMainInfoList);
+		PageResponseDTO<OrdMainInfoRespDTO> pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,
+				OrdMainInfoRespDTO.class);
+		return pageResponseDTO;
+	}
+
+	private void initCriteria(OrdMainInfoExample.Criteria criteria, OrdMainInfoReqDTO ordMainInfoReqDTO) {
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getOrderId())) {
+			criteria.andOrderIdEqualTo(ordMainInfoReqDTO.getOrderId());
+		}
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getShopId())) {
+			criteria.andShopIdEqualTo(ordMainInfoReqDTO.getShopId());
+		}
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getStaffId())) {
+			criteria.andStaffIdEqualTo(ordMainInfoReqDTO.getStaffId());
+		}
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getProvinceCode())) {
+			criteria.andProvinceCodeEqualTo(ordMainInfoReqDTO.getProvinceCode());
+		}
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getOrderType())) {
+			criteria.andOrderTypeEqualTo(ordMainInfoReqDTO.getOrderType());
+		}
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getPayFlag())) {
+			criteria.andPayFlagEqualTo(ordMainInfoReqDTO.getPayFlag());
+		}
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getPayWay())) {
+			criteria.andPayWayEqualTo(ordMainInfoReqDTO.getPayWay());
+		}
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getInvoiceModType())) {
+			criteria.andInvoiceModTypeEqualTo(ordMainInfoReqDTO.getInvoiceModType());
+		}
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getInvoiceStatus())) {
+			criteria.andInvoiceStatusEqualTo(ordMainInfoReqDTO.getInvoiceStatus());
+		}
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getSource())) {
+			criteria.andSourceEqualTo(ordMainInfoReqDTO.getSource());
+		}
+	}
+
 }

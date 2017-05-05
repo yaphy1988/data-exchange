@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.impl.order;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -14,6 +15,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdLog;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdMainInfoSV;
@@ -72,9 +74,19 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		try {
 			ordInfoPage = iOrdInfoSV.queryOrdInfoPage(ordInfoReqDTO);
 		} catch (Exception e) {
-			log.error("分页获取订单信息异常:", e);
+			log.error("分页获取子订单信息异常:", e);
 			throw new Exception(e);
 		}
 		return ordInfoPage;
+	}
+	public List<OrdInfoRespDTO> queryOrderInfoList(OrdInfoReqDTO ordInfoReqDTO) throws Exception{
+		List<OrdInfoRespDTO> ordInfoList = new ArrayList<OrdInfoRespDTO>();
+		try {
+			ordInfoList = iOrdInfoSV.queryOrderInfoList(ordInfoReqDTO);
+		} catch (Exception e) {
+			log.error("获取子订单List信息异常:", e);
+			throw new Exception(e);
+		}
+		return ordInfoList;
 	}
 }
