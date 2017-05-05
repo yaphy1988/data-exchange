@@ -1,0 +1,48 @@
+
+<table class="table table-bordered text-center">
+	<thead>
+		<tr class="active">
+			<th>序号</th>
+			<th>数据名称</th>
+			<th>APIkey</th>
+			<th>申请时间</th>
+			<th>剩余次数</th>
+			<th>购买</th>
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr  th:each="list,iterStat : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
+			<td th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
+			<td th:text="${list.gdsName}"></td>
+			<td th:text="${list.apiName}"></td>
+			<td  th:text="${#calendars.format(list.orderTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+			<td th:text="${list.eachCount}"></td>
+			<td><a href="">再次购买</a></td>
+			<td><a href="">接口</a></td>
+		</tr>
+
+	</tbody>
+</table>
+<!-- 分页-->
+<div th:fragment="pager" class="pagerBar pagelist"
+	style="margin-top: 0px;">
+	<script type="text/javascript" src="../static/js-busi/common/pager.js"
+		th:src="@{/js-busi/common/pager.js}"></script>
+	<span data-toggle="pager" id="pagerId"
+		th:data-count="${pageInfo.count}" th:data-size="${pageInfo.pageSize}"
+		th:data-currentindex="${pageInfo.pageNo}"></span>
+	<script th:inline="javascript">
+
+        var total = '[[${pageInfo.count}]]';
+	    var pageNum = '[[${pageInfo.pageNo}]]';
+	    var pageSize = '[[${pageInfo.pageSize}]]';
+
+	    if (typeof pagerClick === "undefined") {
+	        pagerClick = function (index) {
+	        	myOrderDataList(index);
+	        }
+	    }
+	    $('#pagerId').pager({callback: pagerClick});
+	</script>
+</div>

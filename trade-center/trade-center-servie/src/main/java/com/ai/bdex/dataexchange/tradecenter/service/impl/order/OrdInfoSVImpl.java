@@ -71,10 +71,9 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 			Integer pageNo = ordInfoReqDTO.getPageNo();
 			Integer pageSize = ordInfoReqDTO.getPageSize();
 		    OrdInfoExample example = new OrdInfoExample();
-			example.setOrderByClause("order_time desc");
 			OrdInfoExample.Criteria  criteria = example.createCriteria();
 			initCriteria(criteria,ordInfoReqDTO);
-			example.setOrderByClause(" AD_ORDER desc ");
+			example.setOrderByClause("ORDER_TIME desc");
 			PageHelper.startPage(pageNo, pageSize);
 			List<OrdInfo> ordInfoList = ordInfoMapper.selectByExample(example);
 			// 使用PageInfo对结果进行包装

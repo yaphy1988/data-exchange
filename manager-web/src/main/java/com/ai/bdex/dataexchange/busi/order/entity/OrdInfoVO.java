@@ -3,7 +3,9 @@ package com.ai.bdex.dataexchange.busi.order.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class OrdInfoVO implements Serializable{
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+
+public class OrdInfoVO  extends BaseInfo{
 	    private String subOrder; 
 	    private String orderId;
  	    private Integer orderAmount; 

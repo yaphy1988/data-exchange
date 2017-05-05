@@ -9,6 +9,7 @@
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+	<script type="text/javascript" src="../../static/js-busi/order/myData.js" th:src="@{/js-busi/order/myData.js}"></script>
 </head>
 <body>
 <header class="clearfix m_header">
@@ -58,18 +59,18 @@
             </div>
 
             <!--tab切换内容-->
-            <div class="tab-slide pl20 pr20" id="gdsListContent">
+            <div class="tab-slide pl20 pr20" id="ordListContent">
 
                 <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist" th:remove="all">
+                <ul class="nav nav-tabs" role="tablist" >
                     <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">我的数据</a></li>
                     <li><a href="#tab02" aria-controls="profile" role="tab" data-toggle="tab">定制数据</a></li>
                    
                 </ul>
 
                 <!-- Tab panes -->
-                <div class="tab-content pt15" th:remove="all">
-                    <div role="tabpanel" class="tab-pane active" id="tab01">
+                <div class="tab-content pt15" >
+                    <div role="tabpanel" class="tab-pane active" id="tab01" >
                         <table class="table table-bordered text-center" >
                             <thead>
                             <tr class="active">
