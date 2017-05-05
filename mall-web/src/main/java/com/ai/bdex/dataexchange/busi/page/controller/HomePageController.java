@@ -521,7 +521,7 @@ public class HomePageController {
 	 */
 	@RequestMapping(value="/company")
 	private String company(){ 
-		String viewName = "/companyprofile"; 
+		String viewName = "companyprofile"; 
 		return viewName;	 
 	} 
 	/**
@@ -529,7 +529,7 @@ public class HomePageController {
 	 */
 	@RequestMapping(value="/contactouer")
 	private String contactouer(){ 
-		String viewName = "/contactouer"; 
+		String viewName = "contactouer"; 
 		return viewName;	 
 	}
 	/**
@@ -537,7 +537,7 @@ public class HomePageController {
 	 */
 	@RequestMapping(value="/commonHelp")
 	private String commonHelp(){ 
-		String viewName = "/commonHelp"; 
+		String viewName = "commonHelp"; 
 		return viewName;	 
 	}
 	
