@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdLog;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
@@ -25,7 +26,9 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 	@Resource
 	private IOrdInfoSV iOrdInfoSV;
  
-	
+	/**
+	 * 创建订单
+	 */
 	@Override
     public int createOrderInfo(OrdMainInfoReqDTO ordMainInfoReqDTO,OrdInfoReqDTO ordInfoReqDTO) throws Exception
     {
@@ -34,14 +37,11 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		iOrdInfoSV.creatsubOrderByweb(ordInfoReqDTO);
 		//写日志
 		OrdLog ordLog = new OrdLog();
+		ordLog.setCreateStaff(ordMainInfoReqDTO.getCreateStaff());
 		ordLog.setOrderId(ordMainInfoReqDTO.getOrderId());
-		ordLog.setNode(node);
-		ordLog.setNodeDesc(node);
-		iOrdMainInfoSV.saveOrderlog();
-		
-		//需要调用主表和子表的实物
-        // return   iDataCustomizationSV.saveDataCustomization(dataCustomizationRespDTO);
-		return 1;
+		ordLog.setNode(Constants.Order.LOG_CODE_01);
+		ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_01);
+		return iOrdMainInfoSV.saveOrderlog(ordLog); 
     }
 	@Override
 	public OrdInfoRespDTO querySubOrderDetail(OrdInfoRespDTO ordInfo) throws Exception {

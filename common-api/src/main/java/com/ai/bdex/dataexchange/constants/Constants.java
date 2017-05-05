@@ -20,19 +20,19 @@ public class Constants {
         // NODE节点 
         public static String LOG_CODE_01 = "01"; 
         // 订单日志-节点描述
-        public static String LOG_DESC_01 = "订单提交"; 
+        public static String LOG_CODE_DESC_01 = "订单提交"; 
      
 	    public static String LOG_CODE_02 = "02"; 
         // 订单日志-节点描述
-        public static String LOG_DESC_02 = "订单支付"; 
+        public static String LOG_CODE_DESC_02 = "订单支付"; 
 		
 		public static String LOG_CODE_03 = "03"; 
         // 订单日志-节点描述
-        public static String LOG_DESC_03 = "手动失效订单"; 
+        public static String LOG_CODE_DESC_03 = "手动失效订单"; 
 		
-	    public static String LOG_CODE_99 = "99"; 
+	    public static String LOG_CODE_CODE_99 = "99"; 
         // 订单日志-节点描述
-        public static String LOG_DESC_99 = "取消订单"; 
+        public static String LOG_CODE_DESC_99 = "取消订单"; 
 		
 		/*订单主表状态：
 		01  申请订购中（未付款），
