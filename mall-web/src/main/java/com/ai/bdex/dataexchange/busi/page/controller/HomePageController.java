@@ -270,7 +270,7 @@ public class HomePageController {
 							BeanUtils.copyProperties(respDTO, sortInfoVO2);
 							//copy菜单内容
 							SortContentVO sortContentVO2 = new SortContentVO();
-							SortContentRespDTO contentRespDTO2 = infoRespDTO.getSortContentRespDTO();
+							SortContentRespDTO contentRespDTO2 = respDTO.getSortContentRespDTO();
 							BeanUtils.copyProperties(contentRespDTO2, sortContentVO2);
 							sortInfoVO2.setSortContentVO(sortContentVO2);
 							subSortInfoVos.add(sortInfoVO2);

@@ -49,14 +49,14 @@ var header = new Object({
 					var sortInfos = data.sortInfos;
 					$(sortInfos).each(function(i,d){
 						var content = d.sortContentVO;
-						htmlLever1 +='<li pSortId='+d.sortId+'><a href="'+setLinkUrk(content.contentLink)+'"><i>&rsaquo;</i>'+content.contentName+'</a> </li>';
+						htmlLever1 +='<li pSortId='+d.sortId+'><a href="'+setLinkUrk(content.contentLink)+'"  target="_blank"><i>&rsaquo;</i>'+content.contentName+'</a> </li>';
 						var subSortInfoList = d.subSortInfoList;
 						htmlLever2 += '<div pSortId='+d.sortId+' class="sidebar-hidden" style="display: none">'+
 							'<h4>'+content.contentName+'</h4>'+
 							'<div class="sidebar-link">';
 						$(subSortInfoList).each(function(i,d){
 							var subContent = d.sortContentVO;
-							htmlLever2 +='<a href="'+setLinkUrk(subContent.contentLink)+'">'+subContent.contentName+'</a>';
+							htmlLever2 +='<a href="'+setLinkUrk(subContent.contentLink)+'"  target="_blank">'+subContent.contentName+'</a>';
 							if(parseInt(i+1)%5 == 0){
 								if(parseInt(i+1)== data.sortInfos.length){
 									htmlLever2 +='</div>'; 
