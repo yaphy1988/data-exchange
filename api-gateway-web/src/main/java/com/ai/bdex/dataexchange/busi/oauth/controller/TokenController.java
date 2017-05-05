@@ -170,7 +170,6 @@ public class TokenController {
 //	@PUT
 //	@Produces(MediaType.APPLICATION_JSON+";"+"charset=utf-8")
 	@RequestMapping(value="/refreshToken",method={RequestMethod.GET,RequestMethod.POST})
-	@Security(authorCheckType=ServiceCheckChain.class)
 	public @ResponseBody String refreshAccessToken(HttpServletRequest request)throws Exception{
 		Map<String,Object> map=new HashMap<String,Object>();
 		Map<String,String> resultMap=new HashMap<String,String>();

@@ -3,6 +3,7 @@ package com.ai.bdex.dataexchange;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowire;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
@@ -45,14 +46,7 @@ public class ApiGatewayWebApplication {
 //        registration.addInitParameter(ServletProperties.JAXRS_APPLICATION_CLASS, RestApplication.class.getName());  
 //        return registration;  
 //    } 
-	@Bean
-	public ServiceCheckChain serviceCheckChain(){
-		ServiceCheckChain chain=new ServiceCheckChain();
-		List<PermissionCheckHandler> list=new ArrayList<PermissionCheckHandler>();
-		list.add((AccessTokenCheckHandler)Utils.getCtx().getBean(AccessTokenCheckHandler.class));
-		chain.setCheckHandlers(list);
-		return chain;
-	}
+		
 	
 	//自定义DispatcherServlet
 	@Bean
