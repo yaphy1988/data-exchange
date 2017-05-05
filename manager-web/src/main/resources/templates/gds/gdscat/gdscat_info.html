@@ -1,0 +1,16 @@
+<table class="editTable" width="100%">
+<input type="hidden" th:attr="value=${catInfo.catId}" id="catId"/>
+    <tbody>
+        <tr>
+         <td class="Hint" width="15%">分类编码：</td>	                            
+         <td width="15%" th:text="${catInfo.catId}">121232</td>
+         <td class="Hint" width="15%">分类名称：</td>
+         <td th:text="${catInfo.catName}">测试标题测试标题测试标题</td>
+     </tr>
+        <tr>
+         <td class="Hint">展示顺序：</td>	                            
+         <td th:text="${catInfo.showOrder}">2</td>
+     </tr>
+         
+    </tbody>
+</table>

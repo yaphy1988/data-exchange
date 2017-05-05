@@ -82,22 +82,17 @@ public class GdsCatController{
      * @since JDK 1.6
      */
     @RequestMapping(value="/querycatnodeinfo")
-    @ResponseBody
-    public AjaxJson queryCatNodeInfo(Model model,GdsCatVO gdsCatVO){
-        AjaxJson ajaxJson = new AjaxJson();
+    public String queryCatNodeInfo(Model model,GdsCatVO gdsCatVO){
         GdsCatReqDTO gdsCatReqDTO = new GdsCatReqDTO();
         gdsCatReqDTO.setStatus("1");
         gdsCatReqDTO.setCatId(gdsCatVO.getCatId());
         try {
             GdsCatRespDTO gdsCatRespDTO = iGdsCatRSV.queryGdsCatByCatId(gdsCatVO.getCatId());
-            ajaxJson.setSuccess(true);
-            ajaxJson.setObj(gdsCatRespDTO);
+            model.addAttribute("catInfo", gdsCatRespDTO);
         } catch (Exception e) {
             logger.error("查询商品分类信息异常：",e);
-            ajaxJson.setSuccess(false);
-            ajaxJson.setMsg("查询商品分类信息异常");
         }
-        return ajaxJson;
+        return "/gds/gdscat/gdscat_info";
     }
     
     /**
@@ -116,13 +111,15 @@ public class GdsCatController{
         GdsCatReqDTO gdsCatReqDTO = new GdsCatReqDTO();
         gdsCatReqDTO.setStatus("1");
         gdsCatReqDTO.setCatPid(gdsCatVO.getCatId());
+        gdsCatReqDTO.setPageNo(gdsCatVO.getPageNo());
+        gdsCatReqDTO.setPageSize(10);
         try {
             PageResponseDTO<GdsCatRespDTO> gdsCatRespDTO = iGdsCatRSV.queryCatPageInfo(gdsCatReqDTO);
             model.addAttribute("pageInfo", gdsCatRespDTO);
         } catch (Exception e) {
             logger.error("查询商品分类信息异常：",e);
         }
-        return "";
+        return "/gds/gdscat/gdscat_child_list";
     }
 }
 

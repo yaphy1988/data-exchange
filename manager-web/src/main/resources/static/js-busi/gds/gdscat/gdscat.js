@@ -8,7 +8,7 @@ $(function(){
 function pagerClick(pageNo) {
 	var param = {
 		catId:$("#catId").val(),
-		pageNo:1
+		pageNo:pageNo
 	};
 	GdsCat.queryCatChildList(param);
 }
@@ -50,23 +50,18 @@ var GdsCat = {
 	        async:true,
 	        url:WEB_ROOT+"/gdscat/querycatnodeinfo",
 	        type:'post',
-	        dataType:'json',
-	        data:{},
-	        success:function (jsonObj) {
-	            if(jsonObj!=null && jsonObj.success){
-	            	var catObj = jsonObj.obj;
-	            	var param = {
-            			catId:catObj.catId,
-            			pageNo:1
-            		};
-            		GdsCat.querycatnodeinfo(param);
-	            }
+	        dataType:'html',
+	        data:param,
+	        success:function (data) {
+	        	$("#nodeInfo").html(data);
+	        	param.pageNo = 1;
+        		GdsCat.queryCatChildList(param);
 	        }
 	    });
 	},
 	queryCatChildList : function(param){
 		$.ajax({
-	        url:basePath+"/gdscat/querycatchild",
+	        url:WEB_ROOT+"/gdscat/querycatchild",
 	        async:true,
 	        type:'POST',
 	        dataType:'html',
@@ -82,8 +77,7 @@ function selClick(e, treeId, treeNode) {
 //    $("#catIdSel").val(treeNode.name);
 	//获取当前节点的信息
 	var param = {
-		catId:treeNode.id,
-		pageNo:1
+		catId:treeNode.id
 	};
 	GdsCat.querycatnodeinfo(param);
 }
