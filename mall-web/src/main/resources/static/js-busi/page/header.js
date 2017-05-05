@@ -6,7 +6,12 @@ $(document).ready(function(){
 		$('#head_menu').attr('class','menu clearfix');
 	}else{
 		$('#head_sidebar>ul').hide();
-		$('#head_menu').attr('class','menuBg seconav');
+		$('#head_menu').attr('class','menu clearfix');
+		$('#head_sidebar').hover(function(){
+            $('#head_sidebar>ul').show();
+        },function(){
+            $('#head_sidebar>ul').hide();
+        });
 	}
 	header.setSpanDate();
 	header.querySortInfo('-1','1');
@@ -83,11 +88,6 @@ var header = new Object({
 						var pSortId = $(this).attr('pSortId');
 						$('#head_sidebar>div').hide();
 						$('#head_sidebar>div[pSortId='+pSortId+']').show();
-					},function(){
-						$('#head_sidebar>div').hide();
-					});
-					$('#head_sidebar>div').hover(function(){
-						$(this).show();
 					},function(){
 						$('#head_sidebar>div').hide();
 					});
