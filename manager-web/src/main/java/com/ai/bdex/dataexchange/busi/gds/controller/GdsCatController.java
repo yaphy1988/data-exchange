@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsCatVO;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
 /**
@@ -120,6 +122,110 @@ public class GdsCatController{
             logger.error("查询商品分类信息异常：",e);
         }
         return "/gds/gdscat/gdscat_child_list";
+    }
+    
+    /**
+     * 
+     * saveGdsCat:(新增分类). <br/> 
+     * 
+     * @author gxq 
+     * @param model
+     * @param gdsCatVO
+     * @return 
+     * @since JDK 1.6
+     */
+    @RequestMapping(value="/savegdscat")
+    @ResponseBody
+    public AjaxJson saveGdsCat(Model model,GdsCatVO gdsCatVO){
+        AjaxJson ajaxJson = new AjaxJson();
+        try {
+            GdsCatReqDTO gdsCatReqDTO = new GdsCatReqDTO();
+            ObjectCopyUtil.copyObjValue(gdsCatVO, gdsCatReqDTO, null, false);
+            iGdsCatRSV.saveGdsCatInfo(gdsCatReqDTO);
+            ajaxJson.setSuccess(true);
+        } catch (BusinessException e) {
+            logger.error("保存商品分类信息异常：",e);
+            ajaxJson.setSuccess(false);
+        }
+        return ajaxJson;
+    }
+    
+    /**
+     * 
+     * updategdscat:(编辑分类). <br/> 
+     * 
+     * @author gxq 
+     * @param model
+     * @param gdsCatVO
+     * @return 
+     * @since JDK 1.6
+     */
+    @RequestMapping(value="/updategdscat")
+    @ResponseBody
+    public AjaxJson updateGdsCat(Model model,GdsCatVO gdsCatVO){
+        AjaxJson ajaxJson = new AjaxJson();
+        try {
+            GdsCatReqDTO gdsCatReqDTO = new GdsCatReqDTO();
+            ObjectCopyUtil.copyObjValue(gdsCatVO, gdsCatReqDTO, null, false);
+            iGdsCatRSV.updateGdsCatInfo(gdsCatReqDTO);
+            ajaxJson.setSuccess(true);
+        } catch (BusinessException e) {
+            logger.error("编辑商品分类信息异常：",e);
+            ajaxJson.setSuccess(false);
+        }
+        return ajaxJson;
+    }
+    
+    /**
+     * 
+     * deleteGdsCat:(删除分类). <br/> 
+     * 
+     * @author gxq 
+     * @param model
+     * @param gdsCatVO
+     * @return 
+     * @since JDK 1.6
+     */
+    @RequestMapping(value="/deletegdscat")
+    @ResponseBody
+    public AjaxJson deleteGdsCat(Model model,GdsCatVO gdsCatVO){
+        AjaxJson ajaxJson = new AjaxJson();
+        try {
+            iGdsCatRSV.deleteGdsCatInfo(gdsCatVO.getCatId());
+            ajaxJson.setSuccess(true);
+        } catch (BusinessException e) {
+            logger.error("删除商品分类信息异常：",e);
+            ajaxJson.setSuccess(false);
+        }
+        return ajaxJson;
+    }
+    
+    /**
+     * 
+     * queryEditCatInfo:(获取编辑的信息). <br/> 
+     * 
+     * @author gxq 
+     * @param model
+     * @param gdsCatVO
+     * @return 
+     * @since JDK 1.6
+     */
+    @RequestMapping(value="/queryeditcatinfo")
+    @ResponseBody
+    public AjaxJson queryEditCatInfo(Model model,GdsCatVO gdsCatVO){
+        AjaxJson ajaxJson = new AjaxJson();
+        try {
+            GdsCatRespDTO catInfo = iGdsCatRSV.queryGdsCatByCatId(gdsCatVO.getCatId());
+            ajaxJson.setSuccess(true);
+            ajaxJson.setObj(catInfo);
+        } catch (BusinessException e) {
+            logger.error("删除商品分类信息异常：",e);
+            ajaxJson.setSuccess(false);
+        } catch (Exception e) {
+            logger.error("删除商品分类信息异常：",e);
+            ajaxJson.setSuccess(false);
+        }
+        return ajaxJson;
     }
 }
 

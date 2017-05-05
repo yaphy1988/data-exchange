@@ -156,5 +156,29 @@ public class GdsCatSVImpl implements IGdsCatSV{
         PageResponseDTO<GdsCatRespDTO> resultDTO = PageResponseFactory.genPageResponse(pageInfo,GdsCatRespDTO.class);
         return resultDTO;
     }
+
+    @Override
+    public int deleteGdsCatInfo(Integer catId) throws BusinessException {
+        int code = gdsCatMapper.deleteByPrimaryKey(catId);
+        //递归删除子节点
+        code = recursionDelteGdsCat(catId);
+        return code;
+    }
     
+    public int recursionDelteGdsCat(Integer catPid){
+        int code = 0;
+        GdsCatExample gdsCatExample = new GdsCatExample();
+        GdsCatExample.Criteria criteria = gdsCatExample.createCriteria();
+        criteria.andCatPidEqualTo(catPid);
+        List<GdsCat> list = gdsCatMapper.selectByExample(gdsCatExample);
+        if(list != null && list.size() >= 1){
+            for(GdsCat gdsCat : list){
+                code = gdsCatMapper.deleteByExample(gdsCatExample);
+                recursionDelteGdsCat(gdsCat.getCatId());
+            }
+        }else{
+            return 1;
+        }
+       return code;
+    }
 }

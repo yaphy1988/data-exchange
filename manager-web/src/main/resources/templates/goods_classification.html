@@ -94,7 +94,6 @@
 		                	<div id="nodeInfo" >
 		                		<!-- 节点信息 -->
 		                		<table class="editTable" width="100%" th:remove="All">
-								<input type="hidden" th:attr="value=${catInfo.catId}" id="catId"/>
 								    <tbody>
 								        <tr>
 								         <td class="Hint" width="15%">分类编码：</td>	                            
@@ -109,12 +108,12 @@
 								         
 								    </tbody>
 								</table>
+								<div class="text-right" th:remove="All">
+				                    <button class="btn btn-default btn-mini ml20 addNewSomeLevel"><i class="glyphicon glyphicon-plus"></i>新增同级分类</button>
+				                    <button class="btn btn-default btn-mini editThisCat"><i class="glyphicon glyphicon-pencil"></i>编辑</button>
+				                    <button class="btn btn-default btn-mini" id="deleteThisCat"><i class="glyphicon glyphicon-minus"></i>删除</button>
+				               	 </div>
 							</div>
-			                <div class="text-right">
-			                    <button class="btn btn-default btn-mini ml20" onclick="location.href=''"><i class="glyphicon glyphicon-plus"></i>新增同级</button>
-			                    <button class="btn btn-default btn-mini" onclick="location.href=''"><i class="glyphicon glyphicon-pencil"></i>编辑</button>
-			                    <button class="btn btn-default btn-mini" onclick="location.href=''"><i class="glyphicon glyphicon-minus"></i>删除</button>
-			                </div>
 
 		                    <!-- 列表 -->
 		                    <div class="title">下级列表</div>
@@ -457,6 +456,52 @@
 //         });
       </SCRIPT>
       <script src="../static/js-busi/gds/gdscat/gdscat.js"  th:src="@{/js-busi/gds/gdscat/gdscat.js}"></script>
+      <!-- 新增分类 -->
+      <div class="m_modal modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document" style="width:420px;">
+			<div class="modal-content" >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">新增同级分类</h4>
+				</div>
+				<div class="modal-body clearfix">
+				<form id="gdsCatForm">
+					<input type="hidden" value="" id="netChildCat"/>
+					<table class="editTable" style="float: left;">
+						<tr id="editInfoCatId"style="display:none">
+							<td class="Hint" width="120">
+								分类编码:
+							</td>
+							<td width="220">
+								<input type="text" class="form-control" id="editCatId" name="editCatId" disabled>
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint" width="120">
+								<font style="color:red">*</font>分类名称:
+							</td>
+							<td width="220">
+								<input type="text" class="form-control" placeholder="输入分类名称" id="catName" name="catName">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint ">
+								展示顺序:
+							</td>
+							<td width="120">
+								<input type="text" class="form-control" placeholder="输入展示顺序" id="showOrder" name="showOrder">
+							</td>
+						</tr>
+					</table>
+				</form>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" id="btnConfirm">确认</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
 	
 </body>

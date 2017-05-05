@@ -39,4 +39,37 @@ public interface IGdsCatRSV {
      * @since JDK 1.6
      */
     public PageResponseDTO<GdsCatRespDTO> queryCatPageInfo(GdsCatReqDTO gdsCatReqDTO) throws BusinessException;
+    
+    /**
+     * 
+     * saveGdsCatInfo:(新增分类). <br/> 
+     * 
+     * @author gxq 
+     * @param gdsCatReqDTO
+     * @throws BusinessException 
+     * @since JDK 1.6
+     */
+    public void saveGdsCatInfo(GdsCatReqDTO gdsCatReqDTO) throws BusinessException;
+    
+    /**
+     * 
+     * updateGdsCatInfo:(编辑分类). <br/> 
+     * 
+     * @author gxq 
+     * @param gdsCatReqDTO
+     * @throws BusinessException 
+     * @since JDK 1.6
+     */
+    public void updateGdsCatInfo(GdsCatReqDTO gdsCatReqDTO) throws BusinessException;
+    
+    /**
+     * 
+     * updateGdsCatInfo:(删除分类). <br/> 
+     * 
+     * @author gxq 
+     * @param gdsCatReqDTO
+     * @throws BusinessException 
+     * @since JDK 1.6
+     */
+    public void deleteGdsCatInfo(Integer catId) throws BusinessException;
 }
