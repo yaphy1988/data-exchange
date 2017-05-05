@@ -1,6 +1,8 @@
+var zTreeObj;
 $(function(){
 	GdsCat.initZTree();
 });
+
 /**
  * 分页点击事件
  * @param pageNo
@@ -41,6 +43,14 @@ var GdsCat = {
 	                    zNodes.push(zNode);
 	                })
 	                zTreeObj = $.fn.zTree.init($("#catZTree"),GdsCat.setting,zNodes);
+	                var treeObj = $.fn.zTree.getZTreeObj("catZTree");
+	                if(treeObj != null && treeObj.getNodes().length >=1){
+	                	var param = {
+                			catId:treeObj.getNodes()[0].id
+                		};
+                		GdsCat.querycatnodeinfo(param);
+	                }
+	            	
 	            }
 	        }
 	    });
