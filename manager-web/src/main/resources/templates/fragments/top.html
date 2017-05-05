@@ -17,7 +17,7 @@
 	<a href="" class="Logo" target="_blank" >
 		<img width="160" src="../static/images/manage_logo.png"  th:src="@{/images/manage_logo.png}" alt="广州数据" >
 	</a>
-	<ul class="m_hdlist clearfix">
+	<ul class="m_hdlist clearfix" th:with="staffInfoDTO=${session.staffInfoDTO}">
 		<li>
 			<a class="item" href="" target="_blank">联系我们</a>
 		</li>
@@ -38,7 +38,7 @@
 		<li >
 			<div class="dropdown">
 				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-
+					<span th:text="${staffInfoDTO!=null and staffInfoDTO.loginIn}? ${staffInfoDTO.staffId}:'未登录'"></span>
 					<span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu" aria-labelledby="dLabel">

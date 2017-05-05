@@ -1,6 +1,7 @@
 package com.ai.bdex.dataexchange.config;
 
 import com.ai.bdex.dataexchange.filter.LoginAuthFilter;
+import com.ai.bdex.dataexchange.thymeleaf.ToolExpressionDialect;
 import com.ai.paas.config.ConfigurationCenter;
 import com.ai.paas.config.SystemConfiguration;
 import com.ai.paas.config.SystemConfigurationImpl;
@@ -62,5 +63,11 @@ public class FilterConfiguration {
         filterRegistrationBean.addUrlPatterns("/*");
         filterRegistrationBean.addInitParameter("ignore_suffix", ignoreSuffix);
         return filterRegistrationBean;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
+    public ToolExpressionDialect toolExpressionDialect() {
+        return new ToolExpressionDialect();
     }
 }
