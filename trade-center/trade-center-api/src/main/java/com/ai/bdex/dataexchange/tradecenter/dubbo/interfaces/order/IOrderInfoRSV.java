@@ -21,9 +21,8 @@ public interface IOrderInfoRSV {
 	public List<OrdInfoRespDTO> queryAllDataByStaff(OrdInfoRespDTO ordInfo) throws Exception;
 
 	// 订单生成
-	public int createOrderInfo(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception;
-
-	/**
+	public int createOrderInfo(OrdMainInfoReqDTO ordMainInfoReqDTO,OrdInfoReqDTO ordInfoReqDTO) throws Exception;
+ 	/**
 	 * 分页查询订单数据
 	 * 
 	 * @param ordInfoReqDTO
