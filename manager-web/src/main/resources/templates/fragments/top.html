@@ -42,7 +42,7 @@
 					<span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu" aria-labelledby="dLabel">
-					<li><a  href="" >退出登录</a></li>
+					<li><a  href="" th:href="${#tools.mailDomain()}+'/login/doLogout'">退出登录</a></li>
 				</ul>
 			</div>
 		</li>
