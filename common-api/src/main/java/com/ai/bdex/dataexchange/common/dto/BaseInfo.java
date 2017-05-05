@@ -58,4 +58,12 @@ public class BaseInfo implements Serializable {
     public void setGridQuerySortOrder(String gridQuerySortOrder) {
         this.gridQuerySortOrder = gridQuerySortOrder;
     }
+
+    public String getCurrentUserId() {
+        return currentUserId;
+    }
+
+    public void setCurrentUserId(String currentUserId) {
+        this.currentUserId = currentUserId;
+    }
 }
