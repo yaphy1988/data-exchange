@@ -198,15 +198,13 @@ public class HomePageController {
 			if (!CollectionUtils.isEmpty(moduleAResult)) {
 				for (PageModuleAdRespDTO moduleAdDTO : moduleAResult) {
 					if (moduleAdDTO.getVfsId() != null) {
-						 if(moduleId.equals("103")){
+						if(moduleId.equals("103")){
 							//数据定制
 							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_800x350"));
-						}
-						 if(moduleId.equals("101")){
+						}else if(moduleId.equals("101")){
 								//数据定制
 								moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_940x400"));
-							}
-						else{
+						}else{
 							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_80x80"));
 
 						}
