@@ -7,7 +7,8 @@ import com.ai.paas.util.SystemConfUtil;
  */
 public class ThymeleafToolsUtil {
     /**
-     * 使用：<a th:href="${#tool.mailDomain()}"></a>
+     * 获取商城全路径
+     * 使用：<a th:href="${#tools.mailDomain()}"></a>
      * @return http://domain/mall-web
      */
     public String mailDomain(){
@@ -15,7 +16,8 @@ public class ThymeleafToolsUtil {
     }
 
     /**
-     * 使用：<a th:href="${#tool.managerDomain()}"></a>
+     * 获取管理后台全路径
+     * 使用：<a th:href="${#tools.managerDomain()}"></a>
      * @return http://domain/manager-web
      */
     public String managerDomain(){
