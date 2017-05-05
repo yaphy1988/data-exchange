@@ -26,14 +26,22 @@
 			<td th:text="${list.ordInfoRespDTO.skuName}"></td>
 			<td th:text="${list.ordInfoRespDTO.buyAllCount}"></td>
 			<td th:text="${list.ordInfoRespDTO.belanceAllCount}"></td>
-			<td th:text="${list.ordInfoRespDTO.orderMoney}"></td>
+			<td th:text="${list.ordInfoRespDTO.orderMoney/100}"></td>
 			<td
 				th:text="${#calendars.format(list.ordInfoRespDTO.activeEndTime,'yyyy-MM-dd HH:mm:ss')}"></td>
-			<td th:if="{${list.ordInfoRespDTO.status=='01'}">待支付</td>
-			<td th:if="{${list.ordInfoRespDTO.status=='02'}">已支付</td>
-			<td th:if="{${list.ordInfoRespDTO.status=='03'}">已失效</td>
-			<td th:if="{${list.ordInfoRespDTO.status=='04'}">已完成</td>
-			<td th:if="{${list.ordInfoRespDTO.status=='99'}">已失效</td>
+			<td th:if="${list.ordInfoRespDTO.status=='01'}">                            
+							<p>待支付</p>
+                        	<p class="pop-link">
+                                <a href="javaScript:void(0)" th:onclick="'toPayModal(this,'+@{${list.orderId}}+')'">去支付</a>
+                            </p>
+                        	<p class="pop-link">
+                                <a href="javaScript:void(0)" th:onclick="'cancelOrder(this,'+@{${list.orderId}}+')'">取消订单</a>
+                            </p>
+             </td>
+			<td th:if="${list.ordInfoRespDTO.status=='02'}"><p>已支付</p></td>
+			<td th:if="${list.ordInfoRespDTO.status=='03'}"><p>已失效</p></td>
+			<td th:if="${list.ordInfoRespDTO.status=='04'}"><p>已完成</p></td>
+			<td th:if="${list.ordInfoRespDTO.status=='99'}"><p>已取消</p></td>
 		</tr>
 
 	</tbody>
@@ -55,9 +63,43 @@
 
 	    if (typeof pagerClick === "undefined") {
 	        pagerClick = function (index) {
-	        	myOrderDataList(index);
+	        	myOrderList(index);
 	        }
 	    }
 	    $('#pagerId').pager({callback: pagerClick});
 	</script>
 </div>
+	<!-- Modal -->
+	<div class="modal fade" id="myModalPay" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">选择支付方式</h4>
+				</div>
+				<div class="modal-body">
+					<table class="editTable ">
+						<tr>
+							<td class="Hint"></td>
+							<td width="260">
+								<div class="radio">
+								<input type="hidden" id="orderId">
+									<label> <input type="radio"  checked name="payWay" value="1">支付宝</label> 
+									<label> <input type="radio"  name="payWay" value="2">线下支付</label>
+								</div>
+							</td>
+
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" th:onclick="'toPay()'">确定</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>

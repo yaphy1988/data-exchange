@@ -39,12 +39,20 @@ public class OrdInfoRespDTO extends BaseResponseDTO{
  	    private Long usedAllCount;
    	    private Long belanceAllCount;
  	    private String status;
- 	    private String apiName;//API接口Name
-		public String getApiName() {
-			return apiName;
+ 	    private String serviceName;
+ 	    private String aipServiceId;
+ 	   
+		public String getServiceName() {
+			return serviceName;
 		}
-		public void setApiName(String apiName) {
-			this.apiName = apiName;
+		public void setServiceName(String serviceName) {
+			this.serviceName = serviceName;
+		}
+		public String getAipServiceId() {
+			return aipServiceId;
+		}
+		public void setAipServiceId(String aipServiceId) {
+			this.aipServiceId = aipServiceId;
 		}
 		public String getSubOrder() {
 			return subOrder;

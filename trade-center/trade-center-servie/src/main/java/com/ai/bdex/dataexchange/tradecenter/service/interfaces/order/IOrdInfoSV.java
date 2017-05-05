@@ -38,4 +38,11 @@ public interface IOrdInfoSV {
 	 * @throws Exception
 	 */
 	public List<OrdInfoRespDTO> queryOrderInfoList(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
+	/**
+	 * 取消订单
+	 * @param ordMainInfoReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public int cancelOrderInfo(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
 }

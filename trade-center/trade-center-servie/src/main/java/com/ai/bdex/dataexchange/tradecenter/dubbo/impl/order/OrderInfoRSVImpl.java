@@ -15,7 +15,6 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdLog;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdMainInfoSV;

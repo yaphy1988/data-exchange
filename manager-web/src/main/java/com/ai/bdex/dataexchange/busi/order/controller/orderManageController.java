@@ -1,27 +1,35 @@
 package com.ai.bdex.dataexchange.busi.order.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
 import com.ai.bdex.dataexchange.busi.order.entity.OrdInfoVO;
 import com.ai.bdex.dataexchange.busi.order.entity.OrdMainInfoVO;
+import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderMainInfoRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.alibaba.dubbo.common.utils.StringUtils;
 
 @Controller
 @RequestMapping("/orderManage")
@@ -75,20 +83,6 @@ public class orderManageController {
 //			}
 			ordReqDTO.setPayFlag(PAY_FLAG_SUCCESS);
 			pageInfo = iOrderInfoRSV.queryOrdInfoPage(ordReqDTO);
-			if(!CollectionUtils.isEmpty(pageInfo.getResult())){
-				for(OrdInfoRespDTO ordRespDTO :pageInfo.getResult()){
-					if(AIP_CAT_ID.equals(ordRespDTO.getProductType())){
-						 //根据APIID查找API接口信息
-	                    if(StringUtil.isNotBlank(ordRespDTO.getSkuInfo())){
-	                    	List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(ordRespDTO.getSkuInfo());
-	            			if(CollectionUtils.isNotEmpty(apiServiceList)){
-	            				ordRespDTO.setApiName(apiServiceList.get(0).getServiceName());
-	            			}
-	                    }
-					}
-					
-				}
-			}
 			model.addAttribute("pageInfo", pageInfo);
 		} catch (Exception e) {
 			logger.error("查询我的数据列表失败！原因是：" + e.getMessage());
@@ -140,4 +134,30 @@ public class orderManageController {
    		}
    		return "order/div/myOrderList";
    	}
+   	/**
+	 * 取消订单
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/cancelOrder")
+	@ResponseBody
+	public Map<String,Object> savePageModuleAdInfo(HttpServletRequest request,OrdMainInfoVO ordMainInfoVO){
+		Map<String,Object>  rMap = new HashMap<>();
+		String status = ordMainInfoVO.getOrderStatus();
+		try {
+			OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
+			if(!StringUtils.isBlank(status)){
+				ordMainInfoReqDTO.setOrderStatus(status);
+			}
+			if(StringUtils.isNotEmpty(ordMainInfoVO.getOrderId())){
+				ordMainInfoReqDTO.setOrderId(ordMainInfoVO.getOrderId());
+			}
+			int code=iOrderMainInfoRSV.cancelOrder(ordMainInfoReqDTO);
+			rMap.put("success", true);
+		} catch (Exception e) {
+			rMap.put("success", false);
+			logger.error("保存广告信息出错：" + e.getMessage());
+		}
+		return rMap;
+	}
 }

@@ -15,5 +15,12 @@ public interface IOrderMainInfoRSV {
 	 * @throws Exception
 	 */
 	public PageResponseDTO<OrdMainInfoRespDTO> queryOrdMainInfoPage(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception;
-
+	
+	/**
+	 * 取消订单
+	 * @param ordMainInfoReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public int cancelOrder(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception;
 }

@@ -79,7 +79,7 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 		if(!CollectionUtil.isEmpty(ordInfoList)){
 			for(OrdInfo ordInfo :ordInfoList){
 				OrdInfoRespDTO respDTO = new OrdInfoRespDTO();
-		        ObjectCopyUtil.copyObjValue(respDTO,ordInfo,null,false);
+		        ObjectCopyUtil.copyObjValue(ordInfo,respDTO,null,false);
 		        respDTOList.add(respDTO);
 			}
 		}
@@ -139,5 +139,17 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 		if (StringUtil.isNotBlank(ordInfoReqDTO.getPayFlag())) {
 			criteria.andPayFlagEqualTo(ordInfoReqDTO.getPayFlag());
 		}
+	}
+	public int cancelOrderInfo(OrdInfoReqDTO ordInfoReqDTO) throws Exception{
+		OrdInfo record = new OrdInfo();	
+		OrdInfoExample example = new OrdInfoExample();
+		OrdInfoExample.Criteria criteria = example.createCriteria();
+		if(StringUtil.isNotBlank(ordInfoReqDTO.getOrderId())){
+			criteria.andOrderIdEqualTo(ordInfoReqDTO.getOrderId());
+		}
+		ordInfoReqDTO.setUpdateTime(DateUtil.getNowAsDate());
+        ObjectCopyUtil.copyObjValue(ordInfoReqDTO,record,null,false);
+		int code=ordInfoMapper.updateByExampleSelective(record, example);
+		return code;
 	}
 }

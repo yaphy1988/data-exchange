@@ -17,6 +17,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdMainInfoSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.sequence.SeqUtil;
@@ -147,5 +148,16 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 			criteria.andSourceEqualTo(ordMainInfoReqDTO.getSource());
 		}
 	}
-
+	public int cancelOrderMainInfo(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception {
+		OrdMainInfo ordMainInfo = new OrdMainInfo();
+		OrdMainInfoExample example = new OrdMainInfoExample();
+		OrdMainInfoExample.Criteria criteria = example.createCriteria();
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getOrderId())) {
+			criteria.andOrderIdEqualTo(ordMainInfoReqDTO.getOrderId());
+		}
+		ordMainInfoReqDTO.setUpdateTime(DateUtil.getNowAsDate());
+		ObjectCopyUtil.copyObjValue(ordMainInfoReqDTO, ordMainInfo, null, false);
+		int code = ordMainInfoMapper.updateByExampleSelective(ordMainInfo, example);
+		return code;
+	}
 }

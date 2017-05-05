@@ -2,7 +2,7 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 <div th:replace="~{fragments/syshead :: syshead}"></div>
 <link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
-<head th:remove="all">
+<head>
 	<meta charset="UTF-8">
 	<title>个人中心-我的订单</title>
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
@@ -11,7 +11,7 @@
 	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
-		<script type="text/javascript" src="../../static/js-busi/order/myOrder.js" th:src="@{/js-busi/order/myOrder.js}"></script>
+	<script type="text/javascript" src="../../static/js-busi/order/myOrder.js" th:src="@{/js-busi/order/myOrder.js}"></script>
 	<!--[if lt IE 9]>
 	        <script src="../static/js/respond.min.js" ></script>
 	        <script src="../static/js/html5shiv.min.js" ></script>
@@ -71,8 +71,8 @@
 			</div>
 			
 			<div class="title">非充值服务类订单</div>
-			<div id="myOrderList" th:remove="all">
-            <table class="table table-bordered table-striped table-hover text-center table-th-nowrap">
+			<div id="myOrderList" >
+            <table class="table table-bordered table-striped table-hover text-center table-th-nowrap" th:remove="all">
                 <thead>
                     <tr >
                         <th>序号</th>
@@ -124,7 +124,7 @@
                 </tbody>
             </table>
 
-            <div class="overflow-hidden clearfix">
+            <div class="overflow-hidden clearfix" th:remove="all">
                   <!-- pagerBar -->
                    <div class="pagelist pull-right">
 						<nav aria-label="Page navigation">
@@ -162,7 +162,7 @@
 	<!-- 右边内容 end--> 
 
     <!-- 左边菜单 -->
-	<div class="m_nav" th:remove="all">
+	<div class="m_nav" >
 		<nav class="nav">
 			<ul>
 				<li class="navTit">

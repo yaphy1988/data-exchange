@@ -1,24 +1,24 @@
 var basePath = WEB_ROOT;
 
 $(function(){
-	myOrderList(1);
+	myOrderDataList(1);
 	
 });
 
 
 
 
-function myOrderList(index){
+function myOrderDataList(index){
 	var param={pageNo:index};
 	$.ajax({
-		url:basePath+'/orderManage/myOrderList',
+		url:basePath+'/orderManage/myOrderDataList',
 		cache:false,
 		async:true,
 		dataType:'html',
 		data : param,
 		success:function(data){
-			$('#myOrderList').empty();
-			$('#myOrderList').html(data);
+			$('#tab01').empty();
+			$('#tab01').html(data);
 		}
 	});
 }
