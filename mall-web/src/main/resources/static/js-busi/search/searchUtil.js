@@ -17,8 +17,9 @@ $(function(){
     						html += "<a href='"+WEB_ROOT+"/search' class='more floatR'>更多&nbsp;&gt;</a>";
     					}
     					var result = list.result;
-    					$(result).each(function(i,v){
-    						html += "<a href='"+v.searchUrl+"' target='_blank'>"+v.searchKey+"</a>";
+    					$(result).each(function(i,v){ 
+    						var	searchUrl = WEB_ROOT+"/search?keyWord="+encodeURI(encodeURI(v.searchKey))+"&catFirst=1";
+    						html += "<a href='"+searchUrl+"' target='_blank'>"+v.searchKey+"</a>";
     					});
     					$("#search_hot").html(html);
     				}

@@ -78,9 +78,9 @@ function updateNewsPageInfo(infoId,status){
 function createEditor() {
 
 	var config = {
-		filebrowserImageUploadUrl : "/ck/upload?type=Image",
-		filebrowserUploadUrl :"/ck/upload?type=File",
-		filebrowserFlashUploadUrl :"/ck/upload?type=Flash"
+		filebrowserImageUploadUrl : basePath+ "/ck/upload?type=Image",
+		filebrowserUploadUrl :basePath+ "/ck/upload?type=File",
+		filebrowserFlashUploadUrl :basePath+ "/ck/upload?type=Flash"
 	};
 	ckeditor=CKEDITOR.replace("ckeditor", config);
 	var url = $.trim($('#info_infoUrl').val());

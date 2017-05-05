@@ -27,12 +27,14 @@ jQuery.extend({
 		//create form	
 		var formId = 'jUploadForm' + id;
 		var fileId = 'jUploadFile' + id;
-		var form = jQuery('<form  action="" method="POST" name="' + formId + '" id="' + formId + '" enctype="multipart/form-data"></form>');	
+		var imgsize = $("#"+fileElementId).attr('imgsize');
+		var form = jQuery('<form  action="" method="POST" name="' + formId + '" id="' + formId + '" enctype="multipart/form-data"></form>');
+		jQuery('<input type="hidden" name="imgsize" value="' + imgsize+ '" />').appendTo(form);
 		if(data)
 		{
 			for(var i in data)
 			{
-				jQuery('<input type="hidden" name="' + i + '" value="' + data[i] + '" />').appendTo(form);
+				jQuery('<input type="hidden" name="' + i + '" value="' + data[i] + '" />').appendTo(form);				
 			}			
 		}		
 		var oldElement = jQuery('#' + fileElementId);

@@ -24,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageNewsInfoVO;
+import com.ai.bdex.dataexchange.busi.page.entity.SortContentVO;
+import com.ai.bdex.dataexchange.busi.page.entity.SortInfoVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
@@ -37,6 +39,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
@@ -227,16 +230,12 @@ public class HomePageController {
 	@RequestMapping(value = "/querySortInfo")
 	@ResponseBody
 	public Map<String, Object> querySortInfo(Model model, HttpServletRequest request) {
-		String sortId = request.getParameter("sortId");
 		String sortParentId = request.getParameter("sortParentId");
 		String sortLever = request.getParameter("sortLever");
 		Map<String, Object> rMap = new HashMap<String, Object>();
 		try {
 			SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
 			sortInfoRespDTO.setStatus(STATUS_VALID);
-			if (!StringUtils.isBlank(sortId)) {
-				sortInfoRespDTO.setSortId(Integer.valueOf(sortId));
-			}
 			if (!StringUtils.isBlank(sortParentId)) {
 				sortInfoRespDTO.setParentSortId(Integer.valueOf(sortParentId));
 			}
@@ -244,15 +243,44 @@ public class HomePageController {
 				sortInfoRespDTO.setSortLevel(sortLever);
 			}
 			List<SortInfoRespDTO> sortInfos = iPageDisplayRSV.querySortInfos(sortInfoRespDTO);
-			if("2".equals(sortLever) && !StringUtils.isBlank(sortParentId)){
-				SortInfoRespDTO sortInfoRespDTO2 = new SortInfoRespDTO();
-				sortInfoRespDTO2.setSortId(Integer.valueOf(sortParentId));
-				sortInfoRespDTO2.setStatus(STATUS_VALID);
-				List<SortInfoRespDTO> infos = iPageDisplayRSV.querySortInfos(sortInfoRespDTO2);
-				rMap.put("infos", infos.get(0));
+			List<SortInfoVO>  sortInfoResult = new ArrayList<>();
+			if(!CollectionUtils.isEmpty(sortInfos)){
+				
+				SortInfoRespDTO sortInfoDTO = new SortInfoRespDTO();
+				for(SortInfoRespDTO infoRespDTO : sortInfos){
+					//copy菜单内容Resp to VO
+					SortInfoVO sortInfoVO = new SortInfoVO();
+					BeanUtils.copyProperties(infoRespDTO, sortInfoVO);
+					sortInfoResult.add(sortInfoVO);
+					SortContentVO sortContentVO = new SortContentVO();
+					//copy菜单内容
+					SortContentRespDTO contentRespDTO = infoRespDTO.getSortContentRespDTO();
+					BeanUtils.copyProperties(contentRespDTO, sortContentVO);
+					sortInfoVO.setSortContentVO(sortContentVO);
+					//查询二级子菜单
+					sortInfoDTO.setParentSortId(infoRespDTO.getSortId());
+					sortInfoDTO.setSortLevel("2");
+					sortInfoDTO.setStatus(STATUS_VALID);
+					List<SortInfoRespDTO> subSortInfos = iPageDisplayRSV.querySortInfos(sortInfoDTO);
+					if(!CollectionUtils.isEmpty(subSortInfos)){
+						List<SortInfoVO> subSortInfoVos = new ArrayList<>();
+						for(SortInfoRespDTO respDTO : subSortInfos){
+							//copy菜单内容Resp to VO
+							SortInfoVO sortInfoVO2 = new SortInfoVO();
+							BeanUtils.copyProperties(respDTO, sortInfoVO2);
+							//copy菜单内容
+							SortContentVO sortContentVO2 = new SortContentVO();
+							SortContentRespDTO contentRespDTO2 = respDTO.getSortContentRespDTO();
+							BeanUtils.copyProperties(contentRespDTO2, sortContentVO2);
+							sortInfoVO2.setSortContentVO(sortContentVO2);
+							subSortInfoVos.add(sortInfoVO2);
+						}
+						sortInfoVO.setSubSortInfoList(subSortInfoVos);
+					}
+				}
 			}
 			rMap.put("success", true);
-			rMap.put("sortInfos", sortInfos);
+			rMap.put("sortInfos", sortInfoResult);
 		} catch (Exception e) {
 			rMap.put("success", false);
 			log.error("查询商品分类信息异常：" + e.getMessage());
@@ -495,21 +523,13 @@ public class HomePageController {
 	private String company(){ 
 		String viewName = "/companyprofile"; 
 		return viewName;	 
-	}
+	} 
 	/**
-	 * 新闻动态
+	 * 联系我们
 	 */
-	@RequestMapping(value="/companynews")
-	private String companynews(){ 
-		String viewName = "/companynews"; 
-		return viewName;	 
-	}
-	/**
-	 * 常见问题
-	 */
-	@RequestMapping(value="/commonproblem")
-	private String commonproblem(){ 
-		String viewName = "/commonproblem"; 
+	@RequestMapping(value="/contactouer")
+	private String contactouer(){ 
+		String viewName = "/contactouer"; 
 		return viewName;	 
 	}
 	/**

@@ -23,40 +23,9 @@ import java.util.Map;
 @EnableDubboConfiguration
 public class ManagerWebApplication {
 
-	private final static String ignoreSuffix = ".ico,.swf,.flv,.png,.jpg,.jpeg,.gif,.css,.js,.html,.htm,.eot,.svg,.ttf,.woff,.mp4,.woff2,.map";
-
 	public static void main(String[] args) {
 		ApplicationContext context = SpringApplication.run(ManagerWebApplication.class, args);
 		Utils.setCtx(context);
 		System.out.println("-----------------恭喜你启动ManagerWeb成功了！-----------------");
-	}
-
-	/**
-	 * session过滤器
-	 * @return
-	 */
-	@Bean
-	public FilterRegistrationBean SessionFilterRegistrationBean(){
-		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new CacheSessionFilter());
-		filterRegistrationBean.setOrder(1);
-		filterRegistrationBean.setEnabled(true);
-		filterRegistrationBean.addUrlPatterns("/*");
-		filterRegistrationBean.addInitParameter("ignore_suffix", ignoreSuffix);
-		return filterRegistrationBean;
-	}
-
-	/**
-	 * 登陆过滤器
-	 * @return
-     */
-	@Bean
-	public FilterRegistrationBean filterRegistrationBean(){
-		FilterRegistrationBean filterRegistrationBean = new FilterRegistrationBean(new LoginAuthFilter());
-		filterRegistrationBean.setOrder(2);
-		filterRegistrationBean.setEnabled(false);
-		filterRegistrationBean.addUrlPatterns("/*");
-		filterRegistrationBean.addInitParameter("ignore_suffix", ignoreSuffix);
-		filterRegistrationBean.addInitParameter("login_page", "http://localhost:8081/login/pageInit");
-		return filterRegistrationBean;
 	}
 }

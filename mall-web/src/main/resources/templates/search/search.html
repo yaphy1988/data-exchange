@@ -87,9 +87,10 @@
 		<div class="gl_list">
 			<div class="filter clearfix">
 				<ul>
-					<li class="active sortCondition" sortField="hotDegree"><a href="javascript:void(0)" >综合<i class="glyphicon glyphicon-arrow-down"></i></a></li>
-					<li sortField="shelveTime" class="sortCondition"><a href="javascript:void(0)">最新<i class="glyphicon"></i></a></li>
-					<li sortField="gdsSale" class="sortCondition"><a href="javascript:void(0)">最热<i class="glyphicon"></i></a></li>
+					<li th:if="${searchVO.catFirst == 1}" class="active sortCondition" sortField="hotDegree"><a href="javascript:void(0)" >综合<i class="glyphicon glyphicon-arrow-down"></i></a></li>
+					<li th:if="${searchVO.catFirst == 2} or ${searchVO.catFirst == 3}" sortField="shelveTime" class="active sortCondition"><a href="javascript:void(0)">最新<i class="glyphicon glyphicon-arrow-down"></i></a></li>
+					<li th:if="${searchVO.catFirst == 1}" sortField="shelveTime" class="sortCondition"><a href="javascript:void(0)">最新<i class="glyphicon"></i></a></li>
+					<li th:if="${searchVO.catFirst == 1}" sortField="gdsSale" class="sortCondition"><a href="javascript:void(0)">最热<i class="glyphicon"></i></a></li>
 				</ul>
 				<p class="pull-right pr10">为您找到<b class="col_orange"><font id="numFound">1234</font></b>个结果</p>
 			</div>

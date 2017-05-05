@@ -1,5 +1,6 @@
 var ckeditPackage,ckeditDataDetail,ckeditDataExample,ckeditCase,ckeditCompany;
 var saveValid=true;
+var basePath = WEB_ROOT;
 $(function(){
 	var isEdit = $("#isEdit").val();
 	var catFirst = $("#catFirst").val();
@@ -776,9 +777,9 @@ function createEditor(id) {
 	// html
 
 	var config = {
-		filebrowserImageUploadUrl : "/ck/upload?type=Image",
-		filebrowserUploadUrl :"/ck/upload?type=File",
-		filebrowserFlashUploadUrl :"/ck/upload?type=Flash"
+		filebrowserImageUploadUrl :basePath+ "/ck/upload?type=Image",
+		filebrowserUploadUrl :basePath+"/ck/upload?type=File",
+		filebrowserFlashUploadUrl :basePath+"/ck/upload?type=Flash"
 	};
 	if(id=="editorPackage"){
 		ckeditPackage=CKEDITOR.replace(id, config);

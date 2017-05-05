@@ -31,12 +31,30 @@
 				<li >
 					<a href="">
 						<i class=""></i>
+						用户中心
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li >
+							<a th:href="@{/password/modify}">密码修改</a>
+						</li>
+						<li >
+							<a th:href="@{/infomanager/pageInit}">资料修改</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
 						企业认证
 						<span class="caret"></span>
 					</a>
 					<ol class="infoItem">
 						<li >
-							<a th:href="@{/authencheck/pageInit}"></i>认证审核</a>
+							<a th:href="@{/authencheck/pageInit}">认证审核</a>
+						</li>
+						<li >
+							<a th:href="@{/authenapply/userinfo}">认证申请</a>
 						</li>
 					</ol>
 				</li>
