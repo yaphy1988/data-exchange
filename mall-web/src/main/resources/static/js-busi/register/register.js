@@ -1,7 +1,7 @@
 
 function checkstaffId(obj){
 	var staffId = $(obj).val();
-	var reg = /^[a-zA-Z0-9]$/;	
+	var reg = /^[A-Za-z0-9]+$/;///^[a-zA-Z0-9]$/;
 	if(!staffId){
 		showwarm('staffIdDiv','用户ID不能为空');
 		return;
