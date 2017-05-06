@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
@@ -25,6 +27,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.CacheUtil;
+import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
@@ -66,6 +69,9 @@ public class OrderController {
 		//套餐信息
 		int skusid =  Integer.parseInt(request.getParameter("skuid"));
 		String skuname =  request.getParameter("skuname"); 
+	    //图片ID
+		String gdsvfsid =  request.getParameter("gdsvfsid"); 
+		String gdsvfsurl = "";
 		//获取商品的价格和图
 		GdsSkuRespDTO gdsSkuRespDTO = new GdsSkuRespDTO(); 
 		GdsSkuReqDTO dsSkuReqDTO = new GdsSkuReqDTO();
@@ -74,13 +80,23 @@ public class OrderController {
 		dsSkuReqDTO.setStatus(STATUS_VALID);
 		List<GdsSkuRespDTO>  listGdsSku =new ArrayList<>();
 		try { 
-			listGdsSku = iGdsSkuRSV.queryGdsSkuList(dsSkuReqDTO);
+			//价格
+			listGdsSku = iGdsSkuRSV.queryGdsSkuList(dsSkuReqDTO); 
+			
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}
+		try { 
+			//图片
+			gdsvfsurl= ImageUtil.getImageUrl(gdsvfsid + "_80x80"); 
+		} catch (Exception e) {
+		    e.printStackTrace();
+		} 
+		  
 		if(!CollectionUtil.isEmpty(listGdsSku) )
 		{
 			gdsSkuRespDTO = listGdsSku.get(0);
+			//图片 
 		}
 	   /*	long gdsprice = 1;//单位分
 		String vsfid = "";//图片ID 
@@ -91,6 +107,7 @@ public class OrderController {
 	    request.setAttribute("skuInfo",gdsSkuRespDTO);
 	    request.setAttribute("gdsname",gdsname);
 	    request.setAttribute("skuname",skuname);
+	    request.setAttribute("gdsvfsurl",gdsvfsurl); 
 		//返回预购界面
 		ModelAndView modelAndView = new ModelAndView("shopcart/shoppint_cart");
 		return modelAndView; 

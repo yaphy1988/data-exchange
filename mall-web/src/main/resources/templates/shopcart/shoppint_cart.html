@@ -9,11 +9,11 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <title>广州数据中心</title>
-    <link rel="icon" type="../static/image/png" href="../static/images/favicon.png"  th:remove="all">
-    <link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
-    <link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-    <link rel="stylesheet" href="../static/css/index.css" th:remove="all">
-    <link rel="stylesheet" href="../static/css/shoppint_cart.css" th:href="@{/css/shoppint_cart.css}">  <!-- 购物车/汇款 tangyk -->
+    <link rel="icon" type="../../static/image/png" href="../static/images/favicon.png"  th:remove="all">
+    <link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
+    <link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
+    <link rel="stylesheet" href="../../static/css/index.css" th:remove="all">
+    <link rel="stylesheet" href="../../static/css/shoppint_cart.css" th:href="@{/css/shoppint_cart.css}">  <!-- 购物车/汇款 tangyk -->
     <script src="../../static/js/jquery-1.12.4.js" th:remove="all"></script>
     <script src="../../static/component/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
     <script src="../../static/js-busi/page/homePage.js" th:src="@{/js-busi/page/homePage.js}"></script>
@@ -51,8 +51,7 @@
     <!--标志-->
     <div class="logo pull-left">
         <a href="/homePage/pageInit" target="_blank"><img src="../../static/images/logo.png" title="广州数据中心" th:src="@{/images/logo.png}"></a>
-<!--         <div class="logo floatL"><img src="../../static/images/logo.png" title="广州数据中心" th:src="@{/images/logo.png}"></div>
- -->    </div>
+     </div>
     <!--步骤-->
     <div class="shopping_cart_bg1 pull-right" >
         <a href="#"><font color="#ec6000">1、我的购物车</font></a>
@@ -69,9 +68,7 @@
                     <a class="serviceQQ" data-toggle="modal" data-target="#myQQModal" >
                          <img src="../static/images/QQtalk.png"  border="0" th:src="@{/images/QQtalk.png}">
                     </a>
-            </div>
-        
-
+            </div> 
             <table  class="cart_list  text-center" width="100%" border="0">
                         <tbody>
                              <tr>
@@ -81,8 +78,7 @@
                                 <th>数量</th>
                                 <th>金额</th>
                             </tr>
-                        </tbody>
-                        
+                        </tbody> 
                         <tbody class="tbody_line" th:remove="all">
                             <tr >
                                 <td width="39" >
@@ -118,33 +114,29 @@
                         <tbody class="tbody_line" >
                             <tr >
                                 <td width="39" >
-                                    <input checked="checked"  type="checkbox">
+                                    <input checked="checked"  type="checkbox"  disabled="disabled">
                                 </td>
                                 <td width="39" >
                                     <p class="cart_img">
                                       <span>
-                                            <a target="_blank" href="#"><img src="images/0771A3A26900101.jpg"></a>
+                                            <a  href=""   th:href="'/goods/details/'+${skuInfo.gdsId}+'-'" ><img src="images/0771A3A26900101.jpg" th:src="${gdsvfsurl}"></a>
                                        </span>
                                     </p>
                                 </td>
                                 <td width="200">
-<!--                                     <p ><a target="_blank" href="#" class="cart_img_link">${gdsname}</a></p>
- -->                                    <p ><a target="_blank" href="#" class="cart_img_link">1111</a></p>
-                                    
-                                </td>
-                                <td th:text="${skuInfo.packTimes} / ${skuInfo.packPrice}" >
-                                 <b><span th:text="${skuInfo.packTimes}">70</span></b>   
-                                </td>
-                                <td> <b><span th:text="${skuInfo.packPrice}" >70</span></b>     </td>
-                                <td>
-                                    <i class="reduce"></i> 
-                                    <input  value="1" maxlength="5" class="val"  type="text">
-                                    <i class="add"></i>
+                                <p ><a href="#"  th:href="'/goods/details/'+${skuInfo.gdsId}+'-'"  class="cart_img_link" th:text="${gdsname}">商品名称</a></p>
                                 </td>
                                 <td>
-<!--                            <b><span id="allmoney"  name='总价'>${skuInfo.packPrice}</span></b>
- --> 
-                                    <b><span id="allmoney"  name='总价'  th:text="${skuInfo.packPrice}">70</span></b>
+                                 <b><span th:text="${skuInfo.packPrice}">套餐名称</span><span>/</span><span th:text="${skuInfo.packTimes}">套餐次数</span><span>次</span></b>   
+                                </td>
+                                <td> <b><span th:text="${skuInfo.packPrice}" >单价</span></b>     </td>
+                                <td>
+                                    <i class="reduce"  th:onclick="'javascript:reduce();'"></i> 
+                                    <input  value="1" maxlength="5" class="val"  type="text" id="gdscount">
+                                    <i class="add" th:onclick="'javascript:addnum();'"></i>
+                                </td>
+                                <td> 
+                                    <b><span id="allmoney"  name='总价'  th:text="${skuInfo.packPrice}">总价 70</span></b>
                                 </td>
                              </tr>
                         </tbody>
@@ -161,9 +153,7 @@
               <td align="right">
                   <div  class="total pull-right">
                       <span class="finalAmount">
-                          共
-                          <font>2</font>
-                           件商品 
+                                                                  共  <font>2</font>  件商品 
                       </span>
                       <span class="finalPrice"><span class="finalText">总计:</span><span>￥1835</span></span>
                   </div>
@@ -183,6 +173,29 @@
     })
     </script>
 </section>
+
+<!-- 支付提示 弹出框 -->
+<div class="modal fade" id="prompt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;top:-10px;overflow: scroll !important;" >
+  <div class="modal-dialog" role="document" style="width:400px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">支付提示</h4>
+      </div>
+      <div class="modal-body">
+              <!-- 内容 -->
+              <div class="blackfont text-center p20"> 
+                    <p class="col_orange mb20">您的订单已生成，请您前往支付宝页面进行付款。</p>
+                    <a href="" class="btn btn-primary btn-m mr10" >遇见问题</a>
+                    <a href="" class="btn btn-primary btn-g" >付款成功</a>
+              </div>
+               <!-- 内容 end-->
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 支付提示 弹出框 end-->
 </div>
 
 <!-- 底部 -->
@@ -231,27 +244,5 @@
     <div class="copyright"> © 2016 版权所有 亚信科技(中国)有限公司 京ICP备11005544号-15 京公网安备 11010802022324号</div>
 </div>
 
-<!-- 支付提示 弹出框 -->
-<div class="modal fade" id="prompt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;top:-10px;overflow: scroll !important;" >
-  <div class="modal-dialog" role="document" style="width:400px">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title" id="myModalLabel">支付提示</h4>
-      </div>
-      <div class="modal-body">
-              <!-- 内容 -->
-              <div class="blackfont text-center p20"> 
-                    <p class="col_orange mb20">您的订单已生成，请您前往支付宝页面进行付款。</p>
-                    <a href="" class="btn btn-primary btn-m mr10" >遇见问题</a>
-                    <a href="" class="btn btn-primary btn-g" >付款成功</a>
-              </div>
-               <!-- 内容 end-->
-
-      </div>
-    </div>
-  </div>
-</div>
-<!-- 支付提示 弹出框 end-->
 </body>
 </html>
