@@ -7,6 +7,7 @@ import com.ai.bdex.dataexchange.busi.gds.entity.*;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.*;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.*;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
@@ -338,7 +339,7 @@ public class GdsController {
         HttpSession session = request.getSession();
 
         try {
-            OrdInfoRespDTO ordInfoRespDTO = new OrdInfoRespDTO();
+        	OrdInfoReqDTO ordInfoRespDTO = new OrdInfoReqDTO();
             ordInfoRespDTO.setGdsId(gdsId);
             ordInfoRespDTO.setSkuId(skuId);
             ordInfoRespDTO.setStaffId(StaffUtil.getStaffId(session));
