@@ -16,11 +16,11 @@ function deleteGoods()
 {
      //跳转到首页
 	 self.location=basePath+"homePage/pageInit"; 
- }
-function reducenum()
+}
+function reduce()
 {
 //减少数量
-	 var num =  $("#gdscount").val();
+	 var num =  parseInt($("#gdscount").val());
 	 if(num > 1)
 	 {
 		 $("#gdscount").val(num - 1);
@@ -31,8 +31,8 @@ function reducenum()
  function addnum()
  {
     //增加数量
-	var num =  $("#gdscount").val(); 
-	$("#gdscount").val(num + 1);
+	 var num =  parseInt($("#gdscount").val());
+  	$("#gdscount").val(num + 1);
 	 //提交到后台
 	 WEB.msg.info("提示","后台去更新数量:"+$("#gdscount").val());
  }
