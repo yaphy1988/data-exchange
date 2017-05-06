@@ -92,7 +92,7 @@ public class OrderController {
 	    request.setAttribute("gdsname",gdsname);
 	    request.setAttribute("skuname",skuname);
 		//返回预购界面
-		ModelAndView modelAndView = new ModelAndView("shoppint_cart");
+		ModelAndView modelAndView = new ModelAndView("shopcart/shoppint_cart");
 		return modelAndView; 
 	}
 	  //修改预定的数据的数量，增加或者减少

@@ -13,12 +13,12 @@
     <link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
     <link rel="stylesheet" href="../static/css/global.css" th:remove="all">
     <link rel="stylesheet" href="../static/css/index.css" th:remove="all">
-    <link rel="stylesheet" href="../static/css/shoppint_cart.css" th:remove="all">  <!-- 购物车/汇款 tangyk -->
-    <script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
-    <script src="../static/component/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
-    <script src="../static/js-busi/page/homePage.js" th:src="@{/js-busi/page/homePage.js}"></script>
-    <script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
-    <script src="../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
+    <link rel="stylesheet" href="../static/css/shoppint_cart.css" th:href="@{/css/shoppint_cart.css}">  <!-- 购物车/汇款 tangyk -->
+    <script src="../../static/js/jquery-1.12.4.js" th:remove="all"></script>
+    <script src="../../static/component/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
+    <script src="../../static/js-busi/page/homePage.js" th:src="@{/js-busi/page/homePage.js}"></script>
+    <script src="../../static/js/util.js" th:src="@{/js/util.js}"></script>
+    <script src="../../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
      <!--[if lt IE 9]>
             <script src="../static/js/respond.min.js" ></script>
             <script src="../static/js/html5shiv.min.js" ></script>
@@ -45,8 +45,9 @@
     </div>
 </div>
 
-
-<div class="wrap1200 topCommon clearfix">
+<div class="wrap1200" layout:fragment="screen_content">
+<!--中间区域-->
+<div class="wrap1200 topCommon clearfix" >
     <!--标志-->
     <div class="logo pull-left">
         <a href="index.html"><img src="../static/images/logo.png" /></a>
@@ -59,8 +60,6 @@
         <a href="#"><font>3、支付</font></a>
     </div>
 </div>
-
-<!--中间区域-->
 <section class="wrap1200">
     <h1 class="cart_title">我的数据购买：</h1>
     <ol>
@@ -186,7 +185,7 @@
     })
     </script>
 </section>
-
+</div>
 
 <!-- 底部 -->
 <div class="footer" th:remove="all">
