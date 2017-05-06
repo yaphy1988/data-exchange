@@ -21,9 +21,10 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
     <!-- thymeleaf版本调整为3.0 -->
-    <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
-    <thymeleaf-layout-dialect.version>2.1.2</thymeleaf-layout-dialect.version>
+    <thymeleaf.version>3.0.5.RELEASE</thymeleaf.version>
+    <thymeleaf-layout-dialect.version>2.2.1</thymeleaf-layout-dialect.version>
     <thymeleaf-extras-java8time.version>3.0.0.RELEASE</thymeleaf-extras-java8time.version>
+    <assertj-core-version>3.6.2</assertj-core-version>
   </properties>
 
   <dependencies>
