@@ -84,7 +84,7 @@
                             </tr>
                         </tbody>
                         
-                        <tbody class="tbody_line" >
+                        <tbody class="tbody_line" th:remove="all">
                             <tr >
                                 <td width="39" >
                                     <input checked="checked"  type="checkbox">
@@ -98,6 +98,7 @@
                                 </td>
                                 <td width="200">
                                     <p ><a target="_blank" href="#" class="cart_img_link">三星 SHE-C10立体声耳道式耳机</a></p>
+                                     <p ><a target="_blank" href="#" class="cart_img_link">三星 SHE-C10立体声耳道式耳机</a></p>
                                 </td>
                                 <td >
                                     10000次
@@ -128,21 +129,25 @@
                                     </p>
                                 </td>
                                 <td width="200">
-                                    <p ><a target="_blank" href="#" class="cart_img_link">三星 SHE-C10立体声耳道式耳机</a></p>
+<!--                                     <p ><a target="_blank" href="#" class="cart_img_link">${gdsname}</a></p>
+ -->                                    <p ><a target="_blank" href="#" class="cart_img_link">1111</a></p>
+                                    
                                 </td>
-                                <td >
-                                    10000次
+                                <td >70
+                                  <!--  ${skuInfo.packTimes} -->
                                 </td>
-                                <td>
-                                     <b><span >￥70</span></b>
-                                </td>
+                                <td> <b><span >70</span></b> 
+<!--                                      <b><span >${skuInfo.packPrice}</span></b>
+ -->                                </td>
                                 <td>
                                     <i class="reduce"></i> 
                                     <input  value="1" maxlength="5" class="val"  type="text">
                                     <i class="add"></i>
                                 </td>
                                 <td>
-                                    <b><span >￥70</span></b>
+<!--                            <b><span id="allmoney"  name='总价'>${skuInfo.packPrice}</span></b>
+ --> 
+                                    <b><span id="allmoney"  name='总价'>70</span></b>
                                 </td>
                              </tr>
                         </tbody>
