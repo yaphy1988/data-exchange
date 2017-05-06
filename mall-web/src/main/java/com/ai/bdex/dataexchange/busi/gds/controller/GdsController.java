@@ -7,8 +7,11 @@ import com.ai.bdex.dataexchange.busi.gds.entity.*;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.*;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.*;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.CollectionUtil;
@@ -23,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,6 +57,8 @@ public class GdsController {
     private IGdsSkuRSV iGdsSkuRSV;
     @DubboConsumer(timeout = 30000)
     private IServiceMessageRSV iServiceMessageRSV;
+    @DubboConsumer
+    private IOrderInfoRSV iOrderInfoRSV;
 
     @RequestMapping(value = "/details/{gdsId}-{skuId}")
     public String pageInit(HttpServletRequest request, HttpServletResponse response, @PathVariable Integer gdsId,@PathVariable Integer skuId){
@@ -327,10 +333,29 @@ public class GdsController {
 
     @RequestMapping(value = "/applyDataValidate")
     @ResponseBody
-    public AjaxJson applyDataValidate(HttpServletRequest request,HttpServletResponse response){
+    public AjaxJson applyDataValidate(HttpServletRequest request, HttpServletResponse response,@PathVariable Long gdsId,@PathVariable Long skuId){
         AjaxJson ajaxJson = new AjaxJson();
+        HttpSession session = request.getSession();
 
-        ajaxJson.setSuccess(true);
+        try {
+            OrdInfoRespDTO ordInfoRespDTO = new OrdInfoRespDTO();
+            ordInfoRespDTO.setGdsId(gdsId);
+            ordInfoRespDTO.setSkuId(skuId);
+            ordInfoRespDTO.setStaffId(StaffUtil.getStaffId(session));
+            ordInfoRespDTO.setPayFlag("1");
+            List<OrdInfoRespDTO> list = iOrderInfoRSV.queryOrderByStaff(ordInfoRespDTO);
+            if (!CollectionUtil.isEmpty(list)){
+                ajaxJson.setSuccess(false);
+                ajaxJson.setErrorCode("1");
+            }else{
+                ajaxJson.setSuccess(true);
+            }
+        }catch (Exception e){
+            log.error("查询是否购买过商品异常：",e);
+            ajaxJson.setSuccess(false);
+            ajaxJson.setErrorCode("0");
+        }
+
         return ajaxJson;
     }
 

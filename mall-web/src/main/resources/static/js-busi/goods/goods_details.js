@@ -83,7 +83,13 @@ function applyData(obj) {
                 if (jsonObj.success){
                     window.location.href = basePath + "/order/gdstmpsavesession?gdsid="+gdsId+"&skuid="+skuId+"&gdsname="+gdsName+"&skuname="+skuName
                 }else{
-
+                    if (jsonObj.errorCode == "0"){
+                        WEB.msg.info("提示","系统判断是否购买过该商品异常！")
+                    }else if (jsonObj.errorCode == "1"){
+                        WEB.msg.info("提示","您已订购套餐，是否继续订购",function () {
+                            window.location.href = basePath + "/order/gdstmpsavesession?gdsid="+gdsId+"&skuid="+skuId+"&gdsname="+gdsName+"&skuname="+skuName
+                        })
+                    }
                 }
             }else {
                 WEB.msg.info("系统错误，请联系管理员！");
