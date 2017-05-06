@@ -1,12 +1,15 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.impl.gds;
 
+import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsSku;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsSkuSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.paas.utils.CollectionUtil;
+import com.ai.paas.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -25,6 +28,8 @@ public class GdsSkuRSVImpl implements IGdsSkuRSV {
 
     @Resource
     private IGdsSkuSV iGdsSkuSV;
+    @Resource
+    private IGdsInfoSV iGdsInfoSV;
 
     @Override
     public List<GdsSkuRespDTO> queryGdsSkuList(GdsSkuReqDTO gdsSkuReqDTO) throws Exception {
@@ -38,6 +43,10 @@ public class GdsSkuRSVImpl implements IGdsSkuRSV {
                 for (GdsSku gdsSku : gdsSkuList){
                     GdsSkuRespDTO gdsSkuRespDTO = new GdsSkuRespDTO();
                     ObjectCopyUtil.copyObjValue(gdsSku,gdsSkuRespDTO,null,false);
+                    GdsInfo gdsInfo = iGdsInfoSV.queryGdsInfoById(gdsSku.getGdsId());
+                    if (gdsInfo!=null){
+                        gdsSkuRespDTO.setGdsPic(gdsInfo.getGdsPic());
+                    }
 //                    BeanUtils.copyProperties(gdsSku,gdsSkuRespDTO);
                     gdsSkuRespDTOList.add(gdsSkuRespDTO);
                 }
