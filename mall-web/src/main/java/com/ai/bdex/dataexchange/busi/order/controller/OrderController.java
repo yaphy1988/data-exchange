@@ -70,7 +70,7 @@ public class OrderController {
 		int skusid =  Integer.parseInt(request.getParameter("skuid"));
 		String skuname =  request.getParameter("skuname"); 
 	    //图片ID
-		String gdsvfsid =  request.getParameter("gdsvfsid"); 
+		String gdsvfsid =  "";
 		String gdsvfsurl = "";
 		//获取商品的价格和图
 		GdsSkuRespDTO gdsSkuRespDTO = new GdsSkuRespDTO(); 
@@ -82,25 +82,18 @@ public class OrderController {
 		try { 
 			//价格
 			listGdsSku = iGdsSkuRSV.queryGdsSkuList(dsSkuReqDTO); 
-			
 		} catch (Exception e) {
 		    e.printStackTrace();
-		}
-		try { 
-			//图片
-			gdsvfsurl= ImageUtil.getImageUrl(gdsvfsid + "_80x80"); 
-		} catch (Exception e) {
-		    e.printStackTrace();
-		} 
-		  
+		}  
 		if(!CollectionUtil.isEmpty(listGdsSku) )
 		{
 			gdsSkuRespDTO = listGdsSku.get(0);
 			//图片 
-		}
-	   /*	long gdsprice = 1;//单位分
-		String vsfid = "";//图片ID 
-       */        
+			gdsvfsid = gdsSkuRespDTO.getGdsPic(); 
+			if(!StringUtil.isBlank(gdsvfsid)){
+				gdsvfsurl= ImageUtil.getImageUrl(gdsvfsid + "_80x80");  
+			}
+		} 
 		Object obj = new Object();
 		//每次进来都是讲session赋值为新的数据
 		// CacheUtil.addItem(staff_id, gdsSkuRespDTO);
