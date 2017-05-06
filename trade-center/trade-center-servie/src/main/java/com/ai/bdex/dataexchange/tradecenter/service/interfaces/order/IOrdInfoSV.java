@@ -14,8 +14,8 @@ public interface IOrdInfoSV {
 
 	public OrdInfo queryOrderDetail(OrdInfo ordInfo) throws Exception;
 
-	// 我的所有子订单
-	public List<OrdInfo> queryOrderByStaff(OrdInfo ordInfo) throws Exception;
+	// 我的所有子订单-提供给商品调用
+	public List<OrdInfoRespDTO> queryOrderByStaff(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
 
 	// 商品投诉
 	public List<OrdInfo> queryOrderByStaffGds(OrdInfo ordInfo) throws Exception;

@@ -47,18 +47,21 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 			return ordInforeturn;	 
 	   }
 	   //我的所有子订单
-	   public List<OrdInfo> queryOrderByStaff(OrdInfo ordInfo) throws Exception{
+	   public List<OrdInfoRespDTO> queryOrderByStaff(OrdInfoReqDTO ordInfoReqDTO) throws Exception{
 		      OrdInfoExample example = new OrdInfoExample();
 			  OrdInfoExample.Criteria criteria = example.createCriteria(); 
 				   //订单类型，我的订单中，渠道商不能查到后场创建的订单
-			  if(ordInfo.getOrderId() != "0"){
-					criteria.andOrderIdEqualTo(ordInfo.getOrderId());
-			  }  
-					//订单状态，是否支付
-			   if(ordInfo.getStatus() != null){
-						criteria.andStatusEqualTo(ordInfo.getStatus());
-			   } 
-				return ordInfoMapper.selectByExample(example);	
+			  initCriteria(criteria,ordInfoReqDTO);
+			  List<OrdInfo> ordInfoList=ordInfoMapper.selectByExample(example);
+			  List<OrdInfoRespDTO> respDTOList = new ArrayList<>();
+			  if(!CollectionUtil.isEmpty(ordInfoList)){
+				  for(OrdInfo ordInfo:ordInfoList){
+					  OrdInfoRespDTO respDTO = new OrdInfoRespDTO();
+				      ObjectCopyUtil.copyObjValue(ordInfo,respDTO,null,false);
+				      respDTOList.add(respDTO);
+				  }
+			  }
+			return respDTOList;	
 	   }
        //商品投诉 -- 根据已支付的数据。并且不能在投诉表中出现过的数据进行投诉。
 	   public List<OrdInfo> queryOrderByStaffGds(OrdInfo ordInfo) throws Exception{

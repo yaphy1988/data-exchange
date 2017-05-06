@@ -1,10 +1,12 @@
 package com.ai.bdex.dataexchange.busi.order.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -26,29 +28,27 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderMainInfoRSV;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ChnlInvoiceTaxDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqInvoiceTaxDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IChnlInvoiceTaxRSV;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.alibaba.dubbo.common.utils.StringUtils;
 
 /**
- * 订单管理
+ * 发票管理
  * @author win8
  *
  */
 @Controller
-@RequestMapping("/orderManage")
-public class orderManageController {
+@RequestMapping("/invoiceManage")
+public class invoiceManageController {
     /**
      * 记录日志
      */
     private final Log logger = LogFactory.getLog(getClass());
-	private final static String PAY_FLAG_SUCCESS = "1";// 已支付
-    private final static String AIP_CAT_ID = "1";//aip的catId
-    private final static String CUSTOM_CAT_ID = "2";//定制需求catId
-    private final static String SOLUTION_CAT_ID = "3";//解决方案catId
-    private final static Integer PAGE_SIZE = 10;//页数
-    private final static String ORDER_TYPE_COMMON = "10";//普通订单
 
 	@DubboConsumer(timeout = 30000)
 	private IOrderInfoRSV iOrderInfoRSV;
@@ -56,6 +56,9 @@ public class orderManageController {
     private IOrderMainInfoRSV iOrderMainInfoRSV;
     @DubboConsumer
     private IAipServiceInfoRSV iAipServiceInfoRSV;
+	
+	@DubboConsumer
+	private IChnlInvoiceTaxRSV iChnlInvoiceTaxRSV;
     
     /**
      * 我的数据
@@ -69,76 +72,26 @@ public class orderManageController {
         return "mydata";
     }
     /**
-	 * 我的数据
-	 * 
-	 * @param model
-	 * @param searchVO
-	 * @return
-	 */
-	@RequestMapping(value = "/myOrderDataList")
-	public String myOrderData(Model model, OrdInfoVO ordInfoVO) {
-		try {
-			PageResponseDTO<OrdInfoRespDTO> pageInfo = new PageResponseDTO<OrdInfoRespDTO>();
-			OrdInfoReqDTO ordReqDTO = new OrdInfoReqDTO();
-			ordReqDTO.setPageNo(ordInfoVO.getPageNo());
-//			if(ordInfoVO.getPageSize()!=null||ordInfoVO.getPageSize()!=0){
-//				ordReqDTO.setPageSize(ordInfoVO.getPageSize());
-//			}else{
-				ordReqDTO.setPageSize(2);
-//			}
-			ordReqDTO.setPayFlag(PAY_FLAG_SUCCESS);
-			pageInfo = iOrderInfoRSV.queryOrdInfoPage(ordReqDTO);
-			model.addAttribute("pageInfo", pageInfo);
-		} catch (Exception e) {
-			logger.error("查询我的数据列表失败！原因是：" + e.getMessage());
-		}
-		return "order/div/myOrderData";
-	}
-	 /**
-     * 我的订单
+     * 发票开具申请
      * @param model
-     * @param gdsInfoVO
+     * @param session
      * @return
      * @throws Exception
      */
-    @RequestMapping("/myOrder")
-    public String myOrder(Model model,OrdMainInfoVO ordMainInfoVO) throws Exception{
-        return "myOrder";
-    }
-    /**
-   	 * 查询我的订单List
-   	 * 
-   	 * @param model
-   	 * @param searchVO
-   	 * @return
-   	 */
-   	@RequestMapping(value = "/myOrderList")
-   	public String myOrderList(Model model, OrdMainInfoVO ordMainInfoVO) {
-   		try {
-   			PageResponseDTO<OrdMainInfoRespDTO> pageInfo = new PageResponseDTO<OrdMainInfoRespDTO>();
-   			OrdMainInfoReqDTO ordMainReqDTO = new OrdMainInfoReqDTO();
-   			ordMainReqDTO.setPageNo(ordMainInfoVO.getPageNo());
-   			ordMainReqDTO.setPageSize(PAGE_SIZE);
-   			ordMainReqDTO.setOrderType(ORDER_TYPE_COMMON);
-   			pageInfo = iOrderMainInfoRSV.queryOrdMainInfoPage(ordMainReqDTO);
-   			if(!CollectionUtils.isEmpty(pageInfo.getResult())){
-   				for(OrdMainInfoRespDTO ordMainRespDTO :pageInfo.getResult()){
-   					OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
-   					ordInfoReqDTO.setOrderId(ordMainRespDTO.getOrderId());
-   					List<OrdInfoRespDTO> ordInfoList = iOrderInfoRSV.queryOrderInfoList(ordInfoReqDTO);
-   					if(CollectionUtils.isNotEmpty(ordInfoList)){
-   						//一个订单只有一个子订单
-   						ordMainRespDTO.setOrdInfoRespDTO(ordInfoList.get(0));
-   					}
-   					
-   				}
-   			}
-   			model.addAttribute("pageInfo", pageInfo);
-   		} catch (Exception e) {
-   			logger.error("查询我的订单列表失败！原因是：" + e.getMessage());
-   		}
-   		return "order/div/myOrderList";
-   	}
+    @RequestMapping(value="/applyInvoice")
+	public String applyInvoice(Model model,HttpSession session) throws Exception{
+		ReqInvoiceTaxDTO input = new ReqInvoiceTaxDTO();
+		input.setStaffId(StaffUtil.getStaffVO(session).getStaffId());
+		List<ChnlInvoiceTaxDTO> datas = new ArrayList<>();
+		ChnlInvoiceTaxDTO invoiceTaxDTO =new  ChnlInvoiceTaxDTO();
+		input.setStatus("20");
+		datas = iChnlInvoiceTaxRSV.queryInvoiceRecord(input);
+		if(CollectionUtils.isNotEmpty(datas)){
+			invoiceTaxDTO=datas.get(0);
+		}
+		model.addAttribute("invoiceTaxDTO", invoiceTaxDTO);
+		return "mybill_apply";
+	}
    	/**
 	 * 取消订单
 	 * @param request

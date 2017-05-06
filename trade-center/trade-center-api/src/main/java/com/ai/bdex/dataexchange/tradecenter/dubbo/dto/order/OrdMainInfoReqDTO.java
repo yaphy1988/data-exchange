@@ -31,6 +31,14 @@ public class OrdMainInfoReqDTO  extends BaseInfo{
     private String payWay;
     private String invoiceModType;
     private String invoiceStatus;
+    private String isNotInvoiceModType;//不 包含某种发票类型
+    
+	public String getIsNotInvoiceModType() {
+		return isNotInvoiceModType;
+	}
+	public void setIsNotInvoiceModType(String isNotInvoiceModType) {
+		this.isNotInvoiceModType = isNotInvoiceModType;
+	}
 	public String getOrderId() {
 		return orderId;
 	}

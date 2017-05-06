@@ -12,8 +12,9 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
 public interface IOrderInfoRSV {
 	public OrdInfoRespDTO querySubOrderDetail(OrdInfoRespDTO ordInfo) throws Exception;
 
-	// 我的所有子订单
-	public List<OrdInfoRespDTO> queryOrderByStaff(OrdInfoRespDTO ordInfo) throws Exception;
+	// 我的所有子订单--提供商品调用
+	public List<OrdInfoRespDTO> queryOrderByStaff(OrdInfoReqDTO ordInfo) throws Exception;
+
 
 	// 商品投诉
 	public List<OrdInfoRespDTO> queryOrderByStaffGds(OrdInfoRespDTO ordInfo) throws Exception;

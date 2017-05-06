@@ -51,8 +51,15 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 
 	// 我的所有子订单
 	@Override
-	public List<OrdInfoRespDTO> queryOrderByStaff(OrdInfoRespDTO ordInfo) throws Exception {
-		return null;
+	public List<OrdInfoRespDTO> queryOrderByStaff(OrdInfoReqDTO ordInfo) throws Exception {
+		List<OrdInfoRespDTO> ordInfoList = new ArrayList<>();
+		try {
+			ordInfoList = iOrdInfoSV.queryOrderByStaff(ordInfo);
+		} catch (Exception e) {
+			log.error("分页获取子订单信息异常:", e);
+			throw new Exception(e);
+		}
+		return ordInfoList;
 	}
 
 	// 商品投诉
