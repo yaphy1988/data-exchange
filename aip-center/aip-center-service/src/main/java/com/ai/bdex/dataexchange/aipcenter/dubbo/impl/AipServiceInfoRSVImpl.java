@@ -53,6 +53,7 @@ public class AipServiceInfoRSVImpl implements IAipServiceInfoRSV{
 			throw e;
 		}
 	}
+	
 	@Override
 	public AipServiceInfoDTO selectServiceByPk(String serviceId, String version)
 			throws Exception {		
@@ -66,6 +67,59 @@ public class AipServiceInfoRSVImpl implements IAipServiceInfoRSV{
 			return dto;
 		}catch(Exception e){
 			log.error("query service by service_Id and service_version failted:"+serviceId+":"+version, e);
+			throw e;
+		}
+	}
+	@Override
+	public AipServiceInfoDTO selectServiceByServiceIdWithInitversion(
+			String serviceId) throws Exception {
+		try{
+			AipServiceInfoDTO dto=null;
+			AipServiceInfo info=aipServiceInfoSV.selectServiceByServiceIdWithInitversion(serviceId);
+			if(null!=info){
+				dto=new AipServiceInfoDTO();
+				ObjectCopyUtil.copyObjValue(info, dto, null, false);
+			}
+			return dto;
+		}catch(Exception e){
+			log.error("query service by service_Id and service_version failted:"+serviceId, e);
+			throw e;
+		}
+	}
+	@Override
+	public AipServiceInfoDTO getAipServiceInfo(String serviceId,
+			String serviceVersion, String status) throws Exception {
+		try{
+			AipServiceInfoDTO dto=null;
+			AipServiceInfo info=aipServiceInfoSV.getAipServiceInfo(serviceId, serviceVersion, status);
+			if(null!=info){
+				dto=new AipServiceInfoDTO();
+				ObjectCopyUtil.copyObjValue(info, dto, null, false);
+			}
+			return dto;
+		}catch(Exception e){
+			log.error("query service by service_Id and service_version failted:"+serviceId+":"+serviceVersion, e);
+			throw e;
+		}
+	}
+	
+	@Override
+	public PageResponseDTO<AipServiceInfoDTO> selectServiceWithPageWithInitVersion(
+			AipServiceInfoReqDTO req) throws Exception {
+		try{	        
+			return aipServiceInfoSV.selectServiceWithPageWithInitVersion(req);
+		}catch(Exception e){
+			log.error("query service failted", e);
+			throw e;
+		}
+	}
+	@Override
+	public PageResponseDTO<AipServiceInfoDTO> selectServiceWithPageWithInitVersionAndValidstatus(
+			AipServiceInfoReqDTO req) throws Exception {
+		try{	        
+			return aipServiceInfoSV.selectServiceWithPageWithInitVersionAndValidstatus(req);
+		}catch(Exception e){
+			log.error("query service failted", e);
 			throw e;
 		}
 	}
