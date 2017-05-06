@@ -325,6 +325,15 @@ public class GdsController {
         return mv;
     }
 
+    @RequestMapping(value = "/applyDataValidate")
+    @ResponseBody
+    public AjaxJson applyDataValidate(HttpServletRequest request,HttpServletResponse response){
+        AjaxJson ajaxJson = new AjaxJson();
+
+        ajaxJson.setSuccess(true);
+        return ajaxJson;
+    }
+
     /**
      * 将float保留两位小数
      * @param num
