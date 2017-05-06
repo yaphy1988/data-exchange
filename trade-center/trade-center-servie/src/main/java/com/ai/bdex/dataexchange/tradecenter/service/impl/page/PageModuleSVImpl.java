@@ -37,6 +37,9 @@ public class PageModuleSVImpl implements IPageModuleSV {
 		if(!StringUtils.isBlank(pageModule.getStatus())){
 			criteria.andStatusEqualTo(pageModule.getStatus());
 		}
+		if(!StringUtils.isBlank(pageModule.getModuleName())){
+			criteria.andModuleNameLike("%"+pageModule.getModuleName()+"%");
+		}
 		if(pageModule.getModulePid() != null && pageModule.getModulePid() != 0){
 			criteria.andModulePidEqualTo(pageModule.getModulePid());
 		}

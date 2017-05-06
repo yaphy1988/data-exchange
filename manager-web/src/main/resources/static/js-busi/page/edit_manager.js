@@ -51,7 +51,7 @@ function savePageModule(){
 			remark:remark,
 			status:status
 			};
-	var url="/pageManage/savePageModule";
+	var url=basePath+"/pageManage/savePageModule";
 	$.ajax({
 			url:url,
 			cache:false,

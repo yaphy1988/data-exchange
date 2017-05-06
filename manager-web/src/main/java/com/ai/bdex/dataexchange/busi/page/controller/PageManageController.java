@@ -262,6 +262,9 @@ public class PageManageController {
 		Map<String, Object> rMap = new HashMap<String, Object>();
 		try {
 			PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
+			if(StringUtil.isNotBlank(moduleName)){
+				pageModuleReqDTO.setModuleName(moduleName);
+			}
 			pageModuleReqDTO.setStatus(STATUS_VALID);
 			List<PageModuleRespDTO> moduleList = iPageDisplayRSV.queryPageModuleList(pageModuleReqDTO);
 			if(!CollectionUtils.isEmpty(moduleList)){
