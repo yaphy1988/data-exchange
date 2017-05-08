@@ -69,6 +69,16 @@ public class PageManageController {
 	IPageDisplayRSV iPageDisplayRSV;
 	@DubboConsumer(timeout = 30000)
 	IGdsInfoRSV iGdsInfoRSV;
+	/**
+	 * 页面管理入口
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/moduleManage")
+	public ModelAndView moduleManage(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView("module_manager");
+		return modelAndView;
+	}
 	
 	@RequestMapping(value = "/newsInfo")
 	public ModelAndView pageInit(HttpServletRequest request) {
@@ -191,11 +201,7 @@ public class PageManageController {
 		}
 		return rMap;
 	}
-	@RequestMapping(value = "/moduleManage")
-	public ModelAndView moduleManage(HttpServletRequest request) {
-		ModelAndView modelAndView = new ModelAndView("module_manager");
-		return modelAndView;
-	}
+
 	@RequestMapping(value = "/editModule")
 	public ModelAndView editModule(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("edit_module");
@@ -602,5 +608,10 @@ public class PageManageController {
     private String getHtmlUrl(String vfsId) {
         return ImageUtil.getStaticDocUrl(vfsId, "html");
     }
-
+    
+	@RequestMapping(value = "/pageClassify")
+	public ModelAndView pageClassify(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView("page_classification");
+		return modelAndView;
+	}
 }
