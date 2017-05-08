@@ -159,6 +159,12 @@
 							<option value="0" >女</option>
 							<option value="1" selected>男</option>
 							</select>
+
+							<select  class="form-control" id="gender" th:if="${userinfo.gender==''}">
+								<option value="">请选择</option>
+								<option value="0" >女</option>
+								<option value="1">男</option>
+							</select>
 						</td>
 					</tr>
 					<tr>
