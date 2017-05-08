@@ -72,6 +72,11 @@ public class UserInfoManagerController {
 			rMap.put("msg", "请先登录！");
 			return rMap;
 		}
+		if(StringUtil.isBlank(vo.getStaffName())){
+			rMap.put("success",false);
+			rMap.put("msg","用户名称不能为空！");
+			return rMap;
+		}
 		try {
 			//校验用户名是否存在
 			boolean nameFlag = this.iAuthStaffRSV.checkInfoByName(vo.getStaffName(), staffId);
@@ -80,12 +85,12 @@ public class UserInfoManagerController {
 				rMap.put("msg", "用户名已被使用！");
 				return rMap;
 			}
-			nameFlag = this.iAuthStaffRSV.checkInfoByName(vo.getAliasName(), staffId);
-			if(nameFlag){
-				rMap.put("success", false);
-				rMap.put("msg", "别名已被使用！");
-				return rMap;
-			}
+//			nameFlag = this.iAuthStaffRSV.checkInfoByName(vo.getAliasName(), staffId);
+//			if(nameFlag){
+//				rMap.put("success", false);
+//				rMap.put("msg", "别名已被使用！");
+//				return rMap;
+//			}
 			BeanUtils.copyProperties(vo, input);
 			input.setStaffId(staffId);
 			iAuthStaffRSV.updateAuthStaffInfo(input);
@@ -129,7 +134,7 @@ public class UserInfoManagerController {
 	/**
 	 * 修改用户手机号
 	 * @param model
-	 * @param vo
+	 * @param
 	 * @return
 	 */
 	@RequestMapping(value="/updatephone",method=RequestMethod.POST)

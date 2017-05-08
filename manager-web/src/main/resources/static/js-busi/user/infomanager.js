@@ -230,11 +230,11 @@ function doupdatePhone(tocken,seccode,phoneNo){
 }
 
 function updateInfo(){
-	var aliasName = $("#aliasName").val();
-	if(aliasName&&WEB.fucCheckLength(aliasName)>64){
-		WEB.msg.info('提示','别名不能超过32个汉字');
-		return;
-	}
+	// var aliasName = $("#aliasName").val();
+	// if(aliasName&&WEB.fucCheckLength(aliasName)>64){
+	// 	WEB.msg.info('提示','别名不能超过32个汉字');
+	// 	return;
+	// }
 	var staffName = $("#staffName").val();
 	if(staffName&&WEB.fucCheckLength(staffName)>256){
 		WEB.msg.info('提示','别名不能超过128个汉字');
@@ -263,7 +263,7 @@ function updateInfo(){
 		type : 'POST',
 		async : true,
 		data : {
-			aliasName : aliasName,
+			// aliasName : aliasName,
 			staffName : staffName,
 			qq : qq,
 			weChat : weChat,
