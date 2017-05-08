@@ -10,6 +10,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PageModuleGoodsMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoods;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoodsExample;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoodsExample.Criteria;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleGoodsSV;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
@@ -26,21 +27,21 @@ public class PageModuleGoodsSVImpl implements IPageModuleGoodsSV {
 	}
 
 	@Override
-	public PageResponseDTO<PageModuleGoodsRespDTO>   queryPageModuleGoodsList(PageModuleGoods pageModuleGoods) throws Exception {
+	public PageResponseDTO<PageModuleGoodsRespDTO>   queryPageModuleGoodsList(PageModuleGoodsReqDTO moduleGoodsReqDTO) throws Exception {
 		  //分页信息赋值
-        int page = 1;
-        int rows = 10;
+        int page = moduleGoodsReqDTO.getPageNo();
+        int rows = moduleGoodsReqDTO.getPageSize();
         
 		PageModuleGoodsExample example = new PageModuleGoodsExample();
 		Criteria criteria = example.createCriteria();
-		if(pageModuleGoods.getPmgId() != null && pageModuleGoods.getPmgId() != 0){
-			criteria.andPmgIdEqualTo(pageModuleGoods.getPmgId());
+		if(moduleGoodsReqDTO.getPmgId() != null && moduleGoodsReqDTO.getPmgId() != 0){
+			criteria.andPmgIdEqualTo(moduleGoodsReqDTO.getPmgId());
 		}
-		if(pageModuleGoods.getModuleId() != null && pageModuleGoods.getModuleId() != 0){
-			criteria.andModuleIdEqualTo(pageModuleGoods.getModuleId());
+		if(moduleGoodsReqDTO.getModuleId() != null && moduleGoodsReqDTO.getModuleId() != 0){
+			criteria.andModuleIdEqualTo(moduleGoodsReqDTO.getModuleId());
 		}
-		if(!StringUtils.isBlank(pageModuleGoods.getStatus())){
-			criteria.andStatusEqualTo(pageModuleGoods.getStatus());
+		if(!StringUtils.isBlank(moduleGoodsReqDTO.getStatus())){
+			criteria.andStatusEqualTo(moduleGoodsReqDTO.getStatus());
 		}
 		example.setOrderByClause(" ORDER_NO desc ");
 		PageHelper.startPage(page, rows);

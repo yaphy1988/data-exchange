@@ -56,7 +56,6 @@ public class PageModuleAdSVImpl implements IPageModuleAdSV {
 		Integer pageSize = moduleAdDTO.getPageSize();
 				
 		PageModuleAdExample example = new PageModuleAdExample();
-		example.setOrderByClause("AD_ORDER desc");
 		Criteria criteria = example.createCriteria();
 		if(moduleAdDTO.getAdId() !=null && moduleAdDTO.getAdId() != 0){
 			criteria.andAdIdEqualTo(moduleAdDTO.getAdId());
@@ -70,7 +69,7 @@ public class PageModuleAdSVImpl implements IPageModuleAdSV {
 		if(CollectionUtils.isNotEmpty(moduleAdDTO.getStatusList())){
 			criteria.andStatusIn(moduleAdDTO.getStatusList());
 		}
-		example.setOrderByClause(" AD_ORDER desc ");
+		example.setOrderByClause(" AD_ORDER DESC,UPDATE_TIME DESC ");
 		PageHelper.startPage(pageNo, pageSize);
 		List<PageModuleAd> pageModuleAdList = moduleAdMapper.selectByExample(example);
 		// 使用PageInfo对结果进行包装

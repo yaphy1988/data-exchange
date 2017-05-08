@@ -265,7 +265,6 @@ public class PageManageController {
 			if(StringUtil.isNotBlank(moduleName)){
 				pageModuleReqDTO.setModuleName(moduleName);
 			}
-			pageModuleReqDTO.setStatus(STATUS_VALID);
 			List<PageModuleRespDTO> moduleList = iPageDisplayRSV.queryPageModuleList(pageModuleReqDTO);
 			if(!CollectionUtils.isEmpty(moduleList)){
 				for(PageModuleRespDTO moduleRespDTO : moduleList){

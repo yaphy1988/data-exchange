@@ -28,6 +28,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdPropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
@@ -319,15 +320,15 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
         return AdRespDTO;
 	}
 	@Override
-	public PageResponseDTO<PageModuleGoodsRespDTO> queryPageModuleGoodsList(PageModuleGoodsRespDTO pageModuleGoodsRespDTO)
+	public PageResponseDTO<PageModuleGoodsRespDTO> queryPageModuleGoodsList(PageModuleGoodsReqDTO goodsReqDTO)
 			throws Exception {
 		PageResponseDTO<PageModuleGoodsRespDTO> queryPageModuleGoodsList = new PageResponseDTO<PageModuleGoodsRespDTO>();
         try{
-        	 if (pageModuleGoodsRespDTO ==null ){
+        	 if (goodsReqDTO ==null ){
                  throw new Exception("查询商品楼层信息异常，入参为空");
              }
-         	 PageModuleGoods exam = new PageModuleGoods();
-         	 BeanUtils.copyProperties( pageModuleGoodsRespDTO,exam); 
+         	 PageModuleGoodsReqDTO exam = new PageModuleGoodsReqDTO();
+         	 BeanUtils.copyProperties( goodsReqDTO,exam); 
          	queryPageModuleGoodsList = iPageModuleGoodsSV.queryPageModuleGoodsList(exam);
            
         }catch(Exception e){

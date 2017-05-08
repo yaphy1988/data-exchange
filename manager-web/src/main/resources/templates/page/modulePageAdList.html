@@ -6,7 +6,7 @@
 			<th>广告版位</th>
 			<th width="200">图片</th>
 			<th width="240">广告语</th>
-			<th>展示顺序</th>
+			<!-- <th>展示顺序</th> -->
 			<th>操作</th>
 		</tr>
 	</thead>
@@ -21,7 +21,7 @@
 				</div>
 			</td>
 			<td th:text="${pageAd.adTitle}"></td>
-			<td th:text="${pageAd.adOrder}">1</td>
+			<!-- <td th:text="${pageAd.adOrder}">1</td> -->
 			<td>
 				<p class="pop-link">
 					<a th:onclick="'updatePageModuleAd('+@{${pageAd.adId}}+','+@{${pageAd.moduleId}}+',0)'" th:if="${pageAd.status=='1'}">失效</a><i th:if="${pageAd.status=='1'}">|</i> 
