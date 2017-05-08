@@ -268,7 +268,7 @@ public class GdsEditController {
         	String staffId=StaffUtil.getStaffVO(session).getStaffId();
     		JSONObject gdsInfoVO=JSONObject.parseObject(req.getParameter("gdsInfoVO"));
 			this.setGdsInfo(gdsInfoReqDTO, gdsInfoVO);
-			gdsInfoReqDTO.setStatus(GDS_VALID);
+			gdsInfoReqDTO.setStatus(GDS_INVALID);
 			gdsInfoReqDTO.setCreateUser(staffId);
 			int  gdsId=gdsInfoRSV.insertGdsInfo(gdsInfoReqDTO);
         	//商品分类属性关联信息
@@ -359,7 +359,6 @@ public class GdsEditController {
         	String staffId=StaffUtil.getStaffVO(session).getStaffId();
     		JSONObject gdsInfoVO=JSONObject.parseObject(req.getParameter("gdsInfoVO"));
 			this.setGdsInfo(gdsInfoReqDTO, gdsInfoVO);
-			gdsInfoReqDTO.setStatus(GDS_VALID);
 			gdsInfoReqDTO.setCreateUser(staffId);
 			int gdsId=gdsInfoReqDTO.getGdsId();
 			gdsInfoRSV.updateGdsInfo(gdsInfoReqDTO);
