@@ -1,6 +1,8 @@
 package com.ai.bdex.dataexchange.tradecenter.service.impl.gds;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -20,6 +22,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.sequence.SeqUtil;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -61,8 +64,13 @@ public class GdsCatSVImpl implements IGdsCatSV{
         if (gdsCatReqDTO ==null){
             throw new Exception("插入商品分类信息的入参为空");
         }
+        int catId =SeqUtil.getInt("SEQ_GDS_CAT");
         GdsCat gdsCat = new GdsCat();
+        gdsCat.setCatId(catId);
         ObjectCopyUtil.copyObjValue(gdsCatReqDTO,gdsCat,null,false);
+        gdsCat.setStatus("1");
+        Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        gdsCat.setCreateTime(time);
         int code = gdsCatMapper.insert(gdsCat);
 
         return code;
@@ -77,6 +85,8 @@ public class GdsCatSVImpl implements IGdsCatSV{
         GdsCat gdsCat = new GdsCat();
         ObjectCopyUtil.copyObjValue(gdsCatReqDTO,gdsCat,null,false);
 //        BeanUtils.copyProperties(gdsCatReqDTO,gdsCat);
+        Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
+        gdsCat.setUpdateTime(time);
         int code = gdsCatMapper.updateByPrimaryKey(gdsCat);
 
         return code;

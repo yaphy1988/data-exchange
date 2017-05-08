@@ -166,8 +166,9 @@ var GdsCat = {
 	        		WEB.msg.info("提示", "保存成功", function(r) {
 	        			var param = {
 	        					catId:$("#catId").val()
-	        				};
-        				GdsCat.querycatnodeinfo(param);
+	        				};	
+	        			GdsCat.initZTree();
+        				$(".close").trigger('click');
 	                 });
 	        	}else{
 	        		WEB.msg.error("提示","保存失败");
@@ -193,7 +194,7 @@ var GdsCat = {
 	        			var param = {
 	        					catId:$("#catId").val()
 	        				};
-        				GdsCat.querycatnodeinfo(param);
+	        			GdsCat.initZTree();
 	                 });
 	        	}else{
 	        		WEB.msg.error("更新失败");
@@ -213,8 +214,16 @@ var GdsCat = {
 		        	if(data.success){
 		        		WEB.msg.info("提示", "删除成功", function(r) {
 		        			var param = {
-		        					catId:$("#catId").val()
-		        				};
+	        					catId:$("#catId").val()
+	        				};
+		        			GdsCat.initZTree();
+		        			var treeObj = $.fn.zTree.getZTreeObj("catZTree");
+		 	                if(treeObj != null && treeObj.getNodes().length >=1){
+		 	                	var param = {
+		                 			catId:treeObj.getNodes()[0].id
+		                 		};
+		 	                	$("#catZTree_"+treeObj.getNodes()[0].id+"_a").trigger('click');
+		 	                }
 	        				GdsCat.querycatnodeinfo(param);
 		                 });
 		        	}else{
