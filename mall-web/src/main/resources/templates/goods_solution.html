@@ -133,7 +133,7 @@
 			<div class="gd_Left">
 				<div class="gd_hd clearfix">
 					<div class="imgBox">
-						<span class="img" style="overflow: hidden">
+						<span class="img" style="overflow: hidden;text-align: center">
 							<img src="../static/images/img.jpg" th:src="${gdsInfo.gdsPic}">
 						</span>
 						<a class="active collect">
@@ -199,7 +199,7 @@
 					</ul>
 					<div class="tab-content gd_info" id="tabContentDiv">
 						<div class=" tab-pane fade active in" role="tabpanel" id="tab1" aria-labelledby="tab1" th:text="${gdsInfo.funIntroduction}">
-							<ul class="piclist clearfix">
+							<ul class="piclist clearfix" th:remove="all">
 								<li><img src="../static/images/img.jpg"></li>
 								<li><img src="../static/images/img.jpg"></li>
 								<li><img src="../static/images/img.jpg"></li>
@@ -211,8 +211,8 @@
 							</ul>
 						</div>
 						<div class="tab-pane fade"  role="tabpanel" id="tab2" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:id="'tab2-'+${tabContentStat.count}">
-							<h3>系统错误代码参照2222：</h3>
-							<table class="table table-bordered ">
+							<h3 th:remove="all">系统错误代码参照2222：</h3>
+							<table class="table table-bordered " th:remove="all">
 								<thead>
 									<tr class="active">
 										<td>错误码22</td>
