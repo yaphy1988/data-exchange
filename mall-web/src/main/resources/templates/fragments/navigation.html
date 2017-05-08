@@ -43,17 +43,22 @@
     	 		   	  e.preventDefault();
    	    	    });
   				if($("#catFirst").val()=="1"){
-  					 $.cookie('gjs_navigation', "/search/api", {path : '/'});
+  					$.cookie('gjs_navigation', "/search/api", {path : '/'});
+  				}else if($("#catFirst").val()=="2"){
+  					$.cookie('gjs_navigation', "/search/custom", {path : '/'});
+  				}else if($("#catFirst").val()=="3"){
+  					$.cookie('gjs_navigation', "/search/solution", {path : '/'});
   				}
   				var url = $.cookie('gjs_navigation');
   				var thisUrl = window.location.pathname;
  	  	    	$(".navigationBar").each(function(){
  	  	    		if($(this).attr("href")==thisUrl){
  	  	    			$(this).parents("li").addClass('active');
+ 	  	    			return false;
  	  	    		}else if($(this).attr('href')==url){
  	  	    			$(this).parents("li").addClass('active');
+ 	  	    			return false;
  	  	    		}
- 	  	    		
  	  	    	});
   			  }
   	  		});

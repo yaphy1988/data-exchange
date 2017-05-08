@@ -17,8 +17,9 @@
 				
 			</dl>
 			<div class="bar">
-				<a href="" class="btn btn-primary pl30 pr30"><i class="icon-dianhua iconfont pr5"></i>在线咨询</a>
-				<a href="" class="btn btn-orange"><i class="icon-xingxing iconfont pr5"></i>收藏</a>
+				<a href="javascript:void(0)" class="btn btn-primary pl30 pr30"><i class="icon-dianhua iconfont pr5"></i>在线咨询</a>
+				<a href="javascript:void(0)" class="btn btn-orange" th:onclick="'javascript:Search.gdsCollection(this,\''+${list.id}+'\',\''+${list.skuId}+'\',\''+${list.catFirst}+'\')'">
+				<i class="icon-shoucang iconfont pr5 gdsCollection"  th:attr="gdsId=${list.id}"></i>收藏</a>
 			</div>
 			<div class="info">
 				<span th:utext="${list.commpanyName}">发布方江南天安科技有限公司</span>

@@ -28,6 +28,10 @@
     </dependency>
     <dependency>
       <groupId>com.ai.woego.boot</groupId>
+      <artifactId>file-engine-spring-boot-autoconfigure</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>com.ai.woego.boot</groupId>
       <artifactId>dubbo-spring-boot-autoconfigure</artifactId>
     </dependency>
     <dependency>

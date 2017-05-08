@@ -1,6 +1,7 @@
 package com.ai.bdex.dataexchange.busi.search.entiry;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
@@ -23,6 +24,18 @@ public class SearchVO extends BaseInfo implements Serializable{
      * @since JDK 1.6 
      */ 
     private static final long serialVersionUID = 3329595398889197798L;
+    /**
+     * 商品id
+     */
+    private int gdsId;
+    /**
+     * 商品列表id
+     */
+    private List<Integer> gdsIds;
+    /**
+     * 单品id
+     */
+    private int skuId;
     /**
      * 关键词
      */
@@ -47,6 +60,7 @@ public class SearchVO extends BaseInfo implements Serializable{
      * 分类map集合
      */
     private String selectedCondition;
+    
     
     public String getKeyWord() {
         return keyWord;
@@ -83,6 +97,24 @@ public class SearchVO extends BaseInfo implements Serializable{
     }
     public void setSelectedCondition(String selectedCondition) {
         this.selectedCondition = selectedCondition;
+    }
+    public int getGdsId() {
+        return gdsId;
+    }
+    public void setGdsId(int gdsId) {
+        this.gdsId = gdsId;
+    }
+    public int getSkuId() {
+        return skuId;
+    }
+    public void setSkuId(int skuId) {
+        this.skuId = skuId;
+    }
+    public List<Integer> getGdsIds() {
+        return gdsIds;
+    }
+    public void setGdsIds(List<Integer> gdsIds) {
+        this.gdsIds = gdsIds;
     }
     
 }
