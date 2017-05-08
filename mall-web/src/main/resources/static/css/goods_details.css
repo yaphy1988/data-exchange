@@ -436,7 +436,7 @@ h3{
 	border: solid 1px #ec6000;
 	color: #ec6000;
 }
-.gl_group a.btn_more:focus,
+
 .gl_group a.btn_more:active{
 	background-color: #ec6000!important;
 	color: #fff;
