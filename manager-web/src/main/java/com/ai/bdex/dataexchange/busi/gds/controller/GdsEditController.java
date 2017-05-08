@@ -270,6 +270,7 @@ public class GdsEditController {
 			this.setGdsInfo(gdsInfoReqDTO, gdsInfoVO);
 			gdsInfoReqDTO.setStatus(GDS_INVALID);
 			gdsInfoReqDTO.setCreateUser(staffId);
+			gdsInfoReqDTO.setUpdateUser(staffId);
 			int  gdsId=gdsInfoRSV.insertGdsInfo(gdsInfoReqDTO);
         	//商品分类属性关联信息
         	GdsInfo2CatReqDTO gdsInfo2CatReqDTO = new GdsInfo2CatReqDTO();
@@ -277,6 +278,7 @@ public class GdsEditController {
     		this.setGdsInfo2Cat(gdsInfo2CatReqDTO, gdsInfo2CatVO);
     		gdsInfo2CatReqDTO.setStatus(GDS_VALID);
     		gdsInfo2CatReqDTO.setCreateUser(staffId);
+    		gdsInfo2CatReqDTO.setUpdateUser(staffId);
         	gdsInfoRSV.insertGdsInfo2Cat(gdsInfo2CatReqDTO);
         	//商品标签信息
         	JSONArray gdsLabelVOList=JSONArray.parseArray(req.getParameter("gdsLabelVOList"));
@@ -289,6 +291,7 @@ public class GdsEditController {
             			labelReq.setGdsId(gdsId);
             			labelReq.setStatus(GDS_VALID);
             			labelReq.setCreateUser(staffId);
+            			labelReq.setUpdateUser(staffId);
             			iGdsLabelRSV.insertGdsLabel(labelReq);
             		}
             	}
@@ -304,6 +307,7 @@ public class GdsEditController {
             			skuReq.setGdsId(gdsId);
             			skuReq.setStatus(GDS_VALID);
             			skuReq.setCreateUser(staffId);
+            			skuReq.setUpdateUser(staffId);
             			iGdsSkuRSV.insertGdsSku(skuReq);
             		}
             	}
@@ -319,6 +323,7 @@ public class GdsEditController {
             			propReq.setGdsId(gdsId);
             			propReq.setStatus(GDS_VALID);
             			propReq.setCreateUser(staffId);
+            			propReq.setUpdateUser(staffId);
             			iGdsInfo2PropRSV.insertGdsInfo2Prop(propReq);
             		}
             	}
@@ -719,7 +724,7 @@ public class GdsEditController {
             }
             byte[] datas = inputStream2Bytes(file.getInputStream());
             String imageId = ImageUtil.upLoadImage(datas, fileName);
-            String imagePath=ImageUtil.getImageUrl(imageId);
+            String imagePath=ImageUtil.getImageUrl(imageId+ "_100x100");
             resultMap.put("flag", true);
             resultMap.put("imageId", imageId);
             resultMap.put("imageName", fileName);

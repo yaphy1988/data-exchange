@@ -80,8 +80,8 @@ public class GdsLabelSVImpl implements IGdsLabelSV {
         int labId=SeqUtil.getInt("SEQ_GDS_LABEL");
         gdsLabelReqDTO.setLabId(labId);
         gdsLabelReqDTO.setCreateTime(DateUtil.getNowAsDate());
+        gdsLabelReqDTO.setUpdateTime(DateUtil.getNowAsDate());
         ObjectCopyUtil.copyObjValue(gdsLabelReqDTO,gdsLabel,null,false);
-//        BeanUtils.copyProperties(gdsLabelReqDTO,gdsLabel);
         int code = gdsLabelMapper.insert(gdsLabel);
         return code;
     }
