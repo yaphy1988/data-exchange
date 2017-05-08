@@ -21,6 +21,7 @@ import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -147,6 +148,9 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 		}
 		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getSource())) {
 			criteria.andSourceEqualTo(ordMainInfoReqDTO.getSource());
+		}
+		if (!CollectionUtil.isEmpty(ordMainInfoReqDTO.getInvoiceModTypeList())) {
+			criteria.andInvoiceModTypeIn(ordMainInfoReqDTO.getInvoiceModTypeList());
 		}
 	}
 	public int cancelOrderMainInfo(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception {

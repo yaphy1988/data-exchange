@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
@@ -31,13 +32,13 @@ public class OrdMainInfoReqDTO  extends BaseInfo{
     private String payWay;
     private String invoiceModType;
     private String invoiceStatus;
-    private String isNotInvoiceModType;//不 包含某种发票类型
-    
-	public String getIsNotInvoiceModType() {
-		return isNotInvoiceModType;
+    private List<String> invoiceModTypeList;//发票类型List
+   
+	public List<String> getInvoiceModTypeList() {
+		return invoiceModTypeList;
 	}
-	public void setIsNotInvoiceModType(String isNotInvoiceModType) {
-		this.isNotInvoiceModType = isNotInvoiceModType;
+	public void setInvoiceModTypeList(List<String> invoiceModTypeList) {
+		this.invoiceModTypeList = invoiceModTypeList;
 	}
 	public String getOrderId() {
 		return orderId;

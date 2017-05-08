@@ -146,7 +146,7 @@ public class orderManageController {
 	 */
 	@RequestMapping(value="/cancelOrder")
 	@ResponseBody
-	public Map<String,Object> savePageModuleAdInfo(HttpServletRequest request,OrdMainInfoVO ordMainInfoVO){
+	public Map<String,Object> cancelOrder(HttpServletRequest request,OrdMainInfoVO ordMainInfoVO){
 		Map<String,Object>  rMap = new HashMap<>();
 		String status = ordMainInfoVO.getOrderStatus();
 		try {

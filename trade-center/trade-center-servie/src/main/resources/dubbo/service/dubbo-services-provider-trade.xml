@@ -30,5 +30,7 @@
                  owner="zhaoyf7" timeout="3000"/>
  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV" ref="iOrderInfoRSV"
                  owner="zhaoyf7" timeout="3000"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrdInvoiceTaxRSV" ref="iOrdInvoiceTaxRSV"
+                 owner="zhaoyf7" timeout="3000"/>
                  
 </beans>

@@ -17,8 +17,7 @@
 	<tbody>
 		<tr th:each="list,iterStat : ${pageInfo.result}"
 			th:unless="${#lists.isEmpty(pageInfo.result)}">
-			<td
-				th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
+			<td th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
 			<td th:text="${list.orderId}"></td>
 			<td
 				th:text="${#calendars.format(list.ordInfoRespDTO.orderTime,'yyyy-MM-dd HH:mm:ss')}"></td>
