@@ -39,7 +39,7 @@ public class OrdInfoReqDTO extends BaseInfo{
  	    private Long usedAllCount;
    	    private Long belanceAllCount;
  	    private String status;
- 	   private String serviceName;
+ 	    private String serviceName;
 	    private String aipServiceId;
 	   
 		public String getServiceName() {

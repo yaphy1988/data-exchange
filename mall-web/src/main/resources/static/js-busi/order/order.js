@@ -19,14 +19,14 @@ function deleteGoods()
 }
 function reduce()
 {
-//减少数量
+    //减少数量
 	 var num =  parseInt($("#gdscount").val());
 	 if(num > 1)
 	 {
 		 $("#gdscount").val(num - 1);
 	 }
 	 //提交到后台
-	 WEB.msg.info("提示","后台去更新数量:"+$("#gdscount").val());
+	 amountUpdate($("#gdscount").val()); 
  }
  function addnum()
  {
@@ -34,12 +34,21 @@ function reduce()
 	 var num =  parseInt($("#gdscount").val());
   	$("#gdscount").val(num + 1);
 	 //提交到后台
-	 WEB.msg.info("提示","后台去更新数量:"+$("#gdscount").val());
+  	amountUpdate($("#gdscount").val());
  }
  function amountUpdate(num)
 {
-   // 后台更新数据	 
-	 WEB.msg.info("提示","后台去更新数量:"+$("#gdscount").val());
+   // 后台更新数据	  
+		var url = basePath+'/order/updategdstmpsave';
+		var params={updatenum:updatenum};
+		var callBack =function(data){ 
+			if(data.success){ 
+			} 
+			else{
+				 WEB.msg.info("提示","更新失败");
+			}
+		};
+		doAjax(url,params,callBack); 
 }
  
 /*//获取数据定制的图片

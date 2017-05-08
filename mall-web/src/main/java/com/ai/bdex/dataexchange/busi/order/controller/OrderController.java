@@ -18,10 +18,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
@@ -85,6 +84,7 @@ public class OrderController {
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}  
+		OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
 		if(!CollectionUtil.isEmpty(listGdsSku) )
 		{
 			gdsSkuRespDTO = listGdsSku.get(0);
@@ -93,10 +93,32 @@ public class OrderController {
 			if(!StringUtil.isBlank(gdsvfsid)){
 				gdsvfsurl= ImageUtil.getImageUrl(gdsvfsid + "_80x80");  
 			}
-		} 
-		Object obj = new Object();
-		//每次进来都是讲session赋值为新的数据
-		// CacheUtil.addItem(staff_id, gdsSkuRespDTO);
+			
+			//购买总数
+			int orderAmount = 1;//默认进来就只是购买一个
+			ordInfoReqDTO.setOrderAmount(orderAmount);
+			//单价
+			long lprice = (long)gdsSkuRespDTO.getPackPrice();
+			ordInfoReqDTO.setOrderPrice(lprice);
+			//订单金额
+			long lorderMoney = lprice * orderAmount;
+			ordInfoReqDTO.setOrderMoney(lorderMoney); 
+			//使用次数
+			long lbuyAllCount = gdsSkuRespDTO.getPackTimes()*orderAmount;
+			ordInfoReqDTO.setBuyAllCount(lbuyAllCount);
+			long lgdsid =  (long)gdsid;
+			ordInfoReqDTO.setGdsId(lgdsid);
+			long lskuid = (long)skusid;
+			ordInfoReqDTO.setSkuId(lskuid);
+			//如果已经有数据了，那就先删除，然后再写入
+			Object  ordInfoDTO = CacheUtil.getItem(staff_id);
+			if(ordInfoDTO != null)
+			{
+				CacheUtil.delItem(staff_id);
+			}
+			//每次进来都是讲session赋值为新的数据
+			 CacheUtil.addItem(staff_id, ordInfoReqDTO);
+		}  
 	    request.setAttribute("skuInfo",gdsSkuRespDTO);
 	    request.setAttribute("gdsname",gdsname);
 	    request.setAttribute("skuname",skuname);
@@ -108,32 +130,34 @@ public class OrderController {
 	  //修改预定的数据的数量，增加或者减少
 	@RequestMapping(value = "/updategdstmpsave")
 	@ResponseBody
-	public ModelAndView updategdstmpsave() {
-		ModelAndView modelAndView = new ModelAndView("index");
-		return modelAndView;
-/*			//将商品的名称，gdsID，套餐id，skuID，带过来，存储到session中。
-			//每次进来都是讲session赋值为新的数据
-		String moduleType = request.getParameter("moduleType");
-		String moduleId = request.getParameter("moduleId");
+	public  Map<String, Object> updategdstmpsave(Model model, HttpServletRequest request) {
 		Map<String, Object> rMap = new HashMap<String, Object>();
-		try {
-			PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
-			if (!StringUtils.isBlank(moduleType)) {
-				pageModuleReqDTO.setModuleType(moduleType);
-			}
-			if(!StringUtils.isBlank(moduleId)){
-				pageModuleReqDTO.setModuleId(Integer.valueOf(moduleId));
-			}
-			pageModuleReqDTO.setStatus(STATUS_VALID);
-			List<PageModuleRespDTO> pageModuleList = iPageDisplayRSV.queryPageModuleList(pageModuleReqDTO);
-			rMap.put("pageModuleList", pageModuleList);
-			rMap.put("success", true);
-		} catch (Exception e) {
-			log.error("查询楼层信息出错：" + e.getMessage());
+       try{
+		String updatenum = request.getParameter("updatenum"); 
+		int iorderamount = Integer.parseInt(updatenum);
+		if(iorderamount < 1)
+		{
+			log.error("更新次数出错：" + "不能提交小于1的数量");
 			rMap.put("success", false);
-			rMap.put("msg", e.getMessage());
 		}
-		return rMap;*/
+		else{
+			HttpSession hpptsesion = request.getSession(); 
+			String staff_id = StaffUtil.getStaffId(hpptsesion); 
+			
+			OrdInfoReqDTO  ordInfoReqDTO = (OrdInfoReqDTO)CacheUtil.getItem(staff_id);
+			//原始单品次数
+			long skutimes = ordInfoReqDTO.getBelanceAllCount()/ordInfoReqDTO.getOrderAmount();			
+			ordInfoReqDTO.setOrderAmount(iorderamount);
+			ordInfoReqDTO.setOrderMoney(iorderamount*ordInfoReqDTO.getOrderPrice());
+			ordInfoReqDTO.setBuyAllCount(iorderamount*skutimes);
+			rMap.put("success", true);
+	       } 
+		} 
+       catch (Exception e) {
+   				log.error("更新次数出错：" + e.getMessage());
+   				rMap.put("success", false);
+   			}
+		return rMap;
 	}
  
  
