@@ -1,10 +1,200 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+
+    <link rel="stylesheet" href="../../static/component/bootstrap/css/bootstrap.css" th:remove="all"/>
+    <link rel="stylesheet" href="../../static/css/global.css" th:remove="all"/>
+    <link rel="stylesheet" href="../../static/js/frameajax/frameajax.css" th:remove="all"/>
+    <link rel="stylesheet" href="../../static/css/index.css" th:remove="all"/>
+
+    <!-- 业务js写在这 -->
 <head>
     <meta charset="UTF-8"/>
     <title>测试页面</title>
 </head>
 <body>
-<input th:value="${username}" name="username" value="测试"/>
+    <header class="clearfix m_header" th:remove="all">
+        <a href="" class="Logo" target="_blank" >
+            <img  src="../../static/images/manage_logo.png" alt="广州数据" >
+        </a>
+        <ul class="m_hdlist clearfix">
+            <li>
+                <a class="item" href="" target="_blank">联系我们</a>
+            </li>
+            <li >
+                <div class="dropdown">
+                    <a  class="item" data-toggle="dropdown"  >
+                        关注广数
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+                        <li><img src="../../static/images/wexin.jpg"></li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <a class="item" href="" target="_blank">常见问题</a>
+            </li>
+            <li >
+                <div class="dropdown">
+                    <a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        okleung
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dLabel">
+                        <li><a  href="" >退出登录</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </header>
+
+    <div  layout:fragment="screen_content">
+        <!-- 美工在这些静态界面 -->
+    </div>
+
+    <div class="m_nav" th:remove="all">
+        <nav class="nav">
+            <ul>
+                <li class="navTit">
+                    <i class="glyphicon glyphicon-compressed"></i>
+                    个人中心
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+                    </a>
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录
+                    </a>
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录
+                    </a>
+                </li>
+                <li >
+                    <a href="">
+                        <i class=""></i>
+                        用户中心
+                        <span class="caret"></span>
+                    </a>
+                    <ol class="infoItem">
+                        <li >
+                            <a th:href="@{/password/modify}">密码修改</a>
+                        </li>
+                        <li >
+                            <a th:href="@{/infomanager/pageInit}">资料修改</a>
+                        </li>
+                    </ol>
+                </li>
+                <li >
+                    <a href="">
+                        <i class=""></i>
+                        企业认证
+                        <span class="caret"></span>
+                    </a>
+                    <ol class="infoItem">
+                        <li >
+                            <a th:href="@{/authencheck/pageInit}">认证审核</a>
+                        </li>
+                        <li >
+                            <a th:href="@{/authenapply/userinfo}">认证申请</a>
+                        </li>
+                    </ol>
+                </li>
+                <li >
+                    <a href="">
+                        <i class=""></i>
+                        商品管理
+                        <span class="caret"></span>
+                    </a>
+                    <ol class="infoItem">
+                        <li class="active">
+                            <a th:href="@{/gdsEdit/pageInit}"></i>商品录入</a>
+                        </li>
+                        <li >
+                            <a th:href="@{/gdsManage/index}"></i>商品管理</a>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <a href="">
+                        <i ></i>
+                        首页管理
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="infoItem">
+                        <li >
+                            <a th:href="@{/pageManage/moduleManage}">楼层管理</a>
+                        </li>
+                        <li >
+                            <a th:href="@{/pageManage/newsInfo}">新闻管理</a>
+                        </li>
+                    </ul>
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录
+                    </a>
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录
+                    </a>
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录
+                    </a>
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="infoItem">
+                        <li class="">
+                            <a href=""><i class="iconfont"></i>二级分类</a>
+                        </li>
+                        <li class="">
+                            <a href=""><i class="iconfont"></i>二级分类</a>
+                        </li>
+                        <li class="">
+                            <a href=""><i class="iconfont"></i>二级分类</a>
+                        </li>
+                    </ul>
+                </li>
+                <li th:remove="all">
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+                    <ul class="infoItem">
+                        <li class="">
+                            <a href=""><i class="iconfont"></i>二级分类</a>
+                        </li>
+                        <li class="">
+                            <a href=""><i class="iconfont"></i>二级分类</a>
+                        </li>
+                        <li class="">
+                            <a href=""><i class="iconfont"></i>二级分类</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </body>
 </html>

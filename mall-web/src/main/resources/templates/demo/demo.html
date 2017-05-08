@@ -5,12 +5,16 @@
     <head>
         <meta charset="UTF-8"/>
         <title>测试页面</title>
-        <link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
-        <link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-        <link rel="stylesheet" href="../static/css/index.css" th:remove="all">
-        <link rel="stylesheet" href="../static/fonts/iconfont.css"  th:remove="all">
+        <link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
+        <link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
+        <link rel="stylesheet" href="../../static/css/index.css" th:remove="all">
+        <link rel="stylesheet" href="../../static/fonts/iconfont.css"  th:remove="all">
+        <link rel="stylesheet" href="../../static/css/info.css"  th:remove="all">
 
-        <link rel="stylesheet" href="../static/css/info.css"  th:href="@{/css/info.css}">
+        <script type="text/javascript" src="../../static/js-busi/page/pager.js" th:src="@{/js-busi/page/pager.js}"></script>
+
+        <!-- 该功能需要的js有开发引入 -->
+        <script type="text/javascript" src="../../static/js-busi/demo/demo.js" th:src="@{/js-busi/demo/demo.js}"></script>
     </head>
     <body>
         <!-- top 增加 th:remove="all" 运行时移除-->
@@ -25,7 +29,7 @@
                     <a href="#">免费注册</a>
                     <i>|</i>
                     <a href="#" class="follow">关注广数<i class="glyphicon glyphicon-menu-down"></i>
-                        <div class="guangshu"><i></i><img src="../static/images/wexin.jpg"></div>
+                        <div class="guangshu"><i></i><img src="../../static/images/wexin.jpg"></div>
                     </a>
                     <a href="#">常见问题</a>
                     <a href="#">联系我们</a>
@@ -34,8 +38,8 @@
         </div>
         <div class="header" th:remove="all">
             <div class="wrap1200 clearfix">
-                <div class="logo floatL"><img src="../static/images/logo.png" title="广州数据中心"></div>
-                <div class="search floatR">
+                <div class="logo floatL"><img src="../../static/images/logo.png" title="广州数据中心"></div>
+                <div class="search floatR" >
                     <div class="search-input">
                         <input type="text">
                         <button class="btn btn-primary">搜索</button>
@@ -57,7 +61,7 @@
                 <!--左侧边栏开始-->
                 <div class="sidebar floatL">
                     <h3>全部商品<i class="glyphicon glyphicon-list menuIcon"></i></h3>
-                    <ul>
+                    <ul style="display: none;">
                         <li><a href="#"><i>&rsaquo;</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
                         <li><a href="#"><i>&rsaquo;</i>交通运输</a> </li>
                         <li><a href="#"><i>&rsaquo;</i>气象环保</a> </li>
@@ -120,84 +124,71 @@
 
         <!-- 搜索页内容 -->
         <div class="wrap1200" layout:fragment="screen_content">
-            <div class="info clearfix">
-                <div class="infoLeft">
-                    <div class="infoLeft_inner">
-                        <div class="con">
-                            <h1 class="info_d_tit">
-                                <span>— ·帮助中心· —</span>
-                                <div class="info_panel">
-                                    <span class="pr20"><span class="pr5">发布方:</span>广州数据交易 www.gzbdex.com</span>
-                                    <span><span class="pr5">发布时间:</span>2017-04-17</span>
-                                </div>
-                            </h1>
-                            <div class="info_d_con">
-                                <p>广州数据交易服务有限公司数据交易平台（以下简称“广数交平台”）（www.gzbdex.com）是中立的数据流通服务平台，旨在为各行各业的客户提供便利的数据流通通道，面向全社会链接数据需求方、数据提供方、独立数据分析方、其它数据平台，打造数据流通产业链。 广数交平台对接了多维度数据，覆盖数据种类多样，目前已对接的数据主要包括金融理财、电信运营、电商、气象环保、交通运输、医疗健康等行业的数据。</p><br>
-                                <p>广数交平台分为网站和DataHub客户端，会员可以从网站搜索、浏览数据资源、发布数据、购买数据；通过客户端，会员可以便捷、快速的通过Client端获取数据。</p><br>
-                                <p>客户端安装和使用方法，请下载附件<a href="http://www.gzbdex.com/helpgz.docx">《DataHub客户端安装和使用方法》</a>查看。     </p>    <br>
-                            </div>
-                        </div>
-                    </div>
+            <div style="margin:10px;">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label>时间格式化：</label>
                 </div>
-                <div th:replace="~{home/rightNewslist :: rightNewslist}"></div>
-                <div class="infoRight" th:remove="all">
-                    <div class="sidebarImg">
-                        <img src="" width="200" height="200">
-                    </div>
-                    <div class="sidebarBox" style="border-top:none;">
-                        <h3 class="title">
-                            <a href="" class="pull-right more">查看全部 »</a>
-                            行业资讯
-                        </h3>
-                        <ul class="sideli">
-                            <li><a href="">如何才能完成一场高效的演讲？</a></li>
-                            <li><a href="">如何才能完成一场高效的演讲？</a></li>
-                            <li><a href="">如何才能完成一场高效的演讲？</a></li>
-                        </ul>
-                    </div>
-                    <div class="sidebarBox">
-                        <h3 class="title">
-                            <a href="" class="pull-right more">查看全部 »</a>
-                            平台公告
-                        </h3>
-                        <ul class="sideli">
-                            <li><a href="">如何才能完成一场高效的演讲？</a></li>
-                            <li><a href="">如何才能完成一场高效的演讲？</a></li>
-                            <li><a href="">如何才能完成一场高效的演讲？</a></li>
-                        </ul>
-                    </div>
-                    <div class="sidebarBox">
-                        <h3 class="title">
-                            <a href="" class="pull-right more">查看全部 »</a>
-                            平台活动
-                        </h3>
-                        <ul class="sideli">
-                            <li><a href="">如何才能完成一场高效的演讲？</a></li>
-                            <li><a href="">如何才能完成一场高效的演讲？</a></li>
-                            <li><a href="">如何才能完成一场高效的演讲？</a></li>
-                        </ul>
-                    </div>
+                <div class="form-group">
+                    <label>密码</label>
+                </div>
 
-                    <div class="sidebarBox">
-                        <h3 class="title">
-                            <a href="" class="pull-right more">查看全部 »</a>
-                            常见问题
-                        </h3>
-                        <ul class="sideli">
-                            <li><a href="">如何才能完成一场高效的演讲？</a></li>
-                            <li><a href="">如何才能完成一场高效的演讲？</a></li>
-                            <li><a href="">如何才能完成一场高效的演讲？</a></li>
-                        </ul>
-                    </div>
+            </form>
+            <br>
+            <button type="button" class="btn btn-default" id="demoSeachBtn">加载表格数据</button>
+            <div class="table-responsive" style="width:500px;" th:if="${pageData}" id="demoTable">
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>用户名</th>
+                        <th>用户ID</th>
+                        <th>用户信息</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="row,rowStat:${pageData.result}">
+                        <th scope="row" th:text="${rowStat.index+1}">1</th>
+                        <td th:text="${row.userName}">Mark</td>
+                        <td th:text="${row.id}">123</td>
+                        <td><div th:replace="::showUserInfo (${row})">...</div></td>
+                    </tr>
+                    <tr th:remove="all">
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>456</td>
+                    </tr>
+                    <tr th:remove="all">
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>789</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div  class="pagelist" style="margin-top:0px;">
+                    <span data-toggle="pager" id="pagerId" th:data-count="${pageData.count}" th:data-size="${pageData.pageSize}" th:data-currentindex="${pageData.pageNo}"></span>
                 </div>
             </div>
-        </div>
+            </div>
 
+            <ul class="nav nav-tabs" id="demoTab">
+                <li role="presentation" class="active" tab="#Home"><a href="Javascript:void(0)">Home</a></li>
+                <li role="presentation" tab="#Profile"><a href="Javascript:void(0)">Profile</a></li>
+                <li role="presentation" tab="#Messages"><a href="Javascript:void(0)">Messages</a></li>
+            </ul>
+            <div style="height:300px;" id="demoTabContext"></div>
+
+            <div id="Home" style="dislay:none;">Remote Home</div>
+            <div id="Profile" style="dislay:none;">Remote Profile</div>
+            <div id="Messages" style="dislay:none;">Remote Messages</div>
+        </div>
         <!-- footer 增加 th:remove="all" 运行时移除-->
         <div class="footer" th:remove="all">
             <div class="wrap1200 ptb40">
                 <div class="left floatL">
-                    <img src="../static/images/logo-footer.png">
+                    <img src="../../static/images/logo-footer.png">
                     <p class="">本网站所列开源项目的中文版文档全部由Bootstrap中文网成员翻译整理，并全部遵循 CC BY 3.0协议发布</p>
                 </div>
                 <div class="right floatR">
@@ -239,6 +230,11 @@
             <div class="copyright"> © 2016 版权所有 亚信科技(中国)有限公司 京ICP备11005544号-15 京公网安备 11010802022324号</div>
 
 
+        </div>
+
+        <!-- 方法 -->
+        <div th:fragment="showUserInfo (user)" style="dislay:none;">
+            <p th:text="${user.userName} + ' - ' + ${user.id}">...</p>
         </div>
     </body>
 </html>
