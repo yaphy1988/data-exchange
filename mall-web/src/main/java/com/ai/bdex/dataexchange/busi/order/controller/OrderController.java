@@ -111,13 +111,17 @@ public class OrderController {
 			long lskuid = (long)skusid;
 			ordInfoReqDTO.setSkuId(lskuid);
 			//如果已经有数据了，那就先删除，然后再写入
-			Object  ordInfoDTO = CacheUtil.getItem(staff_id);
+			Object  ordInfoDTO = CacheUtil.getItem(staff_id+"_shopcart");
 			if(ordInfoDTO != null)
 			{
-				CacheUtil.delItem(staff_id);
+				CacheUtil.delItem(staff_id+"_shopcart");
 			}
 			//每次进来都是讲session赋值为新的数据
-			 CacheUtil.addItem(staff_id, ordInfoReqDTO);
+			if(StringUtil.isBlank(staff_id))
+			{
+				staff_id = "tmpuser";
+			}
+			 CacheUtil.addItem(staff_id+"_shopcart", ordInfoReqDTO);
 		}  
 	    request.setAttribute("skuInfo",gdsSkuRespDTO);
 	    request.setAttribute("gdsname",gdsname);
@@ -143,13 +147,20 @@ public class OrderController {
 		else{
 			HttpSession hpptsesion = request.getSession(); 
 			String staff_id = StaffUtil.getStaffId(hpptsesion); 
-			
-			OrdInfoReqDTO  ordInfoReqDTO = (OrdInfoReqDTO)CacheUtil.getItem(staff_id);
+			if(StringUtil.isBlank(staff_id))
+			{
+				staff_id = "tmpuser";
+			}
+			OrdInfoReqDTO  ordInfoReqDTO = (OrdInfoReqDTO)CacheUtil.getItem(staff_id+"_shopcart");
 			//原始单品次数
-			long skutimes = ordInfoReqDTO.getBelanceAllCount()/ordInfoReqDTO.getOrderAmount();			
+			long skutimes = ordInfoReqDTO.getBuyAllCount()/ordInfoReqDTO.getOrderAmount();			
 			ordInfoReqDTO.setOrderAmount(iorderamount);
 			ordInfoReqDTO.setOrderMoney(iorderamount*ordInfoReqDTO.getOrderPrice());
 			ordInfoReqDTO.setBuyAllCount(iorderamount*skutimes);
+			//重置
+			CacheUtil.delItem(staff_id+"_shopcart"); 
+			CacheUtil.addItem(staff_id+"_shopcart", ordInfoReqDTO);  
+			rMap.put("money", iorderamount*ordInfoReqDTO.getOrderPrice());
 			rMap.put("success", true);
 	       } 
 		} 

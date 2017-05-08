@@ -40,9 +40,10 @@ function reduce()
 {
    // 后台更新数据	  
 		var url = basePath+'/order/updategdstmpsave';
-		var params={updatenum:updatenum};
+		var params={updatenum:num};
 		var callBack =function(data){ 
 			if(data.success){ 
+				$("#allmoney").text(data.money);
 			} 
 			else{
 				 WEB.msg.info("提示","更新失败");
