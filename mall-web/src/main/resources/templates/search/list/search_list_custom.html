@@ -1,3 +1,4 @@
+<div th:replace="~{search/search-order-condition :: search-order-condition}"></div>
 <div class="goodslist clearfix">
 	<ul >
 		<li th:each="list : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
@@ -27,6 +28,3 @@
 </div>
 <!-- 分页-->
 <div th:replace="~{fragments/pager :: pager}"></div>
-<script type="text/javascript">
-$("#numFound").text([[${pageInfo.count}]]);
-</script>
