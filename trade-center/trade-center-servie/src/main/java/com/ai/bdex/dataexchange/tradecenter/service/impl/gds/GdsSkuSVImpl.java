@@ -58,8 +58,8 @@ public class GdsSkuSVImpl implements IGdsSkuSV {
         GdsSku gdsSku = new GdsSku();
         gdsSkuReqDTO.setSkuId(skuId);
         gdsSkuReqDTO.setCreateTime(DateUtil.getNowAsDate());
+        gdsSkuReqDTO.setUpdateTime(DateUtil.getNowAsDate());
         ObjectCopyUtil.copyObjValue(gdsSkuReqDTO,gdsSku,null,false);
-//        BeanUtils.copyProperties(gdsSkuReqDTO,gdsSku);
         int code = gdsSkuMapper.insert(gdsSku);
         return skuId;
     }

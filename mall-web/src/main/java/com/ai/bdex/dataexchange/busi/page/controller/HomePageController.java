@@ -34,6 +34,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
@@ -118,14 +119,25 @@ public class HomePageController {
 	@RequestMapping(value = "/queryPageModuleGoods")
 	@ResponseBody
 	public Map<String, Object> queryPageModuleGoods(Model model, HttpServletRequest request) {
+		String moduleIdstr = request.getParameter("moduleId");
+		
 		Map<String, Object> rMap = new HashMap<String, Object>();
 		try {
-			String moduleIdstr = request.getParameter("moduleId");
 			int moduleId = Integer.parseInt(moduleIdstr);
-			PageModuleGoodsRespDTO pageModuleGoodsRespDTO = new PageModuleGoodsRespDTO();
-			pageModuleGoodsRespDTO.setModuleId(moduleId);
-			pageModuleGoodsRespDTO.setStatus(STATUS_VALID);  
-			PageResponseDTO<PageModuleGoodsRespDTO> moduleGoodsList = iPageDisplayRSV.queryPageModuleGoodsList(pageModuleGoodsRespDTO);
+			//查询楼层
+			PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
+			pageModuleReqDTO.setStatus(STATUS_VALID);
+			PageModuleRespDTO moduleResp = iPageDisplayRSV.queryPageModuleById(moduleId);
+			Integer count = 10;
+			if (moduleResp != null) {
+				count = moduleResp.getModuleCount();
+			}
+			
+			PageModuleGoodsReqDTO pageModuleGoodsReqDTO = new PageModuleGoodsReqDTO();
+			pageModuleGoodsReqDTO.setModuleId(moduleId);
+			pageModuleGoodsReqDTO.setStatus(STATUS_VALID);  
+			pageModuleGoodsReqDTO.setPageSize(count);
+			PageResponseDTO<PageModuleGoodsRespDTO> moduleGoodsList = iPageDisplayRSV.queryPageModuleGoodsList(pageModuleGoodsReqDTO);
 			if(moduleGoodsList !=null && moduleGoodsList.getCount()>0)
 			{
 				try{
@@ -139,7 +151,6 @@ public class HomePageController {
 							if(gdsInfoRespDTO!= null && !StringUtil.isBlank(gdsInfoRespDTO.getGdsPic()) )
 							{
 								  String vfsid= ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_150x150");
-								// String vfsid= "http://112.74.163.29:14751/ImageServer/image/"+gdsInfoRespDTO.getGdsPic()+"_150x150.jpg";
 								  moduleGoodsList.getResult().get(i).setVfsid(vfsid); 
 							}
 					   }

@@ -133,7 +133,7 @@
 			<div class="gd_Left">
 				<div class="gd_hd clearfix">
 					<div class="imgBox">
-						<span class="img" style="overflow: hidden">
+						<span class="img" style="overflow: hidden;text-align: center">
 							<img src="../static/images/img.jpg" th:src="${gdsInfo.gdsPic}">
 						</span>
 						<a class="active collect">
@@ -187,7 +187,7 @@
 					</ul>
 					<div class="tab-content gd_info" id="tabContentDiv">
 						<div class=" tab-pane fade active in" role="tabpanel" id="tab1" aria-labelledby="tab1"  th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:class="${tabContentStat.count}==1? 'tab-pane fade active in':'tab-pane fade'" th:id="'tab'+${tabContentStat.count}">
-							<ul class="piclist clearfix">
+							<ul class="piclist clearfix" th:remove="all">
 								<li><img src="../static/images/img.jpg"></li>
 								<li><img src="../static/images/img.jpg"></li>
 								<li><img src="../static/images/img.jpg"></li>

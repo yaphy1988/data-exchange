@@ -31,6 +31,10 @@ function initCatZTree() {
         success:function (jsonObj) {
             if(jsonObj!=null && jsonObj.success){
                 var zNodes = new Array();
+                var rootNode = {};
+                rootNode.id = 0;
+                rootNode.name = "全部";
+                zNodes.push(rootNode);
                 $.each(jsonObj.obj,function (i,catObj) {
                     var zNode = {};
                     zNode.id = catObj.catId;
@@ -65,7 +69,11 @@ var onBodyDown = function () {
 };
 
 function catSelClick(e, treeId, treeNode) {
-    $("#catIdSel").attr("catId",treeNode.id);
+    if (treeNode.id == "0"){
+        $("#catIdSel").attr("catId","");
+    }else{
+        $("#catIdSel").attr("catId",treeNode.id);
+    }
     $("#catIdSel").val(treeNode.name);
     hideMenu();
 }

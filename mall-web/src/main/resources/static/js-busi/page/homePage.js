@@ -117,7 +117,7 @@ function queryModue101(moduleId){
 		}
 		$('#carousel-example-generic>ol').html(htmlOl);
 		$('#carousel-example-generic>div').html(htmDiv);
-		$('#carousel-example-generic').carousel({interval: 3000});
+		$('#carousel-example-generic').carousel({interval: 5000});
 	};
 	doAjax(url,params,callBack);
 }
@@ -199,7 +199,7 @@ function queryPartner109(moduleId){
 			});
 		}
 		$('#partnertCarousel>div').html(html); 
-		$('#partnertCarousel').carousel({interval: 4000});
+		$('#partnertCarousel').carousel({interval: 5000});
 	};
 	doAjax(url,params,callBack);
 }

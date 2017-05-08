@@ -134,7 +134,7 @@
 			<div class="gd_Left">
 				<div class="gd_hd clearfix">
 					<div class="imgBox">
-						<span class="img" style="overflow: hidden">
+						<span class="img" style="overflow: hidden;text-align: center">
 							<img src="../static/images/img.jpg" th:src="${gdsInfo.gdsPic}">
 						</span>
 						<a class="active collect">
@@ -174,7 +174,7 @@
 								<!-- <p class="label label-info"><i class="iconfont"></i>有效期120天</p>
 								<p class="label label-warning"><i class="iconfont"></i>有效期120天</p> -->
 							</div>
-							<ul class="norms clearfix" id="skuListSel">
+							<ul class="norms clearfix">
 								<li th:each="gdsSku,gdsSkuStat:${gdsInfo.gdsSkuVOList}" th:class="${gdsSku.ifHaveSel}" class="active">
 									<a href="javascript:void(0)" th:attr="skuId=${gdsSku.skuId},packPriceStr=${gdsSku.packPriceStr},packPrice=${gdsSku.packPrice},packTimes=${gdsSku.packTimes},packDay=${gdsSku.packDay}" th:text="${gdsSku.skuName}" th:onclick="'changeGdsSku(this)'">
 										0.00/10次
@@ -183,7 +183,7 @@
 								<li th:remove="All"><a href="">套餐二</a></li>
 								<li th:remove="All"><a href="">1000次</a></li>
 							</ul>
-							<a class="btn btn-orange btn_rec_bg" th:attr="gdsId=${gdsInfo.gdsId},gdsName=${gdsInfo.gdsName}" onclick="applyData(this)">
+							<a class="btn btn-orange btn_rec_bg">
 								<i class="iconfont"></i>
 								申请数据
 							</a>
@@ -202,8 +202,8 @@
 							<a href="#tab2"  data-toggle="tab">错误代码参照</a></li>
 						<li class="">
 							<a href="#tab3" data-toggle="tab" >实例代码</a></li>
-						<li class="" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:attr="htmlFileId=$tabContent.tabContentId,proType=2" >
-							<a href="#tab4" data-toggle="tab" th:href="'#tab4-'+$tabContentStat.count" >套餐介绍</a>
+						<li class="" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:attr="htmlFileId=${tabContent.tabContentId},proType=2" >
+							<a href="#tab4" data-toggle="tab" th:href="'tab4-'+${tabContentStat.count}" >套餐介绍</a>
 						</li>
 					</ul>
 					<div class="tab-content gd_info" id="tabContentDiv">
@@ -362,7 +362,7 @@
 								</tbody>
 							</table>
 						</div>
-						<div class=" tab-pane fade" role="tabpanel" id="tab4" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:id="'tab4-'+$tabContentStat.count">44</div>
+						<div class=" tab-pane fade" role="tabpanel" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:id="'tab4-'+${tabContentStat.count}"></div>
 					</div>
 				</div>
 				

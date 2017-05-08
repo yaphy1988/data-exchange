@@ -79,6 +79,7 @@ public class GdsInfo2PropSVImpl implements IGdsInfo2PropSV {
         int gpId=SeqUtil.getInt("SEQ_GDS_INFO_2_PROP");
         gdsInfo2PropReqDTO.setGpId(gpId);
         gdsInfo2PropReqDTO.setCreateTime(DateUtil.getNowAsDate());
+        gdsInfo2PropReqDTO.setUpdateTime(DateUtil.getNowAsDate());
         ObjectCopyUtil.copyObjValue(gdsInfo2PropReqDTO,gdsInfo2Prop,null,false);
         int code = gdsInfo2PropMapper.insert(gdsInfo2Prop);
         return gpId;
