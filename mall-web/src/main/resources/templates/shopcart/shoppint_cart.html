@@ -10,7 +10,7 @@
     <meta name="keywords" content="">
     <title>广州数据中心</title>
     <link rel="icon" type="../../static/image/png" href="../static/images/favicon.png"  th:remove="all">
-    <link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
+    <link rel="stylesheet" href="../../static/css/bootstrap.css">
     <link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
     <link rel="stylesheet" href="../../static/css/index.css" th:remove="all">
     <link rel="stylesheet" href="../../static/css/shoppint_cart.css" th:href="@{/css/shoppint_cart.css}">  <!-- 购物车/汇款 tangyk -->
@@ -83,7 +83,7 @@
                             </tr>
                         </tbody> 
                         
-                        <tbody class="tbody_line" >
+                        <tbody class="tbody_line"  th:with="packPrice=${skuInfo.packPrice}">
                             <tr >
                                 <td width="39" >
                                     <input checked="checked"  type="checkbox"  disabled="disabled">
@@ -99,17 +99,19 @@
                                 <p ><a href="#"  th:href="'/goods/details/'+${skuInfo.gdsId}+'-'"  class="cart_img_link" th:text="${gdsname}">商品名称</a></p>
                                 </td>
                                 <td>
-                                 <b><span th:text="${skuInfo.packPrice}">套餐名称</span><span>/</span><span th:text="${skuInfo.packTimes}">套餐次数</span><span>次</span></b>   
+                                 
+                                 <b><span   th:text="${#tools.formatMoney(packPrice)}">套餐名称</span><span>/</span><span th:text="${skuInfo.packTimes}">套餐次数</span><span>次</span></b>   
                                 </td>
-                                <td> <b><span th:text="${skuInfo.packPrice}" >单价</span></b>     </td>
-                                <td>
+                               <td> <b><span  th:text="${#tools.formatMoney(packPrice)}" >单价</span></b>     </td>
+                                 <td>
                                     <i class="reduce"  th:onclick="'javascript:reduce();'"></i> 
                                     <input  value="1" maxlength="5" class="val"  type="text" id="gdscount">
                                     <i class="add" th:onclick="'javascript:addnum();'"></i>
                                 </td>
                                 <td> 
-                                    <b><span id="allmoney"  name='总价'  th:text="${skuInfo.packPrice}">总价 70</span></b>
-                                </td>
+                                 <b><span id="allmoney"  name='总价'  th:text="${#tools.formatMoney(packPrice)}">总价 70</span></b>
+<!--                                     <b><span id="allmoney"  name='总价'  th:text="#tools.formatMoney(${skuInfo.packPrice})">总价 70</span></b>
+ -->                                </td>
                              </tr>
                         </tbody>
             </table>
@@ -119,21 +121,21 @@
     <table width="100%" border="0" class="mb50"> 
         <tr>
               <td align="left">支付方式：
-                  <input name="" type="radio" value=""><span class="ml5">支付宝</span>
-                  <input name="" type="radio" value=""><span class="ml5">线下转账</span>
+                  <input name="pay" type="radio" value="zhifubao"><span class="ml5">支付宝</span>
+                  <input name="pay" type="radio" value="outline"><span class="ml5">线下转账</span>
               </td>
               <td align="right">
                   <div  class="total pull-right">
                       <span class="finalAmount">
-                                                                  共  <font>2</font>  件商品 
+                                                                  共  <font><span id="buycount">1</span></font>  件商品 
                       </span>
-                      <span class="finalPrice"><span class="finalText">总计:</span><span>￥1835</span></span>
+                      <span class="finalPrice"><span class="finalText">总计:</span><span id="allmoneypay" th:with="packPrice=${skuInfo.packPrice}" th:text="${#tools.formatMoney(packPrice)}">￥1835</span></span>
                   </div>
               </td>
         </tr>
         <tr>
               <td align="left " class="pt15"><a href="index.html" class="btn btn-default">继续购物</a></td>
-              <td align="right" class="pt15"><a href="http://www.baidu.com" target="_blank" class="btn btn-primary ok" >确认提交</a></td>
+              <td align="right" class="pt15"><a  class="btn btn-primary ok" th:onclick="'javascript:createOrder();'"   >确认提交</a></td>
         </tr>
   </table>
     <script type="text/javascript">

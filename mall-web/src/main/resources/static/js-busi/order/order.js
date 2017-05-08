@@ -44,6 +44,9 @@ function reduce()
 		var callBack =function(data){ 
 			if(data.success){ 
 				$("#allmoney").text(data.money);
+				$("#allmoneypay").text(data.money); 
+				$("#buycount").text(data.iorderamount); 
+				
 			} 
 			else{
 				 WEB.msg.info("提示","更新失败");
@@ -51,7 +54,32 @@ function reduce()
 		};
 		doAjax(url,params,callBack); 
 }
- 
+ //创建订单
+ function createOrder(){
+	  
+		var url = basePath+'/order/creatOrder';
+		var params={};
+		var callBack =function(data){ 
+			if(data.success){ 
+				//打开一个新界面
+				  var paytype = $('input:radio:checked').val();
+				    if(paytype ==  "zhifubao")
+				    {
+     			    	//支付宝
+				    	 WEB.msg.info("提示","支付宝");
+				    }
+				    else
+				    {
+				    	//线下支付
+				    	 WEB.msg.info("提示","线下支付");
+				    }
+			} 
+			else{
+				 WEB.msg.info("提示","更新失败");
+			}
+		};
+		doAjax(url,params,callBack); 
+ }
 /*//获取数据定制的图片
 function queryModue103(moduleId){
 	var url = basePath+'/homePage/queryPageModuleAd';

@@ -34,14 +34,15 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 	  private OrdLogMapper ordLogMapper; 
 	 //创建订单
 	  @Override
-	 public int creatOrderByweb(OrdMainInfoReqDTO ordMainInfoRespDTO)throws Exception{
+	 public long creatOrderByweb(OrdMainInfoReqDTO ordMainInfoRespDTO)throws Exception{
 		 OrdMainInfo record = new OrdMainInfo();	
 		 BeanUtils.copyProperties(record, ordMainInfoRespDTO);
-		 record.setOrderId(Long.toString(SeqUtil.getLong("SEQ_ORD_MAIN_INFO"))); 
+		 long lorderid = SeqUtil.getLong("SEQ_ORD_MAIN_INFO");
+		 record.setOrderId(Long.toString(lorderid)); 
 	 	 record.setCreateTime(DateUtil.getNowAsDate()); 
-   		 return ordMainInfoMapper.insertSelective(record); 
-   		 //插入子订单-- 放到dubbol层去做
-	 }
+   		  ordMainInfoMapper.insertSelective(record); 
+   		  return lorderid;
+ 	 }
 	 //根据ID查询订单的详细信息
 	  @Override
 	 public OrdMainInfo queryOrderById(OrdMainInfo ordInfo) throws Exception{
