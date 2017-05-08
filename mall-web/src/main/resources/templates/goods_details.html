@@ -202,7 +202,7 @@
 							<a href="#tab2"  data-toggle="tab">错误代码参照</a></li>
 						<li class="">
 							<a href="#tab3" data-toggle="tab" >实例代码</a></li>
-						<li class="" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:attr="'htmlFileId='+$tabContent.tabContentId+',proType=2'" >
+						<li class="" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:attr="htmlFileId=$tabContent.tabContentId,proType=2" >
 							<a href="#tab4" data-toggle="tab" th:href="'#tab4-'+$tabContentStat.count" >套餐介绍</a>
 						</li>
 					</ul>
