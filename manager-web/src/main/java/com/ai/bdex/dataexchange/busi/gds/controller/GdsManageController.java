@@ -11,6 +11,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
@@ -25,7 +26,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -148,6 +151,7 @@ public class GdsManageController {
         String gdsId = request.getParameter("gdsId");
         String targetStatus = request.getParameter("targetStatus");
         String oldStatus = request.getParameter("oldStatus");
+        HttpSession session = request.getSession();
         try {
 
             GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
@@ -157,6 +161,11 @@ public class GdsManageController {
                 GdsInfoReqDTO updateReqDTO = new GdsInfoReqDTO();
                 ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,updateReqDTO,null,false);
                 updateReqDTO.setStatus(targetStatus);
+                Date nowDate = new Date();
+                updateReqDTO.setUpdateTime(nowDate);
+                updateReqDTO.setUpdateUser(StaffUtil.getStaffId(session));
+                updateReqDTO.setShelveTime(nowDate);
+                updateReqDTO.setShelveUser(StaffUtil.getStaffId(session));
                 iGdsInfoRSV.updateGdsInfoManager(updateReqDTO);
 
             }else{
