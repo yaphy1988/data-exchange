@@ -64,7 +64,7 @@
                         	<span class="col_red">*</span>广告版位:
                     </td>
                     <td width="420">
-                         <select class="form-control" id="moduleId" disabled>
+                         <select class="form-control" id="moduleId">
                              <option th:each="pageModule,catStat:${moduleAdList}" th:value="${pageModule.moduleId}" th:selected="(${pageModule.moduleId} == ${moduleId})"th:text="${pageModule.moduleName}"></option>
                          </select>
                     </td>

@@ -56,13 +56,15 @@ public class PageModuleAdSVImpl implements IPageModuleAdSV {
 		Integer pageSize = moduleAdDTO.getPageSize();
 				
 		PageModuleAdExample example = new PageModuleAdExample();
-		example.setOrderByClause("AD_ORDER desc");
 		Criteria criteria = example.createCriteria();
 		if(moduleAdDTO.getAdId() !=null && moduleAdDTO.getAdId() != 0){
 			criteria.andAdIdEqualTo(moduleAdDTO.getAdId());
 		}
 		if(moduleAdDTO.getModuleId() != null && moduleAdDTO.getModuleId() !=0){
 			criteria.andModuleIdEqualTo(moduleAdDTO.getModuleId());
+		}
+		if(!StringUtils.isBlank(moduleAdDTO.getAdTitle())){
+			criteria.andAdTitleLike("%"+moduleAdDTO.getAdTitle()+"%");
 		}
 		if(!StringUtils.isBlank(moduleAdDTO.getStatus())){
 			criteria.andStatusEqualTo(moduleAdDTO.getStatus());

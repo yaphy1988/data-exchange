@@ -307,14 +307,21 @@ public class PageManageController {
 			PageModuleAdReqDTO adReqDTO = new PageModuleAdReqDTO();
 			adReqDTO.setPageNo(moduleAdVO.getPageNo());
 			adReqDTO.setPageSize(PAGE_SIZE);
+			if(!StringUtils.isBlank(moduleAdVO.getAdTitle())){
+				adReqDTO.setAdTitle(moduleAdVO.getAdTitle());
+			}
+			if(!StringUtils.isBlank(moduleAdVO.getStatus())){
+				adReqDTO.setStatus(moduleAdVO.getStatus());
+			}else{
+				List<String> statusList=new ArrayList<String>();
+				//查询有效、失效
+				statusList.add(STATUS_VALID);
+				statusList.add(STATUS_INVALID);
+				adReqDTO.setStatusList(statusList);
+			}
 			if(moduleAdVO.getModuleId()!=null){
 				adReqDTO.setModuleId(moduleAdVO.getModuleId());
 			}
-			List<String> statusList=new ArrayList<String>();
-			//查询有效、失效
-			statusList.add(STATUS_VALID);
-			statusList.add(STATUS_INVALID);
-			adReqDTO.setStatusList(statusList);
 			pageInfo = iPageDisplayRSV.queryPageModuleAdPageInfo(adReqDTO);
 			if(!CollectionUtils.isEmpty(pageInfo.getResult())){
 				for(PageModuleAdRespDTO adRespDTO :pageInfo.getResult()){
@@ -430,12 +437,8 @@ public class PageManageController {
 				adRespDTO.setVfsIdUrl(ImageUtil.getImageUrl(adRespDTO.getVfsId() + "_100x100"));
 			}
 			//根据moduleTye查询广告信息信息 
-			PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
-			pageModuleReqDTO.setModuleType(MODULE_TYPE_AD);
-			//查询全部的广告版位
-			List<PageModuleRespDTO> moduleAdList = iPageDisplayRSV.queryPageModuleInfoList(pageModuleReqDTO);
+			queryAdPlace(model);
 			model.addAttribute("moduleId", moduleAdVO.getModuleId());
-			model.addAttribute("moduleAdList", moduleAdList);
 			model.addAttribute("adRespDTO", adRespDTO);
 		} catch (Exception e) {
 			log.error("查询广告列表失败！原因是：" + e.getMessage());
@@ -611,10 +614,45 @@ public class PageManageController {
     private String getHtmlUrl(String vfsId) {
         return ImageUtil.getStaticDocUrl(vfsId, "html");
     }
-    
+    /**
+     * 广告维护入口
+     * @param request
+     * @return
+     */
+	@RequestMapping(value = "/adManage")
+	public ModelAndView adManage(HttpServletRequest request,Model model) {
+		ModelAndView modelAndView = new ModelAndView("ad_manager");
+		String moduleId = request.getParameter("moduleId");
+		modelAndView.addObject("moduleId", moduleId);
+		queryAdPlace(model);
+		return modelAndView;
+	}
+	/**
+	 * 首页商品菜单分类入口
+	 * @param request
+	 * @return
+	 */
 	@RequestMapping(value = "/pageClassify")
 	public ModelAndView pageClassify(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("page_classification");
 		return modelAndView;
+	}
+	/**
+	 * 查询全部的广告版位
+	 * @param model
+	 */
+	private void queryAdPlace(Model model){
+		//根据moduleTye查询广告信息信息 
+		PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
+		pageModuleReqDTO.setModuleType(MODULE_TYPE_AD);
+		//查询全部的广告版位
+		List<PageModuleRespDTO> moduleAdList;
+		try {
+			moduleAdList = iPageDisplayRSV.queryPageModuleInfoList(pageModuleReqDTO);
+			model.addAttribute("moduleAdList", moduleAdList);
+		} catch (Exception e) {
+			log.error("【查询全部的广告版位】异常信息：" + e);
+			e.printStackTrace();
+		}
 	}
 }
