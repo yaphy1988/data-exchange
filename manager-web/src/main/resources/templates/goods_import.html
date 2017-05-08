@@ -202,7 +202,7 @@
 					</td>
 					<td>
 						<span>
-							<img src="" width="100" height="100" name="gdsPicUrl" id="gdsPicUrl"  th:src="${gdsInfoVO.gdsPicUrl}">
+							<img src="" name="gdsPicUrl" id="gdsPicUrl"  th:src="${gdsInfoVO.gdsPicUrl}">
 						</span>
 						<span class="tip">说明：建议选择100*100规格图片</span>
 					</td>
@@ -214,7 +214,7 @@
 						 <div class="form-inline">
                              <div class="form-group">
                              <input  type="hidden" class="form-control" placeholder="" id="gdsPic" th:value="${gdsInfoVO.gdsPic}">
-                             <input type="file" class="float_File form-control" width="100" height="100" name="picUpLoad" id="picUpLoad" th:onchange="'uploadImage(this)'">
+                             <input type="file" class="float_File form-control"  name="picUpLoad" id="picUpLoad" th:onchange="'uploadImage(this)'">
                               </div>
                           </div>
 						
