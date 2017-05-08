@@ -1,13 +1,19 @@
 var basePath = WEB_ROOT;
 var currentUrl = window.location.href;
 $(document).ready(function(){
-	if(currentUrl.match(/\/homePage\/pageInit/)){//首页
-		$('#head_sidebar>ul').show();
-		$('#head_menu').attr('class','menu clearfix');
-	}else{
-		$('#head_sidebar>ul').hide();
-		$('#head_menu').attr('class','menuBg seconav');
-	}
+	$('#head_sidebar>ul').show();
+    $('#head_menu').attr('class','menu clearfix');
+    if(currentUrl.match(/\/homePage\/pageInit/)){//首页
+        $('#head_sidebar>ul').show();
+    }else{
+        $('#head_sidebar>ul').hide();
+        $('#head_sidebar').hover(function(){
+            $('#head_sidebar>ul').show();
+        },function(){
+            $('#head_sidebar>ul').hide();
+        });
+    }
+
 	header.setSpanDate();
 	header.querySortInfo('-1','1');
 	window.setInterval("header.setSpanDate()", 1000);
@@ -49,9 +55,8 @@ var header = new Object({
 					var sortInfos = data.sortInfos;
 					$(sortInfos).each(function(i,d){
 						var content = d.sortContentVO;
-						htmlLever1 +='<li pSortId='+d.sortId+'><a href="javascript:void(0)"  target="_blank"><i>&rsaquo;</i>'+content.contentName+'</a> </li>';
-/*						htmlLever1 +='<li pSortId='+d.sortId+'><a href="'+setLinkUrk(content.contentLink)+'"  target="_blank"><i>&rsaquo;</i>'+content.contentName+'</a> </li>';
-*/						var subSortInfoList = d.subSortInfoList;
+						htmlLever1 +='<li pSortId='+d.sortId+'><a href="'+setLinkUrk(content.contentLink)+'"  target="_blank"><i>&rsaquo;</i>'+content.contentName+'</a> </li>';
+						var subSortInfoList = d.subSortInfoList;
 						htmlLever2 += '<div pSortId='+d.sortId+' class="sidebar-hidden" style="display: none">'+
 							'<h4>'+content.contentName+'</h4>'+
 							'<div class="sidebar-link">';
@@ -70,28 +75,25 @@ var header = new Object({
 					});
 					html += htmlLever1 +'</ul><!--二级导航开始-->'+htmlLever2+'<!--二级导航结束-->';
 					$('#head_sidebar').html(html);
-					if(currentUrl.match(/\/homePage\/pageInit/)){//首页
-						$('#head_sidebar>ul').show();
-					}else{
-						$('#head_sidebar>ul').hide();
-						$('#head_sidebar').hover(function(){
-							$('#head_sidebar>ul').show();
-						},function(){
-							$('#head_sidebar>ul').hide();
-						});
-					}
+                    if(currentUrl.match(/\/homePage\/pageInit/)){//首页
+                        $('#head_sidebar>ul').show();
+                    }else{
+                        $('#head_sidebar>ul').hide();
+                    }
+                    //分类事件
 					$('#head_sidebar>ul').children().hover(function(){
 						var pSortId = $(this).attr('pSortId');
-						$('#head_sidebar>div').hide();
+                        $('#head_sidebar>div').hide();
 						$('#head_sidebar>div[pSortId='+pSortId+']').show();
 					},function(){
-						$('#head_sidebar>div').hide();
+					    $('#head_sidebar>div').hide();
 					});
+
 					$('#head_sidebar>div').hover(function(){
-						$(this).show();
-					},function(){
-						$('#head_sidebar>div').hide();
-					});
+                       $(this).show();
+                    },function(){
+                        $(this).hide();
+                    });
 				}
 			}
 		});
