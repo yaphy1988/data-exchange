@@ -4,6 +4,8 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.apache.solr.client.solrj.SolrClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,12 +30,17 @@ import com.ai.bdex.dataexchange.solrutil.SolrSearchUtil;
 import com.ai.bdex.dataexchange.solrutil.SortField;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserCollectionReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserCollectionRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoQueryRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IUserCollectionRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageHotSearchRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.solr.IDeltaIndexServiceRSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 /**
@@ -62,6 +69,8 @@ public class SearchController{
     private SolrClient solrClient;
     @DubboConsumer
     private IPageHotSearchRSV iPageHotSearchRSV;
+    @DubboConsumer
+    private IUserCollectionRSV iUserCollectionRSV;
     /**
      * 
      * init:(搜索页初始化入口). <br/> 
@@ -158,6 +167,8 @@ public class SearchController{
         String returnUrl = "";
         if(searchVO.getCatFirst()==3){
             returnUrl = "search/list/search_list_solution";
+        }else if(searchVO.getCatFirst()==2){
+            returnUrl = "search/list/search_list_custom";
         }else{
             returnUrl = "search/list/search_list";
         }
@@ -232,7 +243,7 @@ public class SearchController{
      * @return 
      * @since JDK 1.6
      */
-    @SuppressWarnings("rawtypes")
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     @RequestMapping(value="/suggest")
     @ResponseBody
     public AjaxJson suggest(Model model,SearchVO searchVO){
@@ -248,6 +259,13 @@ public class SearchController{
             searchParam.setPageNo(searchVO.getPageNo());
             searchParam.setPageSize(10);
             searchParam.setKeyWord(searchVO.getKeyWord());
+            List<SearchField> searchFieldList = new ArrayList<SearchField>();
+            if(searchVO.getCatFirst() >= 1){
+                SearchField searchField = new SearchField();
+                searchField.setName("catFirst");
+                searchField.setValue(searchVO.getCatFirst()+"");
+                searchParam.setSearchField(searchFieldList);
+            }
             List<FacetRespVO> result = SolrSearchUtil.facetSuggest(searchParam);
 //            List<ResultRespVO> result = SolrSearchUtil.suggest(searchParam);
            
@@ -287,17 +305,85 @@ public class SearchController{
         return json;
     }
     
+    /**
+     * 
+     * gdsCollection:(商品收藏). <br/> 
+     * 
+     * @author gxq 
+     * @param searhVO
+     * @param session
+     * @return 
+     * @since JDK 1.6
+     */
+    @RequestMapping(value="/gdscollection")
+    @ResponseBody
+    public AjaxJson gdsCollection(SearchVO searhVO,HttpSession session){
+        AjaxJson ajaxJson = new AjaxJson();
+        try {
+            UserCollectionReqDTO userCollectionReqDTO = new UserCollectionReqDTO();
+            ObjectCopyUtil.copyObjValue(searhVO, userCollectionReqDTO, null, false);
+            userCollectionReqDTO.setStaffId(StaffUtil.getStaffId(session));
+            List<UserCollectionRespDTO> list = iUserCollectionRSV.queryUserCollectionList(userCollectionReqDTO);
+            if(list != null && list.size() >= 1){
+                //表示已经收藏过该商品，这次点击是作为取消收藏
+                iUserCollectionRSV.deleteUserCollection(userCollectionReqDTO);
+                ajaxJson.setObj("cancel");
+            }else{
+                userCollectionReqDTO.setStatus("1");
+                userCollectionReqDTO.setCreateUser(StaffUtil.getStaffId(session));
+                iUserCollectionRSV.insertUserCollection(userCollectionReqDTO);
+                ajaxJson.setObj("add");
+            }
+            ajaxJson.setSuccess(true);
+           
+        } catch (BusinessException e) {
+            logger.error("收藏失败", e);
+            ajaxJson.setSuccess(false);
+        }
+        return ajaxJson;
+    }
+    
+    /**
+     * 
+     * whethercollect:(是否已经收藏). <br/> 
+     * 
+     * @author gxq 
+     * @param searhVO
+     * @param session
+     * @return 
+     * @since JDK 1.6
+     */
+    @RequestMapping(value="/whethercollect")
+    @ResponseBody
+    public AjaxJson whetherCollect(SearchVO searhVO,HttpSession session){
+        AjaxJson ajaxJson = new AjaxJson();
+        try {
+            
+            UserCollectionReqDTO userCollectionReqDTO = new UserCollectionReqDTO();
+            ObjectCopyUtil.copyObjValue(searhVO, userCollectionReqDTO, null, false);
+            userCollectionReqDTO.setStaffId(StaffUtil.getStaffId(session));
+            List<UserCollectionRespDTO> list = iUserCollectionRSV.queryUserCollectionList(userCollectionReqDTO);
+            ajaxJson.setSuccess(true);
+            ajaxJson.setObj(list);
+        } catch (BusinessException e) {
+            logger.error("收藏失败", e);
+            ajaxJson.setSuccess(false);
+        }
+        return ajaxJson;
+    }
     
     @DubboConsumer
     private IDeltaIndexServiceRSV iDeltaIndexServiceRSV;
     @RequestMapping(value="/index")
     public String deltaImport(){
         try {
-            iDeltaIndexServiceRSV.deltaFullImport(SolrCoreEnum.GDS.getCode(), true);
+            iDeltaIndexServiceRSV.deltaImport(SolrCoreEnum.GDS.getCode(), 1079);
         } catch (BusinessException e) {
             e.printStackTrace();
         }
         return "search/search";
     }
+    
+    
 }
 
