@@ -1,4 +1,3 @@
-<div th:replace="~{search/search-order-condition :: search-order-condition}"></div>
 <div class="goodslist clearfix">
 	<ul >
 		<li th:each="list : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
