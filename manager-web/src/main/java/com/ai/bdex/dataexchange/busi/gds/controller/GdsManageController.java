@@ -205,6 +205,7 @@ public class GdsManageController {
         String gdsId = request.getParameter("gdsId");
         String ifRecGds = request.getParameter("ifRecGds");
         String errorMsg = "";
+        HttpSession session = request.getSession();
         if ("1".equals(ifRecGds)){
             errorMsg = "商品推荐失败";
         }else{
@@ -219,6 +220,8 @@ public class GdsManageController {
                 GdsInfoReqDTO updateReqDTO = new GdsInfoReqDTO();
                 ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,updateReqDTO,null,false);
                 updateReqDTO.setIfRecommend(ifRecGds);
+                updateReqDTO.setUpdateTime(new Date());
+                updateReqDTO.setUpdateUser(StaffUtil.getStaffId(session));
                 iGdsInfoRSV.updateGdsInfo(updateReqDTO);
             }else{
                 ajaxJson.setSuccess(false);
