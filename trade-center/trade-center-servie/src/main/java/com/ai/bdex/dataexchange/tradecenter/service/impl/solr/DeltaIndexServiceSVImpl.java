@@ -184,7 +184,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                 solrInputDocument.addField("gdsNameSrc", gdsInfo.getGdsName(), 1.0f);
                 solrInputDocument.addField("gdsSubtitle", gdsInfo.getGdsSubtitle(), 1.0f);
                 solrInputDocument.addField("gdsSubtitleSrc", gdsInfo.getGdsSubtitle(), 1.0f);
-                solrInputDocument.addField("catFirst", gdsInfo.getGdsSubtitle());
+                solrInputDocument.addField("catFirst", gdsInfo.getCatFirst());
                 solrInputDocument.addField("apiId", gdsInfo.getApiId());
                 solrInputDocument.addField("gdsPic", gdsInfo.getGdsPic());
                 solrInputDocument.addField("ifRecommend", gdsInfo.getIfRecommend());
@@ -256,7 +256,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                     solrInputDocument.addField("gdsNameSrc", gdsInfo.getGdsName(), 1.0f);
                     solrInputDocument.addField("gdsSubtitle", gdsInfo.getGdsSubtitle(), 1.0f);
                     solrInputDocument.addField("gdsSubtitleSrc", gdsInfo.getGdsSubtitle(), 1.0f);
-                    solrInputDocument.addField("catFirst", gdsInfo.getGdsSubtitle());
+                    solrInputDocument.addField("catFirst", gdsInfo.getCatFirst());
                     solrInputDocument.addField("apiId", gdsInfo.getApiId());
                     solrInputDocument.addField("gdsPic", gdsInfo.getGdsPic());
                     solrInputDocument.addField("ifRecommend", gdsInfo.getIfRecommend());
