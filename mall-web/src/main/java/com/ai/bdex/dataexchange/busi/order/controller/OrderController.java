@@ -75,7 +75,7 @@ public class OrderController {
 		//将商品的名称，gdsID，套餐id，skuID，带过来，存储到session中。价格必须从商品服务从新回去
         //商品名称和ID
 		int gdsid = Integer.parseInt(request.getParameter("gdsid"));
-		String gdsname =  request.getParameter("gdsname"); 
+		String gdsname = "";
 		//套餐信息
 		int skusid =  Integer.parseInt(request.getParameter("skuid"));
 		String skuname = "";
@@ -94,7 +94,8 @@ public class OrderController {
 			listGdsSku = iGdsSkuRSV.queryGdsSkuList(dsSkuReqDTO); 
 		} catch (Exception e) {
 		    e.printStackTrace();
-		}  
+		}   	
+			
 		OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
 		if(!CollectionUtil.isEmpty(listGdsSku) )
 		{
@@ -123,6 +124,30 @@ public class OrderController {
 			ordInfoReqDTO.setGdsId(lgdsid);
 			long lskuid = (long)skusid;
 			ordInfoReqDTO.setSkuId(lskuid);
+			//获取服务ID，服务名称，商品名称
+			//获取名称
+			try { 
+				GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
+				GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
+	 			gdsInfoReqDTO.setGdsId(gdsid);
+				gdsInfoRespDTO =  iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO); 
+				if(gdsInfoRespDTO != null)
+				{ 
+					    ordInfoReqDTO.setAipServiceId(Integer.toString(gdsInfoRespDTO.getApiId()));
+						List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(String.valueOf(gdsInfoRespDTO.getApiId()));
+						if(!CollectionUtil.isEmpty(apiServiceList))
+						{
+							ordInfoReqDTO.setServiceName(apiServiceList.get(0).getServiceName());
+						}
+						ordInfoReqDTO.setCatFirst(gdsInfoRespDTO.getCatFirst());
+						ordInfoReqDTO.setCatId(gdsInfoRespDTO.getCatId());
+						gdsname = gdsInfoRespDTO.getGdsName();
+				} 
+			} catch (Exception e) {
+			    e.printStackTrace();
+			} 
+			
+			
 			//如果已经有数据了，那就先删除，然后再写入
 			Object  ordInfoDTO = CacheUtil.getItem(staff_id+"_shopcart");
 			if(ordInfoDTO != null)
