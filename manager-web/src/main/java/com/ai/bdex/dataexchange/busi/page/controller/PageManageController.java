@@ -169,7 +169,7 @@ public class PageManageController {
 		request.setAttribute("infoUrl", infoUrl);
 		request.setAttribute("infoTitle", infoTitle);
 		request.setAttribute("infoType", infoType);
-		return "page/newsInfo-add";
+		return "info_details :: #edit_data";
 	} 
 	@RequestMapping(value="/updateNewsPageInfo")
 	@ResponseBody

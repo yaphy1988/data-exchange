@@ -39,7 +39,7 @@ function editOrAddNewsInfo(infoId){
 		async:true,
 		data:{infoId:infoId},
 		success:function(data){
-			$('#tab02').html(data).attr('class','tab-pane active');
+			$('#edit_content').html(data).show().attr('class','tab-pane active').show();
 			$('#tab01').attr('class','tab-pane');
 			$('ul[role=tablist]').children().removeClass('active').eq(1).attr('class',"active");
 			createEditor();
@@ -91,6 +91,7 @@ function createEditor() {
 	//ckeditor.getData()
 }
 function queryNewsPageInfo(pageNo){
+	$('#edit_content').hide();
 	var infoTitle=$.trim($('#news_title').val());
 	var status=$('#news_status').val();
 	var infotype=$('#news_infotype').val();
