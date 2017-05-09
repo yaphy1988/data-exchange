@@ -38,4 +38,8 @@ public interface IOrdMainInfoSV {
 	*/
 	public int cancelOrderMainInfo(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception;
 
+	/**
+	 * 更新订单主表信息
+	 */
+	public int updateOrderMainInfo(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception ;
 }

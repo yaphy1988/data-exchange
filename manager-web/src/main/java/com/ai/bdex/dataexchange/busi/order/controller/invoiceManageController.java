@@ -118,12 +118,12 @@ public class invoiceManageController {
 				taxReqDTO.setShopId(ordInfoList.get(0).getShopId());
 				taxReqDTO.setStaffId(ordInfoList.get(0).getStaffId());
 			}
-			taxReqDTO.setStatus(Constants.Order.INVOICE_STATUS_APLLY);
+			taxReqDTO.setStatus(Constants.Order.ORDER_INVOICE_STATUS_1);
 			Long ordTaxId=iOrdInvoiceTaxRSV.insertOrdInvoice(taxReqDTO);
 			if(ordTaxId>0){
 				OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
 				ordMainInfoReqDTO.setOrderId(ordInvoiceTaxVO.getOrderId());
-				ordMainInfoReqDTO.setInvoiceStatus(Constants.Order.INVOICE_STATUS_APLLY);
+				ordMainInfoReqDTO.setInvoiceStatus(Constants.Order.ORDER_INVOICE_STATUS_1);
 				iOrderMainInfoRSV.updateOrderMainInfo(ordMainInfoReqDTO);
 			}
 			rMap.put("success", true);
@@ -149,11 +149,11 @@ public class invoiceManageController {
    			ordMainReqDTO.setStaffId(StaffUtil.getStaffId(session));
    			ordMainReqDTO.setPageNo(ordMainInfoVO.getPageNo());
    			ordMainReqDTO.setPageSize(PAGE_SIZE);
-   			ordMainInfoVO.setPayFlag(Constants.Order.PAY_FLAG_SUCCESS);//已支付
+   			ordMainInfoVO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);//已支付
    			//查询发票类型为1普通发票、2增值税发票
    			List<String> invoiceModTypeList = new ArrayList<String>();
-   			invoiceModTypeList.add(Constants.Order.INVOICE_MOD_TYPE_COMM);
-   			invoiceModTypeList.add(Constants.Order.INVOICE_MOD_TYPE_ADD);
+   			invoiceModTypeList.add(Constants.Order.ORDER_invoiceModType_1);
+   			invoiceModTypeList.add(Constants.Order.ORDER_invoiceModType_2);
    			ordMainReqDTO.setInvoiceModTypeList(invoiceModTypeList);
    			pageInfo = iOrderMainInfoRSV.queryOrdMainInfoPage(ordMainReqDTO);
 			if (CollectionUtils.isNotEmpty(pageInfo.getResult())) {
