@@ -120,7 +120,44 @@ function onImageFileChange(obj){
 }
 
 $(function(){
-//	$("#picUpLoad").bind('change',function(){
-//		onImageFileChange(this);
-//	});
+
+	$("#province").change(function () {
+		var provinceId = $(this).val();
+		var params = {};
+		if (provinceId==undefined){
+			provinceId = "";
+		}
+		params.code = provinceId;
+		params.contentId = "city"
+		$.ajax({
+			url:WEB_ROOT + "/authenapply/queryAreaList",
+			data:params,
+			dataType:'html',
+			type:'post',
+			async:true,
+			success:function (data) {
+				$("#city").html(data);
+			}
+		})
+	})
+
+	$("#city").change(function () {
+		var cityId = $(this).val();
+		var params = {};
+		if (cityId==undefined){
+			cityId = "";
+		}
+		params.code = cityId;
+		params.contentId = "country"
+		$.ajax({
+			url:WEB_ROOT + "/authenapply/queryAreaList",
+			data:params,
+			dataType:'html',
+			type:'post',
+			async:true,
+			success:function (data) {
+				$("#country").html(data);
+			}
+		})
+	})
 });
