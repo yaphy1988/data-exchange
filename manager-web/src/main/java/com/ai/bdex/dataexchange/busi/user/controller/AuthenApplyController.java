@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.busi.user.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,6 +8,12 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.ai.bdex.dataexchange.busi.base.entity.BaseAdminAreaInfoVO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.BaseAdminAreaReqDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.BaseAdminAreaRespDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IBaseAdminAreaRSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.paas.utils.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -34,6 +41,9 @@ public class AuthenApplyController {
 	
 	@DubboConsumer
 	private IChnlInvoiceTaxRSV iChnlInvoiceTaxRSV;
+
+	@DubboConsumer
+	private IBaseAdminAreaRSV iBaseAdminAreaRSV;
 	
 	/**
 	 * 用户提交审核页面初始化
@@ -52,6 +62,14 @@ public class AuthenApplyController {
 			String contextpath = request.getContextPath();
 			return "redirect:"+mallurl+contextpath+"/login/pageInit";
 		}
+
+		//查询省份列表
+		BaseAdminAreaReqDTO baseAdminAreaReqDTO = new BaseAdminAreaReqDTO();
+		baseAdminAreaReqDTO.setStatus("1");
+		baseAdminAreaReqDTO.setAreaLevel("10");
+		List<BaseAdminAreaInfoVO> provinceList = queryBaseArea(baseAdminAreaReqDTO);
+		model.addAttribute("provinceList",provinceList);
+
 		input.setStaffId(staffId);
 		List<ChnlInvoiceTaxDTO> datas = null;
 		InvoiceTaxVO vodata = new InvoiceTaxVO();
@@ -151,5 +169,23 @@ public class AuthenApplyController {
 			rMap.put("msg", e.getMessage());
 		}
 		return rMap;
+	}
+
+	private List<BaseAdminAreaInfoVO> queryBaseArea(BaseAdminAreaReqDTO baseAdminAreaReqDTO){
+		List<BaseAdminAreaInfoVO> list = new ArrayList<BaseAdminAreaInfoVO>();
+		try {
+			List<BaseAdminAreaRespDTO> baseAdminAreaRespDTOList = iBaseAdminAreaRSV.queryBaseAdminAreaList(baseAdminAreaReqDTO);
+			if (!CollectionUtil.isEmpty(baseAdminAreaRespDTOList)){
+				for (BaseAdminAreaRespDTO baseAdminAreaRespDTO : baseAdminAreaRespDTOList){
+					BaseAdminAreaInfoVO baseAdminAreaInfoVO = new BaseAdminAreaInfoVO();
+					ObjectCopyUtil.copyObjValue(baseAdminAreaRespDTO,baseAdminAreaInfoVO,null,false);
+					list.add(baseAdminAreaInfoVO);
+				}
+			}
+		}catch (Exception e){
+			log.error("查询区域列表信息异常",e);
+		}
+
+		return list;
 	}
 }
