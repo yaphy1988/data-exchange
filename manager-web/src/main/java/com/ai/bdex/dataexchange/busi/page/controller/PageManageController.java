@@ -380,16 +380,15 @@ public class PageManageController {
 			}
 			if(!StringUtils.isBlank(moduleId)){
 				newsInfoReqDTO.setModuleId(Integer.valueOf(moduleId));
-			}else{
-				if("1".equals(infoType)){
-					newsInfoReqDTO.setModuleId(105);
-				}else if("2".equals(infoType)){
-					newsInfoReqDTO.setModuleId(106);
-				}else if("3".equals(infoType)){
-					newsInfoReqDTO.setModuleId(107);
-				}else{
-					newsInfoReqDTO.setModuleId(108);
-				}
+			}
+			if("1".equals(infoType)){
+				newsInfoReqDTO.setModuleId(105);
+			}else if("2".equals(infoType)){
+				newsInfoReqDTO.setModuleId(106);
+			}else if("3".equals(infoType)){
+				newsInfoReqDTO.setModuleId(107);
+			}else if("4".equals(infoType)){
+				newsInfoReqDTO.setModuleId(108);
 			}
 			newsInfoReqDTO.setStatus(STATUS_VALID);
 			newsInfoReqDTO.setInfoTitle(infoTitle);
