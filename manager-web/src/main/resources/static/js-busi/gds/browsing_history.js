@@ -2,14 +2,14 @@ $(function(){
 	var param = {
 		pageNo : 1
 	}
-	MyFavorite.gridUserCollection(param);
+	BrowsingHistory.gridUserfootprint(param);
 	//查询按钮
 	$("#searchBtn").click(function(){
 		var param = {
 			pageNo : 1,
 			gdsId : $.trim($("#gdsId").val())
 		}
-		MyFavorite.gridUserCollection(param);
+		BrowsingHistory.gridUserfootprint(param);
 	});
 	$.validator.addMethod("number",
 		function(value, element, params) {
@@ -24,7 +24,7 @@ $(function(){
 			pageNo : 1,
 			gdsId : $.trim($("#gdsId").val())
 		}
-		MyFavorite.gridUserCollection(param);
+		BrowsingHistory.gridUserfootprint(param);
 		e.preventDefault();
 	})
 });
@@ -36,15 +36,15 @@ $(function(){
 function pagerClick(pageNo) {
 	var param = {
 		gdsId : $.trim($("#gdsId").val()),
-		pageNo:pageNo,
+		pageNo:pageNo
 	};
-	MyFavorite.gridUserCollection(param);
+	BrowsingHistory.gridUserfootprint(param);
 }
-var MyFavorite = {
-	gridUserCollection : function(param){
+var BrowsingHistory = {
+	gridUserfootprint : function(param){
 		param.catFirst = $(".tabSelect.active").attr('catFirst');
 		$.ajax({
-	        url:WEB_ROOT+"/usercollection/gridusercollection",
+	        url:WEB_ROOT+"/userfootprint/gridUserfootprint",
 	        async:true,
 	        type:'POST',
 	        dataType:'html',
@@ -54,20 +54,20 @@ var MyFavorite = {
 	        }
 	    });
 	},
-	deleteUserCollect : function(colId){
-		WEB.msg.confirm("提示", "确定要删除当前分类和该分类下的所有分类吗？", function(r) {
+	deleteUserFootPrint : function(fpId){
+		WEB.msg.confirm("提示", "确定要删除当前记录信息吗？", function(r) {
 			$.ajax({
-		        url:WEB_ROOT+"/usercollection/deleteusercollect",
+		        url:WEB_ROOT+"/userfootprint/deleteuserfootprint",
 		        async:true,
 		        type:'POST',
 		        dataType:'json',
-		        data:{colId:colId},
+		        data:{fpId:fpId},
 		        success:function (data) {
 		        	if(data.success){
 		        		WEB.msg.info("提示", "删除成功", function(r) {
 		        			var param = {
 	        				};
-		        			MyFavorite.gridUserCollection(param);
+		        			BrowsingHistory.gridUserfootprint(param);
 		                 });
 		        	}else{
 		        		WEB.msg.error("删除失败");

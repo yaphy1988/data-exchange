@@ -111,7 +111,8 @@ public class UserCollectionSVImpl implements IUserCollectionSV{
         List<UserCollection> userCollections = userCollectionMapper.selectByExample(example);
         UserCollectionRespDTO userCollectionRespDTO = null;
         if(!CollectionUtil.isEmpty(userCollections)){
-                ObjectCopyUtil.copyObjValue(userCollections.get(0), userCollectionRespDTO, null, false);
+            userCollectionRespDTO = new UserCollectionRespDTO();
+            ObjectCopyUtil.copyObjValue(userCollections.get(0), userCollectionRespDTO, null, false);
         }
         return userCollectionRespDTO;
     }
