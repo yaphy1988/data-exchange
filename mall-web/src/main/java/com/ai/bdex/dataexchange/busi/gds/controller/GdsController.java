@@ -58,7 +58,7 @@ public class GdsController {
     private IGdsSkuRSV iGdsSkuRSV;
     @DubboConsumer(timeout = 30000)
     private IServiceMessageRSV iServiceMessageRSV;
-    @DubboConsumer
+    @DubboConsumer 
     private IOrderInfoRSV iOrderInfoRSV;
 
     @RequestMapping(value = "/details/{gdsId}-{skuId}")

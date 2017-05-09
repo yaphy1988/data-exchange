@@ -55,18 +55,19 @@ function reduce()
 		doAjax(url,params,callBack); 
 }
  //创建订单
- function createOrder(){
-	  
-		var url = basePath+'/order/creatOrder';
+ function createOrder(){ 
+		
+	    var url = basePath+'/order/creatOrder';
 		var params={};
 		var callBack =function(data){ 
 			if(data.success){ 
 				//打开一个新界面
 				  var paytype = $('input:radio:checked').val();
-				    if(paytype ==  "zhifubao")
+				   if(paytype ==  "zhifubao")
 				    {
-     			    	//支付宝
-				    	 WEB.msg.info("提示","支付宝");
+				    	//支付宝
+				    	// WEB.msg.info("提示","支付宝"); 
+				    	 window.open("http://www.jb51.net");
 				    }
 				    else
 				    {
@@ -78,7 +79,7 @@ function reduce()
 				 WEB.msg.info("提示","更新失败");
 			}
 		};
-		doAjax(url,params,callBack); 
+		doAjax(url,params,callBack);  
  }
 /*//获取数据定制的图片
 function queryModue103(moduleId){
