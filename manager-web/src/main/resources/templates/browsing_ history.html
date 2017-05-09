@@ -2,13 +2,12 @@
 <html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
 	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
 	  layout:decorate="~{fragments/layout}">
-<head th:remove="all">
+<head>
 	<meta charset="UTF-8">
 	<title>个人中心-浏览历史</title>
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
-	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
+	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
 	<!--[if lt IE 9]>
@@ -58,7 +57,8 @@
 <!-- 头部 end-->
 
 
-<div layout:fragment="screen_content">
+<div  layout:fragment="screen_content">
+	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
 	<script th:src="@{/js-busi/gds/browsing_history.js}"></script>
     <!-- 右边内容 --> 
 	<div class="m_main">
@@ -99,7 +99,7 @@
                 <div class="tab-content pt15" id="userFootPrintList">
                     
                     <!-- 全部 -->
-                    <div id="user_collection_list_template"  th:remove="all-but-first">
+                    <div class="tab-pane active" id="user_footprint_list_template">
 	                    <div role="tabpanel" class="tab-pane active" id="tab01">
 	                        <table class="table table-bordered text-center" >
 	                            <thead>
@@ -219,7 +219,7 @@
 	                    </div>
 	
 	                     <!-- 分页-->
-	                    <div class="pagelist" th:remove="all" th:replace="fragments/pager :: pager">
+	                    <div class="pagelist pull-right" th:replace="fragments/pager :: pager">
 	                        <nav aria-label="Page navigation">
 	                            <ul class="pagination">
 	                                <li >

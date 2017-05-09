@@ -44,13 +44,13 @@ var BrowsingHistory = {
 	gridUserfootprint : function(param){
 		param.catFirst = $(".tabSelect.active").attr('catFirst');
 		$.ajax({
-	        url:WEB_ROOT+"/userfootprint/gridUserfootprint",
+	        url:WEB_ROOT+"/userfootprint/griduserfootprint",
 	        async:true,
 	        type:'POST',
 	        dataType:'html',
 	        data:param,
 	        success:function (data) {
-	            $("#userCollectionList").html(data);
+	            $("#userFootPrintList").html(data);
 	        }
 	    });
 	},

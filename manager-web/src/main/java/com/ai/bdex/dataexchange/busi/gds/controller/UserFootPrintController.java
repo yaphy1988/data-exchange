@@ -40,7 +40,7 @@ public class UserFootPrintController {
         //初始化必须返回一个对象,对象不能是null噢。否则页面解析报错
         PageResponseDTO<UserFootPrintRespDTO> pageResponseDTO = new PageResponseDTO<UserFootPrintRespDTO>();
         model.addAttribute("pageInfo", pageResponseDTO);
-        return "myfavorite";
+        return "browsing_ history";
     }
     
     /**
