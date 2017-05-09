@@ -10,7 +10,7 @@
 	<tr>
 		<td class="Hint "><span class="col_red">*</span>信息类型:</td>
 		<td>
-		<select class="form-control;width:60%" id="infoType" th:if="${infoflag=='edit'}" disabled>
+		<select class="form-control;width:60%" id="infoType" th:if="${infoflag=='edit'}" disabled style="background-color:#eee">
 			<option value="1" th:selected="(${infoType} == '1')">行业资讯</option>
             <option value="2" th:selected="(${infoType} == '2')">平台公告</option>
             <option value="3" th:selected="(${infoType} == '3')">平台活动</option>
