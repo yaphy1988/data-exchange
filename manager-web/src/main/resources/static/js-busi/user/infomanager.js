@@ -49,9 +49,10 @@ function sendSmsCode(){
 	$.ajax({
 		url : MALL_ROOT+"/security/sendChangPhoneCode",
 		type : 'POST',
-		async : true,
+        async : true,
+        dataType : 'jsonp',
+        jsonp :'jsonpCallback',
 		data : {picVerifyCode:picCode,busiType:'1'},
-		dataType : 'json',
 		success : function(obj){	
 			if(obj.success){
 				afterSend();
@@ -92,8 +93,9 @@ function nextStep(){
 		url : MALL_ROOT+"/security/checkSendChangPhoneCode",
 		type : 'POST',
 		async : true,
+        dataType : 'jsonp',
+        jsonp :'jsonpCallback',
 		data : {verifyCode:smsCode,busiType:'1'},
-		dataType : 'json',
 		success : function(obj){	
 			if(obj.success){
 				bindNewPhone();
@@ -146,10 +148,10 @@ function sendSmsCodeNew(){
 
 	$.ajax({
         url : MALL_ROOT+"/security/sendChangPhoneCode",
-        type : 'POST',
         async : true,
+        dataType : 'jsonp',
+        jsonp :'jsonpCallback',
         data : {picVerifyCode:picCodeNew,newPhoneNo:phoneNo,busiType:'2'},
-        dataType : 'json',
         success : function(obj){
             if(obj.success){
                 afterSendNew();

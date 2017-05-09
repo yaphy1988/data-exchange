@@ -13,6 +13,7 @@ import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +35,9 @@ public class SmsValidController{
     public static final String CACHE_ITEM_CHECK_ID = "cache_item_check_id";
     // 短信验证码的信息；
     public static String SMS_SECURITY_CODE_KEY = "Sms.Security.Code.String.";
-    
+
+	private static ObjectMapper mapper = new ObjectMapper();
+
     @DubboConsumer
     private ISmsSeccodeRSV iSmsSeccodeRSV;
     
@@ -52,7 +55,7 @@ public class SmsValidController{
      */
 	@RequestMapping(value="/sendChangPhoneCode")
 	@ResponseBody
-	public Map<String,Object> sendChangPhoneCode(HttpServletRequest request,@RequestParam String picVerifyCode ,@RequestParam String busiType){
+	public String sendChangPhoneCode(HttpServletRequest request,@RequestParam String picVerifyCode ,@RequestParam String busiType){
 		Map<String,Object> result = new HashMap<>();
 
 		//先校验验证码是否正确
@@ -60,7 +63,7 @@ public class SmsValidController{
 			if (CaptchaServlet.verifyCaptcha(request, picVerifyCode.trim()) == false) {
 				result.put("success",false);
 				result.put("msg","图片验证码不正确，请重新输入！");
-				return result;
+				return getJsonCallback(result,request);
 			}
 		}
 
@@ -78,26 +81,28 @@ public class SmsValidController{
 			} catch (BusinessException e) {
 				result.put("success", false);
 				result.put("msg", "获取手机号失败，请稍后再试");
+				return getJsonCallback(result,request);
 			}
 		}else if("2".equals(busiType)) {
 			phoneNo = request.getParameter("newPhoneNo");
 		}else{
 			result.put("success", false);
 			result.put("msg", "无效的请求参数");
+			return getJsonCallback(result,request);
 		}
 
 		//手机号为空，则返回
 		if(StringUtils.isBlank(phoneNo)){
 			result.put("success", false);
 			result.put("msg", "发送失败：手机号为空");
-			return result;
+			return getJsonCallback(result,request);
 		}
 
 		Object oldCode = CacheUtil.getItem("SMS_CHANGPHONE_SPEED_"+busiType+phoneNo);
 		if(oldCode!= null){
 			result.put("success", false);
 			result.put("msg", "验证码已发送：重发需等60秒。");
-			return result;
+			return getJsonCallback(result,request);
 		}
 
 		/**开始发送验证码*/
@@ -115,13 +120,13 @@ public class SmsValidController{
 		} catch (Exception e) {
 			result.put("success", false);
 			result.put("msg", "验证码发送失败："+ e.getMessage());
-			return result;
+			return getJsonCallback(result,request);
 		}
 
 		result.put("msg","验证码已经发送到手机，请查收！");
 		result.put("success",true);
 
-		return result;
+		return getJsonCallback(result,request);
 	}
 
 	/**
@@ -133,13 +138,13 @@ public class SmsValidController{
      */
 	@RequestMapping(value="/checkSendChangPhoneCode")
 	@ResponseBody
-	public Map<String,Object> checkSendChangPhoneCode(HttpServletRequest request,@RequestParam String verifyCode ,@RequestParam String busiType){
+	public String checkSendChangPhoneCode(HttpServletRequest request,@RequestParam String verifyCode ,@RequestParam String busiType){
 		Map<String,Object> result = new HashMap<>();
 
 		if(StringUtils.isBlank(verifyCode)){
 			result.put("success",false);
 			result.put("msg","短信验证码不能为空！");
-			return result;
+			return getJsonCallback(result,request);
 		}
 
 		//获取用户旧手机号
@@ -156,12 +161,14 @@ public class SmsValidController{
 			} catch (BusinessException e) {
 				result.put("success", false);
 				result.put("msg", "获取手机号失败，请稍后再试");
+				return getJsonCallback(result,request);
 			}
 		}else if("2".equals(busiType)) {
 			phoneNo = request.getParameter("newPhoneNo");
 		}else{
 			result.put("success", false);
 			result.put("msg", "无效的请求参数");
+			return getJsonCallback(result,request);
 		}
 
 		Object code = CacheUtil.getItem("SMS_CHANGPHONE_EXPIRY_"+busiType+phoneNo);
@@ -172,9 +179,10 @@ public class SmsValidController{
 		}else{
 			result.put("success",false);
 			result.put("msg", "短信验证码错误！");
+			return getJsonCallback(result,request);
 		}
 
-		return result;
+		return getJsonCallback(result,request);
 	}
 
 	/**
@@ -322,5 +330,19 @@ public class SmsValidController{
 		passWord.append(String.valueOf(rand.nextInt(10)));
       }
 	  return passWord.toString();
+	}
+
+	protected String getJsonCallback(Map<String, Object> map,HttpServletRequest request){
+		String callback = request.getParameter("jsonpCallback");
+
+		try{
+			if(StringUtils.isBlank(callback)){
+				return new ObjectMapper().writeValueAsString(map);
+			}else{
+				return callback+"("+new ObjectMapper().writeValueAsString(map)+")";
+			}
+		}catch (Exception e) {
+			throw new RuntimeException("JsonUtil.toJSONString发生错误", e);
+		}
 	}
 }
