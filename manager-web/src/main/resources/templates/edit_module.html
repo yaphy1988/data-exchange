@@ -91,7 +91,8 @@
                                     <span class="col_red">*</span>展示数量:
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" placeholder="" id="moduleCount" th:value="${moduleRespDTO.moduleCount}" >
+                                	<input th:if="${103 == moduleRespDTO.moduleId}" type="text" class="form-control" placeholder="" id="moduleCount" disabled th:value="${moduleRespDTO.moduleCount}" >
+                                    <input th:if="${103 != moduleRespDTO.moduleId}" type="text" class="form-control" placeholder="" id="moduleCount"  th:value="${moduleRespDTO.moduleCount}" >
                                 </td>
                             </tr>
                             <!-- 
