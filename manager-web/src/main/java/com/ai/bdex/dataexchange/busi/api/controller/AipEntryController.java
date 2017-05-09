@@ -2,7 +2,9 @@ package com.ai.bdex.dataexchange.busi.api.controller;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
+import com.ai.bdex.dataexchange.busi.api.entity.AipServiceDetailsInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.AipServiceInfoVO;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.slf4j.Logger;
@@ -38,15 +40,27 @@ public class AipEntryController {
     public ModelAndView baseInfoInit(HttpServletRequest request, HttpServletResponse response, @PathVariable String serviceId,@PathVariable String version){
         String viewName = "aip_documnet_deploy";
         ModelAndView mv = new ModelAndView(viewName);
+        AipServiceDetailsInfoVO aipServiceDetailsInfoVO = new AipServiceDetailsInfoVO();
         //判断是否是录入界面
         if (StringUtil.isBlank(serviceId) && StringUtil.isBlank(version)){
             return mv;
         }
 
+        //aip基本信息
         try {
             AipServiceInfoDTO aipServiceInfoDTO= iAipServiceInfoRSV.selectServiceByPk(serviceId,version);
+            if (aipServiceInfoDTO!=null){
+                ObjectCopyUtil.copyObjValue(aipServiceInfoDTO,aipServiceDetailsInfoVO,null,false);
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            log.error("查询aip信息异常：",e);
+        }
+
+        //入参信息
+        try{
+
+        }catch (Exception e){
+            log.error("查询aip入参信息异常：",e);
         }
 
 
