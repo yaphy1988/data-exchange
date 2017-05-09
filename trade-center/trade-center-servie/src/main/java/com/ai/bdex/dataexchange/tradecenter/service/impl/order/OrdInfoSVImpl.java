@@ -39,13 +39,7 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
    		 return ordInfoMapper.insertSelective(record); 
    		 //插入子订单-- 放到dubbol层去做
 	 }
-      // 查询子订单详情
-	  @Override
-	   public OrdInfo queryOrderDetail(OrdInfo ordInfo) throws Exception{
-  		    String suborderid = ordInfo.getSubOrder();
-  		    OrdInfo ordInforeturn =  ordInfoMapper.selectByPrimaryKey(suborderid);
-			return ordInforeturn;	 
-	   }
+    
 	   //我的所有子订单
 	   public List<OrdInfoRespDTO> queryOrderByStaff(OrdInfoReqDTO ordInfoReqDTO) throws Exception{
 		      OrdInfoExample example = new OrdInfoExample();
@@ -118,11 +112,11 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 		if (StringUtil.isNotBlank(ordInfoReqDTO.getStaffId())) {
 			criteria.andStaffIdEqualTo(ordInfoReqDTO.getStaffId());
 		}
-		if (ordInfoReqDTO.getBrandId() != null) {
-			criteria.andBrandIdEqualTo(ordInfoReqDTO.getBrandId());
+		if (ordInfoReqDTO.getCatFirst()!= null) {
+			criteria.andCatFirstEqualTo(ordInfoReqDTO.getCatFirst());
 		}
-		if (ordInfoReqDTO.getModelId() != null) {
-			criteria.andModelIdEqualTo(ordInfoReqDTO.getModelId());
+		if (ordInfoReqDTO.getCatId() != null) {
+			criteria.andCatIdEqualTo(ordInfoReqDTO.getCatId());
 		}
 		if (ordInfoReqDTO.getGdsId() != null) {
 			criteria.andGdsIdEqualTo(ordInfoReqDTO.getGdsId());

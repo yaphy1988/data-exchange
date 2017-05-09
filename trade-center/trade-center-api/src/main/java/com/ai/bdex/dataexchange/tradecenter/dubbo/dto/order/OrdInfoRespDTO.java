@@ -16,8 +16,7 @@ public class OrdInfoRespDTO extends BaseResponseDTO{
  	    private Date orderTime;
  	    private String staffId;
  	    private String shopId;
- 	    private Long brandId;
- 	    private String modelId;
+ 
  	    private String productType;
  	    private Long gdsId;
  	    private String gdsName;
@@ -41,7 +40,22 @@ public class OrdInfoRespDTO extends BaseResponseDTO{
  	    private String status;
  	    private String serviceName;
  	    private String aipServiceId;
- 	   
+ 	    private Integer catId; 
+		private Integer catFirst;
+		
+
+ 	    public Integer getCatId() {
+			return catId;
+		}
+		public void setCatId(Integer catId) {
+			this.catId = catId;
+		}
+		public Integer getCatFirst() {
+			return catFirst;
+		}
+		public void setCatFirst(Integer catFirst) {
+			this.catFirst = catFirst;
+		}
 		public String getServiceName() {
 			return serviceName;
 		}
@@ -113,19 +127,7 @@ public class OrdInfoRespDTO extends BaseResponseDTO{
 		}
 		public void setShopId(String shopId) {
 			this.shopId = shopId;
-		}
-		public Long getBrandId() {
-			return brandId;
-		}
-		public void setBrandId(Long brandId) {
-			this.brandId = brandId;
-		}
-		public String getModelId() {
-			return modelId;
-		}
-		public void setModelId(String modelId) {
-			this.modelId = modelId;
-		}
+		} 
 		public String getProductType() {
 			return productType;
 		}

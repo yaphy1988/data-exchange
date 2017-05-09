@@ -12,7 +12,6 @@ public interface IOrdInfoSV {
 	// 创建子订单
 	public int creatsubOrderByweb(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
 
-	public OrdInfo queryOrderDetail(OrdInfo ordInfo) throws Exception;
 
 	// 我的所有子订单-提供给商品调用
 	public List<OrdInfoRespDTO> queryOrderByStaff(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
