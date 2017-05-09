@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdPropRespDTO;
@@ -58,4 +60,8 @@ public interface    IPageDisplayRSV {
 	
 	public int insertPageModuleAdInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception;
 	public int updatePageModule(PageModuleReqDTO reqDTO) throws Exception;
+	
+	public PageAdPalceRespDTO queryPageAdPlace(PageAdPalceReqDTO adPalceReqDTO) throws Exception;
+	
+	public List<PageAdPalceRespDTO> queryPageAdPalceList(PageAdPalceReqDTO adPalceReqDTO) throws Exception;
 }

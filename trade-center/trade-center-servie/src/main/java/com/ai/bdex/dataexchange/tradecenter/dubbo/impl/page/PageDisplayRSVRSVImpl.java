@@ -18,15 +18,16 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHotSearch;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModule;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAd;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAdProp;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoods;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContent;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdPropRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
@@ -38,6 +39,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IDataCustomizationSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageAdPlaceSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHeaderNavSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHotSearchSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleAdPropSV;
@@ -47,7 +49,6 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleS
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageNewsInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortContentSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
-import com.alibaba.dubbo.common.utils.StringUtils;
 
 @Service("iPageDisplayRSV")
 public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
@@ -75,7 +76,8 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
     private IPageModuleAdPropSV   iPageModuleAdpropSV;
     @Resource
     private IDataCustomizationSV iDataCustomizationSV;
-
+    @Resource
+    private IPageAdPlaceSV   iPageAdPlaceSV;
     @Override
     public List<SortInfoRespDTO> querySortInfos(SortInfoRespDTO sortInfoRespDTO) throws Exception {
         List<SortInfoRespDTO> sortInfoRespLis = new ArrayList<SortInfoRespDTO>();
@@ -427,5 +429,13 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
 			throw new BusinessException("模块Id不能为空：moduleId="+reqDTO.getModuleId());
 		}
 		return iPageModuleSV.updatePageModule(reqDTO);
+	}
+	@Override
+	public PageAdPalceRespDTO queryPageAdPlace(PageAdPalceReqDTO adPalceReqDTO) throws Exception {
+		return iPageAdPlaceSV.queryPageAdPlace(adPalceReqDTO);
+	}
+	@Override
+	public List<PageAdPalceRespDTO> queryPageAdPalceList(PageAdPalceReqDTO adPalceReqDTO) throws Exception {
+		return iPageAdPlaceSV.queryPageAdPalceList(adPalceReqDTO);
 	}
 }
