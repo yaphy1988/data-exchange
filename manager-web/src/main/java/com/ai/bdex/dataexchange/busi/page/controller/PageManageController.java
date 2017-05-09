@@ -159,6 +159,7 @@ public class PageManageController {
 					infoTitle = newsInfo.getInfoTitle();
 					infoType = newsInfo.getInfoType();
 				}
+				request.setAttribute("infoflag", "edit");
 			}
 		} catch (Exception e) {
 			log.error("新闻资讯信息新增出错：" + e.getMessage());
