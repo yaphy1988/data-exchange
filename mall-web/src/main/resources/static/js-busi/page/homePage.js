@@ -129,9 +129,10 @@ function queryModue103(moduleId){
 		var htmlOl = '';
 		var htmDiv = '';
 		if(data.success){
-			$(data.moduleAdList).each(function(i,d){
-				$("#datasetImg").attr("src",d.vfsId); 
-			});
+			if(data.moduleAdList != null){
+				var moduleAd = data.moduleAdList[0];
+				$("#datasetImg").attr("src",moduleAd.vfsId); 
+			}
 		} 
 	};
 	doAjax(url,params,callBack);

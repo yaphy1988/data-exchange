@@ -7,7 +7,8 @@ $(document).ready(function(){
         $('#head_sidebar>ul').show();
     }else{
         $('#head_sidebar>ul').hide();
-        $('#head_sidebar').hover(function(){
+        $('#head_menu').attr('class','menuBg seconav');
+       $('#head_sidebar').hover(function(){
             $('#head_sidebar>ul').show();
         },function(){
             $('#head_sidebar>ul').hide();
