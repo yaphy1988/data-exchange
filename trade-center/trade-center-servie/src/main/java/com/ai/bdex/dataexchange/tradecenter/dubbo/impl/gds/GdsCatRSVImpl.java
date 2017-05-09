@@ -133,7 +133,7 @@ public class GdsCatRSVImpl implements IGdsCatRSV {
             throw new BusinessException("删除商品分类信息入参为空");
         }
         try {
-            iGdsCatSV.deleteGdsCatById(catId);
+            iGdsCatSV.deleteGdsCatInfo(catId);
         } catch (Exception e) {
             throw new BusinessException("删除分类失败："+e);
         }

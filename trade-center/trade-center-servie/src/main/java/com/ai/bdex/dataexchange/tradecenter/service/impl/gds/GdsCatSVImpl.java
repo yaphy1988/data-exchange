@@ -71,6 +71,7 @@ public class GdsCatSVImpl implements IGdsCatSV{
         gdsCat.setStatus("1");
         Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
         gdsCat.setCreateTime(time);
+        gdsCat.setUpdateTime(time);
         int code = gdsCatMapper.insert(gdsCat);
 
         return code;
@@ -84,10 +85,9 @@ public class GdsCatSVImpl implements IGdsCatSV{
 
         GdsCat gdsCat = new GdsCat();
         ObjectCopyUtil.copyObjValue(gdsCatReqDTO,gdsCat,null,false);
-//        BeanUtils.copyProperties(gdsCatReqDTO,gdsCat);
         Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
         gdsCat.setUpdateTime(time);
-        int code = gdsCatMapper.updateByPrimaryKey(gdsCat);
+        int code = gdsCatMapper.updateByPrimaryKeySelective(gdsCat);
 
         return code;
     }
@@ -155,7 +155,7 @@ public class GdsCatSVImpl implements IGdsCatSV{
         GdsCatExample example = new GdsCatExample();
         GdsCatExample.Criteria criteria = example.createCriteria();
         initCriteria(criteria, gdsCatReqDTO);
-        example.setOrderByClause("update_time desc");
+        example.setOrderByClause("show_order asc");
         //开启分页查询，使用mybatis-PageHelper分页插件，第三个条件是order by排序子句
         PageHelper.startPage(page, rows);
         List<GdsCat> lists = gdsCatMapper.selectByExample(example);
@@ -177,6 +177,7 @@ public class GdsCatSVImpl implements IGdsCatSV{
     
     public int recursionDelteGdsCat(Integer catPid){
         int code = 0;
+        code = gdsCatMapper.deleteByPrimaryKey(catPid);
         GdsCatExample gdsCatExample = new GdsCatExample();
         GdsCatExample.Criteria criteria = gdsCatExample.createCriteria();
         criteria.andCatPidEqualTo(catPid);

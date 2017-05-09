@@ -152,9 +152,15 @@ var GdsCat = {
 	saveGdsCat : function(){
 		var param ={
 			catName : $.trim($("#catName").val()),
-			showOrder : $.trim($("#showOrder").val()),
-			catPid : $("#catPid").val()
+			showOrder : $.trim($("#showOrder").val())
 		};
+		if($("#netChildCat").val()=="true"){
+			//表示新增当前分类的下级分类，则父分类取的是当前分类id
+			param.catPid = $("#catId").val();
+		}else{
+			//新增同级分类。
+			param.catPid = $("#catPid").val();
+		}
 		$.ajax({
 	        url:WEB_ROOT+"/gdscat/savegdscat",
 	        async:true,
@@ -169,6 +175,10 @@ var GdsCat = {
 	        				};	
 	        			GdsCat.initZTree();
         				$(".close").trigger('click');
+        				/**
+	        			 * 清除弹出的各种隐藏域和input值
+	        			 */
+	        			GdsCat.clearWindInfo();
 	                 });
 	        	}else{
 	        		WEB.msg.error("提示","保存失败");
@@ -179,8 +189,8 @@ var GdsCat = {
 	updateGdsCat : function(){
 		var param ={
 			catId : $("#editCatId").val(),
-			catName : $("#catName"),
-			showOrder : $("#showOrder")
+			catName : $.trim($("#catName").val()),
+			showOrder : $.trim($("#showOrder").val())
 		};
 		$.ajax({
 	        url:WEB_ROOT+"/gdscat/updategdscat",
@@ -195,6 +205,12 @@ var GdsCat = {
 	        					catId:$("#catId").val()
 	        				};
 	        			GdsCat.initZTree();
+	        			$(".close").trigger('click');
+	        			GdsCat.queryCatChildList(param);
+	        			/**
+	        			 * 清除弹出的各种隐藏域和input值
+	        			 */
+	        			GdsCat.clearWindInfo();
 	                 });
 	        	}else{
 	        		WEB.msg.error("更新失败");
@@ -249,6 +265,15 @@ var GdsCat = {
 	        	}
 	        }
 	    });
+	},
+	/**
+	 * 清除弹出的各种隐藏域和input值
+	 */
+	clearWindInfo : function(){
+		$("#netChildCat").val('');
+		$("#editCatId").val('');
+		$("#catName").val('');
+		$("#showOrder").val('');
 	}
 };
 function selClick(e, treeId, treeNode) {

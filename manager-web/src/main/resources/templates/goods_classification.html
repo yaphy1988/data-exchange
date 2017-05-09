@@ -5,17 +5,17 @@
 <head>
 	<meta charset="UTF-8">
 	<title>商品分类</title>
-	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
-	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="All">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="All">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="All">
 	<script type="text/javascript" src="../static/js-busi/user/authenDetail.js" th:src="@{/js-busi/user/authenDetail.js}"></script>
 	<script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
 	<!--[if lt IE 9]>
         <script src="../static/js/respond.min.js" ></script>
         <script src="../static/js/html5shiv.min.js" ></script>
 	<![endif]-->
-	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
-	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+	<script src="../static/js/jquery-1.12.4.js" th:remove="All"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="All"></script>
     <!-- 树形菜单 tangyk-->
     <link rel="stylesheet" href="../static/css/zTreeStyle.css" type="text/css" th:href="@{/css/zTreeStyle.css}">
      <!-- 树形菜单 tangyk-->
@@ -27,7 +27,7 @@
 <body>
 
 <!-- 头部 -->
-<header class="clearfix m_header">
+<header class="clearfix m_header" th:remove="All">
 	<a href="" class="Logo" target="_blank" >
 		<img  src="../static/images/manage_logo.png" th:src="@{/images/manage_logo.png}" alt="广州数据" >
 	</a>
@@ -90,192 +90,198 @@
 		                    <!-- 左边树形菜单  end--> 
 
 		                </div>
-		                <div class="col-md-9">
-		                	<div id="nodeInfo" >
-		                		<!-- 节点信息 -->
-		                		<table class="editTable" width="100%" th:remove="All">
-								    <tbody>
-								        <tr>
-								         <td class="Hint" width="15%">分类编码：</td>	                            
-								         <td width="15%" th:text="${catInfo.catId}">121232</td>
-								         <td class="Hint" width="15%">分类名称：</td>
-								         <td th:text="${catInfo.catName}">测试标题测试标题测试标题</td>
-								     </tr>
-								        <tr>
-								         <td class="Hint">展示顺序：</td>	                            
-								         <td th:text="${catInfo.showOrder}">2</td>
-								     </tr>
-								         
-								    </tbody>
-								</table>
-								<div class="text-right" th:remove="All">
-				                    <button class="btn btn-default btn-mini ml20 addNewSomeLevel"><i class="glyphicon glyphicon-plus"></i>新增同级分类</button>
-				                    <button class="btn btn-default btn-mini editThisCat"><i class="glyphicon glyphicon-pencil"></i>编辑</button>
-				                    <button class="btn btn-default btn-mini" id="deleteThisCat"><i class="glyphicon glyphicon-minus"></i>删除</button>
-				               	 </div>
+		                <div class="col-md-9" >
+		                	<div id="nodeInfo">
+			                	<div id="node_info_template" >
+			                		<!-- 节点信息 -->
+			                		<table class="editTable" width="100%">
+										<input type="hidden" th:attr="value=${catInfo.catId}" id="catId"/>
+										<input type="hidden" th:attr="value=${catInfo.catPid}" id="catPid"/>
+									    <tbody>
+									        <tr>
+									         <td class="Hint" width="15%">分类编码：</td>	                            
+									         <td width="15%" th:text="${catInfo.catId}">121232</td>
+									         <td class="Hint" width="15%">分类名称：</td>
+									         <td th:text="${catInfo.catName}">测试标题测试标题测试标题</td>
+									     </tr>
+									        <tr>
+									         <td class="Hint">展示顺序：</td>	                            
+									         <td th:text="${catInfo.showOrder}">2</td>
+									     </tr>
+									         
+									    </tbody>
+									</table>
+									<div class="text-right">
+									    <button class="btn btn-default btn-mini ml20 addNewSomeLevel" id="addNewSomeLevel"><i class="glyphicon glyphicon-plus"></i>新增同级分类</button>
+									    <button class="btn btn-default btn-mini editThisCat" id="editThisCat" th:attr="catId=${catInfo.catId}"><i class="glyphicon glyphicon-pencil"></i>编辑</button>
+									    <button class="btn btn-default btn-mini" id="deleteThisCat" th:onclick="'javascript:GdsCat.deleteGdsCat(\''+${catInfo.catId}+'\')'"><i class="glyphicon glyphicon-minus"></i>删除</button>
+									</div>
+								</div>
 							</div>
 
 		                    <!-- 列表 -->
 		                    <div class="title">下级列表</div>
-		                    <div id="childList"></div>
-		                    <table th:remove="All" class="table table-bordered table-striped table-hover text-center table_th_center">
-		                        <thead>
-		                            <tr >
-		                                <th>分类编码</th>
-		                                <th>分类名称</th>
-		                                <th>展示顺序</th>
-		                                <th>操作</th>
-		                            </tr>
-		                        </thead>
-		                        <tbody >
-		                            <tr>
-		                                <td>111</td>
-		                                <td>标题标题标题标题标题标题1</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>112</td>
-		                                <td>标题标题标题标题标题标题2</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>113</td>
-		                                <td>标题标题标题标题标题标题3</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>114</td>
-		                                <td>标题标题标题标题标题标题4</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>115</td>
-		                                <td>标题标题标题标题标题标题5</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>116</td>
-		                                <td>标题标题标题标题标题标题6</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>117</td>
-		                                <td>标题标题标题标题标题标题7</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>118</td>
-		                                <td>标题标题标题标题标题标题8</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>112</td>
-		                                <td>标题标题标题标题标题标题9</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>119</td>
-		                                <td>标题标题标题标题标题标题10</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                        </tbody>
-		                    </table>
-		                    
-
-		                    <div class="overflow-hidden clearfix" th:remove="All">
-		                          <div class="pull-left mt20">
-		                              <button class="btn btn-primary btn-small" data-target="#add_article" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i>新增下级</button>
-		                          </div>
-
-		                          <!-- pagerBar -->
-	                              <div class="pagelist pull-right">
-										<nav aria-label="Page navigation">
-										  <ul class="pagination">
-										    <li >
-										      <a href="#" aria-label="Previous">
-										        <span aria-hidden="true">上一页</span>
-										      </a>
-										    </li>
-										    <li class="active"><a href="#">1</a></li>
-										    <li><a href="#">2</a></li>
-										    <li><a href="#">3</a></li>
-										    <li><a href="#">4</a></li>
-										    <li><a href="#">5</a></li>
-										    <li>
-										      <a href="#" aria-label="Next">
-										        <span aria-hidden="true">下一页</span>
-										      </a>
-										    </li>
-										    <div class="pageskip">
-										  	<span class="pr10">到第<input type="text" class="pageskip_box">页</span>
-										  	<a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
-										  </div>
-										  </ul>
-										  
-										</nav>
-									</div>
-		                          <!-- pagerBar end-->
+		                   	<div id="childList">
+		                   		<div id="child_List_template">
+				                    <table class="table table-bordered table-striped table-hover text-center table_th_center" >
+				                        <thead>
+				                            <tr >
+				                                <th>分类编码</th>
+				                                <th>分类名称</th>
+				                                <th>展示顺序</th>
+				                                <th>操作</th>
+				                            </tr>
+				                        </thead>
+				                        <tbody th:remove="all-but-first"  >
+				                            <tr th:if="${pageInfo} and ${pageInfo.result} and ${#lists.size(pageInfo.result) gt 0}" th:each="gdsCat,gdsCatStat : ${pageInfo.result}">
+									            <td th:text="${gdsCat.catId}">11</td>
+									            <td th:text="${gdsCat.catName}">标题标题标题标题标题标题1</td>
+									            <td th:text="${gdsCat.showOrder}">1</td>
+									            <td>
+									            	<p class="pop-link">
+									                    <a href="javascript:void(0)" class="editThisCat" th:attr="catId=${gdsCat.catId}">编辑</a>
+									                    <a href="javascript:void(0)" th:onclick="'javascript:GdsCat.deleteGdsCat(\''+${gdsCat.catId}+'\')'">删除</a>
+									                </p>
+									            </td>
+									        </tr>
+				                            <tr>
+				                                <td>112</td>
+				                                <td>标题标题标题标题标题标题2</td>
+				                                <td>1</td>
+				                                <td>
+				                                	<p class="pop-link">
+				                                        <a href="">编辑</a>
+				                                        <a href="">删除</a>
+				                                    </p>
+				                                </td>
+				                            </tr>
+				                            <tr>
+				                                <td>113</td>
+				                                <td>标题标题标题标题标题标题3</td>
+				                                <td>1</td>
+				                                <td>
+				                                	<p class="pop-link">
+				                                        <a href="">编辑</a>
+				                                        <a href="">删除</a>
+				                                    </p>
+				                                </td>
+				                            </tr>
+				                            <tr>
+				                                <td>114</td>
+				                                <td>标题标题标题标题标题标题4</td>
+				                                <td>1</td>
+				                                <td>
+				                                	<p class="pop-link">
+				                                        <a href="">编辑</a>
+				                                        <a href="">删除</a>
+				                                    </p>
+				                                </td>
+				                            </tr>
+				                            <tr>
+				                                <td>115</td>
+				                                <td>标题标题标题标题标题标题5</td>
+				                                <td>1</td>
+				                                <td>
+				                                	<p class="pop-link">
+				                                        <a href="">编辑</a>
+				                                        <a href="">删除</a>
+				                                    </p>
+				                                </td>
+				                            </tr>
+				                            <tr>
+				                                <td>116</td>
+				                                <td>标题标题标题标题标题标题6</td>
+				                                <td>1</td>
+				                                <td>
+				                                	<p class="pop-link">
+				                                        <a href="">编辑</a>
+				                                        <a href="">删除</a>
+				                                    </p>
+				                                </td>
+				                            </tr>
+				                            <tr>
+				                                <td>117</td>
+				                                <td>标题标题标题标题标题标题7</td>
+				                                <td>1</td>
+				                                <td>
+				                                	<p class="pop-link">
+				                                        <a href="">编辑</a>
+				                                        <a href="">删除</a>
+				                                    </p>
+				                                </td>
+				                            </tr>
+				                            <tr>
+				                                <td>118</td>
+				                                <td>标题标题标题标题标题标题8</td>
+				                                <td>1</td>
+				                                <td>
+				                                	<p class="pop-link">
+				                                        <a href="">编辑</a>
+				                                        <a href="">删除</a>
+				                                    </p>
+				                                </td>
+				                            </tr>
+				                            <tr>
+				                                <td>112</td>
+				                                <td>标题标题标题标题标题标题9</td>
+				                                <td>1</td>
+				                                <td>
+				                                	<p class="pop-link">
+				                                        <a href="">编辑</a>
+				                                        <a href="">删除</a>
+				                                    </p>
+				                                </td>
+				                            </tr>
+				                            <tr>
+				                                <td>119</td>
+				                                <td>标题标题标题标题标题标题10</td>
+				                                <td>1</td>
+				                                <td>
+				                                	<p class="pop-link">
+				                                        <a href="">编辑</a>
+				                                        <a href="">删除</a>
+				                                    </p>
+				                                </td>
+				                            </tr>
+				                        </tbody>
+				                    </table>
+				                    
+				                    <div class="overflow-hidden clearfix" >
+				                          <div class="pull-left mt20">
+				                              <button class="btn btn-primary btn-small addChildCat" data-target="#add_article" data-toggle="modal2"><i class="glyphicon glyphicon-plus"></i>新增下级</button>
+				                          </div>
+				                          <!-- pagerBar -->
+			                              <div class="pagelist pull-right" th:remove="all" th:replace="fragments/pager :: pager">
+												<nav aria-label="Page navigation">
+												  <ul class="pagination">
+												    <li >
+												      <a href="#" aria-label="Previous">
+												        <span aria-hidden="true">上一页</span>
+												      </a>
+												    </li>
+												    <li class="active"><a href="#">1</a></li>
+												    <li><a href="#">2</a></li>
+												    <li><a href="#">3</a></li>
+												    <li><a href="#">4</a></li>
+												    <li><a href="#">5</a></li>
+												    <li>
+												      <a href="#" aria-label="Next">
+												        <span aria-hidden="true">下一页</span>
+												      </a>
+												    </li>
+												    <div class="pageskip">
+												  	<span class="pr10">到第<input type="text" class="pageskip_box">页</span>
+												  	<a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+												  </div>
+												  </ul>
+												  
+												</nav>
+											</div>
+				                          <!-- pagerBar end-->
+				                    </div>
+			                    </div>
 		                    </div>
+
 		                    <!-- 列表 end-->
 		            </div>
 		    </div>
@@ -285,7 +291,7 @@
 	<!-- 右边内容 end-->
 
 	<!-- 左边菜单 -->
-	<div class="m_nav">
+	<div class="m_nav"  th:remove="All">
 		<nav class="nav">
 			<ul>
 				<li class="navTit">
@@ -404,7 +410,7 @@
 		</nav>
 	</div>
 	<!-- 左边菜单 end-->
-	<SCRIPT type="text/javascript">
+	<SCRIPT type="text/javascript"  th:remove="All">
         var setting = {
           check: {
             enable: true,
@@ -436,24 +442,24 @@
 
         ];
         
-//         var code;   
-//         function setCheck() {
-//           var type = $("#level").attr("checked")? "level":"all";
-//           setting.check.radioType = type;
-//           showCode('setting.check.radioType = "' + type + '";');
-//           $.fn.zTree.init($("#catZTree"), setting, zNodes);
-//         }
-//         function showCode(str) {
-//           if (!code) code = $("#code");
-//           code.empty();
-//           code.append("<li>"+str+"</li>");
-//         }
+        var code;   
+        function setCheck() {
+          var type = $("#level").attr("checked")? "level":"all";
+          setting.check.radioType = type;
+          showCode('setting.check.radioType = "' + type + '";');
+          $.fn.zTree.init($("#catZTree"), setting, zNodes);
+        }
+        function showCode(str) {
+          if (!code) code = $("#code");
+          code.empty();
+          code.append("<li>"+str+"</li>");
+        }
         
-//         $(document).ready(function(){
-//           setCheck();     
-//           $("#level").bind("change", setCheck);
-//           $("#all").bind("change", setCheck);
-//         });
+        $(document).ready(function(){
+          setCheck();     
+          $("#level").bind("change", setCheck);
+          $("#all").bind("change", setCheck);
+        });
       </SCRIPT>
       <script src="../static/js-busi/gds/gdscat/gdscat.js"  th:src="@{/js-busi/gds/gdscat/gdscat.js}"></script>
       <!-- 新增分类 -->

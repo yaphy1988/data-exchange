@@ -41,7 +41,12 @@ public class GdsCatController{
     private IGdsCatRSV iGdsCatRSV;
     
     @RequestMapping()
-    public String init(){
+    public String init(Model model){
+        //初始化必须返回一个对象。否则页面解析报错
+        PageResponseDTO<GdsCatRespDTO> pageResponseDTO = new PageResponseDTO<GdsCatRespDTO>();
+        model.addAttribute("pageInfo", pageResponseDTO);
+        GdsCatRespDTO gdsCatRespDTO = new GdsCatRespDTO();
+        model.addAttribute("catInfo", gdsCatRespDTO);
         return "goods_classification";
     }
     
@@ -94,7 +99,7 @@ public class GdsCatController{
         } catch (Exception e) {
             logger.error("查询商品分类信息异常：",e);
         }
-        return "/gds/gdscat/gdscat_info";
+        return "goods_classification :: #node_info_template";
     }
     
     /**
@@ -121,7 +126,7 @@ public class GdsCatController{
         } catch (Exception e) {
             logger.error("查询商品分类信息异常：",e);
         }
-        return "/gds/gdscat/gdscat_child_list";
+        return "goods_classification :: #child_List_template";
     }
     
     /**
