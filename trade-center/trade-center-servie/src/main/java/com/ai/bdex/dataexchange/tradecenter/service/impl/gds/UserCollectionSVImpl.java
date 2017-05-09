@@ -140,6 +140,7 @@ public class UserCollectionSVImpl implements IUserCollectionSV{
         UserCollectionExample example = new UserCollectionExample();
         UserCollectionExample.Criteria criteria = example.createCriteria();
         initCriteria(criteria,userCollectionReqDTO);
+        example.setOrderByClause("create_time desc");
         //开启分页查询，使用mybatis-PageHelper分页插件，第三个条件是排序子句
         PageHelper.startPage(page, rows);
         List<UserCollection> userCollections = userCollectionMapper.selectByExample(example);

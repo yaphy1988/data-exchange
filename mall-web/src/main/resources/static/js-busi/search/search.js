@@ -141,7 +141,7 @@ var Search = {
 		gdsCollection : function(obj,gdsId,skuId,catFirstId){
 			var param = {
 					gdsId : gdsId,
-					catFirstId : catFirstId
+					catFirst : catFirstId
 			};
 			if(skuId !="null" && skuId !=""){
 				param.skuId = skuId;

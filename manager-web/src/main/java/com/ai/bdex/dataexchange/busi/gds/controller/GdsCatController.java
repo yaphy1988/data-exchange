@@ -42,7 +42,7 @@ public class GdsCatController{
     
     @RequestMapping()
     public String init(Model model){
-        //初始化必须返回一个对象。否则页面解析报错
+        //初始化必须返回一个对象,对象不能是null噢。否则页面解析报错
         PageResponseDTO<GdsCatRespDTO> pageResponseDTO = new PageResponseDTO<GdsCatRespDTO>();
         model.addAttribute("pageInfo", pageResponseDTO);
         GdsCatRespDTO gdsCatRespDTO = new GdsCatRespDTO();
