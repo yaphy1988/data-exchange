@@ -339,7 +339,7 @@ public class PageManageController {
 		} catch (Exception e) {
 			log.error("查询广告列表失败！原因是：" + e.getMessage());
 		}
-		return "page/modulePageAdList";
+		return "ad_manager :: #ad_content";
 	}
 	/**
 	 * 更新广告信息
