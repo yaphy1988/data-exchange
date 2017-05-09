@@ -55,28 +55,27 @@ function reduce()
 		doAjax(url,params,callBack); 
 }
  //创建订单
- function createOrder(){ 
-		
+ function createOrder(){  
 	    var url = basePath+'/order/creatOrder';
 		var params={};
 		var callBack =function(data){ 
 			if(data.success){ 
-				//打开一个新界面
+				  //打开一个新界面
+                  // 
 				  var paytype = $('input:radio:checked').val();
 				   if(paytype ==  "zhifubao")
 				    {
 				    	//支付宝
-				    	// WEB.msg.info("提示","支付宝"); 
-				    	 window.open("http://www.jb51.net");
+ 				    	 window.open("http://www.jb51.net");
+				    	//去写一条请求支付的记录 
 				    }
 				    else
 				    {
-				    	//线下支付
-				    	 WEB.msg.info("提示","线下支付");
-				    }
+				       window.location.href=basePath+"/order/offline_remittance";  
+ 				    }
 			} 
 			else{
-				 WEB.msg.info("提示","更新失败");
+				 WEB.msg.info("提示","订单生成失败");
 			}
 		};
 		doAjax(url,params,callBack);  

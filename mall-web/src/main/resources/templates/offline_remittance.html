@@ -8,11 +8,8 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css"  th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css"  th:remove="all">
 	<link rel="stylesheet" href="../static/css/index.css"  th:remove="all">
-	<link rel="stylesheet" href="../static/fonts/iconfont.css"  th:remove="all">
-    <link type="text/css" rel="stylesheet" href="../static/css/info.css" th:href="@{/css/info.css}"/>
-    <link rel="stylesheet" href="../static/css/shoppint_cart.css" th:remove="all">  <!-- 购物车/汇款 tangyk -->
-	<script src="../static/js-busi/page/infoNewslist.js" th:src="@{/js-busi/page/infoNewslist.js}"></script>
-    <script type="text/javascript" src="../static/js-busi/page/pager.js" th:src="@{/js-busi/page/pager.js}"></script>
+     <link type="text/css" rel="stylesheet" href="../static/css/info.css" th:href="@{/css/info.css}"/>
+    <link type="text/css"  rel="stylesheet" href="../static/css/shoppint_cart.css" th:href="@{/css/shoppint_cart.css}">  <!-- 购物车/汇款 tangyk -->
 	
 </head>
 <body>
@@ -128,9 +125,10 @@
           <div class="tishi">
              <div class="B">温馨提示：</div>
           	 <p class="">
-          	 	1、中国亚信中国亚信中国亚信中国亚信中国亚<span class="col_orange">信中国亚信中</span>国亚信中国亚信中国亚信中国亚信中国亚信中国亚信 </br>
-          	 	2、中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信  </br>
-          	 	3、中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信中国亚信  </br>
+          	 	1、受银行处理时间影响，采用线下汇款方式到账会有延误，<span class="col_orange">强烈建议采用支付宝实时到账</span> </br>
+          	 	2、线下汇款直接向广州数据交易所专属账户汇款，系统会将汇款直接匹配到您的账户。  </br>
+          	 	3、<span class="col_orange">账户余额仅能提现到账户发票抬头信息/账户实名认证信息同名的支付宝银行卡，</span>请慎重选择充值/付款账户 </br>
+          	    4、<span class="col_orange">汇款时，必须将订单号填写清楚，方便管理员核对订单。</span> </br>
           	 </p>
           </div>
           <p class="mb15">请您通过网银转账，或者自行到银行进行汇款，汇款账号如下：</p>
@@ -139,14 +137,14 @@
 		           	<li>
 		           		 <label>开户名称：</label>
 		           		 <div class="bank_info">
-		           		 		亚信公司亚信公司亚信公司亚信公司亚信公司
+		           		 		广州数据交易中心
 		           		 </div>
 		           	</li>
 		           	<li>
 		           		 <label>开户银行：</label>
 		           		 <div class="bank_info">
-		           		 		<p><img src="../static/images/pay_fangshi_13.png"> 南宁市招商银行支行</p>
-		           		 		<p>专属汇款账号：<input type="text" value="5719 0549 3610 7020 8888 8888" style="width:220px" disabled></p>
+		           		 		<p><img src="../static/images/pay_fangshi_13.png" th:src="@{/images/pay_fangshi_13.png}"> 广州市招商银行支行</p>
+		           		 		<p>专属汇款账号：<input type="text" value="5719 0549 3610 7020 8888" style="width:220px" disabled></p>
 		           		 		<p class="mt10">将以上账号，免费发送到手机：<span class="col_orange">186******3220 </span><a class="btn btn-primary">发送短信</a></p>
 		           		 </div>
 		           	</li>

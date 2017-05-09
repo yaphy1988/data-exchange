@@ -78,7 +78,7 @@ public class OrderController {
 		String gdsname =  request.getParameter("gdsname"); 
 		//套餐信息
 		int skusid =  Integer.parseInt(request.getParameter("skuid"));
-		String skuname =  request.getParameter("skuname"); 
+		String skuname = "";
 	    //图片ID
 		String gdsvfsid =  "";
 		String gdsvfsurl = "";
@@ -99,6 +99,7 @@ public class OrderController {
 		if(!CollectionUtil.isEmpty(listGdsSku) )
 		{
 			gdsSkuRespDTO = listGdsSku.get(0);
+			skuname = gdsSkuRespDTO.getSkuName();
 			//图片 
 			gdsvfsid = gdsSkuRespDTO.getGdsPic(); 
 			if(!StringUtil.isBlank(gdsvfsid)){
@@ -196,7 +197,7 @@ public class OrderController {
 	 */
 	@RequestMapping(value = "/creatOrder")
 	@ResponseBody
-	private  Map<String, Object> saveMadeData(Model model, HttpServletRequest request, HttpServletResponse response) {
+	private  Map<String, Object> creatOrder(Model model, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> rMap = new HashMap<String, Object>();
 		try { 
 			HttpSession hpptsesion = request.getSession(); 
@@ -209,9 +210,59 @@ public class OrderController {
  				  if("0".equals(staffInfoDTO.getAuthenFlag()))
  				  {
  					  //未认证用户，不能购买
- 				/*	 rMap.put("success", false);
+ 			         rMap.put("success", false);
  					 rMap.put("ERRORINFO", "未认证用户，不能购买商品，请先去实名认证");
- 					 return rMap;*/
+ 					 return rMap; 
+ 				  }
+  					if(StringUtil.isBlank(staff_id))
+ 					{
+ 						staff_id = "tmpuser";
+ 					}
+ 					OrdInfoReqDTO  ordInfoReqDTO = (OrdInfoReqDTO)CacheUtil.getItem(staff_id+"_shopcart");
+ 					ordInfoReqDTO.setCreateStaff(staff_id);
+ 					
+ 					GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
+ 					GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
+ 					int igdsid =   new Long(ordInfoReqDTO.getGdsId()).intValue();  
+ 					gdsInfoReqDTO.setGdsId(igdsid);
+ 					gdsInfoRespDTO =  iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO); 
+ 					if(gdsInfoRespDTO != null)
+ 					{
+ 						ordInfoReqDTO.setAipServiceId(Integer.toString(gdsInfoRespDTO.getApiId()));
+ 						List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(String.valueOf(gdsInfoRespDTO.getApiId()));
+ 						if(!CollectionUtil.isEmpty(apiServiceList))
+ 						{
+ 							ordInfoReqDTO.setServiceName(apiServiceList.get(0).getServiceName());
+ 						}
+ 					}  
+ 					iOrderInfoRSV.createOrderInfo(ordInfoReqDTO);
+ 					//要去获取一下商品的大类
+ 			} 
+			rMap.put("success", true);
+		} catch (Exception e) {
+			log.error("生成订单异常：" + e.getMessage());
+			rMap.put("success", false);
+		}
+		return rMap;
+	}
+	@RequestMapping(value = "/savepayLog")
+	@ResponseBody
+	private  Map<String, Object> savepayLog(Model model, HttpServletRequest request, HttpServletResponse response) {
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		try { 
+			HttpSession hpptsesion = request.getSession(); 
+			String staff_id = StaffUtil.getStaffId(hpptsesion);
+			
+  			StaffInfoDTO staffInfoDTO = StaffUtil.getStaffVO(hpptsesion);
+ 			//是否已认证：1 认证，0未认证
+ 			if(staffInfoDTO!=null)
+ 			{
+ 				  if("0".equals(staffInfoDTO.getAuthenFlag()))
+ 				  {
+ 					  //未认证用户，不能购买
+ 			         rMap.put("success", false);
+ 					 rMap.put("ERRORINFO", "未认证用户，不能购买商品，请先去实名认证");
+ 					 return rMap; 
  				  }
   					if(StringUtil.isBlank(staff_id))
  					{
@@ -245,6 +296,7 @@ public class OrderController {
 		return rMap;
 	}
 
+
 	private String uRLDecoderStr(String strinfo) {
 		String newstrinfo = "";
 		try {
@@ -253,6 +305,14 @@ public class OrderController {
 		}
 		return newstrinfo;
 	}
+	    //预线下支付的静态界面展示
+		@RequestMapping(value = "/offline_remittance")
+		public ModelAndView offline_remittance(Model model, HttpServletRequest request) { 
+			//返回预购界面
+			ModelAndView modelAndView = new ModelAndView("offline_remittance");
+			return modelAndView; 
+		}
+		  
 
 	 
 }
