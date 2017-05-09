@@ -126,18 +126,19 @@ public class orderManageController {
    					OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
    					ordInfoReqDTO.setOrderId(ordMainRespDTO.getOrderId());
    					List<OrdInfoRespDTO> ordInfoList = iOrderInfoRSV.queryOrderInfoList(ordInfoReqDTO);
+   					OrdInfoRespDTO ordInfoRespDTO = new OrdInfoRespDTO();
    					if(CollectionUtils.isNotEmpty(ordInfoList)){
    						//一个订单只有一个子订单
-   						ordMainRespDTO.setOrdInfoRespDTO(ordInfoList.get(0));
+   						ordInfoRespDTO=ordInfoList.get(0);
    					}
-   					
+   					ordMainRespDTO.setOrdInfoRespDTO(ordInfoRespDTO);
    				}
    			}
    			model.addAttribute("pageInfo", pageInfo);
    		} catch (Exception e) {
    			logger.error("查询我的订单列表失败！原因是：" + e.getMessage());
    		}
-   		return "order/div/myOrderList";
+   		return "myOrder :: #myOrderList";
    	}
    	/**
 	 * 取消订单

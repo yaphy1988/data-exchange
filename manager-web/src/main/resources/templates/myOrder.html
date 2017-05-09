@@ -62,103 +62,154 @@
 <div  layout:fragment="screen_content">
     <!-- 右边内容 --> 
 	<div class="m_main">
-		<div class="m_con">
-			<div class="classify">
-				<i class="iconfont"></i>
-				<span>当前位置：</span>
-				<a href=""><span>个人中心</span></a>
-				<span >我的订单</span>
-			</div>
-			
-			<div class="title">非充值服务类订单</div>
-			<div id="myOrderList" >
-            <table class="table table-bordered table-striped table-hover text-center table-th-nowrap" th:remove="all">
-                <thead>
-                    <tr >
-                        <th>序号</th>
-                        <th>订单号</th>
-                        <th>购买时间</th>
-                        <th>数据名称</th>
-                        <th>套餐类别</th>
-                        <th>分数</th>
-                        <th>剩余次数</th>
-                        <th>金额</th>
-                        <th>有效期</th>
-                        <th >订单状态</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>201703270001</td>
-                        <td>2017-03-27 18:01:02</td>
-                        <td>API接口产品名称API接口产品名称API接口产品名称</td>
-                        <td>套餐档次</td>
-                        <td>333</td>
-                        <td>20</td>
-                        <td>90.00</td>
-                        <td>2017-03-27 18:01:02</td>
-                        <td>已支付</td>
-                    </tr>
-                    <tr>
-                        <td>1</td>
-                        <td>201703270001</td>
-                        <td>2017-03-27 18:01:02</td>
-                        <td>API接口产品名称</td>
-                        <td>套餐档次</td>
-                        <td>333</td>
-                        <td>20</td>
-                        <td>90.00</td>
-                        <td>2017-03-27 18:01:02</td>
-                        <td>
-                            <p>待支付</p>
-                        	<p class="pop-link">
-                                <a href="">去支付</a>
-                            </p>
-                        	<p class="pop-link">
-                                <a href="">取消订单</a>
-                            </p>
-                        </td>
-                    </tr>
+			<div class="m_con">
+				<div class="classify">
+					<i class="iconfont"></i> <span>当前位置：</span> <a href=""><span>个人中心</span></a>
+					<span>我的订单</span>
+				</div>
 
-                </tbody>
-            </table>
+				<div class="title">非充值服务类订单</div>
+				<div id="myOrderList">
+					<table
+						class="table table-bordered table-striped table-hover text-center table-th-nowrap">
+						<thead>
+							<tr>
+								<th>序号</th>
+								<th>订单号</th>
+								<th>购买时间</th>
+								<th>数据名称</th>
+								<th>套餐类别</th>
+								<th>分数</th>
+								<th>剩余次数</th>
+								<th>金额</th>
+								<th>有效期</th>
+								<th>订单状态</th>
+							</tr>
+						</thead>
+						<tbody th:if=" ${pageInfo}" th:remove="all-but-first">
+							<tr th:each="list,iterStat : ${pageInfo.result}"
+								th:unless="${#lists.isEmpty(pageInfo.result)}">
+								<td
+									th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
+								<td th:text="${list.orderId}"></td>
+								<td
+									th:text="${#calendars.format(list.ordInfoRespDTO.orderTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+								<td th:text="${list.ordInfoRespDTO.serviceName}"></td>
+								<td th:text="${list.ordInfoRespDTO.skuName}"></td>
+								<td th:text="${list.ordInfoRespDTO.buyAllCount}"></td>
+								<td th:text="${list.ordInfoRespDTO.belanceAllCount}"></td>
+								<td th:text="${list.orderMoney/100}"></td>
+								<td
+									th:text="${#calendars.format(list.ordInfoRespDTO.activeEndTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+								<td th:if="${list.ordInfoRespDTO.status=='01'}">
+									<p>待支付</p>
+									<p class="pop-link">
+										<a href="javaScript:void(0)"
+											th:onclick="'toPayModal(this,'+@{${list.orderId}}+')'">去支付</a>
+									</p>
+									<p class="pop-link">
+										<a href="javaScript:void(0)"
+											th:onclick="'cancelOrder(this,'+@{${list.orderId}}+')'">取消订单</a>
+									</p>
+								</td>
+								<td th:if="${list.ordInfoRespDTO.status=='02'}"><p>已支付</p></td>
+								<td th:if="${list.ordInfoRespDTO.status=='03'}"><p>已失效</p></td>
+								<td th:if="${list.ordInfoRespDTO.status=='04'}"><p>已完成</p></td>
+								<td th:if="${list.ordInfoRespDTO.status=='99'}"><p>已取消</p></td>
+							</tr>
 
-            <div class="overflow-hidden clearfix" th:remove="all">
-                  <!-- pagerBar -->
-                   <div class="pagelist pull-right">
-						<nav aria-label="Page navigation">
-						  <ul class="pagination">
-						    <li >
-						      <a href="#" aria-label="Previous">
-						        <span aria-hidden="true">上一页</span>
-						      </a>
-						    </li>
-						    <li class="active"><a href="#">1</a></li>
-						    <li><a href="#">2</a></li>
-						    <li><a href="#">3</a></li>
-						    <li><a href="#">4</a></li>
-						    <li><a href="#">5</a></li>
-						    <li>
-						      <a href="#" aria-label="Next">
-						        <span aria-hidden="true">下一页</span>
-						      </a>
-						    </li>
-						    <div class="pageskip">
-						  	<span class="pr10">到第<input type="text" class="pageskip_box">页</span>
-						  	<a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
-						  </div>
-						  </ul>
-						  
-						</nav>
+							<tr>
+								<td>1</td>
+								<td>201703270001</td>
+								<td>2017-03-27 18:01:02</td>
+								<td>API接口产品名称API接口产品名称API接口产品名称</td>
+								<td>套餐档次</td>
+								<td>333</td>
+								<td>20</td>
+								<td>90.00</td>
+								<td>2017-03-27 18:01:02</td>
+								<td>已支付</td>
+							</tr>
+							<tr>
+								<td>1</td>
+								<td>201703270001</td>
+								<td>2017-03-27 18:01:02</td>
+								<td>API接口产品名称</td>
+								<td>套餐档次</td>
+								<td>333</td>
+								<td>20</td>
+								<td>90.00</td>
+								<td>2017-03-27 18:01:02</td>
+								<td>
+									<p>待支付</p>
+									<p class="pop-link">
+										<a href="">去支付</a>
+									</p>
+									<p class="pop-link">
+										<a href="">取消订单</a>
+									</p>
+								</td>
+							</tr>
+
+						</tbody>
+					</table>
+
+					<div class="overflow-hidden clearfix">
+						<!-- pagerBar -->
+						<div class="pagelist pull-right" th:remove="all">
+							<nav aria-label="Page navigation">
+								<ul class="pagination">
+									<li><a href="#" aria-label="Previous"> <span
+											aria-hidden="true">上一页</span>
+									</a></li>
+									<li class="active"><a href="#">1</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">5</a></li>
+									<li><a href="#" aria-label="Next"> <span
+											aria-hidden="true">下一页</span>
+									</a></li>
+									<div class="pageskip">
+										<span class="pr10">到第<input type="text"
+											class="pageskip_box">页
+										</span> <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+									</div>
+								</ul>
+
+							</nav>
+						</div>
+						<!-- pagerBar end-->
+						<!-- 分页-->
+						<div th:fragment="pager" class="pagerBar pagelist pull-right"
+							th:if=" ${pageInfo}">
+							<script type="text/javascript"
+								src="../static/js-busi/common/pager.js"
+								th:src="@{/js-busi/common/pager.js}"></script>
+							<span data-toggle="pager" id="pagerId"
+								th:data-count="${pageInfo.count}"
+								th:data-size="${pageInfo.pageSize}"
+								th:data-currentindex="${pageInfo.pageNo}"></span>
+							<script th:inline="javascript">
+								var total = '[[${pageInfo.count}]]';
+								var pageNum = '[[${pageInfo.pageNo}]]';
+								var pageSize = '[[${pageInfo.pageSize}]]';
+
+								if (typeof pagerClick === "undefined") {
+									pagerClick = function(index) {
+										myOrderList(index);
+									}
+								}
+								$('#pagerId').pager({
+									callback : pagerClick
+								});
+							</script>
+						</div>
 					</div>
-                  <!-- pagerBar end-->
-            </div>
- 			</div>
+
+				</div>
+			</div>
 		</div>
-
-
-	</div>
 	<!-- 右边内容 end--> 
 
     <!-- 左边菜单 -->
@@ -211,61 +262,39 @@
     <!-- 左边菜单 -->
 	
 	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">修改手机号码</h4>
-	      </div>
-	      <div class="modal-body">
-	        	<table class="editTable ">
-					
-					
-					
-					<tr>
-						<td class="Hint">
-							原手机号码:
-						</td>
-						<td width="260">
-							<input class="form-control" placeholder="" type="text"  maxlength="128" >
-						</td>
-						
-					</tr>
-					<tr>
-						<td class="Hint">
-							验证码:
-						</td>
-						<td >
-							<div class="form-inline">
-								<input class="form-control wt150" placeholder="" type="text"  maxlength="128" >
-								<img  src="" height="30" width="100">
-							</div>
-						</td>
-						<td  ></td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							短信验证码:
-						</td>
-						<td >
-						<div class="form-inline">
-							<input class="form-control wt150" placeholder="" type="text"  maxlength="128" >
-							<button class="btn btn-default btn-sm " >获取短信验证码</button>
-						</div>
+	<!-- Modal -->
+	<div class="modal fade" id="myModalPay" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+					<h4 class="modal-title" id="myModalLabel">选择支付方式</h4>
+				</div>
+				<div class="modal-body">
+					<table class="editTable ">
+						<tr>
+							<td class="Hint"></td>
+							<td width="260">
+								<div class="radio">
+								<input type="hidden" id="orderId">
+									<label> <input type="radio"  checked name="payWay" value="1">支付宝</label> 
+									<label> <input type="radio"  name="payWay" value="2">线下支付</label>
+								</div>
+							</td>
 
-						</td>
-					
-					</tr>
-					
-			</table>	
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary">保存</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-	      </div>
-	    </div>
-	  </div>
+						</tr>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" th:onclick="'toPay()'">确定</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
 	</div>
 	
 
