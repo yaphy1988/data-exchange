@@ -17,7 +17,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageAdPlaceSV;
 import com.alibaba.dubbo.common.utils.StringUtils;
-@Service("iPageHeaderNavSV")
+@Service("iPageAdPlaceSV")
 public class PageAdPalceSVImpl implements IPageAdPlaceSV {
 	@Resource
     private PageAdPalceMapper pageAdPalceMapper;

@@ -63,7 +63,7 @@
                             <div class="input-group02">
                                 <select class="form-control" id="moduleId">
                                 	 <option value="">全部</option>
-		                             <option th:each="pageModule,catStat:${moduleAdList}" th:value="${pageModule.moduleId}" th:selected="(${pageModule.moduleId} == ${moduleId})"th:text="${pageModule.moduleName}"></option>
+		                             <option th:each="adPlace,catStat:${adPlaceList}" th:value="${adPlace.placeAd}" th:selected="(${adPlace.placeAd} == ${moduleId})"th:text="${adPlace.placeName}"></option>
 		                         </select>
                             </div>
                         </td>
@@ -108,7 +108,7 @@
 
                 <!-- Tab panes -->
                 <div class="tab-content pt15">
-                    <div role="tabpanel" class="tab-pane active" id="tab01">
+                    <div role="tabpanel" class="tab-pane active" id="ad_content">
                         <table class="table table-bordered text-center" >
                             <thead>
 	                            <tr class="active">

@@ -65,7 +65,7 @@
                     </td>
                     <td width="420">
                          <select class="form-control" id="moduleId">
-                             <option th:each="adPlace,catStat:${adPlaceList}" th:value="${adPlace.placeId}" th:selected="(${adPlace.placeId} == ${moduleId})"th:text="${adPlace.placeName}"></option>
+                             <option th:each="adPlace,catStat:${adPlaceList}" th:value="${adPlace.placeAd}" th:selected="(${adPlace.placeAd} == ${moduleId})"th:text="${adPlace.placeName}"></option>
                          </select>
                     </td>
                 </tr>

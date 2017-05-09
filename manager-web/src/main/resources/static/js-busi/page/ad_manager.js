@@ -83,7 +83,7 @@ function queryModulePageAdList(index){
 		dataType:'html',
 		data : params,
 		success:function(data){
-			$("#tab01").html(data);
+			$("#ad_content").html(data);
 		}
 	});
 }

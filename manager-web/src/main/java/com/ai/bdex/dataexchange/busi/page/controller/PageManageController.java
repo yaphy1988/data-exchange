@@ -619,10 +619,11 @@ public class PageManageController {
      * @return
      */
 	@RequestMapping(value = "/adManage")
-	public ModelAndView adManage(HttpServletRequest request) {
+	public ModelAndView adManage(HttpServletRequest request,Model model) {
 		ModelAndView modelAndView = new ModelAndView("ad_manager");
 		String moduleId = request.getParameter("moduleId");
 		modelAndView.addObject("moduleId", moduleId);
+		queryAdPlace(model);
 		return modelAndView;
 	}
 	/**
