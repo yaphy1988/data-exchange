@@ -141,7 +141,7 @@ var Search = {
 		gdsCollection : function(obj,gdsId,skuId,catFirstId){
 			var param = {
 					gdsId : gdsId,
-					catFirst : catFirstId
+					catFirstId : catFirstId
 			};
 			if(skuId !="null" && skuId !=""){
 				param.skuId = skuId;
@@ -195,6 +195,10 @@ var Search = {
 					}
 				}
 			});
+		},
+		addToCart : function(gdsId,skuId){
+			var url = WEB_ROOT+"/order/gdshopcart?gdsId="+gdsId+"&skuId="+skuId;
+			window.open(url);
 		}
 };
 function Map() {

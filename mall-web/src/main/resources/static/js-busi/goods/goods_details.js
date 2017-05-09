@@ -104,3 +104,8 @@ function encodeURI2(strinfo) {
     var strinfo1 = encodeURI(strinfo);
     return strinfo1;
 }
+
+function addToCart(gdsId,skuId){
+	var url = WEB_ROOT+"/order/gdshopcart?gdsId="+gdsId+"&skuId="+skuId;
+	window.open(url);
+}

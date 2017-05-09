@@ -183,7 +183,7 @@
 								<li th:remove="All"><a href="">套餐二</a></li>
 								<li th:remove="All"><a href="">1000次</a></li>
 							</ul>
-							<a class="btn btn-orange btn_rec_bg">
+							<a class="btn btn-orange btn_rec_bg" th:onclick="|addToCart(${list.id},${gdsSku.skuId})|">
 								<i class="iconfont"></i>
 								申请数据
 							</a>
