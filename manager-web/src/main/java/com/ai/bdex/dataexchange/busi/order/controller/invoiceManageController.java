@@ -15,12 +15,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
 import com.ai.bdex.dataexchange.busi.order.entity.OrdInfoVO;
 import com.ai.bdex.dataexchange.busi.order.entity.OrdInvoiceTaxVO;
 import com.ai.bdex.dataexchange.busi.order.entity.OrdMainInfoVO;
-import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
@@ -31,7 +28,6 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInvoiceTaxReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInvoiceTaxRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrdInvoiceTaxRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderMainInfoRSV;
@@ -40,10 +36,8 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IChnlInvoiceTaxRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
-import com.ai.bdex.dataexchange.util.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
-import com.alibaba.dubbo.common.utils.StringUtils;
 
 /**
  * 发票管理
@@ -58,6 +52,9 @@ public class invoiceManageController {
      */
     private final Log logger = LogFactory.getLog(getClass());
     private final static Integer PAGE_SIZE = 10;//页数
+    
+	@DubboConsumer
+	private IOrderInfoRSV iOrderInfoRSV;
 
 	@DubboConsumer(timeout = 30000)
 	private IOrdInvoiceTaxRSV iOrdInvoiceTaxRSV;
@@ -85,7 +82,7 @@ public class invoiceManageController {
      * @throws Exception
      */
     @RequestMapping(value="/applyInvoice")
-	public String applyInvoice(Model model,HttpSession session) throws Exception{
+	public String applyInvoice(Model model,HttpSession session,OrdInvoiceTaxVO ordInvoiceTaxVO) throws Exception{
 		ReqInvoiceTaxDTO input = new ReqInvoiceTaxDTO();
 		input.setStaffId(StaffUtil.getStaffVO(session).getStaffId());
 		List<ChnlInvoiceTaxDTO> datas = new ArrayList<>();
@@ -95,6 +92,7 @@ public class invoiceManageController {
 		if(CollectionUtils.isNotEmpty(datas)){
 			invoiceTaxDTO=datas.get(0);
 		}
+		model.addAttribute("orderId", ordInvoiceTaxVO.getOrderId());
 		model.addAttribute("invoiceTaxDTO", invoiceTaxDTO);
 		return "mybill_apply";
 	}
@@ -105,19 +103,31 @@ public class invoiceManageController {
 	 */
 	@RequestMapping(value="/saveInvoiceTax")
 	@ResponseBody
-	public Map<String,Object> saveInvoiceTax(HttpServletRequest request,OrdInvoiceTaxVO ordInvoiceTaxVO){
+	public Map<String,Object> saveInvoiceTax(HttpServletRequest request,HttpSession session,OrdInvoiceTaxVO ordInvoiceTaxVO){
 		Map<String,Object>  rMap = new HashMap<>();
 		try {
+			//查询我的子订单
+			OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
+			ordInfoReqDTO.setOrderId(ordInvoiceTaxVO.getOrderId());
+			List<OrdInfoRespDTO> ordInfoList = iOrderInfoRSV.queryOrderInfoList(ordInfoReqDTO);
 			OrdInvoiceTaxReqDTO taxReqDTO = new OrdInvoiceTaxReqDTO();
 			ObjectCopyUtil.copyObjValue(ordInvoiceTaxVO, taxReqDTO, null, false);
-			Long ordTaxId=iOrdInvoiceTaxRSV.insertOrdInvoiceTax(taxReqDTO);
+			taxReqDTO.setCreateStaff(StaffUtil.getStaffId(session));
+			taxReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+			if(CollectionUtils.isNotEmpty(ordInfoList)){
+				taxReqDTO.setShopId(ordInfoList.get(0).getShopId());
+				taxReqDTO.setStaffId(ordInfoList.get(0).getStaffId());
+			}
+			taxReqDTO.setStatus(Constants.Order.INVOICE_STATUS_APLLY);
+			Long ordTaxId=iOrdInvoiceTaxRSV.insertOrdInvoice(taxReqDTO);
 			if(ordTaxId>0){
-				OrdInvoiceTaxAddrReqDTO ordInvoiceTaxAddrReqDTO = new OrdInvoiceTaxAddrReqDTO();
-				ordInvoiceTaxAddrReqDTO.setOrderTaxId(ordTaxId);
-				ordInvoiceTaxAddrReqDTO.setOrderId(ordInvoiceTaxVO.getOrderId());
-				iOrdInvoiceTaxRSV.insertOrdInvoiceAddrTax(ordInvoiceTaxAddrReqDTO);
+				OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
+				ordMainInfoReqDTO.setOrderId(ordInvoiceTaxVO.getOrderId());
+				ordMainInfoReqDTO.setInvoiceStatus(Constants.Order.INVOICE_STATUS_APLLY);
+				iOrderMainInfoRSV.updateOrderMainInfo(ordMainInfoReqDTO);
 			}
 			rMap.put("success", true);
+
 		} catch (Exception e) {
 			rMap.put("success", false);
 			logger.error("保存发票开具申请信息出错：" + e.getMessage());
@@ -131,11 +141,12 @@ public class invoiceManageController {
    	 * @param searchVO
    	 * @return
    	 */
-   	@RequestMapping(value = "/myOrderInvoiceTaxList")
-   	public String myOrderInvoiceTaxList(Model model, OrdMainInfoVO ordMainInfoVO) {
+   	@RequestMapping(value = "/myOrderInvoiceList")
+   	public String myOrderInvoiceTaxList(Model model,HttpSession session, OrdMainInfoVO ordMainInfoVO) {
    		try {
    			PageResponseDTO<OrdMainInfoRespDTO> pageInfo = new PageResponseDTO<OrdMainInfoRespDTO>();
    			OrdMainInfoReqDTO ordMainReqDTO = new OrdMainInfoReqDTO();
+   			ordMainReqDTO.setStaffId(StaffUtil.getStaffId(session));
    			ordMainReqDTO.setPageNo(ordMainInfoVO.getPageNo());
    			ordMainReqDTO.setPageSize(PAGE_SIZE);
    			ordMainInfoVO.setPayFlag(Constants.Order.PAY_FLAG_SUCCESS);//已支付
@@ -152,22 +163,25 @@ public class invoiceManageController {
 					ordInvoiceTaxReqDTO.setOrderId(ordMainInfo.getOrderId());
 					List<OrdInvoiceTaxRespDTO> invoiceTaxList = iOrdInvoiceTaxRSV
 							.queryOrdInvoiceTaxList(ordInvoiceTaxReqDTO);
+					OrdInvoiceTaxRespDTO texRespDTO = new OrdInvoiceTaxRespDTO();
+					OrdInvoiceTaxAddrRespDTO taxAddrRespDTO = new OrdInvoiceTaxAddrRespDTO();
 					if (CollectionUtils.isNotEmpty(invoiceTaxList)) {
-						OrdInvoiceTaxRespDTO texRespDTO = invoiceTaxList.get(0);
-						ordMainInfo.setOrdInvoiceTaxReqDTO(texRespDTO);
+						texRespDTO = invoiceTaxList.get(0);
 						OrdInvoiceTaxAddrReqDTO ordInvoiceTaxAddrReqDTO = new OrdInvoiceTaxAddrReqDTO();
 						ordInvoiceTaxAddrReqDTO.setOrderTaxId(texRespDTO.getOrderTaxId());
 						List<OrdInvoiceTaxAddrRespDTO> invoiceTaxAddrList = iOrdInvoiceTaxRSV.queryOrdInvoiceTaxAddrList(ordInvoiceTaxAddrReqDTO);
 						if(CollectionUtils.isNotEmpty(invoiceTaxAddrList)){
-							ordMainInfo.setOrdInvoiceTaxAddrRespDTO(invoiceTaxAddrList.get(0));
+							taxAddrRespDTO=invoiceTaxAddrList.get(0);
 						}
 					}
+					ordMainInfo.setOrdInvoiceTaxReqDTO(texRespDTO);
+					ordMainInfo.setOrdInvoiceTaxAddrRespDTO(taxAddrRespDTO);
 				}
 			}
    			model.addAttribute("pageInfo", pageInfo);
    		} catch (Exception e) {
    			logger.error("查询发票管理列表失败！原因是：" + e.getMessage());
    		}
-   		return "mybill";
+   		return "mybill :: #myOrderBillList";
    	}
 }

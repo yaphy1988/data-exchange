@@ -9,7 +9,10 @@
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+	<script type="text/javascript" src="../../static/js-busi/order/mybill.js" th:src="@{/js-busi/order/mybill.js}"></script>
+	
 </head>
+
 <body>
 <header class="clearfix m_header">
 	<a href="" class="Logo" target="_blank" >
@@ -55,8 +58,8 @@
                 <a href=""><span>个人中心</span></a>
                 <span class="col_999">发票管理</span>
             </div>
-			<div id="mybillList">
-
+			<div id="myOrderBillList">
+:
                         <table class="table table-bordered text-center" >
                             <thead>
                             <tr class="active">
@@ -70,8 +73,24 @@
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody >
-                            <tr th:remove="all">
+                            <tbody th:if=" ${pageInfo}" th:remove="all-but-first" >
+                            <tr th:each="list,iterStat : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
+								<td th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
+								<td th:text="${list.orderId}"></td>
+								<td th:text="${list.orderMoney/100}"></td>
+								<td
+									th:text="${#calendars.format(list.ordInvoiceTaxReqDTO.updateTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+								<td th:text="${list.ordInvoiceTaxReqDTO.invoiceTitle}"></td>
+								<td th:text="${list.ordInvoiceTaxAddrRespDTO.contactInfo}"></td>
+								<td>
+									<span th:if="${list.ordInvoiceTaxReqDTO.status=='0'}">未申请</span>
+									<span th:if="${list.ordInvoiceTaxReqDTO.status=='1'}">待开发票</span>
+									<span th:if="${list.ordInvoiceTaxReqDTO.status=='2'}">已开发票</span>
+									<span th:if="${list.ordInvoiceTaxReqDTO.status=='9'}">拒开发票</span>
+								</td>
+								<td><a href="">申请开具</a></td>
+							</tr>
+                            <tr >
                                 <td>1</td>
                                 <td> 201703270001</td>
                                 <td>599</td>
@@ -81,40 +100,59 @@
                                 <td>未开具</td>
                                 <td><a href="">申请开具</a></td>
                             </tr>
-                          
                             </tbody>
                         </table>
                   
                      <!-- 分页-->
-                    <div class="pagelist" th:remove="all" >
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination">
-                                <li >
-                                    <a href="#" aria-label="Previous">
-                                        <span aria-hidden="true">上一页</span>
-                                    </a>
-                                </li>
-                                <li class="active"><a href="#">1</a></li>
-                                <li><a href="#">2</a></li>
-                                <li><a href="#">3</a></li>
-                                <li><a href="#">4</a></li>
-                                <li><a href="#">5</a></li>
-                                <li>
-                                    <a href="#" aria-label="Next">
-                                        <span aria-hidden="true">下一页</span>
-                                    </a>
-                                </li>
-                                <div class="pageskip">
-                                    <span class="pr10">到第<input type="text" class="pageskip_box">页</span>
-                                    <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
-                                </div>
-                            </ul>
+					<div class="pagelist" th:remove="all">
+						<nav aria-label="Page navigation">
+							<ul class="pagination">
+								<li><a href="#" aria-label="Previous"> <span
+										aria-hidden="true">上一页</span>
+								</a></li>
+								<li class="active"><a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li><a href="#" aria-label="Next"> <span
+										aria-hidden="true">下一页</span>
+								</a></li>
+								<div class="pageskip">
+									<span class="pr10">到第<input type="text"
+										class="pageskip_box">页
+									</span> <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+								</div>
+							</ul>
+						</nav>
+					</div>
+					<div class="overflow-hidden clearfix" th:if=" ${pageInfo}">
+						<!-- 分页-->
+						<div th:fragment="pager" class="pagerBar pagelist pull-right">
+							<script type="text/javascript"
+								src="../static/js-busi/common/pager.js"
+								th:src="@{/js-busi/common/pager.js}"></script>
+							<span data-toggle="pager" id="pagerId"
+								th:data-count="${pageInfo.count}"
+								th:data-size="${pageInfo.pageSize}"
+								th:data-currentindex="${pageInfo.pageNo}"></span>
+							<script th:inline="javascript">
+								var total = '[[${pageInfo.count}]]';
+								var pageNum = '[[${pageInfo.pageNo}]]';
+								var pageSize = '[[${pageInfo.pageSize}]]';
 
-                        </nav>
-                    </div>
-                    </div>
-                </div>
-            </div>
+								if (typeof pagerClick === "undefined") {
+									pagerClick = function(index) {
+										myOrderInvoiceList(index);
+									}
+								}
+								$('#pagerId').pager({
+									callback : pagerClick
+								});
+							</script>
+						</div>
+					</div>
+				</div>
 		</div>
 	</div>
 	<div class="m_nav">

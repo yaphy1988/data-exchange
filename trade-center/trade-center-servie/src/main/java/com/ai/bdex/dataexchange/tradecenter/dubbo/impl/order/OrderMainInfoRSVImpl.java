@@ -55,7 +55,20 @@ public class OrderMainInfoRSVImpl  implements IOrderMainInfoRSV {
 				code=iOrdInfoSV.cancelOrderInfo(ordInfoReqDTO);
 			}
 		} catch (Exception e) {
-			log.error("分页获取订单主信息异常:", e);
+			log.error("取消订单信息异常:", e);
+			throw new Exception(e);
+		}
+		return code;
+	}
+	public int updateOrderMainInfo(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception {
+		if (ordMainInfoReqDTO ==null ||StringUtil.isBlank(ordMainInfoReqDTO.getOrderId())){
+            throw new Exception("更新订单异常，oderId入参为空");
+        }
+		int code=0;
+		try {
+			code= iOrdMainInfoSV.updateOrderMainInfo(ordMainInfoReqDTO);
+		} catch (Exception e) {
+			log.error("更新订单信息异常:", e);
 			throw new Exception(e);
 		}
 		return code;

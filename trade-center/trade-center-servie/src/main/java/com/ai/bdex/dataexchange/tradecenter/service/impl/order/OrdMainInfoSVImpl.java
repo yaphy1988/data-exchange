@@ -165,4 +165,16 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 		int code = ordMainInfoMapper.updateByExampleSelective(ordMainInfo, example);
 		return code;
 	}
+	public int updateOrderMainInfo(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception {
+		OrdMainInfo ordMainInfo = new OrdMainInfo();
+		OrdMainInfoExample example = new OrdMainInfoExample();
+		OrdMainInfoExample.Criteria criteria = example.createCriteria();
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getOrderId())) {
+			criteria.andOrderIdEqualTo(ordMainInfoReqDTO.getOrderId());
+		}
+		ordMainInfoReqDTO.setUpdateTime(DateUtil.getNowAsDate());
+		ObjectCopyUtil.copyObjValue(ordMainInfoReqDTO, ordMainInfo, null, false);
+		int code = ordMainInfoMapper.updateByExampleSelective(ordMainInfo, example);
+		return code;
+	}
 }

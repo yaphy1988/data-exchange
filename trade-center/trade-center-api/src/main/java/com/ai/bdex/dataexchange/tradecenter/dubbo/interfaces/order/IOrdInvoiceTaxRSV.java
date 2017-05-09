@@ -11,6 +11,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInvoiceTaxRespDTO
 
  
 public interface IOrdInvoiceTaxRSV {
+	public Long insertOrdInvoice(OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO) throws Exception ;
 	/**
 	 * 发票开具申请
 	 * @param ordInvoiceTaxReqDTO

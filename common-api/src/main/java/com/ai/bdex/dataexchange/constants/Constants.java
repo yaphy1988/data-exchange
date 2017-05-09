@@ -56,6 +56,5 @@ public class Constants {
 		public final static String ORDER_INVOICE_STATUS_9 = "9";//9 拒开发票
 		
 		public final static int ORDER_AIP_ACTIVE_MON =  12 ;//12个月
-
     }  
 }

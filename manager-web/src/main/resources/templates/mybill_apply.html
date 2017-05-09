@@ -3,6 +3,7 @@
 <div th:replace="~{fragments/syshead :: syshead}"></div>
 
 <link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+<script type="text/javascript" src="../../static/js-busi/order/mybill.js" th:src="@{/js-busi/order/mybill.js}"></script>
 <head th:remove="all">
 	<meta charset="UTF-8">
 	<title>我的发票开具申请</title>
@@ -68,7 +69,10 @@
 							邮寄地址:
 						</td>
 						<td width="520">
-							<input class="form-control"  type="text"  maxlength="128" >
+								<input class="form-control"  type="hidden"  maxlength="128" id="taxId" th:value="${invoiceTaxDTO.taxId}" >
+								<input class="form-control"  type="hidden"  maxlength="128" id="phone" th:value="${invoiceTaxDTO.phone}" >
+								<input class="form-control"  type="hidden"  maxlength="128" id="orderId" th:value="${orderId}" >
+							<input class="form-control"  type="text"  maxlength="128" id="taxAddr" >
 						</td>
 					</tr>
 					
@@ -77,7 +81,7 @@
 							<span class="col_red"></span>电话:
 						</td>
 						<td >
-							<input class="form-control"  type="text" maxlength="128" >
+							<input class="form-control"  type="text" maxlength="128"  id="taxAddrPhone">
 						</td>
 						
 					</tr>
@@ -86,7 +90,7 @@
 							发票抬头:
 						</td>
 						<td >
-							<input class="form-control"  type="text" maxlength="128" th:text="${invoiceTaxDTO.organCode}" disabled>
+							<input class="form-control"  type="text" maxlength="128" id="invoiceTitle" th:value="${invoiceTaxDTO.invoiceTitle}" disabled>
 						</td>
 					</tr>
 					<tr>
@@ -94,7 +98,7 @@
 							社会统一信用代码:
 						</td>
 						<td >
-							<input class="form-control"  type="text" maxlength="128"   th:text="${invoiceTaxDTO.taxpayerNo}" disabled>
+							<input class="form-control"  type="text" maxlength="128" id="taxpayerNo" th:value="${invoiceTaxDTO.taxpayerNo}" disabled>
 						</td>
 					</tr>
 					<tr>
@@ -102,7 +106,7 @@
 							地址:
 						</td>
 						<td >
-							<input class="form-control"  type="text" maxlength="128"  th:text="${invoiceTaxDTO.contactInfo}" disabled>
+							<input class="form-control"  type="text" maxlength="128" id="contactInfo" th:value="${invoiceTaxDTO.contactInfo}" disabled>
 						</td>
 					</tr>
 					<tr>
@@ -110,7 +114,7 @@
 							开户行:
 						</td>
 						<td >
-							<input class="form-control"  type="text" maxlength="128" th:text="${invoiceTaxDTO.bankName}">
+							<input class="form-control"  type="text" maxlength="128" id="bankName" th:value="${invoiceTaxDTO.bankName}">
 						</td>
 					</tr>
 					<tr>
@@ -118,10 +122,10 @@
 							账户:
 						</td>
 						<td >
-							<input class="form-control"  type="text" maxlength="128" th:text="${invoiceTaxDTO.acctInfo}" >
+							<input class="form-control"  type="text" maxlength="128" id="acctInfo" th:value="${invoiceTaxDTO.acctInfo}" >
 						</td>
 					</tr>
-					<tr>
+					<tr th:remove="all">
 						<td class="Hint">
 							是否与其他发票申请合并开具:
 						</td>
@@ -141,7 +145,7 @@
 		<!-- 按钮 -->
 			<hr>
 			<div class="p20 text-center " style="margin-left: 220px;">
-				<a href="javascript:;" class="btn-primary btn mr10" >提交</a>
+				<a href="javascript:;" class="btn-primary btn mr10"  th:onclick="'saveInvoiceTax()'">提交</a>
 				<a href="javascript:;" class="btn-default btn mr10" >取消</a>
 			</div>
 	</div>

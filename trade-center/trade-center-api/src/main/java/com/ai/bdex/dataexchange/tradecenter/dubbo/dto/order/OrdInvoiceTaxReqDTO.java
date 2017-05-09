@@ -29,9 +29,30 @@ public class OrdInvoiceTaxReqDTO  extends BaseInfo{
    private String updateStaff; 
    private Date updateTime; 
    private String invoiceDesc;
+   
+   private String taxAddr;//邮寄地址
+   private String taxAddrPhone;//邮寄电话
+   
+	public String getTaxAddr() {
+		return taxAddr;
+	}
+
+	public void setTaxAddr(String taxAddr) {
+		this.taxAddr = taxAddr;
+	}
+
+	public String getTaxAddrPhone() {
+		return taxAddrPhone;
+	}
+
+	public void setTaxAddrPhone(String taxAddrPhone) {
+		this.taxAddrPhone = taxAddrPhone;
+	}
+
 	public Long getOrderTaxId() {
 		return orderTaxId;
 	}
+
 	public void setOrderTaxId(Long orderTaxId) {
 		this.orderTaxId = orderTaxId;
 	}

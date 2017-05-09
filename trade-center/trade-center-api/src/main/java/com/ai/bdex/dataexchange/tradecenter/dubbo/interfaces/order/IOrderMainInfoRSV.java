@@ -23,4 +23,11 @@ public interface IOrderMainInfoRSV {
 	 * @throws Exception
 	 */
 	public int cancelOrder(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception;
+	/**
+	 * 更新订单
+	 * @param ordMainInfoReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateOrderMainInfo(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception;
 }

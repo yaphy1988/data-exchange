@@ -17,6 +17,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInvoiceTaxRespDTO
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrdInvoiceTaxRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdInvoiceTaxAddrSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.order.IOrdInvoiceTaxSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 @Service("iOrdInvoiceTaxRSV")
 public class OrdInvoiceTaxRSVImpl  implements IOrdInvoiceTaxRSV {
 	private static final Logger log = LoggerFactory.getLogger(OrdInvoiceTaxRSVImpl.class);
@@ -25,12 +26,40 @@ public class OrdInvoiceTaxRSVImpl  implements IOrdInvoiceTaxRSV {
 	private IOrdInvoiceTaxSV iOrdInvoiceTaxSV;
 	@Resource
 	private IOrdInvoiceTaxAddrSV iOrdInvoiceTaxAddrSV;
+	public Long insertOrdInvoice(OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO) throws Exception {
+		if (ordInvoiceTaxReqDTO ==null){
+            throw new Exception("发票开具申请异常，入参为空");
+        }
+		if(ordInvoiceTaxReqDTO.getTaxId()==null){
+            throw new Exception("发票开具申请异常，tax_id入参为空");
+		}
+		Long orderTaxId;
+		try {
+			orderTaxId= iOrdInvoiceTaxSV.insertOrdInvoiceTax(ordInvoiceTaxReqDTO);
+			OrdInvoiceTaxAddrReqDTO ordInvoiceTaxAddrReqDTO = new OrdInvoiceTaxAddrReqDTO();
+			//保存发票开具申请收货地址
+			if(orderTaxId>0){
+				ObjectCopyUtil.copyObjValue(ordInvoiceTaxReqDTO, ordInvoiceTaxAddrReqDTO, null, false);
+				ordInvoiceTaxAddrReqDTO.setOrderTaxId(orderTaxId);
+				ordInvoiceTaxAddrReqDTO.setOrderId(ordInvoiceTaxReqDTO.getOrderId());
+				ordInvoiceTaxAddrReqDTO.setContactInfo(ordInvoiceTaxReqDTO.getTaxAddr());
+				ordInvoiceTaxAddrReqDTO.setPhone(ordInvoiceTaxReqDTO.getTaxAddrPhone());
+				iOrdInvoiceTaxAddrSV.insertOrdInvoiceAddrTax(ordInvoiceTaxAddrReqDTO);
+			}
+		} catch (Exception e) {
+			log.error("发票开具申请信息异常:", e);
+			throw new Exception(e);
+		}
+		return orderTaxId;
+	}
 	@Override
 	public Long insertOrdInvoiceTax(OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO) throws Exception {
 		if (ordInvoiceTaxReqDTO ==null){
             throw new Exception("发票开具申请异常，入参为空");
         }
-		
+		if(ordInvoiceTaxReqDTO.getTaxId()==null){
+            throw new Exception("发票开具申请异常，tax_id入参为空");
+		}
 		Long orderTaxId;
 		try {
 			orderTaxId= iOrdInvoiceTaxSV.insertOrdInvoiceTax(ordInvoiceTaxReqDTO);
