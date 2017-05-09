@@ -66,7 +66,7 @@ public class OrderController {
 	IAipServiceInfoRSV iAipServiceInfoRSV;
 	
     //预定的数据展现
-	@RequestMapping(value = "/gdstmpsavesession")
+	@RequestMapping(value = "/gdshopcart")
 	public ModelAndView saveTosession(Model model, HttpServletRequest request) {
 		//取用户ID
 		HttpSession hpptsesion = request.getSession(); 
@@ -104,8 +104,7 @@ public class OrderController {
 			gdsvfsid = gdsSkuRespDTO.getGdsPic(); 
 			if(!StringUtil.isBlank(gdsvfsid)){
 				gdsvfsurl= ImageUtil.getImageUrl(gdsvfsid + "_80x80");  
-			}
-		
+			} 
 			//每份的次数
 			ordInfoReqDTO.setEachCount(gdsSkuRespDTO.getPackTimes());
 			//购买总数
@@ -234,9 +233,10 @@ public class OrderController {
  						{
  							ordInfoReqDTO.setServiceName(apiServiceList.get(0).getServiceName());
  						}
+ 						ordInfoReqDTO.setCatFirst(gdsInfoRespDTO.getCatFirst());
+ 						ordInfoReqDTO.setCatId(gdsInfoRespDTO.getCatId());
  					}  
- 					iOrderInfoRSV.createOrderInfo(ordInfoReqDTO);
- 					//要去获取一下商品的大类
+ 					iOrderInfoRSV.createOrderInfo(ordInfoReqDTO); 
  			} 
 			rMap.put("success", true);
 		} catch (Exception e) {
