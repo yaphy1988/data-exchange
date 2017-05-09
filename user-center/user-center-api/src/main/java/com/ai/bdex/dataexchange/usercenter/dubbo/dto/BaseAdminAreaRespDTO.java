@@ -1,9 +1,11 @@
 package com.ai.bdex.dataexchange.usercenter.dubbo.dto;
 
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+
 /**
  * Created by yx on 2017/5/9.
  */
-public class BaseAdminAreaRespDTO {
+public class BaseAdminAreaRespDTO extends BaseInfo{
 
     private String areaCode;
 
