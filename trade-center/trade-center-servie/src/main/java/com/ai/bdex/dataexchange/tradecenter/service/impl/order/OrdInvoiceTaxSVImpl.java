@@ -54,6 +54,20 @@ public class OrdInvoiceTaxSVImpl  implements IOrdInvoiceTaxSV {
 		return orderTaxId;
 	}
 	@Override
+	public Long updateOrdInvoiceTax(OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO) throws Exception {
+		OrdInvoiceTax invoiceTax = new OrdInvoiceTax();
+		OrdInvoiceTaxExample example = new OrdInvoiceTaxExample();
+		OrdInvoiceTaxExample.Criteria criteria = example.createCriteria();
+		if (ordInvoiceTaxReqDTO.getOrderTaxId()!=null) {
+			criteria.andOrderTaxIdEqualTo(ordInvoiceTaxReqDTO.getOrderTaxId());
+		}
+		ordInvoiceTaxReqDTO.setUpdateTime(DateUtil.getNowAsDate());
+		invoiceTax.setUpdateTime(DateUtil.getNowAsDate());
+		ObjectCopyUtil.copyObjValue(ordInvoiceTaxReqDTO, invoiceTax, null, false);
+		int code = ordInvoiceTaxMapper.updateByExampleSelective(invoiceTax, example);
+		return Long.valueOf(code);
+	}
+	@Override
 	public PageResponseDTO<OrdInvoiceTaxRespDTO> queryOrdInvoiceTaxPage(OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO)
 			throws Exception {
 		Integer pageNo = ordInvoiceTaxReqDTO.getPageNo();
@@ -61,7 +75,7 @@ public class OrdInvoiceTaxSVImpl  implements IOrdInvoiceTaxSV {
 		OrdInvoiceTaxExample example = new OrdInvoiceTaxExample();
 		OrdInvoiceTaxExample.Criteria criteria = example.createCriteria();
 		initCriteria(criteria, ordInvoiceTaxReqDTO);
-		example.setOrderByClause("CREATE_TIME desc");
+		example.setOrderByClause("status asc,CREATE_TIME desc");
 		PageHelper.startPage(pageNo, pageSize);
 		List<OrdInvoiceTax> ordInvoiceTaxList = ordInvoiceTaxMapper.selectByExample(example);
 		// 使用PageInfo对结果进行包装

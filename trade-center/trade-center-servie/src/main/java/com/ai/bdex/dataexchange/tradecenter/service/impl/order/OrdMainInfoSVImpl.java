@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.tradecenter.service.impl.order;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -118,6 +119,23 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 		return pageResponseDTO;
 	}
 
+	@Override
+	public List<OrdMainInfoRespDTO> queryOrdMainInfoList(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception {
+		OrdMainInfoExample example = new OrdMainInfoExample();
+		OrdMainInfoExample.Criteria criteria = example.createCriteria();
+		initCriteria(criteria,ordMainInfoReqDTO);
+		List<OrdMainInfo> ordMainInfoList = ordMainInfoMapper.selectByExample(example);
+		List<OrdMainInfoRespDTO> respDTOList = new ArrayList<OrdMainInfoRespDTO>();
+		if (!CollectionUtil.isEmpty(ordMainInfoList)) {
+			for (OrdMainInfo ordMainInfo : ordMainInfoList) {
+				OrdMainInfoRespDTO ordMainInfoRespDTO = new OrdMainInfoRespDTO();
+				ObjectCopyUtil.copyObjValue(ordMainInfo, ordMainInfoRespDTO, null, false);
+				respDTOList.add(ordMainInfoRespDTO);
+			}
+		}
+
+		return respDTOList;
+	}
 	private void initCriteria(OrdMainInfoExample.Criteria criteria, OrdMainInfoReqDTO ordMainInfoReqDTO) {
 		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getOrderId())) {
 			criteria.andOrderIdEqualTo(ordMainInfoReqDTO.getOrderId());

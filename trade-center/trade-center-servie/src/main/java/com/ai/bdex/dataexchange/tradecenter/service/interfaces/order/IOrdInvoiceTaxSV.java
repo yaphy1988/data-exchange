@@ -20,6 +20,13 @@ public interface IOrdInvoiceTaxSV {
 	 * @throws Exception
 	 */
 	public Long insertOrdInvoiceTax(OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO) throws Exception;
+	/**
+	 * 更新发票开具申请数据
+	 * @param ordInvoiceTaxReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public Long updateOrdInvoiceTax(OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO) throws Exception;
 
 	/**
 	 * 分页获取发票管理信息

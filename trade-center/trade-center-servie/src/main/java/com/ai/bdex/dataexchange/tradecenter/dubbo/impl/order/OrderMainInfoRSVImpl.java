@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.impl.order;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -72,5 +73,15 @@ public class OrderMainInfoRSVImpl  implements IOrderMainInfoRSV {
 			throw new Exception(e);
 		}
 		return code;
+	}
+	public List<OrdMainInfoRespDTO> queryOrdMainInfoList(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception {
+		List<OrdMainInfoRespDTO> respDTOList = new ArrayList<OrdMainInfoRespDTO>();
+		try {
+			respDTOList= iOrdMainInfoSV.queryOrdMainInfoList(ordMainInfoReqDTO);
+		} catch (Exception e) {
+			log.error("获取订单主表信息异常:", e);
+			throw new Exception(e);
+		}
+		return respDTOList;
 	}
 }

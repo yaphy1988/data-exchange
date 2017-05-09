@@ -58,6 +58,19 @@ public class OrdInvoiceTaxAddrSVImpl  implements IOrdInvoiceTaxAddrSV {
 		int code = ordInvoiceTaxAddrMapper.insert(invoiceTaxAddr);
 		return Long.valueOf(code);
 	}
+	@Override
+	public Long updateOrdInvoiceAddrTax(OrdInvoiceTaxAddrReqDTO ordInvoiceTaxAddrReqDTO) throws Exception{
+		OrdInvoiceTaxAddr invoiceTaxAddr = new OrdInvoiceTaxAddr();
+		OrdInvoiceTaxAddrExample example = new OrdInvoiceTaxAddrExample();
+		OrdInvoiceTaxAddrExample.Criteria criteria = example.createCriteria();
+		if (ordInvoiceTaxAddrReqDTO.getOrderTaxId()!=null) {
+			criteria.andOrderTaxIdEqualTo(ordInvoiceTaxAddrReqDTO.getOrderTaxId());
+		}
+		invoiceTaxAddr.setUpdateTime(DateUtil.getNowAsDate());
+		ObjectCopyUtil.copyObjValue(ordInvoiceTaxAddrReqDTO, invoiceTaxAddr, null, false);
+		int code = ordInvoiceTaxAddrMapper.updateByExampleSelective(invoiceTaxAddr, example);
+		return Long.valueOf(code);
+	}
 	
 	@Override
 	public List<OrdInvoiceTaxAddrRespDTO> queryOrdInvoiceTaxAddrList(OrdInvoiceTaxAddrReqDTO ordInvoiceTaxAddrReqDTO)

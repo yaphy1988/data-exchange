@@ -3,7 +3,9 @@ $(function(){
 	myOrderInvoiceList(1);
 	
 });
-
+function applyInvoice(orderId){
+	window.location.href = basePath+"/invoiceManage/applyInvoice?orderId="+orderId;
+}
 
 
 
@@ -81,7 +83,7 @@ function saveInvoiceTax(){
 			success:function(data){
 				if(data.success){
 					 WEB.msg.info("提示","发票开具申请保存成功！",function(){
-			           	 	window.location.href = basePath+"/invoiceManage/mybill";
+						window.location.href = basePath+"/invoiceManage/mybill";
 			       });
 				}else{
 					WEB.msg.info("提示","发票开具申请保存失败！");

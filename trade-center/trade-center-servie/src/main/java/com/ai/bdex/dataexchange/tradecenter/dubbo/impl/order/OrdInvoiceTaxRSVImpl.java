@@ -52,6 +52,22 @@ public class OrdInvoiceTaxRSVImpl  implements IOrdInvoiceTaxRSV {
 		}
 		return orderTaxId;
 	}
+	public Long updateOrdInvoiceTax(OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO) throws Exception {
+		if (ordInvoiceTaxReqDTO ==null){
+            throw new Exception("发票开具申请更新异常，入参为空");
+        }
+		if(ordInvoiceTaxReqDTO.getOrderTaxId()==null){
+            throw new Exception("发票开具申请更新异常，order_tax_id入参为空");
+		}
+		Long orderTaxId;
+		try {
+			orderTaxId= iOrdInvoiceTaxSV.updateOrdInvoiceTax(ordInvoiceTaxReqDTO);
+		} catch (Exception e) {
+			log.error("发票开具申请更新信息异常:", e);
+			throw new Exception(e);
+		}
+		return orderTaxId;
+	}
 	@Override
 	public Long insertOrdInvoiceTax(OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO) throws Exception {
 		if (ordInvoiceTaxReqDTO ==null){
@@ -111,6 +127,19 @@ public class OrdInvoiceTaxRSVImpl  implements IOrdInvoiceTaxRSV {
 			code= iOrdInvoiceTaxAddrSV.insertOrdInvoiceAddrTax(ordInvoiceTaxAddrReqDTO);
 		} catch (Exception e) {
 			log.error("发票开具申请收货地址信息异常:", e);
+			throw new Exception(e);
+		}
+		return code;
+	}
+	public Long updateOrdInvoiceAddrTax(OrdInvoiceTaxAddrReqDTO ordInvoiceTaxAddrReqDTO) throws Exception{
+		if (ordInvoiceTaxAddrReqDTO ==null||ordInvoiceTaxAddrReqDTO.getOrderTaxId()==null){
+            throw new Exception("发票开具申请收货地址更新异常，入参为空");
+        }
+		Long code;
+		try {
+			code= iOrdInvoiceTaxAddrSV.updateOrdInvoiceAddrTax(ordInvoiceTaxAddrReqDTO);
+		} catch (Exception e) {
+			log.error("发票开具申请收货地址更新信息异常:", e);
 			throw new Exception(e);
 		}
 		return code;

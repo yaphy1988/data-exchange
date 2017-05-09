@@ -21,6 +21,13 @@ public interface IOrdInvoiceTaxAddrSV {
 	 * @throws Exception
 	 */
 	public Long insertOrdInvoiceAddrTax(OrdInvoiceTaxAddrReqDTO ordInvoiceTaxAddrReqDTO) throws Exception;
+	/**
+	 * 发票开具申请收货地址更新数据
+	 * @param ordInvoiceTaxAddrReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public Long updateOrdInvoiceAddrTax(OrdInvoiceTaxAddrReqDTO ordInvoiceTaxAddrReqDTO) throws Exception;
 
 	/**
 	 * 查询发票收货地址信息

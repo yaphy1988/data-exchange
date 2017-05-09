@@ -9,7 +9,7 @@
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
-	<script type="text/javascript" src="../../static/js-busi/order/mybill.js" th:src="@{/js-busi/order/mybill.js}"></script>
+	<script type="text/javascript" src="../../static/js-busi/order/mybillCheck.js" th:src="@{/js-busi/order/mybillCheck.js}"></script>
 	
 </head>
 
@@ -58,7 +58,7 @@
                 <a href=""><span>个人中心</span></a>
                 <span class="col_999">发票管理</span>
             </div>
-			<div id="myOrderBillList">
+			<div id="myInvoiceCheckList">
 :
                         <table class="table table-bordered text-center" >
                             <thead>
@@ -77,18 +77,18 @@
                             <tr th:each="list,iterStat : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
 								<td th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
 								<td th:text="${list.orderId}"></td>
-								<td th:text="${list.orderMoney/100}"></td>
+								<td th:text="${list.ordMainInfoRespDTO.orderMoney/100}"></td>
 								<td
-									th:text="${#calendars.format(list.ordInvoiceTaxReqDTO.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
-								<td th:text="${list.ordInvoiceTaxReqDTO.invoiceTitle}"></td>
+									th:text="${#calendars.format(list.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+								<td th:text="${list.invoiceTitle}"></td>
 								<td th:text="${list.ordInvoiceTaxAddrRespDTO.contactInfo}"></td>
 								<td>
-									<span th:if="${list.invoiceStatus=='0'}">未申请</span>
-									<span th:if="${list.invoiceStatus=='1'}">申请中</span>
-									<span th:if="${list.invoiceStatus=='2'}">已开发票</span>
-									<span th:if="${list.invoiceStatus=='9'}">拒开发票</span>
+									<span th:if="${list.status=='0'}">未申请</span>
+									<span th:if="${list.status=='1'}">待开发票</span>
+									<span th:if="${list.status=='2'}">已开发票</span>
+									<span th:if="${list.status=='9'}">拒开发票</span>
 								</td>
-								<td><a href="javaScript:void(0)" th:if="${list.invoiceStatus=='0'}" th:onclick="|applyInvoice('${list.orderId}')|">申请开具</a></td>
+								<td><a href="javaScript:void(0)" th:if="${list.status=='1'}" th:onclick="|makeInvoiceTax('${list.orderTaxId}','${list.orderId}')|">开票</a></td>
 							</tr>
                             <tr >
                                 <td>1</td>
@@ -143,7 +143,7 @@
 
 								if (typeof pagerClick === "undefined") {
 									pagerClick = function(index) {
-										myOrderInvoiceList(index);
+										myInvoiceCheckList(index);
 									}
 								}
 								$('#pagerId').pager({

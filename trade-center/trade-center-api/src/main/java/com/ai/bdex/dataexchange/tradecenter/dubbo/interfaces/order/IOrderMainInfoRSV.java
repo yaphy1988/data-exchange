@@ -30,4 +30,12 @@ public interface IOrderMainInfoRSV {
 	 * @throws Exception
 	 */
 	public int updateOrderMainInfo(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception;
+	
+	/**
+	 * 获取订单主表信息List
+	 * @param ordMainInfoReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public List<OrdMainInfoRespDTO> queryOrdMainInfoList(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception;
 }

@@ -36,6 +36,7 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IChnlInvoiceTaxRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
+import com.ai.bdex.dataexchange.util.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 
@@ -107,9 +108,9 @@ public class invoiceManageController {
 		Map<String,Object>  rMap = new HashMap<>();
 		try {
 			//查询我的子订单
-			OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
-			ordInfoReqDTO.setOrderId(ordInvoiceTaxVO.getOrderId());
-			List<OrdInfoRespDTO> ordInfoList = iOrderInfoRSV.queryOrderInfoList(ordInfoReqDTO);
+			OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
+			ordMainInfoReqDTO.setOrderId(ordInvoiceTaxVO.getOrderId());
+			List<OrdMainInfoRespDTO> ordInfoList = iOrderMainInfoRSV.queryOrdMainInfoList(ordMainInfoReqDTO);
 			OrdInvoiceTaxReqDTO taxReqDTO = new OrdInvoiceTaxReqDTO();
 			ObjectCopyUtil.copyObjValue(ordInvoiceTaxVO, taxReqDTO, null, false);
 			taxReqDTO.setCreateStaff(StaffUtil.getStaffId(session));
@@ -121,10 +122,10 @@ public class invoiceManageController {
 			taxReqDTO.setStatus(Constants.Order.ORDER_INVOICE_STATUS_1);
 			Long ordTaxId=iOrdInvoiceTaxRSV.insertOrdInvoice(taxReqDTO);
 			if(ordTaxId>0){
-				OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
-				ordMainInfoReqDTO.setOrderId(ordInvoiceTaxVO.getOrderId());
-				ordMainInfoReqDTO.setInvoiceStatus(Constants.Order.ORDER_INVOICE_STATUS_1);
-				iOrderMainInfoRSV.updateOrderMainInfo(ordMainInfoReqDTO);
+				OrdMainInfoReqDTO ordMainInfo= new OrdMainInfoReqDTO();
+				ordMainInfo.setOrderId(ordInvoiceTaxVO.getOrderId());
+				ordMainInfo.setInvoiceStatus(Constants.Order.ORDER_INVOICE_STATUS_1);
+				iOrderMainInfoRSV.updateOrderMainInfo(ordMainInfo);
 			}
 			rMap.put("success", true);
 
@@ -134,15 +135,26 @@ public class invoiceManageController {
 		}
 		return rMap;
 	}
+	 /**
+     * 发票管理-管理员审核
+     * @param model
+     * @param gdsInfoVO
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/mybillCheck")
+    public String mybillCheck(Model model,OrdInfoVO ordInfoVO) throws Exception{
+        return "mybillCheck";
+    }
 	/**
-   	 * 查询发票管理
+   	 * 查询发票管理审核列表
    	 * 
    	 * @param model
    	 * @param searchVO
    	 * @return
    	 */
    	@RequestMapping(value = "/myOrderInvoiceList")
-   	public String myOrderInvoiceTaxList(Model model,HttpSession session, OrdMainInfoVO ordMainInfoVO) {
+   	public String myOrderInvoiceList(Model model,HttpSession session, OrdMainInfoVO ordMainInfoVO) {
    		try {
    			PageResponseDTO<OrdMainInfoRespDTO> pageInfo = new PageResponseDTO<OrdMainInfoRespDTO>();
    			OrdMainInfoReqDTO ordMainReqDTO = new OrdMainInfoReqDTO();
@@ -184,4 +196,88 @@ public class invoiceManageController {
    		}
    		return "mybill :: #myOrderBillList";
    	}
+   	/**
+   	 * 查询发票管理
+   	 * 
+   	 * @param model
+   	 * @param searchVO
+   	 * @return
+   	 */
+   	@RequestMapping(value = "/myInvoiceCheckList")
+   	public String myInvoiceCheckList(Model model,HttpSession session, OrdMainInfoVO ordMainInfoVO) {
+   		try {
+   			PageResponseDTO<OrdInvoiceTaxRespDTO> pageInfo = new PageResponseDTO<OrdInvoiceTaxRespDTO>();
+   			OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO = new OrdInvoiceTaxReqDTO();
+   			ordInvoiceTaxReqDTO.setPageNo(ordMainInfoVO.getPageNo());
+   			ordInvoiceTaxReqDTO.setPageSize(PAGE_SIZE);
+   			pageInfo = iOrdInvoiceTaxRSV.queryOrdInvoiceTaxPage(ordInvoiceTaxReqDTO);
+			if (CollectionUtils.isNotEmpty(pageInfo.getResult())) {
+				for (OrdInvoiceTaxRespDTO taxRespDTO : pageInfo.getResult()) {
+					// 获取订单信息
+					OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
+					ordMainInfoReqDTO.setOrderId(taxRespDTO.getOrderId());
+					List<OrdMainInfoRespDTO> ordMainList = iOrderMainInfoRSV.queryOrdMainInfoList(ordMainInfoReqDTO);
+					OrdMainInfoRespDTO ordMainInfoRespDTO = new OrdMainInfoRespDTO();
+					OrdInvoiceTaxAddrRespDTO taxAddrRespDTO = new OrdInvoiceTaxAddrRespDTO();
+					if (CollectionUtils.isNotEmpty(ordMainList)) {
+						ordMainInfoRespDTO = ordMainList.get(0);
+					}
+					//获取发票开具申请收货地址
+					OrdInvoiceTaxAddrReqDTO ordInvoiceTaxAddrReqDTO = new OrdInvoiceTaxAddrReqDTO();
+					ordInvoiceTaxAddrReqDTO.setOrderTaxId(taxRespDTO.getOrderTaxId());
+					List<OrdInvoiceTaxAddrRespDTO> invoiceTaxAddrList = iOrdInvoiceTaxRSV.queryOrdInvoiceTaxAddrList(ordInvoiceTaxAddrReqDTO);
+					if(CollectionUtils.isNotEmpty(invoiceTaxAddrList)){
+						taxAddrRespDTO=invoiceTaxAddrList.get(0);
+					}
+					taxRespDTO.setOrdMainInfoRespDTO(ordMainInfoRespDTO);
+					taxRespDTO.setOrdInvoiceTaxAddrRespDTO(taxAddrRespDTO);
+				}
+			}
+   			model.addAttribute("pageInfo", pageInfo);
+   		} catch (Exception e) {
+   			logger.error("查询发票管理列表失败！原因是：" + e.getMessage());
+   		}
+   		return "mybillCheck :: #myInvoiceCheckList";
+   	}
+	/**
+	 * 发票审核开票、拒开票
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/makeInvoiceTax")
+	@ResponseBody
+	public Map<String,Object> makeInvoiceTax(HttpServletRequest request,HttpSession session,OrdInvoiceTaxVO ordInvoiceTaxVO){
+		Map<String,Object>  rMap = new HashMap<>();
+		try {
+			OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO = new OrdInvoiceTaxReqDTO();
+			ordInvoiceTaxReqDTO.setOrderTaxId(ordInvoiceTaxVO.getOrderTaxId());
+			ordInvoiceTaxReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+			if(StringUtil.isNotBlank(ordInvoiceTaxVO.getStatus())){
+				ordInvoiceTaxReqDTO.setStatus(ordInvoiceTaxVO.getStatus());
+			}
+			Long ordTaxCode=iOrdInvoiceTaxRSV.updateOrdInvoiceTax(ordInvoiceTaxReqDTO);
+			
+			OrdInvoiceTaxAddrReqDTO ordInvoiceTaxAddrReqDTO = new OrdInvoiceTaxAddrReqDTO();
+			ordInvoiceTaxAddrReqDTO.setOrderTaxId(ordInvoiceTaxVO.getOrderTaxId());
+			ordInvoiceTaxAddrReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+			if(StringUtil.isNotBlank(ordInvoiceTaxVO.getStatus())){
+				ordInvoiceTaxAddrReqDTO.setStatus(ordInvoiceTaxVO.getStatus());
+			}
+			if(ordTaxCode>0){
+				iOrdInvoiceTaxRSV.updateOrdInvoiceAddrTax(ordInvoiceTaxAddrReqDTO);
+			}
+			OrdMainInfoReqDTO ordMainInfo= new OrdMainInfoReqDTO();
+			ordMainInfo.setOrderId(ordInvoiceTaxVO.getOrderId());
+			if(StringUtil.isNotBlank(ordInvoiceTaxVO.getStatus())){
+				ordMainInfo.setInvoiceStatus(ordInvoiceTaxVO.getStatus());
+			}
+			iOrderMainInfoRSV.updateOrderMainInfo(ordMainInfo);
+			rMap.put("success", true);
+
+		} catch (Exception e) {
+			rMap.put("success", false);
+			logger.error("保存发票开具申请信息出错：" + e.getMessage());
+		}
+		return rMap;
+	}
 }

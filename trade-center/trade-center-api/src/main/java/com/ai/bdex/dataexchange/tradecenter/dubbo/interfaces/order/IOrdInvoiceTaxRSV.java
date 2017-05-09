@@ -13,6 +13,13 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInvoiceTaxRespDTO
 public interface IOrdInvoiceTaxRSV {
 	public Long insertOrdInvoice(OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO) throws Exception ;
 	/**
+	 * 发票开具更新数据
+	 * @param ordInvoiceTaxReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public Long updateOrdInvoiceTax(OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO) throws Exception;
+	/**
 	 * 发票开具申请
 	 * @param ordInvoiceTaxReqDTO
 	 * @return
@@ -42,6 +49,13 @@ public interface IOrdInvoiceTaxRSV {
 	 * @throws Exception
 	 */
 	public Long insertOrdInvoiceAddrTax(OrdInvoiceTaxAddrReqDTO ordInvoiceTaxAddrReqDTO) throws Exception;
+	/**
+	 * 发票开具申请收货地址更新数据
+	 * @param ordInvoiceTaxAddrReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public Long updateOrdInvoiceAddrTax(OrdInvoiceTaxAddrReqDTO ordInvoiceTaxAddrReqDTO) throws Exception;
 
 	/**
 	 * 查询发票收货地址信息
