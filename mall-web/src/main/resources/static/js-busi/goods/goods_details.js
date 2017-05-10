@@ -106,6 +106,5 @@ function encodeURI2(strinfo) {
 }
 
 function addToCart(gdsId,skuId){
-	var url = WEB_ROOT+"/order/gdshopcart?gdsId="+gdsId+"&skuId="+skuId;
-	window.open(url);
+	window.location.href=WEB_ROOT+"/order/gdshopcart?gdsId="+gdsId+"&skuId="+skuId;
 }
