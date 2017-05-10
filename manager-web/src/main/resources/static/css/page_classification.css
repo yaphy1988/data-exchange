@@ -48,8 +48,8 @@
 	background: #fff;
 	border: solid 1px #eee;
 	/* border-left:none; */
-	height: auto;
-	min-height: 200px;
+	height: 442px;
+	overflow: hidden;
 	padding: 30px 36px 30px 56px;
 	box-shadow: 2px 2px 7px #eee;
 }
