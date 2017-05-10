@@ -43,7 +43,6 @@
 	position: absolute;
 	width: 500px;
 	left: 248px;
-
 	top: -1px;
 	z-index: 10;
 	background: #fff;
@@ -51,7 +50,8 @@
 	/* border-left:none; */
 	height: auto;
 	min-height: 200px;
-	padding: 20px;
+	padding: 30px 36px 30px 56px;
+	box-shadow: 2px 2px 7px #eee;
 }
 .class_sidebar_secon h4{
 	font-size: 14px;
