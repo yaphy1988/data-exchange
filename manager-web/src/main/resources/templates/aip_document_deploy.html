@@ -8,6 +8,9 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+
+
+	<script th:src="@{/js-busi/aip/aipEntry.js}"></script>
 	
 </head>
 <body>
@@ -57,33 +60,32 @@
 						接口地址:
 					</td>
 					<td width="520" colspan="3">
-						<input type="text" class="form-control" placeholder="" >
+						<input type="text" class="form-control" placeholder="" th:value="${aipServiceBaseInfo.apiUrl}" id="baseInfo_aipUrl">
 					</td>
 					<td ><span class="tip">必填</span></td>
 				</tr>
 				
-				<tr th:remove="all">
+				<tr>
 					<td class="Hint" >
 						<span class="col_red">*</span>支持格式:
 					</td>
 					<td>
-						<input type="text" class="form-control" placeholder="" >
+						<input type="text" class="form-control" placeholder="" id="baseInfo_supportFormat" th:value="${aipServiceBaseInfo.supportFormat}">
 					</td>
 					<td class="Hint" width="140">
 						<span class="col_red">*</span>请求方式:
 					</td>
 					<td>
-						<input type="text" class="form-control" placeholder="" >
+						<input type="text" class="form-control" placeholder="" id="baseInfo_reqType" th:value="${aipServiceBaseInfo.reqType}">
 					</td>
 				</tr>
-				<tr th:remove="all">
+				<tr>
 					<td class="Hint ">
 						<span class="col_red">*</span>请求实例:
 					</td>
 					<td  colspan="3">
-						<textarea class="form-control" rows="2"></textarea>
+						<textarea class="form-control" rows="2" id="baseInfo_exampleUrl" th:value="${aipServiceBaseInfo.exampleUrl}"></textarea>
 					</td>
-
 				</tr>
 				<tr>
 					<td class="Hint" >
@@ -91,31 +93,17 @@
 						在线测试地址:
 					</td>
 					<td width="520" colspan="3">
-						<input type="text" class="form-control" placeholder="" >
-					</td>
-					
-				</tr>
-				
-				<tr th:remove="all">
-					<td class="Hint" >
-						<span class="col_red">*</span>接口文档:
-					</td>
-					<td colspan="3">
-						<div class="input-group">
-							<input type="text" class="form-control" placeholder="/热门数据/">
-							<span class="input-group-btn">
-					        <button class="btn btn-default" type="button">请选择</button>
-					      </span>
-						</div>
+						<input type="text" class="form-control" placeholder="" id="baseInfo_testTool" th:value="${aipServiceBaseInfo.testTool}">
 					</td>
 				</tr>
+
 
 				<tr th:remove="all" >
 					<td class="Hint">
 						<span class="col_red">*</span>接口备注:
 					</td>
 					<td  colspan="3">
-						<textarea class="form-control" rows="5"></textarea>
+						<textarea class="form-control" rows="5" id="baseInfo_apiRemark" th:value="${aipServiceBaseInfo.apiRemark}"></textarea>
 					</td>
 				</tr>
 
@@ -132,29 +120,62 @@
 							</tr>
 							</thead>
 							<tbody>
-							<tr  >
+							<tr id="inParaTrHidden" style="display: none;">
 								<td><input type="text" class="form-control" name=""></td>
 								<td colspan="">
 									<select class="form-control wt100" >
-										<option>1</option>
+										<option value="00">Object</option>
+										<option value="01">String</option>
+										<option value="02">Interger</option>
+										<option value="03">Double</option>
+										<option value="04">Float</option>
+										<option value="05">Date</option>
 									</select>
 								</td>
 								<td>
 									<select class="form-control wt100">
-										<option>1</option>
+										<option value="00">可空</option>
+										<option value="01" >必填</option>
+									</select>
+								</td>
+								<td>
+									<div class="check-link">
+										<input type="text" class="form-control" name="">
+										<a href="javascript:void(0)"  onclick="delRow(this)">删除</a>
+									</div>
+								</td>
+							</tr>
+							<tr class="inParaTr" th:if="${#lists.size(aipServiceInParaList)} gt 0" th:each="aipServiceInPara,aipServiceInParaStat:${aipServiceInParaList}">
+								<td><input type="text" class="form-control" name="" th:value="${aipServiceInPara.paraCode}"></td>
+								<td colspan="">
+									<select class="form-control wt100" >
+										<option value="00" th:selected="(${aipServiceInPara.paraType}=='00')">Object</option>
+										<option value="01" th:selected="(${aipServiceInPara.paraType}=='01')">String</option>
+										<option value="02" th:selected="(${aipServiceInPara.paraType}=='02')">Interger</option>
+										<option value="03" th:selected="(${aipServiceInPara.paraType}=='03')">Double</option>
+										<option value="04" th:selected="(${aipServiceInPara.paraType}=='04')">Float</option>
+										<option value="05" th:selected="(${aipServiceInPara.paraType}=='05')">Date</option>
+									</select>
+								</td>
+								<td>
+									<select class="form-control wt100">
+										<option value="00" th:selected="(${aipServiceInPara.type}=='00')">可空</option>
+										<option value="01" th:selected="(${aipServiceInPara.type}=='01')">必填</option>
 									</select>
 								</td>
 								<td>
 								<div class="check-link">
-									<input type="text" class="form-control" name="">
-									<a href="" >删除</a>	
+									<input type="text" class="form-control" name="" th:value="${aipServiceInPara.remark}">
+									<a href="javascript:void(0)" onclick="delRow(this)">删除</a>
 								</div>
-
 								</td>
-					   			
-					   			
 							</tr>
 							
+							<tr>
+								<td colspan="4" style="text-align: right">
+									<button type="button" onclick="inParaAddRow(this)">新增一行</button>
+								</td>
+							</tr>
 							</tbody>
 						</table>
 					</td>
@@ -171,25 +192,50 @@
 							</tr>
 							</thead>
 							<tbody>
-							<tr  >
+							<tr id="outParaTrHidden" style="display: none">
 								<td><input type="text" class="form-control" name=""></td>
 								<td colspan="">
 									<select class="form-control wt100" >
-										<option>1</option>
+										<option value="00" >Object</option>
+										<option value="01" >String</option>
+										<option value="02" >Interger</option>
+										<option value="03" >Double</option>
+										<option value="04" >Float</option>
+										<option value="05" >Date</option>
 									</select>
 								</td>
-								
+								<td>
+									<div class="check-link">
+										<input type="text" class="form-control" name="">
+										<a href="javascritp:void(0)" onclick="delRow(this)">删除</a>
+									</div>
+								</td>
+							</tr>
+							<tr class="outParaTr" th:if="${#lists.size(aipServiceInParaList)} gt 0" th:each="aipServiceOutPara,aipServiceOutParaStat:${aipServiceOutParaList}">
+								<td><input type="text" class="form-control" name="" th:value="${aipServiceOutPara.paraCode}"></td>
+								<td colspan="">
+									<select class="form-control wt100" >
+										<option value="00" th:selected="(${aipServiceOutPara.paraType}=='00')">Object</option>
+										<option value="01" th:selected="(${aipServiceOutPara.paraType}=='01')">String</option>
+										<option value="02" th:selected="(${aipServiceOutPara.paraType}=='02')">Interger</option>
+										<option value="03" th:selected="(${aipServiceOutPara.paraType}=='03')">Double</option>
+										<option value="04" th:selected="(${aipServiceOutPara.paraType}=='04')">Float</option>
+										<option value="05" th:selected="(${aipServiceOutPara.paraType}=='05')">Date</option>
+									</select>
+								</td>
 								<td>
 								<div class="check-link">
-									<input type="text" class="form-control" name="">
-									<a href="" >删除</a>	
+									<input type="text" class="form-control" name="" th:value="${aipServiceOutPara.remark}">
+									<a href="javascritp:void(0)" onclick="delRow(this)">删除</a>
 								</div>
-
 								</td>
-					   			
-					   			
 							</tr>
-							
+
+							<tr>
+								<td colspan="3" style="text-align: right">
+									<button type="button" onclick="outParaAddRow(this)">新增一行</button>
+								</td>
+							</tr>
 							</tbody>
 						</table>
 					</td>
@@ -208,7 +254,7 @@
 
 			<!-- 按钮 -->
 			<div class="p20 text-center " style="margin-left: 220px;">
-				<a href="javascript:void(0)" class="btn-primary btn mr10" ">保存并下一步</a>
+				<a href="javascript:void(0)" class="btn-primary btn mr10 ">保存并下一步</a>
 				<a href="javascript:void(0)" class="btn-default btn" >返回</a>
 			</div>
 		</div>

@@ -36,19 +36,23 @@ public class AipEntryController {
 
     @DubboConsumer(timeout = 30000)
     private IAipServiceInfoRSV iAipServiceInfoRSV;
-    @DubboConsumer
+    @DubboConsumer(timeout = 30000)
     private IServiceMessageRSV iServiceMessageRSV;
 
     /**
      * 初始化基本信息界面
      * @param request
      * @param response
-     * @param serviceId
      * @return
      */
     @RequestMapping(value = "/baseInfoInit")
-    public ModelAndView baseInfoInit(HttpServletRequest request, HttpServletResponse response, @PathVariable String serviceId,@PathVariable String version){
-        String viewName = "aip_documnet_deploy";
+    public ModelAndView baseInfoInit(HttpServletRequest request, HttpServletResponse response){
+
+        String serviceId = request.getParameter("serviceId");
+        String version = request.getParameter("version");
+        String isView = request.getParameter("isView");//是否是查看页面，1是，0否
+
+        String viewName = "aip_document_deploy";
         ModelAndView mv = new ModelAndView(viewName);
 
         AipServiceDetailsInfoVO aipServiceDetailsInfoVO = new AipServiceDetailsInfoVO();
@@ -57,6 +61,9 @@ public class AipEntryController {
 
         //判断是否是录入界面
         if (StringUtil.isBlank(serviceId) && StringUtil.isBlank(version)){
+            mv.addObject("aipServiceBaseInfo",new AipServiceDetailsInfoVO());
+            mv.addObject("aipServiceInParaList",new ArrayList<AipServiceInParaVO>());
+            mv.addObject("aipServiceOutParaList",new ArrayList<AipServiceOutParaVO>());
             return mv;
         }
 
