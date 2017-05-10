@@ -1,30 +1,31 @@
-package com.ai.bdex.dataexchange.busi.page.entity;
+package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 
 import java.util.Date;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
-public class SortContentVO extends BaseInfo{
-
-	private Integer sortContentId;
+public class SortInfoReqDTO  extends BaseInfo {
+	private static final long serialVersionUID = 1L;
 	private Integer sortId;
-	private String contentName;
-	private String contentLink;
-	private String vfsId;
-
+	private String sortType;
+	private String sortLevel;
+	private String sortName;
+	private Integer parentSortId;
 	private String orderNo;
-
-	private String moreUrl;
-
 	private String status;
-
 	private String createStaffId;
-
 	private Date createTime;
-
 	private String updateStaffId;
-
 	private Date updateTime;
+	private SortContentRespDTO sortContentRespDTO;
+
+	public SortContentRespDTO getSortContentRespDTO() {
+		return sortContentRespDTO;
+	}
+
+	public void setSortContentRespDTO(SortContentRespDTO sortContentRespDTO) {
+		this.sortContentRespDTO = sortContentRespDTO;
+	}
 
 	public Integer getSortId() {
 		return sortId;
@@ -34,36 +35,36 @@ public class SortContentVO extends BaseInfo{
 		this.sortId = sortId;
 	}
 
-	public Integer getSortContentId() {
-		return sortContentId;
+	public String getSortType() {
+		return sortType;
 	}
 
-	public void setSortContentId(Integer sortContentId) {
-		this.sortContentId = sortContentId;
+	public void setSortType(String sortType) {
+		this.sortType = sortType;
 	}
 
-	public String getContentName() {
-		return contentName;
+	public String getSortLevel() {
+		return sortLevel;
 	}
 
-	public void setContentName(String contentName) {
-		this.contentName = contentName;
+	public void setSortLevel(String sortLevel) {
+		this.sortLevel = sortLevel;
 	}
 
-	public String getContentLink() {
-		return contentLink;
+	public String getSortName() {
+		return sortName;
 	}
 
-	public void setContentLink(String contentLink) {
-		this.contentLink = contentLink;
+	public void setSortName(String sortName) {
+		this.sortName = sortName;
 	}
 
-	public String getVfsId() {
-		return vfsId;
+	public Integer getParentSortId() {
+		return parentSortId;
 	}
 
-	public void setVfsId(String vfsId) {
-		this.vfsId = vfsId;
+	public void setParentSortId(Integer parentSortId) {
+		this.parentSortId = parentSortId;
 	}
 
 	public String getOrderNo() {
@@ -72,14 +73,6 @@ public class SortContentVO extends BaseInfo{
 
 	public void setOrderNo(String orderNo) {
 		this.orderNo = orderNo;
-	}
-
-	public String getMoreUrl() {
-		return moreUrl;
-	}
-
-	public void setMoreUrl(String moreUrl) {
-		this.moreUrl = moreUrl;
 	}
 
 	public String getStatus() {

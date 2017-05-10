@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
     <script th:inline="javascript">
         var WEB_ROOT = [[${#httpServletRequest.contextPath}]];
+        var MALL_ROOT = [[${#tools.mailDomain()}]];
         var staffInfoDTO = [[${session.staffInfoDTO}]];
     </script>
     <!-- js -->

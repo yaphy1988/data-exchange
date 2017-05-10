@@ -96,7 +96,9 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 		if(!StringUtils.isBlank(exam.getInfoType())){
 			record.setInfoType(exam.getInfoType());
 		}
-		record.setStatus(exam.getStatus());
+		if(!StringUtils.isBlank(exam.getStatus())){
+			record.setStatus(exam.getStatus());
+		}
 		record.setUpdateStaffId(exam.getUpdateStaffId());
 		record.setUpdateTime(DateUtil.getNowAsDate());
 		return pageNewsInfoMapper.updateByPrimaryKey(record);

@@ -16,6 +16,7 @@
 	<![endif]-->
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+	<script src="../static/js-busi/page/page_classification.js" th:src="@{/js-busi/page/page_classification.js}"></script>
 </head>
 <body>
 
@@ -78,17 +79,17 @@
 			    <div class=" mt15">
 					<div class="col-md-3">
 	                     <!-- 左边树形菜单  --> 
-			             <div class="class_sidebar">
+			             <div class="class_sidebar" th:id="head_sidebar" th:remove="body">
 				            <h3>全部商品</h3>
 				            <ul th:remove="all-but-first">
-				                <li th:each="sortInfo,infoStat : ${sortInfos}" th:sortId="${sortInfo.sortId}"><a href="javascript:void(0)" ><span class="dele">✖</span><i>›</i><span th:text="${sortInfo.sortName}">金融理财金融理财金融金融理财金融理财金融金融理财金融理财金融金融理财金融理财金融</span></a> </li>
-				                <li class="active"><a href="#"><i>›</i><span class="dele">✖</span>交通运输</a> </li>
-				                <li><a href="#"><i>›</i><span class="dele">✖</span>气象环保</a> </li>
-				                <li><a href="#"><i>›</i><span class="dele">✖</span>生活服务</a> </li>
-				                <li><a href="#"><i>›</i><span class="dele">✖</span>生活服务</a> </li>
-				                <li><a href="#"><i>›</i><span class="dele">✖</span>时空数据</a> </li>
-				                <li><a href="#"><i>›</i><span class="dele">✖</span>健康医疗</a> </li>
-				                <li><a href="#"><i>›</i><span class="dele">✖</span>更多服务</a> </li>
+				                <li><a href="#" ><i>›</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
+				                <li class="active"><a href="#"><i>›</i>交通运输</a> </li>
+				                <li><a href="#"><i>›</i>气象环保</a> </li>
+				                <li><a href="#"><i>›</i>生活服务</a> </li>
+				                <li><a href="#"><i>›</i>生活服务</a> </li>
+				                <li><a href="#"><i>›</i>时空数据</a> </li>
+				                <li><a href="#"><i>›</i>健康医疗</a> </li>
+				                <li><a href="#"><i>›</i>更多服务</a> </li>
 				                <div class="mt10 ml15">
 				                	<button class="btn btn-sm btn-default">新增菜单</button>
 				                </div>

@@ -1,9 +1,10 @@
 package com.ai.bdex.dataexchange.busi.page.entity;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class SortInfoVO  implements Serializable{ 
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+
+public class SortInfoVO  extends BaseInfo{ 
     private Integer sortId; 
     private String sortType; 
     private String sortLevel;

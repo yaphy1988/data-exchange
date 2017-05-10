@@ -1,11 +1,12 @@
-package com.ai.bdex.dataexchange.busi.page.entity;
+package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 
 import java.util.Date;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
-public class SortContentVO extends BaseInfo{
+public class SortContentReqDTO  extends BaseInfo{
 
+	private static final long serialVersionUID = 1L;
 	private Integer sortContentId;
 	private Integer sortId;
 	private String contentName;
