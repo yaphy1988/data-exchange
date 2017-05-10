@@ -5,6 +5,8 @@ public class Constants {
     public static class Page {  
         // 商品品牌展示个数
         public static int BRAND_LENGTH = 10;  
+        public static String STATUS_VALID="1";//有效
+        public static String STATUS_INVALID="0";//失效
     } 
     public static class Order {   
         // 订单状态

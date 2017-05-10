@@ -23,7 +23,27 @@ public class PageModuleGoodsVO {
 
     private String status;
 
-    public Integer getPmgId() {
+    private String gdsName;
+    
+    private String catId;
+    
+    public String getGdsName() {
+		return gdsName;
+	}
+
+	public void setGdsName(String gdsName) {
+		this.gdsName = gdsName;
+	}
+
+	public String getCatId() {
+		return catId;
+	}
+
+	public void setCatId(String catId) {
+		this.catId = catId;
+	}
+
+	public Integer getPmgId() {
         return pmgId;
     }
 

@@ -61,518 +61,252 @@
                 </ul>
 
                 <!-- Tab panes -->
-                <div class="tab-content pt15">
-                    <div role="tabpanel" class="tab-pane active" id="tab02" th:remove="all">
-                        <div class="shop-list">
-                            <div class="edit-title">已选择商品列表</div>
-                            <div class="top-table">
-                                <table class="editTable">
-                                    <tr>
-				                        <td class="Hint">
-				                            <span class="col_red">*</span>
-				                            	商品名称：
-				                        </td>
-				                        <td width="20%">
-				                            <div class="input-group02">
-				                                <input type="text" class="form-control" placeholder="商品名称" id="gdsNameInput">
-				                            </div>
-				                        </td>
-				                        <td class="Hint" >
-				                            <span class="col_red">*</span>
-				                            	上架状态：
-				                        </td>
-				                        <td width="20%">
-				                            <div class="input-group02">
-				                                <input type="hidden" id="gdsStatus" value="">
-				                                <select class="form-control" id="gdsStatusSel" onchange="changeStatus()">
-				                                    <option value="">全部</option>
-				                                    <option value="0">待上架</option>
-				                                    <option value="1">已上架</option>
-				                                    <option value="2">已下架</option>
-				                                    <option value="9">已删除</option>
-				                                </select>
-				                            </div>
-				                        </td>
-				                        <td class="Hint">
-				                            <span class="col_red">*</span>
-				                            	商品类型：
-				                        </td>
-				                        <td width="20%">
-				                            <div class="input-group02">
-				                                <input id="catIdSel" catId="" onclick="showCatSel(this)" type="text" class="form-control" readonly="readonly" placeholder="商品类型" />
-				                                <div style="width:15%;height:auto;position: absolute;display: none;background: #EEE;border: solid 1px;" id="catZTree" class="ztree">
-				
-				                                </div>
-				                                <!--<select class="form-control">-->
-				                                    <!--<option>定制需求</option>-->
-				                                <!--</select>-->
-				                            </div>
-				                        </td>
-				                        <td>
-				                            <div class="input-group02">
-				                                <button class="btn btn-primary" onclick="queryGdsList(1)">查询</button>
-				                            </div>
-				                        </td>
-				                    </tr>
-                                </table>
-                            </div>
-                            <table class="table table-bordered text-center" >
-                                <thead>
-                                <tr class="active">
-                                     <th>商品编码</th>
-	                                <th width="240">商品名称</th>
-	                                <th>上架状态</th>
-	                                <th>商品类型</th>
-	                                <th>上/下架时间</th>
-	                                <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div class="pagelist">
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination">
-                                        <li >
-                                            <a href="#" aria-label="Previous">
-                                                <span aria-hidden="true">上一页</span>
-                                            </a>
-                                        </li>
-                                        <li class="active"><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#">4</a></li>
-                                        <li><a href="#">5</a></li>
-                                        <li>
-                                            <a href="#" aria-label="Next">
-                                                <span aria-hidden="true">下一页</span>
-                                            </a>
-                                        </li>
-                                        <div class="pageskip">
-                                            <span class="pr10">到第<input type="text" class="pageskip_box">页</span>
-                                            <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
-                                        </div>
-                                    </ul>
+					<div class="tab-content pt15">
+							<input type="hidden" class="form-control" id="moduleId" th:value="${moduleId}">
+						<div role="tabpanel" class="tab-pane active" id="tab02">
+							<div class="shop-list" id="selGoodsList">
+								<div class="edit-title">已选择商品列表</div>
+								<div class="top-table">
+									<table class="editTable">
+										<tr>
+											<td class="Hint"><span class="col_red">*</span> 商品名称：</td>
+											<td width="20%">
+												<div class="input-group02">
+													<input type="text" class="form-control" placeholder="商品名称"
+														id="gdsName">
+												</div>
+											</td>
+											<td class="Hint"><span class="col_red">*</span> 上架状态：</td>
+											<td width="20%">
+												<div class="input-group02">
+													<input type="hidden" id="gdsStatus" value=""> <select
+														class="form-control" id="gdsStatusSel"
+														onchange="changeStatus()">
+														<option value="">全部</option>
+														<option value="0">待上架</option>
+														<option value="1">已上架</option>
+														<option value="2">已下架</option>
+														<option value="9">已删除</option>
+													</select>
+												</div>
+											</td>
+											<td class="Hint"><span class="col_red">*</span> 商品类型：</td>
+											<td width="20%">
+												<div class="input-group02">
+													<input id="selCatId" catId="" onclick="showCatSel(this)"
+														type="text" class="form-control" readonly="readonly"
+														placeholder="商品类型" />
+													<div
+														style="width: 15%; height: auto; position: absolute; display: none; background: #EEE; border: solid 1px;"
+														id="catZTree" class="ztree"></div>
+												</div>
+											</td>
+											<td>
+												<div class="input-group02">
+													<button class="btn btn-primary" onclick="queryGdsList(1)">查询</button>
+												</div>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<table class="table table-bordered text-center">
+									<thead>
+										<tr class="active">
+											<th>商品编码</th>
+											<th width="240">商品名称</th>
+											<th>商品价格</th>
+											<th>上架状态</th>
+											<th>商品类型</th>
+											<th>上/下架时间</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody th:if=" ${pageInfo}" th:remove="all-but-first">
+										<tr th:each="list,iterStat : ${pageInfo.result}"
+											th:unless="${#lists.isEmpty(pageInfo.result)}">
+											<td th:text="${list.gdsId}">xxxx商品 名称随便取了</td>
+											<td th:text="${list.gdsName}">广西联通</td>
+											<td th:text="${list.packPrice}">2000.00</td>
+											<td><span th:if="${list.status=='0'}">待上架</span> <span
+												th:if="${list.status=='1'}">已上架</span> <span
+												th:if="${list.status=='2'}">已下架</span> <span
+												th:if="${list.status=='9'}">删除</span></td>
+											<td th:text="${list.catName}">1000.00</td>
+											<td
+												th:text="${#calendars.format(list.ordInvoiceTaxReqDTO.shelveTime,'yyyy-MM-dd HH:mm:ss')}"">619.00</td>
+											<td>
+												<p class="pop-link">
+													<a href="javaScript:void(0)"
+														th:onclick="|deletePageModuleGoods('${list.pmgId}')|">删除</a>
+												</p>
+											</td>
+										</tr>
+										<tr>
+											<td>xxxx商品 名称随便取了</td>
+											<td>广西联通</td>
+											<td>2000.00</td>
+											<td>1000.00</td>
+											<td>619.00</td>
+											<td>已上架</td>
+											<td>22</td>
+											<td>12</td>
+											<td>
+												<p class="pop-link">
+													<a href="">删除</a>
+												</p>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="pagelist" th:remove="all">
+									<nav aria-label="Page navigation">
+										<ul class="pagination">
+											<li><a href="#" aria-label="Previous"> <span
+													aria-hidden="true">上一页</span>
+											</a></li>
+											<li class="active"><a href="#">1</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">5</a></li>
+											<li><a href="#" aria-label="Next"> <span
+													aria-hidden="true">下一页</span>
+											</a></li>
+											<div class="pageskip">
+												<span class="pr10">到第<input type="text"
+													class="pageskip_box">页
+												</span> <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+											</div>
+										</ul>
 
-                                </nav>
-                            </div>
-                        </div>
+									</nav>
+								</div>
+								<div class="overflow-hidden clearfix" th:if=" ${pageInfo}">
+									<!-- 分页-->
+									<div th:fragment="pager" class="pagerBar pagelist pull-right">
+										<script type="text/javascript"
+											src="../static/js-busi/common/pager.js"
+											th:src="@{/js-busi/common/pager.js}"></script>
+										<span data-toggle="pager" id="pagerIdSel"
+											th:data-count="${pageInfo.count}"
+											th:data-size="${pageInfo.pageSize}"
+											th:data-currentindex="${pageInfo.pageNo}"></span>
+										<script th:inline="javascript">
+											var total = '[[${pageInfo.count}]]';
+											var pageNum = '[[${pageInfo.pageNo}]]';
+											var pageSize = '[[${pageInfo.pageSize}]]';
+											if (typeof pagerClick === "undefined") {
+												pagerClick = function(index) {
+													qryModuleGoodsSelList(index);
+												}		
+											}
+											$('#pagerIdSel').pager({
+												callback : pagerClick
+											});	
+										</script>
+									</div>
+								</div>
+							</div>
+							<div class="shop-list" id="unSelGoodsList">
+								<div class="edit-title">待选择商品列表</div>
+								<div class="top-table">
+									<table class="editTable">
+										<tr>
+											<td class="Hint">商品名称：</td>
+											<td width="20%"><input type="text" class="form-control"
+												id="unSelGdsName"></td>
+											<td class="Hint"><span class="col_red">*</span> 商品类型：</td>
+											<td><select class="form-control" id="unselCatId">
+													<option>全部</option>
+											</select></td>
+											<td>&nbsp;</td>
+											<td>
+												<button class="btn btn-primary"
+													th:onclick="qryModuleGoodsUnSelList(1)">查询</button>
+											</td>
+										</tr>
+									</table>
+								</div>
+								<table class="table table-bordered text-center">
+									<thead>
+										<tr class="active">
+											<th width="240">商品名称</th>
+											<th>指导价（/元）</th>
+											<th>商品状态</th>
+											<th>操作</th>
+										</tr>
+									</thead>
+									<tbody th:if=" ${pageInfo}" th:remove="all-but-first">
+										<tr th:each="list,iterStat : ${pageInfo.result}"
+											th:unless="${#lists.isEmpty(pageInfo.result)}">
+											<td th:text="${list.gdsName}">xxxx商品 名称随便取了</td>
+											<td th:text="${list.packPrice}">2000.00</td>
+											<td><span th:if="${list.status=='0'}">待上架</span> <span
+												th:if="${list.status=='1'}">已上架</span> <span
+												th:if="${list.status=='2'}">已下架</span> <span
+												th:if="${list.status=='9'}">删除</span></td>
+											<td>
+												<p class="pop-link">
+													<a href="javaScript:void(0)"
+														th:onclick="|savePageModuleGoods('${list.gdsId}')|">选择</a>
+												</p>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+								<div class="pagelist" th:remove="all">
+									<nav aria-label="Page navigation">
+										<ul class="pagination">
+											<li><a href="#" aria-label="Previous"> <span
+													aria-hidden="true">上一页</span>
+											</a></li>
+											<li class="active"><a href="#">1</a></li>
+											<li><a href="#">2</a></li>
+											<li><a href="#">3</a></li>
+											<li><a href="#">4</a></li>
+											<li><a href="#">5</a></li>
+											<li><a href="#" aria-label="Next"> <span
+													aria-hidden="true">下一页</span>
+											</a></li>
+											<div class="pageskip">
+												<span class="pr10">到第<input type="text"
+													class="pageskip_box">页
+												</span> <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+											</div>
+										</ul>
+									</nav>
+								</div>
+								<div class="overflow-hidden clearfix" th:if=" ${pageInfo}">
+									<!-- 分页-->
+									<div th:fragment="pager" class="pagerBar pagelist pull-right">
+										<script type="text/javascript"
+											src="../static/js-busi/common/pager.js"
+											th:src="@{/js-busi/common/pager.js}"></script>
+										<span data-toggle="pager" id="pagerId"
+											th:data-count="${pageInfo.count}"
+											th:data-size="${pageInfo.pageSize}"
+											th:data-currentindex="${pageInfo.pageNo}"></span>
+										<script th:inline="javascript">
+											var total = '[[${pageInfo.count}]]';
+											var pageNum = '[[${pageInfo.pageNo}]]';
+											var pageSize = '[[${pageInfo.pageSize}]]';
+											if (typeof pagerClick === "undefined") {
+												pagerClick = function(index) {
+												qryModuleGoodsUnSelList(index);
+												}		
+											}
+											$('#pagerId').pager({
+												callback : pagerClick
+											});	
+										</script>
+									</div>
+								</div>
+							</div>
+						</div>
 
-                        <div class="shop-list">
-                            <div class="edit-title">待选择商品列表</div>
-                            <div class="top-table">
-                                <table class="editTable">
-                                    <tr>
-                                        <td class="Hint">
-                                            <span class="col_red">*</span>
-                                            备号：
-                                        </td>
-                                        <td width="20%">
-                                            <select class="form-control" disabled>
-                                                <option>广西</option>
-                                            </select>
+					</div>
 
-                                        </td>
-                                        <td class="Hint" >
-                                            店铺名称：
-                                        </td>
-                                        <td width="20%">
-                                            <select class="form-control">
-                                                <option>全部</option>
-                                            </select>
-                                        </td>
-                                        <td class="Hint">
-                                            商品名称：
-                                        </td>
-                                        <td width="20%">
-                                            <input type="text" class="form-control">
-                                        </td>
-                                        <td>&nbsp;</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="Hint">
-                                            <span class="col_red">*</span>
-                                            商品类型：
-                                        </td>
-                                        <td>
-                                            <select class="form-control">
-                                                <option>全部</option>
-                                            </select>
-
-                                        </td>
-                                        <td class="Hint" >
-                                            商品品牌：
-                                        </td>
-                                        <td >
-                                            <select class="form-control">
-                                                <option>全部</option>
-                                            </select>
-                                        </td>
-                                        <td class="Hint">
-                                            商品型号：
-                                        </td>
-                                        <td>
-                                            <select class="form-control">
-                                                <option>全部</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button class="btn btn-primary">查询</button>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </div>
-                            <table class="table table-bordered text-center" >
-                                <thead>
-                                <tr class="active">
-                                    <th width="240">商品名称</th>
-                                    <th>归属店铺</th>
-                                    <th>指导价（/元）</th>
-                                    <th>提货（/元）</th>
-                                    <th>查询（/元）</th>
-                                    <th>商品状态</th>
-                                    <th>库存数量</th>
-                                    <th>顺序</th>
-                                    <th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>xxxx商品 名称随便取了</td>
-                                    <td> 广西联通</td>
-                                    <td>2000.00</td>
-                                    <td>1000.00</td>
-                                    <td>619.00</td>
-                                    <td>已上架</td>
-                                    <td>22</td>
-                                    <td>12</td>
-                                    <td>
-                                        <p class="pop-link">
-                                            <a href="#">删除</a>
-                                        </p>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                            <div class="pagelist">
-                                <nav aria-label="Page navigation">
-                                    <ul class="pagination">
-                                        <li >
-                                            <a href="#" aria-label="Previous">
-                                                <span aria-hidden="true">上一页</span>
-                                            </a>
-                                        </li>
-                                        <li class="active"><a href="#">1</a></li>
-                                        <li><a href="#">2</a></li>
-                                        <li><a href="#">3</a></li>
-                                        <li><a href="#">4</a></li>
-                                        <li><a href="#">5</a></li>
-                                        <li>
-                                            <a href="#" aria-label="Next">
-                                                <span aria-hidden="true">下一页</span>
-                                            </a>
-                                        </li>
-                                        <div class="pageskip">
-                                            <span class="pr10">到第<input type="text" class="pageskip_box">页</span>
-                                            <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
-                                        </div>
-                                    </ul>
-
-                                </nav>
-                            </div>
-                        </div>
-
-
-                    </div>
-                    
-                </div>
-
-            </div>
+				</div>
 		</div>
 	</div>
 	</div>
