@@ -134,7 +134,7 @@
     <div class="banner-box">
         <div id="carousel-example-generic" class="carousel slide">
         <!-- Indicators -->
-        <ol class="carousel-indicators">
+        <ol class="carousel-indicators" th:remove="body">
             <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
             <li data-target="#carousel-example-generic" data-slide-to="1"></li>
             <li data-target="#carousel-example-generic" data-slide-to="2"></li>
@@ -143,7 +143,7 @@
         </ol>
 
         <!-- Wrapper for slides -->
-        <div class="carousel-inner" role="listbox">
+        <div class="carousel-inner" role="listbox" th:remove="body">
             <div class="item active">
                 <img src="../static/images/index-banner.jpg" th:src="@{/images/index-banner.jpg}" alt="...">
             </div>

@@ -159,6 +159,7 @@ public class PageManageController {
 					infoTitle = newsInfo.getInfoTitle();
 					infoType = newsInfo.getInfoType();
 				}
+				request.setAttribute("infoflag", "edit");
 			}
 		} catch (Exception e) {
 			log.error("新闻资讯信息新增出错：" + e.getMessage());
@@ -168,7 +169,7 @@ public class PageManageController {
 		request.setAttribute("infoUrl", infoUrl);
 		request.setAttribute("infoTitle", infoTitle);
 		request.setAttribute("infoType", infoType);
-		return "page/newsInfo-add";
+		return "info_details :: #edit_data";
 	} 
 	@RequestMapping(value="/updateNewsPageInfo")
 	@ResponseBody
@@ -380,16 +381,15 @@ public class PageManageController {
 			}
 			if(!StringUtils.isBlank(moduleId)){
 				newsInfoReqDTO.setModuleId(Integer.valueOf(moduleId));
-			}else{
-				if("1".equals(infoType)){
-					newsInfoReqDTO.setModuleId(105);
-				}else if("2".equals(infoType)){
-					newsInfoReqDTO.setModuleId(106);
-				}else if("3".equals(infoType)){
-					newsInfoReqDTO.setModuleId(107);
-				}else{
-					newsInfoReqDTO.setModuleId(108);
-				}
+			}
+			if("1".equals(infoType)){
+				newsInfoReqDTO.setModuleId(105);
+			}else if("2".equals(infoType)){
+				newsInfoReqDTO.setModuleId(106);
+			}else if("3".equals(infoType)){
+				newsInfoReqDTO.setModuleId(107);
+			}else if("4".equals(infoType)){
+				newsInfoReqDTO.setModuleId(108);
 			}
 			newsInfoReqDTO.setStatus(STATUS_VALID);
 			newsInfoReqDTO.setInfoTitle(infoTitle);

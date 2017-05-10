@@ -374,10 +374,10 @@ public class SearchController{
     
     @DubboConsumer
     private IDeltaIndexServiceRSV iDeltaIndexServiceRSV;
-    @RequestMapping(value="/index")
+    @RequestMapping(value="/deltaimport")
     public String deltaImport(){
         try {
-            iDeltaIndexServiceRSV.deltaImport(SolrCoreEnum.GDS.getCode(), 1079);
+            iDeltaIndexServiceRSV.deltaFullImport(SolrCoreEnum.GDS.getCode(), true);
         } catch (BusinessException e) {
             e.printStackTrace();
         }

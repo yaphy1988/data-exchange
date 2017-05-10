@@ -150,7 +150,7 @@ public class HomePageController {
 							gdsInfoRespDTO =  iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO); 
 							if(gdsInfoRespDTO!= null && !StringUtil.isBlank(gdsInfoRespDTO.getGdsPic()) )
 							{
-								  String vfsid= ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_86x86");
+								  String vfsid= ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_86x86!");
 								  moduleGoodsList.getResult().get(i).setVfsid(vfsid); 
 							}
 					   }
@@ -211,13 +211,13 @@ public class HomePageController {
 					if (moduleAdDTO.getVfsId() != null) {
 						if(moduleId.equals("103")){
 							//数据定制
-							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_555x350"));
+							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_555x350!"));
 						}else if(moduleId.equals("101")){
 								//轮播广告图
-								moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_940x400"));
+								moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_940x400!"));
 						}else if(moduleId.equals("109")){
 						   //合作伙伴
-							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_217x116"));
+							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_217x116!"));
 
 						}
 
