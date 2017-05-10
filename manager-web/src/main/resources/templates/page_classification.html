@@ -81,14 +81,14 @@
 			             <div class="class_sidebar">
 				            <h3>全部商品</h3>
 				            <ul th:remove="all-but-first">
-				                <li th:each="sortInfo,infoStat : ${sortInfos}" th:sortId="${sortInfo.sortId}"><a href="javascript:void(0)" ><i>›</i><span th:text="${sortInfo.sortName}">金融理财金融理财金融理财金融理财金融理财</span></a> </li>
-				                <li class="active"><a href="#"><i>›</i>交通运输</a> </li>
-				                <li><a href="#"><i>›</i>气象环保</a> </li>
-				                <li><a href="#"><i>›</i>生活服务</a> </li>
-				                <li><a href="#"><i>›</i>生活服务</a> </li>
-				                <li><a href="#"><i>›</i>时空数据</a> </li>
-				                <li><a href="#"><i>›</i>健康医疗</a> </li>
-				                <li><a href="#"><i>›</i>更多服务</a> </li>
+				                <li th:each="sortInfo,infoStat : ${sortInfos}" th:sortId="${sortInfo.sortId}"><a href="javascript:void(0)" ><span class="dele">✖</span><i>›</i><span th:text="${sortInfo.sortName}">金融理财金融理财金融金融理财金融理财金融金融理财金融理财金融金融理财金融理财金融</span></a> </li>
+				                <li class="active"><a href="#"><i>›</i><span class="dele">✖</span>交通运输</a> </li>
+				                <li><a href="#"><i>›</i><span class="dele">✖</span>气象环保</a> </li>
+				                <li><a href="#"><i>›</i><span class="dele">✖</span>生活服务</a> </li>
+				                <li><a href="#"><i>›</i><span class="dele">✖</span>生活服务</a> </li>
+				                <li><a href="#"><i>›</i><span class="dele">✖</span>时空数据</a> </li>
+				                <li><a href="#"><i>›</i><span class="dele">✖</span>健康医疗</a> </li>
+				                <li><a href="#"><i>›</i><span class="dele">✖</span>更多服务</a> </li>
 				                <div class="mt10 ml15">
 				                	<button class="btn btn-sm btn-default">新增菜单</button>
 				                </div>
@@ -97,29 +97,28 @@
 				            <div psortid="1" class="class_sidebar_secon" style="display: block;">
 								<h4>金融理财</h4>
 								<div class="class_link">
-									<a href="https://www.baidu.com" target="_blank">条码查询</a><a
+									<a href="https://www.baidu.com" target="_blank">条码查询<span>✖</span></a><a
 										href="http://112.74.163.29:8082/mall-web/goods/details/1037-"
-										target="_blank">万能小哥</a><a
+										target="_blank">万能小哥<span>✖</span></a><a
 										href="http://112.74.163.29:8082/mall-web/goods/details/1039-"
-										target="_blank">专利查询</a><a href="javascript:void(0);" target="_blank">全国违章直连查询</a><a
+										target="_blank">专利查询<span>✖</span></a><a href="javascript:void(0);" target="_blank">全国违章直连查询<span>✖</span></a><a
 										href="https://www.baidu.com" target="_blank">H5在线电影票</a>
-					                    <a href="#">常用快递</a>
-					                    <a href="#">快递在线下单</a>
-					                    <a href="#">名片识别</a>
-					                    <a href="#">条码查询</a>
-					                    <a href="#">万能小哥</a>
-					                    <a href="#">专利查询</a>
-					                    <a href="#">全国违章直连查询</a>
-					                    <a href="#">H5在线电影票</a>
-					                    <a href="#">常用快递</a>
-					                    <a href="#">快递在线下单</a>
-					                    <a href="#">名片识别</a>
-					                    <a href="#">条码查询</a>
-					                    <a href="#">万能小哥</a>
-					                    <a href="#">专利查询</a>
-					                    <a href="#">全国违章直连查询</a>
-					                    <a href="#">H5在线电影票</a>
-					                    <a href="#">常用快递</a>
+					                    <a href="#">常用快递<span>✖</span></a>
+					                    <a href="#">名片识别<span>✖</span></a>
+					                    <a href="#">条码查询<span>✖</span></a>
+					                    <a href="#">万能小哥<span>✖</span></a>
+					                    <a href="#">专利查询<span>✖</span></a>
+					                    <a href="#">全国违章直连查询<span>✖</span></a>
+					                    <a href="#">H5在线电影票<span>✖</span></a>
+					                    <a href="#">常用快递<span>✖</span></a>
+					                    <a href="#">快递在线下单<span>✖</span></a>
+					                    <a href="#">名片识别<span>✖</span></a>
+					                    <a href="#">条码查询<span>✖</span></a>
+					                    <a href="#">万能小哥<span>✖</span></a>
+					                    <a href="#">专利查询<span>✖</span></a>
+					                    <a href="#">全国违章直连查询<span>✖</span></a>
+					                    <a href="#">H5在线电影票<span>✖</span></a>
+					                    <a href="#">常用快递<span>✖</span></a>
 										
 								</div>
 								<div class="sidebar-link"></div>
