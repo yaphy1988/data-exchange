@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
@@ -14,6 +15,8 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageNewsInfoSV;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
+import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.utils.DateUtil;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -52,7 +55,13 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 		if (!StringUtils.isBlank(exam.getStatus())) {
 			criteria.andStatusEqualTo(exam.getStatus());
 		} 
-		example.setOrderByClause( "INFO_ORDER asc,update_time desc");
+		if(!StringUtils.isBlank(exam.getInfoTitle())){
+			criteria.andInfoTitleLike("%"+exam.getInfoTitle()+"%");
+		}
+		if(!StringUtils.isBlank(exam.getInfoType())){
+			criteria.andInfoTypeEqualTo(exam.getInfoType());
+		}
+		example.setOrderByClause( "status desc,update_time desc");
 		PageHelper.startPage(page, rows);
 		List<PageNewsInfo> pageList = pageNewsInfoMapper.selectByExample(example);
 		// 使用PageInfo对结果进行包装
@@ -60,5 +69,38 @@ public class PageNewsInfoSVImpl implements IPageNewsInfoSV {
 		PageResponseDTO<PageNewsInfoRespDTO> pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,
 				PageNewsInfoRespDTO.class);
 		return pageResponseDTO;
+	}
+
+	@Override
+	public long insertPageNewsInfo(PageNewsInfoReqDTO exam) throws Exception {
+		PageNewsInfo record = new PageNewsInfo();
+		BeanUtils.copyProperties(exam, record);
+		Integer seq =  SeqUtil.getInt("SEQ_PAGE_NEWS_INFO");
+	    record.setInfoId(seq);
+		record.setCreateStaffId(exam.getCreateStaffId());
+ 	    record.setCreateTime(DateUtil.getNowAsDate());
+ 	    record.setUpdateStaffId(exam.getUpdateStaffId());
+ 	    record.setUpdateTime(DateUtil.getNowAsDate());
+		return pageNewsInfoMapper.insert(record);
+	}
+
+	@Override
+	public long updatePageNewsInfoByKey(PageNewsInfoReqDTO exam) throws Exception {
+		PageNewsInfo record = pageNewsInfoMapper.selectByPrimaryKey(exam.getInfoId());
+		if(!StringUtils.isBlank(exam.getInfoTitle())){
+			record.setInfoTitle(exam.getInfoTitle());
+		}
+		if(!StringUtils.isBlank(exam.getInfoUrl())){
+			record.setInfoUrl(exam.getInfoUrl());
+		}
+		if(!StringUtils.isBlank(exam.getInfoType())){
+			record.setInfoType(exam.getInfoType());
+		}
+		if(!StringUtils.isBlank(exam.getStatus())){
+			record.setStatus(exam.getStatus());
+		}
+		record.setUpdateStaffId(exam.getUpdateStaffId());
+		record.setUpdateTime(DateUtil.getNowAsDate());
+		return pageNewsInfoMapper.updateByPrimaryKey(record);
 	}
 }

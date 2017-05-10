@@ -22,17 +22,13 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>1.8</java.version>
     <!-- thymeleaf版本调整为3.0 -->
-    <thymeleaf.version>3.0.2.RELEASE</thymeleaf.version>
-    <thymeleaf-layout-dialect.version>2.1.2</thymeleaf-layout-dialect.version>
+    <thymeleaf.version>3.0.5.RELEASE</thymeleaf.version>
+    <thymeleaf-layout-dialect.version>2.2.1</thymeleaf-layout-dialect.version>
     <thymeleaf-extras-java8time.version>3.0.0.RELEASE</thymeleaf-extras-java8time.version>
-
+    <assertj-core-version>3.6.2</assertj-core-version>
   </properties>
 
   <dependencies>
-    <!--<dependency>-->
-    <!--<groupId>org.springframework.boot</groupId>-->
-    <!--<artifactId>spring-boot-starter-security</artifactId>-->
-    <!--</dependency>-->
     <dependency>
       <groupId>org.springframework.session</groupId>
       <artifactId>spring-session</artifactId>
@@ -68,6 +64,11 @@
     <dependency>
       <groupId>com.ai.bdex.dataexchange</groupId>
       <artifactId>aip-center-api</artifactId>
+      <version>${project.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.ai.bdex.dataexchange</groupId>
+      <artifactId>common-web</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
@@ -130,6 +131,14 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
+        <dependencies>
+          <!-- spring热部署 -->
+          <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>springloaded</artifactId>
+            <version>1.2.6.RELEASE</version>
+          </dependency>
+        </dependencies>
       </plugin>
     </plugins>
   </build>

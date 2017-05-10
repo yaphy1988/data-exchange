@@ -1,6 +1,7 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 
 import java.util.Date;
+import java.util.List;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
@@ -34,7 +35,27 @@ public class PageModuleAdReqDTO  extends BaseInfo{
 
     private String updateStaffId;
 
-    public Integer getAdId() {
+    private List<String> statusList;
+    
+    private String statusNotIn;
+
+    public String getStatusNotIn() {
+		return statusNotIn;
+	}
+
+	public void setStatusNotIn(String statusNotIn) {
+		this.statusNotIn = statusNotIn;
+	}
+
+	public List<String> getStatusList() {
+		return statusList;
+	}
+
+	public void setStatusList(List<String> statusList) {
+		this.statusList = statusList;
+	}
+
+	public Integer getAdId() {
         return adId;
     }
 

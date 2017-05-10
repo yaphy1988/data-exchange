@@ -1,31 +1,27 @@
 package com.ai.bdex.dataexchange.busi.user.controller;
 
-import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.ISmsSendRSV;
 import com.ai.bdex.dataexchange.busi.user.entity.SmsSeccodeInfoVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ISmsSeccodeRSV;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.captcha.CaptchaServlet;
 import com.ai.paas.util.CacheUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.logger.Logger;
 import com.alibaba.dubbo.common.logger.LoggerFactory;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+import java.util.*;
 
 @Controller
 @RequestMapping(value="/security")
@@ -39,7 +35,9 @@ public class SmsValidController{
     public static final String CACHE_ITEM_CHECK_ID = "cache_item_check_id";
     // 短信验证码的信息；
     public static String SMS_SECURITY_CODE_KEY = "Sms.Security.Code.String.";
-    
+
+	private static ObjectMapper mapper = new ObjectMapper();
+
     @DubboConsumer
     private ISmsSeccodeRSV iSmsSeccodeRSV;
     
@@ -49,13 +47,151 @@ public class SmsValidController{
     @DubboConsumer(timeout=30000)
     private ISmsSendRSV smsSendByThreadRSV;
 
-    /**
-     * 发送短信
-     * @param request
-     * @param phoneNo电话号码
-     * @param busiType业务类型
-     * @param lastTocken
-     * @param picVerifyCode
+	/**
+	 *
+	 * @param picVerifyCode 图片验证码
+	 * @param busiType 发送类型（1：发送旧手机，2:发送新手机）
+	 * @return
+     */
+	@RequestMapping(value="/sendChangPhoneCode")
+	@ResponseBody
+	public String sendChangPhoneCode(HttpServletRequest request,@RequestParam String picVerifyCode ,@RequestParam String busiType){
+		Map<String,Object> result = new HashMap<>();
+
+		//先校验验证码是否正确
+		if(!StringUtils.isBlank(picVerifyCode)){
+			if (CaptchaServlet.verifyCaptcha(request, picVerifyCode.trim()) == false) {
+				result.put("success",false);
+				result.put("msg","图片验证码不正确，请重新输入！");
+				return getJsonCallback(result,request);
+			}
+		}
+
+		//获取用户旧手机号
+		String phoneNo = "";
+		if("1".equals(busiType)) {
+			try {
+				String staffId = StaffUtil.getStaffId(request.getSession());
+				AuthStaffDTO input = new AuthStaffDTO();
+				input.setStaffId(staffId);
+				AuthStaffDTO staffInfo = this.iAuthStaffRSV.findAuthStaffInfo(input);
+				if (staffInfo != null) {
+					phoneNo = staffInfo.getSerialNumber();
+				}
+			} catch (BusinessException e) {
+				result.put("success", false);
+				result.put("msg", "获取手机号失败，请稍后再试");
+				return getJsonCallback(result,request);
+			}
+		}else if("2".equals(busiType)) {
+			phoneNo = request.getParameter("newPhoneNo");
+		}else{
+			result.put("success", false);
+			result.put("msg", "无效的请求参数");
+			return getJsonCallback(result,request);
+		}
+
+		//手机号为空，则返回
+		if(StringUtils.isBlank(phoneNo)){
+			result.put("success", false);
+			result.put("msg", "发送失败：手机号为空");
+			return getJsonCallback(result,request);
+		}
+
+		Object oldCode = CacheUtil.getItem("SMS_CHANGPHONE_SPEED_"+busiType+phoneNo);
+		if(oldCode!= null){
+			result.put("success", false);
+			result.put("msg", "验证码已发送：重发需等60秒。");
+			return getJsonCallback(result,request);
+		}
+
+		/**开始发送验证码*/
+		try {
+
+			String seccode = this.getRandom(6);
+			smsSendByThreadRSV.sendVerifyCodeByAlibaba(phoneNo, seccode);
+
+			//发送成功后
+			//1.发送频率控制，60秒发一次
+			CacheUtil.addItem("SMS_CHANGPHONE_SPEED_"+busiType+phoneNo, System.currentTimeMillis(),60);
+			//2.验证码的有效期 10分钟
+			CacheUtil.addItem("SMS_CHANGPHONE_EXPIRY_"+busiType+phoneNo, seccode,10*60);
+
+		} catch (Exception e) {
+			result.put("success", false);
+			result.put("msg", "验证码发送失败："+ e.getMessage());
+			return getJsonCallback(result,request);
+		}
+
+		result.put("msg","验证码已经发送到手机，请查收！");
+		result.put("success",true);
+
+		return getJsonCallback(result,request);
+	}
+
+	/**
+	 * 校验手机验证码
+	 * @param request
+	 * @param verifyCode
+	 * @param busiType
+     * @return
+     */
+	@RequestMapping(value="/checkSendChangPhoneCode")
+	@ResponseBody
+	public String checkSendChangPhoneCode(HttpServletRequest request,@RequestParam String verifyCode ,@RequestParam String busiType){
+		Map<String,Object> result = new HashMap<>();
+
+		if(StringUtils.isBlank(verifyCode)){
+			result.put("success",false);
+			result.put("msg","短信验证码不能为空！");
+			return getJsonCallback(result,request);
+		}
+
+		//获取用户旧手机号
+		String phoneNo = "";
+		if("1".equals(busiType)) {
+			try {
+				String staffId = StaffUtil.getStaffId(request.getSession());
+				AuthStaffDTO input = new AuthStaffDTO();
+				input.setStaffId(staffId);
+				AuthStaffDTO staffInfo = this.iAuthStaffRSV.findAuthStaffInfo(input);
+				if (staffInfo != null) {
+					phoneNo = staffInfo.getSerialNumber();
+				}
+			} catch (BusinessException e) {
+				result.put("success", false);
+				result.put("msg", "获取手机号失败，请稍后再试");
+				return getJsonCallback(result,request);
+			}
+		}else if("2".equals(busiType)) {
+			phoneNo = request.getParameter("newPhoneNo");
+		}else{
+			result.put("success", false);
+			result.put("msg", "无效的请求参数");
+			return getJsonCallback(result,request);
+		}
+
+		Object code = CacheUtil.getItem("SMS_CHANGPHONE_EXPIRY_"+busiType+phoneNo);
+		if(code != null && verifyCode.equals(code.toString())){
+			//保存手机号时要验证
+			request.getSession().setAttribute("SMS_CHANGPHONE_VERIFY_"+ busiType+phoneNo,"true");
+			result.put("success",true);
+		}else{
+			result.put("success",false);
+			result.put("msg", "短信验证码错误！");
+			return getJsonCallback(result,request);
+		}
+
+		return getJsonCallback(result,request);
+	}
+
+	/**
+	 * 发送短信
+	 * @param request
+	 * @param phoneNo
+	 * @param busiType
+	 * @param lastTocken
+	 * @param picVerifyCode
      * @return
      */
 	@RequestMapping(value="/sendSecurity")
@@ -194,5 +330,19 @@ public class SmsValidController{
 		passWord.append(String.valueOf(rand.nextInt(10)));
       }
 	  return passWord.toString();
+	}
+
+	protected String getJsonCallback(Map<String, Object> map,HttpServletRequest request){
+		String callback = request.getParameter("jsonpCallback");
+
+		try{
+			if(StringUtils.isBlank(callback)){
+				return new ObjectMapper().writeValueAsString(map);
+			}else{
+				return callback+"("+new ObjectMapper().writeValueAsString(map)+")";
+			}
+		}catch (Exception e) {
+			throw new RuntimeException("JsonUtil.toJSONString发生错误", e);
+		}
 	}
 }

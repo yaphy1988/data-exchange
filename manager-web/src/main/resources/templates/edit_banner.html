@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>广告编辑</title>
+	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+	<script type="text/javascript" src="../../static/js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
+	<script type="text/javascript" src="../static/js-busi/page/edit_manager.js" th:src="@{/js-busi/page/edit_manager.js}"></script>
+</head>
+<body>
+<header class="clearfix m_header">
+	<a href="" class="Logo" target="_blank" >
+		<img  src="../static/images/manage_logo.png" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<div  layout:fragment="screen_content">
+	<div class="m_main">
+		<div class="m_con">
+            <div class="classify">
+                <i class="iconfont"></i>
+                <span>当前位置：</span>
+                <a href=""><span>个人中心</span></a>
+                <a href=""><span>模块管理</span></a>
+                <span class="col_999">广告编辑</span>
+            </div>
+            <table class="editTable">
+                <tr>
+                    <td class="Hint " width="120">
+                        	<span class="col_red">*</span>广告版位:
+                    </td>
+                    <td width="420">
+                         <select class="form-control" id="moduleId">
+                             <option th:each="adPlace,catStat:${adPlaceList}" th:value="${adPlace.placeAd}" th:selected="(${adPlace.placeAd} == ${moduleId})"th:text="${adPlace.placeName}"></option>
+                         </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="Hint">
+                        <span class="col_red">*</span>广告语:
+                    </td>
+                    <td>
+                      <input type="hidden" class="form-control" placeholder="" id="adId" th:value="${adRespDTO.adId}">
+                      <input type="text" class="form-control" placeholder="" id="adTitle" th:value="${adRespDTO.adTitle}">
+                    </td>
+                </tr>
+                <tr>
+                    <td class="Hint tips">
+                        <span class="col_red">*</span>图片:
+                    </td>
+                    <td>
+                           <input type="hidden" class="form-control wt200 ClassItem" placeholder="" id="vfsId" th:value="${adRespDTO.vfsId}">
+                           <input type="text" class="form-control wt200 ClassItem" placeholder="" disabled id="bmpName" th:value="${adRespDTO.bmpName}">
+                           <input class="float_File"  type="file"  width="" height="" id="picUpLoad" name="picUpLoad"th:onchange="'uploadImage(this)'">
+                        
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><p class="col_red pt5 pb20">
+                    	温馨提醒：请上传小于100k的图片(jpg格式);为达到最佳显示效果，建议图片<br>分辨率为：首页轮播广告940*400px;数据定制广告800*350px;合作伙伴80*80px;</p></td>
+                </tr>
+                <tr>
+                    <td class="Hint">预览：</td>
+                    <td><img src="" width="80"  height="80" id="imgSrcURL"  th:src="${adRespDTO.vfsIdUrl}"></td>
+                </tr>
+                <tr th:remove="all">
+                    <td class="Hint ">
+                        <span class="col_red ">*</span>链接类型:
+                    </td>
+                    <td>
+                        <div class="radio">
+                            <label>
+                                <input type="radio" name="" value="option1" checked>x
+                            </label>
+                            <label>
+                                <input type="radio" name="" value="option2" >x
+                            </label>
+                            <label>
+                                <input type="radio" name="" value="option3" >x
+                            </label>
+                            <label>
+                                <input type="radio" name="" value="option4" >x
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="Hint">
+                        <span class="col_red">*</span>链接内容:
+                    </td>
+                    <td>
+                      <input type="text" class="form-control" id="linkPage" th:value="${adRespDTO.linkPage}">
+                    </td>
+                </tr>
+                <tr th:remove="all">
+                    <td class="Hint">
+                        	简略信息:
+                    </td>
+                    <td>
+                        <textarea class="form-control" rows="4"></textarea>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="Hint">&nbsp;</td>
+                    <td>
+                        <button class="btn btn-primary" th:onclick="'savePageModuleAd()'">保存</button>
+                        <button class="btn btn-default" th:onclick="'javascript :history.back(-1);'" >返回</button>
+                    </td>
+                </tr>
+            </table>
+		</div>
+	</div>
+	<div class="m_nav">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li class="active">
+							<a href=""></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i ></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li >
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+
+</body>
+</html>

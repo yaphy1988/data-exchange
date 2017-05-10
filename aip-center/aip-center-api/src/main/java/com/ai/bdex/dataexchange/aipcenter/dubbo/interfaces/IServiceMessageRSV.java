@@ -1,6 +1,10 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces;
 
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInParaDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceOutParaDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.ServiceDTO;
+
+import java.util.List;
 
 public interface IServiceMessageRSV {
 	/**
@@ -11,4 +15,22 @@ public interface IServiceMessageRSV {
 	 * @throws Exception
 	 */
 	ServiceDTO getServiceMessage(String serviceId,String serviceVersion)throws Exception;
+
+	/**
+	 * 查询aip服务的入参列表
+	 * @param serviceId
+	 * @param version
+	 * @return
+	 * @throws Exception
+     */
+	List<AipServiceInParaDTO> queryAipServiceInParaList(String serviceId,String version) throws Exception;
+
+	/**
+	 * 查询aip服务的出参列表
+	 * @param serviceId
+	 * @param version
+	 * @return
+	 * @throws Exception
+     */
+	List<AipServiceOutParaDTO> queryAipServiceOutParaList(String serviceId,String version) throws Exception;
 }

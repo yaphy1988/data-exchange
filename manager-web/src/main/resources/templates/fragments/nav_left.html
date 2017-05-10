@@ -11,113 +11,75 @@
 					个人中心
 				</li>
 				<li >
-					<a href="">
+					<a href="javascript:void(0)">
 						<i class=""></i>
-						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class=""></i>
-						一级目录
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class=""></i>
-						一级目录
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class=""></i>
-						一级目录
+						用户中心
 						<span class="caret"></span>
 					</a>
 					<ol class="infoItem">
-						<li class="active">
-							<a href=""></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						<li >
+							<a th:href="@{/password/modify}">密码修改</a>
 						</li>
 						<li >
-							<a href=""></i>二级分类</a>
-						</li>
-						<li >
-							<a href=""></i>二级分类</a>
+							<a th:href="@{/infomanager/pageInit}">资料修改</a>
 						</li>
 					</ol>
 				</li>
 				<li >
-					<a href="">
-						<i ></i>
-						一级目录
+					<a href="javascript:void(0)">
+						<i class=""></i>
+						企业认证
 						<span class="caret"></span>
 					</a>
-					<ul class="infoItem">
+					<ol class="infoItem">
 						<li >
-							<a href="">二级分类</a>
+							<a th:href="@{/authencheck/pageInit}">认证审核</a>
 						</li>
 						<li >
-							<a href="">二级分类</a>
+							<a th:href="@{/authenapply/userinfo}">认证申请</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="javascript:void(0)">
+						<i class=""></i>
+						商品管理
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li>
+							<a th:href="@{/gdsEdit/pageInit}"></i>商品录入</a>
 						</li>
 						<li >
-							<a href="">二级分类</a>
-						</li>
-					</ul>
+							<a th:href="@{/gdsManage/index}"></i>商品管理</a>
+						</li> 
+					</ol>
 				</li>
 				<li>
-					<a href="">
-						<i class=""></i>
-						一级目录
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class=""></i>
-						一级目录
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class=""></i>
-						一级目录
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class=""></i>
-						一级目录
+					<a href="javascript:void(0)">
+						<i ></i>
+						页面管理
 						<span class="caret"></span>
 					</a>
 					<ul class="infoItem">
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
+						<li >
+							<a th:href="@{/pageManage/moduleManage}">楼层维护</a>
 						</li>
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
-						</li>
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
-						</li>
-					</ul>
-				</li>
-				<li >
-					<span>
-						<i class=""></i>
-						一级目录
-						<span class="caret"></span>
-					</span>
-					<ul class="infoItem">
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
-						</li>
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
-						</li>
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
+						<li >
+							<a th:href="@{/pageManage/adManage}">首页商品维护</a>
+						</li> 
+						<li >
+							<a th:href="@{/pageManage/adManage}">广告维护</a>
+						</li>  
+						<li >
+							<a th:href="@{/pageManage/newsInfo}">新闻维护</a>
+						</li>  
+						<li >
+							<a th:href="@{/pageManage/pageClassify}">首页菜单分类</a>
 						</li>
 					</ul>
 				</li>
+				
 			</ul>
 		</nav>
 	</div>

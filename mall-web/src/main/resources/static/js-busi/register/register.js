@@ -1,10 +1,32 @@
+
+function checkstaffId(obj){
+	var staffId = $(obj).val();
+	var reg = /^[A-Za-z0-9]+$/;///^[a-zA-Z0-9]$/;
+	if(!staffId){
+		showwarm('staffIdDiv','用户ID不能为空');
+		return;
+	}else if(!reg.test(staffId)){
+		showwarm('staffIdDiv','用户ID格式不正确！');
+		return;
+	}else if(staffId.length<6||staffId.length>24){
+		showwarm('staffIdDiv','用户ID为6-24位字母数字！');
+		return;
+	}
+}
 /**
  * 保存注册信息
  */
-function saveInfo(){
+function saveInfo(){	
 	var staffId = $("#staffId").val();
+	var reg = /^[a-zA-Z0-9]*$/;	
 	if(!staffId){
 		showwarm('staffIdDiv','用户ID不能为空');
+		return;
+	}else if(!reg.test(staffId)){
+		showwarm('staffIdDiv','用户ID格式不正确！');
+		return;
+	}else if(staffId.length<6||staffId.length>24){
+		showwarm('staffIdDiv','用户ID为6-24位字母数字！');
 		return;
 	}
 	var serialNumber = $("#phoneNo").val();
@@ -19,10 +41,16 @@ function saveInfo(){
 	if(!signpass){
 		showwarm('signpassDiv','请输入密码');
 		return;
+	}else if(signpass.length<8){
+		showwarm('signpassDiv','密码不能少于8位');
+		return;
 	}
 	var confirmPass = $("#confirmPass").val();
 	if(!confirmPass){
 		showwarm('confirmPassDiv','请输入确认密码');
+		return;
+	}else if(confirmPass.length<8){
+		showwarm('confirmPassDiv','密码不能少于8位');
 		return;
 	}
 	if(signpass!=confirmPass){

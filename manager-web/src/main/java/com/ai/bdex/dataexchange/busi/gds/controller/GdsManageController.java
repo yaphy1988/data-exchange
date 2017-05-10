@@ -11,10 +11,10 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
-import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -25,7 +25,9 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -45,7 +47,7 @@ public class GdsManageController {
     @RequestMapping(value = "/index")
     public ModelAndView index(HttpServletRequest request, HttpServletResponse response){
 
-        String viewName = "/goods_manager";
+        String viewName = "goods_manager";
         ModelAndView mv = new ModelAndView(viewName);
         return mv;
     }
@@ -122,7 +124,7 @@ public class GdsManageController {
             log.error("查询商品列表异常");
         }
 
-        String viewName = "/gds/gdsManage/gdsManageList";
+        String viewName = "gds/gdsManage/gdsManageList";
         ModelAndView mv = new ModelAndView(viewName);
 //        mv.addObject("gdsInfoList",pageInfo.getResult());
         mv.addObject("pageInfo",pageInfo);
@@ -148,6 +150,7 @@ public class GdsManageController {
         String gdsId = request.getParameter("gdsId");
         String targetStatus = request.getParameter("targetStatus");
         String oldStatus = request.getParameter("oldStatus");
+        HttpSession session = request.getSession();
         try {
 
             GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
@@ -157,6 +160,11 @@ public class GdsManageController {
                 GdsInfoReqDTO updateReqDTO = new GdsInfoReqDTO();
                 ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,updateReqDTO,null,false);
                 updateReqDTO.setStatus(targetStatus);
+                Date nowDate = new Date();
+                updateReqDTO.setUpdateTime(nowDate);
+                updateReqDTO.setUpdateUser(StaffUtil.getStaffId(session));
+                updateReqDTO.setShelveTime(nowDate);
+                updateReqDTO.setShelveUser(StaffUtil.getStaffId(session));
                 iGdsInfoRSV.updateGdsInfoManager(updateReqDTO);
 
             }else{
@@ -196,6 +204,7 @@ public class GdsManageController {
         String gdsId = request.getParameter("gdsId");
         String ifRecGds = request.getParameter("ifRecGds");
         String errorMsg = "";
+        HttpSession session = request.getSession();
         if ("1".equals(ifRecGds)){
             errorMsg = "商品推荐失败";
         }else{
@@ -210,6 +219,8 @@ public class GdsManageController {
                 GdsInfoReqDTO updateReqDTO = new GdsInfoReqDTO();
                 ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,updateReqDTO,null,false);
                 updateReqDTO.setIfRecommend(ifRecGds);
+                updateReqDTO.setUpdateTime(new Date());
+                updateReqDTO.setUpdateUser(StaffUtil.getStaffId(session));
                 iGdsInfoRSV.updateGdsInfo(updateReqDTO);
             }else{
                 ajaxJson.setSuccess(false);

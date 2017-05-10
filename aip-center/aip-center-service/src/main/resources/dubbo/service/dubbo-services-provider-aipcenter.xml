@@ -26,5 +26,7 @@
   <dubbo:service interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceUsedLogRSV" ref="aipServiceUsedLogRSV"
                  owner="zhaoyf7" timeout="3000"/>                                                                                 
                  
-                 
+                
+  <dubbo:service interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV" ref="aipCenterDataAccountRSV"
+                 owner="zhaoyf7" timeout="3000"/>
 </beans>

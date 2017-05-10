@@ -72,6 +72,7 @@ public class GdsInfo2CatSVImpl implements IGdsInfo2CatSV {
         int gcId=SeqUtil.getInt("SEQ_GDS_INFO_2_CAT");
         gdsInfo2CatReqDTO.setGcId(gcId);
         gdsInfo2CatReqDTO.setCreateTime(DateUtil.getNowAsDate());
+        gdsInfo2CatReqDTO.setUpdateTime(DateUtil.getNowAsDate());
         ObjectCopyUtil.copyObjValue(gdsInfo2CatReqDTO,gdsInfo2Cat,null,false);
         int code = gdsInfo2CatMapper.insert(gdsInfo2Cat);
         return gcId;

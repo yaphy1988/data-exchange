@@ -1,0 +1,32 @@
+<div class="goodslist clearfix">
+	<ul >
+		<li th:each="list : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
+			<div class="glist_items cus">
+				<div class="collect active">
+					<span class="bg"></span>
+					<i class="iconfont icon-xingxing"></i>
+				</div>
+				<div class="pic">
+					<a href="" target="_blank" th:href="@{'/goods/details/'+${list.id}+'-'}" th:attr="title=${list.gdsNameSrc}">
+						<img src="" style="width:80px;height:80px" th:src="${list.gdsPic}">
+					</a>
+				</div>
+				<div class="tit"><a href="" target="_blank" th:href="@{'/goods/details/'+${list.id}+'-'}" th:utext="${list.gdsName}">我是商品名称最长配置十四字我|是多余的文字</a></div>
+				<div class="sale pl10 pr10"><a href="" target="_blank" th:href="@{'/goods/details/'+${list.id}+'-'}" th:attr="title=${list.gdsSubtitleSrc}" th:utext="${list.gdsSubtitle}">我是副标题？哈哈哈哈哈哈哈哈哈哈哈哈哈我是副标题？哈哈哈哈哈哈哈哈哈哈哈哈哈</a></div>
+				<div class="info ">
+					<a href="javascript:void(0)" th:href="@{'/goods/details/'+${list.id}+'-'}" target="_blank" class="btn btn-primary btn_rec">
+						查看详情
+					</a> 
+					<a href="javascript:void(0)" class="btn btn-orange btn_rec">
+						在线咨询
+					</a> 
+				</div>
+			</div>
+		</li>
+	</ul>
+</div>
+<!-- 分页-->
+<div th:replace="~{fragments/pager :: pager}"></div>
+<script type="text/javascript">
+$("#numFound").text([[${pageInfo.count}]]);
+</script>

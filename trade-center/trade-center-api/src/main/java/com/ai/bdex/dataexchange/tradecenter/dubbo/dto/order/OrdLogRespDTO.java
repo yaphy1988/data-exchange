@@ -4,7 +4,9 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class OrdLogRespDTO implements Serializable{
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+
+public class OrdLogRespDTO  extends BaseResponseDTO{
     private Long sysLogId;
     private String orderId;
     private String subOrder;

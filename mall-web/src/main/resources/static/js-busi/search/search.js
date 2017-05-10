@@ -99,6 +99,11 @@ var Search = {
 						param.pageNo = index;
 						Search.gridGdsInfo(param);
 					}});
+					var gdsCollect = $(".gdsCollection");
+					if(gdsCollect.length >= 1){
+						//判断商品是否已经收藏
+						Search.whethercollect();
+					}
 				}
 			});
 		},
@@ -132,6 +137,68 @@ var Search = {
 			}
 			param.sortValue = sortValue;
 			return param;
+		},
+		gdsCollection : function(obj,gdsId,skuId,catFirstId){
+			var param = {
+					gdsId : gdsId,
+					catFirstId : catFirstId
+			};
+			if(skuId !="null" && skuId !=""){
+				param.skuId = skuId;
+			}
+			
+			$.ajax({
+				url:WEB_ROOT+'/search/gdscollection',
+				cache:false,
+				async:true,
+				dataType:'json',
+				data : param,
+				success:function(data){
+					if(data.success ){
+						var _obj = $(obj).children("i");
+						if(data.obj=="add"){
+							_obj.removeClass("icon-shoucang");
+							_obj.addClass("icon-shoucang1")
+						}else if(data.obj=="cancel"){
+							_obj.removeClass("icon-shoucang1");
+							_obj.addClass("icon-shoucang")
+						}
+					}
+				}
+			});
+		},
+		whethercollect : function(){
+			var arr = new Array();
+			$(".gdsCollection").each(function(){
+				arr.push($(this).attr('gdsId'));
+			});
+			$.ajax({
+				url:WEB_ROOT+'/search/whethercollect',
+				cache:false,
+				async:true,
+				dataType:'json',
+				data : {gdsIds:arr.toString()},
+				success:function(data){
+					if(data.success){
+						var list = data.obj;
+						if(list != null && list.length>=1){
+							 $.each(list,function (i,collect) {
+								 $(".gdsCollection").each(function(){
+									if($(this).attr('gdsId')==collect.gdsId){
+										var _obj = $(this);
+										_obj.removeClass("icon-shoucang");
+										_obj.addClass("icon-shoucang1")
+									}
+								});
+							 });
+						}
+					}
+				}
+			});
+		},
+		addToCart : function(gdsId,skuId){
+			var url = WEB_ROOT+"/order/gdshopcart?gdsId="+gdsId+"&skuId="+skuId;
+			window.open(url);
 		}
 };
 function Map() {

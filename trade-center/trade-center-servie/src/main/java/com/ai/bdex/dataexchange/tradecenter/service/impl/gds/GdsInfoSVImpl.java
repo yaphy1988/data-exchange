@@ -77,8 +77,8 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         GdsInfo gdsInfo = new GdsInfo();
         gdsInfoReqDTO.setGdsId(gdsId);
         gdsInfoReqDTO.setCreateTime(DateUtil.getNowAsDate());
+        gdsInfoReqDTO.setUpdateTime(DateUtil.getNowAsDate());
         ObjectCopyUtil.copyObjValue(gdsInfoReqDTO,gdsInfo,null,false);
-//        BeanUtils.copyProperties(gdsInfoReqDTO,gdsInfo);
         int code = gdsInfoMapper.insert(gdsInfo);
         return gdsId;
     }
@@ -133,6 +133,9 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         }
         if (!CollectionUtil.isEmpty(gdsInfoReqDTO.getGdsIds())){
             criteria.andGdsIdIn(gdsInfoReqDTO.getGdsIds());
+        }
+        if (gdsInfoReqDTO.getCatId()!=null){
+            criteria.andCatIdEqualTo(gdsInfoReqDTO.getCatId());
         }
         
     }

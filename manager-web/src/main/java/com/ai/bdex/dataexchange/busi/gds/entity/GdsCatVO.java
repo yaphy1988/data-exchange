@@ -7,6 +7,12 @@ import java.util.Date;
  * Created by yx on 2017/4/18.
  */
 public class GdsCatVO implements Serializable {
+    /** 
+     * serialVersionUID:TODO(用一句话描述这个变量表示什么). 
+     * @since JDK 1.6 
+     */ 
+    private static final long serialVersionUID = -6774297425492555330L;
+
     private Integer catId;
 
     private Integer catPid;
@@ -28,6 +34,8 @@ public class GdsCatVO implements Serializable {
     private String updateUser;
 
     private Date updateTime;
+    
+    private int pageNo;
 
     public Integer getCatId() {
         return catId;
@@ -115,5 +123,13 @@ public class GdsCatVO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public int getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
     }
 }

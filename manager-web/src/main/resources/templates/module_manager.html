@@ -8,12 +8,14 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
+	<script type="text/javascript" src="../static/js-busi/page/module_manager.js" th:src="@{/js-busi/page/module_manager.js}"></script>
+    <script type="text/javascript" src="../static/js-busi/page/pager.js" th:src="@{/js-busi/page/pager.js}"></script>
 </head>
 <body>
 <header class="clearfix m_header">
 	<a href="" class="Logo" target="_blank" >
-		<img width="160" src="../static/images/manage_logo.jpg" alt="广州数据" >
+		<img  src="../static/images/manage_logo.png" alt="广州数据" >
 	</a>
 	<ul class="m_hdlist clearfix">
 		<li>
@@ -52,41 +54,18 @@
 			<div class="top-table">
                 <table class="editTable">
                     <tr>
-                        <td class="Hint" >
-                            <span class="col_red">*</span>
-                            省份：
-                        </td>
-                        <td width="20%">
-                            <div class="input-group02">
-                                <select class="form-control">
-                                    <option>全部</option>
-                                </select>
-                            </div>
-                        </td>
                         <td class="Hint">
                             <span class="col_red">*</span>
-                            模块名称：
+                          	  模块名称：
                         </td>
-                        <td width="20%">
+                        <td width="60%">
                             <div class="input-group02">
-                                <input type="text" class="form-control" placeholder="商品名称">
-                            </div>
-                        </td>
-
-                        <td class="Hint">
-                            <span class="col_red">*</span>
-                            是否显示：
-                        </td>
-                        <td width="20%">
-                            <div class="input-group02">
-                                <select class="form-control">
-                                    <option>全部</option>
-                                </select>
+                                <input type="text" class="form-control" th:id="moduleName">
                             </div>
                         </td>
                         <td>
                             <div class="input-group02">
-                                <button class="btn btn-primary">查询</button>
+                                <button class="btn btn-primary" th:onclick="'queryModuleList(1)'">查询</button>
                             </div>
                         </td>
                     </tr>
@@ -111,19 +90,19 @@
                                 <th>模块编码</th>
                                 <th width="240">模块名称</th>
                                 <th>父模块</th>
-                                <th>赋予数量</th>
+                                <th>展示数量</th>
                                 <th>是否展示</th>
                                 <th>类型</th>
                                 <th>操作</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>17</td>
                                 <td> 挂壁机</td>
                                 <td>1f手机</td>
                                 <td>6</td>
-                                <td>展示</td>
+                                <td>1</td>
                                 <td>商品</td>
                                 <td>
                                     <p class="pop-link">
@@ -131,12 +110,12 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>17</td>
                                 <td> 挂壁机</td>
                                 <td>1f手机</td>
                                 <td>6</td>
-                                <td>展示</td>
+                                <td>2</td>
                                 <td>商品</td>
                                 <td>
                                     <p class="pop-link">
@@ -144,12 +123,12 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>17</td>
                                 <td> 挂壁机</td>
                                 <td>1f手机</td>
                                 <td>6</td>
-                                <td>展示</td>
+                                <td>4</td>
                                 <td>商品</td>
                                 <td>
                                     <p class="pop-link">
@@ -157,12 +136,12 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>17</td>
                                 <td> 挂壁机</td>
                                 <td>1f手机</td>
                                 <td>6</td>
-                                <td>展示</td>
+                                <td>3</td>
                                 <td>商品</td>
                                 <td>
                                     <p class="pop-link">
@@ -170,12 +149,12 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>17</td>
                                 <td> 挂壁机</td>
                                 <td>1f手机</td>
                                 <td>6</td>
-                                <td>展示</td>
+                                <td>6</td>
                                 <td>商品</td>
                                 <td>
                                     <p class="pop-link">
@@ -183,12 +162,12 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
+                            <tr th:remove="all">
                                 <td>17</td>
                                 <td> 挂壁机</td>
                                 <td>1f手机</td>
                                 <td>6</td>
-                                <td>展示</td>
+                                <td>10</td>
                                 <td>商品</td>
                                 <td>
                                     <p class="pop-link">
@@ -198,8 +177,11 @@
                             </tr>
                             </tbody>
                         </table>
-
-                        <div class="pagelist">
+                 		<!-- 分页-->
+						<div  class="pagelist" style="margin-top:0px;" th:remove="all">
+							<span data-toggle="pager" id="pagerId" data-count="" data-size="" data-currentindex=""></span>
+						</div>
+                        <div class="pagelist" th:remove="all">
                             <nav aria-label="Page navigation">
                                 <ul class="pagination">
                                     <li >

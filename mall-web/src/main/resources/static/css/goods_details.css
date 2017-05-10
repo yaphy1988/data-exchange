@@ -54,6 +54,7 @@ h3{
 	float: right;
 	width: 620px;
 	overflow-x: hidden;
+
 }
 .gd_hd .info_hd{
 	background-color: #f2f3f4;
@@ -435,7 +436,7 @@ h3{
 	border: solid 1px #ec6000;
 	color: #ec6000;
 }
-.gl_group a.btn_more:focus,
+
 .gl_group a.btn_more:active{
 	background-color: #ec6000!important;
 	color: #fff;
@@ -505,6 +506,9 @@ h3{
 .glist_items:hover{
 	border: solid 1px #2b4099;
 }
+.glist_items.cus:hover{
+	border: solid 1px #ddd;
+}
 
 .glist_items .pic{
 	width: 80px;
@@ -550,7 +554,6 @@ h3{
 }
 .glist_items .info{
 	padding: 10px;
-	padding-top: 0;
 	text-align: center;
 	background-color: #fbfbfb;
 	border-bottom: solid 1px #f2f2f2 ;
@@ -566,7 +569,7 @@ h3{
 .glist_items .pirce{
 	font-size: 16px;
 	color: #666;
-	margin-top: 5px;
+	
 	height: 30px;
 	overflow-y: hidden;
 }
@@ -578,18 +581,39 @@ h3{
 	color: #2baa3f;
 
 }
-.glist_items .info .btn{
+.glist_items .info .btn-primary{
 	width: 100%;
 	background-color: transparent;
 	color: #2b4099;
 }
-.glist_items:hover .btn{
+.glist_items .info .btn-orange{
+	background-color: transparent;
+	color: #ec6000;
+}
+.glist_items .info .btn-primary:hover{
+	background-color: #233890;
+}
+.glist_items .info .btn-orange:hover{
+	background-color: #db5900;
+}
+.glist_items.cus .info .btn{
+	width: 45%;
+}
+
+.glist_items .info.cus a.orange{
+	color: #ec6000;
+}
+.glist_items:hover .btn-primary{
 	background-color: #2b4099;
 	color: #fff;
 }
-.glist_items .info .btn:hover{
-	background-color: #233890;
+
+.glist_items:hover .btn-orange{
+	background-color: #ec6000;
 	color: #fff;
+}
+.glist_items.cus:hover .btn{
+	/* background-color: none; */
 }
 
 /* 商品搜索列表-解决方案 */
@@ -665,6 +689,40 @@ h3{
 	margin: 20px 0;
 	background-color: #22d18d;
 	position: relative;
+}
+.gl_banner.gysbg{
+	height: 176px;
+	background: #2d4397 url(../images/gysbg.jpg) no-repeat;
+	overflow: hidden;
+}
+.gyslogo{
+	position: absolute;
+	top: 45px;
+	left: 116px;
+}
+.gyslogo img{
+	max-height: 95px;
+}
+.gl_banner.gysbg dl{
+	margin-left: 360px;
+	padding: 20px 70px;
+	
+}
+
+.gl_banner.gysbg dl dt,
+.gl_banner.gysbg dl dd{
+	color: #fff;
+	line-height: 32px;
+	font-size: 12px;
+}
+.gl_banner.gysbg dl dt{
+	font-size: 15px;
+	font-weight: 600;
+	padding-bottom: 10px;
+}
+.gl_banner.gysbg dl dd{
+	height: 100px;
+	overflow-y: auto;
 }
 .gl_banner .btnBox{
 	position: absolute;

@@ -1,10 +1,257 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+
+    <link rel="stylesheet" href="../../static/component/bootstrap/css/bootstrap.css" th:remove="all"/>
+    <link rel="stylesheet" href="../../static/css/global.css" th:remove="all"/>
+    <link rel="stylesheet" href="../../static/js/frameajax/frameajax.css" th:remove="all"/>
+    <link rel="stylesheet" href="../../static/css/index.css" th:remove="all"/>
+
+    <!-- 业务js写在这 -->
+
 <head>
     <meta charset="UTF-8"/>
     <title>测试页面</title>
 </head>
 <body>
-<input th:value="${username}" name="username" value="测试"/>
+    <header class="clearfix m_header" th:remove="all">
+        <a href="" class="Logo" target="_blank" >
+            <img  src="../../static/images/manage_logo.png" alt="广州数据" >
+        </a>
+        <ul class="m_hdlist clearfix">
+            <li>
+                <a class="item" href="" target="_blank">联系我们</a>
+            </li>
+            <li >
+                <div class="dropdown">
+                    <a  class="item" data-toggle="dropdown"  >
+                        关注广数
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+                        <li><img src="../../static/images/wexin.jpg"></li>
+                    </ul>
+                </div>
+            </li>
+            <li>
+                <a class="item" href="" target="_blank">常见问题</a>
+            </li>
+            <li >
+                <div class="dropdown">
+                    <a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        okleung
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="dLabel">
+                        <li><a  href="" >退出登录</a></li>
+                    </ul>
+                </div>
+            </li>
+        </ul>
+    </header>
+
+    <div  layout:fragment="screen_content">
+        <!-- 美工在这些静态界面 -->
+        <div class="m_main">
+            <div class="m_con">
+                <div class="classify">
+                    <i class="iconfont"></i>
+                    <span>当前位置：</span>
+                    <a href=""><span>数据市场</span></a>
+                    <a href=""><span>用户管理</span></a>
+                    <span class="col_999">企业认证管理</span>
+                </div>
+                <div class="title">企业认证管理</div>
+                <div class="top-table">
+                    <table class="editTable">
+                        <tbody><tr>
+                            <td class="Hint ">
+
+                                审核状态：
+                            </td>
+                            <td>
+
+                                <select class="form-control" id="status">
+                                    <option value="">全部</option>
+                                    <option value="10">待审核</option>
+                                    <option value="20">审核通过</option>
+                                    <option value="30">审核不通过</option>
+                                </select>
+
+                            </td>
+                            <td>
+                                <button class="btn btn-primary" onclick="queryData();">查询</button>
+                            </td>
+                        </tr>
+                        </tbody></table>
+                </div>
+
+                <table class="table table-bordered">
+                    <thead>
+                    <tr class="active">
+                        <th>序号</th>
+                        <th>公司名称</th>
+                        <th>公司地址</th>
+                        <th>营业执照编号</th>
+                        <th>税务登记证编号</th>
+                        <th>组织机构编号</th>
+                        <th>联系人姓名</th>
+                        <th>审核状态</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="authdatas"><tr><td>1</td><td>北京亚信数据有限公司</td><td>313123231</td><td>2131224124214</td><td>12312312</td><td>666666</td><td>王五</td><td>审核不通过</td><td></td></tr><tr><td>2</td><td>亚信科技（中国）有限公司</td><td>412312312</td><td>2311455121131</td><td>421312344</td><td>888888</td><td>六子</td><td>审核通过</td><td></td></tr><tr><td>1001</td><td>随便公司</td><td>广西湖南广西南宁青秀</td><td>21312412323123123</td><td></td><td></td><td>zouwj</td><td>审核不通过</td><td></td></tr><tr><td>-1</td><td>广森数据</td><td>广西广西广西广西南宁青秀区</td><td>1132321333</td><td>1313133</td><td>313131</td><td>卢</td><td>审核通过</td><td></td></tr><tr><td>1002</td><td>南宁南宁南宁</td><td>广西广西湖南广西南宁</td><td>4566775444</td><td>2334444</td><td>111111</td><td>张三</td><td>审核通过</td><td></td></tr><tr><td>1003</td><td>亚信</td><td>广西广西湖南南宁</td><td>334434343</td><td></td><td></td><td>44</td><td>待审核</td><td><a href="/manager-web/authencheck/getdetail/1003">审核</a></td></tr></tbody>
+                </table>
+
+                <div class="pagerBar pagelist" style="margin-top:0px;">
+                    <span data-toggle="pager" id="pagerId" data-count="" data-size="" data-currentindex=""><nav aria-label="Page navigation"><ul class="pagination"><li class="pgNext" pagerindex="1"><a href="javascript:void(0)">上一页</a></li><li class="page-number active" pagerindex="1"><a href="javascript:void(0)">1</a></li><li class="pgNext" pagerindex="1"><a href="javascript:void(0)">下一页</a></li><div class="pageskip"><span class="pr10">到第<input type="text" id="skipPagepagerId" name="skipPagepagerId" value="1" class="pageskip_box">页</span><a href="javascript:void(0)" id="skippagerId" class="btn btn-default  btn_rec btn-sm">确定</a></div></ul></nav></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="m_nav" th:remove="all">
+        <nav class="nav">
+            <ul>
+                <li class="navTit">
+                    <i class="glyphicon glyphicon-compressed"></i>
+                    个人中心
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+                    </a>
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录
+                    </a>
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录
+                    </a>
+                </li>
+                <li >
+                    <a href="">
+                        <i class=""></i>
+                        用户中心
+                        <span class="caret"></span>
+                    </a>
+                    <ol class="infoItem">
+                        <li >
+                            <a th:href="@{/password/modify}">密码修改</a>
+                        </li>
+                        <li >
+                            <a th:href="@{/infomanager/pageInit}">资料修改</a>
+                        </li>
+                    </ol>
+                </li>
+                <li >
+                    <a href="">
+                        <i class=""></i>
+                        企业认证
+                        <span class="caret"></span>
+                    </a>
+                    <ol class="infoItem">
+                        <li >
+                            <a th:href="@{/authencheck/pageInit}">认证审核</a>
+                        </li>
+                        <li >
+                            <a th:href="@{/authenapply/userinfo}">认证申请</a>
+                        </li>
+                    </ol>
+                </li>
+                <li >
+                    <a href="">
+                        <i class=""></i>
+                        商品管理
+                        <span class="caret"></span>
+                    </a>
+                    <ol class="infoItem">
+                        <li class="active">
+                            <a th:href="@{/gdsEdit/pageInit}"></i>商品录入</a>
+                        </li>
+                        <li >
+                            <a th:href="@{/gdsManage/index}"></i>商品管理</a>
+                        </li>
+                    </ol>
+                </li>
+                <li>
+                    <a href="">
+                        <i ></i>
+                        首页管理
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="infoItem">
+                        <li >
+                            <a th:href="@{/pageManage/moduleManage}">楼层管理</a>
+                        </li>
+                        <li >
+                            <a th:href="@{/pageManage/newsInfo}">新闻管理</a>
+                        </li>
+                    </ul>
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录
+                    </a>
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录
+                    </a>
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录
+                    </a>
+                </li>
+                <li th:remove="all">
+                    <a href="">
+                        <i class=""></i>
+                        一级目录
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="infoItem">
+                        <li class="">
+                            <a href=""><i class="iconfont"></i>二级分类</a>
+                        </li>
+                        <li class="">
+                            <a href=""><i class="iconfont"></i>二级分类</a>
+                        </li>
+                        <li class="">
+                            <a href=""><i class="iconfont"></i>二级分类</a>
+                        </li>
+                    </ul>
+                </li>
+                <li th:remove="all">
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+                    <ul class="infoItem">
+                        <li class="">
+                            <a href=""><i class="iconfont"></i>二级分类</a>
+                        </li>
+                        <li class="">
+                            <a href=""><i class="iconfont"></i>二级分类</a>
+                        </li>
+                        <li class="">
+                            <a href=""><i class="iconfont"></i>二级分类</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+    </div>
 </body>
 </html>

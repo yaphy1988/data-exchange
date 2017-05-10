@@ -1,3 +1,5 @@
+
+
 package com.ai.bdex.dataexchange.busi.page.controller;
 
 import java.net.URLDecoder;
@@ -9,7 +11,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.catalina.Session;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageNewsInfoVO;
+import com.ai.bdex.dataexchange.busi.page.entity.SortContentVO;
+import com.ai.bdex.dataexchange.busi.page.entity.SortInfoVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
@@ -31,20 +34,22 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.ImageUtil;
-import com.ai.paas.utils.DateUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 
@@ -62,9 +67,9 @@ public class HomePageController {
 	private final static String CUSTOMDATA_STATUS_VALID = "1";// 有效
 	private static final Logger log = LoggerFactory.getLogger(HomePageController.class);
 
-	@DubboConsumer
+	@DubboConsumer(timeout = 30000)
 	IPageDisplayRSV iPageDisplayRSV;
-	@DubboConsumer
+	@DubboConsumer(timeout = 30000)
 	IGdsInfoRSV iGdsInfoRSV;
 	
 	@RequestMapping(value = "/pageInit")
@@ -115,14 +120,25 @@ public class HomePageController {
 	@RequestMapping(value = "/queryPageModuleGoods")
 	@ResponseBody
 	public Map<String, Object> queryPageModuleGoods(Model model, HttpServletRequest request) {
+		String moduleIdstr = request.getParameter("moduleId");
+		
 		Map<String, Object> rMap = new HashMap<String, Object>();
 		try {
-			String moduleIdstr = request.getParameter("moduleId");
 			int moduleId = Integer.parseInt(moduleIdstr);
-			PageModuleGoodsRespDTO pageModuleGoodsRespDTO = new PageModuleGoodsRespDTO();
-			pageModuleGoodsRespDTO.setModuleId(moduleId);
-			pageModuleGoodsRespDTO.setStatus(STATUS_VALID);  
-			PageResponseDTO<PageModuleGoodsRespDTO> moduleGoodsList = iPageDisplayRSV.queryPageModuleGoodsList(pageModuleGoodsRespDTO);
+			//查询楼层
+			PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
+			pageModuleReqDTO.setStatus(STATUS_VALID);
+			PageModuleRespDTO moduleResp = iPageDisplayRSV.queryPageModuleById(moduleId);
+			Integer count = 10;
+			if (moduleResp != null) {
+				count = moduleResp.getModuleCount();
+			}
+			
+			PageModuleGoodsReqDTO pageModuleGoodsReqDTO = new PageModuleGoodsReqDTO();
+			pageModuleGoodsReqDTO.setModuleId(moduleId);
+			pageModuleGoodsReqDTO.setStatus(STATUS_VALID);  
+			pageModuleGoodsReqDTO.setPageSize(count);
+			PageResponseDTO<PageModuleGoodsRespDTO> moduleGoodsList = iPageDisplayRSV.queryPageModuleGoodsList(pageModuleGoodsReqDTO);
 			if(moduleGoodsList !=null && moduleGoodsList.getCount()>0)
 			{
 				try{
@@ -135,8 +151,7 @@ public class HomePageController {
 							gdsInfoRespDTO =  iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO); 
 							if(gdsInfoRespDTO!= null && !StringUtil.isBlank(gdsInfoRespDTO.getGdsPic()) )
 							{
-								  String vfsid= ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_150x150");
-								// String vfsid= "http://112.74.163.29:14751/ImageServer/image/"+gdsInfoRespDTO.getGdsPic()+"_150x150.jpg";
+								  String vfsid= ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_86x86!");
 								  moduleGoodsList.getResult().get(i).setVfsid(vfsid); 
 							}
 					   }
@@ -190,17 +205,20 @@ public class HomePageController {
 			}
 			pageModuleAdResDTO.setStatus(STATUS_VALID);
 			PageResponseDTO<PageModuleAdRespDTO> moduleAdPageInfo = iPageDisplayRSV
-					.queryPageModulePageInfo(pageModuleAdResDTO);
+					.queryPageModuleAdPageInfo(pageModuleAdResDTO);
 			List<PageModuleAdRespDTO> moduleAResult = moduleAdPageInfo.getResult();
 			if (!CollectionUtils.isEmpty(moduleAResult)) {
 				for (PageModuleAdRespDTO moduleAdDTO : moduleAResult) {
 					if (moduleAdDTO.getVfsId() != null) {
-						 if(moduleId.equals("103")){
+						if(moduleId.equals("103")){
 							//数据定制
-							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_800x350"));
-						}
-						else{
-							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_80x80"));
+							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_555x350!"));
+						}else if(moduleId.equals("101")){
+								//轮播广告图
+								moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_940x400!"));
+						}else if(moduleId.equals("109")){
+						   //合作伙伴
+							moduleAdDTO.setVfsId(ImageUtil.getImageUrl(moduleAdDTO.getVfsId()+ "_217x116!"));
 
 						}
 
@@ -222,17 +240,13 @@ public class HomePageController {
 	 */
 	@RequestMapping(value = "/querySortInfo")
 	@ResponseBody
-	public Map<String, Object> querySortInfo(Model model, HttpServletRequest request) {
-		String sortId = request.getParameter("sortId");
+	public String querySortInfo(Model model, HttpServletRequest request) {
 		String sortParentId = request.getParameter("sortParentId");
 		String sortLever = request.getParameter("sortLever");
 		Map<String, Object> rMap = new HashMap<String, Object>();
 		try {
 			SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
 			sortInfoRespDTO.setStatus(STATUS_VALID);
-			if (!StringUtils.isBlank(sortId)) {
-				sortInfoRespDTO.setSortId(Integer.valueOf(sortId));
-			}
 			if (!StringUtils.isBlank(sortParentId)) {
 				sortInfoRespDTO.setParentSortId(Integer.valueOf(sortParentId));
 			}
@@ -240,13 +254,49 @@ public class HomePageController {
 				sortInfoRespDTO.setSortLevel(sortLever);
 			}
 			List<SortInfoRespDTO> sortInfos = iPageDisplayRSV.querySortInfos(sortInfoRespDTO);
+			List<SortInfoVO>  sortInfoResult = new ArrayList<>();
+			if(!CollectionUtils.isEmpty(sortInfos)){
+				
+				SortInfoRespDTO sortInfoDTO = new SortInfoRespDTO();
+				for(SortInfoRespDTO infoRespDTO : sortInfos){
+					//copy菜单内容Resp to VO
+					SortInfoVO sortInfoVO = new SortInfoVO();
+					BeanUtils.copyProperties(infoRespDTO, sortInfoVO);
+					sortInfoResult.add(sortInfoVO);
+					SortContentVO sortContentVO = new SortContentVO();
+					//copy菜单内容
+					SortContentRespDTO contentRespDTO = infoRespDTO.getSortContentRespDTO();
+					BeanUtils.copyProperties(contentRespDTO, sortContentVO);
+					sortInfoVO.setSortContentVO(sortContentVO);
+					//查询二级子菜单
+					sortInfoDTO.setParentSortId(infoRespDTO.getSortId());
+					sortInfoDTO.setSortLevel("2");
+					sortInfoDTO.setStatus(STATUS_VALID);
+					List<SortInfoRespDTO> subSortInfos = iPageDisplayRSV.querySortInfos(sortInfoDTO);
+					if(!CollectionUtils.isEmpty(subSortInfos)){
+						List<SortInfoVO> subSortInfoVos = new ArrayList<>();
+						for(SortInfoRespDTO respDTO : subSortInfos){
+							//copy菜单内容Resp to VO
+							SortInfoVO sortInfoVO2 = new SortInfoVO();
+							BeanUtils.copyProperties(respDTO, sortInfoVO2);
+							//copy菜单内容
+							SortContentVO sortContentVO2 = new SortContentVO();
+							SortContentRespDTO contentRespDTO2 = respDTO.getSortContentRespDTO();
+							BeanUtils.copyProperties(contentRespDTO2, sortContentVO2);
+							sortInfoVO2.setSortContentVO(sortContentVO2);
+							subSortInfoVos.add(sortInfoVO2);
+						}
+						sortInfoVO.setSubSortInfoList(subSortInfoVos);
+					}
+				}
+			}
 			rMap.put("success", true);
-			rMap.put("sortInfos", sortInfos);
+			rMap.put("sortInfos", sortInfoResult);
 		} catch (Exception e) {
 			rMap.put("success", false);
 			log.error("查询商品分类信息异常：" + e.getMessage());
 		}
-		return rMap;
+		return getJsonCallback(rMap,request);
 	}
 
 	/**
@@ -391,15 +441,15 @@ public class HomePageController {
 	}
 
 	// 新闻资讯详情
-	@RequestMapping(value = "/pageNewsDetail")
-	public ModelAndView pageNewsDetail(HttpServletRequest request) {
+	@RequestMapping(value = "/newsDetail")
+	public ModelAndView newsDetail(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("info_details");
 		String infoId = request.getParameter("infoId");
 		try {
 			if (!StringUtils.isBlank(infoId)) {
 				PageNewsInfoRespDTO pageNewsInfo = iPageDisplayRSV.queryPageNewsInfoById(Integer.valueOf(infoId));
 				if (pageNewsInfo != null) {
-					 String docUrl = ImageUtil.getStaticDocUrl(pageNewsInfo.getVfsId(),"html");
+					 String docUrl = ImageUtil.getStaticDocUrl(pageNewsInfo.getInfoUrl(),"html");
 					 pageNewsInfo.setInfoUrl(docUrl);
 				}
 				modelAndView.addObject("pageNewsInfo", pageNewsInfo);
@@ -440,7 +490,9 @@ public class HomePageController {
 					if(!CollectionUtils.isEmpty(result)){
 						for(PageNewsInfoRespDTO infoRespDTO : result){
 							infoRespDTO.setInfoType(moduleRespDTO.getModuleName());
+							infoRespDTO.setInfoUrl(ImageUtil.getStaticDocUrl(infoRespDTO.getInfoUrl(), "html"));
 						}
+						
 					}
 				
 				}
@@ -462,7 +514,7 @@ public class HomePageController {
 						PageModuleRespDTO moduleDTO = iPageDisplayRSV.queryPageModuleList(pageModuleReqDTO).get(0);
 						infoRespDTO.setInfoType(moduleDTO.getModuleName());
 						//设置文本路劲
-						String docUrl = ImageUtil.getStaticDocUrl(infoRespDTO.getVfsId(), "html");
+						String docUrl = ImageUtil.getStaticDocUrl(infoRespDTO.getInfoUrl(), "html");
 						infoRespDTO.setInfoUrl(docUrl);
 					}
 				}
@@ -480,23 +532,15 @@ public class HomePageController {
 	 */
 	@RequestMapping(value="/company")
 	private String company(){ 
-		String viewName = "/companyprofile"; 
+		String viewName = "companyprofile"; 
 		return viewName;	 
-	}
+	} 
 	/**
-	 * 新闻动态
+	 * 联系我们
 	 */
-	@RequestMapping(value="/companynews")
-	private String companynews(){ 
-		String viewName = "/companynews"; 
-		return viewName;	 
-	}
-	/**
-	 * 常见问题
-	 */
-	@RequestMapping(value="/commonproblem")
-	private String commonproblem(){ 
-		String viewName = "/commonproblem"; 
+	@RequestMapping(value="/contactouer")
+	private String contactouer(){ 
+		String viewName = "contactouer"; 
 		return viewName;	 
 	}
 	/**
@@ -504,7 +548,7 @@ public class HomePageController {
 	 */
 	@RequestMapping(value="/commonHelp")
 	private String commonHelp(){ 
-		String viewName = "/commonHelp"; 
+		String viewName = "commonHelp"; 
 		return viewName;	 
 	}
 	
@@ -577,5 +621,18 @@ public class HomePageController {
 			log.error("查询首页导航信息信息异常：" + e.getMessage());
 		}
 		return rMap;
+	}
+	protected String getJsonCallback(Map<String, Object> map,HttpServletRequest request){
+		String callback = request.getParameter("jsonpCallback");
+
+		try{
+			if(StringUtils.isBlank(callback)){
+				return new ObjectMapper().writeValueAsString(map);
+			}else{
+				return callback+"("+new ObjectMapper().writeValueAsString(map)+")";
+			}
+		}catch (Exception e) {
+			throw new RuntimeException("JsonUtil.toJSONString发生错误", e);
+		}
 	}
 }

@@ -2,23 +2,24 @@
 	<ul>
 		<li th:each="list : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
 			<div class="pic">
-				<a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:attr="title=${list.gdsNameSrc}">
-					<img src="" width="200" height="200" th:src="'http://'+${list.gdsPic}">
+				<a href="" target="_blank" th:href="@{'/goods/details/'+${list.id}+'-'}" th:attr="title=${list.gdsNameSrc}">
+					<img src="" width="200" height="200" th:src="${list.gdsPic}">
 				</a>
 			</div>
 			<dl>
 				<dt class="clearfix">
-					<h2 th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:utext="${list.gdsName}">2015年广东省汽车零部件生产企业状况</h2>
+					<h2 th:href="@{'/goods/details/'+${list.id}+'-'}" th:utext="${list.gdsName}">2015年广东省汽车零部件生产企业状况</h2>
 					<div class="label_box">
 						<p th:each="label : ${list.gdsLabelParse}" th:text="${label.labName}" th:attr="style='color:'+${label.labColor}">免费体验</p>
 					</div>
 				</dt>
-				<dd class="intro" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:utext="${list.funIntroduction}" th:attr="title=${list.funIntroductionSrc}">功能介绍按照《GMT 0021-2012_动态口令密码应用 技术规范》执行动态令牌种子密钥生成、种子密钥传输、种子密钥安全存储、种子密钥使用安全均有硬件密码设备保护；功能介绍按照《GMT 0021-2012_动态口令密码应用 技术规范》执行动态令牌种子密钥生成、种子密钥传输、种子密钥安全存储、种子密钥使用安全均有硬件密码设备保护；功能介绍按照《GMT 0021-2012_动态口令密码应用 技术规范》执行动态令牌种子密钥生成、种子密钥传输、种子密钥安全存储、种子密钥使用安全均有硬件密码设备保护；功能介绍按照《GMT 0021-2012_动态口令密码应用 技术规范》执行动态令牌种子密钥生成、种子密钥传输、种子密钥安全存储、种子密钥使用安全均有硬件密码设备保护；</dd>
+				<dd class="intro" th:href="@{'/goods/details/'+${list.id}+'-'}" th:utext="${list.funIntroduction}" th:attr="title=${list.funIntroductionSrc}">功能介绍按照《GMT 0021-2012_动态口令密码应用 技术规范》执行动态令牌种子密钥生成、种子密钥传输、种子密钥安全存储、种子密钥使用安全均有硬件密码设备保护；功能介绍按照《GMT 0021-2012_动态口令密码应用 技术规范》执行动态令牌种子密钥生成、种子密钥传输、种子密钥安全存储、种子密钥使用安全均有硬件密码设备保护；功能介绍按照《GMT 0021-2012_动态口令密码应用 技术规范》执行动态令牌种子密钥生成、种子密钥传输、种子密钥安全存储、种子密钥使用安全均有硬件密码设备保护；功能介绍按照《GMT 0021-2012_动态口令密码应用 技术规范》执行动态令牌种子密钥生成、种子密钥传输、种子密钥安全存储、种子密钥使用安全均有硬件密码设备保护；</dd>
 				
 			</dl>
 			<div class="bar">
-				<a href="" class="btn btn-primary pl30 pr30"><i class="icon-dianhua iconfont pr5"></i>在线咨询</a>
-				<a href="" class="btn btn-orange"><i class="icon-xingxing iconfont pr5"></i>收藏</a>
+				<a href="javascript:void(0)" class="btn btn-primary pl30 pr30"><i class="icon-dianhua iconfont pr5"></i>在线咨询</a>
+				<a href="javascript:void(0)" class="btn btn-orange" th:onclick="'javascript:Search.gdsCollection(this,\''+${list.id}+'\',\''+${list.skuId}+'\',\''+${list.catFirst}+'\')'">
+				<i class="icon-shoucang iconfont pr5 gdsCollection"  th:attr="gdsId=${list.id}"></i>收藏</a>
 			</div>
 			<div class="info">
 				<span th:utext="${list.commpanyName}">发布方江南天安科技有限公司</span>

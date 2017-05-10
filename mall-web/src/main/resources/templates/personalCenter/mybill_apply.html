@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{fragments/syshead :: syshead}"></div>
+
+<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+<head th:remove="all">
+	<meta charset="UTF-8">
+	<title>我的发票开具申请</title>
+	<link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/manage.css" th:href="@{/css/manage.css}">
+	
+</head>
+
+<body>
+<div th:replace="~{fragments/top :: top}"></div>
+<header class="clearfix m_header" th:remove="all">
+	<a href="" class="Logo" target="_blank" >
+		<img  src="../../static/images/manage_logo.png" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<div  layout:fragment="screen_content">
+	<div class="m_main">
+		<div class="m_con">
+			<div class="classify">
+				<i class="iconfont"></i>
+				<span>当前位置：</span>
+				<a href=""><span>个人中心</span></a>
+				<span class="col_999">发票开具申请</span>
+			</div>
+			<!-- <hr> -->
+			
+			<div class="title">发票开具申请</div>
+			<table class="editTable ">
+					<tr>
+						<td class="Hint " width="200">
+							邮寄地址:
+						</td>
+						<td width="520">
+							<input class="form-control"  type="text"  maxlength="128" >
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="Hint">
+							<span class="col_red"></span>电话:
+						</td>
+						<td >
+							<input class="form-control"  type="text" maxlength="128">
+						</td>
+						
+					</tr>
+					<tr>
+						<td class="Hint">
+							发票抬头:
+						</td>
+						<td >
+							<input class="form-control"  type="text" maxlength="128">
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							社会统一信用代码:
+						</td>
+						<td >
+							<input class="form-control"  type="text" maxlength="128" >
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							地址:
+						</td>
+						<td >
+							<input class="form-control"  type="text" maxlength="128" >
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							社会统一信用代码:
+						</td>
+						<td >
+							<input class="form-control"  type="text" maxlength="128" >
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							开户行:
+						</td>
+						<td >
+							<input class="form-control"  type="text" maxlength="128" >
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							账户:
+						</td>
+						<td >
+							<input class="form-control"  type="text" maxlength="128" >
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							是否与其他发票申请合并开具:
+						</td>
+						<td >
+						<label>
+							<input class=""  type="radio" name="optionsRadios" checked>
+							否
+						</label>
+						<label>
+							<input class=""  type="radio" name="optionsRadios">
+							是
+						</label>
+						</td>
+					</tr>
+			</table>	
+		</div>
+		<!-- 按钮 -->
+			<hr>
+			<div class="p20 text-center " style="margin-left: 220px;">
+				<a href="javascript:;" class="btn-primary btn mr10" >提交</a>
+				<a href="javascript:;" class="btn-default btn mr10" >取消</a>
+			</div>
+	</div>
+
+
+		<div class="m_nav">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						我的数据
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						我的订单
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						密码修改
+					</a>
+				</li>
+				<li class="active">
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						企业认证
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						发票管理
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						我的收藏
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	
+	
+	
+	<script src="../../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../../static/js/bootstrap.min.js" th:remove="all"></script>
+	
+
+</body>
+</html>

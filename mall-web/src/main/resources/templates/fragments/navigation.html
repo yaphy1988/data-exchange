@@ -29,7 +29,8 @@
   					var html='';
   					if(data.success){
   						$(data.searchNavList).each(function(i,d){
-  							html +='<li><a class="navigationBar" href='+WEB_ROOT+d.navLink+' target="_blank">'+d.navName+'</a>';
+  							//html +='<li><a class="navigationBar" href='+WEB_ROOT+d.navLink+' target="_blank">'+d.navName+'</a>';
+  							html +='<li><a class="navigationBar" href='+d.navLink+' target="_blank">'+d.navName+'</a>';
   						});
   					}
   				}
@@ -37,19 +38,31 @@
   				$(".navigationBar").die().live('click',function(e){
     	    		  $(this).parents("li").addClass('active').siblings().removeClass("active");
     	    		  var url = $(this).attr('href');
-    	 		   	  $.cookie('gjs_navigation', url, {path : '/'});
+//     	 		   	  $.cookie('gjs_navigation', url, {path : '/'});
     	 		   	  window.location.href=WEB_ROOT+url;
     	 		   	  e.preventDefault();
    	    	    });
-  				var url = $.cookie('gjs_navigation');
+  				var url = "";
+  				if($("#catFirst").val()=="1"){
+  					url =  "/search/api";
+//   					$.cookie('gjs_navigation', "/search/api", {path : '/'});
+  				}else if($("#catFirst").val()=="2"){
+  					url =  "/search/custom";
+//   					$.cookie('gjs_navigation', "/search/custom", {path : '/'});
+  				}else if($("#catFirst").val()=="3"){
+  					url =  "/search/solution";
+//   					$.cookie('gjs_navigation', "/search/solution", {path : '/'});
+  				}
+//   				var url = $.cookie('gjs_navigation');
   				var thisUrl = window.location.pathname;
  	  	    	$(".navigationBar").each(function(){
  	  	    		if($(this).attr("href")==thisUrl){
  	  	    			$(this).parents("li").addClass('active');
+ 	  	    			return false;
  	  	    		}else if($(this).attr('href')==url){
  	  	    			$(this).parents("li").addClass('active');
+ 	  	    			return false;
  	  	    		}
- 	  	    		
  	  	    	});
   			  }
   	  		});

@@ -31,7 +31,7 @@
 }
 /* header */
 .m_header{
-	height: 60px;
+	height: 60px!important;
 	border-bottom: solid 1px #eee;
 	background-color: #fbfbfb;
 	z-index: 100;
@@ -42,10 +42,13 @@
 }
 .m_header .Logo{
 	margin-top: 10px;
-	margin-left: 10px;
+	margin-left: 30px;
 	display: inline-block;
 	text-align: center;
 	line-height: 35px;
+}
+.m_header .Logo img{
+	max-height: 40px;
 }
 .m_hdlist{
 	float: right; 

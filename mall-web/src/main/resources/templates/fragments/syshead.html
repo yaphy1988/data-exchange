@@ -7,11 +7,13 @@
    	<title>广州数据中心</title>
     <meta name="description" content="">
     <meta name="keywords" content="">
+    <link rel="icon" type="../static/image/png" href="../static/images/favicon.png">
     <link rel="icon" type="../../static/image/png" href="../../static/images/favicon.png" th:href="@{/images/favicon.png}">
     <link rel="stylesheet" href="../../static/component/bootstrap/css/bootstrap.css" th:href="@{/component/bootstrap/css/bootstrap.min.css}"/>
     <link rel="stylesheet" href="../../static/css/global.css" th:href="@{/css/global.css}"/>
     <link type="text/css" rel="stylesheet" href="../../static/js/frameajax/frameajax.css" th:href="@{/js/frameajax/frameajax.css}"/>
     <link rel="stylesheet" href="../../static/css/index.css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" href="../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
     <script th:inline="javascript">
         var WEB_ROOT = [[${#httpServletRequest.contextPath}]];
         var staffInfoDTO = [[${session.staffInfoDTO}]];
@@ -19,7 +21,6 @@
     <!-- js -->
     <script src="../../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
     <script src="../../static/component/bootstrap/js/bootstrap.min.js" th:src="@{/component/bootstrap/js/bootstrap.min.js}"></script>
-    <script type="text/javascript" src="../../static/js/vue.min.js" th:src="@{/js/vue.min.js}"></script>
     <script type="text/javascript" src="../../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
     <script type="text/javascript" src="../../static/js/jquery.blockUI.js" th:src="@{/js/jquery.blockUI.js}"></script>
     <script type="text/javascript" src="../../static/js/frameajax/frameajax.js" th:src="@{/js/frameajax/frameajax.js}"></script>
@@ -31,6 +32,13 @@
 	<script type="text/javascript" src="../static/js/autocomplete/autocomplete.js" th:src="@{/js/autocomplete/autocomplete.js}"></script>
 	<script type="text/javascript" src="../static/js-busi/search/searchUtil.js" th:src="@{/js-busi/search/searchUtil.js}"></script>
 	<script type="text/javascript" src="../../static/js/jquery.cookie.js" th:src="@{/js/jquery.cookie.js}"></script>
+    <script type="text/javascript" src="../../static/js-busi/page/header.js" th:src="@{/js-busi/page/header.js}"></script>
+    <script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
+    <script src="../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
+    <!--[if lt IE 9]>
+        <script src="../static/js/respond.min.js" th:src="@{/js/respond.min.js}"></script>
+        <script src="../static/js/html5shiv.min.js" th:src="@{/js/html5shiv.min.js}"></script>
+    <![endif]--> 
 </head>
 <body class="bgf1" th:remove="all">
 </body>

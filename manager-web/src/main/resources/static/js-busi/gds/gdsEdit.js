@@ -1,5 +1,6 @@
 var ckeditPackage,ckeditDataDetail,ckeditDataExample,ckeditCase,ckeditCompany;
 var saveValid=true;
+var basePath = WEB_ROOT;
 $(function(){
 	var isEdit = $("#isEdit").val();
 	var catFirst = $("#catFirst").val();
@@ -10,7 +11,8 @@ $(function(){
 		catText +="/";
 		if(catFirst=="1"){
 			$('div[name="DivAPI"]').css("display","");
-			catText +=$("#catName").val();;
+			catText +=$("#catName").val();
+			gridAPIInfoList(1);
 		}else if(catFirst=="3"){
 			$("#otherInfo").css("display","");
 			addSolutionText();
@@ -91,7 +93,7 @@ function saveGdsLabelQuik(){
  * @param obj
  */
 function deleteGdsLabel(obj){
-	WEB.msg.warn("提示","确定要删除该标签吗？",function(){
+	WEB.msg.confirm("提示","确定要删除该标签吗？",function(){
 		$(obj).parent().parent().remove();
 	});
 }
@@ -111,7 +113,7 @@ function addPackAgeOne(){
  * 删除套餐
  */
 function deleteGdsSku(obj){
-	WEB.msg.warn("提示","确定要删除该套餐吗？",function(){
+	WEB.msg.confirm("提示","确定要删除该套餐吗？",function(){
 		$(obj).parent().parent().remove();
 	});
 }
@@ -645,7 +647,11 @@ function uploadImage(object) {
     	return false;
     }
 	var width=$(object).attr("width");
-	var height=$(object).attr("height"),
+	var height=$(object).attr("height");
+	if(width==undefined||height==undefined){
+		width="";
+		height="";
+	}
 	filepath = (filepath + '').toLowerCase();
 	var regex = new RegExp(
 			'\\.(jpg)$|\\.(png)$|\\.(jpeg)$|\\.(gif)$|\\.(bmp)$', 'gi');
@@ -775,9 +781,9 @@ function createEditor(id) {
 	// html
 
 	var config = {
-		filebrowserImageUploadUrl : "/ck/upload?type=Image",
-		filebrowserUploadUrl :"/ck/upload?type=File",
-		filebrowserFlashUploadUrl :"/ck/upload?type=Flash"
+		filebrowserImageUploadUrl :basePath+ "/ck/upload?type=Image",
+		filebrowserUploadUrl :basePath+"/ck/upload?type=File",
+		filebrowserFlashUploadUrl :basePath+"/ck/upload?type=Flash"
 	};
 	if(id=="editorPackage"){
 		ckeditPackage=CKEDITOR.replace(id, config);
@@ -832,6 +838,7 @@ function gridAPIInfoList(index){
 		dataType:'html',
 		data : param,
 		success:function(data){
+			$('#gdsAPIList').empty();
 			$('#gdsAPIList').html(data);
 		}
 	});

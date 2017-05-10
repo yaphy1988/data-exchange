@@ -1,10 +1,240 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8"/>
-    <title>测试页面</title>
-</head>
-<body>
-<h1 th:text="${username}"></h1>
-</body>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+    <head>
+        <meta charset="UTF-8"/>
+        <title>测试页面</title>
+        <link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
+        <link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
+        <link rel="stylesheet" href="../../static/css/index.css" th:remove="all">
+        <link rel="stylesheet" href="../../static/fonts/iconfont.css"  th:remove="all">
+        <link rel="stylesheet" href="../../static/css/info.css"  th:remove="all">
+
+        <script type="text/javascript" src="../../static/js-busi/page/pager.js" th:src="@{/js-busi/page/pager.js}"></script>
+
+        <!-- 该功能需要的js有开发引入 -->
+        <script type="text/javascript" src="../../static/js-busi/demo/demo.js" th:src="@{/js-busi/demo/demo.js}"></script>
+    </head>
+    <body>
+        <!-- top 增加 th:remove="all" 运行时移除-->
+        <div class="top" th:remove="all">
+            <div class="wrap1200 overflow-inherit clearfix">
+                <div class="top-left floatL">
+                    <span>欢迎来到广州数据中心</span>
+                    <span>2017年4月20日&nbsp;&nbsp;12：00：30</span>
+                </div>
+                <div class="top-right floatR">
+                    <a href="#"><b>请登录</b></a>
+                    <a href="#">免费注册</a>
+                    <i>|</i>
+                    <a href="#" class="follow">关注广数<i class="glyphicon glyphicon-menu-down"></i>
+                        <div class="guangshu"><i></i><img src="../../static/images/wexin.jpg"></div>
+                    </a>
+                    <a href="#">常见问题</a>
+                    <a href="#">联系我们</a>
+                </div>
+            </div>
+        </div>
+        <div class="header" th:remove="all">
+            <div class="wrap1200 clearfix">
+                <div class="logo floatL"><img src="../../static/images/logo.png" title="广州数据中心"></div>
+                <div class="search floatR" >
+                    <div class="search-input">
+                        <input type="text">
+                        <button class="btn btn-primary">搜索</button>
+                    </div>
+                    <div class="search-hot">
+                        <a href="#" class="more floatR">更多&nbsp;&gt;</a>
+                        <a href="#">手机号码归属地</a>
+                        <a href="#">常用快递</a>
+                        <a href="#">快递</a>
+                        <a href="#">手机号码归属地</a>
+                        <a href="#">全国车辆违章</a>
+                        <a href="#">身份证实名认证</a>
+                        <a href="#">短信API服务</a>
+                        <a href="#">短信API服务</a>
+                    </div>
+                </div>
+            </div>
+            <div class="menu clearfix">
+                <!--左侧边栏开始-->
+                <div class="sidebar floatL">
+                    <h3>全部商品<i class="glyphicon glyphicon-list menuIcon"></i></h3>
+                    <ul style="display: none;">
+                        <li><a href="#"><i>&rsaquo;</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
+                        <li><a href="#"><i>&rsaquo;</i>交通运输</a> </li>
+                        <li><a href="#"><i>&rsaquo;</i>气象环保</a> </li>
+                        <li><a href="#"><i>&rsaquo;</i>生活服务</a> </li>
+                        <li><a href="#"><i>&rsaquo;</i>生活服务</a> </li>
+                        <li><a href="#"><i>&rsaquo;</i>时空数据</a> </li>
+                        <li><a href="#"><i>&rsaquo;</i>健康医疗</a> </li>
+                        <li><a href="#"><i>&rsaquo;</i>更多服务</a> </li>
+                    </ul>
+
+                    <!--二级导航开始-->
+                    <div class="sidebar-hidden" style="display: none">
+                        <h4>金融服务</h4>
+                        <div class="sidebar-link">
+                            <a href="#">条码查询</a>
+                            <a href="#">万能小哥</a>
+                            <a href="#">专利查询</a>
+                            <a href="#">全国违章直连查询</a>
+                            <a href="#">H5在线电影票</a>
+                            <a href="#">常用快递</a>
+                            <a href="#">快递在线下单</a>
+                            <a href="#">名片识别</a>
+                            <a href="#">条码查询</a>
+                            <a href="#">万能小哥</a>
+                            <a href="#">专利查询</a>
+                            <a href="#">全国违章直连查询</a>
+                            <a href="#">H5在线电影票</a>
+                            <a href="#">常用快递</a>
+                            <a href="#">快递在线下单</a>
+                            <a href="#">名片识别</a>
+                            <a href="#">条码查询</a>
+                            <a href="#">万能小哥</a>
+                            <a href="#">专利查询</a>
+                            <a href="#">全国违章直连查询</a>
+                            <a href="#">H5在线电影票</a>
+                            <a href="#">常用快递</a>
+                        </div>
+
+                        <div class="ad-list clearfix">
+                            <div class="item floatL"></div>
+                            <div class="item floatL"></div>
+                            <div class="item floatL"></div>
+                        </div>
+                    </div>
+                    <!--二级导航结束-->
+                </div>
+                <!--左侧边栏结束-->
+
+                <!--菜单栏开始-->
+                <ul class="navbar floatL clearfix">
+                    <li><a href="#">首页</a> </li>
+                    <li><a href="#">API</a> </li>
+                    <li><a href="#">定制数据</a> </li>
+                    <li><a href="#">解决方案</a> </li>
+                    <li><a href="#">新闻动态</a> </li>
+                </ul>
+                <!--菜单栏结束-->
+            </div>
+        </div>
+
+        <!-- 搜索页内容 -->
+        <div class="wrap1200" layout:fragment="screen_content">
+            <div style="margin:10px;">
+            <form class="form-horizontal">
+                <div class="form-group">
+                    <label>时间格式化：</label>
+                </div>
+                <div class="form-group">
+                    <label>密码</label>
+                </div>
+
+            </form>
+            <br>
+            <button type="button" class="btn btn-default" id="demoSeachBtn">加载表格数据</button>
+            <div class="table-responsive" style="width:500px;" th:if="${pageData}" id="demoTable">
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>序号</th>
+                        <th>用户名</th>
+                        <th>用户ID</th>
+                        <th>用户信息</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="row,rowStat:${pageData.result}">
+                        <th scope="row" th:text="${rowStat.index+1}">1</th>
+                        <td th:text="${row.userName}">Mark</td>
+                        <td th:text="${row.id}">123</td>
+                        <td><div th:replace="::showUserInfo (${row})">...</div></td>
+                    </tr>
+                    <tr th:remove="all">
+                        <th scope="row">2</th>
+                        <td>Jacob</td>
+                        <td>456</td>
+                    </tr>
+                    <tr th:remove="all">
+                        <th scope="row">3</th>
+                        <td>Larry</td>
+                        <td>789</td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div  class="pagelist" style="margin-top:0px;">
+                    <span data-toggle="pager" id="pagerId" th:data-count="${pageData.count}" th:data-size="${pageData.pageSize}" th:data-currentindex="${pageData.pageNo}"></span>
+                </div>
+            </div>
+            </div>
+
+            <ul class="nav nav-tabs" id="demoTab">
+                <li role="presentation" class="active" tab="#Home"><a href="Javascript:void(0)">Home</a></li>
+                <li role="presentation" tab="#Profile"><a href="Javascript:void(0)">Profile</a></li>
+                <li role="presentation" tab="#Messages"><a href="Javascript:void(0)">Messages</a></li>
+            </ul>
+            <div style="height:300px;" id="demoTabContext"></div>
+
+            <div id="Home" style="display:none;">Remote Home</div>
+            <div id="Profile" style="display:none;">Remote Profile</div>
+            <div id="Messages" style="display:none;">Remote Messages</div>
+        </div>
+        <!-- footer 增加 th:remove="all" 运行时移除-->
+        <div class="footer" th:remove="all">
+            <div class="wrap1200 ptb40">
+                <div class="left floatL">
+                    <img src="../../static/images/logo-footer.png">
+                    <p class="">本网站所列开源项目的中文版文档全部由Bootstrap中文网成员翻译整理，并全部遵循 CC BY 3.0协议发布</p>
+                </div>
+                <div class="right floatR">
+                    <div class="footer-item">
+                        <h4>关于我们</h4>
+                        <p>
+                            <a href="#">公司简介</a>
+                            <a href="#">新闻动人</a>
+                            <a href="#">友情链接</a>
+                            <a href="#">招聘</a>
+                        </p>
+                    </div>
+                    <div class="footer-item">
+                        <h4>服务与支持</h4>
+                        <p>
+                            <a href="#">服务条款</a>
+                            <a href="#">常见问题</a>
+                            <a href="#">友情链接</a>
+                            <a href="#">招聘</a>
+                        </p>
+                    </div>
+                    <div class="footer-item">
+                        <h4>联系我们</h4>
+                        <p>
+                            <a href="#">商务合作</a>
+                            <a href="#">在线咨询</a>
+                            <a href="#">友情链接</a>
+                            <a href="#">招聘</a>
+                        </p>
+                    </div>
+                    <div class="footer-item">
+                        <h4>官方微信</h4>
+                        <p>
+                            <img src="../static/images/wexin.jpg">
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright"> © 2016 版权所有 亚信科技(中国)有限公司 京ICP备11005544号-15 京公网安备 11010802022324号</div>
+
+
+        </div>
+
+        <!-- 方法 -->
+        <div th:fragment="showUserInfo (user)" style="dislay:none;">
+            <p th:text="${user.userName} + ' - ' + ${user.id}">...</p>
+        </div>
+    </body>
 </html>

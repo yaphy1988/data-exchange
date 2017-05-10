@@ -12,8 +12,8 @@
     <module>api-gateway</module>
     <module>user-center</module>
     <module>trade-center</module>
-    <module>billing-center</module>
     <module>api-gateway-web</module>
+    <module>common-web</module>
     <module>mall-web</module>
     <module>manager-web</module>
     <module>common-dao</module>

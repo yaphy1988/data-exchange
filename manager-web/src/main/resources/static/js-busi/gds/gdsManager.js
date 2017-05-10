@@ -1,6 +1,7 @@
 /**
  * Created by yx on 2017/4/27.
  */
+var basePath = WEB_ROOT;
 var zTreeObj;
 var setting = {
     data: {
@@ -23,13 +24,17 @@ $(function () {
 function initCatZTree() {
     $.ajax({
         async:true,
-        url:"/gdsManage/queryAllCats",
+        url:basePath+"/gdsManage/queryAllCats",
         type:'post',
         dataType:'json',
         data:{},
         success:function (jsonObj) {
             if(jsonObj!=null && jsonObj.success){
                 var zNodes = new Array();
+                var rootNode = {};
+                rootNode.id = 0;
+                rootNode.name = "全部";
+                zNodes.push(rootNode);
                 $.each(jsonObj.obj,function (i,catObj) {
                     var zNode = {};
                     zNode.id = catObj.catId;
@@ -64,7 +69,11 @@ var onBodyDown = function () {
 };
 
 function catSelClick(e, treeId, treeNode) {
-    $("#catIdSel").attr("catId",treeNode.id);
+    if (treeNode.id == "0"){
+        $("#catIdSel").attr("catId","");
+    }else{
+        $("#catIdSel").attr("catId",treeNode.id);
+    }
     $("#catIdSel").val(treeNode.name);
     hideMenu();
 }
@@ -91,7 +100,7 @@ function queryGdsList(pageNo) {
     params.gdsName = gdsName;
     params.pageNo = pageNo;
     $.ajax({
-        url:"/gdsManage/queryGdsList",
+        url:basePath+"/gdsManage/queryGdsList",
         async:true,
         type:'POST',
         dataType:'html',
@@ -143,7 +152,7 @@ function doGdsStatus(obj) {
     params.targetStatus = targetStatus;
     params.oldStatus = oldStatus;
     $.ajax({
-        url:"/gdsManage/doGdsStatus",
+        url:basePath+"/gdsManage/doGdsStatus",
         type:'post',
         dataType:'json',
         data:params,
@@ -204,10 +213,10 @@ function doGdsStatusModal(obj) {
         title = "商品删除";
         content = "确认删除该商品？";
     }else if (targetStatus == "look"){
-        window.location.href = "/gdsEdit/pageInit?gdsId="+gdsId+"&&isView=true";
+        window.location.href = basePath+"/gdsEdit/pageInit?gdsId="+gdsId+"&&isView=true";
         return;
     }else if (targetStatus == "edit"){
-        window.location.href = "/gdsEdit/pageInit?gdsId="+gdsId;
+        window.location.href = basePath+"/gdsEdit/pageInit?gdsId="+gdsId;
         return;
     }
     $("#doGdsStatusModalTitle").html(title);
@@ -234,7 +243,7 @@ function checkRecGds(obj){
     params.gdsId = gdsId;
     params.ifRecGds = ifRecGds;
     $.ajax({
-        url:"/gdsManage/dealGdsRec",
+        url:basePath+"/gdsManage/dealGdsRec",
         data:params,
         dataType:'json',
         type:'post',

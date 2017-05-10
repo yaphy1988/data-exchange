@@ -56,6 +56,10 @@ public class ResultRespVO  extends BaseResponseDTO implements Serializable{
     private String commpanyName;
     @Field
     private int packPrice;
+    /**
+     * 用于前店展示，单位元
+     */
+    private String packPriceShow;
     @Field
     private int packTimes;
     @Field
@@ -117,7 +121,7 @@ public class ResultRespVO  extends BaseResponseDTO implements Serializable{
     }
     public void setGdsPic(String gdsPic) {
         try {
-            this.gdsPic = ImageUtil.getImageUrl(gdsPic + "_80x80");
+            this.gdsPic = ImageUtil.getImageUrl(gdsPic + "_200x200");
         } catch (Exception e) {
             this.gdsPic = gdsPic;
         }
@@ -220,6 +224,12 @@ public class ResultRespVO  extends BaseResponseDTO implements Serializable{
     }
     public void setGdsLabelParse(List<GdsLabelRespDTO> gdsLabelParse) {
         this.gdsLabelParse = gdsLabelParse;
+    }
+    public String getPackPriceShow() {
+        return packPriceShow;
+    }
+    public void setPackPriceShow(String packPriceShow) {
+        this.packPriceShow = packPriceShow;
     }
 
     

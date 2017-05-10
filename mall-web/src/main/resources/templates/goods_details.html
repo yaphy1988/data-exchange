@@ -120,18 +120,21 @@
 	<div class="main" layout:fragment="screen_content">
 		<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
 		<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>
+		<style>
+			.bgf1{background:white}
+		</style>
 		<div class="classify">
 			<i class="iconfont"></i>
 			<span>当前位置：</span>
-			<a href=""><span>数据市场</span></a>
-			<a href=""><span>生活服务</span></a>
-			<span class="col_999">常用快递</span>
+			<a href="#" th:each="ladderCat,ladderCatStat : ${ladderCatList}"><span th:text="${ladderCat.catName}">数据市场</span></a>
+			<a href="" th:remove="all"><span>生活服务</span></a>
+			<span class="col_999" th:remove="all">常用快递</span>
 		</div>
 		<div class="gd_etails clearfix">
 			<div class="gd_Left">
 				<div class="gd_hd clearfix">
 					<div class="imgBox">
-						<span class="img" style="overflow: hidden">
+						<span class="img" style="overflow: hidden;text-align: center">
 							<img src="../static/images/img.jpg" th:src="${gdsInfo.gdsPic}">
 						</span>
 						<a class="active collect">
@@ -180,7 +183,7 @@
 								<li th:remove="All"><a href="">套餐二</a></li>
 								<li th:remove="All"><a href="">1000次</a></li>
 							</ul>
-							<a class="btn btn-orange btn_rec_bg">
+							<a class="btn btn-orange btn_rec_bg" th:onclick="|addToCart(${gdsInfo.gdsId},${gdsInfo.gdsSkuVOList.get(0).skuId})|">
 								<i class="iconfont"></i>
 								申请数据
 							</a>
@@ -199,8 +202,8 @@
 							<a href="#tab2"  data-toggle="tab">错误代码参照</a></li>
 						<li class="">
 							<a href="#tab3" data-toggle="tab" >实例代码</a></li>
-						<li class="" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:attr="'htmlFileId='+$tabContent.tabContentId+',proType=2'" >
-							<a href="#tab4" data-toggle="tab" th:href="'#tab4-'+$tabContentStat.count" >套餐介绍</a>
+						<li class="" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:attr="htmlFileId=${tabContent.tabContentId},proType=2" >
+							<a href="#tab4" data-toggle="tab" th:href="'tab4-'+${tabContentStat.count}" >套餐介绍</a>
 						</li>
 					</ul>
 					<div class="tab-content gd_info" id="tabContentDiv">
@@ -227,10 +230,6 @@
 									<tr>
 										<td>在线测试：</td>
 										<td><a href="javascript:void(0)" th:href="${gdsInfo.serviceVO.testTool}" target="_blank">在线测试工具</a> </td>
-									</tr>
-									<tr>
-										<td>接口文档：</td>
-										<td><a href="javascript:void(0)">下载接口文档</a> </td>
 									</tr>
 									<tr>
 										<td>接口备注：</td>
@@ -363,7 +362,7 @@
 								</tbody>
 							</table>
 						</div>
-						<div class=" tab-pane fade" role="tabpanel" id="tab4" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:id="'tab4-'+$tabContentStat.count">44</div>
+						<div class=" tab-pane fade" role="tabpanel" th:each="tabContent,tabContentStat : ${gdsInfo.tabContentList}" th:id="'tab4-'+${tabContentStat.count}"></div>
 					</div>
 				</div>
 				
@@ -403,18 +402,18 @@
 						</dl>
 					</a>
 				</div>
-				<h3 class="gd_title">
-					促销活动
-					<i></i>
-				</h3>
-				<div class="gd_sales">
-					<a href="" class="img">
-						<img src="../static/images/img.jpg">
-					</a>
-					<a href="" class="img">
-						<img src="../static/images/img.jpg">
-					</a>
-				</div>
+				<!--<h3 class="gd_title">-->
+					<!--促销活动-->
+					<!--<i></i>-->
+				<!--</h3>-->
+				<!--<div class="gd_sales">-->
+					<!--<a href="" class="img">-->
+						<!--<img src="../static/images/img.jpg">-->
+					<!--</a>-->
+					<!--<a href="" class="img">-->
+						<!--<img src="../static/images/img.jpg">-->
+					<!--</a>-->
+				<!--</div>-->
 			</div>
 		</div>
 	</div>
@@ -460,7 +459,7 @@
             </div>
         </div>
     </div>
-    <div class="copyright"> © 2016 版权所有 亚信科技(中国)有限公司 京ICP备11005544号-15 京公网安备 11010802022324号</div>
+    <div class="copyright"> © 2017 广州数据交易服务有限公司 粤ICP备16073970号 * 粤公网安备 44010502000357号</div>
 </div>
 	<script src="../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
 	<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>

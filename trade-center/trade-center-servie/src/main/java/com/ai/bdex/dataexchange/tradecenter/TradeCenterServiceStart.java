@@ -13,7 +13,7 @@ import org.springframework.context.annotation.ImportResource;
  * @author yafei
  * @since 2017/4/4
  */
-@ImportResource({"classpath*:/dubbo/service/*.xml"})
+@ImportResource({"classpath*:/dubbo/service/*.xml","classpath:/spring/spring-aop-transaction.xml"})
 @SpringBootApplication
 @MapperScan("com.ai.bdex.dataexchange.tradecenter.dao.mapper")
 public class TradeCenterServiceStart {

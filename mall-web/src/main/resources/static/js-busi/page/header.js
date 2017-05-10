@@ -1,61 +1,27 @@
 var basePath = WEB_ROOT;
+var currentUrl = window.location.href;
 $(document).ready(function(){
-	var currentUrl = window.location.href;
-	if(currentUrl.match(/\/homePage\/pageInit/)){//首页
-		$('#head_sidebar>ul').show();
-	}else{
-		$('#head_sidebar>ul').hide();
-		$('#head_sidebar').hover(function(){
-			$('#head_sidebar>ul').show();
-		},function(){
-			$('#head_sidebar>ul').hide();
-		});
-	}
-	header.queryHotSearch();
-	header.queryHeaderNav();
+	$('#head_sidebar>ul').show();
+    if(currentUrl.match(/\/homePage\/pageInit/)){//首页
+        $('#head_sidebar>ul').show();
+         $('#head_menu').attr('class','menuBg');
+    }else{
+        $('#head_sidebar>ul').hide();
+        $('#head_menu').attr('class','menuBg seconav');
+       $('#head_sidebar').hover(function(){
+            $('#head_sidebar>ul').show();
+        },function(){
+            $('#head_sidebar>ul').hide();
+        });
+
+        $('#head_menu').attr('class','menuBg seconav');
+    }
+
 	header.setSpanDate();
-	header.querySortInfo('','-1','1');
+	header.querySortInfo('-1','1');
 	window.setInterval("header.setSpanDate()", 1000);
 });
 var header = new Object({
-	queryHotSearch:function(){
-		 $.ajax({
-			url:WEB_ROOT+'/homePage/queryHotSearch',
-			cache:false,
-			async:true,
-			dataType:'json',
-			success:function(data){
-				var html = '<a href="#" class="more floatR">更多&nbsp;&gt;</a>';
-				if(data.success){
-					$(data.hotSearchList).each(function(i,d){
-						html +='<a href='+WEB_ROOT+d.searchUrl+' target="_blank">'+d.searchKey+'</a>';
-					});
-				}
-				$('#search-hot').html(html);
-			}
-		});
-
-	},
-	queryHeaderNav:function(){
-		$.ajax({
-			url:WEB_ROOT+'/homePage/queryHeaderNav',
-			cache:false,
-			async:true,
-			dataType:'json',
-			success:function(data){
-				var html;
-				if(data.success){
-					var html='';
-					if(data.success){
-						$(data.searchNavList).each(function(i,d){
-							html +='<li><a href='+WEB_ROOT+d.navLink+' target="_blank">'+d.navName+'</a></li>';
-						});
-					}
-				}
-				$('#head_navbar').html(html);
-			}
-		});
-	},
 	/*时钟显示*/
 	setSpanDate:function(){    
 		var nowDate = new Date(new Date().getTime());  
@@ -75,51 +41,62 @@ var header = new Object({
 		  else        
 			  return num;
 	},
-	querySortInfo:function(sortId,sortParentId,sortLever){
+	querySortInfo:function(sortParentId,sortLever){
 		$.ajax({
 			url:WEB_ROOT+'/homePage/querySortInfo',
-			data:{sortId:sortId,sortParentId:sortParentId,sortLever:sortLever},
+			data:{sortParentId:sortParentId,sortLever:sortLever},
 			cache:false,
 			async:true,
 			type:'post',
 			dataType:'json',
 			success:function(data){
-				var html='';
+				var html ='<h3>全部商品<i class="glyphicon glyphicon-list menuIcon"></i></h3>'+
+						  '<ul>';
+				var htmlLever1 = '';
+				var htmlLever2 = '';
 				if(data.success){
-					if(sortLever== '2'){//2级导航
-						html +='<h4>金融服务</h4><div class="sidebar-link">';
-					}
-					$(data.sortInfos).each(function(i,d){
-						var link ;
-						if(d.sortContentRespDTO!=null && d.sortContentRespDTO!= undefined){
-							link =d.sortContentRespDTO.contentLink;
-						}
-						if(sortLever== '2'){//2级导航
-							html +='<a href='+setLinkUrk(link)+' target="_blank">'+d.sortName+'</a>';
-						}else{//1级导航
-							html +='<li sortId="'+d.sortId+'"><a href='+setLinkUrk(link)+' target="_blank"><i>&rsaquo;</i>'+d.sortName+'</a> </li>';
-						}
+					var sortInfos = data.sortInfos;
+					$(sortInfos).each(function(i,d){
+						var content = d.sortContentVO;
+						htmlLever1 +='<li pSortId='+d.sortId+'><a href="'+setLinkUrk(content.contentLink)+'"  target="_blank"><i>&rsaquo;</i>'+content.contentName+'</a> </li>';
+						var subSortInfoList = d.subSortInfoList;
+						htmlLever2 += '<div pSortId='+d.sortId+' class="sidebar-hidden" style="display: none">'+
+							'<h4>'+content.contentName+'</h4>'+
+							'<div class="sidebar-link">';
+						$(subSortInfoList).each(function(i,d){
+							var subContent = d.sortContentVO;
+							htmlLever2 +='<a href="'+setLinkUrk(subContent.contentLink)+'"  target="_blank">'+subContent.contentName+'</a>';
+							if(parseInt(i+1)%5 == 0){
+								if(parseInt(i+1)== data.sortInfos.length){
+									htmlLever2 +='</div>'; 
+								}else{
+									htmlLever2 +='</div><div class="sidebar-link">';
+								}
+							}
+						});
+						htmlLever2 +='</div></div>'
 					});
-				}
-				if(sortLever== '2'){
-					html+='<div class="ad-list clearfix">'+
-	                    	'<div class="item floatL"></div>'+
-	                    	'<div class="item floatL"></div>'+
-	                    	'<div class="item floatL"></div>'+
-							'</div>';
-					$('#head_sidebar>div').html(html).show();
-				}else{
-					$('#head_sidebar>ul').html(html);
+					html += htmlLever1 +'</ul><!--二级导航开始-->'+htmlLever2+'<!--二级导航结束-->';
+					$('#head_sidebar').html(html);
+                    if(currentUrl.match(/\/homePage\/pageInit/)){//首页
+                        $('#head_sidebar>ul').show();
+                    }else{
+                        $('#head_sidebar>ul').hide();
+                    }
+                    //分类事件
 					$('#head_sidebar>ul').children().hover(function(){
-						header.querySortInfo('',$(this).attr('sortId'),'2');
+						var pSortId = $(this).attr('pSortId');
+                        $('#head_sidebar>div').hide();
+						$('#head_sidebar>div[pSortId='+pSortId+']').show();
 					},function(){
-						$('#head_sidebar>div').hide();
+					    $('#head_sidebar>div').hide();
 					});
+
 					$('#head_sidebar>div').hover(function(){
-						$(this).show();
-					},function(){
-						$(this).hide();
-					});
+                       $(this).show();
+                    },function(){
+                        $(this).hide();
+                    });
 				}
 			}
 		});

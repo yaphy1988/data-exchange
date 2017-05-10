@@ -1,0 +1,107 @@
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:remove="all">
+	<meta charset="UTF-8">
+	<title>新闻资讯列表_广州数据交易</title>
+	<link rel="stylesheet" href="../static/css/bootstrap.css"  th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css"  th:remove="all">
+	<link rel="stylesheet" href="../static/css/index.css"  th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css"  th:remove="all">
+    <link type="text/css" rel="stylesheet" href="../static/css/info.css" th:href="@{/css/info.css}" th:remove="all">
+	
+</head>
+<body>
+	<div th:fragment="rightNewslist">
+		<script type="text/javascript"  th:inline="javascript">
+			$(function(){
+				queryRightNewslist('03','-1');
+			});
+			function queryRightNewslist(moduleType,modulePid){
+				var url = basePath+'/homePage/queryRightNewslist';
+				var params ={moduleType:moduleType,modulePid:modulePid}; //新闻资讯类型
+				var callBack =function(data){
+					var html='';
+					if(data.success){
+						var newsList = data.rightNewsList;
+						$(newsList).each(function(i,d){
+							var moduleVO = d.pageModuleVO;
+							var infoList = d.newsInfoList;
+							if(i==0){
+								html +='<div class="sidebarBox" style="border-top:none;"><h3 class="title">';
+							}else{
+								html +='<div class="sidebarBox"><h3 class="title">';
+							}
+							html +='<a href="'+basePath+'/homePage/pageNewsInfolist?moduleId='+moduleVO.moduleId+'"  class="pull-right more">查看全部 »</a>';
+							html +=''+moduleVO.moduleName+'</h3><ul class="sideli">';
+			                $(infoList).each(function(k,f){
+			                	html+='<li><a href="'+basePath+'/homePage/newsDetail?infoId='+f.infoId+'" target="_blank">'+f.infoTitle+'</a></li>';
+			                });
+			                html += '</ul></div>';
+						});
+					}
+					$('#news_list').html(html);
+				};
+				doAjax(url,params,callBack);	
+			}
+		</script>
+		<div class="infoRight" id="news_list" th:remove="body">
+			<div class="sidebarImg">
+				<img src="" width="200" height="200">
+			</div>
+			<!-- <div class="sidebarCollect">
+				<ul class="sideli">
+					<li><a href=""><i class="glyphicon glyphicon-leaf"></i>行业资讯</a></li>
+					<li><a href=""><i class="glyphicon glyphicon-leaf"></i>平台公告</a></li>
+					<li><a href=""><i class="glyphicon glyphicon-leaf"></i>平台活动</a></li>
+					<li><a href=""><i class="glyphicon glyphicon-leaf"></i>常见问题</a></li>
+				</ul>
+			</div> -->
+			<div class="sidebarBox" style="border-top:none;">
+				<h3 class="title">
+					<a href="" class="pull-right more">查看全部 »</a>
+					行业资讯
+				</h3>
+				<ul class="sideli">
+					<li><a href="">如何才能完成一场高效的演讲？</a></li>
+					<li><a href="">如何才能完成一场高效的演讲？</a></li>
+					<li><a href="">如何才能完成一场高效的演讲？</a></li>
+				</ul>
+			</div>
+			<div class="sidebarBox">
+				<h3 class="title">
+					<a href="" class="pull-right more">查看全部 »</a>
+					平台公告
+				</h3>
+				<ul class="sideli">
+					<li><a href="">如何才能完成一场高效的演讲？</a></li>
+					<li><a href="">如何才能完成一场高效的演讲？</a></li>
+					<li><a href="">如何才能完成一场高效的演讲？</a></li>
+				</ul>
+			</div>
+			<div class="sidebarBox">
+				<h3 class="title">
+					<a href="" class="pull-right more">查看全部 »</a>
+					平台活动
+				</h3>
+				<ul class="sideli">
+					<li><a href="">如何才能完成一场高效的演讲？</a></li>
+					<li><a href="">如何才能完成一场高效的演讲？</a></li>
+					<li><a href="">如何才能完成一场高效的演讲？</a></li>
+				</ul>
+			</div>
+		
+			<div class="sidebarBox">
+				<h3 class="title">
+					<a href="" class="pull-right more">查看全部 »</a>
+					常见问题
+				</h3>
+				<ul class="sideli">
+					<li><a href="">如何才能完成一场高效的演讲？</a></li>
+					<li><a href="">如何才能完成一场高效的演讲？</a></li>
+					<li><a href="">如何才能完成一场高效的演讲？</a></li>
+				</ul>
+			</div>
+			
+		</div>
+	</div>
+</body>
+</html>

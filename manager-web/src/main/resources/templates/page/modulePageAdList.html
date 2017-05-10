@@ -1,0 +1,60 @@
+
+<table class="table table-bordered text-center">
+	<thead>
+		<tr class="active">
+			<th>广告编号</th>
+			<th>广告版位</th>
+			<th width="200">图片</th>
+			<th width="240">广告语</th>
+			<!-- <th>展示顺序</th> -->
+			<th>操作</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr th:each="pageAd : ${pageInfo.result}"
+			th:unless="${#lists.isEmpty(pageInfo.result)}">
+			<td th:text="${pageAd.adId}"></td>
+			<td th:text="${pageAd.pageModuleRespDTO.moduleName}"></td>
+			<td>
+				<div class="table-banner">
+					<img src="" th:src="${pageAd.vfsIdUrl}">
+				</div>
+			</td>
+			<td th:text="${pageAd.adTitle}"></td>
+			<!-- <td th:text="${pageAd.adOrder}">1</td> -->
+			<td>
+				<p class="pop-link">
+					<a th:onclick="'updatePageModuleAd('+@{${pageAd.adId}}+','+@{${pageAd.moduleId}}+',0)'" th:if="${pageAd.status=='1'}">失效</a><i th:if="${pageAd.status=='1'}">|</i> 
+					<a href="javascript:void(0)"  th:onclick="'editModuleAd('+@{${pageAd.adId}}+','+@{${pageAd.moduleId}}+')'">编辑</a><i>|</i> 
+					<a th:onclick="'updatePageModuleAd('+@{${pageAd.adId}}+','+@{${pageAd.moduleId}}+',2)'" th:if="${pageAd.status!='2'}">删除</a>
+				</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+<div class="pagelist clearfix">
+	<div class="left-btn">
+		<button th:onclick="'addModuleAd()'">
+			<i class="glyphicon glyphicon-plus"></i>新增广告
+		</button>
+	</div>
+	<!-- 分页-->
+	<div th:fragment="pager" class="pagerBar pagelist"style="margin-top: 0px;">
+		<script type="text/javascript" src="../static/js-busi/common/pager.js"th:src="@{/js-busi/common/pager.js}"></script>
+		<span data-toggle="pager" id="pagerId"th:data-count="${pageInfo.count}" th:data-size="${pageInfo.pageSize}"
+			th:data-currentindex="${pageInfo.pageNo}"></span>
+		<script th:inline="javascript">
+			var total = '[[${pageInfo.count}]]';
+			var pageNum = '[[${pageInfo.pageNo}]]';
+			var pageSize = '[[${pageInfo.pageSize}]]';
+
+			if (typeof pagerClick === "undefined") {
+				pagerClick = function(index) {
+					queryModulePageAdList(index);
+				}
+			}
+			$('#pagerId').pager({
+				callback : pagerClick
+			});
+		</script>
+	</div>

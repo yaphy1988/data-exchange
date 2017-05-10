@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.solrutil;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -61,7 +62,13 @@ public class SolrSearchUtil {
                 query.addFilterQuery(searchField.getName() + ":" + searchField.getValue().toString());  
             }  
             // 设置起始位置与返回结果数  
-            query.setStart(searchParam.getPageNo());  
+            int pageNo = 0;
+            if(searchParam.getPageNo()==1){
+                pageNo = searchParam.getPageNo() -1;
+            }else if(searchParam.getPageNo() >= 2){
+                pageNo = (searchParam.getPageNo() -1 )*searchParam.getPageSize();
+            }
+            query.setStart(pageNo);  
             query.setRows(searchParam.getPageSize());  
             // 设置排序  
             if (null != sortfield || sortfield.size() >= 1) {  
@@ -81,10 +88,12 @@ public class SolrSearchUtil {
             //Item即为上面定义的bean类
             for (ResultRespVO resultRespVO  : resultlist) {
                    //hightlight的键为Item的id，值唯一，我们设置的高亮字段为gdsName
-                    if(!StringUtil.isBlank(resultRespVO.getGdsPic())){
-                        resultRespVO.setGdsPic(resultRespVO.getGdsPic());
-                    }
-                    resultRespVO.setGdsLabel(resultRespVO.getGdsLabel());
+                   if(!StringUtil.isBlank(resultRespVO.getGdsPic())){
+                       resultRespVO.setGdsPic(resultRespVO.getGdsPic());
+                   }
+                   resultRespVO.setPackPriceShow(changeF2Y(resultRespVO.getPackPrice()+""));
+                   resultRespVO.setGdsNameSrc(resultRespVO.getGdsName());
+                   resultRespVO.setGdsLabel(resultRespVO.getGdsLabel());
                    List<String> hlString = map.get(resultRespVO.getId()).get("gdsName");
                    if (null != hlString) {
                        StringBuffer sbf = new StringBuffer();
@@ -93,6 +102,7 @@ public class SolrSearchUtil {
                        }
                        resultRespVO.setGdsName(sbf.toString());
                    } 
+                   resultRespVO.setGdsSubtitleSrc(resultRespVO.getGdsSubtitle());
                    List<String> hTitlelString = map.get(resultRespVO.getId()).get("gdsSubtitle");
                    if (null != hTitlelString) {
                        StringBuffer sbf = new StringBuffer();
@@ -101,6 +111,7 @@ public class SolrSearchUtil {
                        }
                        resultRespVO.setGdsSubtitle(sbf.toString());
                    }
+                   resultRespVO.setFunIntroductionSrc(resultRespVO.getFunIntroduction());
                    List<String> hIntroString = map.get(resultRespVO.getId()).get("funIntroduction");
                    if (null != hIntroString) {
                        StringBuffer sbf = new StringBuffer();
@@ -189,6 +200,15 @@ public class SolrSearchUtil {
             query.setFacetPrefix(keyWord);
             query.setFacetLimit(searchParam.getPageSize());
             query.setFacetMinCount(1);
+            List<SearchField> searchFieldList = searchParam.getSearchField();
+            if(searchFieldList!= null && searchFieldList.size()>=1){
+                for (SearchField searchField : searchFieldList) {  
+                    if(searchField.getValue() == null){
+                        continue;
+                    }
+                    query.addFilterQuery(searchField.getName() + ":" + searchField.getValue().toString());  
+                } 
+            }
         } catch (Exception e) {  
             e.printStackTrace();  
         }  
@@ -214,6 +234,14 @@ public class SolrSearchUtil {
         }  
         // 返回查询结果  
         return resultCount;  
+    }  
+    /**金额为分的格式 */  
+    public static final String CURRENCY_FEN_REGEX = "\\-?[0-9]+";
+    public static String changeF2Y(String amount) throws Exception{  
+        if(!amount.matches(CURRENCY_FEN_REGEX)) {  
+            throw new Exception("金额格式有误");  
+        }  
+        return BigDecimal.valueOf(Long.valueOf(amount)).divide(new BigDecimal(100)).toString();  
     }  
 }
 

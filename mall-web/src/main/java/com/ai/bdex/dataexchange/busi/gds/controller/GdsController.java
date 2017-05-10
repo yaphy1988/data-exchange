@@ -7,8 +7,12 @@ import com.ai.bdex.dataexchange.busi.gds.entity.*;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.*;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.*;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.CollectionUtil;
@@ -23,8 +27,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -52,6 +58,8 @@ public class GdsController {
     private IGdsSkuRSV iGdsSkuRSV;
     @DubboConsumer(timeout = 30000)
     private IServiceMessageRSV iServiceMessageRSV;
+    @DubboConsumer 
+    private IOrderInfoRSV iOrderInfoRSV;
 
     @RequestMapping(value = "/details/{gdsId}-{skuId}")
     public String pageInit(HttpServletRequest request, HttpServletResponse response, @PathVariable Integer gdsId,@PathVariable Integer skuId){
@@ -79,6 +87,11 @@ public class GdsController {
                     if (gdsCatRespDTO!=null){
                         gdsInfoVO.setCatName(gdsCatRespDTO.getCatName());
                     }
+                    //获取从最高级到最低价的分类列表
+                    List<GdsCatRespDTO> ladderCatList = iGdsCatRSV.queryLadderCatListByCatId(gdsInfoRespDTO.getCatId());
+                    Collections.reverse(ladderCatList);
+                    request.setAttribute("ladderCatList",ladderCatList);
+
                 }
                 if (gdsInfoRespDTO.getCatFirst()!=null && gdsInfoRespDTO.getCatId().intValue()>0){
                     GdsCatRespDTO gdsCatRespDTO = iGdsCatRSV.queryGdsCatByCatId(gdsInfoRespDTO.getCatFirst());
@@ -248,7 +261,7 @@ public class GdsController {
                     }
 
 
-                    viewName = "/goods_details";
+                    viewName = "goods_details";
 
                 }else if (CUSTOM_CAT_ID.equals(gdsInfoRespDTO.getCatFirst())){
                     if (!CollectionUtil.isEmpty(gdsInfoVO.getGdsInfo2PropVOList())){
@@ -259,7 +272,7 @@ public class GdsController {
                         }
                     }
 
-                    viewName = "/goods_custom";
+                    viewName = "goods_custom";
                 }else if (SOLUTION_CAT_ID.equals(gdsInfoRespDTO.getCatFirst())){
                     if (!CollectionUtil.isEmpty(gdsInfoVO.getGdsInfo2PropVOList())){
                         for (GdsInfo2PropVO gdsInfo2PropVO : gdsInfoVO.getGdsInfo2PropVOList()){
@@ -271,7 +284,7 @@ public class GdsController {
                             }
                         }
                     }
-                    viewName = "/goods_solution";
+                    viewName = "goods_solution";
                 }
 
             }
@@ -288,11 +301,12 @@ public class GdsController {
 
     @RequestMapping(value = "/queryRecomGdsList")
     public ModelAndView queryRecomGdsList(){
-        String viewName = "/goods/details/recomGdsList";
+        String viewName = "goods/details/recomGdsList";
         GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
         gdsInfoReqDTO.setCatFirst(AIP_CAT_ID);
         gdsInfoReqDTO.setStatus("1");
-        gdsInfoReqDTO.setPageSize(4);
+        gdsInfoReqDTO.setPageSize(8);
+        gdsInfoReqDTO.setIfRecommend("1");
         gdsInfoReqDTO.setGridQuerySortName("shelve_time");
         gdsInfoReqDTO.setGridQuerySortOrder("desc");
         PageResponseDTO<GdsInfoRespDTO> pageResponseDTO = new PageResponseDTO<GdsInfoRespDTO>();
@@ -316,6 +330,34 @@ public class GdsController {
         ModelAndView mv = new ModelAndView(viewName);
         mv.addObject("recGdsList",gdsInfoVOList);
         return mv;
+    }
+
+    @RequestMapping(value = "/applyDataValidate")
+    @ResponseBody
+    public AjaxJson applyDataValidate(HttpServletRequest request, HttpServletResponse response,@PathVariable Long gdsId,@PathVariable Long skuId){
+        AjaxJson ajaxJson = new AjaxJson();
+        HttpSession session = request.getSession();
+
+        try {
+        	OrdInfoReqDTO ordInfoRespDTO = new OrdInfoReqDTO();
+            ordInfoRespDTO.setGdsId(gdsId);
+            ordInfoRespDTO.setSkuId(skuId);
+            ordInfoRespDTO.setStaffId(StaffUtil.getStaffId(session));
+            ordInfoRespDTO.setPayFlag("1");
+            List<OrdInfoRespDTO> list = iOrderInfoRSV.queryOrderByStaff(ordInfoRespDTO);
+            if (!CollectionUtil.isEmpty(list)){
+                ajaxJson.setSuccess(false);
+                ajaxJson.setErrorCode("1");
+            }else{
+                ajaxJson.setSuccess(true);
+            }
+        }catch (Exception e){
+            log.error("查询是否购买过商品异常：",e);
+            ajaxJson.setSuccess(false);
+            ajaxJson.setErrorCode("0");
+        }
+
+        return ajaxJson;
     }
 
     /**

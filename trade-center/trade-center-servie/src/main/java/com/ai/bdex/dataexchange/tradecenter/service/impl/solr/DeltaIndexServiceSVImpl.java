@@ -181,14 +181,20 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
             if(gdsInfo != null){
                 solrInputDocument.addField("id", gdsInfo.getGdsId(), 1.0f);
                 solrInputDocument.addField("gdsName", gdsInfo.getGdsName(), 1.0f);
-                solrInputDocument.addField("gdsNameSrc", gdsInfo.getGdsName(), 1.0f);
                 solrInputDocument.addField("gdsSubtitle", gdsInfo.getGdsSubtitle(), 1.0f);
-                solrInputDocument.addField("gdsSubtitleSrc", gdsInfo.getGdsSubtitle(), 1.0f);
-                solrInputDocument.addField("catFirst", gdsInfo.getGdsSubtitle());
+                solrInputDocument.addField("catFirst", gdsInfo.getCatFirst());
                 solrInputDocument.addField("apiId", gdsInfo.getApiId());
                 solrInputDocument.addField("gdsPic", gdsInfo.getGdsPic());
                 solrInputDocument.addField("ifRecommend", gdsInfo.getIfRecommend());
                 solrInputDocument.addField("funIntroduction", gdsInfo.getFunIntroduction());
+//                if(StringUtil.isNotBlank(funIntroduction)){
+//                    try {
+//                        solrInputDocument.addField("funIntroduction", new String(MongoFileUtil.readFile(funIntroduction), "UTF-8"));
+//                    } catch (Exception e) {
+//                        logger.error("解析 funIntroduction 描述失败", e);
+//                        solrInputDocument.addField("funIntroduction", funIntroduction);
+//                    }
+//                }
                 solrInputDocument.addField("status", gdsInfo.getStatus());
                 solrInputDocument.addField("shelveTime", gdsInfo.getShelveTime());
                 solrInputDocument.addField("createTime", gdsInfo.getCreateTime());
@@ -253,14 +259,20 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                     solrInputDocument = new SolrInputDocument();
                     solrInputDocument.addField("id", gdsInfo.getGdsId(), 1.0f);
                     solrInputDocument.addField("gdsName", gdsInfo.getGdsName(), 1.0f);
-                    solrInputDocument.addField("gdsNameSrc", gdsInfo.getGdsName(), 1.0f);
                     solrInputDocument.addField("gdsSubtitle", gdsInfo.getGdsSubtitle(), 1.0f);
-                    solrInputDocument.addField("gdsSubtitleSrc", gdsInfo.getGdsSubtitle(), 1.0f);
-                    solrInputDocument.addField("catFirst", gdsInfo.getGdsSubtitle());
+                    solrInputDocument.addField("catFirst", gdsInfo.getCatFirst());
                     solrInputDocument.addField("apiId", gdsInfo.getApiId());
                     solrInputDocument.addField("gdsPic", gdsInfo.getGdsPic());
                     solrInputDocument.addField("ifRecommend", gdsInfo.getIfRecommend());
                     solrInputDocument.addField("funIntroduction", gdsInfo.getFunIntroduction());
+//                    String funIntroduction = gdsInfo.getFunIntroduction();
+//                    if(StringUtil.isNotBlank(funIntroduction)){
+//                        try {
+//                            solrInputDocument.addField("funIntroduction", new String(MongoFileUtil.readFile(funIntroduction), "UTF-8"));
+//                        } catch (Exception e) {
+//                            logger.error("解析 funIntroduction 描述失败", e);
+//                        }
+//                    }
                     solrInputDocument.addField("status", gdsInfo.getStatus());
                     solrInputDocument.addField("shelveTime", gdsInfo.getShelveTime());
                     solrInputDocument.addField("createTime", gdsInfo.getCreateTime());
@@ -332,9 +344,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                     solrInputDocument = new SolrInputDocument();
                     solrInputDocument.addField("id", gdsInfoRespDTO.getGdsId(), 1.0f);
                     solrInputDocument.addField("gdsName", gdsInfoRespDTO.getGdsName(), 1.0f);
-                    solrInputDocument.addField("gdsNameSrc", gdsInfoRespDTO.getGdsName(), 1.0f);
                     solrInputDocument.addField("gdsSubtitle", gdsInfoRespDTO.getGdsSubtitle(), 1.0f);
-                    solrInputDocument.addField("gdsSubtitleSrc", gdsInfoRespDTO.getGdsSubtitle(), 1.0f);
                     solrInputDocument.addField("catFirst", gdsInfoRespDTO.getCatFirst());
                     if(gdsInfoRespDTO.getApiId() != null){
                         solrInputDocument.addField("apiId", gdsInfoRespDTO.getApiId());
@@ -342,6 +352,14 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                     solrInputDocument.addField("gdsPic", gdsInfoRespDTO.getGdsPic());
                     solrInputDocument.addField("ifRecommend", gdsInfoRespDTO.getIfRecommend());
                     solrInputDocument.addField("funIntroduction", gdsInfoRespDTO.getFunIntroduction());
+//                    String funIntroduction = gdsInfoRespDTO.getFunIntroduction();
+//                    if(StringUtil.isNotBlank(funIntroduction)){
+//                        try {
+//                            solrInputDocument.addField("funIntroduction", new String(MongoFileUtil.readFile(funIntroduction), "UTF-8"));
+//                        } catch (Exception e) {
+//                            logger.error("解析 funIntroduction 描述失败", e);
+//                        }
+//                    }
                     solrInputDocument.addField("status", gdsInfoRespDTO.getStatus());
                     solrInputDocument.addField("shelveTime", gdsInfoRespDTO.getShelveTime());
                     solrInputDocument.addField("createTime", gdsInfoRespDTO.getCreateTime());

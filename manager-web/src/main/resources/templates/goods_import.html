@@ -8,7 +8,6 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-	<!--  <link rel="stylesheet" href="../static/css/manage.css"   th:href="@{/css/manage.css}">-->
 	<script type="text/javascript" src="../../static/js-busi/gds/gdsEdit.js" th:src="@{/js-busi/gds/gdsEdit.js}"></script>
 	<script type="text/javascript" src="../../static/component/ckeditor/ckeditor.js" th:src="@{/component/ckeditor/ckeditor.js}"></script>
 	<script type="text/javascript" src="../../static/js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
@@ -16,7 +15,7 @@
 <body>
 <header class="clearfix m_header" th:remove="all">
 	<a href="" class="Logo" target="_blank" >
-		<img width="160" src="../static/images/manage_logo.jpg" alt="广州数据" >
+		<img  src="../static/images/manage_logo.png" alt="广州数据" >
 	</a>
 	<ul class="m_hdlist clearfix">
 		<li>
@@ -203,7 +202,7 @@
 					</td>
 					<td>
 						<span>
-							<img src="" width="120" height="120" name="gdsPicUrl" id="gdsPicUrl"  th:src="${gdsInfoVO.gdsPicUrl}">
+							<img src="" name="gdsPicUrl" id="gdsPicUrl"  th:src="${gdsInfoVO.gdsPicUrl}">
 						</span>
 						<span class="tip">说明：建议选择100*100规格图片</span>
 					</td>
@@ -215,7 +214,7 @@
 						 <div class="form-inline">
                              <div class="form-group">
                              <input  type="hidden" class="form-control" placeholder="" id="gdsPic" th:value="${gdsInfoVO.gdsPic}">
-                             <input type="file" class="float_File form-control" width="100" height="100" name="picUpLoad" id="picUpLoad" th:onchange="'uploadImage(this)'">
+                             <input type="file" class="float_File form-control"  name="picUpLoad" id="picUpLoad" th:onchange="'uploadImage(this)'">
                               </div>
                           </div>
 						

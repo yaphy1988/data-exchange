@@ -1,104 +1,196 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="~{fragments/syshead :: syshead}"></div>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
 <head>
 	<meta charset="UTF-8">
 	<title>商品搜索</title>
-	<link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}">
-		<link rel="stylesheet" href="../static/css/global.css" th:href="@{/css/global.css}">
-	<link rel="stylesheet" href="../static/css/index.css" th:href="@{/css/index.css}">
+	<!-- 公共css 增加 th:remove="all" 运行时移除，不然会重复引入样式-->
+	<link th:remove="all" rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}">
+	<link th:remove="all" rel="stylesheet" href="../static/css/global.css" th:href="@{/css/global.css}">
+	<link th:remove="all" rel="stylesheet" href="../static/css/index.css" th:href="@{/css/index.css}">
+
+	<!--业务css-->
 	<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
-	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+	<!--业务js-->
+	<script type="text/javascript" th:src="@{/js-busi/search/search.js}"></script>
 </head>
 
 <body>
-	<div th:replace="~{fragments/top :: top}"></div>
-	<div class="header">
-		<!-- 搜索框 -->
-	    <div th:replace="~{fragments/search_box :: search_box}"></div>
-	    <div class="menuBg seconav">
-	    	<div class="menu clearfix">
-	        <!--左侧边栏开始-->
-	        <div class="sidebar floatL">
-	            <h3>全部商品<i class="glyphicon glyphicon-list"></i></h3>
-	            <ul class="hidden">
-	                <li><a href="#"><i>&rsaquo;</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>交通运输</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>气象环保</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>生活服务</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>生活服务</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>时空数据</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>健康医疗</a> </li>
-	                <li><a href="#"><i>&rsaquo;</i>更多服务</a> </li>
-	            </ul>
-
-	            <!--二级导航开始-->
-	            <div class="sidebar-hidden" style="display: none">
-	                <h4>金融服务</h4>
-	                <div class="sidebar-link">
-	                    <a href="#">条码查询</a>
-	                    <a href="#">万能小哥</a>
-	                    <a href="#">专利查询</a>
-	                    <a href="#">全国违章直连查询</a>
-	                    <a href="#">H5在线电影票</a>
-	                    <a href="#">常用快递</a>
-	                    <a href="#">快递在线下单</a>
-	                    <a href="#">名片识别</a>
-	                    <a href="#">条码查询</a>
-	                    <a href="#">万能小哥</a>
-	                    <a href="#">专利查询</a>
-	                    <a href="#">全国违章直连查询</a>
-	                    <a href="#">H5在线电影票</a>
-	                    <a href="#">常用快递</a>
-	                    <a href="#">快递在线下单</a>
-	                    <a href="#">名片识别</a>
-	                    <a href="#">条码查询</a>
-	                    <a href="#">万能小哥</a>
-	                    <a href="#">专利查询</a>
-	                    <a href="#">全国违章直连查询</a>
-	                    <a href="#">H5在线电影票</a>
-	                    <a href="#">常用快递</a>
-	                </div>
-
-	                <div class="ad-list clearfix">
-	                    <div class="item floatL"></div>
-	                    <div class="item floatL"></div>
-	                    <div class="item floatL"></div>
-	                </div>
-	            </div>
-	            <!--二级导航结束-->
-	        </div>
-	        <!--左侧边栏结束-->
-
-	        <!--菜单栏开始-->
-	        <div th:replace="~{fragments/navigation :: navigation}"></div>
-	        <!--菜单栏结束-->
-	    	</div>
-	    </div>
-	</div>
-	<!-- 搜索页内容 -->
-	<div class="main">
-		<input type="hidden" th:attr="value=${searchVO.keyWord}" id="keyWord"/>
-		<input type="hidden" th:attr="value=${searchVO.catFirst}" id="catFirst"/>
-		<!-- 不同一级分类页面展示的筛选条件不一样 -->
-		<div th:if="${searchVO.catFirst == 1}"><div th:replace="~{search/search-api-condition :: search-api-condition}"></div></div>
-		<div th:if="${searchVO.catFirst == 2}"><div th:replace="~{search/search-custom-condition :: search-custom-condition}"></div></div>
-		<div th:if="${searchVO.catFirst == 3}"><div th:replace="~{search/search-api-condition :: search-api-condition}"></div></div>
-		<div class="gl_list">
-			<div class="filter clearfix">
-				<ul>
-					<li class="active sortCondition" sortField="hotDegree"><a href="javascript:void(0)" >综合<i class="glyphicon glyphicon-arrow-down"></i></a></li>
-					<li sortField="shelveTime" class="sortCondition"><a href="javascript:void(0)">最新<i class="glyphicon"></i></a></li>
-					<li sortField="gdsSale" class="sortCondition"><a href="javascript:void(0)">最热<i class="glyphicon"></i></a></li>
-				</ul>
-				<p class="pull-right pr10">为您找到<b class="col_orange"><font id="numFound">1234</font></b>个结果</p>
+    <!-- top 增加 th:remove="all" 运行时移除-->
+	<div class="top" th:remove="all">
+		<div class="wrap1200 overflow-inherit clearfix">
+			<div class="top-left floatL">
+				<span>欢迎来到广州数据中心</span>
+				<span>2017年4月20日&nbsp;&nbsp;12：00：30</span>
 			</div>
-			<div id="search_list">
+			<div class="top-right floatR">
+				<a href="#"><b>请登录</b></a>
+				<a href="#">免费注册</a>
+				<i>|</i>
+				<a href="#" class="follow">关注广数<i class="glyphicon glyphicon-menu-down"></i>
+					<div class="guangshu"><i></i><img src="../static/images/wexin.jpg"></div>
+				</a>
+				<a href="#">常见问题</a>
+				<a href="#">联系我们</a>
 			</div>
 		</div>
 	</div>
-	<!-- footer -->
-	<div th:replace="~{fragments/footer :: footer}"><!-- footer --></div>
-	<script type="text/javascript" th:src="@{/js-busi/search/search.js}"></script>
+	<div class="header" th:remove="all">
+		<div class="wrap1200 clearfix">
+			<div class="logo floatL"><img src="../static/images/logo.png" title="广州数据中心"></div>
+			<div class="search floatR">
+				<div class="search-input">
+					<input type="text">
+					<button class="btn btn-primary">搜索</button>
+				</div>
+				<div class="search-hot">
+					<a href="#" class="more floatR">更多&nbsp;&gt;</a>
+					<a href="#">手机号码归属地</a>
+					<a href="#">常用快递</a>
+					<a href="#">快递</a>
+					<a href="#">手机号码归属地</a>
+					<a href="#">全国车辆违章</a>
+					<a href="#">身份证实名认证</a>
+					<a href="#">短信API服务</a>
+					<a href="#">短信API服务</a>
+				</div>
+			</div>
+		</div>
+		<div class="menu clearfix">
+			<!--左侧边栏开始-->
+			<div class="sidebar floatL">
+				<h3>全部商品<i class="glyphicon glyphicon-list menuIcon"></i></h3>
+				<ul>
+					<li><a href="#"><i>&rsaquo;</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
+					<li><a href="#"><i>&rsaquo;</i>交通运输</a> </li>
+					<li><a href="#"><i>&rsaquo;</i>气象环保</a> </li>
+					<li><a href="#"><i>&rsaquo;</i>生活服务</a> </li>
+					<li><a href="#"><i>&rsaquo;</i>生活服务</a> </li>
+					<li><a href="#"><i>&rsaquo;</i>时空数据</a> </li>
+					<li><a href="#"><i>&rsaquo;</i>健康医疗</a> </li>
+					<li><a href="#"><i>&rsaquo;</i>更多服务</a> </li>
+				</ul>
+
+				<!--二级导航开始-->
+				<div class="sidebar-hidden" style="display: none">
+					<h4>金融服务</h4>
+					<div class="sidebar-link">
+						<a href="#">条码查询</a>
+						<a href="#">万能小哥</a>
+						<a href="#">专利查询</a>
+						<a href="#">全国违章直连查询</a>
+						<a href="#">H5在线电影票</a>
+						<a href="#">常用快递</a>
+						<a href="#">快递在线下单</a>
+						<a href="#">名片识别</a>
+						<a href="#">条码查询</a>
+						<a href="#">万能小哥</a>
+						<a href="#">专利查询</a>
+						<a href="#">全国违章直连查询</a>
+						<a href="#">H5在线电影票</a>
+						<a href="#">常用快递</a>
+						<a href="#">快递在线下单</a>
+						<a href="#">名片识别</a>
+						<a href="#">条码查询</a>
+						<a href="#">万能小哥</a>
+						<a href="#">专利查询</a>
+						<a href="#">全国违章直连查询</a>
+						<a href="#">H5在线电影票</a>
+						<a href="#">常用快递</a>
+					</div>
+
+					<div class="ad-list clearfix">
+						<div class="item floatL"></div>
+						<div class="item floatL"></div>
+						<div class="item floatL"></div>
+					</div>
+				</div>
+				<!--二级导航结束-->
+			</div>
+			<!--左侧边栏结束-->
+
+			<!--菜单栏开始-->
+			<ul class="navbar floatL clearfix">
+				<li><a href="#">首页</a> </li>
+				<li><a href="#">API</a> </li>
+				<li><a href="#">定制数据</a> </li>
+				<li><a href="#">解决方案</a> </li>
+				<li><a href="#">新闻动态</a> </li>
+			</ul>
+			<!--菜单栏结束-->
+		</div>
+	</div>
+
+	<!-- 搜索页内容 -->
+	<div layout:fragment="screen_content">
+		<div class="main">
+			<input type="hidden" th:attr="value=${searchVO.keyWord}" id="keyWord"/>
+			<input type="hidden" th:attr="value=${searchVO.catFirst}" id="catFirst"/>
+			<!-- 不同一级分类页面展示的筛选条件不一样 -->
+			<div th:if="${searchVO.catFirst == 1}"><div th:replace="~{search/search-api-condition :: search-api-condition}"></div></div>
+			<div th:if="${searchVO.catFirst == 2}"><div th:replace="~{search/search-custom-condition :: search-custom-condition}"></div></div>
+			<div th:if="${searchVO.catFirst == 3}"><div th:replace="~{search/search-api-condition :: search-api-condition}"></div></div>
+			<div class="gl_list">
+			<div class="filter clearfix" th:fragment="search-order-condition">
+				<ul>
+					<li th:if="${searchVO.catFirst == 1}" class="active sortCondition" sortField="hotDegree"><a href="javascript:void(0)" >综合<i class="glyphicon glyphicon-arrow-down"></i></a></li>
+					<li th:if="${searchVO.catFirst == 2} or ${searchVO.catFirst == 3}" sortField="shelveTime" class="active sortCondition"><a href="javascript:void(0)">最新<i class="glyphicon glyphicon-arrow-down"></i></a></li>
+					<li th:if="${searchVO.catFirst == 1}" sortField="shelveTime" class="sortCondition"><a href="javascript:void(0)">最新<i class="glyphicon"></i></a></li>
+					<li th:if="${searchVO.catFirst == 1}" sortField="gdsSale" class="sortCondition"><a href="javascript:void(0)">最热<i class="glyphicon"></i></a></li>
+				</ul>
+				<p class="pull-right pr10">为您找到<b class="col_orange"><font id="numFound">0</font></b>个结果</p>
+			</div>
+			<div id="search_list"></div>
+		</div>
+	</div>
+
+	<!-- footer 增加 th:remove="all" 运行时移除-->
+	<div class="footer" th:remove="all">
+		<div class="wrap1200 ptb40">
+			<div class="left floatL">
+				<img src="../static/images/logo-footer.png">
+				<p class="">本网站所列开源项目的中文版文档全部由Bootstrap中文网成员翻译整理，并全部遵循 CC BY 3.0协议发布</p>
+			</div>
+			<div class="right floatR">
+				<div class="footer-item">
+					<h4>关于我们</h4>
+					<p>
+						<a href="#">公司简介</a>
+						<a href="#">新闻动人</a>
+						<a href="#">友情链接</a>
+						<a href="#">招聘</a>
+					</p>
+				</div>
+				<div class="footer-item">
+					<h4>服务与支持</h4>
+					<p>
+						<a href="#">服务条款</a>
+						<a href="#">常见问题</a>
+						<a href="#">友情链接</a>
+						<a href="#">招聘</a>
+					</p>
+				</div>
+				<div class="footer-item">
+					<h4>联系我们</h4>
+					<p>
+						<a href="#">商务合作</a>
+						<a href="#">在线咨询</a>
+						<a href="#">友情链接</a>
+						<a href="#">招聘</a>
+					</p>
+				</div>
+				<div class="footer-item">
+					<h4>官方微信</h4>
+					<p>
+						<img src="../static/images/wexin.jpg">
+					</p>
+				</div>
+			</div>
+		</div>
+		<div class="copyright"> © 2017 广州数据交易服务有限公司 粤ICP备16073970号 * 粤公网安备 44010502000357号</div>
+
+
+	</div>
 </body>
 </html>

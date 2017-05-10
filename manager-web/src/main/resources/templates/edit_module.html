@@ -9,11 +9,13 @@
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+	<script type="text/javascript" src="../static/js-busi/page/edit_manager.js" th:src="@{/js-busi/page/edit_manager.js}"></script>
+	
 </head>
 <body>
 <header class="clearfix m_header">
 	<a href="" class="Logo" target="_blank" >
-		<img width="160" src="../static/images/manage_logo.jpg" alt="广州数据" >
+		<img  src="../static/images/manage_logo.png" alt="广州数据" >
 	</a>
 	<ul class="m_hdlist clearfix">
 		<li>
@@ -53,10 +55,10 @@
             <div class="tab-slide pl20 pr20">
 
                 <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
+                <ul class="nav nav-tabs" role="tablist" id="tabList">
                     <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">编辑模块</a></li>
-                    <li><a href="#tab02" aria-controls="home" role="tab" data-toggle="tab">商品模块</a></li>
-                    <li><a href="#tab03" aria-controls="home" role="tab" data-toggle="tab">广告模块</a></li>
+                    <li th:remove="all"><a href="#tab02" aria-controls="home" role="tab" data-toggle="tab" >商品模块</a></li>
+                    <li th:if="${moduleRespDTO.moduleType=='02'}" ><a href="#tab03" aria-controls="home" role="tab" data-toggle="tab">广告模块</a></li>
                 </ul>
 
                 <!-- Tab panes -->
@@ -65,41 +67,44 @@
                         <table class="editTable">
                             <tr>
                                 <td class="Hint " width="120">
-                                    标识:
+                                    	模块名称:
                                 </td>
                                 <td width="420">
-                                      <input type="text" class="form-control" placeholder="xxxxx">
+                                      <input type="text" class="form-control" placeholder="" id="moduleName" th:value="${moduleRespDTO.moduleName}">
+                                      <input type="hidden" id="moduleId" th:value="${moduleId}">
                                 </td>
                             </tr>
 
                             <tr>
                                 <td class="Hint">
-                                    <span class="col_red">*</span>标题:
+                                    <span class="col_red">*</span>父模块:
                                 </td>
                                 <td>
-                                        <input type="text" class="form-control" placeholder="xxxx">
+                                   <select class="form-control" id="modulePid" disabled>
+                                   	    <option value="-1">无</option>
+                                   		<option th:each="subPageModule,catStat:${moduleRespDTO.subPageModuleList}" th:value="${subPageModule.moduleId}" th:selected="(${subPageModule.moduleId} == ${moduleRespDTO.modulePid})"th:text="${subPageModule.moduleName}"></option>
+	                                </select>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="Hint tips">
-                                    <span class="col_red">*</span>数量:
+                                    <span class="col_red">*</span>展示数量:
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" placeholder="xxxx">
+                                	<input th:if="${103 == moduleRespDTO.moduleId}" type="text" class="form-control" placeholder="" id="moduleCount" disabled th:value="${moduleRespDTO.moduleCount}" >
+                                    <input th:if="${103 != moduleRespDTO.moduleId}" type="text" class="form-control" placeholder="" id="moduleCount"  th:value="${moduleRespDTO.moduleCount}" >
                                 </td>
                             </tr>
-                            <tr>
-                                <td></td>
-                                <td class="pt5"><span class="col_999 ">请录入数量</span></td>
-                            </tr>
+                            <!-- 
                             <tr>
                                 <td class="Hint">
-                                    更多链接:
+                                    <span class="col_red">*</span>排序:
                                 </td>
                                 <td>
-                                   <textarea class="form-control" rows="4"></textarea>
+                                    <input type="text" class="form-control" placeholder="" id="orderNo" th:value="${moduleRespDTO.orderNo}" disabled>
                                 </td>
                             </tr>
+                             
                             <tr>
                                 <td class="Hint">
                                     <span class="col_red">*</span>是否展示:
@@ -107,41 +112,34 @@
                                 <td>
                                     <div class="radio">
                                         <label>
-                                            <input type="radio" name="" value="option1" checked>是
+                                            <input type="radio" name="" value="1" th:name="status" th:checked="${moduleRespDTO.validStatus}">是
                                         </label>
                                         <label>
-                                            <input type="radio" name="" value="option2" >否
+                                            <input type="radio" name="" value="0" th:name="status" th:checked="${moduleRespDTO.inValidStatus}">否
                                         </label>
                                     </div>
                                 </td>
                             </tr>
+                            -->
                             <tr>
                                 <td class="Hint">
-                                    模块排序:
+                                    	备注:
                                 </td>
                                 <td>
-                                    <input type="text" class="form-control" placeholder="xxxx">
-                                </td>
-                            </tr>
-                            <tr>
-                                <td class="Hint">
-                                    备注:
-                                </td>
-                                <td>
-                                    <textarea class="form-control" rows="4"></textarea>
+                                    <textarea class="form-control" rows="4" id="remark" th:text="${moduleRespDTO.remark}"></textarea>
                                 </td>
                             </tr>
                             <tr>
                                 <td class="Hint">&nbsp;</td>
                                 <td>
-                                    <button class="btn btn-primary">保存</button>
-                                    <button class="btn btn-default">返回</button>
+                                    <button class="btn btn-primary" th:onclick="'savePageModule()'" >保存</button>
+                                    <button class="btn btn-default" th:onclick="'javascript :history.back(-1);'" >返回</button>
                                 </td>
                             </tr>
                         </table>
 
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="tab02">
+                    <div role="tabpanel" class="tab-pane" id="tab02" th:remove="all">
                         <div class="shop-list">
                             <div class="edit-title">已选择商品列表</div>
                             <div class="top-table">
@@ -631,8 +629,8 @@
 
 
                     </div>
-                    <div role="tabpanel" class="tab-pane" id="tab03">
-                        <table class="table table-bordered text-center" >
+                    <div role="tabpanel" class="tab-pane" id="tab03" th:if="${moduleRespDTO.moduleType=='02'}"  >
+                        <table class="table table-bordered text-center" th:remove="all">
                             <thead>
                             <tr class="active">
                                 <th>广告编号</th>
@@ -662,171 +660,9 @@
                                     </p>
                                 </td>
                             </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="" title="图片">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>100168699</td>
-                                <td> 首页轮播广告</td>
-                                <td>
-                                    <div class="table-banner">
-                                        <img src="">
-                                    </div>
-                                </td>
-                                <td>xxxxxxxxxxxxxxxx,xxxxxxxxxxxxxxxx,xxxxxxxxxx</td>
-                                <td>1</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="#">失效</a><i>|</i>
-                                        <a href="#">编辑</a><i>|</i>
-                                        <a href="#">删除</a>
-                                    </p>
-                                </td>
-                            </tr>
                             </tbody>
                         </table>
-                        <div class="pagelist clearfix">
+                        <div class="pagelist clearfix" th:remove="all">
                             <div class="left-btn">
                                 <button><i class="glyphicon glyphicon-plus"></i>新增广告</button>
                             </div>

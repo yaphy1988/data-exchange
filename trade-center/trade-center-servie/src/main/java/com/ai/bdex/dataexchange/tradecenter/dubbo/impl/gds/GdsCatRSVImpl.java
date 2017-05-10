@@ -1,21 +1,23 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.impl.gds;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.Resource;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.GdsCat;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IGdsCatSV;
-
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.paas.utils.CollectionUtil;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import javax.annotation.Resource;
 
 /**
  * Created by yx on 2017/4/20.
@@ -68,5 +70,72 @@ public class GdsCatRSVImpl implements IGdsCatRSV {
             throw new Exception(e);
         }
         return respDTOList;
+    }
+
+    @Override
+    public List<GdsCatRespDTO> queryLadderCatListByCatId(Integer catId) throws Exception {
+        if (catId == null){
+            throw new Exception("根据当前ID获取从最低级到最高级分类的入参为空");
+        }
+        List<GdsCatRespDTO> list = new ArrayList<GdsCatRespDTO>();
+        try {
+            queryLadderCatList(list,catId);
+        }catch (Exception e){
+            log.error("根据当前ID获取从最低级到最高级分类异常：",e);
+        }
+        return list;
+    }
+
+    private void queryLadderCatList(List<GdsCatRespDTO> list , Integer catId){
+        GdsCatRespDTO gdsCatRespDTO = null;
+        try {
+            gdsCatRespDTO = queryGdsCatByCatId(catId);
+            if (gdsCatRespDTO!=null){
+                list.add(gdsCatRespDTO);
+                if (gdsCatRespDTO.getCatPid().intValue()>0){
+                    queryLadderCatList(list,gdsCatRespDTO.getCatPid());
+                }
+            }
+        }catch (Exception e){
+            log.error("查询分类递进列表异常：",e);
+        }
+    }
+    @Override
+    public PageResponseDTO<GdsCatRespDTO> queryCatPageInfo(GdsCatReqDTO gdsCatReqDTO)
+            throws BusinessException {
+        return iGdsCatSV.queryCatPageInfo(gdsCatReqDTO);
+    }
+    @Override
+    public void saveGdsCatInfo(GdsCatReqDTO gdsCatReqDTO) throws BusinessException {
+        if (gdsCatReqDTO==null){
+            throw new BusinessException("保存商品分类信息入参为空");
+        }
+        try {
+            iGdsCatSV.insertGdsCat(gdsCatReqDTO);
+        } catch (Exception e) {
+            throw new BusinessException("分类保存失败："+e);
+        }
+    }
+    @Override
+    public void updateGdsCatInfo(GdsCatReqDTO gdsCatReqDTO) throws BusinessException {
+        if (gdsCatReqDTO==null){
+            throw new BusinessException("编辑商品分类信息入参为空");
+        }
+        try {
+            iGdsCatSV.updateGdsCat(gdsCatReqDTO);
+        } catch (Exception e) {
+            throw new BusinessException("分类编辑失败："+e);
+        }
+    }
+    @Override
+    public void deleteGdsCatInfo(Integer catId) throws BusinessException {
+        if (catId==null || catId.intValue()<=0){
+            throw new BusinessException("删除商品分类信息入参为空");
+        }
+        try {
+            iGdsCatSV.deleteGdsCatInfo(catId);
+        } catch (Exception e) {
+            throw new BusinessException("删除分类失败："+e);
+        }
     }
 }

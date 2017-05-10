@@ -3,6 +3,8 @@ package com.ai.bdex.dataexchange.aipcenter.dubbo.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -117,5 +119,51 @@ public class ServiceMessageRSVImpl implements IServiceMessageRSV{
 			throw e;
 		}
 	}
-	
+
+	@Override
+	public List<AipServiceInParaDTO> queryAipServiceInParaList(String serviceId, String version) throws Exception {
+		if(StringUtil.isBlank(serviceId) || StringUtil.isBlank(version)){
+			throw new BusinessException("查询aip入参信息列表的参数为空！");
+		}
+		List<AipServiceInParaDTO> list = new ArrayList<AipServiceInParaDTO>();
+
+		try {
+			List<AipServiceInPara> paras = aipServiceInParaSV.getBeans(serviceId,version);
+			if (!CollectionUtil.isEmpty(paras)){
+				for (AipServiceInPara aipServiceInPara : paras){
+					AipServiceInParaDTO aipServiceInParaDTO = new AipServiceInParaDTO();
+					ObjectCopyUtil.copyObjValue(aipServiceInPara,aipServiceInParaDTO,null,false);
+					list.add(aipServiceInParaDTO);
+				}
+			}
+		}catch (Exception e){
+			log.error("查询aip入参列表异常：",e);
+		}
+
+		return list;
+	}
+
+	@Override
+	public List<AipServiceOutParaDTO> queryAipServiceOutParaList(String serviceId, String version) throws Exception {
+		if(StringUtil.isBlank(serviceId) || StringUtil.isBlank(version)){
+			throw new BusinessException("查询aip出参信息列表的参数为空！");
+		}
+		List<AipServiceOutParaDTO> list = new ArrayList<AipServiceOutParaDTO>();
+
+		try {
+			List<AipServiceOutPara> paras = aipServiceOutParaSV.getbeans(serviceId,version);
+			if (!CollectionUtil.isEmpty(paras)){
+				for (AipServiceOutPara aipServiceOutPara : paras){
+					AipServiceOutParaDTO aipServiceOutParaDTO = new AipServiceOutParaDTO();
+					ObjectCopyUtil.copyObjValue(aipServiceOutPara,aipServiceOutParaDTO,null,false);
+					list.add(aipServiceOutParaDTO);
+				}
+			}
+		}catch (Exception e){
+			log.error("查询aip出参列表异常：",e);
+		}
+
+		return list;
+	}
+
 }

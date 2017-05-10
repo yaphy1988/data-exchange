@@ -1,6 +1,5 @@
 var basePath =  WEB_ROOT;
-var imgPath = "http://112.74.163.29:14751/ImageServer/image/"; 
-$(function(){
+ $(function(){
 	$("#needcontent").focus(function(){
 		hiddenwarm('needcontentDiv');
 	});
@@ -27,83 +26,12 @@ function showwarm(id,msg){
 function hiddenwarm(id){
 	$("#"+id).find("p").css('visibility','hidden');
 }
-function  showData() {
-	$("#myModal").show();
-	
-}
 function encodeURI2(strinfo) {
 	//中文编码一次，后台解析即可
 	var strinfo1 = encodeURI(strinfo);
 	return strinfo1;
 }
-/**
- * 
- */
-/** 保存数据定制信息 */
-function saveMadeData() {
-	
-/*	var staff_id = $("#staff_id").val();
-	if(staff_id == "")
-	{
-	    WEB.msg.info("提示",'请先登录');
-	    return;
-	}*/
-	var needTiel    =  encodeURI2($("#needTiel").val());
-	var needcontent =  encodeURI2($("#needcontent").val());
-	var lnkposen    =  encodeURI2($("#lnkposen").val());
-	var lnkphone    =  $("#lnkphone").val();
-	var lnkemail    =  $("#lnkemail").val();
-	var url = WEB_ROOT + "/homePage/saveMadeData";
-    if(!needTiel){
-    	showwarm('needTielDiv','请输入标题');
-		return;	 
- 	 }
-    if(!needcontent){
-    	showwarm('needcontentDiv','请输入内容');
-		return;	 
- 	 }
-    if(!lnkposen){
-    	showwarm('lnkposenDiv','请输入联系人');
-		return;	 
- 	 }
-	if(!WEB.check.isMobile(lnkphone))
-	{
-		showwarm('lnkphoneDiv','请输入正确的手机号码');
-		return;
-	}
-	if(!WEB.check.isEmail(lnkemail))
-	{
- 		showwarm('lnkemailDiv','请输入正确的邮箱地址');
-		return;
-	} 
 
-	$("#commitData").attr("disabled", true);
-	param = {
-		needTiel : needTiel,
-		needcontent : needcontent,
-		lnkposen : lnkposen,
-		lnkphone : lnkphone,
-		lnkemail : lnkemail
-	};
-	$.ajax({
-		url : url,
-		type : "POST",
-		dataType : "json",
-		async : false,
-		data : param,
-		success : function(data) {
-		   if(data.success)  {
-			    WEB.msg.info("提示",'保存成功');
-			    $("#myModal").hide(); 
-				$("#commitData").attr("disabled", false);
-
-  		   }
-	}});
-}
-function hideMadeData()
-{
-	  $("#myModal").hide(); 
- }
 /**查询楼层信息，异步加载楼层内容*/
 function queryPageModue(){
 	var url = basePath+'/homePage/queryPageModue';
@@ -177,19 +105,19 @@ function queryModue101(moduleId){
 				if(i==0){
 					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="active"></li>';
 					htmDiv +='<div class="item active">'+
-	                '<a href="'+setLinkUrk(d.linkPage)+'" target="_blank"><img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'"></a>'+
+	                '<a href="'+setLinkUrk(d.linkPage)+'" target="_blank"><img src="'+d.vfsId+'" alt="'+d.adTitle+'"></a>'+
 	            '</div>';
 				}else{
 					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'"></li>';
 					htmDiv +='<div class="item">'+
-		                '<a href="'+setLinkUrk(d.linkPage)+'" target="_blank"><img src="'+basePath+'/images/index-banner.jpg" alt="'+d.adTitle+'"></a>'+
+		                '<a href="'+setLinkUrk(d.linkPage)+'" target="_blank"><img  src="'+d.vfsId+'" alt="'+d.adTitle+'"></a>'+
 		            '</div>';
 				}
 			});
 		}
 		$('#carousel-example-generic>ol').html(htmlOl);
 		$('#carousel-example-generic>div').html(htmDiv);
-		$('#carousel-example-generic').carousel({interval: 3000});
+		$('#carousel-example-generic').carousel({interval: 5000});
 	};
 	doAjax(url,params,callBack);
 }
@@ -201,9 +129,10 @@ function queryModue103(moduleId){
 		var htmlOl = '';
 		var htmDiv = '';
 		if(data.success){
-			$(data.moduleAdList).each(function(i,d){
-				$("#datasetImg").attr("src",d.vfsId); 
-			});
+			if(data.moduleAdList != null){
+				var moduleAd = data.moduleAdList[0];
+				$("#datasetImg").attr("src",moduleAd.vfsId); 
+			}
 		} 
 	};
 	doAjax(url,params,callBack);
@@ -229,7 +158,7 @@ function querysubPageModuleList(moduleId,pageNo){
 			var pageModule = data.moduleRespDTO;
 			html +='<dt>'+pageModule.moduleName+'</dt>';
 			$(data.pageInfoList).each(function(i,d){
-                html+='<dd><a href="'+basePath+'/homePage/pageNewsDetail?infoId='+d.infoId+'" target="_blank">'+d.infoTitle+'</a> </dd>';
+                html+='<dd><a href="'+basePath+'/homePage/newsDetail?infoId='+d.infoId+'" target="_blank">'+d.infoTitle+'</a> </dd>';
 			});
 		}
 		switch (moduleId) {
@@ -271,7 +200,7 @@ function queryPartner109(moduleId){
 			});
 		}
 		$('#partnertCarousel>div').html(html); 
-		$('#partnertCarousel').carousel({interval: 4000});
+		$('#partnertCarousel').carousel({interval: 5000});
 	};
 	doAjax(url,params,callBack);
 }

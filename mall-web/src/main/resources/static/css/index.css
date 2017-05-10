@@ -78,10 +78,11 @@ input,button{
 }
 
 .logo{
-    width: 260px;
+    width: 240px;
     overflow: hidden;
+    margin-top: -13px;
 }
-.logo img{max-height: 66px;}
+.logo img{max-height: 74px;}
 
 .search{
     margin-right: 220px;
@@ -235,7 +236,7 @@ margin-right: -46px;
 }
 .sidebar-hidden{
     height: 400px;
-    width: 950px;
+    width: 500px;
     border: 2px solid #2b4099;
     border-left: 0;
     background: #fff;
@@ -274,8 +275,11 @@ margin-right: -46px;
 
 .banner .banner-box{
     margin-left: 260px;
+    /* height: 400px; */
 }
-
+.banner .banner-box .carousel-inner{
+    height: 400px;
+}
 .carousel-indicators li{
     border: none;
     background: #fff;
@@ -566,6 +570,7 @@ i.icon-auto{
 .footer .left img{
     display: block;
     padding: 5px 0px 15px;
+    max-height: 120px;
 }
 .copyright{
     background: #343232;
@@ -590,8 +595,8 @@ i.icon-auto{
     color: #fff;
 }
 .footer-item img{
-    width: 100px;
-    height: 100px;
+    width: 80px;
+    height: 80px;
 }
 
 

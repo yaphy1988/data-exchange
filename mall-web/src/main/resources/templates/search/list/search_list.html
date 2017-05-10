@@ -7,23 +7,23 @@
 					<i class="iconfont icon-xingxing"></i>
 				</div>
 				<div class="pic">
-					<a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:attr="title=${list.gdsNameSrc}">
+					<a href="" target="_blank" th:href="@{'/goods/details/'+${list.id}+'-'+${list.skuId}}" th:attr="title=${list.gdsNameSrc}">
 						<img src="" style="width:80px;height:80px" th:src="${list.gdsPic}">
 					</a>
 				</div>
-				<div class="tit"><a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:utext="${list.gdsName}">我是商品名称最长配置十四字我|是多余的文字</a></div>
+				<div class="tit"><a href="" target="_blank" th:href="@{'/goods/details/'+${list.id}+'-'+${list.skuId}}" th:utext="${list.gdsName}">我是商品名称最长配置十四字我|是多余的文字</a></div>
 				<div class="info">
 					<div class="pirce">
 						<small>￥</small>
-						<strong th:text="${#numbers.formatDecimal(list.packPrice, 1, 2)}">499.00</strong>
+						<strong th:text="${#numbers.formatDecimal(list.packPriceShow, 1, 2)}">499.00</strong>
 						<small th:text="'/'+${list.packTimes}+'次'">/10000次</small>
 					</div>
 					<div class="sale">
-						<a href="" target="_blank" th:href="@{'/goods/pageInit/'+${list.id}+'-'}" th:attr="title=${list.gdsSubtitleSrc}" th:utext="${list.gdsSubtitle}">
+						<a href="" target="_blank" th:href="@{'/goods/details/'+${list.id}+'-'+${list.skuId}}" th:attr="title=${list.gdsSubtitleSrc}" th:utext="${list.gdsSubtitle}">
 							首次申请赠送50次
 						</a>
 					</div>
-					<a href="" target="_blank" class="btn btn-primary btn_rec" th:href="@{'/goods/pageInit/'+${list.id}+'-'}">
+					<a href="javascript:void(0)" target="_blank" class="btn btn-primary btn_rec" th:onclick="|Search.addToCart(${list.id},${list.skuId})|">
 						申请数据
 					</a> 
 				</div>

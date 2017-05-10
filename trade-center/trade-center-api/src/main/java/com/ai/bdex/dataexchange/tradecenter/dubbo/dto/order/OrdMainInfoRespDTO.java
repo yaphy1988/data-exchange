@@ -2,8 +2,12 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
-public class OrdMainInfoRespDTO implements Serializable{ 
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+
+
+public class OrdMainInfoRespDTO  extends BaseResponseDTO{ 
     private String orderId;
     private Integer orderAmount;
     private Long orderMoney; 
@@ -28,6 +32,28 @@ public class OrdMainInfoRespDTO implements Serializable{
     private String payWay;
     private String invoiceModType;
     private String invoiceStatus;
+    private OrdInfoRespDTO ordInfoRespDTO;//子订单 
+    private OrdInvoiceTaxRespDTO ordInvoiceTaxReqDTO;//订单关联增值税发票信息
+    private OrdInvoiceTaxAddrRespDTO ordInvoiceTaxAddrRespDTO;////订单关联增值税发票收货地址表
+
+	public OrdInvoiceTaxAddrRespDTO getOrdInvoiceTaxAddrRespDTO() {
+		return ordInvoiceTaxAddrRespDTO;
+	}
+	public void setOrdInvoiceTaxAddrRespDTO(OrdInvoiceTaxAddrRespDTO ordInvoiceTaxAddrRespDTO) {
+		this.ordInvoiceTaxAddrRespDTO = ordInvoiceTaxAddrRespDTO;
+	}
+	public OrdInvoiceTaxRespDTO getOrdInvoiceTaxReqDTO() {
+		return ordInvoiceTaxReqDTO;
+	}
+	public void setOrdInvoiceTaxReqDTO(OrdInvoiceTaxRespDTO ordInvoiceTaxReqDTO) {
+		this.ordInvoiceTaxReqDTO = ordInvoiceTaxReqDTO;
+	}
+	public OrdInfoRespDTO getOrdInfoRespDTO() {
+		return ordInfoRespDTO;
+	}
+	public void setOrdInfoRespDTO(OrdInfoRespDTO ordInfoRespDTO) {
+		this.ordInfoRespDTO = ordInfoRespDTO;
+	}
 	public String getOrderId() {
 		return orderId;
 	}
