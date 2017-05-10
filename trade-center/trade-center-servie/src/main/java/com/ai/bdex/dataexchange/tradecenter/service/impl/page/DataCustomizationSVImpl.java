@@ -1,7 +1,13 @@
 package com.ai.bdex.dataexchange.tradecenter.service.impl.page;
  
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.DataCustomizationExample;
+import com.ai.bdex.dataexchange.util.PageResponseFactory;
+import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.utils.DateUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +18,10 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.DataCustomization;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IDataCustomizationSV;
  import com.ai.paas.sequence.SeqUtil;
+import  com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationReqDTO;
+
+import java.util.List;
+
 @Service("iDataCustomizationSV")
 public class DataCustomizationSVImpl implements IDataCustomizationSV {
 	
@@ -43,13 +53,32 @@ public class DataCustomizationSVImpl implements IDataCustomizationSV {
  	  }
 	  //将定制信息处理为已处理
 	  @Override
-	   public int updateDataCustomizationStatus(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception{
-		    DataCustomization record = new DataCustomization();	
-			BeanUtils.copyProperties(record, dataCustomizationRespDTO);
-  			record.setCreateStaffId(dataCustomizationRespDTO.getCreateStaffId());
-		    record.setCreateTime(DateUtil.getNowAsDate()); 
+	   public int updateDataCustomizationStatus(DataCustomizationReqDTO dataCustomizationReqDTO) throws Exception{
+		    DataCustomization record = new DataCustomization();
+			BeanUtils.copyProperties(record, dataCustomizationReqDTO);
+  			record.setUpdateStaffId(dataCustomizationReqDTO.getUpdateStaffId());
+		    record.setUpdateTime(DateUtil.getNowAsDate());
 			return dataCustomizationMapper.updateByPrimaryKey(record);
- 	  }
+        }
+	@Override
+	public PageResponseDTO<DataCustomizationRespDTO> queryDataCustomizationInfo(DataCustomizationReqDTO dataCustomizationReqDTO)
+			throws Exception {
+		Integer pageNo = dataCustomizationReqDTO.getPageNo();
+		Integer pageSize = dataCustomizationReqDTO.getPageSize();
 
+		DataCustomizationExample example = new DataCustomizationExample();
+		DataCustomizationExample.Criteria  criteria = example.createCriteria();
+		if(!StringUtil.isBlank(dataCustomizationReqDTO.getStatus())){
+			criteria.andStatusEqualTo(dataCustomizationReqDTO.getStatus());
+		}
+		example.setOrderByClause("CREATE_TIME  ");
+		PageHelper.startPage(pageNo, pageSize);
+		List<DataCustomization> dataCustomizationList = dataCustomizationMapper.selectByExample(example);
+		// 使用PageInfo对结果进行包装
+		PageInfo pageInfo = new PageInfo(dataCustomizationList);
+		PageResponseDTO<DataCustomizationRespDTO> pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,
+				DataCustomizationRespDTO.class);
+		return pageResponseDTO;
+	}
 	  
 }

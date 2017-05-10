@@ -4,7 +4,10 @@ public class Constants {
     
     public static class Page {  
         // 商品品牌展示个数
-        public static int BRAND_LENGTH = 10;  
+        public static int BRAND_LENGTH = 10;
+        public static String CUSTOM_DATA_STATUS_0 = "0";//失效-无用的
+        public static String CUSTOM_DATA_STATUS_1 = "1";//未处理
+        public static String CUSTOM_DATA_STATUS_2 = "2";//已处理
     } 
     public static class Order {   
         // 订单状态

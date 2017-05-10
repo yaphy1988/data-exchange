@@ -15,7 +15,11 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -32,14 +36,6 @@ import org.springframework.web.util.HtmlUtils;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
@@ -654,4 +650,57 @@ public class PageManageController {
 			e.printStackTrace();
 		}
 	}
+
+
+	/**
+	 * 定制数据管理查询
+	 * @param request
+	 * @return
+	 * auther:landeng
+	 */
+	@RequestMapping(value = "/querymanageDatainit")
+	public ModelAndView QuerymanageData(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView("dataCustom_manage:: dddddd");
+		DataCustomizationReqDTO dataCustomizationReqDTO = new DataCustomizationReqDTO();
+		String status = request.getParameter("status");
+		int pageno   =  Integer.parseInt( request.getParameter("pageno"));
+		int pagesize = Integer.parseInt(request.getParameter("pagesize"));
+		dataCustomizationReqDTO.setStatus(status);
+		PageResponseDTO<DataCustomizationRespDTO> pageData = new PageResponseDTO<DataCustomizationRespDTO>();
+		try{
+			dataCustomizationReqDTO.setPageNo(pageno);
+			dataCustomizationReqDTO.setPageSize(pagesize);
+			pageData = iPageDisplayRSV.queryDataCustomizationInfo(dataCustomizationReqDTO);
+		} catch (Exception e) {
+			log.error("查询用户提交的定制数据信息出错：" + e.getMessage());
+		}
+		return modelAndView;
+	}
+	/**
+	 * 定制数据管理--将数据设置为已处理
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/updateCustDataStatus")
+	@ResponseBody
+	public Map<String,Object>  updateCustDataStatus(HttpServletRequest request) {
+		Map<String,Object>  rMap = new HashMap<>();
+		try{
+			String status = Constants.Page.CUSTOM_DATA_STATUS_2;
+			DataCustomizationReqDTO dataCustomizationReqDTO  = new DataCustomizationReqDTO();
+			dataCustomizationReqDTO.setStatus(status);
+			HttpSession hpptsesion = request.getSession();
+			String staff_id = StaffUtil.getStaffId(hpptsesion);
+			dataCustomizationReqDTO.setUpdateStaffId(staff_id);
+
+			int updatecount = iPageDisplayRSV.updateDataCustomizationStatus(dataCustomizationReqDTO);
+			rMap.put("success", true);
+			} catch (Exception e) {
+				rMap.put("success", false);
+				log.error("保存广告信息出错：" + e.getMessage());
+			}
+		 return rMap;
+	}
+
+
 }
