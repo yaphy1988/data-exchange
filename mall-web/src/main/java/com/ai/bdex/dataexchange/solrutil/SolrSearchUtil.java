@@ -62,7 +62,13 @@ public class SolrSearchUtil {
                 query.addFilterQuery(searchField.getName() + ":" + searchField.getValue().toString());  
             }  
             // 设置起始位置与返回结果数  
-            query.setStart(searchParam.getPageNo()-1);  
+            int pageNo = 0;
+            if(searchParam.getPageNo()==1){
+                pageNo = searchParam.getPageNo() -1;
+            }else if(searchParam.getPageNo() >= 2){
+                pageNo = (searchParam.getPageNo() -1 )*searchParam.getPageSize();
+            }
+            query.setStart(pageNo);  
             query.setRows(searchParam.getPageSize());  
             // 设置排序  
             if (null != sortfield || sortfield.size() >= 1) {  

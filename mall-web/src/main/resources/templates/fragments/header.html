@@ -14,7 +14,8 @@
 	<div class="header" th:fragment="header">
 		<!-- 搜索框 -->
 	    <div th:replace="~{fragments/search_box :: search_box}"></div>
-	    <div class="menu clearfix" id="head_menu">
+   	    <div class="menuBg seconav" id="head_menu">
+	    	<div class="menu clearfix">
 	        <!--左侧边栏开始-->
 	        <div class="sidebar floatL" id="head_sidebar">
 	            <h3>全部商品<i class="glyphicon glyphicon-list menuIcon"></i></h3>
@@ -64,6 +65,7 @@
 	        <!--菜单栏开始-->
 	       	<div th:replace="~{fragments/navigation :: navigation}"></div>
 	        <!--菜单栏结束-->
+	        </div>
 	    </div>
 	</div>
 </body>

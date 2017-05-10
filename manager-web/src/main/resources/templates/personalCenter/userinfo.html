@@ -1,30 +1,24 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="~{fragments/syshead :: syshead}"></div>
-<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
-
-<link rel="stylesheet" href="../../static/css/manage.css" th:href="@{/css/manage.css}">
-<script type="text/javascript" src="../../static/js-busi/user/infomanager.js" th:src="@{/js-busi/user/infomanager.js}"></script>
-<script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
-<script type="text/javascript" src="../js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
-<script src="../static/js-busi/common/sms.js" th:src="@{/js-busi/common/sms.js}"></script>
-<script src="../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
-<script src="../static/js-busi/common/uploadimg.js" th:src="@{/js-busi/common/uploadimg.js}"></script>
-<script type="text/javascript">
-        var WEB_ROOT = '[[${#httpServletRequest.contextPath}]]';
-    </script>
-<head th:remove="all">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
 	<meta charset="UTF-8">
 	<title>个人中心-用户信息管理</title>
 	<link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
-	<link rel="stylesheet" href="../../static/css/manage.css" th:href="@{/css/manage.css}">
-</head>
+	<link rel="stylesheet" href="../../static/css/manage.css" th:remove="all">
 
+	<script type="text/javascript" src="../js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
+	<script src="../static/js-busi/common/uploadimg.js" th:src="@{/js-busi/common/uploadimg.js}"></script>
+	<script type="text/javascript" src="../../static/js-busi/user/infomanager.js" th:src="@{/js-busi/user/infomanager.js}"></script>
+	<script th:inline="javascript">
+		var MALL_ROOT = [[${#tools.mailDomain()}]];
+	</script>
+</head>
 <body>
-<div th:replace="~{fragments/top :: top}"></div>
-<header class="clearfix m_header" th:remove="all">
+	<header class="clearfix m_header" th:remove="all">
 	<a href="" class="Logo" target="_blank" >
 		<img  src="../../static/images/manage_logo.png" alt="广州数据" >
 	</a>
@@ -39,7 +33,7 @@
 					<span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
-					<li><img src="../static/images/wexin.jpg"></li>
+					<li><img src="../../static/images/wexin.jpg"></li>
 				</ul>
 			</div>
 		</li>
@@ -59,303 +53,362 @@
 		</li>
 	</ul>
 </header>
-<div  layout:fragment="screen_content">
-	<div class="m_main">
-		<div class="m_con">
-			<div class="classify">
-				<i class="iconfont"></i>
-				<span>当前位置：</span>
-				<a href=""><span>个人中心</span></a>
-				<span >用户信息管理</span>
-			</div>
-			<!-- <hr> -->
-			
-			<div class="title">基本信息</div>
-			<table class="editTable ">
-					
-					<tr>
-						<td class="Hint tips" width="140">
-							用户ID:
-						</td>
-						<td width="520">
-							<input class="form-control" placeholder="" type="text"  maxlength="128" disabled th:value="${userinfo.staffId}">
-						</td>
-						<!-- <td class="tip"><span class="">已实名认证/去实名认证</span></td> -->
-					</tr>
-					<tr>
-						<td ></td>
-						<td>
-						<span class="col_red" th:if="${userinfo.authenFlag=='1'}">已实名认证</span>
-						<a th:href="@{/authenapply/userinfo}" th:if="${userinfo.authenFlag=='0'}"><span class="col_red">去实名认证</span></a>
-						
-						</td>
-					</tr>
-					<!--<tr>-->
-						<!--<td class="Hint">-->
-							<!--<span class="col_red"></span>别名:-->
-						<!--</td>-->
-						<!--<td >-->
-							<!--<input class="form-control" placeholder="" type="text"  maxlength="64" th:value="${userinfo.aliasName}" id="aliasName">-->
-						<!--</td>-->
-						<!---->
-					<!--</tr>-->
-					<tr>
-						<td class="Hint">
-							用户名称:
-						</td>
-						<td >
-							<input class="form-control" placeholder="" type="text"  maxlength="128"  th:value="${userinfo.staffName}" id="staffName">
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							电话:
-						</td>
-						<td >
-						<span th:text="${userinfo.serialNumber}" id="spanphone"></span>
-							<input class="form-control" id="phoneHidden" placeholder="" type="hidden"  maxlength="11" th:value="${userinfo.serialNumber}" disabled>
-							<button class="btn btn-default btn-sm " style="margin-left:30px;" onclick="initModifyPhone();">修改号码</button>
-						</td>
-						<td class="pl5"></td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							用户头像:
-						</td>
-						<td >
-							<img src="" width="80" height="80" th:src="${userinfo.headSrc}" id="headVfsid" th:vfsId="${userinfo.headVfsid}">
-							<input type="file" class="float_File" name="picUpLoad" id="picUpLoad" imgsize="_80x80!" onchange="onImageFileChange(this);">							
-							<button class="btn btn-default btn-sm" th:remove="all">修改</button>
-						</td>
-						
-					</tr>
-					<tr>
-						<td class="Hint">
-							QQ号:
-						</td>
-						<td >
-							<input class="form-control" placeholder="" type="text"  maxlength="16" th:value="${userinfo.qq}" id="qq" >
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							微信号:
-						</td>
-						<td >
-							<input class="form-control" placeholder="" type="text"  maxlength="56" th:value="${userinfo.weChat}" id="weChat" >
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							性别:
-						</td>
-						<td >
-							<select  class="form-control" id="gender" th:if="${userinfo.gender=='0'}">
-							<option value="0" selected>女</option>
-							<option value="1" >男</option>
-							</select>
-							
-							<select  class="form-control" id="gender" th:if="${userinfo.gender=='1'}">
-							<option value="0" >女</option>
-							<option value="1" selected>男</option>
-							</select>
 
-							<select  class="form-control" id="gender" th:if="${userinfo.gender==''}">
-								<option value="">请选择</option>
-								<option value="0" >女</option>
-								<option value="1">男</option>
-							</select>
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							职位:
-						</td>
-						<td >
-							<input class="form-control" placeholder="" type="text"  maxlength="128" th:value="${userinfo.job}" id="job" >
-						</td>
-					</tr>
-			</table>	
+	<div  layout:fragment="screen_content">
+		<div class="m_main">
+			<div class="m_con">
+				<div class="classify">
+					<i class="iconfont"></i>
+					<span>当前位置：</span>
+					<a href=""><span>个人中心</span></a>
+					<span >用户信息管理</span>
+				</div>
+				<!-- <hr> -->
+
+				<div class="title">基本信息</div>
+				<table class="editTable ">
+
+						<tr>
+							<td class="Hint tips" width="140">
+								用户ID:
+							</td>
+							<td width="520">
+								<input class="form-control" placeholder="" type="text"  maxlength="128" disabled th:value="${userinfo.staffId}">
+							</td>
+							<!-- <td class="tip"><span class="">已实名认证/去实名认证</span></td> -->
+						</tr>
+						<tr>
+							<td ></td>
+							<td>
+								<span class="col_green" th:if=    "${userinfo.authenFlag=='1'}">已实名认证</span>
+								<span class="col_red" th:unless="${userinfo.authenFlag=='1'}">
+									<a th:href="@{/authenapply/userinfo}">去实名认证</a>
+								</span>
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								用户名称:
+							</td>
+							<td >
+								<input class="form-control" placeholder="" type="text"  maxlength="128"  th:value="${userinfo.staffName}" id="staffName">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								电话:
+							</td>
+							<td >
+							<span th:text="${userinfo.serialNumber}" id="spanphone"></span>
+								<input class="form-control" id="phoneHidden" placeholder="" type="hidden"  maxlength="11" th:value="${userinfo.serialNumber}" disabled>
+								<button class="btn btn-default btn-sm " style="margin-left:30px;" onclick="initModifyPhone();">修改号码</button>
+							</td>
+							<td class="pl5"></td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								用户头像:
+							</td>
+							<td >
+								<img src="" width="80" height="80" th:src="${userinfo.headSrc}" id="headVfsid" th:vfsId="${userinfo.headVfsid}">
+								<input type="file" class="float_File" name="picUpLoad" id="picUpLoad" imgsize="_80x80!" onchange="onImageFileChange(this);">
+								<button class="btn btn-default btn-sm" th:remove="all">修改</button>
+							</td>
+
+						</tr>
+						<tr>
+							<td class="Hint">
+								QQ号:
+							</td>
+							<td >
+								<input class="form-control" placeholder="" type="text"  maxlength="16" th:value="${userinfo.qq}" id="qq" >
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								微信号:
+							</td>
+							<td >
+								<input class="form-control" placeholder="" type="text"  maxlength="56" th:value="${userinfo.weChat}" id="weChat" >
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								性别:
+							</td>
+							<td >
+								<select  class="form-control" id="gender">
+									<option value="">请选择</option>
+									<option value="0" th:selected="${userinfo.gender=='0'}? 'true' : 'false'">女</option>
+									<option value="1" th:selected="${userinfo.gender=='1'}? 'true' : 'false'">男</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								职位:
+							</td>
+							<td >
+								<input class="form-control" placeholder="" type="text"  maxlength="128" th:value="${userinfo.job}" id="job" >
+							</td>
+						</tr>
+				</table>
+			</div>
+			<!-- 按钮 -->
+				<hr>
+				<div class="p20 text-center " style="margin-left: 220px;">
+					<a href="javascript:;" class="btn-primary btn mr10" onclick="updateInfo();">保存</a>
+				</div>
 		</div>
-		<!-- 按钮 -->
-			<hr>
-			<div class="p20 text-center " style="margin-left: 220px;">
-				<a href="javascript:;" class="btn-primary btn mr10" onclick="updateInfo();">保存</a>
+		<!-- Modal -->
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabel">修改手机号码</h4>
+					</div>
+					<div class="modal-body">
+						<table class="editTable " style="width:80%;">
+							<tr>
+								<td class="Hint">
+									原手机号码:
+								</td>
+								<td >
+									<input style="width:50%;" class="form-control" placeholder="" type="text"  maxlength="128" disabled id="oldphoneNo" th:value="${userinfo.serialNumber}">
+								</td>
+							</tr>
+							<tr>
+								<td class="Hint">
+									验证码:
+								</td>
+								<td >
+									<div class="form-inline">
+										<input class="form-control wt150" placeholder="" type="text"  maxlength="4" id="picCode">
+										<img  src="" height="30" width="100" id="imgcaptcha" onclick="checkImgChng();">
+									</div>
+								</td>
+								<td  ></td>
+							</tr>
+							<tr>
+								<td class="Hint">
+									短信验证码:
+								</td>
+								<td >
+									<div class="form-inline">
+										<input class="form-control wt150" placeholder="" type="text"  maxlength="6" id="smsCode">
+										<button class="btn btn-default btn-sm " onclick="sendSmsCode();" id="getcodebtn">获取短信验证码</button>
+									</div>
+
+								</td>
+
+							</tr>
+
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" onclick="nextStep();">下一步</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					</div>
+				</div>
 			</div>
+		</div>
+		<!-- Modal -->
+		<div class="modal fade" id="myModalNew" tabindex="-1" role="dialog" aria-labelledby="myModalLabelNew">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+						<h4 class="modal-title" id="myModalLabelNew">修改手机号码</h4>
+					</div>
+					<div class="modal-body">
+						<table class="editTable " style="width:80%;">
+							<tr>
+								<td class="Hint">
+									新手机号码:
+								</td>
+								<td >
+									<input style="width:50%;" class="form-control" placeholder="" type="text"  maxlength="11" id="newphoneNo">
+								</td>
+							</tr>
+							<tr>
+								<td class="Hint">
+									验证码:
+								</td>
+								<td >
+									<div class="form-inline">
+										<input class="form-control wt150" placeholder="" type="text"  maxlength="4" id="picCodeNew">
+										<img  src="" height="30" width="100" id="imgcaptchaNew" onclick="checkImgChngNew();">
+									</div>
+								</td>
+								<td  ></td>
+							</tr>
+							<tr>
+								<td class="Hint">
+									短信验证码:
+								</td>
+								<td >
+									<div class="form-inline">
+										<input class="form-control wt150" placeholder="" type="text"  maxlength="6" id="smsCodeNew">
+										<button class="btn btn-default btn-sm " onclick="sendSmsCodeNew();" id="getcodebtnNew">获取短信验证码</button>
+									</div>
+
+								</td>
+
+							</tr>
+
+						</table>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-primary" onclick="updatePhone();">保存</button>
+						<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 
-<div th:replace="~{fragments/nav_left :: nav_left}"></div>
-		<div class="m_nav" th:remove="all">
-		<nav class="nav">
-			<ul>
-				<li class="navTit">
-					<i class="glyphicon glyphicon-compressed"></i>
-					个人中心
-				</li>
-				<li >
-					<a href="">
-						<i class="glyphicon glyphicon-inbox pr5"></i>
-						我的数据
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class="glyphicon glyphicon-inbox pr5"></i>
-						我的订单
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class="glyphicon glyphicon-inbox pr5"></i>
-						密码修改
-					</a>
-				</li>
-				<li class="active">
-					<a href="">
-						<i class="glyphicon glyphicon-inbox pr5"></i>
-						企业认证
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class="glyphicon glyphicon-inbox pr5"></i>
-						发票管理
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class="glyphicon glyphicon-inbox pr5"></i>
-						我的收藏
-					</a>
-				</li>
-			</ul>
-		</nav>
-	</div>
-	
-	<!-- Modal -->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">修改手机号码</h4>
-	      </div>
-	      <div class="modal-body">
-	        	<table class="editTable " style="width:80%;">
-					
-					
-					
-					<tr>
-						<td class="Hint">
-							原手机号码:
-						</td>
-						<td >
-							<input style="width:50%;" class="form-control" placeholder="" type="text"  maxlength="128" disabled id="oldphoneNo">
-						</td>
-						
-					</tr>
-					<tr>
-						<td class="Hint">
-							验证码:
-						</td>
-						<td >
-							<div class="form-inline">
-								<input class="form-control wt150" placeholder="" type="text"  maxlength="4" id="picCode">
-								<img  src="" height="30" width="100" id="imgcaptcha" onclick="checkImgChng();">
-							</div>
-						</td>
-						<td  ></td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							短信验证码:
-						</td>
-						<td >
-						<div class="form-inline">
-							<input class="form-control wt150" placeholder="" type="text"  maxlength="6" id="smsCode">
-							<button class="btn btn-default btn-sm " onclick="sendSmsCode();" id="getcodebtn">获取短信验证码</button>
-						</div>
-
-						</td>
-					
-					</tr>
-					
-			</table>	
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary" onclick="nextStep();">下一步</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	
-	<!-- Modal -->
-	<div class="modal fade" id="myModalNew" tabindex="-1" role="dialog" aria-labelledby="myModalLabelNew">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabelNew">修改手机号码</h4>
-	      </div>
-	      <div class="modal-body">
-	        	<table class="editTable " style="width:80%;">
-					
-					
-					
-					<tr>
-						<td class="Hint">
-							新手机号码:
-						</td>
-						<td >
-							<input style="width:50%;" class="form-control" placeholder="" type="text"  maxlength="11" id="newphoneNo">
-						</td>
-						
-					</tr>
-					<tr>
-						<td class="Hint">
-							验证码:
-						</td>
-						<td >
-							<div class="form-inline">
-								<input class="form-control wt150" placeholder="" type="text"  maxlength="4" id="picCodeNew">
-								<img  src="" height="30" width="100" id="imgcaptchaNew" onclick="checkImgChngNew();">
-							</div>
-						</td>
-						<td  ></td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							短信验证码:
-						</td>
-						<td >
-						<div class="form-inline">
-							<input class="form-control wt150" placeholder="" type="text"  maxlength="6" id="smsCodeNew">
-							<button class="btn btn-default btn-sm " onclick="sendSmsCodeNew();" id="getcodebtnNew">获取短信验证码</button>
-						</div>
-
-						</td>
-					
-					</tr>
-					
-			</table>	
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary" onclick="updatePhone();">保存</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	
-	<script src="../../static/js/jquery-1.12.4.js" th:remove="all"></script>
-	<script src="../../static/js/bootstrap.min.js" th:remove="all"></script>
-	<script type="text/javascript">
-	$("#mainTopDiv").addClass('clearfix m_header');
-	</script>
-	<style type="text/css">
-	.m_header{height:auto;}
-	</style>
-
+	<div class="m_nav" th:remove="all">
+	<nav class="nav">
+		<ul>
+			<li class="navTit">
+				<i class="glyphicon glyphicon-compressed"></i>
+				个人中心
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+				</a>
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录
+				</a>
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录
+				</a>
+			</li>
+			<li >
+				<a href="">
+					<i class=""></i>
+					用户中心
+					<span class="caret"></span>
+				</a>
+				<ol class="infoItem">
+					<li >
+						<a th:href="@{/password/modify}">密码修改</a>
+					</li>
+					<li >
+						<a th:href="@{/infomanager/pageInit}">资料修改</a>
+					</li>
+				</ol>
+			</li>
+			<li >
+				<a href="">
+					<i class=""></i>
+					企业认证
+					<span class="caret"></span>
+				</a>
+				<ol class="infoItem">
+					<li >
+						<a th:href="@{/authencheck/pageInit}">认证审核</a>
+					</li>
+					<li >
+						<a th:href="@{/authenapply/userinfo}">认证申请</a>
+					</li>
+				</ol>
+			</li>
+			<li >
+				<a href="">
+					<i class=""></i>
+					商品管理
+					<span class="caret"></span>
+				</a>
+				<ol class="infoItem">
+					<li class="active">
+						<a th:href="@{/gdsEdit/pageInit}"></i>商品录入</a>
+					</li>
+					<li >
+						<a th:href="@{/gdsManage/index}"></i>商品管理</a>
+					</li>
+				</ol>
+			</li>
+			<li>
+				<a href="">
+					<i ></i>
+					首页管理
+					<span class="caret"></span>
+				</a>
+				<ul class="infoItem">
+					<li >
+						<a th:href="@{/pageManage/moduleManage}">楼层管理</a>
+					</li>
+					<li >
+						<a th:href="@{/pageManage/newsInfo}">新闻管理</a>
+					</li>
+				</ul>
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录
+				</a>
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录
+				</a>
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录
+				</a>
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录
+					<span class="caret"></span>
+				</a>
+				<ul class="infoItem">
+					<li class="">
+						<a href=""><i class="iconfont"></i>二级分类</a>
+					</li>
+					<li class="">
+						<a href=""><i class="iconfont"></i>二级分类</a>
+					</li>
+					<li class="">
+						<a href=""><i class="iconfont"></i>二级分类</a>
+					</li>
+				</ul>
+			</li>
+			<li th:remove="all">
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+				<ul class="infoItem">
+					<li class="">
+						<a href=""><i class="iconfont"></i>二级分类</a>
+					</li>
+					<li class="">
+						<a href=""><i class="iconfont"></i>二级分类</a>
+					</li>
+					<li class="">
+						<a href=""><i class="iconfont"></i>二级分类</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+</div>
 </body>
 </html>

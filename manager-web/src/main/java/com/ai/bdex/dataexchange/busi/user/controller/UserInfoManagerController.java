@@ -33,11 +33,6 @@ public class UserInfoManagerController {
 	
 	@RequestMapping(value="/pageInit")
 	public String pageInit(Model model,HttpSession session,HttpServletRequest request) throws Exception{
-		if(StringUtil.isBlank(StaffUtil.getStaffId(session))){
-			String mallurl = SystemConfUtil.getSystemModuleInfo("01","1").genFullUrl();
-			String contextpath = request.getContextPath();
-			return "redirect:"+mallurl+contextpath+"/login/pageInit";
-		}
 		String staffId = StaffUtil.getStaffVO(session).getStaffId();
 		//获取用户信息
 		AuthStaffDTO input = new AuthStaffDTO();
@@ -52,6 +47,7 @@ public class UserInfoManagerController {
 			}
 			model.addAttribute("userinfo", data);
 		}
+		
 		return "personalCenter/userinfo";
 	}
 	
@@ -108,7 +104,7 @@ public class UserInfoManagerController {
 	 */
 	@RequestMapping(value="/getphone",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> updatephone(Model model,HttpSession session){
+	public Map<String,Object> getphone(Model model,HttpSession session){
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		String staffId = StaffUtil.getStaffId(session);
 		if(StringUtil.isBlank(staffId)){
@@ -141,7 +137,7 @@ public class UserInfoManagerController {
 	@ResponseBody
 	public Map<String,Object> updatephone(Model model,String phoneNo,HttpSession session){
 		Map<String,Object> rMap = new HashMap<String,Object>();
-		AuthStaffDTO input = new AuthStaffDTO();
+
 		String staffId = StaffUtil.getStaffId(session);
 		if(StringUtil.isBlank(staffId)){
 			rMap.put("success", false);
@@ -153,12 +149,33 @@ public class UserInfoManagerController {
 			rMap.put("msg", "手机号格式不正确！");
 			return rMap;
 		}
+
+		String oldphoneNo = "";
+		AuthStaffDTO input = new AuthStaffDTO();
+		try {
+			input.setStaffId(staffId);
+			AuthStaffDTO staffInfo = this.iAuthStaffRSV.findAuthStaffInfo(input);
+			if (staffInfo != null) {
+				oldphoneNo = staffInfo.getSerialNumber();
+			}
+		} catch (BusinessException e) {
+			rMap.put("success", false);
+			rMap.put("msg", "获取旧手机号失败，请稍后再试");
+		}
+		//判断是否旧手机验证通过，且新手机验证通过
+		Object oldPhoneNoVerify = session.getAttribute("SMS_CHANGPHONE_VERIFY_1"+oldphoneNo);
+		Object newPhoneNoVerify = session.getAttribute("SMS_CHANGPHONE_VERIFY_2"+phoneNo);
+
 		try {
 			input.setSerialNumber(phoneNo);
 			input.setStaffId(staffId);
 			iAuthStaffRSV.updateMobilePhone(input);
 			rMap.put("success", true);
 			rMap.put("msg", "修改成功！");
+
+			session.removeAttribute("SMS_CHANGPHONE_VERIFY_1"+oldphoneNo);
+			session.removeAttribute("SMS_CHANGPHONE_VERIFY_2"+phoneNo);
+
 		} catch (BusinessException e) {
 			rMap.put("success", false);
 			rMap.put("msg", e.getMessage());

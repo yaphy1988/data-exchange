@@ -38,18 +38,22 @@
   				$(".navigationBar").die().live('click',function(e){
     	    		  $(this).parents("li").addClass('active').siblings().removeClass("active");
     	    		  var url = $(this).attr('href');
-    	 		   	  $.cookie('gjs_navigation', url, {path : '/'});
+//     	 		   	  $.cookie('gjs_navigation', url, {path : '/'});
     	 		   	  window.location.href=WEB_ROOT+url;
     	 		   	  e.preventDefault();
    	    	    });
+  				var url = "";
   				if($("#catFirst").val()=="1"){
-  					$.cookie('gjs_navigation', "/search/api", {path : '/'});
+  					url =  "/search/api";
+//   					$.cookie('gjs_navigation', "/search/api", {path : '/'});
   				}else if($("#catFirst").val()=="2"){
-  					$.cookie('gjs_navigation', "/search/custom", {path : '/'});
+  					url =  "/search/custom";
+//   					$.cookie('gjs_navigation', "/search/custom", {path : '/'});
   				}else if($("#catFirst").val()=="3"){
-  					$.cookie('gjs_navigation', "/search/solution", {path : '/'});
+  					url =  "/search/solution";
+//   					$.cookie('gjs_navigation', "/search/solution", {path : '/'});
   				}
-  				var url = $.cookie('gjs_navigation');
+//   				var url = $.cookie('gjs_navigation');
   				var thisUrl = window.location.pathname;
  	  	    	$(".navigationBar").each(function(){
  	  	    		if($(this).attr("href")==thisUrl){

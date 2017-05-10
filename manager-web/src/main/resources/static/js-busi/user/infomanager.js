@@ -18,45 +18,24 @@ function onImageFileChange(obj){
 function initModifyPhone(){
 	$("#getcodebtn").html("获取验证码");
     $("#getcodebtn").removeAttr("disabled");
-    $("#smsCode").val('');
-	$.ajax({
-		url : WEB_ROOT+"/infomanager/getphone",
-		type : 'POST',
-		async : true,
-		data : {},
-		dataType : 'json',
-		success : function(obj){	
-			if(obj.success){
-				var phone = obj.phoneNo;
-				$("#oldphoneNo").val(phone);
-				$("#myModal").modal({
-			    	  "backdrop":'static',
-			    	  "keyboard":false
-			    	});
-			}else{
-				WEB.msg.info('提示',obj.msg);
-			}			
-		}
-	});
+    $("#smsCode").val("");
+    $("#picCode").val("");
+
+	$("#myModal").modal({
+      "backdrop":'static',
+      "keyboard":false
+    });
+
 	checkImgChng();
-	
 }
 
 /**验证码切换*/
 function checkImgChng(){
-	/*jQuery 包装集IE不兼容,用JS*/
-	//$("#VERIFY_CODE").val("");
-	$("#picCode").val("");
-	$("#picCode").css('color','#999');
 	document.getElementById('imgcaptcha').src = WEB_ROOT + "/captcha/CapthcaImage?a="+ new Date().getTime();
 }
 
 /**验证码切换*/
 function checkImgChngNew(){
-	/*jQuery 包装集IE不兼容,用JS*/
-	//$("#VERIFY_CODE").val("");
-	$("#picCodeNew").val("");
-	$("#picCodeNew").css('color','#999');
 	document.getElementById('imgcaptchaNew').src = WEB_ROOT + "/captcha/CapthcaImage?a="+ new Date().getTime();
 }
 
@@ -68,18 +47,19 @@ function sendSmsCode(){
 		return;
 	}
 	$.ajax({
-		url : WEB_ROOT+"/infomanager/getphone",
+		url : MALL_ROOT+"/security/sendChangPhoneCode",
 		type : 'POST',
-		async : true,
-		data : {},
-		dataType : 'json',
+        async : true,
+        dataType : 'jsonp',
+        jsonp :'jsonpCallback',
+		data : {picVerifyCode:picCode,busiType:'1'},
 		success : function(obj){	
 			if(obj.success){
-				var phoneNo = obj.phoneNo;
-				$.smsDialogPlugin.sendSmsSecurity(phoneNo,'20',picCode,afterSend);	
+				afterSend();
 			}else{
+			    checkImgChng();
 				WEB.msg.info('提示',obj.msg);
-			}			
+			}
 		}
 	});
 }
@@ -96,6 +76,7 @@ function afterSend(){
         $("#getcodebtn").html("重新获取验证码");
         $("#getcodebtn").attr("disabled",false);
         clearInterval(timer);
+        checkImgChng();
       }
     },1000);
     
@@ -109,22 +90,15 @@ function nextStep(){
 		return;
 	}
 	$.ajax({
-		url : WEB_ROOT+"/infomanager/getphone",
+		url : MALL_ROOT+"/security/checkSendChangPhoneCode",
 		type : 'POST',
 		async : true,
-		data : {},
-		dataType : 'json',
+        dataType : 'jsonp',
+        jsonp :'jsonpCallback',
+		data : {verifyCode:smsCode,busiType:'1'},
 		success : function(obj){	
 			if(obj.success){
-				var phoneNo = obj.phoneNo;
-				if(!phoneNo){
-					showwarm('phoneNoDiv','手机号码不能为空');
-					return;
-				}else if(!isMobile(phoneNo)){
-					showwarm('phoneNoDiv','手机号码格式不正确');
-					return;
-				}
-				$.smsDialogPlugin.checkSmsSecurity(smsCode,phoneNo,bindNewPhone);
+				bindNewPhone();
 			}else{
 				WEB.msg.info('提示',obj.msg);
 			}			
@@ -133,7 +107,11 @@ function nextStep(){
 }
 
 function bindNewPhone(){
-	$("#myModal").modal('hide');	
+	$("#myModal").modal('hide');
+	$("#picCodeNew").val("");
+	$("#smsCodeNew").val("");
+    $("#newphoneNo").val("");
+
 	checkImgChngNew();
 	$("#myModalNew").modal({
   	  "backdrop":'static',
@@ -152,7 +130,6 @@ var isMobile=function(mobile){
 	    {return true;}  
 };
 
-
 //发送短信验证码
 function sendSmsCodeNew(){
 	var picCodeNew = $("#picCodeNew").val();
@@ -168,7 +145,22 @@ function sendSmsCodeNew(){
 		WEB.msg.info('提示','手机号格式不正确！',null);
 		return;
 	}
-	$.smsDialogPlugin.sendSmsSecurity(phoneNo,'10',picCodeNew,afterSendNew);
+
+	$.ajax({
+        url : MALL_ROOT+"/security/sendChangPhoneCode",
+        async : true,
+        dataType : 'jsonp',
+        jsonp :'jsonpCallback',
+        data : {picVerifyCode:picCodeNew,newPhoneNo:phoneNo,busiType:'2'},
+        success : function(obj){
+            if(obj.success){
+                afterSendNew();
+            }else{
+                WEB.msg.info('提示',obj.msg);
+                checkImgChngNew();
+            }
+        }
+    });
 }
 
 function afterSendNew(){
@@ -183,6 +175,7 @@ function afterSendNew(){
         $("#getcodebtnNew").html("重新获取验证码");
         $("#getcodebtnNew").attr("disabled",false);
         clearInterval(timer);
+        checkImgChngNew();
       }
     },1000);
     
@@ -203,30 +196,24 @@ function updatePhone(){
 		WEB.msg.info('提示','手机号码格式不正确');
 		return;
 	}
-	$.smsDialogPlugin.checkSmsSecurity(smsCode,phoneNo,doupdatePhone);
-}
-/**
- * 修改用户手机号
- * @param tocken
- * @param seccode
- * @param phoneNo
- */
-function doupdatePhone(tocken,seccode,phoneNo){
+
 	$.ajax({
-		url : WEB_ROOT+"/infomanager/updatephone",
-		type : 'POST',
-		async : true,
-		data : {phoneNo:phoneNo},
-		dataType : 'json',
-		success : function(obj){	
-			if(obj.success){
-				$("#spanphone").html(phoneNo);
-				$("#myModalNew").modal('hide');
-			}else{
-				WEB.msg.info('提示',obj.msg);
-			}			
-		}
-	});
+        url : WEB_ROOT+"/infomanager/updatephone",
+        type : 'POST',
+        async : true,
+        data : {phoneNo:phoneNo},
+        dataType : 'json',
+        success : function(obj){
+            if(obj.success){
+                $("#oldphoneNo").val(phoneNo);
+                $("#spanphone").html(phoneNo);
+                $("#myModalNew").modal('hide');
+                WEB.msg.info("提示","修改成功！");
+            }else{
+                WEB.msg.info('提示',obj.msg);
+            }
+        }
+    });
 }
 
 function updateInfo(){
@@ -279,6 +266,4 @@ function updateInfo(){
 			}			
 		}
 	});
-	
 }
-$(function(){});

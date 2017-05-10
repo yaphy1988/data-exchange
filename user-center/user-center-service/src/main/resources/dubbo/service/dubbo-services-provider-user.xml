@@ -21,5 +21,7 @@
                  
    <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ISmsSeccodeRSV" ref="iSmsSeccodeRSV"
                  owner="zhaoyf7" timeout="3000"/>
+    <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IBaseAdminAreaRSV" ref="iBaseAdminAreaRSV"
+                   owner="zhaoyf7" timeout="3000"/>
 
 </beans>
