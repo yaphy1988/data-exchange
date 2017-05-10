@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.tradecenter.service.impl.gds;
+package com.ai.bdex.dataexchange.tradecenter.service.impl.pic;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -16,11 +16,11 @@ import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PicLibMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PicLib;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PicLibExample;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.PicInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.PicLibReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.PicLibRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IPicInfoSV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IPicLibSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicLibReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicLibRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.pic.IPicInfoSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.pic.IPicLibSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;

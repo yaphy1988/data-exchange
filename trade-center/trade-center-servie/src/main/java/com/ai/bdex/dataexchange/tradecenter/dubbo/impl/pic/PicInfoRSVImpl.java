@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.tradecenter.dubbo.impl.gds;
+package com.ai.bdex.dataexchange.tradecenter.dubbo.impl.pic;
 
 import java.util.List;
 
@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.PicInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.PicInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IPicInfoRSV;
-import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IPicInfoSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.pic.IPicInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.pic.IPicInfoSV;
 /**
  * 
  * Title: ECP <br>

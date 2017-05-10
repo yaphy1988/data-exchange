@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds;
+package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic;
 
 import java.util.Date;
 

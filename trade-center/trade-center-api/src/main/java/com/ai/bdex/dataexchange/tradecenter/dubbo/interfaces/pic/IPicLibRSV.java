@@ -1,11 +1,11 @@
-package com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds;
+package com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.pic;
 
 import java.util.List;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.PicLibReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.PicLibRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicLibReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicLibRespDTO;
 
 public interface IPicLibRSV {
     /**
