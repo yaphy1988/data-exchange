@@ -8,136 +8,128 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/page_classification.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/page_classification.css" th:href="@{/css/page_classification.css}">
 	<!--[if lt IE 9]>
-        <script src="../static/js/respond.min.js" ></script>
-        <script src="../static/js/html5shiv.min.js" ></script>
+        <script src="../static/js/respond.min.js" th:remove="all"></script>
+        <script src="../static/js/html5shiv.min.js"  th:remove="all"></script>
 	<![endif]-->
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
-    <!-- 
-    <link rel="stylesheet" href="../static/css/zTreeStyle.css" type="text/css" th:href="@{/css/zTreeStyle.css}">
-     
-    <script type="text/javascript" src="../static/js/jquery.ztree.core.js" th:src="@{/js/jquery.ztree.core.js}"></script>
-    <script type="text/javascript" src="../static/js/jquery.ztree.excheck.js" th:src="@{/js/jquery.ztree.excheck.js}"></script>
- 	<script type="text/javascript" src="../static/component/ztree/js/jquery.ztree.all.min.js" th:src="@{/component/ztree/js/jquery.ztree.all.min.js}"></script>
-    -->
 </head>
 <body>
 
-<!-- 头部 -->
-<header class="clearfix m_header">
-	<a href="" class="Logo" target="_blank" >
-		<img  src="../static/images/manage_logo.png" th:src="@{/images/manage_logo.png}" alt="广州数据" >
-	</a>
-	<ul class="m_hdlist clearfix">
-		<li>
-			<a class="item" href="" target="_blank">联系我们</a>
-		</li>
-		<li >
-			<div class="dropdown">
-				<a  class="item" data-toggle="dropdown"  >
-					关注广数
-					<span class="caret"></span>
-				</a>
-				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
-					<li><img src="../static/images/wexin.jpg"></li>
-				</ul>
-			</div>
-		</li>
-		<li>
-			<a class="item" href="" target="_blank">常见问题</a>
-		</li>
-		<li >
-			<div class="dropdown">
-				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-					okleung
-					<span class="caret"></span>
-				</a>
-				<ul class="dropdown-menu" aria-labelledby="dLabel">
-					<li><a  href="" >退出登录</a></li>
-				</ul>
-			</div>
-		</li>
-	</ul>
-</header>
-<!-- 头部 end-->
+	<!-- 头部 -->
+	<header class="clearfix m_header" th:remove="all">
+		<a href="" class="Logo" target="_blank" >
+			<img  src="../static/images/manage_logo.png" th:src="@{/images/manage_logo.png}" alt="广州数据" >
+		</a>
+		<ul class="m_hdlist clearfix">
+			<li>
+				<a class="item" href="" target="_blank">联系我们</a>
+			</li>
+			<li >
+				<div class="dropdown">
+					<a  class="item" data-toggle="dropdown"  >
+						关注广数
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+						<li><img src="../static/images/wexin.jpg"></li>
+					</ul>
+				</div>
+			</li>
+			<li>
+				<a class="item" href="" target="_blank">常见问题</a>
+			</li>
+			<li >
+				<div class="dropdown">
+					<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						okleung
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" aria-labelledby="dLabel">
+						<li><a  href="" >退出登录</a></li>
+					</ul>
+				</div>
+			</li>
+		</ul>
+	</header>
+	<!-- 头部 end-->
 
-<div  layout:fragment="screen_content">
-    <!-- 右边内容 -->
-	<div class="m_main">
-		<div class="m_con">
-
-			<div class="classify">
-				<i class="iconfont"></i>
-				<span>当前位置：</span>
-				<a href=""><span>广州数据交易中心</span></a>
-				<a href=""><span>个人中心</span></a>
-				<span class="col_999"> 商品分类</span>
-			</div>
-
-            <!-- Nav tabs -->
-            <ul class="nav nav-tabs">
-                <li class="active"><a href="#tab01">商品分类</a></li>
-            </ul>
-
-		    <div class="overflow-hidden mt15">
-				<div class="col-md-3">
-                     <!-- 左边树形菜单  --> 
-		             <div class="class_sidebar">
-			            <h3>全部商品</h3>
-			            <ul>
-			                <li><a href="#"><i>›</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
-			                <li><a href="#"><i>›</i>交通运输</a> </li>
-			                <li><a href="#"><i>›</i>气象环保</a> </li>
-			                <li><a href="#"><i>›</i>生活服务</a> </li>
-			                <li><a href="#"><i>›</i>生活服务</a> </li>
-			                <li><a href="#"><i>›</i>时空数据</a> </li>
-			                <li><a href="#"><i>›</i>健康医疗</a> </li>
-			                <li><a href="#"><i>›</i>更多服务</a> </li>
-			            </ul> 
-			        </div>       	
-                    <!-- 左边树形菜单  end--> 
-		        </div>
-		        <div class="col-md-9">
-		                	<div id="nodeInfo" >
-		                		<!-- 节点信息 -->
-		                		<table class="editTable" width="100%" th:remove="All">
-								<input type="hidden" th:attr="value=${catInfo.catId}" id="catId"/>
-								    <tbody>
-								        <tr>
-								         <td class="Hint" width="15%">分类编码：</td>	                            
-								         <td width="15%" th:text="${catInfo.catId}">121232</td>
-								         <td class="Hint" width="15%">分类名称：</td>
-								         <td th:text="${catInfo.catName}">测试标题测试标题测试标题</td>
-								     </tr>
-								        <tr>
-								         <td class="Hint">展示顺序：</td>	                            
-								         <td th:text="${catInfo.showOrder}">2</td>
-								     </tr>
-								         
-								    </tbody>
-								</table>
-							</div>
-			                <div class="text-right">
-			                    <button class="btn btn-default btn-mini ml20" onclick="location.href=''"><i class="glyphicon glyphicon-plus"></i>新增同级</button>
-			                    <button class="btn btn-default btn-mini" onclick="location.href=''"><i class="glyphicon glyphicon-pencil"></i>编辑</button>
-			                    <button class="btn btn-default btn-mini" onclick="location.href=''"><i class="glyphicon glyphicon-minus"></i>删除</button>
-			                </div>
-
-		                    <!-- 列表 -->
-		                    <div class="title">下级列表</div>
-		                    <div id="childList"></div>
-		                    <table th:remove="All" class="table table-bordered table-striped table-hover text-center table_th_center">
-		                        <thead>
-		                            <tr >
-		                                <th>分类编码</th>
-		                                <th>分类名称</th>
-		                                <th>展示顺序</th>
-		                                <th>操作</th>
-		                            </tr>
-		                        </thead>
-		                        <tbody >
+	<div  layout:fragment="screen_content">
+	    <!-- 右边内容 -->
+		<div class="m_main">
+			<div class="m_con">
+	
+				<div class="classify">
+					<i class="iconfont"></i>
+					<span>当前位置：</span>
+					<a href=""><span>广州数据交易中心</span></a>
+					<a href=""><span>个人中心</span></a>
+					<span class="col_999"> 商品分类</span>
+				</div>
+	
+	            <!-- Nav tabs -->
+	            <ul class="nav nav-tabs">
+	                <li class="active"><a href="#tab01">商品分类</a></li>
+	            </ul>
+	
+			    <div class="overflow-hidden mt15">
+					<div class="col-md-3">
+	                     <!-- 左边树形菜单  --> 
+			             <div class="class_sidebar">
+				            <h3>全部商品</h3>
+				            <ul th:remove="all-but-first">
+				                <li th:each="sortInfo,infoStat : ${sortInfos}" th:sortId="${sortInfo.sortId}"><a href="javascript:void(0)" ><i>›</i><span th:text="${sortInfo.sortName}">金融理财金融理财金融理财金融理财金融理财</span></a> </li>
+				                <li><a href="#"><i>›</i>交通运输</a> </li>
+				                <li><a href="#"><i>›</i>气象环保</a> </li>
+				                <li><a href="#"><i>›</i>生活服务</a> </li>
+				                <li><a href="#"><i>›</i>生活服务</a> </li>
+				                <li><a href="#"><i>›</i>时空数据</a> </li>
+				                <li><a href="#"><i>›</i>健康医疗</a> </li>
+				                <li><a href="#"><i>›</i>更多服务</a> </li>
+				            </ul> 
+				        </div>       	
+	                    <!-- 左边树形菜单  end--> 
+			        </div>
+			        <div class="col-md-9">
+	                	<div id="nodeInfo" >
+	                		<!-- 节点信息 -->
+	                		<table class="editTable" width="100%" th:remove="All">
+							    <tbody>
+							        <tr>
+							         <td class="Hint" width="15%">分类编码：</td>	                            
+							         <td width="15%" th:text="${catInfo.catId}">121232</td>
+							         <td class="Hint" width="15%">分类名称：</td>
+							         <td th:text="${catInfo.catName}">测试标题测试标题测试标题</td>
+							     </tr>
+							        <tr>
+							         <td class="Hint">展示顺序：</td>	                            
+							         <td th:text="${catInfo.showOrder}">2</td>
+							     </tr>
+							         
+							    </tbody>
+							</table>
+						</div>
+		                <div class="text-right">
+		                    <button class="btn btn-default btn-mini ml20" onclick="location.href=''"><i class="glyphicon glyphicon-plus"></i>新增同级</button>
+		                    <button class="btn btn-default btn-mini" onclick="location.href=''"><i class="glyphicon glyphicon-pencil"></i>编辑</button>
+		                    <button class="btn btn-default btn-mini" onclick="location.href=''"><i class="glyphicon glyphicon-minus"></i>删除</button>
+		                </div>
+	
+	                    <!-- 列表 -->
+	                    <div class="title">下级列表</div>
+	                    <div id="childList"></div>
+             			 <table th:remove="All" class="table table-bordered table-striped table-hover text-center table_th_center">
+	                        <thead>
+	                            <tr >
+	                                <th>分类编码</th>
+	                                <th>分类名称</th>
+	                                <th>展示顺序</th>
+	                                <th>操作</th>
+	                            </tr>
+	                        </thead>
+	                        	<tbody >
 		                            <tr>
 		                                <td>111</td>
 		                                <td>标题标题标题标题标题标题1</td>
@@ -250,7 +242,6 @@
 		                            </tr>
 		                        </tbody>
 		                    </table>
-		                    
 
 		                    <div class="overflow-hidden clearfix" th:remove="All">
 		                          <div class="pull-left mt20">
@@ -288,14 +279,14 @@
 		                    </div>
 		                    <!-- 列表 end-->
 		            </div>
-		    </div>
-			
+			    </div>
+				
+			</div>
 		</div>
+		<!-- 右边内容 end-->
 	</div>
-	<!-- 右边内容 end-->
-
 	<!-- 左边菜单 -->
-	<div class="m_nav">
+	<div class="m_nav"  th:remove="all">
 		<nav class="nav">
 			<ul>
 				<li class="navTit">
@@ -417,7 +408,6 @@
 	<SCRIPT type="text/javascript" th:inline="javascript">
 		
     </SCRIPT>
-</div>
 	
 </body>
 </html>
