@@ -22,6 +22,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IUserCollecti
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -61,8 +62,10 @@ public class UserCollectionSVImpl implements IUserCollectionSV{
         if(userCollectionReqDTO == null){
             throw new BusinessException("入参userCollectionReqDTO不能为null");
         }
+        int colId =SeqUtil.getInt("SEQ_USER_COLLECTION");
         UserCollection userCollection = new UserCollection();
         ObjectCopyUtil.copyObjValue(userCollectionReqDTO, userCollection, null, false);
+        userCollection.setColId(colId);
         Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
         userCollection.setCreateTime(time);
         int code = userCollectionMapper.insert(userCollection);

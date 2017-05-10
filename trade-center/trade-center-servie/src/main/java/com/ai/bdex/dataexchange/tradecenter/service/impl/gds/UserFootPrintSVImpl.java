@@ -22,6 +22,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IUserFootPrin
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -62,8 +63,10 @@ public class UserFootPrintSVImpl implements IUserFootPrintSV{
         if(userFootPrintReqDTO == null){
             throw new BusinessException("入参userFootPrintReqDTO不能为null");
         }
+        int fpId =SeqUtil.getInt("SEQ_USER_FOOTPRINT");
         UserFootPrint userFootPrint = new UserFootPrint();
         ObjectCopyUtil.copyObjValue(userFootPrintReqDTO, userFootPrint, null, false);
+        userFootPrint.setFpId(fpId);
         Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
         userFootPrint.setCreateTime(time);
         int code = userFootPrintMapper.insert(userFootPrint);

@@ -36,6 +36,15 @@ import org.springframework.web.util.HtmlUtils;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
@@ -630,6 +639,15 @@ public class PageManageController {
 	@RequestMapping(value = "/pageClassify")
 	public ModelAndView pageClassify(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("page_classification");
+		try {
+			SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
+			sortInfoRespDTO.setStatus(STATUS_VALID);
+			sortInfoRespDTO.setSortLevel("1");
+			List<SortInfoRespDTO> sortInfos = iPageDisplayRSV.querySortInfos(sortInfoRespDTO);
+			modelAndView.addObject("sortInfos", sortInfos);
+		} catch (Exception e) {
+			log.error("【首页商品菜单分类配置】常信息异：" + e);
+		}
 		return modelAndView;
 	}
 	/**
