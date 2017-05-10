@@ -2,6 +2,8 @@
 .class_sidebar{
 	background: #fbfbfb;
 	border: solid 1px #eee;
+	position: relative;
+	width: 250px;
 }
 .class_sidebar h3{
 	font-size: 16px;
@@ -40,8 +42,9 @@
 .class_sidebar_secon{
 	position: absolute;
 	width: 500px;
-	left: 260px;
-	top: 0;
+	left: 248px;
+
+	top: -1px;
 	z-index: 10;
 	background: #fff;
 	border: solid 1px #eee;
