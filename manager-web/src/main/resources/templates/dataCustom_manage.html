@@ -3,14 +3,14 @@
 <div th:replace="~{fragments/syshead :: syshead}"></div>
 
 <link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
-<head th:remove="all">
+<head>
 	<meta charset="UTF-8">
 	<title>数据定制管理</title>
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
-	
+	<script type="text/javascript" src="../../static/js-busi/page/data_manager.js" th:src="@{/js-busi/page/data_manager.js}"></script>
 </head>
 
 <body>
@@ -60,8 +60,32 @@
 				<span class="col_999">数据定制管理</span>
 			</div>
 			<!-- <hr> -->
-			
 			<div class="title">数据定制管理</div>
+			<div class="top-table">
+				<table class="editTable">
+					<tbody><tr>
+						<td class="Hint">
+							<span class="col_red">*</span>
+							处理状态：
+						</td>
+						<td width="20%">
+							<div class="input-group02">
+								<input type="hidden" id="gdsStatus" value="0">
+								<select class="form-control" id="statusselect"  >
+									<option value="">全部</option>
+									<option value="1">未处理</option>
+									<option value="2">已处理</option>
+								</select>
+							</div>
+						</td>
+						<td>
+							<div class="input-group02">
+								<button class="btn btn-primary" onclick="queryCustomData(1)">查询</button>
+							</div>
+						</td>
+					</tr>
+					</tbody></table>
+			</div>
 			<table class="table table-bordered text-center" >
                             <thead>
                             <tr class="active">
@@ -74,7 +98,22 @@
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody >
+			 	<tbody th:if=" ${pageData}" th:remove="all-but-first"  id="queryresultShow">
+				<tr  th:each="list,iterStat : ${pageData.result}"  class="queryresult">
+					<td th:text="${pageData.pageNo -1}*${pageData.pageSize}+${iterStat.count}"></td>
+					<td th:text="${list.customName}"></td>
+					<td th:text="${list.customDescrip}"></td>
+					<td th:text="${list.linkPerson}"></td>
+					<td th:text="${list.linkPhnoe}"></td>
+					<td th:text="${list.customMail}"></td>
+					<td> <p class="pop-link"  th:if=" ${list.status}=='1'" >
+						<a href="">处理</a>
+					</p>
+						<p class="pop-link"  th:if=" ${list.status}=='2'" >
+							<span>已处理<span/>
+						</p>
+					</td>
+				</tr>
                             <tr th:remove="all">
                                 <td>1</td>
                                 <td> </td>
@@ -89,13 +128,59 @@
                                 </p>
                                 </td>
                             </tr>
-                          
-                            </tbody>
+							</tbody>
                         </table>
-		</div>
-		
-	</div>
+ 			<div class="overflow-hidden clearfix">
+				<div class="pagelist pull-right" th:remove="all">
+					<nav aria-label="Page navigation">
+						<ul class="pagination">
+							<li><a href="#" aria-label="Previous"> <span
+									aria-hidden="true">上一页</span>
+							</a></li>
+							<li class="active"><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li><a href="#" aria-label="Next"> <span
+									aria-hidden="true">下一页</span>
+							</a></li>
+							<div class="pageskip">
+										<span class="pr10">到第<input type="text"
+																	class="pageskip_box">页
+										</span> <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+							</div>
+						</ul>
 
+					</nav>
+				</div>
+				<div th:fragment="pager" class="pagerBar pagelist pull-right"
+					 th:if=" ${pageData}">
+					<script type="text/javascript"
+							src="../static/js-busi/common/pager.js"
+							th:src="@{/js-busi/common/pager.js}"></script>
+					<span data-toggle="pager" id="pagerId"
+						  th:data-count="${pageData.count}"
+						  th:data-size="${pageData.pageSize}"
+						  th:data-currentindex="${pageData.pageNo}"></span>
+					<script th:inline="javascript">
+						var total = '[[${pageData.count}]]';
+						var pageNum = '[[${pageData.pageNo}]]';
+						var pageSize = '[[${pageData.pageSize}]]';
+
+						if (typeof pagerClick === "undefined") {
+							pagerClick = function(index) {
+								queryCustomData(index);
+							}
+						}
+						$('#pagerId').pager({
+							callback : pagerClick
+						});
+					</script>
+				</div>
+			</div>
+		</div>
+	</div>
 
 	<div class="m_nav">
 		<nav class="nav">

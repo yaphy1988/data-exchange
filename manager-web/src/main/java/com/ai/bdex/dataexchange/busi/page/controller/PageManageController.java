@@ -668,7 +668,20 @@ public class PageManageController {
 			e.printStackTrace();
 		}
 	}
-
+	/**
+	 * 定制数据管理界面
+	 * @param request
+	 * @return
+	 * auther:landeng
+	 */
+	@RequestMapping(value = "/manageDataPageInit")
+	public ModelAndView manageDataPageInit(HttpServletRequest request,Model model) {
+		//先将记录数显示出来
+		PageResponseDTO<DataCustomizationRespDTO> pageData = new PageResponseDTO<DataCustomizationRespDTO>();
+		model.addAttribute("pageData", pageData);
+		ModelAndView modelAndView = new ModelAndView("dataCustom_manage");
+		return modelAndView;
+	}
 
 	/**
 	 * 定制数据管理查询
@@ -676,23 +689,26 @@ public class PageManageController {
 	 * @return
 	 * auther:landeng
 	 */
-	@RequestMapping(value = "/querymanageDatainit")
-	public ModelAndView QuerymanageData(HttpServletRequest request) {
-		ModelAndView modelAndView = new ModelAndView("dataCustom_manage:: dddddd");
-		DataCustomizationReqDTO dataCustomizationReqDTO = new DataCustomizationReqDTO();
+	@RequestMapping(value = "/querymanageData")
+	public String QuerymanageData(HttpServletRequest request,Model model) {
+ 		DataCustomizationReqDTO dataCustomizationReqDTO = new DataCustomizationReqDTO();
 		String status = request.getParameter("status");
 		int pageno   =  Integer.parseInt( request.getParameter("pageno"));
 		int pagesize = Integer.parseInt(request.getParameter("pagesize"));
-		dataCustomizationReqDTO.setStatus(status);
+		if(!StringUtil.isBlank(status))
+		{
+			dataCustomizationReqDTO.setStatus(status);
+		}
 		PageResponseDTO<DataCustomizationRespDTO> pageData = new PageResponseDTO<DataCustomizationRespDTO>();
 		try{
 			dataCustomizationReqDTO.setPageNo(pageno);
 			dataCustomizationReqDTO.setPageSize(pagesize);
 			pageData = iPageDisplayRSV.queryDataCustomizationInfo(dataCustomizationReqDTO);
+			model.addAttribute("pageData", pageData);
 		} catch (Exception e) {
 			log.error("查询用户提交的定制数据信息出错：" + e.getMessage());
 		}
-		return modelAndView;
+		return "dataCustom_manage :: .queryresult";
 	}
 	/**
 	 * 定制数据管理--将数据设置为已处理
@@ -715,7 +731,7 @@ public class PageManageController {
 			rMap.put("success", true);
 			} catch (Exception e) {
 				rMap.put("success", false);
-				log.error("保存广告信息出错：" + e.getMessage());
+				log.error("将数据设置为已处理出错：" + e.getMessage());
 			}
 		 return rMap;
 	}
