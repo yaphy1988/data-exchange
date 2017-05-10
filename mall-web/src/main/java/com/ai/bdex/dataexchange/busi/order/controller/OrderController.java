@@ -142,7 +142,9 @@ public class OrderController {
 						ordInfoReqDTO.setCatFirst(gdsInfoRespDTO.getCatFirst());
 						ordInfoReqDTO.setCatId(gdsInfoRespDTO.getCatId());
 						gdsname = gdsInfoRespDTO.getGdsName();
-				} 
+						ordInfoReqDTO.setGdsName(gdsname);
+						ordInfoReqDTO.setSkuName(skuname);
+				}
 			} catch (Exception e) {
 			    e.printStackTrace();
 			} 
