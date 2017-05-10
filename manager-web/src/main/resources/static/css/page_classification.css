@@ -40,9 +40,9 @@
 .class_sidebar_secon{
 	position: absolute;
 	width: 500px;
-	left: 264px;
+	left: 260px;
 	top: 0;
-	z-index: 100;
+	z-index: 10;
 	background: #fff;
 	border: solid 1px #eee;
 	/* border-left:none; */
