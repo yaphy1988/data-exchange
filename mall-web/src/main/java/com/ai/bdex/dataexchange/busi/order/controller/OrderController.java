@@ -72,14 +72,14 @@ public class OrderController {
 		HttpSession hpptsesion = request.getSession(); 
 		String staff_id = StaffUtil.getStaffId(hpptsesion); 
 		StaffInfoDTO staffInfoDTO = StaffUtil.getStaffVO(hpptsesion);
-		//将商品的名称，gdsID，套餐id，skuID，带过来，存储到session中。价格必须从商品服务从新回去
-        //商品名称和ID
-		int gdsid = Integer.parseInt(request.getParameter("gdsid"));
+		//将商品的名称，gdsID，套餐id，skuID，带过来，存储到session中。价
+	    //图片ID格必须从商品服务从新回去
+		//商品名称和ID
+		int gdsid = Integer.parseInt(request.getParameter("gdsId"));
 		String gdsname = "";
 		//套餐信息
-		int skusid =  Integer.parseInt(request.getParameter("skuid"));
+		int skusid =  Integer.parseInt(request.getParameter("skuId"));
 		String skuname = "";
-	    //图片ID
 		String gdsvfsid =  "";
 		String gdsvfsurl = "";
 		//获取商品的价格和图
