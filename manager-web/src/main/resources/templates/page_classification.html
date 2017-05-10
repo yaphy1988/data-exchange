@@ -8,6 +8,7 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/index.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/page_classification.css" th:href="@{/css/page_classification.css}">
 	<!--[if lt IE 9]>
         <script src="../static/js/respond.min.js" th:remove="all"></script>
@@ -88,196 +89,95 @@
 				                <li><a href="#"><i>›</i>时空数据</a> </li>
 				                <li><a href="#"><i>›</i>健康医疗</a> </li>
 				                <li><a href="#"><i>›</i>更多服务</a> </li>
-				            </ul> 
+				            </ul>
+				            <!-- 二级子菜单 -->
+				            <div psortid="1" class="sidebar-hidden" style="display: none;">
+								<h4>金融理财</h4>
+								<div class="sidebar-link">
+									<a href="https://www.baidu.com" target="_blank">条码查询</a><a
+										href="http://112.74.163.29:8082/mall-web/goods/details/1037-"
+										target="_blank">万能小哥</a><a
+										href="http://112.74.163.29:8082/mall-web/goods/details/1039-"
+										target="_blank">专利查询</a><a href="javascript:void(0);" target="_blank">全国违章</a><a
+										href="https://www.baidu.com" target="_blank">H5在线电</a>
+								</div>
+								<div class="sidebar-link"></div>
+							</div> 
 				        </div>       	
 	                    <!-- 左边树形菜单  end--> 
 			        </div>
 			        <div class="col-md-9">
-	                	<div id="nodeInfo" >
-	                		<!-- 节点信息 -->
-	                		<table class="editTable" width="100%" th:remove="All">
-							    <tbody>
-							        <tr>
-							         <td class="Hint" width="15%">分类编码：</td>	                            
-							         <td width="15%" th:text="${catInfo.catId}">121232</td>
-							         <td class="Hint" width="15%">分类名称：</td>
-							         <td th:text="${catInfo.catName}">测试标题测试标题测试标题</td>
-							     </tr>
-							        <tr>
-							         <td class="Hint">展示顺序：</td>	                            
-							         <td th:text="${catInfo.showOrder}">2</td>
-							     </tr>
-							         
-							    </tbody>
+						<div class="box" id="sortInfo">
+						<!--右边-->
+					
+							<table width="100%" border="0" class="editTable table-hover"
+								id="contentInput">
+								<tbody>
+									<tr>
+										<td class="Hint"><span class="red">*</span>分类名称：</td>
+										<td><input type="hidden" value="1" id="tSortContentSize">
+											<input type="hidden" value="1" id="sortId"> <input
+											type="hidden" value="59" id="provinceCode"> <input
+											type="hidden" value="-1" id="parentSortId"> <input
+											type="hidden" value="01" id="sortLevel"> <input
+											type="hidden" value="1" id="orderNo"> <input type="hidden"
+											value="first" id="opType"> <input class="form-control"
+											type="text" id="sortName" value="手机"></td>
+									</tr>
+									<tr>
+										<td class="Hint"><span class="red">*</span>类型：</td>
+										<td><select class="form-control" id="sortType"
+											onchange="hideinput()">
+												<option value="01" selected="selected">概括导航类型</option>
+												<option value="02">具体导航类型</option>
+										</select></td>
+									</tr>
+									<tr name="tr1">
+										<td class="Hint class-zi"><input type="hidden" value="1"
+											id="sortContentId_1"> <input type="hidden" value="59"
+											id="sortConprovinceCode_1"> 分类内容：</td>
+										<td class="TextRight"><a class="deleIcon2"
+											onclick="deltrInfo('1')"></a></td>
+									</tr>
+									<tr name="tr1">
+										<td class="Hint"><span class="red">*</span>内容名称：</td>
+										<td><input class="form-control" type="text" id="contentName_1"
+											value="手机"></td>
+									</tr>
+									<tr name="tr1">
+										<td class="Hint">链接地址：</td>
+										<td><input class="form-control" maxlength="512" type="text"
+											id="contentLink_1"
+											value="/search/search?fq_catList=%255B%2522100%2522%255D"></td>
+									</tr>
+									<tr name="tr1" id="tr1" style="display: none">
+										<td class="Hint">上传图片：</td>
+										<td><input class="form-control" maxlength="50" id="vfsId_1"
+											type="text" value=""><input id="file_1" name="file_1"
+											type="file" onchange="sortUploadImage('1')"></td>
+									</tr>
+									<tr name="tr1">
+										<th colspan="2" scope="row" class="table-line"></th>
+									</tr>
+								</tbody>
 							</table>
+							<div class="red mTB10">
+								备注：链接地址目前只支持系统内部地址(即不需要域名部分，<br>例：要链接至http://www.woego.cn/woego/actzone/pageInit，只需填入/actzone/pageInit）
+							</div>
+							<div class="mTB10">
+								<button class="btn btn-default btn-sm" data-toggle="modal"
+									data-target="#new_adds" onclick="addsortContent();">
+									<i class="glyphicon glyphicon-plus"></i> 新增内容
+								</button>
+							</div>
+							<div class="formOperate">
+								<input type="submit" value="保存" onclick="saveInfo()"
+									class="btn btn-primary">
+							</div>
+							<!--右边 end-->
+						
 						</div>
-		                <div class="text-right">
-		                    <button class="btn btn-default btn-mini ml20" onclick="location.href=''"><i class="glyphicon glyphicon-plus"></i>新增同级</button>
-		                    <button class="btn btn-default btn-mini" onclick="location.href=''"><i class="glyphicon glyphicon-pencil"></i>编辑</button>
-		                    <button class="btn btn-default btn-mini" onclick="location.href=''"><i class="glyphicon glyphicon-minus"></i>删除</button>
-		                </div>
-	
-	                    <!-- 列表 -->
-	                    <div class="title">下级列表</div>
-	                    <div id="childList"></div>
-             			 <table th:remove="All" class="table table-bordered table-striped table-hover text-center table_th_center">
-	                        <thead>
-	                            <tr >
-	                                <th>分类编码</th>
-	                                <th>分类名称</th>
-	                                <th>展示顺序</th>
-	                                <th>操作</th>
-	                            </tr>
-	                        </thead>
-	                        	<tbody >
-		                            <tr>
-		                                <td>111</td>
-		                                <td>标题标题标题标题标题标题1</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>112</td>
-		                                <td>标题标题标题标题标题标题2</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>113</td>
-		                                <td>标题标题标题标题标题标题3</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>114</td>
-		                                <td>标题标题标题标题标题标题4</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>115</td>
-		                                <td>标题标题标题标题标题标题5</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>116</td>
-		                                <td>标题标题标题标题标题标题6</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>117</td>
-		                                <td>标题标题标题标题标题标题7</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>118</td>
-		                                <td>标题标题标题标题标题标题8</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>112</td>
-		                                <td>标题标题标题标题标题标题9</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                            <tr>
-		                                <td>119</td>
-		                                <td>标题标题标题标题标题标题10</td>
-		                                <td>1</td>
-		                                <td>
-		                                	<p class="pop-link">
-		                                        <a href="">编辑</a>
-		                                        <a href="">删除</a>
-		                                    </p>
-		                                </td>
-		                            </tr>
-		                        </tbody>
-		                    </table>
 
-		                    <div class="overflow-hidden clearfix" th:remove="All">
-		                          <div class="pull-left mt20">
-		                              <button class="btn btn-primary btn-small" data-target="#add_article" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i>新增下级</button>
-		                          </div>
-
-		                          <!-- pagerBar -->
-	                              <div class="pagelist pull-right">
-										<nav aria-label="Page navigation">
-										  <ul class="pagination">
-										    <li >
-										      <a href="#" aria-label="Previous">
-										        <span aria-hidden="true">上一页</span>
-										      </a>
-										    </li>
-										    <li class="active"><a href="#">1</a></li>
-										    <li><a href="#">2</a></li>
-										    <li><a href="#">3</a></li>
-										    <li><a href="#">4</a></li>
-										    <li><a href="#">5</a></li>
-										    <li>
-										      <a href="#" aria-label="Next">
-										        <span aria-hidden="true">下一页</span>
-										      </a>
-										    </li>
-										    <div class="pageskip">
-										  	<span class="pr10">到第<input type="text" class="pageskip_box">页</span>
-										  	<a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
-										  </div>
-										  </ul>
-										  
-										</nav>
-									</div>
-		                          <!-- pagerBar end-->
-		                    </div>
-		                    <!-- 列表 end-->
 		            </div>
 			    </div>
 				
