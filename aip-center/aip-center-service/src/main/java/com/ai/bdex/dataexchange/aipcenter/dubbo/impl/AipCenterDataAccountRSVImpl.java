@@ -2,10 +2,11 @@ package com.ai.bdex.dataexchange.aipcenter.dubbo.impl;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IRechargeRSV;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IRechargeSV;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,7 +14,8 @@ import java.util.List;
 /**
  * Created by fangyunfeng on 2017/5/4.
  */
-public class RechargeRSVImpl implements IRechargeRSV {
+@Service("aipCenterDataAccountRSV")
+public class AipCenterDataAccountRSVImpl implements IAipCenterDataAccountRSV {
 
     @Autowired
     private IRechargeSV rechargeSV;
@@ -29,7 +31,7 @@ public class RechargeRSVImpl implements IRechargeRSV {
     }
 
     @Override
-    public DataAccountDTO queryDataAccountByOrderInfo(String orderId,String subOrder) throws BusinessException {
-        return rechargeSV.queryDataAccountByOrderInfo(orderId,subOrder);
+    public DataAccountDTO queryDataAccountByOrderInfo(String subOrder) throws BusinessException {
+        return rechargeSV.queryDataAccountByOrderInfo(subOrder);
     }
 }

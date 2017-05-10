@@ -43,9 +43,6 @@ public class RechargeSVImpl implements IRechargeSV {
     @Autowired
     private DataAccountHisMapper dataAccountHisMapper;
 
-    @Autowired
-    private ManualDataAccountMapper manualDataAccountMapper;
-
     @Override
     public void recharge(List<RechargeDTO> rechargeDTOList) throws BusinessException {
         if(CollectionUtil.isEmpty(rechargeDTOList)){
@@ -57,12 +54,11 @@ public class RechargeSVImpl implements IRechargeSV {
         }
     }
 
-    public DataAccountDTO queryDataAccountByOrderInfo(String orderId,String subOrder) throws BusinessException{
-        if(StringUtil.isBlank(orderId) && StringUtil.isBlank(subOrder)){
+    public DataAccountDTO queryDataAccountByOrderInfo(String subOrder) throws BusinessException{
+        if(StringUtil.isBlank(subOrder)){
             return null;
         }
         RechargeDTO rechargeDTO = new RechargeDTO();
-        rechargeDTO.setOrderId(orderId);
         rechargeDTO.setSubOrder(subOrder);
 
         List<DataAccountDTO> dataAccountDTOList = queryDataAccountByRechargInfo(rechargeDTO);
@@ -120,65 +116,61 @@ public class RechargeSVImpl implements IRechargeSV {
 
     private void recharge(RechargeDTO rechargeDTO) throws BusinessException{
         checkRecharge(rechargeDTO);
+
+        //先记录充值信息，同时也是进行去重处理
+        RechargeRecord rechargeRecord = new RechargeRecord();
+        rechargeRecord.setRechargeReqId(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+SeqUtil.getString("SEQ_RECHARGE_RECORD",8));
+        ObjectCopyUtil.copyObjValue(rechargeDTO,rechargeRecord,null,false);
+        rechargeRecord.setRechargeStatus("1");
+        rechargeRecord.setCreateStaff(rechargeDTO.getCurrentUserId());
+        rechargeRecord.setCreateTime(new Date());
+        rechargeRecordMapper.insertSelective(rechargeRecord);
+
+        //创建数据账户
+        long newDataAcctId = createDataAccount(rechargeDTO);
+
+        //将数据账户信息更新到充值记录
+        RechargeRecord updateRechargeRecord = new RechargeRecord();
+        updateRechargeRecord.setRechargeReqId(rechargeRecord.getRechargeReqId());
+        updateRechargeRecord.setDataAccountId(newDataAcctId);
+        updateRechargeRecord.setRechargeStatus("2");
+        updateRechargeRecord.setUpdateStaff(rechargeDTO.getCurrentUserId());
+        updateRechargeRecord.setUpdateTime(new Date());
+        rechargeRecordMapper.updateByPrimaryKeySelective(updateRechargeRecord);
+
+    }
+
+    /**
+     * 根据充值记录创建数据账户
+     * @param rechargeDTO
+     * @throws BusinessException
+     */
+    private long createDataAccount(RechargeDTO rechargeDTO) throws BusinessException{
         DataAccount dataAccountHis = null;
 
+        DataAccount dataAccount = getDefaultNewDataAccount();
+        dataAccount.setUserId(rechargeDTO.getRechargeUserId());
+        dataAccount.setDataAcctType(rechargeDTO.getRechargeType());
+        dataAccount.setPeriodType(rechargeDTO.getPeriodType());
+        dataAccount.setCreateStaff(rechargeDTO.getCurrentUserId());
+        dataAccount.setCreateTime(new Date());
         //充值类型为次数，直接创建新的账户
         if("1".equals(rechargeDTO.getRechargeType())){
-            DataAccount dataAccount = getDefaultNewDataAccount();
-            dataAccount.setUserId(rechargeDTO.getRechargeUserId());
-            dataAccount.setDataAcctType(rechargeDTO.getRechargeType());
-            dataAccount.setTotalConsumeMoney(0);
             dataAccount.setTotalNum(rechargeDTO.getTotalNum());
-            dataAccount.setCreateStaff(rechargeDTO.getCurrentUserId());
-            dataAccount.setCreateTime(new Date());
-
-            if(dataAccountMapper.insertSelective(dataAccount) <= 0){
-                logger.error("创建数据账号异常 rechargeDTO:"+ JSON.toJSONString(rechargeDTO));
-                throw new BusinessException("创建数据账号异常");
-            }
-            dataAccountHis = dataAccount;
+        }else{
+            dataAccount.setTotalMoney(rechargeDTO.getTotalMoney());
         }
 
-        //先检查充值类型是否为金额，如果是金额需要检查是否已经存在数据账户
-        if("2".equals(rechargeDTO.getRechargeType())){
-            DataAccountDTO queryDataAccount = new DataAccountDTO();
-            queryDataAccount.setUserId(rechargeDTO.getRechargeUserId());
-            queryDataAccount.setDataAcctType(rechargeDTO.getRechargeType());
-            List<DataAccountDTO> dataAccountList = queryDataAccountListByOption(queryDataAccount);
-
-            if(CollectionUtil.isEmpty(dataAccountList)){
-                //如果不存在，则新创建数据账户
-                DataAccount dataAccount = getDefaultNewDataAccount();
-                dataAccount.setUserId(rechargeDTO.getRechargeUserId());
-                dataAccount.setDataAcctType(rechargeDTO.getRechargeType());
-                dataAccount.setTotalMoney(rechargeDTO.getTotalMoney());
-                dataAccount.setCreateStaff(rechargeDTO.getCurrentUserId());
-
-                if(dataAccountMapper.insertSelective(dataAccount) <= 0){
-                    logger.error("创建数据账号异常 rechargeDTO:"+ JSON.toJSONString(rechargeDTO));
-                    throw new BusinessException("创建数据账号异常");
-                }
-                dataAccountHis = dataAccount;
-            }else{
-                DataAccount dataAccount = new DataAccount();
-                dataAccount.setDataAcctId(dataAccountList.get(0).getDataAcctId());
-                dataAccount.setUpdateStaff(rechargeDTO.getCurrentUserId());
-                dataAccount.setUpdateTime(new Date());
-                if(manualDataAccountMapper.updateTotalMoney(dataAccount,rechargeDTO.getTotalMoney()) <= 0){
-                    logger.error("更新数据账号异常 rechargeDTO:"+ JSON.toJSONString(rechargeDTO));
-                    throw new BusinessException("更新数据账号异常");
-                }
-                dataAccountHis = dataAccount;
-            }
+        if(dataAccountMapper.insertSelective(dataAccount) <= 0){
+            logger.error("创建数据账号异常 rechargeDTO:"+ JSON.toJSONString(rechargeDTO));
+            throw new BusinessException("创建数据账号异常");
         }
+        dataAccountHis = dataAccount;
 
         //保存到历史记录表
         saveDataAccountHis(dataAccountHis,"用户下单");
 
-        //保存充值记录
-        rechargeDTO.setDataAccountId(dataAccountHis.getDataAcctId());
-        saveRechargeRecord(rechargeDTO);
-
+        return dataAccount.getDataAcctId();
     }
 
     private List<DataAccountDTO> queryDataAccountListByOption(DataAccountDTO dataAccountDTO){
@@ -237,6 +229,10 @@ public class RechargeSVImpl implements IRechargeSV {
                 throw new BusinessException("非永久有效类型，服务编码不能为空!");
             }
         }
+        if(StringUtil.isBlank(rechargeDTO.getSubOrder())){
+            logger.error("子订单编码不能为空!");
+            throw new BusinessException("子订单编码不能为空!");
+        }
     }
 
     private DataAccount getDefaultNewDataAccount(){
@@ -273,15 +269,6 @@ public class RechargeSVImpl implements IRechargeSV {
         }
 
         dataAccountHisMapper.insertSelective(dataAccountHis);
-    }
-
-    private void saveRechargeRecord(RechargeDTO rechargeDTO){
-        RechargeRecord rechargeRecord = new RechargeRecord();
-        rechargeRecord.setRechargeReqId(new SimpleDateFormat("yyyyMMddHHmmss").format(new Date())+SeqUtil.getString("SEQ_RECHARGE_RECORD",8));
-        ObjectCopyUtil.copyObjValue(rechargeDTO,rechargeRecord,null,false);
-        rechargeRecord.setCreateStaff(rechargeDTO.getCurrentUserId());
-        rechargeRecord.setCreateTime(new Date());
-        rechargeRecordMapper.insertSelective(rechargeRecord);
     }
 
 }
