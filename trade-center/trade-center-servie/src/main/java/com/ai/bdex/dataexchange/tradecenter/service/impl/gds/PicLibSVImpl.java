@@ -24,6 +24,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IPicLibSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -78,7 +79,9 @@ public class PicLibSVImpl implements IPicLibSV{
             throw new BusinessException("入参picLibReqDTO不能为null");
         }
         PicLib picLib = new PicLib();
+        int libId =SeqUtil.getInt("SEQ_PIC_LIB");
         ObjectCopyUtil.copyObjValue(picLibReqDTO, picLib, null, false);
+        picLib.setLibId(libId);
         Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
         picLib.setCreateTime(time);
         int code = PicLibMapper.insert(picLib);
