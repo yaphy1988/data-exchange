@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+  <!-- config transaction advice :define propagation REQUIRED -->
+  <!-- 事务传递规则为：支持当前事务，如果当前没有事务，就新建一个事务。事务的隔离级别：使用底层数据库预设的隔离层级。事务超时：不设置，默认-1不超时 -->
+  <tx:advice id="txAdvice">
+    <tx:attributes>
+      <tx:method name="add*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+      <tx:method name="save*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+      <tx:method name="create*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+      <tx:method name="delete*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+      <tx:method name="update*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+      <tx:method name="deal*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+      <tx:method name="modify*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+      <tx:method name="edit*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+      <tx:method name="change*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+      <tx:method name="alter*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+      <tx:method name="cancel*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+      <tx:method name="batch*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+      <tx:method name="imp*" propagation="REQUIRED" isolation="DEFAULT" rollback-for="java.lang.Exception"/>
+      <tx:method name="get*" read-only="true" propagation="SUPPORTS" isolation="DEFAULT"/>
+      <tx:method name="query*" read-only="true" propagation="SUPPORTS" isolation="DEFAULT"/>
+      <tx:method name="find*" read-only="true" propagation="SUPPORTS" isolation="DEFAULT"/>
+      <tx:method name="count*" read-only="true" propagation="SUPPORTS" isolation="DEFAULT"/>
+      <tx:method name="check*" read-only="true" propagation="SUPPORTS" isolation="DEFAULT"/>
+      <tx:method name="*" propagation="SUPPORTS" isolation="DEFAULT"/>
+    </tx:attributes>
+  </tx:advice>
+  <!-- aop proxy transaction config -->
+  <aop:config proxy-target-class="true">
+    <aop:advisor pointcut="execution( * com.ai.bdex.dataexchange.*.dubbo.impl.*.*.*(..))" advice-ref="txAdvice"/>
+  </aop:config>
+</beans>

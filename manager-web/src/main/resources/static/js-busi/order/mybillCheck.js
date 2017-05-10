@@ -31,7 +31,7 @@ function makeInvoiceTax(orderTaxId,orderId){
 			orderId:orderId,
 			status:status
 			};
-	var url="/invoiceManage/makeInvoiceTax";
+	var url=basePath+"/invoiceManage/makeInvoiceTax";
 	WEB.msg.confirm("提示","是否确定开票？",function(){
 		$.ajax({
 			url:url,

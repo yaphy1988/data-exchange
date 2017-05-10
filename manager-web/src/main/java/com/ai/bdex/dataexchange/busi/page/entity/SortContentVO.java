@@ -2,7 +2,9 @@ package com.ai.bdex.dataexchange.busi.page.entity;
 
 import java.util.Date;
 
-public class SortContentVO {
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+
+public class SortContentVO extends BaseInfo{
 
 	private Integer sortContentId;
 	private Integer sortId;

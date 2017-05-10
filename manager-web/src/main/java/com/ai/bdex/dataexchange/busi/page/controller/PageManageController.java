@@ -35,6 +35,8 @@ import org.springframework.web.util.HtmlUtils;
 
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
+import com.ai.bdex.dataexchange.busi.page.entity.SortContentVO;
+import com.ai.bdex.dataexchange.busi.page.entity.SortInfoVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
@@ -44,7 +46,8 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
@@ -640,11 +643,11 @@ public class PageManageController {
 	public ModelAndView pageClassify(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("page_classification");
 		try {
-			SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
-			sortInfoRespDTO.setStatus(STATUS_VALID);
-			sortInfoRespDTO.setSortLevel("1");
-			List<SortInfoRespDTO> sortInfos = iPageDisplayRSV.querySortInfos(sortInfoRespDTO);
-			modelAndView.addObject("sortInfos", sortInfos);
+//			SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
+//			sortInfoRespDTO.setStatus(STATUS_VALID);
+//			sortInfoRespDTO.setSortLevel("1");
+//			List<SortInfoRespDTO> sortInfos = iPageDisplayRSV.querySortInfos(sortInfoRespDTO);
+//			modelAndView.addObject("sortInfos", sortInfos);
 		} catch (Exception e) {
 			log.error("【首页商品菜单分类配置】常信息异：" + e);
 		}
@@ -667,6 +670,56 @@ public class PageManageController {
 			log.error("【查询全部的广告版位】异常信息：" + e);
 			e.printStackTrace();
 		}
+	}
+	/**
+	 * 首页商品菜单新增、编辑
+	 * @return
+	 */
+	@RequestMapping(value="/insetOrUpdateSortInfo")
+	@ResponseBody
+	private Map<String,Object> insetOrUpdateSortInfo(SortInfoVO sortInfoVO){
+		Map<String,Object> rMap = new HashMap<>();
+		try {
+			if(sortInfoVO.getSortId() != null){
+				SortInfoReqDTO sortInfoReqDTO = new SortInfoReqDTO();
+				iPageDisplayRSV.updateSortInfoById(sortInfoReqDTO);
+			}else{
+				SortInfoReqDTO sortInfoReqDTO = new SortInfoReqDTO();
+				iPageDisplayRSV.insertSortInfo(sortInfoReqDTO);
+			}
+			rMap.put("success", true);
+		} catch (Exception e) {
+			rMap.put("success", true);
+			rMap.put("erroMsg", e.getMessage());
+			log.error("【首页商品菜单新增、编辑】异常信息：" + e);
+		}
+		return rMap;
+
+	}
+	/**
+	 * 首页商品菜单内容新增、编辑
+	 * @return
+	 */
+	@RequestMapping(value="/insetOrUpdateContent")
+	@ResponseBody
+	private Map<String,Object> insetOrUpdateContent(SortContentVO sortContentVO){
+		Map<String,Object> rMap = new HashMap<>();
+		try {
+			if(sortContentVO.getSortContentId() != null){
+				SortContentReqDTO sortContentReqDTO = new SortContentReqDTO();
+				iPageDisplayRSV.updateSortContentById(sortContentReqDTO);
+			}else{
+				SortContentReqDTO sortContentReqDTO = new SortContentReqDTO();
+				iPageDisplayRSV.insertSortContent(sortContentReqDTO);
+			}
+			rMap.put("success", true);
+		} catch (Exception e) {
+			rMap.put("success", true);
+			rMap.put("erroMsg", e.getMessage());
+			log.error("【首页商品菜单内容新增、编辑】异常信息：" + e);
+		}
+		return rMap;
+
 	}
 	/**
 	 * 定制数据管理界面

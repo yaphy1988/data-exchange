@@ -16,6 +16,7 @@
 	<![endif]-->
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+	<script src="../static/js-busi/page/page_classification.js" th:src="@{/js-busi/page/page_classification.js}"></script>
 </head>
 <body>
 
@@ -78,10 +79,10 @@
 			    <div class=" mt15">
 					<div class="col-md-3">
 	                     <!-- 左边树形菜单  --> 
-			             <div class="class_sidebar">
+			             <div class="class_sidebar" th:id="head_sidebar" th:remove="body">
 				            <h3>全部商品</h3>
 				            <ul th:remove="all-but-first">
-				                <li th:each="sortInfo,infoStat : ${sortInfos}" th:sortId="${sortInfo.sortId}"><a href="javascript:void(0)" ><i>›</i><span th:text="${sortInfo.sortName}">金融理财金融理财金融理财金融理财金融理财</span></a> </li>
+				                <li><a href="#" ><i>›</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
 				                <li class="active"><a href="#"><i>›</i>交通运输</a> </li>
 				                <li><a href="#"><i>›</i>气象环保</a> </li>
 				                <li><a href="#"><i>›</i>生活服务</a> </li>
@@ -89,69 +90,40 @@
 				                <li><a href="#"><i>›</i>时空数据</a> </li>
 				                <li><a href="#"><i>›</i>健康医疗</a> </li>
 				                <li><a href="#"><i>›</i>更多服务</a> </li>
+				                <div class="mt10 ml15">
+				                	<button class="btn btn-sm btn-default">新增菜单</button>
+				                </div>
 				            </ul>
 				            <!-- 二级子菜单 -->
 				            <div psortid="1" class="class_sidebar_secon" style="display: block;">
 								<h4>金融理财</h4>
 								<div class="class_link">
-									<a href="https://www.baidu.com" target="_blank">条码查询</a><a
+									<a href="https://www.baidu.com" target="_blank">条码查询<span>✖</span></a><a
 										href="http://112.74.163.29:8082/mall-web/goods/details/1037-"
-										target="_blank">万能小哥</a><a
+										target="_blank">万能小哥<span>✖</span></a><a
 										href="http://112.74.163.29:8082/mall-web/goods/details/1039-"
-										target="_blank">专利查询</a><a href="javascript:void(0);" target="_blank">全国违章</a><a
-										href="https://www.baidu.com" target="_blank">H5在线电</a>
-										
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
-										<a href="https://www.baidu.com" target="_blank">H5在线电</a>
+										target="_blank">专利查询<span>✖</span></a><a href="javascript:void(0);" target="_blank">全国违章直连查询<span>✖</span></a><a
+										href="https://www.baidu.com" target="_blank">H5在线电影票</a>
+					                    <a href="#">常用快递<span>✖</span></a>
+					                    <a href="#">名片识别<span>✖</span></a>
+					                    <a href="#">条码查询<span>✖</span></a>
+					                    <a href="#">万能小哥<span>✖</span></a>
+					                    <a href="#">专利查询<span>✖</span></a>
+					                    <a href="#">全国违章直连查询<span>✖</span></a>
+					                    <a href="#">H5在线电影票<span>✖</span></a>
+					                    <a href="#">常用快递<span>✖</span></a>
+					                    <a href="#">快递在线下单<span>✖</span></a>
+					                    <a href="#">名片识别<span>✖</span></a>
+					                    <a href="#">条码查询<span>✖</span></a>
+					                    <a href="#">万能小哥<span>✖</span></a>
+					                    <a href="#">专利查询<span>✖</span></a>
+					                    <a href="#">全国违章直连查询<span>✖</span></a>
+					                    <a href="#">H5在线电影票<span>✖</span></a>
+					                    <a href="#">常用快递<span>✖</span></a>
 										
 								</div>
 								<div class="sidebar-link"></div>
+								<button class="btn btn-sm btn-default mt10">新增子菜单</button>
 							</div> 
 				        </div>       	
 	                    <!-- 左边树形菜单  end--> 

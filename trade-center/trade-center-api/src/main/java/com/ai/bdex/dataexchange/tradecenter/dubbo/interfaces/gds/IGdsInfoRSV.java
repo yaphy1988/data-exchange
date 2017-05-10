@@ -55,7 +55,7 @@ public interface IGdsInfoRSV {
 
     /**
      * 查询商品列表
-     * @param gdsInfoRespDTO
+     * @param gdsInfoReqDTO
      * @return
      * @throws Exception
      */

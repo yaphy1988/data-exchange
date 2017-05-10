@@ -15,12 +15,11 @@ public interface IRechargeSV {
     /**
      * 根据订单或子订单查询数据账户信息
      * 订单号 和 子订单号不能同时为空
-     * @param orderId 订单号
      * @param subOrder 子订单号
      * @return
      * @throws BusinessException
      */
-    public DataAccountDTO queryDataAccountByOrderInfo(String orderId,String subOrder) throws BusinessException;
+    public DataAccountDTO queryDataAccountByOrderInfo(String subOrder) throws BusinessException;
 
     /**
      * 根据充值信息查询用户数据账户

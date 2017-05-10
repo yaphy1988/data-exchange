@@ -49,6 +49,7 @@ import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 
@@ -239,7 +240,7 @@ public class HomePageController {
 	 */
 	@RequestMapping(value = "/querySortInfo")
 	@ResponseBody
-	public Map<String, Object> querySortInfo(Model model, HttpServletRequest request) {
+	public String querySortInfo(Model model, HttpServletRequest request) {
 		String sortParentId = request.getParameter("sortParentId");
 		String sortLever = request.getParameter("sortLever");
 		Map<String, Object> rMap = new HashMap<String, Object>();
@@ -295,7 +296,7 @@ public class HomePageController {
 			rMap.put("success", false);
 			log.error("查询商品分类信息异常：" + e.getMessage());
 		}
-		return rMap;
+		return getJsonCallback(rMap,request);
 	}
 
 	/**
@@ -620,5 +621,18 @@ public class HomePageController {
 			log.error("查询首页导航信息信息异常：" + e.getMessage());
 		}
 		return rMap;
+	}
+	protected String getJsonCallback(Map<String, Object> map,HttpServletRequest request){
+		String callback = request.getParameter("jsonpCallback");
+
+		try{
+			if(StringUtils.isBlank(callback)){
+				return new ObjectMapper().writeValueAsString(map);
+			}else{
+				return callback+"("+new ObjectMapper().writeValueAsString(map)+")";
+			}
+		}catch (Exception e) {
+			throw new RuntimeException("JsonUtil.toJSONString发生错误", e);
+		}
 	}
 }

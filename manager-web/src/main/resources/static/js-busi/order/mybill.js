@@ -73,7 +73,7 @@ function saveInvoiceTax(){
 			bankName:bankName,
 			acctInfo:acctInfo
 			};
-	var url="/invoiceManage/saveInvoiceTax";
+	var url=basePath+"/invoiceManage/saveInvoiceTax";
 		$.ajax({
 			url:url,
 			cache:false,

@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
  
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.SortInfoMapper;
@@ -11,7 +12,10 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfoExample;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
+import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.utils.DateUtil;
 import com.alibaba.dubbo.common.utils.StringUtils;
 @Service("iSortInfoSV")
 public class SortInfoSVImpl  implements ISortInfoSV{
@@ -56,5 +60,33 @@ public class SortInfoSVImpl  implements ISortInfoSV{
 			} 
 			//    List<PageInfo> selectByExample(PageInfoExample example);
 			 return sortInfoMapper.selectByExample(example);	
-		  } 
+		  }
+	@Override
+	public long insertSortInfo(SortInfoReqDTO sortInfoReqDTO) throws Exception {
+		SortInfo record = new SortInfo();
+		BeanUtils.copyProperties(sortInfoReqDTO, record);
+		Integer seq =  SeqUtil.getInt("SEQ_SORT_INFO");
+	    record.setSortId(seq);
+		record.setCreateStaffId(sortInfoReqDTO.getCreateStaffId());
+ 	    record.setCreateTime(DateUtil.getNowAsDate());
+ 	    record.setUpdateStaffId(sortInfoReqDTO.getUpdateStaffId());
+ 	    record.setUpdateTime(DateUtil.getNowAsDate());
+		return sortInfoMapper.insert(record);
+	}
+	@Override
+	public long updateSortInfoById(SortInfoReqDTO sortInfoReqDTO) throws Exception {
+		SortInfo record = sortInfoMapper.selectByPrimaryKey(sortInfoReqDTO.getSortId());
+		if(!StringUtils.isBlank(sortInfoReqDTO.getSortName())){
+			record.setSortName(sortInfoReqDTO.getSortName());
+		}
+		if(!StringUtils.isBlank(sortInfoReqDTO.getOrderNo())){
+			record.setOrderNo(sortInfoReqDTO.getOrderNo());
+		}
+		if(!StringUtils.isBlank(sortInfoReqDTO.getStatus())){
+			record.setStatus(sortInfoReqDTO.getStatus());
+		}
+		record.setUpdateStaffId(sortInfoReqDTO.getUpdateStaffId());
+		record.setUpdateTime(DateUtil.getNowAsDate());
+		return sortInfoMapper.updateByPrimaryKey(record);
+	} 
  }

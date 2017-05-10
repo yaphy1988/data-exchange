@@ -22,6 +22,24 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAdProp;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContent;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdPropRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IDataCustomizationSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageAdPlaceSV;
@@ -422,6 +440,28 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
 	@Override
 	public List<PageAdPalceRespDTO> queryPageAdPalceList(PageAdPalceReqDTO adPalceReqDTO) throws Exception {
 		return iPageAdPlaceSV.queryPageAdPalceList(adPalceReqDTO);
+	}
+	@Override
+	public long insertSortContent(SortContentReqDTO sortContentReqDTO) throws Exception {
+		return iSortContentSV.insertSortContent(sortContentReqDTO);
+	}
+	@Override
+	public long updateSortContentById(SortContentReqDTO sortContentReqDTO) throws Exception {
+		if(sortContentReqDTO.getSortContentId() == null || sortContentReqDTO.getSortContentId() == 0 ){
+			throw new BusinessException("主键不能为空：sortContentId="+sortContentReqDTO.getSortContentId());
+		}
+		return iSortContentSV.updateSortContentById(sortContentReqDTO);
+	}
+	@Override
+	public long insertSortInfo(SortInfoReqDTO sortInfoReqDTO) throws Exception {
+		return iSortInfoSV.insertSortInfo(sortInfoReqDTO);
+	}
+	@Override
+	public long updateSortInfoById(SortInfoReqDTO sortInfoReqDTO) throws Exception {
+		if(sortInfoReqDTO.getSortId() == null || sortInfoReqDTO.getSortId() == 0 ){
+			throw new BusinessException("主键不能为空：sortId="+sortInfoReqDTO.getSortId());
+		}
+		return iSortInfoSV.updateSortInfoById(sortInfoReqDTO);
 	}
 	@Override
 	public PageResponseDTO<DataCustomizationRespDTO> queryDataCustomizationInfo(DataCustomizationReqDTO dataCustomizationReqDTO) throws Exception{

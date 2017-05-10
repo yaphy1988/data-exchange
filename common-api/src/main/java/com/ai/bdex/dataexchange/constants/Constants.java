@@ -8,7 +8,10 @@ public class Constants {
         public static String CUSTOM_DATA_STATUS_0 = "0";//失效-无用的
         public static String CUSTOM_DATA_STATUS_1 = "1";//未处理
         public static String CUSTOM_DATA_STATUS_2 = "2";//已处理
-    } 
+        public static int BRAND_LENGTH = 10;
+        public static String STATUS_VALID="1";//有效
+        public static String STATUS_INVALID="0";//失效
+    }
     public static class Order {   
         // 订单状态
         /*01  申请订购中（未付款），02 正在生效中（订购合同签订-已支付），

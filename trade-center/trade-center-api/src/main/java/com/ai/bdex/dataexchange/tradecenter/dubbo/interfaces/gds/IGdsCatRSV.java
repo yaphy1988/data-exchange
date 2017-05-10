@@ -67,7 +67,7 @@ public interface IGdsCatRSV {
      * updateGdsCatInfo:(删除分类). <br/> 
      * 
      * @author gxq 
-     * @param gdsCatReqDTO
+     * @param catId
      * @throws BusinessException 
      * @since JDK 1.6
      */
