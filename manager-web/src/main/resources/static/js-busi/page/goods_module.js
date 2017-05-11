@@ -1,6 +1,30 @@
 var basePath = WEB_ROOT;
+var zTreeObj;
+var zTreeObjUnSel;
+var setting = {
+	    data: {
+	        simpleData: {
+	            enable: true
+	        }
+	    },
+	    callback:{
+	        onClick:catSelClick
+	    }
+	};
+var settingUnSel = {
+	    data: {
+	        simpleData: {
+	            enable: true
+	        }
+	    },
+	    callback:{
+	        onClick:catUnSelClick
+	    }
+	};
 $(function(){
-	myOrderInvoiceList(1);
+	 initCatZTree();
+	qryModuleGoodsSelList(1);
+	qryModuleGoodsUnSelList(1);
 	
 });
 function applyInvoice(orderId){
@@ -13,13 +37,16 @@ function applyInvoice(orderId){
  */
 function qryModuleGoodsSelList(index){
 	var gdsName=$("#gdsName").val();
-	var status=$("#gdsStatus").val();
-	var catId=$("#selCatId").val();
+	var gdsStatus=$("#gdsStatusSel").val();
+	var catId=$("#catIdSel").attr("catId");
+	var moduleId=$("#moduleId").val();
 	var param={
+			moduleId:moduleId,
 			gdsName:gdsName,
-			status:status,
+			gdsStatus:gdsStatus,
 			catId:catId,
-			pageNo:defaultIndex
+			pageSize:10,
+			pageNo:index
 			};
 	$.ajax({
 		url:basePath+'/pageModuleGoods/qryModuleGoodsSelList',
@@ -40,10 +67,11 @@ function qryModuleGoodsSelList(index){
  */
 function qryModuleGoodsUnSelList(index){
 	var gdsName=$("#unSelGdsName").val();
-	var catId=$("#unselCatId").val();
+	var catId=$("#catIdUnSel").attr("catId");
 	var param={
 			gdsName:gdsName,
 			catId:catId,
+			pageSize:10,
 			pageNo:index
 			};
 	$.ajax({
@@ -58,75 +86,6 @@ function qryModuleGoodsUnSelList(index){
 		}
 	});
 }
-/**
- * 发票开具申请保存
- */
-function saveInvoiceTax(){
-	var taxId=$("#taxId").val();
-	var phone=$("#phone").val();
-	var orderId=$("#orderId").val();
-	var taxAddr=$("#taxAddr").val();//邮寄地址
-	var taxAddrPhone=$("#taxAddrPhone").val();//邮寄电话
-	var invoiceTitle=$("#invoiceTitle").val();//发票抬头
-	var taxpayerNo=$("#taxpayerNo").val();//
-	var contactInfo=$("#contactInfo").val();//地址
-	var bankName=$("#bankName").val();//开户行
-	var acctInfo=$("#acctInfo").val();//银行账户
-	if(taxAddr==""){
-		WEB.msg.info("提示","请输入邮寄地址");
-		return;
-	}
-	if(taxAddr.length>64){
-		WEB.msg.info("提示","邮寄地址不能超过64个字符！");
-		return;
-	}
-	if(!WEB.check.isPhone(taxAddrPhone)){
-		WEB.msg.info("提示","请输入正确的电话号码！");
-		return;
-	}
-	if(bankName.length>256){
-		WEB.msg.info("提示","开户行不能超过256个字符！");
-		return;
-	}
-	if(!isInteger(acctInfo)){
-		WEB.msg.info("提示","请输入正确的账户！");
-		return;
-	}
-	if(acctInfo.length<12){
-		WEB.msg.info("提示","请输入正确的账户！");
-		return;
-	}
-	var params={
-			taxId:taxId,
-			phone:phone,
-			orderId:orderId,
-			taxAddr:taxAddr,
-			taxAddrPhone:taxAddrPhone,
-			invoiceTitle:invoiceTitle,
-			taxpayerNo:taxpayerNo,
-			contactInfo:contactInfo,
-			bankName:bankName,
-			acctInfo:acctInfo
-			};
-	var url="/invoiceManage/saveInvoiceTax";
-		$.ajax({
-			url:url,
-			cache:false,
-			async:true,
-			dataType:'json',
-			data : params,
-			success:function(data){
-				if(data.success){
-					 WEB.msg.info("提示","发票开具申请保存成功！",function(){
-						 qryModuleGoodsSelList(1);
-			       });
-				}else{
-					WEB.msg.info("提示","发票开具申请保存失败！");
-				}
-			}
-	});
-}
-
 function deletePageModuleGoods(pmgId){
 	var status="0";//失效
 	var params={
@@ -134,7 +93,7 @@ function deletePageModuleGoods(pmgId){
 			status:status
 			
 	};
-	var url=basePath+"pageModuleGoods/updatePageModuleGoods";
+	var url=basePath+"/pageModuleGoods/updatePageModuleGoods";
 	WEB.msg.confirm("提示","确定要删除该商品吗？",function(){
 		$.ajax({
 			url:url,
@@ -163,7 +122,7 @@ function savePageModuleGoods(gdsId){
 			gdsId:gdsId,
 			status:status
 		};
-	var url = basePath + "pageModuleGoods/savePageModuleGoods";
+	var url = basePath + "/pageModuleGoods/savePageModuleGoods";
 	$.ajax({
 		url : url,
 		cache : false,
@@ -172,13 +131,96 @@ function savePageModuleGoods(gdsId){
 		data : params,
 		success : function(data) {
 			if (data.success) {
-				WEB.msg.info("提示", "删除商品成功！", function() {
+				WEB.msg.info("提示", "选择商品成功！", function() {
 					qryModuleGoodsUnSelList(1);
 					qryModuleGoodsSelList(1);
 				});
 			} else {
-				WEB.msg.info("提示", "删除商品失败！");
+				WEB.msg.info("提示", "选择商品失败！");
 			}
 		}
 	});
+}
+
+function initCatZTree() {
+    $.ajax({
+        async:true,
+        url:basePath+"/gdsManage/queryAllCats",
+        type:'post',
+        dataType:'json',
+        data:{},
+        success:function (jsonObj) {
+            if(jsonObj!=null && jsonObj.success){
+                var zNodes = new Array();
+                var rootNode = {};
+                rootNode.id = 0;
+                rootNode.name = "全部";
+                zNodes.push(rootNode);
+                $.each(jsonObj.obj,function (i,catObj) {
+                    var zNode = {};
+                    zNode.id = catObj.catId;
+                    zNode.name = catObj.catName;
+                    zNode.pId = catObj.catPid;
+                    zNodes.push(zNode);
+                })
+                zTreeObj = $.fn.zTree.init($("#catZTree"),setting,zNodes);
+                zTreeObjUnSel = $.fn.zTree.init($("#catZTreeUnSel"),settingUnSel,zNodes);
+
+            }
+        }
+    })
+}
+
+function showCatSel(obj){
+
+    $("#catZTree").parent().find(".ztree").show();
+    $("body").bind("mousedown", onBodyDown);
+    hideMenuUnSel();
+}
+function showCatUnSel(obj){
+
+    $("#catZTreeUnSel").parent().find(".ztree").show();
+    $("body").bind("mousedown", onBodyDownUnSel);
+    hideMenu();
+}
+
+/**
+ * 隐藏父类的节点属性结构菜单
+ */
+var hideMenu = function () {
+    $("#catZTree").fadeOut("fast");
+    $("body").unbind("mousedown", onBodyDown);
+};
+var hideMenuUnSel = function () {
+    $("#catZTreeUnSel").fadeOut("fast");
+    $("body").unbind("mousedown", onBodyDownUnSel);
+};
+var onBodyDown = function () {
+    if (!(event.target.id == "catIdSel" || $(event.target).parents("#catZTree").length>0)) {
+        hideMenu();
+    }
+};
+var onBodyDownUnSel = function () {
+    if (!(event.target.id == "catIdUnSel" || $(event.target).parents("#catZTreeUnSel").length>0)) {
+    	hideMenuUnSel();
+    }
+};
+
+function catSelClick(e, treeId, treeNode) {
+    if (treeNode.id == "0"){
+        $("#catIdSel").attr("catId","");
+    }else{
+        $("#catIdSel").attr("catId",treeNode.id);
+    }
+    $("#catIdSel").val(treeNode.name);
+    hideMenu();
+}
+function catUnSelClick(e, treeId, treeNode) {
+    if (treeNode.id == "0"){
+        $("#catIdUnSel").attr("catId","");
+    }else{
+        $("#catIdUnSel").attr("catId",treeNode.id);
+    }
+    $("#catIdUnSel").val(treeNode.name);
+    hideMenuUnSel();
 }

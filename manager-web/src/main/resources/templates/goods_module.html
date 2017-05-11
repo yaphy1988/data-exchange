@@ -8,10 +8,90 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
 	<link rel="stylesheet" href="../static/component/ztree/css/zTreeStyle/zTreeStyle.css" th:href="@{/component/ztree/css/zTreeStyle/zTreeStyle.css}">
-    <link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
-	<script type="text/javascript" src="../static/js-busi/page/goods_module.js" th:src="@{/js-busi/page/goods_module.js}"></script>
-	
+   	<script src="../static/component/ztree/js/jquery.ztree.all.min.js" th:src="@{/component/ztree/js/jquery.ztree.all.min.js}"></script>
+	<script th:remove="all">
+        var zTreeObj;
+        var zTreeObjUnsel;
+        var setting = {
+            data: {
+                simpleData: {
+                    enable: true
+                }
+            }
+        };
+        var nodes = [
+            { id:1, pId:0, name:"父节点1 - 展开", open:true},
+            { id:11, pId:1, name:"父节点11 - 折叠"},
+            { id:111, pId:11, name:"叶子节点111"},
+            { id:112, pId:11, name:"叶子节点112"},
+            { id:113, pId:11, name:"叶子节点113"},
+            { id:114, pId:11, name:"叶子节点114"},
+            { id:12, pId:1, name:"父节点12 - 折叠"},
+            { id:121, pId:12, name:"叶子节点121"},
+            { id:122, pId:12, name:"叶子节点122"},
+            { id:123, pId:12, name:"叶子节点123"},
+            { id:124, pId:12, name:"叶子节点124"},
+            { id:13, pId:1, name:"父节点13 - 没有子节点", isParent:true},
+            { id:2, pId:0, name:"父节点2 - 折叠"},
+            { id:21, pId:2, name:"父节点21 - 展开", open:true},
+            { id:211, pId:21, name:"叶子节点211"},
+            { id:212, pId:21, name:"叶子节点212"},
+            { id:213, pId:21, name:"叶子节点213"},
+            { id:214, pId:21, name:"叶子节点214"},
+            { id:22, pId:2, name:"父节点22 - 折叠"},
+            { id:221, pId:22, name:"叶子节点221"},
+            { id:222, pId:22, name:"叶子节点222"},
+            { id:223, pId:22, name:"叶子节点223"},
+            { id:224, pId:22, name:"叶子节点224"},
+            { id:23, pId:2, name:"父节点23 - 折叠"},
+            { id:231, pId:23, name:"叶子节点231"},
+            { id:232, pId:23, name:"叶子节点232"},
+            { id:233, pId:23, name:"叶子节点233"},
+            { id:234, pId:23, name:"叶子节点234"},
+            { id:3, pId:0, name:"父节点3 - 没有子节点", isParent:true}
+        ];
+        $(function(){
+            zTreeObj = $.fn.zTree.init($("#catZTree"),setting,nodes);
+            zTreeObjUnsel = $.fn.zTree.init($("#catZTreeUnSel"),setting,nodes);
+        })
+
+        function showCatSel(obj){
+
+            $("#catZTree").parent().find(".ztree").show();
+            $("body").bind("mousedown", onBodyDown);
+        }
+        function showCatUnSel(obj){
+
+            $("#catZTreeUnSel").parent().find(".ztree").show();
+            $("body").bind("mousedown", onBodyDownUnSel);
+        }
+
+        /**
+         * 隐藏父类的节点属性结构菜单
+         */
+        var hideMenu = function () {
+            $("#catZTree").fadeOut("fast");
+            $("body").unbind("mousedown", onBodyDown);
+        };
+        var hideMenuUnSel = function () {
+            $("#catZTreeUnSel").fadeOut("fast");
+            $("body").unbind("mousedown", onBodyDownUnSel);
+        };
+
+        var onBodyDown = function () {
+            if (!(event.target.id == "catIdSel" || $(event.target).parents("#catZTree").length>0)) {
+                hideMenu();
+            }
+        };
+        var onBodyDownUnSel = function () {
+            if (!(event.target.id == "catIdUnSel" || $(event.target).parents("#catZTreeUnSel").length>0)) {
+            	hideMenuUnSel();
+            }
+        };
+    </script>
+    <script type="text/javascript" src="../static/js-busi/page/goods_module.js" th:src="@{/js-busi/page/goods_module.js}"></script>
 </head>
 <body>
 <header class="clearfix m_header">
@@ -64,7 +144,7 @@
 					<div class="tab-content pt15">
 							<input type="hidden" class="form-control" id="moduleId" th:value="${moduleId}">
 						<div role="tabpanel" class="tab-pane active" id="tab02">
-							<div class="shop-list" id="selGoodsList">
+							<div class="shop-list" >
 								<div class="edit-title">已选择商品列表</div>
 								<div class="top-table">
 									<table class="editTable">
@@ -79,9 +159,7 @@
 											<td class="Hint"><span class="col_red">*</span> 上架状态：</td>
 											<td width="20%">
 												<div class="input-group02">
-													<input type="hidden" id="gdsStatus" value=""> <select
-														class="form-control" id="gdsStatusSel"
-														onchange="changeStatus()">
+												 <select class="form-control" id="gdsStatusSel">
 														<option value="">全部</option>
 														<option value="0">待上架</option>
 														<option value="1">已上架</option>
@@ -93,47 +171,41 @@
 											<td class="Hint"><span class="col_red">*</span> 商品类型：</td>
 											<td width="20%">
 												<div class="input-group02">
-													<input id="selCatId" catId="" onclick="showCatSel(this)"
-														type="text" class="form-control" readonly="readonly"
-														placeholder="商品类型" />
-													<div
-														style="width: 15%; height: auto; position: absolute; display: none; background: #EEE; border: solid 1px;"
-														id="catZTree" class="ztree"></div>
+													<input id="catIdSel" catId="" onclick="showCatSel(this)" type="text" class="form-control" readonly="readonly" placeholder="商品类型" />
+                                					<div style="width:15%;height:auto;position: absolute;display: none;background: #EEE;border: solid 1px;" id="catZTree" class="ztree"></div>
 												</div>
 											</td>
 											<td>
 												<div class="input-group02">
-													<button class="btn btn-primary" onclick="queryGdsList(1)">查询</button>
+													<button class="btn btn-primary" onclick="qryModuleGoodsSelList(1)">查询</button>
 												</div>
 											</td>
 										</tr>
 									</table>
 								</div>
+								<div id="selGoodsList">
 								<table class="table table-bordered text-center">
 									<thead>
 										<tr class="active">
 											<th>商品编码</th>
 											<th width="240">商品名称</th>
-											<th>商品价格</th>
 											<th>上架状态</th>
 											<th>商品类型</th>
 											<th>上/下架时间</th>
 											<th>操作</th>
 										</tr>
 									</thead>
-									<tbody th:if=" ${pageInfo}" th:remove="all-but-first">
-										<tr th:each="list,iterStat : ${pageInfo.result}"
-											th:unless="${#lists.isEmpty(pageInfo.result)}">
+									<tbody th:if=" ${pageInfoSel}" th:remove="all-but-first">
+										<tr th:each="list,iterStat : ${pageInfoSel.result}" th:unless="${#lists.isEmpty(pageInfoSel.result)}">
 											<td th:text="${list.gdsId}">xxxx商品 名称随便取了</td>
-											<td th:text="${list.gdsName}">广西联通</td>
-											<td th:text="${list.packPrice}">2000.00</td>
+											<td th:text="${list.gdsInfoRespDTO.gdsName}">广西联通</td>
 											<td><span th:if="${list.status=='0'}">待上架</span> <span
 												th:if="${list.status=='1'}">已上架</span> <span
 												th:if="${list.status=='2'}">已下架</span> <span
 												th:if="${list.status=='9'}">删除</span></td>
 											<td th:text="${list.catName}">1000.00</td>
 											<td
-												th:text="${#calendars.format(list.ordInvoiceTaxReqDTO.shelveTime,'yyyy-MM-dd HH:mm:ss')}"">619.00</td>
+												th:text="${#calendars.format(list.gdsInfoRespDTO.shelveTime,'yyyy-MM-dd HH:mm:ss')}">619.00</td>
 											<td>
 												<p class="pop-link">
 													<a href="javaScript:void(0)"
@@ -181,20 +253,20 @@
 
 									</nav>
 								</div>
-								<div class="overflow-hidden clearfix" th:if=" ${pageInfo}">
+								<div class="overflow-hidden clearfix" th:if=" ${pageInfoSel}">
 									<!-- 分页-->
 									<div th:fragment="pager" class="pagerBar pagelist pull-right">
 										<script type="text/javascript"
 											src="../static/js-busi/common/pager.js"
 											th:src="@{/js-busi/common/pager.js}"></script>
 										<span data-toggle="pager" id="pagerIdSel"
-											th:data-count="${pageInfo.count}"
-											th:data-size="${pageInfo.pageSize}"
-											th:data-currentindex="${pageInfo.pageNo}"></span>
+											th:data-count="${pageInfoSel.count}"
+											th:data-size="${pageInfoSel.pageSize}"
+											th:data-currentindex="${pageInfoSel.pageNo}"></span>
 										<script th:inline="javascript">
-											var total = '[[${pageInfo.count}]]';
-											var pageNum = '[[${pageInfo.pageNo}]]';
-											var pageSize = '[[${pageInfo.pageSize}]]';
+											var total = '[[${pageInfoSel.count}]]';
+											var pageNum = '[[${pageInfoSel.pageNo}]]';
+											var pageSize = '[[${pageInfoSel.pageSize}]]';
 											if (typeof pagerClick === "undefined") {
 												pagerClick = function(index) {
 													qryModuleGoodsSelList(index);
@@ -206,8 +278,9 @@
 										</script>
 									</div>
 								</div>
+								</div>
 							</div>
-							<div class="shop-list" id="unSelGoodsList">
+							<div class="shop-list" >
 								<div class="edit-title">待选择商品列表</div>
 								<div class="top-table">
 									<table class="editTable">
@@ -216,31 +289,36 @@
 											<td width="20%"><input type="text" class="form-control"
 												id="unSelGdsName"></td>
 											<td class="Hint"><span class="col_red">*</span> 商品类型：</td>
-											<td><select class="form-control" id="unselCatId">
-													<option>全部</option>
-											</select></td>
+											<td>
+											<div class="input-group02">
+													<input id="catIdUnSel" catId="" onclick="showCatUnSel(this)" type="text" class="form-control" readonly="readonly" placeholder="商品类型" />
+                                					<div style="width:15%;height:auto;position: absolute;display: none;background: #EEE;border: solid 1px;" id="catZTreeUnSel" class="ztree"></div>
+												</div>
 											<td>&nbsp;</td>
 											<td>
 												<button class="btn btn-primary"
-													th:onclick="qryModuleGoodsUnSelList(1)">查询</button>
+													th:onclick="'qryModuleGoodsUnSelList(1)'">查询</button>
 											</td>
 										</tr>
 									</table>
 								</div>
+								<div id="unSelGoodsList">
 								<table class="table table-bordered text-center">
 									<thead>
 										<tr class="active">
+											<th >商品编码</th>
 											<th width="240">商品名称</th>
-											<th>指导价（/元）</th>
+											<th>商品类型</th>
 											<th>商品状态</th>
 											<th>操作</th>
 										</tr>
 									</thead>
-									<tbody th:if=" ${pageInfo}" th:remove="all-but-first">
+									<tbody th:if="${pageInfo}" th:remove="all-but-first">
 										<tr th:each="list,iterStat : ${pageInfo.result}"
 											th:unless="${#lists.isEmpty(pageInfo.result)}">
+											<td th:text="${list.gdsId}">xxxx商品 名称随便取了</td>
 											<td th:text="${list.gdsName}">xxxx商品 名称随便取了</td>
-											<td th:text="${list.packPrice}">2000.00</td>
+											<td th:text="${list.catName}">xxxx商品 名称随便取了</td>
 											<td><span th:if="${list.status=='0'}">待上架</span> <span
 												th:if="${list.status=='1'}">已上架</span> <span
 												th:if="${list.status=='2'}">已下架</span> <span
@@ -249,6 +327,16 @@
 												<p class="pop-link">
 													<a href="javaScript:void(0)"
 														th:onclick="|savePageModuleGoods('${list.gdsId}')|">选择</a>
+												</p>
+											</td>
+										</tr>
+										<tr>
+											<td>xxxx商品 名称随便取了</td>
+											<td>广西联通</td>
+											<td>2000.00</td>
+											<td>
+												<p class="pop-link">
+													<a href="">删除</a>
 												</p>
 											</td>
 										</tr>
@@ -276,7 +364,7 @@
 										</ul>
 									</nav>
 								</div>
-								<div class="overflow-hidden clearfix" th:if=" ${pageInfo}">
+								<div class="overflow-hidden clearfix" th:if="${pageInfo}">
 									<!-- 分页-->
 									<div th:fragment="pager" class="pagerBar pagelist pull-right">
 										<script type="text/javascript"
@@ -300,6 +388,7 @@
 											});	
 										</script>
 									</div>
+								</div>
 								</div>
 							</div>
 						</div>
@@ -431,6 +520,5 @@
 
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
-
 </body>
 </html>

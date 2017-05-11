@@ -3,6 +3,8 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 import java.util.Date;
 
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 
 public class PageModuleGoodsRespDTO   extends BaseResponseDTO {
 
@@ -28,8 +30,36 @@ public class PageModuleGoodsRespDTO   extends BaseResponseDTO {
 
     private String status;
     private String vfsid;
+    private String catName;
+    
+    private GdsInfoRespDTO gdsInfoRespDTO;
+    private GdsCatRespDTO gdsCatRespDTO;
+    
+    public String getCatName() {
+		return catName;
+	}
 
-    public String getVfsid() {
+	public void setCatName(String catName) {
+		this.catName = catName;
+	}
+
+	public GdsCatRespDTO getGdsCatRespDTO() {
+		return gdsCatRespDTO;
+	}
+
+	public void setGdsCatRespDTO(GdsCatRespDTO gdsCatRespDTO) {
+		this.gdsCatRespDTO = gdsCatRespDTO;
+	}
+
+	public GdsInfoRespDTO getGdsInfoRespDTO() {
+		return gdsInfoRespDTO;
+	}
+
+	public void setGdsInfoRespDTO(GdsInfoRespDTO gdsInfoRespDTO) {
+		this.gdsInfoRespDTO = gdsInfoRespDTO;
+	}
+
+	public String getVfsid() {
 		return vfsid;
 	}
 

@@ -30,27 +30,35 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.util.HtmlUtils;
 
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleGoodsVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
 //import com.ai.bdex.dataexchange.busi.search.entiry.SearchVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageModuleRSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.util.MongoFileUtil;
+import com.ai.paas.utils.CollectionUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alibaba.fastjson.JSONObject;
@@ -72,6 +80,10 @@ public class PageModuleGoodsController {
 
 	@DubboConsumer(timeout = 30000)
 	private IPageModuleRSV iPageModuleRSV;
+	@DubboConsumer(timeout = 30000)
+	private IGdsInfoRSV iGdsInfoRSV;
+	@DubboConsumer
+	private IGdsCatRSV iGdsCatRSV;
 	/**
 	 * 商品模块管理入口
 	 * @param request
@@ -93,69 +105,56 @@ public class PageModuleGoodsController {
 	 */
 	@RequestMapping(value = "/qryModuleGoodsUnSelList")
 	public String qryModuleGoodsUnSelList(Model model, HttpServletRequest request,PageModuleGoodsVO pageModuleGoodsVO) {
-//		SearchVO searchVO = new SearchVO();
-//		try {
-//		            if(StringUtil.isNotBlank(searchVO.getKeyWord())){
-//		                searchVO.setKeyWord(URLDecoder.decode(searchVO.getKeyWord()));
-//		            }
-//		            SearchParam searchParam = new SearchParam();
-//		            searchParam.setCollectionName(SolrCoreEnum.GDS.getCode());
-//		            searchParam.setSolrClient(solrClient);
-//		            searchParam.setKeyWord(searchVO.getKeyWord());
-//		            //查询字段 and
-//		            List<SearchField> searchFieldList = new ArrayList<SearchField>();
-//		            if(StringUtil.isNotBlank(searchVO.getKeyWord())){
-//		                SearchField searchField = new SearchField();
-//		                searchField.setName("name");
-//		                searchField.setValue(searchVO.getKeyWord());
-//		                searchFieldList.add(searchField);
-//		            }
-//		            if(searchVO.getCatFirst() >=1){
-//		                SearchField searchField = new SearchField();
-//		                searchField.setName("catFirst");
-//		                searchField.setValue(searchVO.getCatFirst());
-//		                searchFieldList.add(searchField);
-//		            }
-//		            //查询字段 and
-//		            if(StringUtil.isNotBlank(searchVO.getSelectedCondition())){
-//		                String[] strs = searchVO.getSelectedCondition().split(",");
-//		                SearchField searchField = null;
-//		                for(String str : strs){
-//		                    searchField = new SearchField();
-//		                    searchField.setName("catId");
-//		                    searchField.setValue(str);
-//		                    searchFieldList.add(searchField);
-//		                }
-//		            }
-//		            searchParam.setSearchField(searchFieldList);
-//		            //排序字段
-//		            List<SortField> sortFieldList = new ArrayList<SortField>();
-//		            if(StringUtil.isNotBlank(searchVO.getSortField()) && StringUtil.isNotBlank(searchVO.getSortValue())){
-//		                ESort sortValue = ESort.DESC;
-//		                if(ESort.ASC.getSort().equalsIgnoreCase(searchVO.getSortValue())){
-//		                    sortValue = ESort.ASC;
-//		                }else{
-//		                    sortValue = ESort.DESC;
-//		                }
-//		                SortField sortField = new SortField(searchVO.getSortField(),sortValue);
-//		                sortFieldList.add(sortField);
-//		            }
-//		            searchParam.setSortField(sortFieldList);
-//		            searchParam.setPageNo(searchVO.getPageNo());
-//		            searchParam.setPageSize(20);
-//		            searchParam.setIfHightlight(true);
-//		            PageResponseDTO<ResultRespVO> pageInfo = SolrSearchUtil.Search(searchParam);
-//		            model.addAttribute("pageInfo", pageInfo);
-//		            model.addAttribute("searchVO", searchVO);
-//		        } catch (Exception e) {
-//		            logger.error("查询商品列表失败！原因是："+e.getMessage());
-//		        }
-//		    }
-//		} catch (Exception e) {
-//			rMap.put("success",false);
-//			log.error("查询楼层信息出错：" + e.getMessage());
-//		}
-		return "goods_module :: unSelGoodsList" ;
+        PageResponseDTO<GdsInfoVO> pageInfo = new PageResponseDTO<GdsInfoVO>();
+        try {
+    		GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
+    		if(pageModuleGoodsVO.getGdsId()!=null){
+    			gdsInfoReqDTO.setGdsId(pageModuleGoodsVO.getGdsId());
+    		}
+    		if(StringUtil.isNotBlank(pageModuleGoodsVO.getGdsName())){
+    			gdsInfoReqDTO.setGdsName(pageModuleGoodsVO.getGdsName());
+    		}
+    		if(StringUtil.isNotBlank(pageModuleGoodsVO.getCatId())){
+    			gdsInfoReqDTO.setCatId(Integer.parseInt(pageModuleGoodsVO.getCatId()));
+    		}
+    		gdsInfoReqDTO.setPageNo(pageModuleGoodsVO.getPageNo());
+            gdsInfoReqDTO.setPageSize(10);
+            //查询已选择商品
+        	PageModuleGoodsReqDTO moduleGoodsReqDTO = new PageModuleGoodsReqDTO();
+    		if(pageModuleGoodsVO.getModuleId()!=null){
+    			moduleGoodsReqDTO.setModuleId(pageModuleGoodsVO.getModuleId());
+    		}
+    		if(pageModuleGoodsVO.getGdsId()!=null){
+    			moduleGoodsReqDTO.setGdsId(pageModuleGoodsVO.getGdsId());
+    		}
+    		moduleGoodsReqDTO.setStatus(Constants.Page.STATUS_VALID);
+    		List<PageModuleGoodsRespDTO> selGoodsList=iPageModuleRSV.queryPageModuleGoodsInfoList(moduleGoodsReqDTO);
+    		List<Integer> gdsIdList = new ArrayList<Integer>();
+    		if(!CollectionUtils.isEmpty(selGoodsList)){
+    			for(PageModuleGoodsRespDTO moduleGoods:selGoodsList){
+    				gdsIdList.add(moduleGoods.getGdsId());
+    			}
+    		}
+    		gdsInfoReqDTO.setStatus("1");//已上架
+    		gdsInfoReqDTO.setGdsIdsNotIn(gdsIdList);
+            PageResponseDTO<GdsInfoRespDTO> gdsInfoRespPage = iGdsInfoRSV.queryGdsInfoPage(gdsInfoReqDTO);
+            ObjectCopyUtil.copyObjValue(gdsInfoRespPage,pageInfo,null,false);
+            List<GdsInfoVO> gdsInfoVOList = new ArrayList<GdsInfoVO>();
+            if(!CollectionUtil.isEmpty(gdsInfoRespPage.getResult())){
+                for (GdsInfoRespDTO gdsInfoRespDTO : gdsInfoRespPage.getResult()){
+                    GdsInfoVO gdsInfoVO = new GdsInfoVO();
+                    ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,gdsInfoVO,null,false);
+                    gdsInfoVO.setCatName(traslateCatName(gdsInfoVO.getCatId()));
+                    gdsInfoVOList.add(gdsInfoVO);
+                }
+            }
+            pageInfo.setResult(gdsInfoVOList);
+            model.addAttribute("pageInfo", pageInfo);
+        }catch (Exception e){
+            log.error("查询商品列表异常");
+        }
+
+		return "goods_module :: #unSelGoodsList" ;
 	}
 	/**
 	 * 商品模块查询已选择商品
@@ -166,8 +165,69 @@ public class PageModuleGoodsController {
 	 */
 	@RequestMapping(value = "/qryModuleGoodsSelList")
 	public String qryModuleGoodsSelList(Model model, HttpServletRequest request,PageModuleGoodsVO pageModuleGoodsVO) {
-
-		return "goods_module :: selGoodsList" ;
+		try{
+			PageModuleGoodsReqDTO moduleGoodsReqDTO = new PageModuleGoodsReqDTO();
+			if(pageModuleGoodsVO.getModuleId()!=null){
+				moduleGoodsReqDTO.setModuleId(pageModuleGoodsVO.getModuleId());
+			}
+			if(pageModuleGoodsVO.getGdsId()!=null){
+				moduleGoodsReqDTO.setGdsId(pageModuleGoodsVO.getGdsId());
+			}
+    		moduleGoodsReqDTO.setStatus(Constants.Page.STATUS_VALID);
+			List<PageModuleGoodsRespDTO> goodsList=iPageModuleRSV.queryPageModuleGoodsInfoList(moduleGoodsReqDTO);
+			List<PageModuleGoodsRespDTO> goodsSelList = new ArrayList<PageModuleGoodsRespDTO>();
+			if(!CollectionUtils.isEmpty(goodsList)){
+				for(PageModuleGoodsRespDTO respDTO : goodsList){
+					int gdsid =  respDTO.getGdsId();
+					//通过商品id去搜索商品信息，获取商品
+					GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
+					GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
+					gdsInfoReqDTO.setGdsId(gdsid);
+					if(StringUtil.isNotBlank(pageModuleGoodsVO.getGdsName())){
+						gdsInfoReqDTO.setGdsName(pageModuleGoodsVO.getGdsName());
+					}
+					if(StringUtil.isNotBlank(pageModuleGoodsVO.getCatId())){
+						gdsInfoReqDTO.setCatId(Integer.parseInt(pageModuleGoodsVO.getCatId()));
+					}
+					if(StringUtil.isNotBlank(pageModuleGoodsVO.getGdsStatus())){
+						gdsInfoReqDTO.setStatus(pageModuleGoodsVO.getGdsStatus());
+					}
+					gdsInfoRespDTO =  iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO); 
+					respDTO.setGdsInfoRespDTO(gdsInfoRespDTO);
+					GdsCatRespDTO gdsCatRespDTO = new GdsCatRespDTO();
+					if(gdsInfoRespDTO!=null&&gdsInfoRespDTO.getGdsId()!=null){
+						//获取商品分类名称
+						respDTO.setCatName(traslateCatName(gdsInfoRespDTO.getCatId()));
+						goodsSelList.add(respDTO);
+					}
+				}
+			}
+			List<PageModuleGoodsRespDTO> resultList = new ArrayList<PageModuleGoodsRespDTO>();
+			int startPage = (pageModuleGoodsVO.getPageNo() - 1) * pageModuleGoodsVO.getPageSize() + 1;; // 开始页
+	        int endPage =pageModuleGoodsVO.getPageNo() * pageModuleGoodsVO.getPageSize(); // 结束页
+	        int count = goodsSelList.size(); // 总记录
+	        if (!CollectionUtils.isEmpty(goodsSelList) && goodsSelList.size() > 0) {
+	            for (int i = (startPage - 1); i < endPage; i++) {
+	            	if (i >= goodsSelList.size()) {
+	                    break;
+	                }
+	            	PageModuleGoodsRespDTO vo = goodsSelList.get(i);
+	            	resultList.add(vo);
+	                if (i == count) {
+	                    break;
+	                }
+	            }
+	        }
+	        PageResponseDTO<PageModuleGoodsRespDTO> pageInfo = new PageResponseDTO<PageModuleGoodsRespDTO>();
+	        pageInfo.setPageSize(pageModuleGoodsVO.getPageSize());
+	        pageInfo.setResult(resultList);
+	        pageInfo.setPageNo(pageModuleGoodsVO.getPageNo());
+	        pageInfo.setCount(goodsSelList.size());
+	        model.addAttribute("pageInfoSel", pageInfo);
+		}catch(Exception e){
+			log.error("查询楼层已选择商品出错：" + e.getMessage());
+		}
+		return "goods_module :: #selGoodsList" ;
 	}
 
 	/**
@@ -234,5 +294,19 @@ public class PageModuleGoodsController {
 		}
 		return rMap;
 	}
-
+	private String traslateCatName(Integer catId){
+        String catName = "";
+        if (catId!=null && catId.intValue()>0){
+            GdsCatRespDTO gdsCatRespDTO = new GdsCatRespDTO();
+            try {
+                gdsCatRespDTO = iGdsCatRSV.queryGdsCatByCatId(catId);
+            } catch (Exception e) {
+                log.error("根据catId查询分类信息异常：",e);
+            }
+            if (gdsCatRespDTO!=null){
+                catName = gdsCatRespDTO.getCatName();
+            }
+        }
+        return  catName;
+    }
 }

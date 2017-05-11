@@ -23,5 +23,12 @@ public interface IPageModuleGoodsSV {
 	public PageResponseDTO<PageModuleGoodsRespDTO> queryPageModuleGoodsPage(PageModuleGoodsReqDTO moduleGoodsReqDTO) throws Exception;
 	public int insertPageModuleGoods(PageModuleGoodsReqDTO moduleGoodsReqDTO)throws Exception;
 	public int updatePageModuleGoods(PageModuleGoodsReqDTO moduleGoodsReqDTO)throws Exception;
+	/**
+	 * 已选择商品
+	 * @param moduleGoodsReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public PageResponseDTO<PageModuleGoodsRespDTO> querSelPageModuleGoodsPage(PageModuleGoodsReqDTO moduleGoodsReqDTO) throws Exception;
 
 }

@@ -80,6 +80,24 @@ public class PageModuleGoodsSVImpl implements IPageModuleGoodsSV {
         return respDTO;
         
 	}
+	@Override
+	public PageResponseDTO<PageModuleGoodsRespDTO> querSelPageModuleGoodsPage(PageModuleGoodsReqDTO moduleGoodsReqDTO) throws Exception {
+		  //分页信息赋值
+        int page = moduleGoodsReqDTO.getPageNo();
+        int rows = moduleGoodsReqDTO.getPageSize();
+        
+		PageModuleGoodsExample example = new PageModuleGoodsExample();
+		PageModuleGoodsExample.Criteria criteria = example.createCriteria();
+		initCriteria(criteria,moduleGoodsReqDTO);
+		example.setOrderByClause(" ORDER_NO desc ");
+		PageHelper.startPage(page, rows);
+		List<PageModuleGoods> listGds =  pageModuleGoodsMapper.selectByExample(example);
+		//使用PageInfo对结果进行包装
+        PageInfo pageInfo = new PageInfo(listGds);
+        PageResponseDTO<PageModuleGoodsRespDTO> respDTO = PageResponseFactory.genPageResponse(pageInfo,PageModuleGoodsRespDTO.class);
+        return respDTO;
+        
+	}
 	public List<PageModuleGoodsRespDTO> queryPageModuleGoodsInfoList(PageModuleGoodsReqDTO moduleGoodsReqDTO) throws Exception {
 		PageModuleGoodsExample example = new PageModuleGoodsExample();
 		PageModuleGoodsExample.Criteria criteria = example.createCriteria();
@@ -109,6 +127,7 @@ public class PageModuleGoodsSVImpl implements IPageModuleGoodsSV {
 		if(!CollectionUtil.isEmpty(goodsList)){
 			orderNo=goodsList.get(0).getOrderNo();
 		}
+		moduleGoodsReqDTO.setPmgId(pmgId);
 		moduleGoodsReqDTO.setOrderNo(orderNo+1);
 		PageModuleGoods pageModuleGoods = new PageModuleGoods();
 		ObjectCopyUtil.copyObjValue(moduleGoodsReqDTO, pageModuleGoods, null, false);

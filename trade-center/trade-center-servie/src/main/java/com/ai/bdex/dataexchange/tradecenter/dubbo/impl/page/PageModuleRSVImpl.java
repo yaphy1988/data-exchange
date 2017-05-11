@@ -76,7 +76,7 @@ public class PageModuleRSVImpl implements IPageModuleRSV {
 			if(moduleGoodsReqDTO.getPmgId()==null){
                 throw new Exception("更新商品楼层信息异常，pmgId入参为空");
 			}
-			code = iPageModuleGoodsSV.insertPageModuleGoods(moduleGoodsReqDTO);
+			code = iPageModuleGoodsSV.updatePageModuleGoods(moduleGoodsReqDTO);
 		}catch(Exception e){
 	       	log.error("更新商品楼层信息异常:", e);
 	          throw new Exception(e);
