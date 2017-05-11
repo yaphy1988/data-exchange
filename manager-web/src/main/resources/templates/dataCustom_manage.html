@@ -60,12 +60,10 @@
 				<span class="col_999">数据定制管理</span>
 			</div>
 			<!-- <hr> -->
-			<div class="title">数据定制管理</div>
-			<div class="top-table">
+			<div  >
 				<table class="editTable">
 					<tbody><tr>
-						<td class="Hint">
-							<span class="col_red">*</span>
+						<td width="120px" class="Hint">
 							处理状态：
 						</td>
 						<td width="20%">
@@ -96,10 +94,11 @@
 								<th>联系人</th>
 								<th>手机号码</th>
 								<th>联系邮箱</th>
+								<th>创建时间</th>
 								<th>操作</th>
                             </tr>
-                            </thead>
-			 	<tbody th:if=" ${pageInfo}"  th:remove="all-but-first" >
+				</thead>
+				<tbody th:if=" ${pageInfo}"  th:remove="all-but-first" >
 				<tr  th:each="list,iterStat : ${pageInfo.result}"  class="queryresult">
 					<td th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
 					<td th:text="${list.customName}"></td>
@@ -107,8 +106,9 @@
 					<td th:text="${list.linkPerson}"></td>
 					<td th:text="${list.linkPhnoe}"></td>
 					<td th:text="${list.customMail}"></td>
+					<td th:with="datatime=${list.createTime}" th:text="${#dates.format(datatime, 'yyyy-MM-dd HH:mm')}"</td>
 					<td> <p class="pop-link"  th:if=" ${list.status}=='1'" >
-						<a href="">处理</a>
+						<a  th:onclick="|updateCustomDatastatus('${list.dczaId}')|">处理</a>
 					</p>
 						<p class="pop-link"  th:if=" ${list.status}=='2'" >
 							<span>已处理<span/>
@@ -143,7 +143,7 @@
 						  th:data-size="${pageInfo.pageSize}"
 						  th:data-currentindex="${pageInfo.pageNo}"></span>
 					<script th:inline="javascript">
-						var total = 39;
+						var total ='[[${pageInfo.count}]]';
 						var pageNum = '[[${pageInfo.pageNo}]]';
 						var pageSize = '[[${pageInfo.pageSize}]]';
 

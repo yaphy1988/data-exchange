@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
 import com.ai.bdex.dataexchange.util.StaffUtil;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -761,7 +762,7 @@ public class PageManageController {
 		} catch (Exception e) {
 			log.error("查询用户提交的定制数据信息出错：" + e.getMessage());
 		}
-		return "dataCustom_manage :: .queryresult";
+		return "dataCustom_manage :: #queryresultShow";
 	}
 	/**
 	 * 定制数据管理--将数据设置为已处理
@@ -773,13 +774,21 @@ public class PageManageController {
 	public Map<String,Object>  updateCustDataStatus(HttpServletRequest request) {
 		Map<String,Object>  rMap = new HashMap<>();
 		try{
+			int dzid = Integer.parseInt(request.getParameter("dczaId"));
 			String status = Constants.Page.CUSTOM_DATA_STATUS_2;
 			DataCustomizationReqDTO dataCustomizationReqDTO  = new DataCustomizationReqDTO();
+			DataCustomizationRespDTO dataCustomizationRespDTO = new DataCustomizationRespDTO();
+			dataCustomizationReqDTO.setPageNo(1);
+			dataCustomizationReqDTO.setPageSize(1);
+			dataCustomizationReqDTO.setDczaId(dzid);
+			PageResponseDTO<DataCustomizationRespDTO> pageData = new PageResponseDTO<DataCustomizationRespDTO>();
+			pageData = iPageDisplayRSV.queryDataCustomizationInfo(dataCustomizationReqDTO);
+			dataCustomizationRespDTO = (DataCustomizationRespDTO)pageData.getResult().get(0);
+			BeanUtils.copyProperties(dataCustomizationReqDTO, dataCustomizationRespDTO);
 			dataCustomizationReqDTO.setStatus(status);
 			HttpSession hpptsesion = request.getSession();
 			String staff_id = StaffUtil.getStaffId(hpptsesion);
 			dataCustomizationReqDTO.setUpdateStaffId(staff_id);
-
 			int updatecount = iPageDisplayRSV.updateDataCustomizationStatus(dataCustomizationReqDTO);
 			rMap.put("success", true);
 			} catch (Exception e) {
@@ -788,6 +797,4 @@ public class PageManageController {
 			}
 		 return rMap;
 	}
-
-
 }
