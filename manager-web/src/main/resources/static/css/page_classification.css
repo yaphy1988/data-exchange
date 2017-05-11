@@ -3,7 +3,7 @@
 	background: #fbfbfb;
 	border: solid 1px #eee;
 	position: relative;
-	width: 250px;
+	width: 200px;
 }
 .class_sidebar h3{
 	font-size: 16px;
@@ -44,16 +44,16 @@
 }
 .class_sidebar_secon{
 	position: absolute;
-	width: 500px;
-	left: 230px;
-	top: -1px;
+	width: 300px;
+	left: 198px;
+	top: 40px;
 	z-index: 10;
 	background: #fff;
 	border: solid 1px #eee;
 	/* border-left:none; */
-	height: 401px;
+	height: 380px;
 	overflow: hidden;
-	padding: 30px 36px 30px 56px;
+	padding: 20px;
 	box-shadow: 2px 2px 7px #eee;
 }
 .class_sidebar_secon h4{
