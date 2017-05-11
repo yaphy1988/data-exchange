@@ -25,6 +25,10 @@ $(function(){
 	 initCatZTree();
 	qryModuleGoodsSelList(1);
 	qryModuleGoodsUnSelList(1);
+	$("#moduleId").live('click',function(){
+		qryModuleGoodsSelList(1);
+		qryModuleGoodsUnSelList(1);	
+	});
 	
 });
 function applyInvoice(orderId){
