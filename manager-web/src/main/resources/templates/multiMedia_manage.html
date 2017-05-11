@@ -102,8 +102,8 @@
 		                    	 	<a href="singlePicture_manage.html"><img src="" th:src="${#tools.genImageUrl(piclib.libPic,'200x200')}"></a>
 		                    	 	<span>
 		                    	 		<a href="singlePicture_manage.html" th:href="@{'/picmanage/picinfo?libId='+${piclib.libId}}">查看</a>
-		                    	 		<a href="">编辑></a></a>
-		                    	 		<a href="#">删除</a>
+		                    	 		<a href="#" th:onclick="|PicLib.editPicLib(this,'${piclib.libName}','${piclib.libPic}',${piclib.libId})|">编辑</a>
+		                    	 		<a href="#" th:onclick="|PicLib.deletePicLib(${piclib.libId})|">删除</a>
 		                    	 	</span>
 		                    	 </div>
 		                    </li>
@@ -378,6 +378,7 @@
 	      </div>
 	      <div class="modal-body">
 	            <!-- 内容 -->
+	            <input type="hidden" value="" id="libId"/>
 	            <table class="editTable">
 	                <tr>
 	                    <td class="Hint " width="120">

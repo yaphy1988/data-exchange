@@ -33,9 +33,11 @@ var PicLib = {
 	/**
 	 * 点击编辑
 	 */
-	editPicLib : function(libName,licPic,libId,picUrl){
-		$("#libName").val();
-		$("#libPic").val();
+	editPicLib : function(obj,libName,licPic,libId){
+		$("#libName").val(libName);
+		$("#libPic").val(licPic);
+		$("#libId").val(libId);
+		$("#libPicUrl").attr("src",$(obj).parents(".edit").find("img").attr('src'));
 		$("#add_pic").modal();
 		e.preventDefault();
 	},
@@ -135,7 +137,7 @@ var PicLib = {
 		        	if(data.success){
 		        		WEB.msg.info("提示", "删除成功", function(r) {
 		        			var param = {
-	        					pageNo:pageNo
+	        					pageNo:1
 	        				};
 	        				PicLib.gridPicLib(param);
 		                });
@@ -152,7 +154,9 @@ var PicLib = {
 	clearWindInfo : function(){
 		$("#libName").val('');
 		$("#libPic").val('');
+		$("#libId").val('');
 		$("#libPicUrl").attr("src",'')
+		
 	},
 	uploadImage : function (object) {
 	    var filepath = $(object).val();
