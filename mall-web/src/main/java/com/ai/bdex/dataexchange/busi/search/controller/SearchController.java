@@ -1,8 +1,11 @@
 package com.ai.bdex.dataexchange.busi.search.controller;
 
 import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
@@ -23,7 +26,6 @@ import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.solrutil.ESort;
 import com.ai.bdex.dataexchange.solrutil.FacetRespVO;
 import com.ai.bdex.dataexchange.solrutil.ResultRespVO;
-import com.ai.bdex.dataexchange.solrutil.SearchField;
 import com.ai.bdex.dataexchange.solrutil.SearchParam;
 import com.ai.bdex.dataexchange.solrutil.SolrCoreEnum;
 import com.ai.bdex.dataexchange.solrutil.SolrSearchUtil;
@@ -58,7 +60,6 @@ import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 @Controller
 @RequestMapping(value="/search")
 public class SearchController{
-    private static final String URL = "";
     private static final Logger logger = LoggerFactory.getLogger(SearchController.class);
     
     @DubboConsumer
@@ -145,7 +146,7 @@ public class SearchController{
                 model.addAttribute("catList", catList);
             }
             if(StringUtil.isNotBlank(searchVO.getKeyWord())){
-                searchVO.setKeyWord(URLDecoder.decode(searchVO.getKeyWord()));
+                searchVO.setKeyWord(URLDecoder.decode(searchVO.getKeyWord(),StandardCharsets.UTF_8.name()));
             }
             model.addAttribute("searchVO", searchVO);
         } catch (Exception e) {
@@ -160,7 +161,6 @@ public class SearchController{
      * @return 
      * @since JDK 1.6
      */
-    @SuppressWarnings("rawtypes")
     @RequestMapping(value="gridgdsinfo")
     public String gridGdsInfo(Model model,SearchVO searchVO){
         generGdsList(model,searchVO);
@@ -179,38 +179,28 @@ public class SearchController{
     public void generGdsList(Model model,SearchVO searchVO){
         try {
             if(StringUtil.isNotBlank(searchVO.getKeyWord())){
-                searchVO.setKeyWord(URLDecoder.decode(searchVO.getKeyWord()));
+                searchVO.setKeyWord(URLDecoder.decode(searchVO.getKeyWord(),StandardCharsets.UTF_8.name()));
             }
             SearchParam searchParam = new SearchParam();
             searchParam.setCollectionName(SolrCoreEnum.GDS.getCode());
             searchParam.setSolrClient(solrClient);
             searchParam.setKeyWord(searchVO.getKeyWord());
             //查询字段 and
-            List<SearchField> searchFieldList = new ArrayList<SearchField>();
+            Map<String,String> searchFieldMap = new HashMap<String,String>();
             if(StringUtil.isNotBlank(searchVO.getKeyWord())){
-                SearchField searchField = new SearchField();
-                searchField.setName("name");
-                searchField.setValue(searchVO.getKeyWord());
-                searchFieldList.add(searchField);
+                searchFieldMap.put("name", searchVO.getKeyWord());
             }
             if(searchVO.getCatFirst() >=1){
-                SearchField searchField = new SearchField();
-                searchField.setName("catFirst");
-                searchField.setValue(searchVO.getCatFirst());
-                searchFieldList.add(searchField);
+                searchFieldMap.put("catFirst", searchVO.getCatFirst()+"");
             }
             //查询字段 and
             if(StringUtil.isNotBlank(searchVO.getSelectedCondition())){
                 String[] strs = searchVO.getSelectedCondition().split(",");
-                SearchField searchField = null;
                 for(String str : strs){
-                    searchField = new SearchField();
-                    searchField.setName("catId");
-                    searchField.setValue(str);
-                    searchFieldList.add(searchField);
+                    searchFieldMap.put("catId", str);
                 }
             }
-            searchParam.setSearchField(searchFieldList);
+            searchParam.setSearchField(searchFieldMap);
             //排序字段
             List<SortField> sortFieldList = new ArrayList<SortField>();
             if(StringUtil.isNotBlank(searchVO.getSortField()) && StringUtil.isNotBlank(searchVO.getSortValue())){
@@ -250,7 +240,7 @@ public class SearchController{
         AjaxJson json = new AjaxJson();
         try {
             if(StringUtil.isNotBlank(searchVO.getKeyWord())){
-                searchVO.setKeyWord(URLDecoder.decode(searchVO.getKeyWord()));
+                searchVO.setKeyWord(URLDecoder.decode(searchVO.getKeyWord(),StandardCharsets.UTF_8.name()));
             }
             SearchParam searchParam = new SearchParam();
             searchParam.setCollectionName(SolrCoreEnum.GDS.getCode());
@@ -259,16 +249,11 @@ public class SearchController{
             searchParam.setPageNo(searchVO.getPageNo());
             searchParam.setPageSize(10);
             searchParam.setKeyWord(searchVO.getKeyWord());
-            List<SearchField> searchFieldList = new ArrayList<SearchField>();
+            Map<String,String> searchFieldMap = new HashMap<String,String>();
             if(searchVO.getCatFirst() >= 1){
-                SearchField searchField = new SearchField();
-                searchField.setName("catFirst");
-                searchField.setValue(searchVO.getCatFirst()+"");
-                searchParam.setSearchField(searchFieldList);
+                searchFieldMap.put("catFirst", searchVO.getCatFirst()+"");
             }
             List<FacetRespVO> result = SolrSearchUtil.facetSuggest(searchParam);
-//            List<ResultRespVO> result = SolrSearchUtil.suggest(searchParam);
-           
             json.setObj(result);
             json.setSuccess(true);
         } catch (Exception e) {

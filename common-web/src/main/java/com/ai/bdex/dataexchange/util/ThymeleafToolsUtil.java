@@ -2,8 +2,8 @@ package com.ai.bdex.dataexchange.util;
 
 import java.math.BigDecimal;
 
+import com.ai.paas.util.ImageUtil;
 import com.ai.paas.util.SystemConfUtil;
-import com.ai.paas.utils.SignUtil;
 
 /**
  * Created by xiongqian on 2017/5/5.
@@ -41,6 +41,40 @@ public class ThymeleafToolsUtil {
      	BigDecimal b = new BigDecimal(dmoneytmp);
      	double dmoneyback =  b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
         return  "￥"+dmoneyback;
+    }
+    /**
+     * 
+     * formatMoneyClean:(返回没有元符号). <br/> 
+     * 
+     * @author gxq 
+     * @param money
+     * @return 
+     * @since JDK 1.6
+     */
+    public String formatMoneyClean(int money){
+        return  BigDecimal.valueOf(Long.valueOf(money)).divide(new BigDecimal(100)).toString();
+    }
+    /**
+     * 
+     * genImageUrl:(根据图片id和分辨率获取图片路径). <br/> 
+     * 
+     * @author gxq 
+     * @param picId
+     * @param size
+     * @return 
+     * @since JDK 1.6
+     */
+    public String genImageUrl(String picId,String size){
+        String picUrl = "";
+        if(StringUtil.isNotBlank(picId)){
+            if(StringUtil.isNotBlank(size)){
+                picUrl = ImageUtil.getImageUrl(picId + "_"+size);
+            }else{
+                picUrl = ImageUtil.getImageUrl(picId);
+            }
+        }
+       
+        return picUrl;
     }
 	public static void main(String[] args){
 		ThymeleafToolsUtil thymeleafToolsUtil = new ThymeleafToolsUtil();

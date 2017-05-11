@@ -84,6 +84,7 @@ public class PicLibSVImpl implements IPicLibSV{
         picLib.setLibId(libId);
         Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
         picLib.setCreateTime(time);
+        picLib.setUpdateTime(time);
         int code = PicLibMapper.insert(picLib);
         return code;
     }
