@@ -15,12 +15,7 @@ public class StaffUtil {
 	 * 用户登录名Cookie
 	 */
 	private final static String STAFF_ID = "StaffLoginInfo";
-	
-	/**
-	 * Cookie有效期--一周
-	 */
-	private final static int EXPIRY = 60*60*24*7;
-	
+
 	/**人员信息*/
 	public final static String STAFF_INFO = "staffInfoDTO";
 	
@@ -33,12 +28,6 @@ public class StaffUtil {
 		
 		SessionManager sessionManager=(SessionManager)(Utils.getBean("sessionManager"));
     	sessionManager.addCookie(request, response, STAFF_ID, staffId);
-    
-    	
-		/*Cookie cookie = new Cookie(STAFF_ID, staffId);
-		cookie.setMaxAge(EXPIRY);
-		cookie.setPath("/");
-		response.addCookie(cookie);*/
 	}
 	
 	/**

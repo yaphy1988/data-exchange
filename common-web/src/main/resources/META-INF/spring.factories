@@ -1,3 +1,4 @@
 # Auto Configure
 org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
-com.ai.bdex.dataexchange.config.FilterConfiguration
+com.ai.bdex.dataexchange.config.FilterConfiguration,\
+com.ai.bdex.dataexchange.filter.LoginAuthFilter

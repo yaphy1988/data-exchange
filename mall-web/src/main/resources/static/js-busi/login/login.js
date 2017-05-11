@@ -24,6 +24,8 @@ function doLogin(){
 		WEB.msg.info('提示',"验证码不能为空");
 		return;
 	}
+    //记住密码
+	var rememberPaas = $("#rememberPaas").is(':checked');
 	$.ajax({
 		url : WEB_ROOT+"/login/dologin",
 		type : "POST",
@@ -32,7 +34,8 @@ function doLogin(){
 		data : {
 			staffId:staffId,
 			password:password,
-			verifyCode:verifyCode
+			verifyCode:verifyCode,
+			rememberPaas:rememberPaas
 			},
 		success : function(obj){
 			if(obj.success){

@@ -16,6 +16,13 @@ public class StaffInfoDTO extends BaseInfo{
 	private String authenFlag;
 	private String isFirst;
 	private boolean loginIn;
+	private String loginType; //登陆类型（1：用户手动登陆，2：记住密码系统自动登陆）
+	public String getLoginType() {
+		return loginType;
+	}
+	public void setLoginType(String loginType) {
+		this.loginType = loginType;
+	}
 	public boolean isLoginIn() {
 		return loginIn;
 	}

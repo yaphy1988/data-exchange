@@ -64,6 +64,10 @@
       <artifactId>spring-boot-starter-thymeleaf</artifactId>
     </dependency>
     <dependency>
+      <groupId>com.alibaba</groupId>
+      <artifactId>spring-boot-starter-dubbo</artifactId>
+    </dependency>
+    <dependency>
       <groupId>com.ai.bdex.dataexchange</groupId>
       <artifactId>user-center-api</artifactId>
       <version>${project.version}</version>
