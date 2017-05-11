@@ -8,7 +8,7 @@ public class Constants {
         public static String CUSTOM_DATA_STATUS_0 = "0";//失效-无用的
         public static String CUSTOM_DATA_STATUS_1 = "1";//未处理
         public static String CUSTOM_DATA_STATUS_2 = "2";//已处理
-        public static int BRAND_LENGTH = 10;
+
         public static String STATUS_VALID="1";//有效
         public static String STATUS_INVALID="0";//失效
     }

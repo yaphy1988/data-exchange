@@ -184,7 +184,7 @@
                         <!-- 分页-->
 						<div class="pagelist clearfix">
 						<!-- 分页-->
-						<div th:if="${pageInfo}" th:fragment="pager" class="pagerBar pagelist"style="margin-top: 0px;">
+						 <div th:if="${pageInfo}" th:fragment="pager" class="pagerBar pagelist"style="margin-top: 0px;">
 							<script type="text/javascript" src="../static/js-busi/common/pager.js"th:src="@{/js-busi/common/pager.js}"></script>
 							<span data-toggle="pager" id="pagerId"th:data-count="${pageInfo.count}" th:data-size="${pageInfo.pageSize}"
 								th:data-currentindex="${pageInfo.pageNo}"></span>
@@ -202,7 +202,7 @@
 									callback : pagerClick
 								});
 							</script>
-						</div>
+					    	</div>
 						
                         <div class="pagelist" th:remove="all">
                             <nav aria-label="Page navigation">

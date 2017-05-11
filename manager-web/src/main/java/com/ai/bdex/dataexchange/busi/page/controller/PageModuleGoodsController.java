@@ -33,7 +33,7 @@ import org.springframework.web.util.HtmlUtils;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleGoodsVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
-import com.ai.bdex.dataexchange.busi.search.entiry.SearchVO;
+//import com.ai.bdex.dataexchange.busi.search.entiry.SearchVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;

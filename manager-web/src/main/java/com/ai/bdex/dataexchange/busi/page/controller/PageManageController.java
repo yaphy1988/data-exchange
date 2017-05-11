@@ -730,8 +730,8 @@ public class PageManageController {
 	@RequestMapping(value = "/manageDataPageInit")
 	public ModelAndView manageDataPageInit(HttpServletRequest request,Model model) {
 		//先将记录数显示出来
-		PageResponseDTO<DataCustomizationRespDTO> pageData = new PageResponseDTO<DataCustomizationRespDTO>();
-		model.addAttribute("pageData", pageData);
+	/*	PageResponseDTO<DataCustomizationRespDTO> pageData = new PageResponseDTO<DataCustomizationRespDTO>();
+		model.addAttribute("pageInfo", pageData);*/
 		ModelAndView modelAndView = new ModelAndView("dataCustom_manage");
 		return modelAndView;
 	}
@@ -757,7 +757,7 @@ public class PageManageController {
 			dataCustomizationReqDTO.setPageNo(pageno);
 			dataCustomizationReqDTO.setPageSize(pagesize);
 			pageData = iPageDisplayRSV.queryDataCustomizationInfo(dataCustomizationReqDTO);
-			model.addAttribute("pageData", pageData);
+			model.addAttribute("pageInfo", pageData);
 		} catch (Exception e) {
 			log.error("查询用户提交的定制数据信息出错：" + e.getMessage());
 		}
