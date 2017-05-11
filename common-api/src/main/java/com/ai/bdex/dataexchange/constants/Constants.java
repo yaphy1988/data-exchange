@@ -16,6 +16,10 @@ public class Constants {
         public static String MODULE_TYPE_02="02";
         public static String MODULE_TYPE_03="03";
     }
+    public static class Shop {
+        // 商品品牌展示个数
+        public static String GZDATA_SHOP_ID = "GZDATA_SHOP_ID";//廣州數據交易中心店鋪ID
+    }
     public static class Order {   
         // 订单状态
         /*01  申请订购中（未付款），02 正在生效中（订购合同签订-已支付），

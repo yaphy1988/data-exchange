@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ai.bdex.dataexchange.constants.Constants;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -262,8 +263,9 @@ public class OrderController {
  						}
  						ordInfoReqDTO.setCatFirst(gdsInfoRespDTO.getCatFirst());
  						ordInfoReqDTO.setCatId(gdsInfoRespDTO.getCatId());
- 					}  
- 					iOrderInfoRSV.createOrderInfo(ordInfoReqDTO); 
+ 					}
+				    ordInfoReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
+  					iOrderInfoRSV.createOrderInfo(ordInfoReqDTO);
  			} 
 			rMap.put("success", true);
 		} catch (Exception e) {

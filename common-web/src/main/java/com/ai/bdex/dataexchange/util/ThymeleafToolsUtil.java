@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.util.SystemConfUtil;
+import com.ai.paas.utils.SignUtil;
 
 /**
  * Created by xiongqian on 2017/5/5.
@@ -43,25 +44,25 @@ public class ThymeleafToolsUtil {
         return  "￥"+dmoneyback;
     }
     /**
-     * 
-     * formatMoneyClean:(返回没有元符号). <br/> 
-     * 
-     * @author gxq 
+     *
+     * formatMoneyClean:(返回没有元符号). <br/>
+     *
+     * @author gxq
      * @param money
-     * @return 
+     * @return
      * @since JDK 1.6
      */
     public String formatMoneyClean(int money){
         return  BigDecimal.valueOf(Long.valueOf(money)).divide(new BigDecimal(100)).toString();
     }
     /**
-     * 
-     * genImageUrl:(根据图片id和分辨率获取图片路径). <br/> 
-     * 
-     * @author gxq 
+     *
+     * genImageUrl:(根据图片id和分辨率获取图片路径). <br/>
+     *
+     * @author gxq
      * @param picId
      * @param size
-     * @return 
+     * @return
      * @since JDK 1.6
      */
     public String genImageUrl(String picId,String size){
@@ -73,8 +74,56 @@ public class ThymeleafToolsUtil {
                 picUrl = ImageUtil.getImageUrl(picId);
             }
         }
-       
+
         return picUrl;
+    }
+    public String formatOrderStatus(String status){
+        String showStatus = "订单提交";
+        switch(status)
+        {
+            case "01":
+                showStatus = "订单提交";
+                break;
+            case "02":
+                showStatus = "订单已支付";
+                break;
+            case "03":
+                showStatus = "订单已完成";
+                break;
+            case "04":
+                showStatus = "订单提交";
+                break;
+            case "99":
+                showStatus = "订单已取消";
+                break;
+            default:
+                showStatus = "未知的状态";
+                break;
+            //订单状态：01  申请订购中（未付款），
+            // 02 正在生效中（订购合同签订-已支付），
+            // 03  API接口下线，订单失效（管理员手工失效）、
+            // 04 订单已完成（订单调用量量已经达到最大值、或余额已为0，或有效期已经达到，三者中一种情况达到均为订单完成）、
+            // 99 已失效（取消订单）
+        }
+        return  showStatus;
+    }
+
+    public String formatOrderType(String orderType){
+        String orderTypeShow = "未知类型";
+        switch(orderType)
+        {
+            case "10":
+                orderTypeShow = "普通订单";
+                break;
+            case "20":
+                orderTypeShow = "手动创建订单";
+                break;
+            default:
+                orderTypeShow = "未知的类型";
+                break;
+        }
+        //10普通订单 20手动创建订单
+        return  orderTypeShow;
     }
 	public static void main(String[] args){
 		ThymeleafToolsUtil thymeleafToolsUtil = new ThymeleafToolsUtil();

@@ -5,7 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
+import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -76,12 +79,14 @@ public class orderManageController {
 	 * @return
 	 */
 	@RequestMapping(value = "/myOrderDataList")
-	public String myOrderData(Model model, OrdInfoVO ordInfoVO) {
+	public String myOrderData(HttpServletRequest request,Model model, OrdInfoVO ordInfoVO) {
 		try {
 			PageResponseDTO<OrdInfoRespDTO> pageInfo = new PageResponseDTO<OrdInfoRespDTO>();
 			OrdInfoReqDTO ordReqDTO = new OrdInfoReqDTO();
 			ordReqDTO.setPageNo(ordInfoVO.getPageNo());
-//			if(ordInfoVO.getPageSize()!=null||ordInfoVO.getPageSize()!=0){
+			HttpSession hpptsesion = request.getSession();
+			String staff_id = StaffUtil.getStaffId(hpptsesion);
+ //			if(ordInfoVO.getPageSize()!=null||ordInfoVO.getPageSize()!=0){
 //				ordReqDTO.setPageSize(ordInfoVO.getPageSize());
 //			}else{
 				ordReqDTO.setPageSize(2);
@@ -113,13 +118,16 @@ public class orderManageController {
    	 * @return
    	 */
    	@RequestMapping(value = "/myOrderList")
-   	public String myOrderList(Model model, OrdMainInfoVO ordMainInfoVO) {
+   	public String myOrderList(Model model, OrdMainInfoVO ordMainInfoVO,HttpServletRequest request ) {
    		try {
    			PageResponseDTO<OrdMainInfoRespDTO> pageInfo = new PageResponseDTO<OrdMainInfoRespDTO>();
    			OrdMainInfoReqDTO ordMainReqDTO = new OrdMainInfoReqDTO();
    			ordMainReqDTO.setPageNo(ordMainInfoVO.getPageNo());
    			ordMainReqDTO.setPageSize(PAGE_SIZE);
    			ordMainReqDTO.setOrderType(ORDER_TYPE_COMMON);
+			HttpSession hpptsesion = request.getSession();
+			String staff_id = StaffUtil.getStaffId(hpptsesion);
+			ordMainReqDTO.setStaffId(staff_id);
    			pageInfo = iOrderMainInfoRSV.queryOrdMainInfoPage(ordMainReqDTO);
    			if(!CollectionUtils.isEmpty(pageInfo.getResult())){
    				for(OrdMainInfoRespDTO ordMainRespDTO :pageInfo.getResult()){
@@ -162,8 +170,52 @@ public class orderManageController {
 			rMap.put("success", true);
 		} catch (Exception e) {
 			rMap.put("success", false);
-			logger.error("保存广告信息出错：" + e.getMessage());
+			logger.error("取消订单出错：" + e.getMessage());
 		}
 		return rMap;
 	}
+	/**
+	 * 管理员的订单管理
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/orderManage")
+	@ResponseBody
+	public String orderManage(HttpServletRequest request,OrdMainInfoVO ordMainInfoVO){
+		return "order_manage";
+	}
+	/**
+	 * 管理员的订单管理--查询数据
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/orderManagequery")
+	@ResponseBody
+ 	public String orderManagequery(Model model, OrdMainInfoVO ordMainInfoVO,HttpServletRequest request ) {
+		try {
+				PageResponseDTO<OrdMainInfoRespDTO> pageInfo = new PageResponseDTO<OrdMainInfoRespDTO>();
+				OrdMainInfoReqDTO ordMainReqDTO = new OrdMainInfoReqDTO();
+				ordMainReqDTO.setPageNo(ordMainInfoVO.getPageNo());
+				ordMainReqDTO.setPageSize(PAGE_SIZE);
+					ordMainReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
+					pageInfo = iOrderMainInfoRSV.queryOrdMainInfoPage(ordMainReqDTO);
+					if(!CollectionUtils.isEmpty(pageInfo.getResult())){
+					for(OrdMainInfoRespDTO ordMainRespDTO :pageInfo.getResult()){
+						OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
+						ordInfoReqDTO.setOrderId(ordMainRespDTO.getOrderId());
+						List<OrdInfoRespDTO> ordInfoList = iOrderInfoRSV.queryOrderInfoList(ordInfoReqDTO);
+						OrdInfoRespDTO ordInfoRespDTO = new OrdInfoRespDTO();
+						if(CollectionUtils.isNotEmpty(ordInfoList)){
+							//一个订单只有一个子订单
+							ordInfoRespDTO=ordInfoList.get(0);
+						}
+						ordMainRespDTO.setOrdInfoRespDTO(ordInfoRespDTO);
+					}
+				}
+				model.addAttribute("pageInfo", pageInfo);
+			} catch (Exception e) {
+				logger.error("查询我的订单列表失败！原因是：" + e.getMessage());
+			}
+			return "order_manage :: #managerdata";
+		}
 }

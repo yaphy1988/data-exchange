@@ -109,6 +109,12 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 		OrdMainInfoExample example = new OrdMainInfoExample();
 		OrdMainInfoExample.Criteria criteria = example.createCriteria();
 		initCriteria(criteria, ordMainInfoReqDTO);
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getStaffId())) {
+			criteria.andStaffIdEqualTo(ordMainInfoReqDTO.getStaffId());
+		}
+		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getShopId())) {
+			criteria.andShopIdEqualTo(ordMainInfoReqDTO.getShopId());
+		}
 		example.setOrderByClause("ORDER_TIME desc");
 		PageHelper.startPage(pageNo, pageSize);
 		List<OrdMainInfo> ordMainInfoList = ordMainInfoMapper.selectByExample(example);

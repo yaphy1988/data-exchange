@@ -106,7 +106,7 @@
 					<td th:text="${list.linkPerson}"></td>
 					<td th:text="${list.linkPhnoe}"></td>
 					<td th:text="${list.customMail}"></td>
-					<td th:with="datatime=${list.createTime}" th:text="${#dates.format(datatime, 'yyyy-MM-dd HH:mm')}"</td>
+					<td th:with="datatime=${list.createTime}" th:text="${#dates.format(datatime, 'yyyy-MM-dd HH:mm')}"></td>
 					<td> <p class="pop-link"  th:if=" ${list.status}=='1'" >
 						<a  th:onclick="|updateCustomDatastatus('${list.dczaId}')|">处理</a>
 					</p>
@@ -131,9 +131,8 @@
                             </tr>
 							</tbody>
                         </table>
- 			<div class="overflow-hidden clearfix">
-
-				<div th:fragment="pager" class="pagerBar pagelist pull-right"
+ 			  <div class="overflow-hidden clearfix">
+				 <div th:fragment="pager" class="pagerBar pagelist pull-right"
 					 th:if=" ${pageInfo}">
 					<script type="text/javascript"
 							src="../static/js-busi/common/pager.js"
@@ -156,9 +155,9 @@
 							callback : pagerClick
 						});
 					</script>
-				</div>
-			</div>
-			</div>
+				    </div>
+			       </div>
+			    </div>
 		</div>
 	</div>
 

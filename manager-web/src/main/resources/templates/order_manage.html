@@ -1,17 +1,27 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
-	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-	  layout:decorate="~{fragments/layout}">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{fragments/syshead :: syshead}"></div>
+<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+
 <head>
 	<meta charset="UTF-8">
-	<title>订单管理</title>
+	<title>个人中心-我的订单</title>
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-	
+	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+	<script type="text/javascript" src="../../static/js-busi/order/myOrder.js" th:src="@{/js-busi/order/myOrder.js}"></script>
+	<!--[if lt IE 9]>
+	<script src="../static/js/respond.min.js" ></script>
+	<script src="../static/js/html5shiv.min.js" ></script>
+	<![endif]-->
 </head>
 <body>
-<header class="clearfix m_header">
+<div th:replace="~{fragments/top :: top}"></div>
+<!-- 头部 -->
+<header class="clearfix m_header" th:remove="all">
 	<a href="" class="Logo" target="_blank" >
 		<img  src="../static/images/manage_logo.png" alt="广州数据" >
 	</a>
@@ -56,12 +66,8 @@
 				<a href=""><span>个人中心</span></a>
 				<span class="col_999"> 订单管理</span>
 			</div>
-			
-
-
             <!--tab切换内容-->
             <div class="tab-slide pl20 pr20">
-
                 <!-- Nav tabs -->
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">订单管理</a></li>
@@ -69,7 +75,7 @@
 
                 <!-- Tab panes -->
                 <div class="tab-content pt15">
-                    <div role="tabpanel" class="tab-pane active" id="tab01">
+                    <div role="tabpanel" class="tab-pane active" id="managerdata">
                         <table class="table table-bordered text-center" >
                             <thead>
                             <tr class="active">
@@ -87,8 +93,30 @@
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr>
+							<tbody th:if=" ${pageInfo}" th:remove="all-but-first">
+							<tr th:each="list,iterStat : ${pageInfo.result}" 	th:unless="${#lists.isEmpty(pageInfo.result)}">
+								<td th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
+								<td th:text="${list.orderId}"></td>
+								<td th:text="${#calendars.format(list.ordInfoRespDTO.orderTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+								<td th:text="${list.ordInfoRespDTO.serviceName}"></td>
+								<td th:text="${list.ordInfoRespDTO.skuName}"></td>
+								<td th:text="${list.ordInfoRespDTO.buyAllCount}"></td>
+								<td th:text="${list.ordInfoRespDTO.belanceAllCount}"></td>
+								<td th:with="packPrice="${list.orderMoney}" th:text="${#tools.formatMoney(packPrice)}"></td>
+								<td th:with="activeEndTime="${list.ordInfoRespDTO.activeEndTime}" th:text="${#dates.format(activeEndTime, 'yyyy-MM-dd HH:mm')}"></td>
+								<td th:with="orderstatus="${list.orderStatus}" th:text="${#tools.formatOrderStatus(orderstatus)}"></td>
+								<td th:with="orderType="${list.orderType}" th:text="${#tools.formatOrderType(orderType)}"></td>
+								<td th:if="${list.orderStatus}=='01'">
+									<p class="pop-link">
+										<a href="edit_module.html">编辑</a>
+									</p>
+								</td>
+								<td th:if="${list.orderStatus}!='01'">
+									<p class="pop-link">
+										<a href="edit_module.html">使失效</a>
+									</p>
+								</td>
+ 							<tr>
                                 <td>12</td>
                                 <td>201703270001</td>
                                 <td>2017-03-27</td>
@@ -108,7 +136,33 @@
                             </tr>
                             </tbody>
                         </table>
-                       <div class="pagelist">
+						<div class="overflow-hidden clearfix">
+							<div th:fragment="pager" class="pagerBar pagelist pull-right"
+								 th:if=" ${pageInfo}">
+								<script type="text/javascript"
+										src="../static/js-busi/common/pager.js"
+										th:src="@{/js-busi/common/pager.js}"></script>
+								<span data-toggle="pager" id="pagerId"
+									  th:data-count="${pageInfo.count}"
+									  th:data-size="${pageInfo.pageSize}"
+									  th:data-currentindex="${pageInfo.pageNo}"></span>
+								<script th:inline="javascript">
+									var total ='[[${pageInfo.count}]]';
+									var pageNum = '[[${pageInfo.pageNo}]]';
+									var pageSize = '[[${pageInfo.pageSize}]]';
+
+									if (typeof pagerClick === "undefined") {
+										pagerClick = function(index) {
+											//queryCustomData(index);
+										}
+									}
+									$('#pagerId').pager({
+										callback : pagerClick
+									});
+								</script>
+							</div>
+						</div>
+                       <div class="pagelist" th:remove="all">
 							<nav aria-label="Page navigation">
 							  <ul class="pagination">
 							    <li >
