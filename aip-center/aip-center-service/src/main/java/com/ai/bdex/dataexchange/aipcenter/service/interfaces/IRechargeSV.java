@@ -13,19 +13,9 @@ public interface IRechargeSV {
     public void recharge(List<RechargeDTO> rechargeDTOList) throws BusinessException;
 
     /**
-     * 根据订单或子订单查询数据账户信息
-     * 订单号 和 子订单号不能同时为空
-     * @param subOrder 子订单号
-     * @return
-     * @throws BusinessException
-     */
-    public DataAccountDTO queryDataAccountByOrderInfo(String subOrder) throws BusinessException;
-
-    /**
-     * 根据充值信息查询用户数据账户
+     * 查找充值信息
      * @param rechargeDTO
      * @return
-     * @throws BusinessException
      */
-    public List<DataAccountDTO> queryDataAccountByRechargInfo(RechargeDTO rechargeDTO) throws BusinessException;
+    public List<RechargeDTO> queryRechargeRecordListByOption(RechargeDTO rechargeDTO) throws BusinessException;
 }

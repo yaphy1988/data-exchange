@@ -66,5 +66,34 @@ public class Constants {
 		public final static String ORDER_INVOICE_STATUS_9 = "9";//9 拒开发票
 		
 		public final static int ORDER_AIP_ACTIVE_MON =  12 ;//12个月
-    }  
+    }
+
+    public static class Bill {
+        //数据账户类型：1-基于次数，2-基于余额
+        public static final String DATA_ACCT_TYPE_NUM = "1";//1 基于次数
+        public static final String DATA_ACCT_TYPE_MONEY = "2";//2 基于余额
+
+        //数据账户类型：0-失效，1-有效，2-冻结
+        public static final String DATA_ACCT_STATUS_INVALID = "0";//0 数据账户失效
+        public static final String DATA_ACCT_STATUS_OK = "1";//1 数据账户有效
+        public static final String DATA_ACCT_STATUS_FROZEN = "2";// 2 数据账户冻结
+
+        //数据账户有效期类型：1-有有效期，2-永久有效
+        public static final String DATA_ACCT_PERIOD_VALID = "1";// 1 有生效开始日期，和生效结束日期
+        public static final String DATA_ACCT_PERIOD_PERMANENT = "2"; //永久有效
+
+        //充值类型，与数据账户类型对应：1-基于次数，2-基于余额
+        public static final String RECHARGE_TYPE_NUM = "1";//1 基于次数
+        public static final String RECHARGE_TYPE_MONEY = "2";//2 基于余额
+
+        //充值状态：0-待充值，1-充值中，2-充值成功，3-充值失败
+        public static final String RECHARGE_STATUS_WAITING = "0";//0 待充值
+        public static final String RECHARGE_STATUS_GOING = "1";//1 充值中
+        public static final String RECHARGE_STATUS_SUCCESS = "2";//2 充值成功
+        public static final String RECHARGE_STATUS_FAILED = "3";//3 充值失败
+
+        //计费结果：OK-计费扣减成功，2-计费扣减失败
+        public static final String CHARGE_RESULE_OK = "OK";// OK 计费扣减成功
+        public static final String CHARGE_RESULE_NA = "NA";// NA 计费扣减失败
+    }
 }

@@ -1,7 +1,10 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces;
 
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.BillDetailDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.BillDetailReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 
 import java.util.List;
@@ -32,5 +35,17 @@ public interface IAipCenterDataAccountRSV {
      * @return
      * @throws BusinessException
      */
-    public DataAccountDTO queryDataAccountByOrderInfo(String subOrder) throws BusinessException;
+    public DataAccountDTO queryDataAccountBySubOrder(String subOrder) throws BusinessException;
+
+    /**
+     * 数据账单流水查询服务
+     * 支持按子订单查询
+     * 支持按用户id查询
+     * 支持按流水id查询
+     * 支持按数据账户查询
+     * @param billDetailReqDTO
+     * @return
+     * @throws BusinessException
+     */
+    public PageResponseDTO<BillDetailDTO> queryBillDetail(BillDetailReqDTO billDetailReqDTO) throws BusinessException;
 }

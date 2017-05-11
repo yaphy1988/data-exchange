@@ -1,9 +1,13 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.impl;
 
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.BillDetailDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.BillDetailReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
+import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipCenterBillDetailSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IRechargeSV;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,6 +24,12 @@ public class AipCenterDataAccountRSVImpl implements IAipCenterDataAccountRSV {
     @Autowired
     private IRechargeSV rechargeSV;
 
+    @Autowired
+    private IAipCenterDataAccountRSV dataAccountRSV;
+
+    @Autowired
+    private IAipCenterBillDetailSV aipCenterBillDetailSV;
+
     @Override
     public void recharge(List<RechargeDTO> rechargeDTOList) throws BusinessException {
         rechargeSV.recharge(rechargeDTOList);
@@ -31,7 +41,12 @@ public class AipCenterDataAccountRSVImpl implements IAipCenterDataAccountRSV {
     }
 
     @Override
-    public DataAccountDTO queryDataAccountByOrderInfo(String subOrder) throws BusinessException {
-        return rechargeSV.queryDataAccountByOrderInfo(subOrder);
+    public DataAccountDTO queryDataAccountBySubOrder(String subOrder) throws BusinessException {
+        return dataAccountRSV.queryDataAccountBySubOrder(subOrder);
+    }
+
+    @Override
+    public PageResponseDTO<BillDetailDTO> queryBillDetail(BillDetailReqDTO billDetailReqDTO) throws BusinessException {
+        return aipCenterBillDetailSV.queryBillDetail(billDetailReqDTO);
     }
 }
