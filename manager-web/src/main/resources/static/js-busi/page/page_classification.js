@@ -20,19 +20,19 @@ function querySortInfo(sortParentId,sortLever){
 				var sortInfos = data.sortInfos;
 				$(sortInfos).each(function(i,d){
 					var content = d.sortContentVO;
-					htmlLever1 +='<li pSortId='+d.sortId+'><a href="'+setLinkUrk(content.contentLink)+'"  target="_blank"><i>&rsaquo;</i>'+
-						'<span>✖</span>'+content.contentName+'</a> </li>';
+					htmlLever1 +='<li pSortId='+d.sortId+'>'+
+						'<a href="javascript:;"><span>✖</span></a><a href="javascript:;" onclick="querySortFirstlever(this)"><i>&rsaquo;</i>'+content.contentName+'</a> </li>';
 					var subSortInfoList = d.subSortInfoList;
 					htmlLever2 += '<div pSortId='+d.sortId+' class="class_sidebar_secon" style="display: none">'+
 						'<h4>'+content.contentName+'</h4>'+
 						'<div class="class_link">';
 					$(subSortInfoList).each(function(i,d){
 						var subContent = d.sortContentVO;
-						htmlLever2 +='<a href="'+setLinkUrk(subContent.contentLink)+'"  target="_blank">'+subContent.contentName+'<a href="javascript:;"><span>✖</span></a></a>';
+						htmlLever2 +='<a href="javascript:;" sortId="'+d.sortId+'" onclick="querySortSenlever(this)">'+subContent.contentName+'</a><a href="javascript:;"><span>✖</span></a>';
 					});
 					htmlLever2 +='</div><div class="sidebar-link"></div><button class="btn btn-sm btn-default mt10">新增子菜单</button></div>'
 				});
-				html += htmlLever1 +'<div class="mt10 ml15"><button class="btn btn-sm btn-default">新增菜单</button>'+
+				html += htmlLever1 +'<div class="mt10 ml15"><button class="btn btn-sm btn-default"><i class="glyphicon glyphicon-plus"></i>新增菜单</button>'+
                 	'</div></ul><!--二级导航开始-->'+htmlLever2+'<!--二级导航结束-->';
 				$('#head_sidebar').html(html);
                 
@@ -50,18 +50,40 @@ function querySortInfo(sortParentId,sortLever){
                  },function(){
                      $(this).hide();
                  });
+				
 			}
 		}
 	});
 }
-
+function querySortFirstlever(obj){
+	$(obj).parent().siblings().removeClass('active');
+	$('.class_link a[sortid]').removeClass('active');
+	$(obj).parent().attr('class','active');
+	var sortId = $(obj).parent().attr('psortid');
+	querySortInfoById(sortId)
+}
+function querySortSenlever(obj){
+	$('#head_sidebar').find('li').removeClass('active');
+	$(obj).siblings().removeClass('active');
+	$(obj).attr('class','active');
+	var sortId = $(obj).attr('sortId');
+	querySortInfoById(sortId)
+}
+function querySortInfoById(sortId){
+	var url = WEB_ROOT+'/pageManage/querySortInfoById';
+	var params={sortId:sortId};
+	var callBack = function(data){
+		$('#sortInfo-content').html(data);
+	};
+	goAjax(url,params,'html',callBack);
+}
 function insetOrUpdateContent(){
 	var url = WEB_ROOT+'/pageManage/insetOrUpdateContent';
 	var params={};
 	var callBack = function(data){
 		
 	};
-	goAjax(url,params,callBack);
+	goAjax(url,params,'json',callBack);
 }
 
 function saveSortInfo(){
@@ -70,22 +92,22 @@ function saveSortInfo(){
 	var callBack = function(data){
 		
 	};
-	goAjax(url,params,callBack);
+	goAjax(url,params,'json',callBack);
 }
-function goAjax(url,params,callBack){
+function goAjax(url,params,type,callBack){
 	$.ajax({
 		url:url,
 		cache:false,
 		async:true,
 		data:params,
-		dataType:'json',
+		dataType:type,
 		success:callBack
 	});
 }
 
 function setLinkUrk(linkUrl){
-	if(linkUrl == null || linkUrl == undefined){
-		return 'javascript:void(0);'
+	if(linkUrl == null || linkUrl == undefined || linkUrl==''){
+		return 'javascript:;'
 	}else if(new RegExp('http').test(linkUrl)){
 		return  linkUrl;
 	}else{

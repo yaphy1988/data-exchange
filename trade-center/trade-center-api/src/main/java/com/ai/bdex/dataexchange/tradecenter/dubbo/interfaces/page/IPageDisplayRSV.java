@@ -25,6 +25,11 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
 
 public interface    IPageDisplayRSV {
+	
+	public SortInfoRespDTO querySortInfoById(SortInfoReqDTO sortInfoReqDTO) throws Exception;
+	
+	public SortContentRespDTO querysortContenById(SortContentReqDTO sortContentReqDTO) throws Exception;
+	
     public  List<SortInfoRespDTO>  querySortInfos(SortInfoRespDTO sortInfoRespDTO) throws Exception;
 
     public PageResponseDTO<PageNewsInfoRespDTO> queryPageNewsInfoList(PageNewsInfoReqDTO sortInfoDTO) throws Exception;
@@ -51,7 +56,7 @@ public interface    IPageDisplayRSV {
     
     public int saveDataCustomizationRsv(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception;
     
-    public List<SortContentRespDTO> querysortContenList(SortContentRespDTO sortContentRespDTO) throws Exception;
+    public List<SortContentRespDTO> querysortContenList(SortContentReqDTO sortContentReqDTO) throws Exception;
 
     public PageResponseDTO<PageModuleAdRespDTO> queryPageModuleAdPageInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception;
 

@@ -45,7 +45,7 @@
 .class_sidebar_secon{
 	position: absolute;
 	width: 500px;
-	left: 248px;
+	left: 230px;
 	top: -1px;
 	z-index: 10;
 	background: #fff;
@@ -73,4 +73,16 @@
 }
 .class_sidebar_secon .class_link a:hover{
 	color: #ec6000;
+}
+.table-line {
+
+	height: 10px; 
+	border-top: #ddd 1px dashed; 
+	padding-left: 10%; 
+	margin-bottom: 10px; 
+}
+
+.class_link a.active{
+	color: #ec6000;
+	
 }

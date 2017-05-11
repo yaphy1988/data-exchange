@@ -371,11 +371,11 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
          return   iDataCustomizationSV.saveDataCustomization(dataCustomizationRespDTO);
     }
 	@Override
-	public List<SortContentRespDTO> querysortContenList(SortContentRespDTO sortContentRespDTO) throws Exception {
+	public List<SortContentRespDTO> querysortContenList(SortContentReqDTO sortContentReqDTO) throws Exception {
 		List<SortContentRespDTO> respDTOs = new ArrayList<SortContentRespDTO>();
 		try {
 			SortContent sortContent = new SortContent();
-			BeanUtils.copyProperties(sortContentRespDTO, sortContent);
+			BeanUtils.copyProperties(sortContentReqDTO, sortContent);
 			List<SortContent> contenList = iSortContentSV.querysortContenList(sortContent);
 			if(!CollectionUtils.isEmpty(contenList)){
 				for(SortContent contentVO : contenList){
@@ -464,12 +464,27 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
 		return iSortInfoSV.updateSortInfoById(sortInfoReqDTO);
 	}
 	@Override
+
 	public PageResponseDTO<DataCustomizationRespDTO> queryDataCustomizationInfo(DataCustomizationReqDTO dataCustomizationReqDTO) throws Exception{
 		return iDataCustomizationSV.queryDataCustomizationInfo(dataCustomizationReqDTO);
 	}
 	@Override
 	public int updateDataCustomizationStatus(DataCustomizationReqDTO dataCustomizationReqDTO) throws Exception{
 		return iDataCustomizationSV.updateDataCustomizationStatus(dataCustomizationReqDTO);
+	}
+
+	public SortInfoRespDTO querySortInfoById(SortInfoReqDTO sortInfoReqDTO) throws Exception {
+		if(sortInfoReqDTO.getSortId() == null || sortInfoReqDTO.getSortId() == 0 ){
+			throw new BusinessException("主键不能为空：sortId="+sortInfoReqDTO.getSortId());
+		}
+		return iSortInfoSV.querySortInfoById(sortInfoReqDTO);
+	}
+	@Override
+	public SortContentRespDTO querysortContenById(SortContentReqDTO sortContentReqDTO) throws Exception {
+		if(sortContentReqDTO.getSortContentId() == null || sortContentReqDTO.getSortContentId() == 0 ){
+			throw new BusinessException("主键不能为空：sortContentId="+sortContentReqDTO.getSortContentId());
+		}
+		return iSortContentSV.querysortContenById(sortContentReqDTO);
 	}
 
 }

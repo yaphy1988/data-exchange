@@ -23,11 +23,13 @@ import com.ai.bdex.dataexchange.util.StaffUtil;
 import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -48,7 +50,9 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
@@ -56,6 +60,7 @@ import com.ai.paas.util.ImageUtil;
 import com.ai.paas.util.MongoFileUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.alibaba.dubbo.remoting.exchange.Request;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -692,7 +697,7 @@ public class PageManageController {
 		} catch (Exception e) {
 			rMap.put("success", true);
 			rMap.put("erroMsg", e.getMessage());
-			log.error("【首页商品菜单新增、编辑】异常信息：" + e);
+			log.error("【首页商品菜单分类新增、编辑】异常信息：" + e);
 		}
 		return rMap;
 
@@ -717,7 +722,7 @@ public class PageManageController {
 		} catch (Exception e) {
 			rMap.put("success", true);
 			rMap.put("erroMsg", e.getMessage());
-			log.error("【首页商品菜单内容新增、编辑】异常信息：" + e);
+			log.error("【首页商品菜单分类内容新增、编辑】异常信息：" + e);
 		}
 		return rMap;
 
@@ -796,5 +801,37 @@ public class PageManageController {
 				log.error("将数据设置为已处理出错：" + e.getMessage());
 			}
 		 return rMap;
+	}
+	@RequestMapping(value="/querySortInfoById")
+	private String querySortInfoById(@RequestParam Integer sortId ,Model mode){
+		try {
+			SortInfoVO sortInfo = new SortInfoVO();
+			if(sortId != null){
+				SortInfoReqDTO sortInfoReqDTO = new SortInfoReqDTO();
+				sortInfoReqDTO.setSortId(sortId);
+				SortInfoRespDTO sortInfoRespDTO = iPageDisplayRSV.querySortInfoById(sortInfoReqDTO);
+				if(sortInfoRespDTO != null){
+					BeanUtils.copyProperties(sortInfoRespDTO, sortInfo);
+					SortContentReqDTO sortContentReqDTO = new SortContentReqDTO();
+					sortContentReqDTO.setSortId(sortInfoRespDTO.getSortId());
+					List<SortContentRespDTO> sortContenList = iPageDisplayRSV.querysortContenList(sortContentReqDTO);
+					SortContentRespDTO sortContentRespDTO = sortContenList.get(0);
+					SortContentVO sortContentVO = new SortContentVO();
+					if(sortContentRespDTO != null){
+						BeanUtils.copyProperties(sortContentRespDTO, sortContentVO);
+						sortInfo.setSortContentRespDTO(sortContentVO);
+					}else{
+						sortInfo.setSortContentRespDTO(sortContentVO);
+					}
+				}
+			}
+			if("1".equals(sortInfo.getSortLevel())){
+				mode.addAttribute("sortLever", "1");
+			}
+			mode.addAttribute("sortInfo", sortInfo);
+		} catch (Exception e) {
+			log.error("【首页商品菜单分类查询】异常信息：" + e);
+		}
+		return "page_classification :: #sortInfo";
 	}
 }

@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.SortContentMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContent;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContentExample;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContentExample.Criteria;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortContentSV;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
@@ -25,12 +25,16 @@ public class SortContentSVImpl  implements ISortContentSV {
 	    * 分类列表内容 查询
 	    */
 	  @Override
-	  public SortContent querysortContenById(Integer sortContentId) throws Exception {
-	        if (sortContentId==null){
+	  public SortContentRespDTO querysortContenById(SortContentReqDTO sortContentId) throws Exception {
+		  	SortContentRespDTO	contentRespDTO = new SortContentRespDTO();
+	        if (sortContentId.getSortContentId()==null){
 	            throw new Exception("根据ID查询 数据定制 信息入参为空");
 	        }
-	       SortContent sortContent =  sortContentMapper.selectByPrimaryKey(sortContentId);
-	        return sortContent;
+	       SortContent sortContent =  sortContentMapper.selectByPrimaryKey(sortContentId.getSortContentId());
+	       if(sortContent != null){
+	    	 BeanUtils.copyProperties(sortContent, contentRespDTO);  
+	       }
+	        return contentRespDTO;
 	  }
 	  @Override
 	  public List<SortContent> querysortContenList(SortContent sortContent) throws Exception {

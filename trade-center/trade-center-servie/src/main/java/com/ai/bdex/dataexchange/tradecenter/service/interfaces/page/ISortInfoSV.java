@@ -4,9 +4,10 @@ import java.util.List;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 
 public interface ISortInfoSV {
-	   public SortInfo querySortInfoById(Integer SortInfoid) throws Exception;
+	   public SortInfoRespDTO querySortInfoById(SortInfoReqDTO sortInfoReqDTO) throws Exception;
 
 	   public List<SortInfo> querySortInfoList(SortInfo exam) throws Exception;
 	   

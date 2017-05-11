@@ -6,13 +6,12 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
- 
+
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.SortInfoMapper;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfo;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
@@ -25,12 +24,16 @@ public class SortInfoSVImpl  implements ISortInfoSV{
 	    * 接口没有时，需要定制的信息
 	    */
 	  @Override
-	    public SortInfo querySortInfoById(Integer SortInfoid) throws Exception {
-	        if (SortInfoid==null){
+	    public SortInfoRespDTO querySortInfoById(SortInfoReqDTO sortInfoReqDTO) throws Exception {
+		  SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
+	        if (sortInfoReqDTO.getSortId()==null){
 	            throw new Exception("根据ID查询 数据定制 信息入参为空");
 	        }
-	        SortInfo sortContent =  sortInfoMapper.selectByPrimaryKey(SortInfoid);
-	        return sortContent;
+	        SortInfo sortContent =  sortInfoMapper.selectByPrimaryKey(sortInfoReqDTO.getSortId());
+	        if(sortContent != null){
+	        	BeanUtils.copyProperties(sortContent, sortInfoRespDTO);
+	        }
+	        return sortInfoRespDTO;
 	    }
 	  @Override
 	   public  List<SortInfo>  querySortInfoList(SortInfo exam) throws Exception{

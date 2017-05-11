@@ -91,7 +91,7 @@
 				                <li><a href="#"><i>›</i>健康医疗</a> </li>
 				                <li><a href="#"><i>›</i>更多服务</a> </li>
 				                <div class="mt10 ml15">
-				                	<button class="btn btn-sm btn-default">新增菜单</button>
+				                	<button class="btn btn-default btn-sm" data-toggle="modal"  onclick="addsortContent();"><i class="glyphicon glyphicon-plus"></i> 新增菜单</button>
 				                </div>
 				            </ul>
 				            <!-- 二级子菜单 -->
@@ -128,86 +128,70 @@
 				        </div>       	
 	                    <!-- 左边树形菜单  end--> 
 			        </div>
-			        <div class="col-md-9">
-						<div class="box" id="sortInfo">
-						<!--右边-->
+					<!--右边-->
+			        <div class="col-md-9" id="sortInfo-content">
+						<div class="box" id="sortInfo" th:if="${sortInfo}">
 							
-							<table width="100%" border="0" class="editTable table-hover"
-								id="contentInput">
+							<table width="100%" border="0" class="editTable table-hover" id="firstlever_tab">
 								<tbody>
+								
+									<tr>
+										<td class="Hint class-zi">一级分类：
+										</td>
+									</tr>
 									<tr>
 										<td class="Hint" width="120"><span class="red">*</span>分类名称：</td>
-										<td><input type="hidden" value="1" id="tSortContentSize">
-											<input type="hidden" value="1" id="sortId"> <input
-											type="hidden" value="59" id="provinceCode"> <input
-											type="hidden" value="-1" id="parentSortId"> <input
-											type="hidden" value="01" id="sortLevel"> <input
-											type="hidden" value="1" id="orderNo"> <input type="hidden"
-											value="first" id="opType"> <input class="form-control"
-											type="text" id="sortName" value="手机"></td>
+										<td>
+											<input class="form-control" type="text" id="sortName" th:if="${sortInfo.sortContentRespDTO}"  th:value="${sortInfo.sortContentRespDTO.contentName}">
+										</td>
 									</tr>
 									<tr>
-										<td class="Hint"><span class="red">*</span>类型：</td>
-										<td><select class="form-control" id="sortType"
-											onchange="hideinput()">
-												<option value="01" selected="selected">概括导航类型</option>
-												<option value="02">具体导航类型</option>
-										</select></td>
-									</tr>
-									<tr name="tr1">
-										<td class="Hint class-zi"><input type="hidden" value="1"
-											id="sortContentId_1"> <input type="hidden" value="59"
-											id="sortConprovinceCode_1"> 分类内容：</td>
-										<td class="TextRight"><a class="deleIcon2"
-											onclick="deltrInfo('1')"></a></td>
-									</tr>
-									<tr name="tr1">
-										<td class="Hint"><span class="red">*</span>内容名称：</td>
-										<td><input class="form-control" type="text" id="contentName_1"
-											value="手机"></td>
-									</tr>
-									<tr name="tr1">
 										<td class="Hint">链接地址：</td>
-										<td><input class="form-control" maxlength="512" type="text"
-											id="contentLink_1"
-											value="/search/search?fq_catList=%255B%2522100%2522%255D"></td>
+										<td>
+											<input class="form-control" maxlength="512" type="text" id="contentLink_1" th:if="${sortInfo.sortContentRespDTO}" th:value="${sortInfo.sortContentRespDTO.contentLink}">
+										</td>
 									</tr>
-
-									<tr name="tr1">
+									<tr>
 										<th colspan="2" scope="row" class="table-line"></th>
 									</tr>
+									
+								</tbody>
+							</table>
+							
+							<table width="100%" border="0" class="editTable table-hover" id="seclever_tab" th:remove="all">
+								<tbody>
+								
 									<tr>
-										<td>
-											
+										<td class="Hint class-zi">二级分类：
 										</td>
+									</tr>
+									<tr>
+										<td class="Hint" width="120"><span class="red">*</span>分类名称：</td>
 										<td>
-											<div class="  bg-warning  pt10 pb10 pr20 pl20 ">
-												<p>备注：链接地址目前只支持系统内部地址(即不需要域名部分，
-												<br>例：要链接至http://www.woego.cn/woego/actzone/pageInit，只需填入/actzone/pageInit）</p>
-											</div>
+											<input class="form-control" type="text" id="sortName" value="">
 										</td>
+									</tr>
+									<tr>
+										<td class="Hint">链接地址：</td>
+										<td>
+											<input class="form-control" maxlength="512" type="text" id="contentLink_1"
+											value="">
+										</td>
+									</tr>
+									<tr>
+										<th colspan="2" scope="row" class="table-line"></th>
 									</tr>
 								</tbody>
 							</table>
 							
-							<hr>
 							<div class="text-center">
-								
-								<input type="submit" value="保存" onclick="saveInfo()"
-									class="btn btn-primary">
-								<button class="btn btn-default " data-toggle="modal"
-									data-target="#new_adds" onclick="addsortContent();">
-									 新增内容
-								</button>
+								<button th:if="${sortLever} == '1'" class="btn btn-default btn-sm"  data-toggle="modal" onclick=""><i class="glyphicon glyphicon-plus"></i> 新增内容</button>
+								<input type="submit" value="保存" onclick="" class="btn btn-primary btn-sm">
 							</div>
-							<div class="formOperate">
-								
-							</div>
-							<!--右边 end-->
-						
 						</div>
-
+					
 		            </div>
+		            <!--右边 end-->
 			    </div>
 				
 			</div>
