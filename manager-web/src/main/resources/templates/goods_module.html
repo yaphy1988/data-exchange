@@ -142,13 +142,20 @@
 
                 <!-- Tab panes -->
 					<div class="tab-content pt15">
-							<input type="hidden" class="form-control" id="moduleId" th:value="${moduleId}">
 						<div role="tabpanel" class="tab-pane active" id="tab02">
 							<div class="shop-list" >
 								<div class="edit-title">已选择商品列表</div>
 								<div class="top-table">
 									<table class="editTable">
 										<tr>
+										<td class="Hint"><span class="col_red">*</span> 模块名称：</td>
+											<td width="20%">
+												<div class="input-group02">
+													<select class="form-control" id="moduleId">
+														<option th:each="moduleVO,iterStat : ${moduleList}" th:value="${moduleVO.moduleId}" th:text="${moduleVO.moduleName}">></option>
+													</select>
+												</div>
+											</td>
 											<td class="Hint"><span class="col_red">*</span> 商品名称：</td>
 											<td width="20%">
 												<div class="input-group02">
@@ -156,7 +163,17 @@
 														id="gdsName">
 												</div>
 											</td>
-											<td class="Hint"><span class="col_red">*</span> 上架状态：</td>
+											
+											<td class="Hint"><span class="col_red">*</span> 商品类型：</td>
+											<td width="20%">
+												<div class="input-group02">
+													<input id="catIdSel" catId="" onclick="showCatSel(this)" type="text" class="form-control" readonly="readonly" placeholder="商品类型" />
+                                					<div style="width:15%;height:auto;position: absolute;display: none;background: #EEE;border: solid 1px;" id="catZTree" class="ztree"></div>
+												</div>
+											</td>
+										</tr>
+										<tr>
+										<td class="Hint"><span class="col_red">*</span> 上架状态：</td>
 											<td width="20%">
 												<div class="input-group02">
 												 <select class="form-control" id="gdsStatusSel">
@@ -168,13 +185,9 @@
 													</select>
 												</div>
 											</td>
-											<td class="Hint"><span class="col_red">*</span> 商品类型：</td>
-											<td width="20%">
-												<div class="input-group02">
-													<input id="catIdSel" catId="" onclick="showCatSel(this)" type="text" class="form-control" readonly="readonly" placeholder="商品类型" />
-                                					<div style="width:15%;height:auto;position: absolute;display: none;background: #EEE;border: solid 1px;" id="catZTree" class="ztree"></div>
-												</div>
-											</td>
+											<td class="Hint"></td>
+											<td class="Hint"></td>
+											<td class="Hint"></td>
 											<td>
 												<div class="input-group02">
 													<button class="btn btn-primary" onclick="qryModuleGoodsSelList(1)">查询</button>
@@ -267,13 +280,13 @@
 											var total = '[[${pageInfoSel.count}]]';
 											var pageNum = '[[${pageInfoSel.pageNo}]]';
 											var pageSize = '[[${pageInfoSel.pageSize}]]';
-											if (typeof pagerClick === "undefined") {
-												pagerClick = function(index) {
+											if (typeof pagerClickSel === "undefined") {
+												pagerClickSel = function(index) {
 													qryModuleGoodsSelList(index);
 												}		
 											}
 											$('#pagerIdSel').pager({
-												callback : pagerClick
+												callback : pagerClickSel
 											});	
 										</script>
 									</div>
@@ -289,7 +302,7 @@
 											<td width="20%"><input type="text" class="form-control"
 												id="unSelGdsName"></td>
 											<td class="Hint"><span class="col_red">*</span> 商品类型：</td>
-											<td>
+											<td width="20%">
 											<div class="input-group02">
 													<input id="catIdUnSel" catId="" onclick="showCatUnSel(this)" type="text" class="form-control" readonly="readonly" placeholder="商品类型" />
                                 					<div style="width:15%;height:auto;position: absolute;display: none;background: #EEE;border: solid 1px;" id="catZTreeUnSel" class="ztree"></div>

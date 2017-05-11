@@ -68,7 +68,9 @@ function qryModuleGoodsSelList(index){
 function qryModuleGoodsUnSelList(index){
 	var gdsName=$("#unSelGdsName").val();
 	var catId=$("#catIdUnSel").attr("catId");
+	var moduleId=$("#moduleId").val();
 	var param={
+			moduleId:moduleId,
 			gdsName:gdsName,
 			catId:catId,
 			pageSize:10,

@@ -8,9 +8,13 @@ public class Constants {
         public static String CUSTOM_DATA_STATUS_0 = "0";//失效-无用的
         public static String CUSTOM_DATA_STATUS_1 = "1";//未处理
         public static String CUSTOM_DATA_STATUS_2 = "2";//已处理
-
+        
         public static String STATUS_VALID="1";//有效
         public static String STATUS_INVALID="0";//失效
+        //楼层类型
+        public static String MODULE_TYPE_01="01";
+        public static String MODULE_TYPE_02="02";
+        public static String MODULE_TYPE_03="03";
     }
     public static class Order {   
         // 订单状态

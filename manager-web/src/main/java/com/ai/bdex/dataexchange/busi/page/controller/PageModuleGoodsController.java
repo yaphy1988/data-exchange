@@ -1,21 +1,11 @@
 package com.ai.bdex.dataexchange.busi.page.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.PrintWriter;
-import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Pattern;
 
-import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,45 +13,29 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.util.HtmlUtils;
 
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
-import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleGoodsVO;
-import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
-//import com.ai.bdex.dataexchange.busi.search.entiry.SearchVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageModuleRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
-import com.ai.paas.util.ImageUtil;
-import com.ai.paas.util.MongoFileUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
-import com.alibaba.fastjson.JSONObject;
 
 /**
  * 商品模块配置
@@ -84,6 +58,9 @@ public class PageModuleGoodsController {
 	private IGdsInfoRSV iGdsInfoRSV;
 	@DubboConsumer
 	private IGdsCatRSV iGdsCatRSV;
+	@DubboConsumer(timeout = 30000)
+	IPageDisplayRSV iPageDisplayRSV;
+	
 	/**
 	 * 商品模块管理入口
 	 * @param request
@@ -92,8 +69,16 @@ public class PageModuleGoodsController {
 	@RequestMapping(value = "/pageInit")
 	public ModelAndView pageInit(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("goods_module");
-		String moduleId=request.getParameter("moduleId");
-		modelAndView.addObject("moduleId", moduleId);
+		try{
+			//根据查询t_page_modular楼层信息
+			PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
+			pageModuleReqDTO.setModuleType(Constants.Page.MODULE_TYPE_01);
+			pageModuleReqDTO.setStatus(Constants.Page.STATUS_VALID);
+			List<PageModuleRespDTO> moduleList = iPageDisplayRSV.queryPageModuleInfoList(pageModuleReqDTO);		
+			modelAndView.addObject("moduleList", moduleList);
+		}catch(Exception e){
+            log.error("模块配置商品异常");
+		}
 		return modelAndView;
 	}
 	/**
@@ -124,9 +109,6 @@ public class PageModuleGoodsController {
     		if(pageModuleGoodsVO.getModuleId()!=null){
     			moduleGoodsReqDTO.setModuleId(pageModuleGoodsVO.getModuleId());
     		}
-    		if(pageModuleGoodsVO.getGdsId()!=null){
-    			moduleGoodsReqDTO.setGdsId(pageModuleGoodsVO.getGdsId());
-    		}
     		moduleGoodsReqDTO.setStatus(Constants.Page.STATUS_VALID);
     		List<PageModuleGoodsRespDTO> selGoodsList=iPageModuleRSV.queryPageModuleGoodsInfoList(moduleGoodsReqDTO);
     		List<Integer> gdsIdList = new ArrayList<Integer>();
@@ -136,6 +118,7 @@ public class PageModuleGoodsController {
     			}
     		}
     		gdsInfoReqDTO.setStatus("1");//已上架
+    		//过滤已选择商品
     		gdsInfoReqDTO.setGdsIdsNotIn(gdsIdList);
             PageResponseDTO<GdsInfoRespDTO> gdsInfoRespPage = iGdsInfoRSV.queryGdsInfoPage(gdsInfoReqDTO);
             ObjectCopyUtil.copyObjValue(gdsInfoRespPage,pageInfo,null,false);
