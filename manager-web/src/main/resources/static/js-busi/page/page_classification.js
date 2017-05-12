@@ -25,12 +25,12 @@ function querySortInfo(sortParentId,sortLever){
 					var subSortInfoList = d.subSortInfoList;
 					htmlLever2 += '<div pSortId='+d.sortId+' class="class_sidebar_secon" style="display: none">'+
 						'<h4>'+content.contentName+'</h4>'+
-						'<div class="class_link">';
+						'<ol class="class_link">';
 					$(subSortInfoList).each(function(i,k){
 						var subContent = k.sortContentVO;
-						htmlLever2 +='<a pSortId='+k.parentSortId+' href="javascript:;" sortId="'+k.sortId+'" onclick="querySortSenlever(this)">'+subContent.contentName+'</a><a href="javascript:;"><span>✖</span></a>';
+						htmlLever2 +='<li><a pSortId='+k.parentSortId+' href="javascript:;" sortId="'+k.sortId+'" onclick="querySortSenlever(this)">'+subContent.contentName+'</a><a href="javascript:;">✖</a></li>';
 					});
-					htmlLever2 +='</div><button class="btn btn-default btn-sm"  style="margin-top:20px">'+
+					htmlLever2 +='</ol><button class="btn btn-default btn-sm"  style="margin-top:20px">'+
 						'<i class="glyphicon glyphicon-plus"></i> 添加二级分类</button></div>'
 				});
 				html += htmlLever1 +'<div class="mt10 ml15"><button class="btn btn-sm btn-default"><i class="glyphicon glyphicon-plus"></i>新增菜单</button>'+
