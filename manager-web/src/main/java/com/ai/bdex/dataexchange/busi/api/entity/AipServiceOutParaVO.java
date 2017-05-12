@@ -32,6 +32,8 @@ public class AipServiceOutParaVO extends BaseInfo {
 
     private String updateStaff;
 
+    private String remark;
+
     public String getOutputId() {
         return outputId;
     }
@@ -126,5 +128,13 @@ public class AipServiceOutParaVO extends BaseInfo {
 
     public void setUpdateStaff(String updateStaff) {
         this.updateStaff = updateStaff;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

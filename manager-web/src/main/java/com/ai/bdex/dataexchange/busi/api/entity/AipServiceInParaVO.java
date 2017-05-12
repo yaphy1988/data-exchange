@@ -31,6 +31,8 @@ public class AipServiceInParaVO extends BaseInfo {
 
     private String updateStaff;
 
+    private String remark;
+
     public String getInputId() {
         return inputId;
     }
@@ -117,5 +119,13 @@ public class AipServiceInParaVO extends BaseInfo {
 
     public void setUpdateStaff(String updateStaff) {
         this.updateStaff = updateStaff;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

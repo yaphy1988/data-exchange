@@ -58,44 +58,6 @@
 				<tr>
 					<td class="Hint" width="140">
 						<span class="col_red">*</span>
-						服务名称:
-					</td>
-					<td width="520" colspan="3">
-						<input type="text" class="form-control" placeholder="" th:value="${aipServiceBaseInfo.serviceName}" id="baseInfo_serviceName">
-					</td>
-				</tr>
-				<tr>
-					<td class="Hint ">
-						<span class="col_red">*</span>服务描述:
-					</td>
-					<td  colspan="3">
-						<textarea class="form-control" rows="2" id="baseInfo_serviceDesc" th:value="${aipServiceBaseInfo.serviceDesc}"></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td class="Hint" width="140">
-						<span class="col_red">*</span>
-						供应商服务:
-					</td>
-					<td width="300" colspan="2">
-						<input id="baseInfo_providerServiceInfo" type="text" class="form-control" readonly="readonly" placeholder="供应商服务" />
-						<!--<select class="form-control wt100" id="baseInfo_providerId">-->
-							<!--<option value="1">供应商1</option>-->
-							<!--<option value="2">供应商2</option>-->
-							<!--<option value="3">供应商3</option>-->
-							<!--<option value="4">供应商4</option>-->
-							<!--<option value="5">供应商5</option>-->
-							<!--<option value="6">供应商6</option>-->
-						<!--</select>-->
-						<!--<input type="text" class="form-control" placeholder="" th:value="${aipServiceBaseInfo.serviceName}" id="baseInfo_serviceName">-->
-					</td>
-					<td style="padding-left: 10px;">
-						<button type="button">选择</button>
-					</td>
-				</tr>
-				<tr>
-					<td class="Hint" width="140">
-						<span class="col_red">*</span>
 						接口地址:
 					</td>
 					<td width="520" colspan="3">
@@ -137,7 +99,7 @@
 				</tr>
 
 
-				<tr>
+				<tr th:remove="all" >
 					<td class="Hint">
 						<span class="col_red">*</span>接口备注:
 					</td>
@@ -146,6 +108,139 @@
 					</td>
 				</tr>
 
+				<tr>
+					<td class="Hint"><span class="col_red">*</span>请求参数说明:</td>
+					<td colspan="3">
+						<table class="table table-bordered text-center mt20" >
+							<thead>
+							<tr class="active">
+								<th>名称</th>
+								<th>类型</th>
+								<th>是否必填</th>
+								<th>说明</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr id="inParaTrHidden" style="display: none;">
+								<td><input type="text" class="form-control" name=""></td>
+								<td colspan="">
+									<select class="form-control wt100" >
+										<option value="00">Object</option>
+										<option value="01">String</option>
+										<option value="02">Interger</option>
+										<option value="03">Double</option>
+										<option value="04">Float</option>
+										<option value="05">Date</option>
+									</select>
+								</td>
+								<td>
+									<select class="form-control wt100">
+										<option value="00">可空</option>
+										<option value="01" >必填</option>
+									</select>
+								</td>
+								<td>
+									<div class="check-link">
+										<input type="text" class="form-control" name="">
+										<a href="javascript:void(0)"  onclick="delRow(this)">删除</a>
+									</div>
+								</td>
+							</tr>
+							<tr class="inParaTr" th:if="${#lists.size(aipServiceInParaList)} gt 0" th:each="aipServiceInPara,aipServiceInParaStat:${aipServiceInParaList}">
+								<td><input type="text" class="form-control" name="" th:value="${aipServiceInPara.paraCode}"></td>
+								<td colspan="">
+									<select class="form-control wt100" >
+										<option value="00" th:selected="(${aipServiceInPara.paraType}=='00')">Object</option>
+										<option value="01" th:selected="(${aipServiceInPara.paraType}=='01')">String</option>
+										<option value="02" th:selected="(${aipServiceInPara.paraType}=='02')">Interger</option>
+										<option value="03" th:selected="(${aipServiceInPara.paraType}=='03')">Double</option>
+										<option value="04" th:selected="(${aipServiceInPara.paraType}=='04')">Float</option>
+										<option value="05" th:selected="(${aipServiceInPara.paraType}=='05')">Date</option>
+									</select>
+								</td>
+								<td>
+									<select class="form-control wt100">
+										<option value="00" th:selected="(${aipServiceInPara.type}=='00')">可空</option>
+										<option value="01" th:selected="(${aipServiceInPara.type}=='01')">必填</option>
+									</select>
+								</td>
+								<td>
+								<div class="check-link">
+									<input type="text" class="form-control" name="" th:value="${aipServiceInPara.remark}">
+									<a href="javascript:void(0)" onclick="delRow(this)">删除</a>
+								</div>
+								</td>
+							</tr>
+							
+							<tr>
+								<td colspan="4" style="text-align: right">
+									<button type="button" onclick="inParaAddRow(this)">新增一行</button>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint"><span class="col_red">*</span>返回参数说明:</td>
+					<td colspan="3">
+						<table class="table table-bordered text-center mt20" >
+							<thead>
+							<tr class="active">
+								<th>名称</th>
+								<th>类型</th>
+								<th>说明</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr id="outParaTrHidden" style="display: none">
+								<td><input type="text" class="form-control" name=""></td>
+								<td colspan="">
+									<select class="form-control wt100" >
+										<option value="00" >Object</option>
+										<option value="01" >String</option>
+										<option value="02" >Interger</option>
+										<option value="03" >Double</option>
+										<option value="04" >Float</option>
+										<option value="05" >Date</option>
+									</select>
+								</td>
+								<td>
+									<div class="check-link">
+										<input type="text" class="form-control" name="">
+										<a href="javascritp:void(0)" onclick="delRow(this)">删除</a>
+									</div>
+								</td>
+							</tr>
+							<tr class="outParaTr" th:if="${#lists.size(aipServiceInParaList)} gt 0" th:each="aipServiceOutPara,aipServiceOutParaStat:${aipServiceOutParaList}">
+								<td><input type="text" class="form-control" name="" th:value="${aipServiceOutPara.paraCode}"></td>
+								<td colspan="">
+									<select class="form-control wt100" >
+										<option value="00" th:selected="(${aipServiceOutPara.paraType}=='00')">Object</option>
+										<option value="01" th:selected="(${aipServiceOutPara.paraType}=='01')">String</option>
+										<option value="02" th:selected="(${aipServiceOutPara.paraType}=='02')">Interger</option>
+										<option value="03" th:selected="(${aipServiceOutPara.paraType}=='03')">Double</option>
+										<option value="04" th:selected="(${aipServiceOutPara.paraType}=='04')">Float</option>
+										<option value="05" th:selected="(${aipServiceOutPara.paraType}=='05')">Date</option>
+									</select>
+								</td>
+								<td>
+								<div class="check-link">
+									<input type="text" class="form-control" name="" th:value="${aipServiceOutPara.remark}">
+									<a href="javascritp:void(0)" onclick="delRow(this)">删除</a>
+								</div>
+								</td>
+							</tr>
+
+							<tr>
+								<td colspan="3" style="text-align: right">
+									<button type="button" onclick="outParaAddRow(this)">新增一行</button>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
 				<tr>
 					<td class="Hint">
 						<span class="col_red">*</span>返回示例:
@@ -169,36 +264,7 @@
 		</div>
 	</div>
 
-	<div class="m_modal modal fade" id="pServiceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-		<div class="modal-dialog" role="document" style="width:900px;">
-			<div class="modal-content" >
-				<div class="modal-header">
-					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">服务商服务列表选择</h4>
-				</div>
-				<div class="modal-body clearfix">
-					<table class="editTable" style="float: left; width:40%;">
-						<tr>
-							<td class="Hint" width="120">
-								服务名称:
-							</td>
-							<td width="220">
-								<input type="text" class="form-control" placeholder="服务名称" id="pServiceModal_serviceNameInput" >
-							</td>
-							<td style="padding-left: 10px;">
-								<input type="button" class="btn" value="查询">
-							</td>
-						</tr>
-					</table>
-					<div class="listTable" id="gdsAPIList">
-					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-				</div>
-			</div>
-		</div>
-	</div>
+	
 	<div class="m_nav" th:remove="all">
 		<nav class="nav">
 			<ul>
