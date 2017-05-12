@@ -41,13 +41,13 @@ public class RechargeSVImpl implements IRechargeSV {
     private IAipCenterDataAccountSV aipCenterDataAccountSV;
 
     @Override
-    public void recharge(List<RechargeReqDTO> rechargeDTOList) throws BusinessException {
+    public void dealRecharge(List<RechargeReqDTO> rechargeDTOList) throws BusinessException {
         if(CollectionUtil.isEmpty(rechargeDTOList)){
             throw new BusinessException("充值列表为空！");
         }
 
         for(RechargeReqDTO rechargeDTO:rechargeDTOList){
-            recharge(rechargeDTO);
+            dealRecharge(rechargeDTO);
         }
     }
 
@@ -131,7 +131,8 @@ public class RechargeSVImpl implements IRechargeSV {
         }
     }
 
-    private void recharge(RechargeReqDTO rechargeDTO) throws BusinessException{
+    @Override
+    public void dealRecharge(RechargeReqDTO rechargeDTO) throws BusinessException{
         checkRecharge(rechargeDTO);
 
         //先记录充值信息，同时也是进行去重处理

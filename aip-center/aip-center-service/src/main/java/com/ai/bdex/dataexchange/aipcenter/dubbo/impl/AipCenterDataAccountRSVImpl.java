@@ -29,13 +29,13 @@ public class AipCenterDataAccountRSVImpl implements IAipCenterDataAccountRSV {
     private IAipCenterBillDetailSV aipCenterBillDetailSV;
 
     @Override
-    public void recharge(List<RechargeReqDTO> rechargeDTOList) throws BusinessException {
-        rechargeSV.recharge(rechargeDTOList);
+    public void dealRecharge(List<RechargeReqDTO> rechargeDTOList) throws BusinessException {
+        rechargeSV.dealRecharge(rechargeDTOList);
     }
 
     @Override
-    public void recharge(RechargeReqDTO rechargeDTO) throws BusinessException {
-        rechargeSV.recharge(Arrays.asList(rechargeDTO));
+    public void dealRecharge(RechargeReqDTO rechargeDTO) throws BusinessException {
+        rechargeSV.dealRecharge(rechargeDTO);
     }
 
     @Override
