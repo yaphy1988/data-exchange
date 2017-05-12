@@ -16,5 +16,5 @@ public interface ISortContentSV {
 	   
 	   public long insertSortContent(SortContentReqDTO sortContentReqDTO)throws Exception;
 	   
-	   public long updateSortContentById(SortContentReqDTO sortContentReqDTO)throws Exception;
+	   public long updateSortContent(SortContentReqDTO sortContentReqDTO)throws Exception;
 }

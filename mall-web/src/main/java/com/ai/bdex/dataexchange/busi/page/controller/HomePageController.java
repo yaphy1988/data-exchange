@@ -266,8 +266,10 @@ public class HomePageController {
 					SortContentVO sortContentVO = new SortContentVO();
 					//copy菜单内容
 					SortContentRespDTO contentRespDTO = infoRespDTO.getSortContentRespDTO();
-					BeanUtils.copyProperties(contentRespDTO, sortContentVO);
-					sortInfoVO.setSortContentVO(sortContentVO);
+					if(contentRespDTO != null){
+						BeanUtils.copyProperties(contentRespDTO, sortContentVO);
+						sortInfoVO.setSortContentVO(sortContentVO);
+					}
 					//查询二级子菜单
 					sortInfoDTO.setParentSortId(infoRespDTO.getSortId());
 					sortInfoDTO.setSortLevel("2");
@@ -282,8 +284,10 @@ public class HomePageController {
 							//copy菜单内容
 							SortContentVO sortContentVO2 = new SortContentVO();
 							SortContentRespDTO contentRespDTO2 = respDTO.getSortContentRespDTO();
-							BeanUtils.copyProperties(contentRespDTO2, sortContentVO2);
-							sortInfoVO2.setSortContentVO(sortContentVO2);
+							if(contentRespDTO2 != null){
+								BeanUtils.copyProperties(contentRespDTO2, sortContentVO2);
+								sortInfoVO2.setSortContentVO(sortContentVO2);
+							}
 							subSortInfoVos.add(sortInfoVO2);
 						}
 						sortInfoVO.setSubSortInfoList(subSortInfoVos);

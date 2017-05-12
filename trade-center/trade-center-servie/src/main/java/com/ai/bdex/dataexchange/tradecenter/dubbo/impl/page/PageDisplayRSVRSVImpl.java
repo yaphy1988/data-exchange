@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -22,6 +21,7 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAdProp;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContent;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
@@ -446,11 +446,8 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
 		return iSortContentSV.insertSortContent(sortContentReqDTO);
 	}
 	@Override
-	public long updateSortContentById(SortContentReqDTO sortContentReqDTO) throws Exception {
-		if(sortContentReqDTO.getSortContentId() == null || sortContentReqDTO.getSortContentId() == 0 ){
-			throw new BusinessException("主键不能为空：sortContentId="+sortContentReqDTO.getSortContentId());
-		}
-		return iSortContentSV.updateSortContentById(sortContentReqDTO);
+	public long updateSortContent(SortContentReqDTO sortContentReqDTO) throws Exception {
+		return iSortContentSV.updateSortContent(sortContentReqDTO);
 	}
 	@Override
 	public long insertSortInfo(SortInfoReqDTO sortInfoReqDTO) throws Exception {

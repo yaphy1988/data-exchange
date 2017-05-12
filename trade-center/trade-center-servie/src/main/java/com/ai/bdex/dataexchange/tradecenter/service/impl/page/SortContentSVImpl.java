@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.SortContentMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContent;
@@ -65,22 +66,37 @@ public class SortContentSVImpl  implements ISortContentSV {
 		return sortContentMapper.insert(record);
 	}
 	@Override
-	public long updateSortContentById(SortContentReqDTO sortContentReqDTO) throws Exception {
-		SortContent record = sortContentMapper.selectByPrimaryKey(sortContentReqDTO.getSortContentId());
+	public long updateSortContent(SortContentReqDTO sortContentReqDTO) throws Exception {
+		SortContent sortContent = new SortContent();
+		if(sortContentReqDTO.getSortId() != null){
+			sortContent.setSortId(sortContentReqDTO.getSortId());
+		}
+		if(sortContentReqDTO.getSortContentId() != null){
+			sortContent.setSortContentId(sortContentReqDTO.getSortContentId());
+		}
+		List<SortContent> contenList = this.querysortContenList(sortContent);
+		SortContent record = new SortContent();
+		if(!CollectionUtils.isEmpty(contenList)){
+			record = contenList.get(0);
+			
+		}
+		SortContentExample example = new SortContentExample();
+		Criteria createCriteria = example.createCriteria();
 		if(!StringUtils.isBlank(sortContentReqDTO.getContentName())){
-			record.setContentName(sortContentReqDTO.getContentName());
+			createCriteria.andContentNameEqualTo(sortContentReqDTO.getContentName());
 		}
 		if(!StringUtils.isBlank(sortContentReqDTO.getContentLink())){
-			record.setContentLink(sortContentReqDTO.getContentLink());
+			createCriteria.andContentLinkEqualTo(sortContentReqDTO.getContentLink());
 		}
 		if(!StringUtils.isBlank(sortContentReqDTO.getOrderNo())){
-			record.setOrderNo(sortContentReqDTO.getOrderNo());
+			createCriteria.andOrderNoEqualTo(sortContentReqDTO.getOrderNo());
 		}
 		if(!StringUtils.isBlank(sortContentReqDTO.getStatus())){
-			record.setStatus(sortContentReqDTO.getStatus());
+			createCriteria.andStatusEqualTo(sortContentReqDTO.getStatus());
 		}
 		record.setUpdateStaffId(sortContentReqDTO.getUpdateStaffId());
 		record.setUpdateTime(DateUtil.getNowAsDate());
-		return sortContentMapper.updateByPrimaryKey(record);
-	} 
+		return sortContentMapper.updateByExample(record, example);
+	}
+
 }
