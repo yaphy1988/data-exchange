@@ -84,7 +84,7 @@ public class orderManageController {
 	 * @return
 	 */
 	@RequestMapping(value = "/myOrderDataList")
-	public String myOrderData(HttpServletRequest request,Model model, OrdInfoVO ordInfoVO) {
+	public String myOrderDataList(Model model, OrdInfoVO ordInfoVO) {
 		try {
 			PageResponseDTO<OrdInfoRespDTO> pageInfo = new PageResponseDTO<OrdInfoRespDTO>();
 			OrdInfoReqDTO ordReqDTO = new OrdInfoReqDTO();

@@ -89,7 +89,7 @@
 										<td
 											th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
 										<td th:text="${list.gdsName}"></td>
-										<td th:text="${list.apiName}"></td>
+										<td th:text="${list.serviceName}"></td>
 										<td
 											th:text="${#calendars.format(list.orderTime,'yyyy-MM-dd HH:mm:ss')}"></td>
 										<td th:text="${list.leftCount}"></td>
@@ -109,7 +109,7 @@
 								</tbody>
 							</table>
 							<!-- 分页-->
-							<div th:if=" ${pageInfo}"  th:fragment="pager" class="pagerBar pagelist"
+							<div th:if=" ${pageInfo}"  th:fragment="pager" class="pagerBar pagelist pull-right"
 								style="margin-top: 0px;">
 								<script type="text/javascript"
 									src="../static/js-busi/common/pager.js"

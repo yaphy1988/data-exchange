@@ -5,7 +5,10 @@ $(function(){
 	
 });
 function myOrderDataList(index){
-	var param={pageNo:index};
+	var param={
+			pageNo:index,
+			pageSize:10
+			};
 	$.ajax({
 		url:basePath+'/orderManage/myOrderDataList',
 		cache:false,
