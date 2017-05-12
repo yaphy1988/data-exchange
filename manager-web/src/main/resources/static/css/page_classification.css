@@ -17,6 +17,7 @@
 }
 .class_sidebar ul{
 	padding: 20px 0;
+	min-height: 300px;
 }
 .class_sidebar ul li{
 	height: 40px;
@@ -49,13 +50,14 @@
 	position: absolute;
 	width: 280px;
 	left: 158px;
-	top: 40px;
+	top: 39px;
 	z-index: 10;
 	background: #fff;
 	border: solid 1px #eee;
 	/* border-left:none; */
-	height: 401px;
-	overflow: hidden;
+	min-height: 302px;
+	/* max-height: 402px; */
+	overflow: auto;
 	padding: 20px;
 	box-shadow: 2px 2px 7px #eee;
 }
