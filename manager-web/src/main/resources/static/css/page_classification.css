@@ -102,3 +102,5 @@
 	color: #ec6000;
 	
 }
+.deleIcon2 {width:17px;height:17px;display: inline-block;margin-top:10px;background: url(../images/my_woego/dele-icon.png) 0px -15px no-repeat;margin-left: 5px;cursor: pointer;}
+.deleIcon2:hover { width:17px; height:17px; display: inline-block; background: url(../images/my_woego/dele-icon.png) 0px -33px no-repeat; }

@@ -194,7 +194,7 @@
 					<!--右边-->
 			        <div class="col-md-7" id="sortInfo-content">
 						<div class="box" id="sortInfo" th:if="${sortInfo}">
-							
+							<input type="hidden" id="sortId" th:value="${sortInfo.sortId}">
 							<table width="100%" border="0" class="editTable table-hover" id="firstlever_tab">
 								<tbody>
 								
@@ -221,7 +221,7 @@
 								</tbody>
 							</table>
 							
-							<table width="100%" border="0" class="editTable table-hover" id="seclever_tab" th:remove="all">
+							<table width="100%" border="0" class="editTable table-hover" th:remove="all">
 								<tbody>
 								
 									<tr>
@@ -247,10 +247,9 @@
 									</tr>
 								</tbody>
 							</table>
-							
 							<div class="text-center">
-								<button th:if="${sortLever} == '1'" class="btn btn-default btn-sm"  data-toggle="modal" onclick=""><i class="glyphicon glyphicon-plus"></i> 新增内容</button>
-								<input type="submit" value="保存" onclick="" class="btn btn-primary btn-sm">
+								<button th:if="${sortLever} == '1'" th:onclick="|addSortInfoLever2()|" class="btn btn-default btn-sm"  data-toggle="modal" onclick=""><i class="glyphicon glyphicon-plus"></i> 添加二级分类</button>
+								<input type="submit" value="保存" th:onclick="|saveSortInfo()|" class="btn btn-primary btn-sm">
 							</div>
 						</div>
 					
@@ -261,6 +260,33 @@
 			</div>
 		</div>
 		<!-- 右边内容 end-->
+		<!-- 隐藏区域 -->
+		
+		<table width="100%" border="0" style="display:none" class="editTable table-hover" name="seclever_tab">
+			<tbody>
+			
+				<tr>
+					<td class="Hint class-zi">二级分类：
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint" width="120"><span class="red">*</span>分类名称：</td>
+					<td>
+						<input class="form-control" type="text" name="sortName" value="">
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint">链接地址：</td>
+					<td>
+						<input class="form-control" maxlength="512" type="text" name="contentLink" value="">
+					</td>
+				</tr>
+				<tr>
+					<th colspan="2" scope="row" class="table-line"></th>
+				</tr>
+			</tbody>
+		</table>
+		<!-- 隐藏区域 end-->
 	</div>
 	<!-- 左边菜单 -->
 	<div class="m_nav"  th:remove="all">
@@ -385,6 +411,6 @@
 	<SCRIPT type="text/javascript" th:inline="javascript">
 		
     </SCRIPT>
-	
+
 </body>
 </html>

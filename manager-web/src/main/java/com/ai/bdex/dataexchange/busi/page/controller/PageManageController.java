@@ -17,10 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.ai.bdex.dataexchange.constants.Constants;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
-import com.ai.bdex.dataexchange.util.StaffUtil;
-import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -40,6 +36,9 @@ import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
 import com.ai.bdex.dataexchange.busi.page.entity.SortContentVO;
 import com.ai.bdex.dataexchange.busi.page.entity.SortInfoVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
@@ -54,12 +53,13 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.util.MongoFileUtil;
+import com.ai.paas.utils.DateUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
-import com.alibaba.dubbo.remoting.exchange.Request;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -682,15 +682,65 @@ public class PageManageController {
 	 */
 	@RequestMapping(value="/insetOrUpdateSortInfo")
 	@ResponseBody
-	private Map<String,Object> insetOrUpdateSortInfo(SortInfoVO sortInfoVO){
+	private Map<String,Object> insetOrUpdateSortInfo(HttpServletRequest request,HttpSession session){
+		String pSortId = request.getParameter("pSortId");
+		String sortId = request.getParameter("sortId");
+		String sortName = request.getParameter("sortName");
+		String status = request.getParameter("status");
+		String sortLever = request.getParameter("sortLever");
+		String contentLink = request.getParameter("contentLink");
 		Map<String,Object> rMap = new HashMap<>();
 		try {
-			if(sortInfoVO.getSortId() != null){
-				SortInfoReqDTO sortInfoReqDTO = new SortInfoReqDTO();
-				iPageDisplayRSV.updateSortInfoById(sortInfoReqDTO);
+			if("-1".equals(pSortId)){
+				sortLever ="1";
 			}else{
-				SortInfoReqDTO sortInfoReqDTO = new SortInfoReqDTO();
-				iPageDisplayRSV.insertSortInfo(sortInfoReqDTO);
+				sortLever ="2";
+			}
+			SortInfoReqDTO sortInfoReqDTO = new SortInfoReqDTO();
+			SortContentReqDTO sortContentReqDTO = new SortContentReqDTO();
+			if(!StringUtils.isBlank(pSortId)){
+				sortInfoReqDTO.setParentSortId(Integer.valueOf(pSortId));
+			}
+			
+			if(!StringUtils.isBlank(sortId)){
+				sortInfoReqDTO.setSortId(Integer.valueOf(sortId));
+				sortContentReqDTO.setSortId(Integer.valueOf(sortId));
+			}
+			if(!StringUtils.isBlank(sortName)){
+				sortInfoReqDTO.setSortName(sortName);
+				sortContentReqDTO.setContentName(sortName);
+			}
+			if(!StringUtils.isBlank(sortLever)){
+				sortInfoReqDTO.setSortLevel(sortLever);
+			}
+			if(!StringUtils.isBlank(contentLink)){
+				sortContentReqDTO.setContentLink(contentLink);
+			}
+			
+			sortInfoReqDTO.setUpdateStaffId(StaffUtil.getStaffId(session));
+			sortInfoReqDTO.setUpdateTime(DateUtil.getNowAsDate());
+			sortContentReqDTO.setUpdateStaffId(StaffUtil.getStaffId(session));
+			sortContentReqDTO.setUpdateTime(DateUtil.getNowAsDate());
+			if(!StringUtils.isBlank(sortId)){
+				if(!StringUtils.isBlank(status)){
+					sortInfoReqDTO.setStatus(status);
+					sortContentReqDTO.setStatus(status);
+				}
+				long sortInfoById = iPageDisplayRSV.updateSortInfoById(sortInfoReqDTO);
+				if(sortInfoById >0){
+					iPageDisplayRSV.updateSortContent(sortContentReqDTO);
+				}
+			}else{
+				sortInfoReqDTO.setStatus(Constants.Page.STATUS_VALID);
+				sortInfoReqDTO.setCreateStaffId(StaffUtil.getStaffId(session));
+				sortInfoReqDTO.setCreateTime(DateUtil.getNowAsDate());
+				long insertSortInfoId = iPageDisplayRSV.insertSortInfo(sortInfoReqDTO);
+				if(insertSortInfoId > 0){
+					sortContentReqDTO.setStatus(Constants.Page.STATUS_VALID);
+					sortContentReqDTO.setCreateStaffId(StaffUtil.getStaffId(session));
+					sortContentReqDTO.setCreateTime(DateUtil.getNowAsDate());
+					iPageDisplayRSV.insertSortContent(sortContentReqDTO);
+				}
 			}
 			rMap.put("success", true);
 		} catch (Exception e) {
@@ -701,31 +751,7 @@ public class PageManageController {
 		return rMap;
 
 	}
-	/**
-	 * 首页商品菜单内容新增、编辑
-	 * @return
-	 */
-	@RequestMapping(value="/insetOrUpdateContent")
-	@ResponseBody
-	private Map<String,Object> insetOrUpdateContent(SortContentVO sortContentVO){
-		Map<String,Object> rMap = new HashMap<>();
-		try {
-			if(sortContentVO.getSortContentId() != null){
-				SortContentReqDTO sortContentReqDTO = new SortContentReqDTO();
-				iPageDisplayRSV.updateSortContentById(sortContentReqDTO);
-			}else{
-				SortContentReqDTO sortContentReqDTO = new SortContentReqDTO();
-				iPageDisplayRSV.insertSortContent(sortContentReqDTO);
-			}
-			rMap.put("success", true);
-		} catch (Exception e) {
-			rMap.put("success", true);
-			rMap.put("erroMsg", e.getMessage());
-			log.error("【首页商品菜单分类内容新增、编辑】异常信息：" + e);
-		}
-		return rMap;
-
-	}
+	
 	/**
 	 * 定制数据管理界面
 	 * @param request
@@ -833,4 +859,5 @@ public class PageManageController {
 		}
 		return "page_classification :: #sortInfo";
 	}
+
 }

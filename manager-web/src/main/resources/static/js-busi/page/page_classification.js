@@ -20,17 +20,18 @@ function querySortInfo(sortParentId,sortLever){
 				var sortInfos = data.sortInfos;
 				$(sortInfos).each(function(i,d){
 					var content = d.sortContentVO;
-					htmlLever1 +='<li pSortId='+d.sortId+'>'+
-						'<a href="javascript:;"><span>✖</span></a><a href="javascript:;" onclick="querySortFirstlever(this)"><i>&rsaquo;</i>'+content.contentName+'</a> </li>';
+					htmlLever1 +='<li pSortId='+d.parentSortId+' sortId='+d.sortId+'>'+
+						'<a href="javascript:;" onclick="insetOrUpdateContent(this)"><span>✖</span></a><a href="javascript:;" onclick="querySortFirstlever(this)"><i>&rsaquo;</i>'+content.contentName+'</a> </li>';
 					var subSortInfoList = d.subSortInfoList;
 					htmlLever2 += '<div pSortId='+d.sortId+' class="class_sidebar_secon" style="display: none">'+
 						'<h4>'+content.contentName+'</h4>'+
 						'<div class="class_link">';
-					$(subSortInfoList).each(function(i,d){
-						var subContent = d.sortContentVO;
-						htmlLever2 +='<a href="javascript:;" sortId="'+d.sortId+'" onclick="querySortSenlever(this)">'+subContent.contentName+'</a><a href="javascript:;"><span>✖</span></a>';
+					$(subSortInfoList).each(function(i,k){
+						var subContent = k.sortContentVO;
+						htmlLever2 +='<a pSortId='+k.parentSortId+' href="javascript:;" sortId="'+k.sortId+'" onclick="querySortSenlever(this)">'+subContent.contentName+'</a><a href="javascript:;"><span>✖</span></a>';
 					});
-					htmlLever2 +='</div><div class="sidebar-link"></div><button class="btn btn-sm btn-default mt10">新增子菜单</button></div>'
+					htmlLever2 +='</div><button class="btn btn-default btn-sm"  style="margin-top:20px">'+
+						'<i class="glyphicon glyphicon-plus"></i> 添加二级分类</button></div>'
 				});
 				html += htmlLever1 +'<div class="mt10 ml15"><button class="btn btn-sm btn-default"><i class="glyphicon glyphicon-plus"></i>新增菜单</button>'+
                 	'</div></ul><!--二级导航开始-->'+htmlLever2+'<!--二级导航结束-->';
@@ -38,9 +39,9 @@ function querySortInfo(sortParentId,sortLever){
                 
                 //分类事件
 				$('#head_sidebar>ul').children().hover(function(){
-					var pSortId = $(this).attr('pSortId');
+					var sortId = $(this).attr('sortId');
                     $('#head_sidebar>div').hide();
-					$('#head_sidebar>div[pSortId='+pSortId+']').show();
+					$('#head_sidebar>div[pSortId='+sortId+']').show();
 				},function(){
 				    $('#head_sidebar>div').hide();
 				});
@@ -59,11 +60,11 @@ function querySortFirstlever(obj){
 	$(obj).parent().siblings().removeClass('active');
 	$('.class_link a[sortid]').removeClass('active');
 	$(obj).parent().attr('class','active');
-	var sortId = $(obj).parent().attr('psortid');
+	var sortId = $(obj).parent().attr('sortid');
 	querySortInfoById(sortId)
 }
 function querySortSenlever(obj){
-	$('#head_sidebar').find('li').removeClass('active');
+//	$('#head_sidebar').find('li').removeClass('active');
 	$(obj).siblings().removeClass('active');
 	$(obj).attr('class','active');
 	var sortId = $(obj).attr('sortId');
@@ -77,22 +78,35 @@ function querySortInfoById(sortId){
 	};
 	goAjax(url,params,'html',callBack);
 }
-function insetOrUpdateContent(){
-	var url = WEB_ROOT+'/pageManage/insetOrUpdateContent';
-	var params={};
+function insetOrUpdateSortInfo(obj){
+	var psortId=$(obj).parent().attr('pSortId');
+	var sortId=$(obj).parent().attr('sortId');
+	var url = WEB_ROOT+'/pageManage/insetOrUpdateSortInfo';
+	var params={psortId:psortId,sortId:sortId,status:'2'};
+	var callBack = function(data){
+		if(!data.success){
+			WEB.msg.info('提示','删除失败！'+data.erroMsg);
+		}
+	};
+	goAjax(url,params,'json',callBack);
+}
+
+function saveSortInfo(){
+	var sortId = $('#sortId').val();
+	var sortName = $('#sortName').val();
+	var contentLink = $('#contentLink_1').val();
+	var url = WEB_ROOT+'/pageManage/insetOrUpdateSortInfo';
+	var params={sortId:sortId,sortName:sortName,contentLink:contentLink};
 	var callBack = function(data){
 		
 	};
 	goAjax(url,params,'json',callBack);
 }
 
-function saveSortInfo(){
-	var url = WEB_ROOT+'/pageManage/insetOrUpdateSortInfo';
-	var params={};
-	var callBack = function(data){
-		
-	};
-	goAjax(url,params,'json',callBack);
+function addSortInfoLever2(){
+	var $cloneHtml = $('table[name=seclever_tab]').clone();
+	$('#firstlever_tab').after($cloneHtml);
+	$('table[name=seclever_tab]').show();
 }
 function goAjax(url,params,type,callBack){
 	$.ajax({
@@ -104,6 +118,7 @@ function goAjax(url,params,type,callBack){
 		success:callBack
 	});
 }
+
 
 function setLinkUrk(linkUrl){
 	if(linkUrl == null || linkUrl == undefined || linkUrl==''){
