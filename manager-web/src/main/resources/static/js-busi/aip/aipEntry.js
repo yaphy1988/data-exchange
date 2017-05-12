@@ -205,3 +205,20 @@ function initOutParaParams(params){
     params.outParaStr = outParaStr;
     return true;
 }
+
+
+/**
+ * 供应商服务点击事件
+ */
+function pServiceSel() {
+    $.ajax({
+        url:basePath + "/aipEntry/queryProviderServicePage",
+        dataType:'html',
+        type:'post',
+        async:true,
+        success:function (data) {
+            $("#pServiceModal_aipTable").html(data);
+        }
+    })
+    $("#pServiceModal").modal("show");
+}

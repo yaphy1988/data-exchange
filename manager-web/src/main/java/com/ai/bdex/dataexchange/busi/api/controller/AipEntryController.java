@@ -233,4 +233,10 @@ public class AipEntryController {
         ajaxJson.setMsg("保存成功！");
         return ajaxJson;
     }
+
+    @RequestMapping(value = "/queryProviderServicePage")
+    public String queryProviderServicePage(HttpServletRequest request,HttpServletResponse response){
+
+        return "aip_document_deploy :: #pServiceModal_aipTable";
+    }
 }

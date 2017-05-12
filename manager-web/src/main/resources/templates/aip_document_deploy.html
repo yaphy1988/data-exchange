@@ -90,7 +90,7 @@
 						<!--<input type="text" class="form-control" placeholder="" th:value="${aipServiceBaseInfo.serviceName}" id="baseInfo_serviceName">-->
 					</td>
 					<td style="padding-left: 10px;">
-						<button type="button">选择</button>
+						<button type="button" onclick="pServiceSel()">选择</button>
 					</td>
 				</tr>
 				<tr>
@@ -190,7 +190,23 @@
 							</td>
 						</tr>
 					</table>
-					<div class="listTable" id="gdsAPIList">
+					<div class="listTable" >
+						<table class="table table-bordered table-hover" id="pServiceModal_aipTable" >
+							<thead>
+							<tr class="active">
+								<th>接口Id</th>
+								<th>接口名字</th>
+								<th >操作</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr th:if="${pageInfo}" th:each="list : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
+								<td th:text="${list.serviceId}"></td>
+								<td th:text="${list.serviceName}"></td>
+								<td><a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsAPIInfo(this)'">选择</a></td>
+							</tr>
+							</tbody>
+						</table>
 					</div>
 				</div>
 				<div class="modal-footer">
