@@ -2,6 +2,9 @@ package com.ai.bdex.dataexchange.aipcenter.service.impl;
 
 import java.util.List;
 
+import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.paas.sequence.SeqUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,6 +105,37 @@ public class AipServiceInfoSVImpl implements IAipServiceInfoSV{
 	}
 
 	@Override
+	public String insertAipService(AipServiceInfoReqDTO aipServiceInfoReqDTO) throws Exception {
+		if (aipServiceInfoReqDTO == null){
+			throw new BusinessException("插入aip服务信息入参为空！");
+		}
+		String aipServiceId = SeqUtil.getString("SEQ_AIP_SERVICE_ID");
+		if (StringUtil.isBlank(aipServiceId)){
+			throw new BusinessException("获取到的序列serviceId为空！");
+		}
+		AipServiceInfo aipServiceInfo = new AipServiceInfo();
+		ObjectCopyUtil.copyObjValue(aipServiceInfoReqDTO,aipServiceInfo,null,false);
+		aipServiceInfo.setServiceId(aipServiceId);
+		aipServiceInfoMapper.insert(aipServiceInfo);
+
+		return aipServiceId;
+	}
+
+	@Override
+	public void updateAipServiceByServiceId(AipServiceInfoReqDTO aipServiceInfoReqDTO) throws Exception {
+		if (aipServiceInfoReqDTO==null){
+			throw new BusinessException("更新aip服务信息入参为空！");
+		}
+		AipServiceInfoExample example = new AipServiceInfoExample();
+		AipServiceInfoExample.Criteria criteria = example.createCriteria();
+		criteria.andServiceIdEqualTo(aipServiceInfoReqDTO.getpServiceId());
+		AipServiceInfo aipServiceInfo = new AipServiceInfo();
+		String notCopy = "serviceId,version";
+		ObjectCopyUtil.copyObjValue(aipServiceInfoReqDTO,aipServiceInfo,notCopy,false);
+		aipServiceInfoMapper.updateByExampleSelective(aipServiceInfo,example);
+	}
+
+	@Override
 	public PageResponseDTO<AipServiceInfoDTO> selectServiceWithPageWithInitVersion(
 			AipServiceInfoReqDTO req) throws Exception {
 		try{
@@ -159,5 +193,50 @@ public class AipServiceInfoSVImpl implements IAipServiceInfoSV{
 			log.error("query service failted."+serviceId+":"+serviceVersion, e);
 			throw e;
 		}
-	}		
+	}
+
+	private void initCriteria(AipServiceInfoExample.Criteria criteria,AipServiceInfoReqDTO aipServiceInfoReqDTO){
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getServiceId())){
+			criteria.andServiceIdEqualTo(aipServiceInfoReqDTO.getServiceId());
+		}
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getVersion())){
+			criteria.andVersionEqualTo(aipServiceInfoReqDTO.getVersion());
+		}
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getType())){
+			criteria.andTypeEqualTo(aipServiceInfoReqDTO.getType());
+		}
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getServiceName())){
+			criteria.andServiceNameLike("%"+aipServiceInfoReqDTO.getServiceName()+"%");
+		}
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getServiceDesc())){
+			criteria.andServiceDescLike("%"+aipServiceInfoReqDTO.getServiceDesc()+"%");
+		}
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getProviderId())){
+			criteria.andProviderIdEqualTo(aipServiceInfoReqDTO.getProviderId());
+		}
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getStatus())){
+			criteria.andStatusEqualTo(aipServiceInfoReqDTO.getStatus());
+		}
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getApiUrl())){
+			criteria.andApiUrlEqualTo(aipServiceInfoReqDTO.getApiUrl());
+		}
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getSupportFormat())){
+			criteria.andSupportFormatEqualTo(aipServiceInfoReqDTO.getSupportFormat());
+		}
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getReqType())){
+			criteria.andReqTypeEqualTo(aipServiceInfoReqDTO.getReqType());
+		}
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getExampleUrl())){
+			criteria.andExampleUrlEqualTo(aipServiceInfoReqDTO.getExampleUrl());
+		}
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getApiRemark())){
+			criteria.andApiRemarkEqualTo(aipServiceInfoReqDTO.getApiRemark());
+		}
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getTestTool())){
+			criteria.andTestToolEqualTo(aipServiceInfoReqDTO.getTestTool());
+		}
+		if (!StringUtil.isBlank(aipServiceInfoReqDTO.getpServiceId())){
+			criteria.andPServiceIdEqualTo(aipServiceInfoReqDTO.getpServiceId());
+		}
+	}
 }

@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>api接口配置</title>
+	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<script type="text/javascript" src="../../static/component/ckeditor/ckeditor.js" th:src="@{/component/ckeditor/ckeditor.js}"></script>
+
+
+	<script src="../../static/js-busi/aip/aipEntry.js" th:src="@{/js-busi/aip/aipEntry.js}"></script>
+	
+</head>
+<body>
+<header class="clearfix m_header" th:remove="all">
+	<a href="" class="Logo" target="_blank" >
+		<img  src="../static/images/manage_logo.png" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<div  layout:fragment="screen_content">
+	<div class="m_main">
+		<div class="m_con">
+			<div class="title">API</div>
+			<table class="editTable">
+				<tr>
+					<td class="Hint" width="140">
+						<span class="col_red">*</span>
+						接口地址:
+					</td>
+					<td width="520" colspan="3">
+						<input type="text" class="form-control" placeholder="" th:value="${aipServiceBaseInfo.apiUrl}" id="baseInfo_aipUrl">
+					</td>
+					<td ><span class="tip">必填</span></td>
+				</tr>
+				
+				<tr>
+					<td class="Hint" >
+						<span class="col_red">*</span>支持格式:
+					</td>
+					<td>
+						<input type="text" class="form-control" placeholder="" id="baseInfo_supportFormat" th:value="${aipServiceBaseInfo.supportFormat}">
+					</td>
+					<td class="Hint" width="140">
+						<span class="col_red">*</span>请求方式:
+					</td>
+					<td>
+						<input type="text" class="form-control" placeholder="" id="baseInfo_reqType" th:value="${aipServiceBaseInfo.reqType}">
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint ">
+						<span class="col_red">*</span>请求实例:
+					</td>
+					<td  colspan="3">
+						<textarea class="form-control" rows="2" id="baseInfo_exampleUrl" th:value="${aipServiceBaseInfo.exampleUrl}"></textarea>
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint" >
+						<span class="col_red">*</span>
+						在线测试地址:
+					</td>
+					<td width="520" colspan="3">
+						<input type="text" class="form-control" placeholder="" id="baseInfo_testTool" th:value="${aipServiceBaseInfo.testTool}">
+					</td>
+				</tr>
+
+
+				<tr th:remove="all" >
+					<td class="Hint">
+						<span class="col_red">*</span>接口备注:
+					</td>
+					<td  colspan="3">
+						<textarea class="form-control" rows="5" id="baseInfo_apiRemark" th:value="${aipServiceBaseInfo.apiRemark}"></textarea>
+					</td>
+				</tr>
+
+				<tr>
+					<td class="Hint"><span class="col_red">*</span>请求参数说明:</td>
+					<td colspan="3">
+						<table class="table table-bordered text-center mt20" >
+							<thead>
+							<tr class="active">
+								<th>名称</th>
+								<th>类型</th>
+								<th>是否必填</th>
+								<th>说明</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr id="inParaTrHidden" style="display: none;">
+								<td><input type="text" class="form-control" name=""></td>
+								<td colspan="">
+									<select class="form-control wt100" >
+										<option value="00">Object</option>
+										<option value="01">String</option>
+										<option value="02">Interger</option>
+										<option value="03">Double</option>
+										<option value="04">Float</option>
+										<option value="05">Date</option>
+									</select>
+								</td>
+								<td>
+									<select class="form-control wt100">
+										<option value="00">可空</option>
+										<option value="01" >必填</option>
+									</select>
+								</td>
+								<td>
+									<div class="check-link">
+										<input type="text" class="form-control" name="">
+										<a href="javascript:void(0)"  onclick="delRow(this)">删除</a>
+									</div>
+								</td>
+							</tr>
+							<tr class="inParaTr" th:if="${#lists.size(aipServiceInParaList)} gt 0" th:each="aipServiceInPara,aipServiceInParaStat:${aipServiceInParaList}">
+								<td><input type="text" class="form-control" name="" th:value="${aipServiceInPara.paraCode}"></td>
+								<td colspan="">
+									<select class="form-control wt100" >
+										<option value="00" th:selected="(${aipServiceInPara.paraType}=='00')">Object</option>
+										<option value="01" th:selected="(${aipServiceInPara.paraType}=='01')">String</option>
+										<option value="02" th:selected="(${aipServiceInPara.paraType}=='02')">Interger</option>
+										<option value="03" th:selected="(${aipServiceInPara.paraType}=='03')">Double</option>
+										<option value="04" th:selected="(${aipServiceInPara.paraType}=='04')">Float</option>
+										<option value="05" th:selected="(${aipServiceInPara.paraType}=='05')">Date</option>
+									</select>
+								</td>
+								<td>
+									<select class="form-control wt100">
+										<option value="00" th:selected="(${aipServiceInPara.type}=='00')">可空</option>
+										<option value="01" th:selected="(${aipServiceInPara.type}=='01')">必填</option>
+									</select>
+								</td>
+								<td>
+								<div class="check-link">
+									<input type="text" class="form-control" name="" th:value="${aipServiceInPara.remark}">
+									<a href="javascript:void(0)" onclick="delRow(this)">删除</a>
+								</div>
+								</td>
+							</tr>
+							
+							<tr>
+								<td colspan="4" style="text-align: right">
+									<button type="button" onclick="inParaAddRow(this)">新增一行</button>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint"><span class="col_red">*</span>返回参数说明:</td>
+					<td colspan="3">
+						<table class="table table-bordered text-center mt20" >
+							<thead>
+							<tr class="active">
+								<th>名称</th>
+								<th>类型</th>
+								<th>说明</th>
+							</tr>
+							</thead>
+							<tbody>
+							<tr id="outParaTrHidden" style="display: none">
+								<td><input type="text" class="form-control" name=""></td>
+								<td colspan="">
+									<select class="form-control wt100" >
+										<option value="00" >Object</option>
+										<option value="01" >String</option>
+										<option value="02" >Interger</option>
+										<option value="03" >Double</option>
+										<option value="04" >Float</option>
+										<option value="05" >Date</option>
+									</select>
+								</td>
+								<td>
+									<div class="check-link">
+										<input type="text" class="form-control" name="">
+										<a href="javascritp:void(0)" onclick="delRow(this)">删除</a>
+									</div>
+								</td>
+							</tr>
+							<tr class="outParaTr" th:if="${#lists.size(aipServiceInParaList)} gt 0" th:each="aipServiceOutPara,aipServiceOutParaStat:${aipServiceOutParaList}">
+								<td><input type="text" class="form-control" name="" th:value="${aipServiceOutPara.paraCode}"></td>
+								<td colspan="">
+									<select class="form-control wt100" >
+										<option value="00" th:selected="(${aipServiceOutPara.paraType}=='00')">Object</option>
+										<option value="01" th:selected="(${aipServiceOutPara.paraType}=='01')">String</option>
+										<option value="02" th:selected="(${aipServiceOutPara.paraType}=='02')">Interger</option>
+										<option value="03" th:selected="(${aipServiceOutPara.paraType}=='03')">Double</option>
+										<option value="04" th:selected="(${aipServiceOutPara.paraType}=='04')">Float</option>
+										<option value="05" th:selected="(${aipServiceOutPara.paraType}=='05')">Date</option>
+									</select>
+								</td>
+								<td>
+								<div class="check-link">
+									<input type="text" class="form-control" name="" th:value="${aipServiceOutPara.remark}">
+									<a href="javascritp:void(0)" onclick="delRow(this)">删除</a>
+								</div>
+								</td>
+							</tr>
+
+							<tr>
+								<td colspan="3" style="text-align: right">
+									<button type="button" onclick="outParaAddRow(this)">新增一行</button>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint">
+						<span class="col_red">*</span>返回示例:
+					</td>
+					<td  colspan="3">
+						<div id="outParaExampleCkeditor">
+
+						</div>
+						<textarea class="form-control" rows="5" th:remove="all"></textarea>
+					</td>
+				</tr>
+			</table>
+	
+			</div>
+
+			<!-- 按钮 -->
+			<div class="p20 text-center " style="margin-left: 220px;">
+				<a href="javascript:void(0)" class="btn-primary btn mr10 " onclick="submitInfo()">保存并下一步</a>
+				<a href="javascript:void(0)" class="btn-default btn" >返回</a>
+			</div>
+		</div>
+	</div>
+
+	
+	<div class="m_nav" th:remove="all">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li class="active">
+							<a href=""></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i ></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li >
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+</div>
+</body>
+</html>

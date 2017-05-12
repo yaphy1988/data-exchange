@@ -3,7 +3,9 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order;
 import java.io.Serializable;
 import java.util.Date;
 
-public class OrdInvoiceTaxAddrRespDTO implements Serializable{ 
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+
+public class OrdInvoiceTaxAddrRespDTO  extends BaseResponseDTO{ 
    private Long orderTaxId; 
    private String orderId; 
    private String staffId; 

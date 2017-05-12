@@ -22,6 +22,7 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IUserCollecti
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -61,8 +62,10 @@ public class UserCollectionSVImpl implements IUserCollectionSV{
         if(userCollectionReqDTO == null){
             throw new BusinessException("入参userCollectionReqDTO不能为null");
         }
+        int colId =SeqUtil.getInt("SEQ_USER_COLLECTION");
         UserCollection userCollection = new UserCollection();
         ObjectCopyUtil.copyObjValue(userCollectionReqDTO, userCollection, null, false);
+        userCollection.setColId(colId);
         Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
         userCollection.setCreateTime(time);
         int code = userCollectionMapper.insert(userCollection);
@@ -111,7 +114,8 @@ public class UserCollectionSVImpl implements IUserCollectionSV{
         List<UserCollection> userCollections = userCollectionMapper.selectByExample(example);
         UserCollectionRespDTO userCollectionRespDTO = null;
         if(!CollectionUtil.isEmpty(userCollections)){
-                ObjectCopyUtil.copyObjValue(userCollections.get(0), userCollectionRespDTO, null, false);
+            userCollectionRespDTO = new UserCollectionRespDTO();
+            ObjectCopyUtil.copyObjValue(userCollections.get(0), userCollectionRespDTO, null, false);
         }
         return userCollectionRespDTO;
     }
@@ -140,6 +144,7 @@ public class UserCollectionSVImpl implements IUserCollectionSV{
         UserCollectionExample example = new UserCollectionExample();
         UserCollectionExample.Criteria criteria = example.createCriteria();
         initCriteria(criteria,userCollectionReqDTO);
+        example.setOrderByClause("create_time desc");
         //开启分页查询，使用mybatis-PageHelper分页插件，第三个条件是排序子句
         PageHelper.startPage(page, rows);
         List<UserCollection> userCollections = userCollectionMapper.selectByExample(example);

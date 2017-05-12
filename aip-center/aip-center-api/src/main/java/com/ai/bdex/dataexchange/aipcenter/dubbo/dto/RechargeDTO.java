@@ -1,13 +1,14 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.dto;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
 import java.util.Date;
 
 /**
  * Created by fangyunfeng on 2017/5/4.
  */
-public class RechargeDTO extends BaseInfo {
+public class RechargeDTO extends BaseResponseDTO {
 
     private String rechargeReqId;
 
@@ -29,6 +30,14 @@ public class RechargeDTO extends BaseInfo {
 
     private String serviceId;
 
+    private int catId;
+
+    private int catFirst;
+
+    private int gdsId;
+
+    private int skuId;
+
     private Integer totalNum;
 
     /**
@@ -42,6 +51,8 @@ public class RechargeDTO extends BaseInfo {
 
     private Long dataAccountId;
 
+    //查询是是否要连数据账户信息一起查询
+    private boolean queryDataAccount = false;
     private DataAccountDTO dataAccountDTO;
 
     public String getRechargeReqId() {
@@ -100,6 +111,38 @@ public class RechargeDTO extends BaseInfo {
         this.serviceId = serviceId;
     }
 
+    public int getCatId() {
+        return catId;
+    }
+
+    public void setCatId(int catId) {
+        this.catId = catId;
+    }
+
+    public int getCatFirst() {
+        return catFirst;
+    }
+
+    public void setCatFirst(int catFirst) {
+        this.catFirst = catFirst;
+    }
+
+    public int getGdsId() {
+        return gdsId;
+    }
+
+    public void setGdsId(int gdsId) {
+        this.gdsId = gdsId;
+    }
+
+    public int getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(int skuId) {
+        this.skuId = skuId;
+    }
+
     public Integer getTotalNum() {
         return totalNum;
     }
@@ -138,6 +181,14 @@ public class RechargeDTO extends BaseInfo {
 
     public void setDataAccountId(Long dataAccountId) {
         this.dataAccountId = dataAccountId;
+    }
+
+    public boolean isQueryDataAccount() {
+        return queryDataAccount;
+    }
+
+    public void setQueryDataAccount(boolean queryDataAccount) {
+        this.queryDataAccount = queryDataAccount;
     }
 
     public DataAccountDTO getDataAccountDTO() {

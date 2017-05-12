@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -18,15 +19,16 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHotSearch;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModule;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAd;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAdProp;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoods;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContent;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdPropRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
@@ -34,10 +36,13 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IDataCustomizationSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageAdPlaceSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHeaderNavSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHotSearchSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleAdPropSV;
@@ -47,7 +52,6 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleS
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageNewsInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortContentSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
-import com.alibaba.dubbo.common.utils.StringUtils;
 
 @Service("iPageDisplayRSV")
 public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
@@ -75,7 +79,8 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
     private IPageModuleAdPropSV   iPageModuleAdpropSV;
     @Resource
     private IDataCustomizationSV iDataCustomizationSV;
-
+    @Resource
+    private IPageAdPlaceSV   iPageAdPlaceSV;
     @Override
     public List<SortInfoRespDTO> querySortInfos(SortInfoRespDTO sortInfoRespDTO) throws Exception {
         List<SortInfoRespDTO> sortInfoRespLis = new ArrayList<SortInfoRespDTO>();
@@ -366,11 +371,11 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
          return   iDataCustomizationSV.saveDataCustomization(dataCustomizationRespDTO);
     }
 	@Override
-	public List<SortContentRespDTO> querysortContenList(SortContentRespDTO sortContentRespDTO) throws Exception {
+	public List<SortContentRespDTO> querysortContenList(SortContentReqDTO sortContentReqDTO) throws Exception {
 		List<SortContentRespDTO> respDTOs = new ArrayList<SortContentRespDTO>();
 		try {
 			SortContent sortContent = new SortContent();
-			BeanUtils.copyProperties(sortContentRespDTO, sortContent);
+			BeanUtils.copyProperties(sortContentReqDTO, sortContent);
 			List<SortContent> contenList = iSortContentSV.querysortContenList(sortContent);
 			if(!CollectionUtils.isEmpty(contenList)){
 				for(SortContent contentVO : contenList){
@@ -428,4 +433,58 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
 		}
 		return iPageModuleSV.updatePageModule(reqDTO);
 	}
+	@Override
+	public PageAdPalceRespDTO queryPageAdPlace(PageAdPalceReqDTO adPalceReqDTO) throws Exception {
+		return iPageAdPlaceSV.queryPageAdPlace(adPalceReqDTO);
+	}
+	@Override
+	public List<PageAdPalceRespDTO> queryPageAdPalceList(PageAdPalceReqDTO adPalceReqDTO) throws Exception {
+		return iPageAdPlaceSV.queryPageAdPalceList(adPalceReqDTO);
+	}
+	@Override
+	public long insertSortContent(SortContentReqDTO sortContentReqDTO) throws Exception {
+		return iSortContentSV.insertSortContent(sortContentReqDTO);
+	}
+	@Override
+	public long updateSortContentById(SortContentReqDTO sortContentReqDTO) throws Exception {
+		if(sortContentReqDTO.getSortContentId() == null || sortContentReqDTO.getSortContentId() == 0 ){
+			throw new BusinessException("主键不能为空：sortContentId="+sortContentReqDTO.getSortContentId());
+		}
+		return iSortContentSV.updateSortContentById(sortContentReqDTO);
+	}
+	@Override
+	public long insertSortInfo(SortInfoReqDTO sortInfoReqDTO) throws Exception {
+		return iSortInfoSV.insertSortInfo(sortInfoReqDTO);
+	}
+	@Override
+	public long updateSortInfoById(SortInfoReqDTO sortInfoReqDTO) throws Exception {
+		if(sortInfoReqDTO.getSortId() == null || sortInfoReqDTO.getSortId() == 0 ){
+			throw new BusinessException("主键不能为空：sortId="+sortInfoReqDTO.getSortId());
+		}
+		return iSortInfoSV.updateSortInfoById(sortInfoReqDTO);
+	}
+	@Override
+
+	public PageResponseDTO<DataCustomizationRespDTO> queryDataCustomizationInfo(DataCustomizationReqDTO dataCustomizationReqDTO) throws Exception{
+		return iDataCustomizationSV.queryDataCustomizationInfo(dataCustomizationReqDTO);
+	}
+	@Override
+	public int updateDataCustomizationStatus(DataCustomizationReqDTO dataCustomizationReqDTO) throws Exception{
+		return iDataCustomizationSV.updateDataCustomizationStatus(dataCustomizationReqDTO);
+	}
+
+	public SortInfoRespDTO querySortInfoById(SortInfoReqDTO sortInfoReqDTO) throws Exception {
+		if(sortInfoReqDTO.getSortId() == null || sortInfoReqDTO.getSortId() == 0 ){
+			throw new BusinessException("主键不能为空：sortId="+sortInfoReqDTO.getSortId());
+		}
+		return iSortInfoSV.querySortInfoById(sortInfoReqDTO);
+	}
+	@Override
+	public SortContentRespDTO querysortContenById(SortContentReqDTO sortContentReqDTO) throws Exception {
+		if(sortContentReqDTO.getSortContentId() == null || sortContentReqDTO.getSortContentId() == 0 ){
+			throw new BusinessException("主键不能为空：sortContentId="+sortContentReqDTO.getSortContentId());
+		}
+		return iSortContentSV.querysortContenById(sortContentReqDTO);
+	}
+
 }

@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdPropRespDTO;
@@ -16,10 +18,18 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
 
 public interface    IPageDisplayRSV {
+	
+	public SortInfoRespDTO querySortInfoById(SortInfoReqDTO sortInfoReqDTO) throws Exception;
+	
+	public SortContentRespDTO querysortContenById(SortContentReqDTO sortContentReqDTO) throws Exception;
+	
     public  List<SortInfoRespDTO>  querySortInfos(SortInfoRespDTO sortInfoRespDTO) throws Exception;
 
     public PageResponseDTO<PageNewsInfoRespDTO> queryPageNewsInfoList(PageNewsInfoReqDTO sortInfoDTO) throws Exception;
@@ -46,7 +56,7 @@ public interface    IPageDisplayRSV {
     
     public int saveDataCustomizationRsv(DataCustomizationRespDTO dataCustomizationRespDTO) throws Exception;
     
-    public List<SortContentRespDTO> querysortContenList(SortContentRespDTO sortContentRespDTO) throws Exception;
+    public List<SortContentRespDTO> querysortContenList(SortContentReqDTO sortContentReqDTO) throws Exception;
 
     public PageResponseDTO<PageModuleAdRespDTO> queryPageModuleAdPageInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception;
 
@@ -58,4 +68,19 @@ public interface    IPageDisplayRSV {
 	
 	public int insertPageModuleAdInfo(PageModuleAdReqDTO moduleAdDTO) throws Exception;
 	public int updatePageModule(PageModuleReqDTO reqDTO) throws Exception;
+	
+	public PageAdPalceRespDTO queryPageAdPlace(PageAdPalceReqDTO adPalceReqDTO) throws Exception;
+	
+	public List<PageAdPalceRespDTO> queryPageAdPalceList(PageAdPalceReqDTO adPalceReqDTO) throws Exception;
+
+	public long insertSortContent(SortContentReqDTO sortContentReqDTO)throws Exception;
+
+	public long updateSortContentById(SortContentReqDTO sortContentReqDTO)throws Exception;
+
+	public long insertSortInfo(SortInfoReqDTO sortInfoReqDTO)throws Exception;
+
+    public long updateSortInfoById(SortInfoReqDTO sortInfoReqDTO)throws Exception;
+    public PageResponseDTO<DataCustomizationRespDTO> queryDataCustomizationInfo(DataCustomizationReqDTO dataCustomizationReqDTO) throws Exception;
+    public int updateDataCustomizationStatus(DataCustomizationReqDTO dataCustomizationReqDTO) throws Exception;
+
 }

@@ -2,7 +2,18 @@ package com.ai.bdex.dataexchange.solrutil;
 
 import java.io.Serializable;
 
-
+/**]
+ * 
+ * Title: ECP <br>
+ * Project Name:mall-web <br>
+ * Description: <br>
+ * Date:2017年5月11日下午3:20:07  <br>
+ * Copyright (c) 2017 asia All Rights Reserved <br>
+ * 
+ * @author gxq
+ * @version @param <T> 
+ * @since JDK 1.6
+ */
 @SuppressWarnings("rawtypes")
 public class Field<T> implements Serializable, Comparable<Field>{
 

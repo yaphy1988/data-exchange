@@ -322,7 +322,7 @@ WEB.check.isPhone=function(phone){
 
 //邮箱校验
 WEB.check.isEmail = function(email){
-	var emailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
+	var emailReg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
 	if(!(emailReg.test(email))){
 		return false;
 	}else{

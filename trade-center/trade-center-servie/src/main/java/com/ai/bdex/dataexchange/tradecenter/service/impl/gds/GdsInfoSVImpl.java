@@ -134,6 +134,9 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         if (!CollectionUtil.isEmpty(gdsInfoReqDTO.getGdsIds())){
             criteria.andGdsIdIn(gdsInfoReqDTO.getGdsIds());
         }
+        if (!CollectionUtil.isEmpty(gdsInfoReqDTO.getGdsIdsNotIn())){
+            criteria.andGdsIdNotIn(gdsInfoReqDTO.getGdsIdsNotIn());
+        }
         if (gdsInfoReqDTO.getCatId()!=null){
             criteria.andCatIdEqualTo(gdsInfoReqDTO.getCatId());
         }

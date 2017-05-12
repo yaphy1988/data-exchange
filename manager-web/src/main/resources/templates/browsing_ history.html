@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>个人中心-浏览历史</title>
+	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+	<!--[if lt IE 9]>
+	        <script src="../static/js/respond.min.js" ></script>
+	        <script src="../static/js/html5shiv.min.js" ></script>
+	<![endif]-->
+
+</head>
+
+<body>
+<!-- 头部 -->
+<header class="clearfix m_header" th:remove="all">
+	<a href="" class="Logo" target="_blank" >
+		<img width="160" src="../static/images/manage_logo.png" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<!-- 头部 end-->
+
+
+<div  layout:fragment="screen_content">
+	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
+	<script th:src="@{/js-busi/gds/browsing_history.js}"></script>
+    <!-- 右边内容 --> 
+	<div class="m_main">
+		<div class="m_con">
+
+			<div class="classify">
+				<i class="iconfont"></i>
+				<span>当前位置：</span>
+				<a href=""><span>个人中心</span></a>
+				<span>浏览历史</span>
+			</div>
+
+			<div class="top-table">
+                <table class="editTable">
+                    <tr>
+                        <td >
+                            <input type="text" class="form-control" id="gdsId" name="number" placeholder="请输入商品编码">
+                        </td>
+                        <td>
+                            <button class="btn btn-primary" id="searchBtn">查询</button>
+                        </td>
+                    </tr>
+                </table>
+			</div>
+
+            <!--tab切换内容-->
+            <div class="tab-slide pl20 pr20" id="gdsListContent">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs" role="tablist">
+                    <li th:attr="catFirst='',class='tabSelect active'"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">全部</a></li>
+                    <li th:attr="catFirst='1',class='tabSelect'"><a href="#tab02" aria-controls="profile" role="tab" data-toggle="tab">API</a></li>
+                    <li th:attr="catFirst='2',class='tabSelect'"><a href="#tab03" aria-controls="messages" role="tab" data-toggle="tab">定制数据</a></li>
+                    <li th:attr="catFirst='3',class='tabSelect'"><a href="#tab04" aria-controls="settings" role="tab" data-toggle="tab">解决方案</a></li>
+                </ul>
+
+                <!-- Tab panes -->
+                <div class="tab-content pt15" id="userFootPrintList">
+                    
+                    <!-- 全部 -->
+                    <div class="tab-pane active" id="user_footprint_list_template">
+	                    <div role="tabpanel" class="tab-pane active" id="tab01">
+	                        <table class="table table-bordered text-center" >
+	                            <thead>
+	                            <tr class="active">
+	                                <th>商品图片</th>
+	                                <th>商品名称</th>
+	                                <th>商品类型</th>
+	                                <th>浏览时间</th>
+	                                <th>操作</th>
+	                            </tr>
+	                            </thead>
+	                            <tbody >
+	                              <tr th:if="${pageInfo} and ${pageInfo.result} and ${#lists.size(pageInfo.result) gt 0}" th:each="footPrint,footPrintStat : ${pageInfo.result}">
+	                                <td><img src="" width="80" height="80" th:src="${footPrint.gdsPic}"></td>
+	                                <td th:text="${footPrint.gdsName}">全部全部全部全部全部全部全部</td>
+	                                <td th:text="${footPrint.catFirstName}">API</td>
+	                                <td th:text="${#dates.format(footPrint.createTime, 'yyyy-MM-dd  HH:mm:ss')}">2017-04-10 12:25:23</td>
+	                                <td>
+	                                    <p class="pop-link">
+	                                        <a th:if="${footPrint.catFirst==1}" href="javascript:void(0)" th:href="@{'/goods/details/'+${footPrint.id}+'-'+${footPrint.skuId}}">购买</a>
+	                                        <a href="javascript:void(0)" th:onclick="|MyFavorite.deleteUserFootPrint(${footPrint.fpId})|">删除</a>
+	                                    </p>
+	                                </td>
+	                            </tr>
+	                            </tbody>
+	                        </table>
+	                    </div>
+					
+	                    <!-- API -->
+	                    <div role="tabpanel" class="tab-pane " id="tab02" th:remove="All">
+	                        <table class="table table-bordered text-center" >
+	                            <thead>
+	                            <tr class="active">
+	                                <th>商品图片</th>
+	                                <th>商品名称</th>
+	                                <th>商品类型</th>
+	                                <th>浏览时间</th>
+	                                <th>操作</th>
+	                            </tr>
+	                            </thead>
+	                            <tbody >
+	                            <tr th:remove="all">
+	                                <td><img src="" width="80" height="80"></td>
+	                                <td>APIAPIAPIAPIAPIAPIAPI</td>
+	                                <td>API</td>
+	                                <td>2017-04-10 12:25:23</td>
+	                                <td>
+	                                    <p class="pop-link">
+	                                        <a href="#">购买</a>
+	                                        <a href="#">删除</a>
+	                                    </p>
+	                                </td>
+	                            </tr>
+	                          
+	                            </tbody>
+	                        </table>
+	                    </div>
+	
+	 				    <!-- 定制数据 -->
+	                    <div role="tabpanel" class="tab-pane " id="tab03" th:remove="All">
+	                        <table class="table table-bordered text-center" >
+	                            <thead>
+	                            <tr class="active">
+	                                <th>商品图片</th>
+	                                <th>商品名称</th>
+	                                <th>商品类型</th>
+	                                <th>浏览时间</th>
+	                                <th>操作</th>
+	                            </tr>
+	                            </thead>
+	                            <tbody >
+	                            <tr th:remove="all">
+	                                <td><img src="" width="80" height="80"></td>
+	                                <td>定制数据定制数据定制数据定制数据定制数据</td>
+	                                <td>API</td>
+	                                <td>2017-04-10 12:25:23</td>
+	                                <td>
+	                                    <p class="pop-link">
+	                                        <a href="#">购买</a>
+	                                        <a href="#">删除</a>
+	                                    </p>
+	                                </td>
+	                            </tr>
+	                          
+	                            </tbody>
+	                        </table>
+	                    </div>
+	
+						<!-- 解决方案 -->
+	                    <div role="tabpanel" class="tab-pane " id="tab04" th:remove="All">
+	                        <table class="table table-bordered text-center" >
+	                            <thead>
+	                            <tr class="active">
+	                                <th>商品图片</th>
+	                                <th>商品名称</th>
+	                                <th>商品类型</th>
+	                                <th>浏览时间</th>
+	                                <th>操作</th>
+	                            </tr>
+	                            </thead>
+	                            <tbody >
+	                            <tr th:remove="all">
+	                                <td><img src="" width="80" height="80"></td>
+	                                <td>解决方案解决方案解决方案解决方案</td>
+	                                <td>API</td>
+	                                <td>2017-04-10 12:25:23</td>
+	                                <td>
+	                                    <p class="pop-link">
+	                                        <a href="#">购买</a>
+	                                        <a href="#">删除</a>
+	                                    </p>
+	                                </td>
+	                            </tr>
+	                          
+	                            </tbody>
+	                        </table>
+	                    </div>
+	
+	                     <!-- 分页-->
+	                    <div class="pagelist pull-right" th:replace="fragments/pager :: pager">
+	                        <nav aria-label="Page navigation">
+	                            <ul class="pagination">
+	                                <li >
+	                                    <a href="#" aria-label="Previous">
+	                                        <span aria-hidden="true">上一页</span>
+	                                    </a>
+	                                </li>
+	                                <li class="active"><a href="#">1</a></li>
+	                                <li><a href="#">2</a></li>
+	                                <li><a href="#">3</a></li>
+	                                <li><a href="#">4</a></li>
+	                                <li><a href="#">5</a></li>
+	                                <li>
+	                                    <a href="#" aria-label="Next">
+	                                        <span aria-hidden="true">下一页</span>
+	                                    </a>
+	                                </li>
+	                                <div class="pageskip">
+	                                    <span class="pr10">到第<input type="text" class="pageskip_box">页</span>
+	                                    <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+	                                </div>
+	                            </ul>
+	
+	                        </nav>
+	                    </div>
+                    </div>
+                </div>
+            </div>
+            <!--tab切换内容 end-->
+			
+		</div>
+	</div>
+	<!-- 右边内容 end--> 
+
+    <!-- 左边菜单 -->
+	<div class="m_nav" th:remove="All">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						我的数据
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						我的订单
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						密码修改
+					</a>
+				</li>
+				<li class="active">
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						企业认证
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						发票管理
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						我的收藏
+					</a>
+				</li>
+			</ul>
+		</nav>
+    </div>
+    <!-- 左边菜单 -->
+</div>
+
+	
+</body>
+</html>

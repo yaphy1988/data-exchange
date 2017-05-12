@@ -60,8 +60,17 @@ public class GdsInfoReqDTO extends BaseInfo implements Serializable{
     private Integer catId;
     
     private List<Integer> gdsIds;
+    private List<Integer> gdsIdsNotIn;
     
-    public GdsInfo2PropReqDTO getGdsInfo2PropReqDTO() {
+    public List<Integer> getGdsIdsNotIn() {
+		return gdsIdsNotIn;
+	}
+
+	public void setGdsIdsNotIn(List<Integer> gdsIdsNotIn) {
+		this.gdsIdsNotIn = gdsIdsNotIn;
+	}
+
+	public GdsInfo2PropReqDTO getGdsInfo2PropReqDTO() {
 		return GdsInfo2PropReqDTO;
 	}
 

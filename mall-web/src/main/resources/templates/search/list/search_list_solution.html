@@ -3,7 +3,7 @@
 		<li th:each="list : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
 			<div class="pic">
 				<a href="" target="_blank" th:href="@{'/goods/details/'+${list.id}+'-'}" th:attr="title=${list.gdsNameSrc}">
-					<img src="" width="200" height="200" th:src="${list.gdsPic}">
+					<img src="" width="200" height="200" th:src="${#tools.genImageUrl(list.gdsPic,'200x200')}">
 				</a>
 			</div>
 			<dl>

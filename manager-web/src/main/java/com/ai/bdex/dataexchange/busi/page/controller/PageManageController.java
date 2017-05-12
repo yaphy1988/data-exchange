@@ -15,7 +15,12 @@ import java.util.regex.Pattern;
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
+import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
+import com.ai.bdex.dataexchange.util.StaffUtil;
+import org.apache.commons.beanutils.BeanUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -23,6 +28,7 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -31,13 +37,21 @@ import org.springframework.web.util.HtmlUtils;
 
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
+import com.ai.bdex.dataexchange.busi.page.entity.SortContentVO;
+import com.ai.bdex.dataexchange.busi.page.entity.SortInfoVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
@@ -45,6 +59,7 @@ import com.ai.paas.util.ImageUtil;
 import com.ai.paas.util.MongoFileUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.alibaba.dubbo.remoting.exchange.Request;
 import com.alibaba.fastjson.JSONObject;
 
 /**
@@ -69,6 +84,16 @@ public class PageManageController {
 	IPageDisplayRSV iPageDisplayRSV;
 	@DubboConsumer(timeout = 30000)
 	IGdsInfoRSV iGdsInfoRSV;
+	/**
+	 * 页面管理入口
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/moduleManage")
+	public ModelAndView moduleManage(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView("module_manager");
+		return modelAndView;
+	}
 	
 	@RequestMapping(value = "/newsInfo")
 	public ModelAndView pageInit(HttpServletRequest request) {
@@ -192,11 +217,7 @@ public class PageManageController {
 		}
 		return rMap;
 	}
-	@RequestMapping(value = "/moduleManage")
-	public ModelAndView moduleManage(HttpServletRequest request) {
-		ModelAndView modelAndView = new ModelAndView("module_manager");
-		return modelAndView;
-	}
+
 	@RequestMapping(value = "/editModule")
 	public ModelAndView editModule(HttpServletRequest request) {
 		ModelAndView modelAndView = new ModelAndView("edit_module");
@@ -263,9 +284,7 @@ public class PageManageController {
 		Map<String, Object> rMap = new HashMap<String, Object>();
 		try {
 			PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
-			if(StringUtil.isNotBlank(moduleName)){
-				pageModuleReqDTO.setModuleName(moduleName);
-			}
+			pageModuleReqDTO.setStatus(STATUS_VALID);
 			List<PageModuleRespDTO> moduleList = iPageDisplayRSV.queryPageModuleList(pageModuleReqDTO);
 			if(!CollectionUtils.isEmpty(moduleList)){
 				for(PageModuleRespDTO moduleRespDTO : moduleList){
@@ -301,14 +320,21 @@ public class PageManageController {
 			PageModuleAdReqDTO adReqDTO = new PageModuleAdReqDTO();
 			adReqDTO.setPageNo(moduleAdVO.getPageNo());
 			adReqDTO.setPageSize(PAGE_SIZE);
+			if(!StringUtils.isBlank(moduleAdVO.getAdTitle())){
+				adReqDTO.setAdTitle(moduleAdVO.getAdTitle());
+			}
+			if(!StringUtils.isBlank(moduleAdVO.getStatus())){
+				adReqDTO.setStatus(moduleAdVO.getStatus());
+			}else{
+				List<String> statusList=new ArrayList<String>();
+				//查询有效、失效
+				statusList.add(STATUS_VALID);
+				statusList.add(STATUS_INVALID);
+				adReqDTO.setStatusList(statusList);
+			}
 			if(moduleAdVO.getModuleId()!=null){
 				adReqDTO.setModuleId(moduleAdVO.getModuleId());
 			}
-			List<String> statusList=new ArrayList<String>();
-			//查询有效、失效
-			statusList.add(STATUS_VALID);
-			statusList.add(STATUS_INVALID);
-			adReqDTO.setStatusList(statusList);
 			pageInfo = iPageDisplayRSV.queryPageModuleAdPageInfo(adReqDTO);
 			if(!CollectionUtils.isEmpty(pageInfo.getResult())){
 				for(PageModuleAdRespDTO adRespDTO :pageInfo.getResult()){
@@ -327,7 +353,7 @@ public class PageManageController {
 		} catch (Exception e) {
 			log.error("查询广告列表失败！原因是：" + e.getMessage());
 		}
-		return "page/modulePageAdList";
+		return "ad_manager :: #ad_content";
 	}
 	/**
 	 * 更新广告信息
@@ -423,12 +449,8 @@ public class PageManageController {
 				adRespDTO.setVfsIdUrl(ImageUtil.getImageUrl(adRespDTO.getVfsId() + "_100x100"));
 			}
 			//根据moduleTye查询广告信息信息 
-			PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
-			pageModuleReqDTO.setModuleType(MODULE_TYPE_AD);
-			//查询全部的广告版位
-			List<PageModuleRespDTO> moduleAdList = iPageDisplayRSV.queryPageModuleInfoList(pageModuleReqDTO);
+			queryAdPlace(model);
 			model.addAttribute("moduleId", moduleAdVO.getModuleId());
-			model.addAttribute("moduleAdList", moduleAdList);
 			model.addAttribute("adRespDTO", adRespDTO);
 		} catch (Exception e) {
 			log.error("查询广告列表失败！原因是：" + e.getMessage());
@@ -604,5 +626,211 @@ public class PageManageController {
     private String getHtmlUrl(String vfsId) {
         return ImageUtil.getStaticDocUrl(vfsId, "html");
     }
+    /**
+     * 广告维护入口
+     * @param request
+     * @return
+     */
+	@RequestMapping(value = "/adManage")
+	public ModelAndView adManage(HttpServletRequest request,Model model) {
+		ModelAndView modelAndView = new ModelAndView("ad_manager");
+		String moduleId = request.getParameter("moduleId");
+		modelAndView.addObject("moduleId", moduleId);
+		queryAdPlace(model);
+		return modelAndView;
+	}
+	/**
+	 * 首页商品菜单分类入口
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/pageClassify")
+	public ModelAndView pageClassify(HttpServletRequest request) {
+		ModelAndView modelAndView = new ModelAndView("page_classification");
+		try {
+//			SortInfoRespDTO sortInfoRespDTO = new SortInfoRespDTO();
+//			sortInfoRespDTO.setStatus(STATUS_VALID);
+//			sortInfoRespDTO.setSortLevel("1");
+//			List<SortInfoRespDTO> sortInfos = iPageDisplayRSV.querySortInfos(sortInfoRespDTO);
+//			modelAndView.addObject("sortInfos", sortInfos);
+		} catch (Exception e) {
+			log.error("【首页商品菜单分类配置】常信息异：" + e);
+		}
+		return modelAndView;
+	}
+	/**
+	 * 查询全部的广告版位
+	 * @param model
+	 */
+	private void queryAdPlace(Model model){
+		//根据moduleTye查询广告信息信息 
+		PageAdPalceReqDTO adPalceReqDTO = new PageAdPalceReqDTO();
+		adPalceReqDTO.setStatus(STATUS_VALID);
+		//查询全部的广告版位
+		List<PageAdPalceRespDTO> adPlaceList;
+		try {
+			adPlaceList = iPageDisplayRSV.queryPageAdPalceList(adPalceReqDTO);
+			model.addAttribute("adPlaceList", adPlaceList);
+		} catch (Exception e) {
+			log.error("【查询全部的广告版位】异常信息：" + e);
+			e.printStackTrace();
+		}
+	}
+	/**
+	 * 首页商品菜单新增、编辑
+	 * @return
+	 */
+	@RequestMapping(value="/insetOrUpdateSortInfo")
+	@ResponseBody
+	private Map<String,Object> insetOrUpdateSortInfo(SortInfoVO sortInfoVO){
+		Map<String,Object> rMap = new HashMap<>();
+		try {
+			if(sortInfoVO.getSortId() != null){
+				SortInfoReqDTO sortInfoReqDTO = new SortInfoReqDTO();
+				iPageDisplayRSV.updateSortInfoById(sortInfoReqDTO);
+			}else{
+				SortInfoReqDTO sortInfoReqDTO = new SortInfoReqDTO();
+				iPageDisplayRSV.insertSortInfo(sortInfoReqDTO);
+			}
+			rMap.put("success", true);
+		} catch (Exception e) {
+			rMap.put("success", true);
+			rMap.put("erroMsg", e.getMessage());
+			log.error("【首页商品菜单分类新增、编辑】异常信息：" + e);
+		}
+		return rMap;
 
+	}
+	/**
+	 * 首页商品菜单内容新增、编辑
+	 * @return
+	 */
+	@RequestMapping(value="/insetOrUpdateContent")
+	@ResponseBody
+	private Map<String,Object> insetOrUpdateContent(SortContentVO sortContentVO){
+		Map<String,Object> rMap = new HashMap<>();
+		try {
+			if(sortContentVO.getSortContentId() != null){
+				SortContentReqDTO sortContentReqDTO = new SortContentReqDTO();
+				iPageDisplayRSV.updateSortContentById(sortContentReqDTO);
+			}else{
+				SortContentReqDTO sortContentReqDTO = new SortContentReqDTO();
+				iPageDisplayRSV.insertSortContent(sortContentReqDTO);
+			}
+			rMap.put("success", true);
+		} catch (Exception e) {
+			rMap.put("success", true);
+			rMap.put("erroMsg", e.getMessage());
+			log.error("【首页商品菜单分类内容新增、编辑】异常信息：" + e);
+		}
+		return rMap;
+
+	}
+	/**
+	 * 定制数据管理界面
+	 * @param request
+	 * @return
+	 * auther:landeng
+	 */
+	@RequestMapping(value = "/manageDataPageInit")
+	public ModelAndView manageDataPageInit(HttpServletRequest request,Model model) {
+		//先将记录数显示出来
+	/*	PageResponseDTO<DataCustomizationRespDTO> pageData = new PageResponseDTO<DataCustomizationRespDTO>();
+		model.addAttribute("pageInfo", pageData);*/
+		ModelAndView modelAndView = new ModelAndView("dataCustom_manage");
+		return modelAndView;
+	}
+
+	/**
+	 * 定制数据管理查询
+	 * @param request
+	 * @return
+	 * auther:landeng
+	 */
+	@RequestMapping(value = "/querymanageData")
+	public String QuerymanageData(HttpServletRequest request,Model model) {
+ 		DataCustomizationReqDTO dataCustomizationReqDTO = new DataCustomizationReqDTO();
+		String status = request.getParameter("status");
+		int pageno   =  Integer.parseInt( request.getParameter("pageno"));
+		int pagesize = Integer.parseInt(request.getParameter("pagesize"));
+		if(!StringUtil.isBlank(status))
+		{
+			dataCustomizationReqDTO.setStatus(status);
+		}
+		PageResponseDTO<DataCustomizationRespDTO> pageData = new PageResponseDTO<DataCustomizationRespDTO>();
+		try{
+			dataCustomizationReqDTO.setPageNo(pageno);
+			dataCustomizationReqDTO.setPageSize(pagesize);
+			pageData = iPageDisplayRSV.queryDataCustomizationInfo(dataCustomizationReqDTO);
+			model.addAttribute("pageInfo", pageData);
+		} catch (Exception e) {
+			log.error("查询用户提交的定制数据信息出错：" + e.getMessage());
+		}
+		return "dataCustom_manage :: #queryresultShow";
+	}
+	/**
+	 * 定制数据管理--将数据设置为已处理
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/updateCustDataStatus")
+	@ResponseBody
+	public Map<String,Object>  updateCustDataStatus(HttpServletRequest request) {
+		Map<String,Object>  rMap = new HashMap<>();
+		try{
+			int dzid = Integer.parseInt(request.getParameter("dczaId"));
+			String status = Constants.Page.CUSTOM_DATA_STATUS_2;
+			DataCustomizationReqDTO dataCustomizationReqDTO  = new DataCustomizationReqDTO();
+			DataCustomizationRespDTO dataCustomizationRespDTO = new DataCustomizationRespDTO();
+			dataCustomizationReqDTO.setPageNo(1);
+			dataCustomizationReqDTO.setPageSize(1);
+			dataCustomizationReqDTO.setDczaId(dzid);
+			PageResponseDTO<DataCustomizationRespDTO> pageData = new PageResponseDTO<DataCustomizationRespDTO>();
+			pageData = iPageDisplayRSV.queryDataCustomizationInfo(dataCustomizationReqDTO);
+			dataCustomizationRespDTO = (DataCustomizationRespDTO)pageData.getResult().get(0);
+			BeanUtils.copyProperties(dataCustomizationReqDTO, dataCustomizationRespDTO);
+			dataCustomizationReqDTO.setStatus(status);
+			HttpSession hpptsesion = request.getSession();
+			String staff_id = StaffUtil.getStaffId(hpptsesion);
+			dataCustomizationReqDTO.setUpdateStaffId(staff_id);
+			int updatecount = iPageDisplayRSV.updateDataCustomizationStatus(dataCustomizationReqDTO);
+			rMap.put("success", true);
+			} catch (Exception e) {
+				rMap.put("success", false);
+				log.error("将数据设置为已处理出错：" + e.getMessage());
+			}
+		 return rMap;
+	}
+	@RequestMapping(value="/querySortInfoById")
+	private String querySortInfoById(@RequestParam Integer sortId ,Model mode){
+		try {
+			SortInfoVO sortInfo = new SortInfoVO();
+			if(sortId != null){
+				SortInfoReqDTO sortInfoReqDTO = new SortInfoReqDTO();
+				sortInfoReqDTO.setSortId(sortId);
+				SortInfoRespDTO sortInfoRespDTO = iPageDisplayRSV.querySortInfoById(sortInfoReqDTO);
+				if(sortInfoRespDTO != null){
+					BeanUtils.copyProperties(sortInfoRespDTO, sortInfo);
+					SortContentReqDTO sortContentReqDTO = new SortContentReqDTO();
+					sortContentReqDTO.setSortId(sortInfoRespDTO.getSortId());
+					List<SortContentRespDTO> sortContenList = iPageDisplayRSV.querysortContenList(sortContentReqDTO);
+					SortContentRespDTO sortContentRespDTO = sortContenList.get(0);
+					SortContentVO sortContentVO = new SortContentVO();
+					if(sortContentRespDTO != null){
+						BeanUtils.copyProperties(sortContentRespDTO, sortContentVO);
+						sortInfo.setSortContentRespDTO(sortContentVO);
+					}else{
+						sortInfo.setSortContentRespDTO(sortContentVO);
+					}
+				}
+			}
+			if("1".equals(sortInfo.getSortLevel())){
+				mode.addAttribute("sortLever", "1");
+			}
+			mode.addAttribute("sortInfo", sortInfo);
+		} catch (Exception e) {
+			log.error("【首页商品菜单分类查询】异常信息：" + e);
+		}
+		return "page_classification :: #sortInfo";
+	}
 }

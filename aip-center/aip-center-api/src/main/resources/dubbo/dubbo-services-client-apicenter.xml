@@ -8,7 +8,8 @@
         http://code.alibabatech.com/schema/dubbo/dubbo.xsd
      ">
 
-    <dubbo:reference id="aipCenterDemoRSV" interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IDemoRSV"/>
-	<dubbo:reference id="serviceMessageRSV" interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IServiceMessageRSV"/>
-	<dubbo:reference id="aipServiceInfoRSV" interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV"/>
+    <!--<dubbo:reference id="aipCenterDemoRSV" interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IDemoRSV"/>-->
+	<!--<dubbo:reference id="serviceMessageRSV" interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IServiceMessageRSV"/>-->
+	<!--<dubbo:reference id="aipServiceInfoRSV" interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV"/>-->
+	<!--<dubbo:reference id="aipCenterDataAccountRSV" interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV"/>-->
 </beans>

@@ -3,7 +3,9 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order;
 import java.io.Serializable;
 import java.util.Date;
 
-public class OrdInfoRespDTO implements Serializable{
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+
+public class OrdInfoRespDTO extends BaseResponseDTO{
 	    private String subOrder; 
 	    private String orderId;
  	    private Integer orderAmount; 
@@ -14,8 +16,7 @@ public class OrdInfoRespDTO implements Serializable{
  	    private Date orderTime;
  	    private String staffId;
  	    private String shopId;
- 	    private Long brandId;
- 	    private String modelId;
+ 
  	    private String productType;
  	    private Long gdsId;
  	    private String gdsName;
@@ -37,6 +38,42 @@ public class OrdInfoRespDTO implements Serializable{
  	    private Long usedAllCount;
    	    private Long belanceAllCount;
  	    private String status;
+ 	    private String serviceName;
+ 	    private String aipServiceId;
+ 	    private Integer catId; 
+		private Integer catFirst;
+		private Integer leftCount;//剩余可用次数--计费接口返回值
+
+ 	    public Integer getLeftCount() {
+			return leftCount;
+		}
+		public void setLeftCount(Integer leftCount) {
+			this.leftCount = leftCount;
+		}
+		public Integer getCatId() {
+			return catId;
+		}
+		public void setCatId(Integer catId) {
+			this.catId = catId;
+		}
+		public Integer getCatFirst() {
+			return catFirst;
+		}
+		public void setCatFirst(Integer catFirst) {
+			this.catFirst = catFirst;
+		}
+		public String getServiceName() {
+			return serviceName;
+		}
+		public void setServiceName(String serviceName) {
+			this.serviceName = serviceName;
+		}
+		public String getAipServiceId() {
+			return aipServiceId;
+		}
+		public void setAipServiceId(String aipServiceId) {
+			this.aipServiceId = aipServiceId;
+		}
 		public String getSubOrder() {
 			return subOrder;
 		}
@@ -96,19 +133,7 @@ public class OrdInfoRespDTO implements Serializable{
 		}
 		public void setShopId(String shopId) {
 			this.shopId = shopId;
-		}
-		public Long getBrandId() {
-			return brandId;
-		}
-		public void setBrandId(Long brandId) {
-			this.brandId = brandId;
-		}
-		public String getModelId() {
-			return modelId;
-		}
-		public void setModelId(String modelId) {
-			this.modelId = modelId;
-		}
+		} 
 		public String getProductType() {
 			return productType;
 		}

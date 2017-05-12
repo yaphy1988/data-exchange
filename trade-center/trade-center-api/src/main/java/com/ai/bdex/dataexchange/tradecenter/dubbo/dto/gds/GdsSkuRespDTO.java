@@ -31,6 +31,8 @@ public class GdsSkuRespDTO implements Serializable {
 
     private Date updateTime;
 
+    private String gdsPic;
+
     public Integer getSkuId() {
         return skuId;
     }
@@ -125,5 +127,13 @@ public class GdsSkuRespDTO implements Serializable {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getGdsPic() {
+        return gdsPic;
+    }
+
+    public void setGdsPic(String gdsPic) {
+        this.gdsPic = gdsPic;
     }
 }

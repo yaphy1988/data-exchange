@@ -6,7 +6,7 @@
 	商品分类：树形菜单
  */
 
-.ztree {margin-top: 10px;border: 1px solid #ddd;background: #f9f9f9;width:220px;height:625px;overflow-y:auto;overflow-x:auto;font-size:12px;padding:10px 5px;}
+.ztree {margin-top: 10px;border: 1px solid #ddd;background: #f9f9f9;width:100%;height:625px;overflow-y:auto;overflow-x:auto;font-size:12px;padding:10px 5px;}
 .ztree li{padding:0; margin:0; list-style:none; line-height:14px; text-align:left; white-space:nowrap; outline:0}
 .ztree li ul{ margin:0; padding:0 0 0 18px}
 .ztree li ul.line{ background:url(../images/zTree/line_conn.gif) 0 0 repeat-y;}

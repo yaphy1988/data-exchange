@@ -34,5 +34,6 @@ public interface IGdsCatSV {
      * @since JDK 1.6
      */
     public PageResponseDTO<GdsCatRespDTO> queryCatPageInfo(GdsCatReqDTO gdsCatReqDTO) throws BusinessException;
-
+    
+    public int deleteGdsCatInfo(Integer catId) throws BusinessException;
 }

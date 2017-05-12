@@ -1,0 +1,58 @@
+@charset "utf-8";
+
+/* 购物车 tangyk*/
+
+.mb50{margin-bottom:50px;}
+.topCommon {
+    background: #fff;
+    clear: both;
+    margin-top:25px;
+    margin-bottom:10px;
+}
+.shopping_cart_bg1,.shopping_cart_bg2,.shopping_cart_bg3{width:481px;margin-top:30px;overflow:hidden;_zoom:1;}
+.shopping_cart_bg1{background:url(../images/step1.jpg) no-repeat;}
+.shopping_cart_bg2{background:url(../images/step2.jpg) no-repeat;}
+.shopping_cart_bg3{background:url(../images/step3.jpg) no-repeat;}
+.shopping_cart_bg1 a,.shopping_cart_bg2 a,.shopping_cart_bg3 a{display:block;width:160px;float:left;text-align:center;padding-top:25px;color:#414141;font-size: 12px}
+.cart_title{
+	font-size:20px;
+	font-weight:bold;
+	padding-bottom:5px;
+	line-height: 40px;
+}
+.cart_title strong{font-size:14px;}
+.cart_list{
+	border:1px solid #ddd;
+	 border-top:none; 
+	 margin-bottom:15px;
+}
+.cart_list td,.cart_list th{padding:10px 5px;}
+.cart_list th{background-color:#f7f7f7; border-top:2px solid #ddd; border-bottom:1px solid #ddd;text-align: center}
+.cart_img{display:block;overflow:hidden;_zoom:1;width:70px;float:left;}
+.cart_img img{max-height:40px;max-width:40px;_width:40px;_height:40px;}
+.cart_img span{display:inline-block;height:60px;width:55px;padding:10px;border:1px solid #ddd;}
+.cart_img_link{float:left;width:200px;}
+
+/*商品数量加减*/
+.reduce,.add{display:inline-block;height:15px;width:15px;overflow:hidden;vertical-align:middle;}
+.reduce{background:url(../images/web_icon.png) no-repeat left -20px;}
+.reduce:hover{background:url(../images/web_icon.png) no-repeat left -40px;}
+.add{background:url(../images/web_icon.png) no-repeat -16px -20px;}
+.add:hover{background:url(../images/web_icon.png) no-repeat -16px -40px;}
+.val{height:24px;width:40px;vertical-align:middle;line-height:24px; text-align:center;}
+
+
+.total{font-size:16px;}
+.finalAmount{font-weight:bold;padding-right:10px;}
+.finalPrice{color:#ec6000;}
+
+/*线下汇款*/
+ .offline h2{font-size:16px;padding:20px 0px 10px;border-bottom:#ddd  1px solid;color:#2b4099;}
+ .offline .tishi{background: #ebeff8;font-size:12px;margin:15px 0px;padding:10px 15px;line-height:24px;}
+ .offline .bank{width:600px;border:#ddd 1px solid;padding:10px;line-height:34px;margin-bottom:30px;}
+ .offline .bank label,.offline .bank .bank_info{display: inline-block;vertical-align: top}
+ .offline .bank label{width:75px;font-weight:bold;}
+ .offline .bank .bank_info img{height:28px;border:#eee 1px solid;padding:2px;}
+ .offline .bank .bank_info input{background: #eee;border:none;border:#e4e4e4 1px solid;height:34px;}
+
+

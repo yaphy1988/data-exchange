@@ -63,6 +63,9 @@ public class PageModuleAdSVImpl implements IPageModuleAdSV {
 		if(moduleAdDTO.getModuleId() != null && moduleAdDTO.getModuleId() !=0){
 			criteria.andModuleIdEqualTo(moduleAdDTO.getModuleId());
 		}
+		if(!StringUtils.isBlank(moduleAdDTO.getAdTitle())){
+			criteria.andAdTitleLike("%"+moduleAdDTO.getAdTitle()+"%");
+		}
 		if(!StringUtils.isBlank(moduleAdDTO.getStatus())){
 			criteria.andStatusEqualTo(moduleAdDTO.getStatus());
 		}

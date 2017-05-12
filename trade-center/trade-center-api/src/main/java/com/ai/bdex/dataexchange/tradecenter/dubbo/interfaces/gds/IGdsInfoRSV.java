@@ -15,7 +15,6 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsPropReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsPropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsResultVO;
-import com.github.pagehelper.Page;
 
 /**
  * Created by yx on 2017/4/18.
@@ -56,7 +55,7 @@ public interface IGdsInfoRSV {
 
     /**
      * 查询商品列表
-     * @param gdsInfoRespDTO
+     * @param gdsInfoReqDTO
      * @return
      * @throws Exception
      */

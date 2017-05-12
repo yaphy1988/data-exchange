@@ -11,8 +11,10 @@
     <link rel="stylesheet" href="../../static/css/global.css" th:href="@{/css/global.css}"/>
     <link type="text/css" rel="stylesheet" href="../../static/js/frameajax/frameajax.css" th:href="@{/js/frameajax/frameajax.css}"/>
     <link rel="stylesheet" href="../../static/css/index.css" th:href="@{/css/index.css}"/>
+    <link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
     <script th:inline="javascript">
         var WEB_ROOT = [[${#httpServletRequest.contextPath}]];
+        var MALL_ROOT = [[${#tools.mailDomain()}]];
         var staffInfoDTO = [[${session.staffInfoDTO}]];
     </script>
     <!-- js -->
@@ -20,7 +22,10 @@
     <script src="../../static/component/bootstrap/js/bootstrap.min.js" th:src="@{/component/bootstrap/js/bootstrap.min.js}"></script>
     <script type="text/javascript" src="../../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
     <script type="text/javascript" src="../../static/js/jquery.blockUI.js" th:src="@{/js/jquery.blockUI.js}"></script>
-    <script type="text/javascript" src="../../static/js/frameajax/frameajax.js" th:src="@{/js/frameajax/frameajax.js}"></script>
+	<script type="text/javascript" src="../static/js/jquery.metadata.js" th:src="@{/js/jquery.metadata.js}"></script>
+	<script type="text/javascript" src="../static/js/jquery-migrate-1.2.1.min.js" th:src="@{/js/jquery-migrate-1.2.1.min.js}"></script>
+    <script type="text/javascript" src="../static/js/frameajax/frameajax.js" th:src="@{/js/frameajax/frameajax.js}"></script>
+    <script type="text/javascript" src="../js/jquery.validate.min.js"  th:src="@{/js/jquery.validate.min.js}"></script>
 	<script type="text/javascript" src="../../static/js/util.js" th:src="@{/js/util.js}"></script>
 
 </head>

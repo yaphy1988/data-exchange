@@ -31,6 +31,12 @@ public class UserCollectionRespDTO extends BaseResponseDTO{
     private String updateUser;
 
     private Date updateTime;
+    
+    private String gdsName;
+    
+    private String gdsPic;
+    
+    private String catFirstName;
 
     public Integer getColId() {
         return colId;
@@ -110,6 +116,30 @@ public class UserCollectionRespDTO extends BaseResponseDTO{
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getGdsName() {
+        return gdsName;
+    }
+
+    public void setGdsName(String gdsName) {
+        this.gdsName = gdsName;
+    }
+
+    public String getGdsPic() {
+        return gdsPic;
+    }
+
+    public void setGdsPic(String gdsPic) {
+        this.gdsPic = gdsPic;
+    }
+
+    public String getCatFirstName() {
+        return catFirstName;
+    }
+
+    public void setCatFirstName(String catFirstName) {
+        this.catFirstName = catFirstName;
     }
     
 }

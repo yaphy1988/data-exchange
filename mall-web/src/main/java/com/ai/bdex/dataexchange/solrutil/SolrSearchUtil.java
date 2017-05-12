@@ -18,11 +18,15 @@ import com.ai.paas.utils.StringUtil;
 
 public class SolrSearchUtil {
     private static final Logger logger = LoggerFactory.getLogger(SolrSearchUtil.class.getName());
-    /* 
-     * field 查询的字段名称数组 key 查询的字段名称对应的值 start 查询的起始位置 count 一次查询出来的数量 sortfield 
-     * 需要排序的字段数组 flag 需要排序的字段的排序方式如果为true 升序 如果为false 降序 hightlight 是否需要高亮显示 
-     */  
-    @SuppressWarnings("rawtypes")
+    /**
+     *  
+     * Search:(solr查询商品入口). <br/> 
+     * 
+     * @author gxq 
+     * @param searchParam
+     * @return 
+     * @since JDK 1.6
+     */
     public static PageResponseDTO<ResultRespVO> Search(SearchParam searchParam) {
         long start = System.currentTimeMillis();
         if(searchParam.getSolrClient()==null){
@@ -31,51 +35,15 @@ public class SolrSearchUtil {
         if(StringUtil.isBlank(searchParam.getCollectionName())){
             return null;
         }
-        List<SearchField> searchfield = searchParam.getSearchField(); 
-        List<SortField> sortfield = searchParam.getSortField();
         SolrQuery query = null;  
         PageResponseDTO<ResultRespVO> pageInfo = new PageResponseDTO<ResultRespVO>();
         try {  
             // 初始化查询对象  
             query = new SolrQuery();
-            if(!StringUtil.isBlank(searchParam.getKeyWord())){
-                query.setQuery("name:"+searchParam.getKeyWord());
-            }else{
-                query.setQuery("*:*");
-            }
-            // 设置高亮  
-            if (searchParam.isIfHightlight()) {
-                query.setHighlight(true); // 开启高亮组件  
-                query.addHighlightField("gdsName");// 高亮字段  
-                query.addHighlightField("gdsSubtitle");// 高亮字段  
-                query.addHighlightField("funIntroduction");// 高亮字段  
-                query.setHighlightSimplePre("<font color=\"red\">");// 标记  
-                query.setHighlightSimplePost("</font>");  
-                query.setHighlightSnippets(1);// 结果分片数，默认为1  
-                query.setHighlightFragsize(1000);// 每个分片的最大长度，默认为100  
-  
-            }  
-            for (SearchField searchField : searchfield) {  
-                if(searchField.getValue() == null){
-                    continue;
-                }
-                query.addFilterQuery(searchField.getName() + ":" + searchField.getValue().toString());  
-            }  
-            // 设置起始位置与返回结果数  
-            int pageNo = 0;
-            if(searchParam.getPageNo()==1){
-                pageNo = searchParam.getPageNo() -1;
-            }else if(searchParam.getPageNo() >= 2){
-                pageNo = (searchParam.getPageNo() -1 )*searchParam.getPageSize();
-            }
-            query.setStart(pageNo);  
-            query.setRows(searchParam.getPageSize());  
-            // 设置排序  
-            if (null != sortfield || sortfield.size() >= 1) {  
-                for (SortField sortField : sortfield) { 
-                    query.addSort(sortField.getName(),  SolrQuery.ORDER.valueOf(sortField.getValue().getSort()));  
-                }  
-            }
+            /**
+             * solr查询条件设置初始化
+             */
+            setQueryCondiction(searchParam,query);
         } catch (Exception e) {  
             e.printStackTrace();  
         }  
@@ -86,41 +54,8 @@ public class SolrSearchUtil {
             resultlist = rsp.getBeans(ResultRespVO.class);
             Map<String, Map<String, List<String>>> map = rsp.getHighlighting();
             //Item即为上面定义的bean类
-            for (ResultRespVO resultRespVO  : resultlist) {
-                   //hightlight的键为Item的id，值唯一，我们设置的高亮字段为gdsName
-                   if(!StringUtil.isBlank(resultRespVO.getGdsPic())){
-                       resultRespVO.setGdsPic(resultRespVO.getGdsPic());
-                   }
-                   resultRespVO.setPackPriceShow(changeF2Y(resultRespVO.getPackPrice()+""));
-                   resultRespVO.setGdsNameSrc(resultRespVO.getGdsName());
-                   resultRespVO.setGdsLabel(resultRespVO.getGdsLabel());
-                   List<String> hlString = map.get(resultRespVO.getId()).get("gdsName");
-                   if (null != hlString) {
-                       StringBuffer sbf = new StringBuffer();
-                       for (String s : hlString) {
-                           sbf.append(s);
-                       }
-                       resultRespVO.setGdsName(sbf.toString());
-                   } 
-                   resultRespVO.setGdsSubtitleSrc(resultRespVO.getGdsSubtitle());
-                   List<String> hTitlelString = map.get(resultRespVO.getId()).get("gdsSubtitle");
-                   if (null != hTitlelString) {
-                       StringBuffer sbf = new StringBuffer();
-                       for (String s : hTitlelString) {
-                           sbf.append(s);
-                       }
-                       resultRespVO.setGdsSubtitle(sbf.toString());
-                   }
-                   resultRespVO.setFunIntroductionSrc(resultRespVO.getFunIntroduction());
-                   List<String> hIntroString = map.get(resultRespVO.getId()).get("funIntroduction");
-                   if (null != hIntroString) {
-                       StringBuffer sbf = new StringBuffer();
-                       for (String s : hIntroString) {
-                           sbf.append(s);
-                       }
-                       resultRespVO.setFunIntroduction(sbf.toString());
-                   }
-            }
+            //解析结果
+            parseResult(resultlist,map);
             pageInfo.setResult(resultlist);
             long numFound = rsp.getResults().getNumFound();
             pageInfo.setCount(numFound);
@@ -140,7 +75,6 @@ public class SolrSearchUtil {
         return pageInfo;  
     }  
     
-    @SuppressWarnings("rawtypes")
     public static List<ResultRespVO> suggest(SearchParam searchParam) {
         if(searchParam.getSolrClient()==null){
             return null;
@@ -177,6 +111,15 @@ public class SolrSearchUtil {
         return resultlist;  
     }  
     
+    /**
+     * 
+     * facetSuggest:(facet方式suggest内容). <br/> 
+     * 
+     * @author gxq 
+     * @param searchParam
+     * @return 
+     * @since JDK 1.6
+     */
     @SuppressWarnings("rawtypes")
     public static List<FacetRespVO> facetSuggest(SearchParam searchParam) {
         
@@ -200,13 +143,12 @@ public class SolrSearchUtil {
             query.setFacetPrefix(keyWord);
             query.setFacetLimit(searchParam.getPageSize());
             query.setFacetMinCount(1);
-            List<SearchField> searchFieldList = searchParam.getSearchField();
+            Map<String, String> searchFieldList = searchParam.getSearchField();
             if(searchFieldList!= null && searchFieldList.size()>=1){
-                for (SearchField searchField : searchFieldList) {  
-                    if(searchField.getValue() == null){
-                        continue;
+                for (String str : searchFieldList.keySet()) {  
+                    if(!StringUtil.isBlank(str)){
+                        query.addFilterQuery(str + ":" + searchFieldList.get(str));  
                     }
-                    query.addFilterQuery(searchField.getName() + ":" + searchField.getValue().toString());  
                 } 
             }
         } catch (Exception e) {  
@@ -243,5 +185,269 @@ public class SolrSearchUtil {
         }  
         return BigDecimal.valueOf(Long.valueOf(amount)).divide(new BigDecimal(100)).toString();  
     }  
+    
+    /**
+     * 
+     * setQueryCondiction:(设置solr查询条件). <br/> 
+     * 
+     * @author gxq 
+     * @param searchParam
+     * @param query 
+     * @since JDK 1.6
+     */
+    @SuppressWarnings({ "rawtypes", "null" })
+    public static void setQueryCondiction(SearchParam searchParam, SolrQuery query){
+        if(!StringUtil.isBlank(searchParam.getKeyWord())){
+            query.setQuery("name:"+searchParam.getKeyWord());
+        }else{
+            query.setQuery("*:*");
+        }
+        /**
+         * 设置高亮  
+         */
+        if (searchParam.isIfHightlight()) {
+            query.setHighlight(true); // 开启高亮组件  
+            query.addHighlightField("gdsName");// 高亮字段  
+            query.addHighlightField("gdsSubtitle");// 高亮字段  
+            query.addHighlightField("funIntroduction");// 高亮字段  
+            query.setHighlightSimplePre("<font color=\"red\">");// 标记  
+            query.setHighlightSimplePost("</font>");  
+            query.setHighlightSnippets(1);// 结果分片数，默认为1  
+            query.setHighlightFragsize(1000);// 每个分片的最大长度，默认为100  
+
+        }  
+        /**
+         * 查询条件and
+         * 
+         */
+        Map<String, String> searchFieldList = searchParam.getSearchField();
+        if(searchFieldList != null && searchFieldList.size()>=1){
+            for (String str : searchFieldList.keySet()) {  
+                if(!StringUtil.isBlank(str) && !StringUtil.isBlank(searchFieldList.get(str))){
+                    query.addFilterQuery(str + ":" + searchFieldList.get(str)); 
+                }
+            }
+        }
+        
+        /**
+         * 查询条件and 用于比如 gdsId =1 and gdsId= 2 and gdsId = 3 多值的&&查询
+         * 
+         */
+        Map<String, List<String>> SearchAndListField = searchParam.getSearchAndListField();
+        if(SearchAndListField != null && SearchAndListField.size()>=1){
+            for (String key : SearchAndListField.keySet()) {
+                if(!StringUtil.isBlank(key) && SearchAndListField.get(key)!=null && SearchAndListField.get(key).size()>=1){
+                    query.addFilterQuery(parseSearchAndValue(key,SearchAndListField.get(key)));
+                }
+            }
+        }
+        /**
+         * 查询条件OR
+         */
+        Map<String, String> searchOrfieldList = searchParam.getSearchOrField();
+        if(searchOrfieldList != null && searchOrfieldList.size()>=1){
+            StringBuffer stb = new StringBuffer(" ( ");
+            int i = 0;
+            int size = searchOrfieldList.size();
+            for (String str : searchOrfieldList.keySet()) {  
+                if(!StringUtil.isBlank(str)){
+                    stb.append(" "+str+":"+searchOrfieldList.get(str)+" ");
+                    if(i < size-1){
+                        stb.append(" OR ");
+                    }
+                }
+                i ++;
+            }
+            stb.append(" ) ");
+            query.addFilterQuery(stb.toString());
+        }
+        
+        /**
+         * 查询条件OR。用于某个字段值多值的||查询
+         */
+        Map<String, List<String>> searchOrList = searchParam.getSearchOrListField();
+        if(searchOrList != null && searchOrList.size()>=1){
+            for (String str : searchOrList.keySet()) {
+                if(!StringUtil.isBlank(str) && searchOrList.get(str) != null && searchOrList.get(str).size() >=1){
+                    query.addFilterQuery(parseSearchOrValue(str,searchOrList.get(str)));
+                }
+            }
+           
+        }
+        
+        /**
+         * 查询条件NOT 
+         */
+        Map<String, String> searchNotField = searchParam.getSearchNotField();
+        if(searchNotField != null && searchNotField.size()>=1){
+            for (String str : searchNotField.keySet()) {  
+                if(!StringUtil.isBlank(str) && !StringUtil.isBlank(searchFieldList.get(str))){
+                    query.addFilterQuery(" NOT " +str + ":" + searchFieldList.get(str)); 
+                }
+            }
+        }
+        
+        /**
+         * 查询条件NOT 用于比如 gdsId not in(1,2,3,4,5) 排出多值的
+         */
+        Map<String, List<String>> searchNotListField = searchParam.getSearchNotListField();
+        if(searchNotListField != null && searchNotListField.size()>=1){
+            for (String key : searchNotListField.keySet()) {
+                if(!StringUtil.isBlank(key) && searchNotListField.get(key) != null && searchNotListField.get(key).size()>=1){
+                    query.addFilterQuery(parseSearchNotValue(key,searchNotListField.get(key)));
+                }
+            }
+        }
+        /**
+         * 设置起始位置与返回结果数  
+         */
+        int pageNo = 0;
+        if(searchParam.getPageNo()==1){
+            pageNo = searchParam.getPageNo() -1;
+        }else if(searchParam.getPageNo() >= 2){
+            pageNo = (searchParam.getPageNo() -1 )*searchParam.getPageSize();
+        }
+        query.setStart(pageNo);  
+        query.setRows(searchParam.getPageSize()); 
+        /**
+         * 设置排序条件
+         */
+        List<SortField> sortfield = searchParam.getSortField();
+        if (null != sortfield || sortfield.size() >= 1) {  
+            for (SortField sortField : sortfield) { 
+                query.addSort(sortField.getName(),  SolrQuery.ORDER.valueOf(sortField.getValue().getSort()));  
+            }  
+        }
+    }
+    
+    /**
+     * 
+     * parseResult:(解析查询结果). <br/> 
+     * 
+     * @author gxq 
+     * @param resultlist
+     * @param map 
+     * @since JDK 1.6
+     */
+    public static void parseResult(List<ResultRespVO> resultlist, Map<String, Map<String, List<String>>> map){
+        for (ResultRespVO resultRespVO  : resultlist) {
+            //hightlight的键为Item的id，值唯一，我们设置的高亮字段为gdsName
+            if(!StringUtil.isBlank(resultRespVO.getGdsPic())){
+                resultRespVO.setGdsPic(resultRespVO.getGdsPic());
+            }
+            resultRespVO.setGdsNameSrc(resultRespVO.getGdsName());
+            resultRespVO.setGdsLabel(resultRespVO.getGdsLabel());
+            List<String> hlString = map.get(resultRespVO.getId()).get("gdsName");
+            if (null != hlString) {
+                StringBuffer sbf = new StringBuffer();
+                for (String s : hlString) {
+                    sbf.append(s);
+                }
+                resultRespVO.setGdsName(sbf.toString());
+            } 
+            resultRespVO.setGdsSubtitleSrc(resultRespVO.getGdsSubtitle());
+            List<String> hTitlelString = map.get(resultRespVO.getId()).get("gdsSubtitle");
+            if (null != hTitlelString) {
+                StringBuffer sbf = new StringBuffer();
+                for (String s : hTitlelString) {
+                    sbf.append(s);
+                }
+                resultRespVO.setGdsSubtitle(sbf.toString());
+            }
+            resultRespVO.setFunIntroductionSrc(resultRespVO.getFunIntroduction());
+            List<String> hIntroString = map.get(resultRespVO.getId()).get("funIntroduction");
+            if (null != hIntroString) {
+                StringBuffer sbf = new StringBuffer();
+                for (String s : hIntroString) {
+                    sbf.append(s);
+                }
+                resultRespVO.setFunIntroduction(sbf.toString());
+            }
+        }
+    }
+    
+    /**
+     * 
+     * parseSearchAndValue:(拼接多值&&条件). <br/> 
+     * 
+     * @author gxq 
+     * @param list 
+     * @since JDK 1.6
+     */
+    public static String parseSearchAndValue(String key,List<String> list){
+        StringBuffer stb = new StringBuffer();
+        if(list!= null && list.size() >= 1){
+            int size = list.size();
+            stb.append(key+":( ");
+            int i = 0;
+            for(String str : list){
+                if(!StringUtil.isBlank(str)){
+                    stb.append(" "+str+" ");
+                    if(i<size-1){
+                        stb.append(" , ");
+                    }
+                    i ++;
+                }
+            }
+            stb.append(" )");
+        }
+        return stb.toString();
+    }
+    
+    /**
+     * 
+     * parseSearchOrValue:(拼接多值||条件). <br/> 
+     * 
+     * @author gxq 
+     * @param list 
+     * @since JDK 1.6
+     */
+    public static String parseSearchOrValue(String key,List<String> list){
+        StringBuffer stb = new StringBuffer();
+        if(list!= null && list.size() >= 1){
+            int size = list.size();
+            stb.append("( ");
+            int i = 0;
+            for(String str : list){
+                if(!StringUtil.isBlank(str)){
+                    stb.append(" "+key+":"+str+" ");
+                    if(i<size-1){
+                        stb.append(" OR ");
+                    }
+                    i ++;
+                }
+            }
+            stb.append(" )");
+        }
+        return stb.toString();
+    }
+    
+    /**
+     * 
+     * parseSearchNotValue:(拼接多值!条件). <br/> 
+     * 
+     * @author gxq 
+     * @param list 
+     * @since JDK 1.6
+     */
+    public static String parseSearchNotValue(String key,List<String> list){
+        StringBuffer stb = new StringBuffer();
+        if(list!= null && list.size() >= 1){
+            int size = list.size();
+            stb.append(" NOT "+key+":( ");
+            int i = 0;
+            for(String str : list){
+                if(!StringUtil.isBlank(str)){
+                    stb.append(" "+str+" ");
+                    if(i<size-1){
+                        stb.append(" , ");
+                    }
+                    i ++;
+                }
+            }
+            stb.append(" )");
+        }
+        return stb.toString();
+    }
 }
 
