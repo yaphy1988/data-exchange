@@ -6,6 +6,7 @@ import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipCenterBillDetailSV;
+import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipCenterDataAccountSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IRechargeSV;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
@@ -25,7 +26,7 @@ public class AipCenterDataAccountRSVImpl implements IAipCenterDataAccountRSV {
     private IRechargeSV rechargeSV;
 
     @Autowired
-    private IAipCenterDataAccountRSV dataAccountRSV;
+    private IAipCenterDataAccountSV dataAccountSV;
 
     @Autowired
     private IAipCenterBillDetailSV aipCenterBillDetailSV;
@@ -42,7 +43,7 @@ public class AipCenterDataAccountRSVImpl implements IAipCenterDataAccountRSV {
 
     @Override
     public DataAccountDTO queryDataAccountBySubOrder(String subOrder) throws BusinessException {
-        return dataAccountRSV.queryDataAccountBySubOrder(subOrder);
+        return dataAccountSV.queryDataAccountBySubOrder(subOrder);
     }
 
     @Override
