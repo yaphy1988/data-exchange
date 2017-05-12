@@ -29,13 +29,13 @@ public class RechargeReqDTO extends BaseInfo {
 
     private String serviceId;
 
-    private int catId;
+    private Integer catId;
 
-    private int catFirst;
+    private Integer catFirst;
 
-    private int gdsId;
+    private Integer gdsId;
 
-    private int skuId;
+    private Integer skuId;
 
     private Integer totalNum;
 
@@ -110,35 +110,35 @@ public class RechargeReqDTO extends BaseInfo {
         this.serviceId = serviceId;
     }
 
-    public int getCatId() {
+    public Integer getCatId() {
         return catId;
     }
 
-    public void setCatId(int catId) {
+    public void setCatId(Integer catId) {
         this.catId = catId;
     }
 
-    public int getCatFirst() {
+    public Integer getCatFirst() {
         return catFirst;
     }
 
-    public void setCatFirst(int catFirst) {
+    public void setCatFirst(Integer catFirst) {
         this.catFirst = catFirst;
     }
 
-    public int getGdsId() {
+    public Integer getGdsId() {
         return gdsId;
     }
 
-    public void setGdsId(int gdsId) {
+    public void setGdsId(Integer gdsId) {
         this.gdsId = gdsId;
     }
 
-    public int getSkuId() {
+    public Integer getSkuId() {
         return skuId;
     }
 
-    public void setSkuId(int skuId) {
+    public void setSkuId(Integer skuId) {
         this.skuId = skuId;
     }
 
