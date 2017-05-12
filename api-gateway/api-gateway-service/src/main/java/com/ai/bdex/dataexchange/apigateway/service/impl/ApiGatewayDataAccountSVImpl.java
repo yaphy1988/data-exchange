@@ -45,7 +45,7 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
     private ManualDataAccountMapper manualDataAccountMapper;
 
     @Override
-    public String dataCharge(DataConsumeDTO consumeDTO) throws BusinessException {
+    public String dealDataCharge(DataConsumeDTO consumeDTO) throws BusinessException {
         //参数合法性检查
         checkDataConsumeParams(consumeDTO);
 

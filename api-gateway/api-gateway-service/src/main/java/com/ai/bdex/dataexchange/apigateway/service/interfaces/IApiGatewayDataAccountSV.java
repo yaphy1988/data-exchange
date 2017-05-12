@@ -13,5 +13,5 @@ public interface IApiGatewayDataAccountSV {
      * @return OK-成功，NA-没有权限访问
      * @throws BusinessException
      */
-    String dataCharge(DataConsumeDTO consumeDTO) throws BusinessException;
+    String dealDataCharge(DataConsumeDTO consumeDTO) throws BusinessException;
 }
