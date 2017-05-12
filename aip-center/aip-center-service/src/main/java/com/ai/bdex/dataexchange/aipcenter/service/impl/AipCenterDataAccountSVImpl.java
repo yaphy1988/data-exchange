@@ -87,6 +87,7 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
 
         DataAccount dataAccount = getDefaultNewDataAccount();
         dataAccount.setUserId(rechargeDTO.getRechargeUserId());
+        dataAccount.setServiceId(rechargeDTO.getServiceId());
         dataAccount.setDataAcctType(rechargeDTO.getRechargeType());
         dataAccount.setPeriodType(rechargeDTO.getPeriodType());
         dataAccount.setCreateStaff(rechargeDTO.getCurrentUserId());
