@@ -36,4 +36,20 @@ public interface IAipCenterDataAccountSV {
      * @throws BusinessException
      */
     public long createDataAccount(RechargeReqDTO rechargeDTO) throws BusinessException;
+
+    /**
+     * 查询数据账户信息
+     * @param dataAccountDTO
+     * @return
+     * @throws BusinessException
+     */
+    public List<DataAccountDTO> queryDataAccountListByOption(DataAccountDTO dataAccountDTO) throws BusinessException;
+
+    /**
+     * 根据id查询数据账户
+     * @param dataAcctId
+     * @return
+     * @throws BusinessException
+     */
+    public DataAccountDTO queryDataAccountById(long dataAcctId) throws BusinessException;
 }

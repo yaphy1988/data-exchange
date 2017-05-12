@@ -50,6 +50,6 @@ public class AipCenterDataAccountRSVImpl implements IAipCenterDataAccountRSV {
 
     @Override
     public PageResponseDTO<RechargeDTO> queryRechargePageByOption(RechargeReqDTO rechargeReqDTO) throws BusinessException {
-        return null;
+        return rechargeSV.queryRechargeRecordPageByOption(rechargeReqDTO);
     }
 }

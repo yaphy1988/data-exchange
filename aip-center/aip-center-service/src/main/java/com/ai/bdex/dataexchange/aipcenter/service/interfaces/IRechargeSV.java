@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.aipcenter.service.interfaces;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 
 import java.util.List;
@@ -18,4 +19,12 @@ public interface IRechargeSV {
      * @return
      */
     public List<RechargeDTO> queryRechargeRecordListByOption(RechargeReqDTO rechargeDTO) throws BusinessException;
+
+    /**
+     * 充值信息分页查询
+     * @param rechargeDTO
+     * @return
+     * @throws BusinessException
+     */
+    public PageResponseDTO<RechargeDTO> queryRechargeRecordPageByOption(RechargeReqDTO rechargeDTO) throws BusinessException;
 }

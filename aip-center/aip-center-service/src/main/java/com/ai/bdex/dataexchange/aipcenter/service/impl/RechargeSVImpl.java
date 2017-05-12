@@ -1,19 +1,21 @@
 package com.ai.bdex.dataexchange.aipcenter.service.impl;
 
-
-import com.ai.bdex.dataexchange.aipcenter.dao.mapper.DataAccountMapper;
 import com.ai.bdex.dataexchange.aipcenter.dao.mapper.RechargeRecordMapper;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.*;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipCenterDataAccountSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IRechargeSV;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.ObjectCopyUtil;
 import com.ai.paas.utils.StringUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,9 +76,58 @@ public class RechargeSVImpl implements IRechargeSV {
             for(RechargeRecord rechargeRecord:resultList){
                 RechargeDTO rechargeDTO1 = new RechargeDTO();
                 ObjectCopyUtil.copyObjValue(rechargeRecord,rechargeDTO1,null,false);
+                if(rechargeDTO.isQueryDataAccount()){
+                    rechargeDTO.setDataAccountDTO(aipCenterDataAccountSV.queryDataAccountById(rechargeDTO1.getDataAccountId()));
+                }
                 dtos.add(rechargeDTO1);
             }
             return dtos;
+        }
+    }
+
+    @Override
+    public PageResponseDTO<RechargeDTO> queryRechargeRecordPageByOption(RechargeReqDTO rechargeDTO) throws BusinessException{
+        RechargeRecordExample rechargeRecordExample = new RechargeRecordExample();
+        RechargeRecordExample.Criteria criteria = rechargeRecordExample.createCriteria();
+        if(!StringUtil.isBlank(rechargeDTO.getRechargeUserId())){
+            criteria.andRechargeUserIdEqualTo(rechargeDTO.getRechargeUserId());
+        }
+        if(!StringUtil.isBlank(rechargeDTO.getOrderId())){
+            criteria.andOrderIdEqualTo(rechargeDTO.getOrderId());
+        }
+        if(!StringUtil.isBlank(rechargeDTO.getSubOrder())){
+            criteria.andSubOrderEqualTo(rechargeDTO.getSubOrder());
+        }
+        if(!StringUtil.isBlank(rechargeDTO.getServiceId())){
+            criteria.andServiceIdEqualTo(rechargeDTO.getServiceId());
+        }
+        if(rechargeDTO.getGdsId() != null && rechargeDTO.getGdsId() > 0){
+            criteria.andGdsIdEqualTo(rechargeDTO.getGdsId());
+        }
+        if(rechargeDTO.getSkuId() != null && rechargeDTO.getSkuId() > 0){
+            criteria.andSkuIdEqualTo(rechargeDTO.getSkuId());
+        }
+        if(rechargeDTO.getCatFirst() != null && rechargeDTO.getCatFirst() > 0){
+            criteria.andCatFirstEqualTo(rechargeDTO.getCatFirst());
+        }
+        if(rechargeDTO.getCatId() != null && rechargeDTO.getCatId() > 0){
+            criteria.andCatIdEqualTo(rechargeDTO.getCatId());
+        }
+
+        PageHelper.startPage(rechargeDTO.getPageNo(),rechargeDTO.getPageSize());
+
+        List<RechargeRecord> resultList = rechargeRecordMapper.selectByExample(rechargeRecordExample);
+
+        if(CollectionUtil.isEmpty(resultList)){
+            return null;
+        }else{
+            PageResponseDTO<RechargeDTO> respPageDTO = PageResponseFactory.genPageResponse(new PageInfo(resultList),RechargeDTO.class);
+            if(rechargeDTO.isQueryDataAccount()){
+                for(RechargeDTO pRecharge : respPageDTO.getResult()){
+                    pRecharge.setDataAccountDTO(aipCenterDataAccountSV.queryDataAccountById(pRecharge.getDataAccountId()));
+                }
+            }
+            return respPageDTO;
         }
     }
 

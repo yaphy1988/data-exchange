@@ -120,7 +120,8 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         return dataAccount.getDataAcctId();
     }
 
-    private List<DataAccountDTO> queryDataAccountListByOption(DataAccountDTO dataAccountDTO){
+    @Override
+    public List<DataAccountDTO> queryDataAccountListByOption(DataAccountDTO dataAccountDTO) throws BusinessException{
         DataAccountExample dataAccountExample = new DataAccountExample();
         DataAccountExample.Criteria criteria = dataAccountExample.createCriteria();
 
@@ -143,6 +144,12 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
 
         return ModelDTOConvertUtil.convertModelList2DTOList(dataAccountList,DataAccountDTO.class,null,false);
 
+    }
+
+    @Override
+    public DataAccountDTO queryDataAccountById(long dataAcctId) throws BusinessException {
+        DataAccount resultDataAccount = dataAccountMapper.selectByPrimaryKey(dataAcctId);
+        return ModelDTOConvertUtil.createCopyObject(resultDataAccount,DataAccountDTO.class,null,false);
     }
 
     private DataAccount getDefaultNewDataAccount(){
