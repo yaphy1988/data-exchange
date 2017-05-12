@@ -118,6 +118,14 @@ public class RechargeSVImpl implements IRechargeSV {
             logger.error("充值类型不能为空!");
             throw new BusinessException("充值类型不能为空!");
         }
+        if(Constants.Bill.RECHARGE_TYPE_NUM.equals(rechargeDTO.getRechargeType())&&(rechargeDTO.getTotalNum() == null || rechargeDTO.getTotalNum() <= 0)){
+            logger.error("充值类型为次数时,totalNum必须大于0!");
+            throw new BusinessException("充值类型为次数时,totalNum必须大于0!");
+        }
+        if(Constants.Bill.RECHARGE_TYPE_MONEY.equals(rechargeDTO.getRechargeType())&&(rechargeDTO.getTotalMoney() == null || rechargeDTO.getTotalMoney() <= 0)){
+            logger.error("充值类型为金额时,totalMoney必须大于0!");
+            throw new BusinessException("充值类型为金额时,totalMoney必须大于0!");
+        }
         if(StringUtil.isBlank(rechargeDTO.getPeriodType())){
             logger.error("有效期类型不能为空!");
             throw new BusinessException("有效期类型不能为空!");
