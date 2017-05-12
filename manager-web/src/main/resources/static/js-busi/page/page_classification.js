@@ -21,14 +21,14 @@ function querySortInfo(sortParentId,sortLever){
 				$(sortInfos).each(function(i,d){
 					var content = d.sortContentVO;
 					htmlLever1 +='<li pSortId='+d.parentSortId+' sortId='+d.sortId+'>'+
-						'<a href="javascript:;" onclick="insetOrUpdateContent(this)"><span>✖</span></a><a href="javascript:;" onclick="querySortFirstlever(this)"><i>&rsaquo;</i>'+content.contentName+'</a> </li>';
+						'<a href="javascript:;" onclick="deleteSortInfo(this)"><span>✖</span></a><a href="javascript:;" onclick="querySortFirstlever(this)"><i>&rsaquo;</i>'+content.contentName+'</a> </li>';
 					var subSortInfoList = d.subSortInfoList;
 					htmlLever2 += '<div pSortId='+d.sortId+' class="class_sidebar_secon" style="display: none">'+
 						'<h4>'+content.contentName+'</h4>'+
 						'<ol class="class_link">';
 					$(subSortInfoList).each(function(i,k){
 						var subContent = k.sortContentVO;
-						htmlLever2 +='<li><a pSortId='+k.parentSortId+' href="javascript:;" sortId="'+k.sortId+'" onclick="querySortSenlever(this)">'+subContent.contentName+'</a><a href="javascript:;">✖</a></li>';
+						htmlLever2 +='<li pSortId='+k.parentSortId+' sortId="'+k.sortId+'" ><a href="javascript:;" onclick="querySortSenlever(this)">'+subContent.contentName+'</a><a href="javascript:;" onclick="deleteSortInfo(this)">✖</a></li>';
 					});
 					htmlLever2 +='</ol><button class="btn btn-default btn-sm"  style="margin-top:20px">'+
 						'<i class="glyphicon glyphicon-plus"></i> 添加二级分类</button></div>'
@@ -65,9 +65,13 @@ function querySortFirstlever(obj){
 }
 function querySortSenlever(obj){
 //	$('#head_sidebar').find('li').removeClass('active');
-	$(obj).siblings().removeClass('active');
+	$(obj).parent().siblings().find('a').removeClass('active');
+	var sortId = $(obj).parents('div[psortid]').attr('psortid');
+	$('#head_sidebar li').removeClass('active');
+	$('#head_sidebar li[sortid='+sortId+']').attr('class','active');
+	
 	$(obj).attr('class','active');
-	var sortId = $(obj).attr('sortId');
+	var sortId = $(obj).parent().attr('sortId');
 	querySortInfoById(sortId)
 }
 function querySortInfoById(sortId){
@@ -78,14 +82,16 @@ function querySortInfoById(sortId){
 	};
 	goAjax(url,params,'html',callBack);
 }
-function insetOrUpdateSortInfo(obj){
-	var psortId=$(obj).parent().attr('pSortId');
-	var sortId=$(obj).parent().attr('sortId');
+function deleteSortInfo(obj){
+	var sortId = $(obj).parent().attr('sortId');
+	var params={sortId:sortId,status:'2'};
+	insetOrUpdateSortInfo(params);
+}
+function insetOrUpdateSortInfo(params){
 	var url = WEB_ROOT+'/pageManage/insetOrUpdateSortInfo';
-	var params={psortId:psortId,sortId:sortId,status:'2'};
 	var callBack = function(data){
 		if(!data.success){
-			WEB.msg.info('提示','删除失败！'+data.erroMsg);
+			WEB.msg.info('提示','操作失败！'+data.erroMsg);
 		}
 	};
 	goAjax(url,params,'json',callBack);

@@ -447,9 +447,6 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
 	}
 	@Override
 	public long updateSortContent(SortContentReqDTO sortContentReqDTO) throws Exception {
-		if(sortContentReqDTO.getSortContentId() == null || sortContentReqDTO.getSortContentId() == 0 ){
-			throw new BusinessException("主键不能为空：sortContentId="+sortContentReqDTO.getSortContentId());
-		}
 		return iSortContentSV.updateSortContent(sortContentReqDTO);
 	}
 	@Override
