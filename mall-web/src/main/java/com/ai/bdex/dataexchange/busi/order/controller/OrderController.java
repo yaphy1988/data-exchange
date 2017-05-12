@@ -71,7 +71,15 @@ public class OrderController {
 	public ModelAndView saveTosession(Model model, HttpServletRequest request) {
 		//取用户ID
 		HttpSession hpptsesion = request.getSession(); 
-		String staff_id = StaffUtil.getStaffId(hpptsesion); 
+		String staff_id = StaffUtil.getStaffId(hpptsesion);
+	/*	if(StringUtil.isBlank(staff_id))
+		{
+			//没有登录的，就直接跳转到登录界面去了。
+			ModelAndView modelAndView = new ModelAndView("login");
+			return modelAndView;
+		}*/
+
+
 		StaffInfoDTO staffInfoDTO = StaffUtil.getStaffVO(hpptsesion);
 		//将商品的名称，gdsID，套餐id，skuID，带过来，存储到session中。价
 	    //图片ID格必须从商品服务从新回去
@@ -243,8 +251,11 @@ public class OrderController {
  				  }
   					if(StringUtil.isBlank(staff_id))
  					{
- 						staff_id = "tmpuser";
- 					}
+						staff_id = "tmpstaff_id";
+					/*	rMap.put("success", false);
+						rMap.put("ERRORINFO", "亲，请先登录哦");
+						return rMap;*/
+					}
  					OrdInfoReqDTO  ordInfoReqDTO = (OrdInfoReqDTO)CacheUtil.getItem(staff_id+"_shopcart");
  					ordInfoReqDTO.setCreateStaff(staff_id);
  					
@@ -270,6 +281,7 @@ public class OrderController {
 			rMap.put("success", true);
 		} catch (Exception e) {
 			log.error("生成订单异常：" + e.getMessage());
+			rMap.put("ERRORINFO", "亲，生成订单异常");
 			rMap.put("success", false);
 		}
 		return rMap;

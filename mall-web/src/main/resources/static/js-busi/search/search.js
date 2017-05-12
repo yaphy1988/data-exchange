@@ -197,6 +197,16 @@ var Search = {
 			});
 		},
 		addToCart : function(gdsId,skuId){
+			var staff_id = "";
+			if(staffInfoDTO != null)
+			{
+				staff_id = staffInfoDTO.staffId;
+			}
+			if(staff_id == null || staff_id =="")
+			{
+				WEB.msg.info("提示",'亲，请先登录哦，若无账户，请先注册。');
+				return;
+			}
 			var url = WEB_ROOT+"/order/gdshopcart?gdsId="+gdsId+"&skuId="+skuId;
 			window.open(url);
 		}

@@ -180,8 +180,7 @@ public class orderManageController {
 	 * @return
 	 */
 	@RequestMapping(value="/orderManage")
-	@ResponseBody
-	public String orderManage(HttpServletRequest request,OrdMainInfoVO ordMainInfoVO){
+	public String orderManage(){
 		return "order_manage";
 	}
 	/**
@@ -190,7 +189,6 @@ public class orderManageController {
 	 * @return
 	 */
 	@RequestMapping(value="/orderManagequery")
-	@ResponseBody
  	public String orderManagequery(Model model, OrdMainInfoVO ordMainInfoVO,HttpServletRequest request ) {
 		try {
 				PageResponseDTO<OrdMainInfoRespDTO> pageInfo = new PageResponseDTO<OrdMainInfoRespDTO>();

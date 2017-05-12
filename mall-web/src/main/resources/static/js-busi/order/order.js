@@ -55,8 +55,9 @@ function reduce()
 		doAjax(url,params,callBack); 
 }
  //创建订单
- function createOrder(){  
-	    var url = basePath+'/order/creatOrder';
+ function createOrder(){
+
+ 	    var url = basePath+'/order/creatOrder';
 		var params={};
 		var callBack =function(data){ 
 			if(data.success){ 
@@ -75,24 +76,18 @@ function reduce()
  				    }
 			} 
 			else{
-				 WEB.msg.info("提示","订单生成失败");
+				 WEB.msg.info("提示",data.ERRORINFO);
 			}
 		};
 		doAjax(url,params,callBack);  
  }
-/*//获取数据定制的图片
-function queryModue103(moduleId){
-	var url = basePath+'/homePage/queryPageModuleAd';
-	var params={moduleId:moduleId};
-	var callBack =function(data){
-		var htmlOl = '';
-		var htmDiv = '';
-		if(data.success){
-			$(data.moduleAdList).each(function(i,d){
-				$("#datasetImg").attr("src",d.vfsId); 
-			});
-		} 
-	};
-	doAjax(url,params,callBack);
-}*/
+/*//遇见问题*/
+function haveProblome(moduleId){
+	window.location.href=basePath+"/homePage/pageNewsInfolist?moduleId=108";
+}
+//支付成功  去我的订单
+function createOrdSusse(){
+
+	window.location.href=MANAGE_ROOT+"/orderManage/myOrder";
+}
  

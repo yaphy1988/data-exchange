@@ -43,6 +43,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		ordMainInfoReqDTO.setOrderMoney(ordInfoReqDTO.getOrderMoney());
 		ordMainInfoReqDTO.setRealMoney(ordInfoReqDTO.getOrderMoney());
 		ordMainInfoReqDTO.setStaffId(ordInfoReqDTO.getCreateStaff());
+		ordMainInfoReqDTO.setShopId(ordInfoReqDTO.getShopId());
 		ordMainInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_0);
  		ordMainInfoReqDTO.setOrderTime(orderTime);
 		ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_01);

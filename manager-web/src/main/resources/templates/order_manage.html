@@ -12,7 +12,7 @@
 	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
-	<script type="text/javascript" src="../../static/js-busi/order/myOrder.js" th:src="@{/js-busi/order/myOrder.js}"></script>
+	<script type="text/javascript" src="../../static/js-busi/order/orderManager.js" th:src="@{/js-busi/order/orderManager.js}"></script>
 	<!--[if lt IE 9]>
 	<script src="../static/js/respond.min.js" ></script>
 	<script src="../static/js/html5shiv.min.js" ></script>
@@ -72,7 +72,6 @@
                 <ul class="nav nav-tabs" role="tablist">
                     <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">订单管理</a></li>
                 </ul>
-
                 <!-- Tab panes -->
                 <div class="tab-content pt15">
                     <div role="tabpanel" class="tab-pane active" id="managerdata">
@@ -94,18 +93,19 @@
                             </tr>
                             </thead>
 							<tbody th:if=" ${pageInfo}" th:remove="all-but-first">
-							<tr th:each="list,iterStat : ${pageInfo.result}" 	th:unless="${#lists.isEmpty(pageInfo.result)}">
+							<tr th:each="list,iterStat : ${pageInfo.result}"
+								th:unless="${#lists.isEmpty(pageInfo.result)}">
 								<td th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
 								<td th:text="${list.orderId}"></td>
 								<td th:text="${#calendars.format(list.ordInfoRespDTO.orderTime,'yyyy-MM-dd HH:mm:ss')}"></td>
 								<td th:text="${list.ordInfoRespDTO.serviceName}"></td>
-								<td th:text="${list.ordInfoRespDTO.skuName}"></td>
-								<td th:text="${list.ordInfoRespDTO.buyAllCount}"></td>
+								<td	th:text="${list.ordInfoRespDTO.skuName}"></td>
+								<td	th:text="${list.ordInfoRespDTO.buyAllCount}"></td>
 								<td th:text="${list.ordInfoRespDTO.belanceAllCount}"></td>
-								<td th:with="packPrice="${list.orderMoney}" th:text="${#tools.formatMoney(packPrice)}"></td>
-								<td th:with="activeEndTime="${list.ordInfoRespDTO.activeEndTime}" th:text="${#dates.format(activeEndTime, 'yyyy-MM-dd HH:mm')}"></td>
-								<td th:with="orderstatus="${list.orderStatus}" th:text="${#tools.formatOrderStatus(orderstatus)}"></td>
-								<td th:with="orderType="${list.orderType}" th:text="${#tools.formatOrderType(orderType)}"></td>
+								<td th:with="packPrice=${list.orderMoney}"th:text="${#tools.formatMoney(packPrice)}"></td>
+								 <td   th:with="activeEndTime=${list.ordInfoRespDTO.activeEndTime}" th:text="${#dates.format(activeEndTime,'yyyy-MM-dd HH:mm')}"></td>
+                                 <td  th:with="orderstatus=${list.orderStatus}" th:text="${#tools.formatOrderStatus (orderstatus)}"></td>
+                                <td th:with="orderType=${list.orderType}" th:text="${#tools.formatOrderType(orderType)}"></td>
 								<td th:if="${list.orderStatus}=='01'">
 									<p class="pop-link">
 										<a href="edit_module.html">编辑</a>
@@ -113,9 +113,11 @@
 								</td>
 								<td th:if="${list.orderStatus}!='01'">
 									<p class="pop-link">
-										<a href="edit_module.html">使失效</a>
+										<a href="edit_module.html">使
+											失效</a>
 									</p>
 								</td>
+							</tr>
  							<tr>
                                 <td>12</td>
                                 <td>201703270001</td>
@@ -153,7 +155,7 @@
 
 									if (typeof pagerClick === "undefined") {
 										pagerClick = function(index) {
-											//queryCustomData(index);
+											 orderManagequery(index);
 										}
 									}
 									$('#pagerId').pager({

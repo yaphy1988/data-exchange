@@ -16,6 +16,8 @@
     <link rel="stylesheet" href="../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
     <script th:inline="javascript">
         var WEB_ROOT = [[${#httpServletRequest.contextPath}]];
+
+        var MANAGE_ROOT = [[${#tools.managerDomain()}]];
         var staffInfoDTO = [[${session.staffInfoDTO}]];
     </script>
     <!-- js -->
