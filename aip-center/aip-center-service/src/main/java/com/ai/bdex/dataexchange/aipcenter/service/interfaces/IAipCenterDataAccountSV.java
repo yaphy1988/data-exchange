@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.aipcenter.service.interfaces;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 
 import java.util.List;
@@ -26,7 +27,7 @@ public interface IAipCenterDataAccountSV {
      * @return
      * @throws BusinessException
      */
-    public List<DataAccountDTO> queryDataAccountByRechargInfo(RechargeDTO rechargeDTO) throws BusinessException;
+    public List<DataAccountDTO> queryDataAccountByRechargInfo(RechargeReqDTO rechargeDTO) throws BusinessException;
 
     /**
      * 用户下单创建数据账户
@@ -34,5 +35,5 @@ public interface IAipCenterDataAccountSV {
      * @return 返回创建成功后的数据账户id
      * @throws BusinessException
      */
-    public long createDataAccount(RechargeDTO rechargeDTO) throws BusinessException;
+    public long createDataAccount(RechargeReqDTO rechargeDTO) throws BusinessException;
 }

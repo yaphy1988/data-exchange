@@ -6,6 +6,7 @@ import com.ai.bdex.dataexchange.aipcenter.dao.model.BillDetailExample;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.BillDetailDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.BillDetailReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipCenterBillDetailSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IRechargeSV;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
@@ -43,7 +44,7 @@ public class AipCenterBillDetailSVImpl implements IAipCenterBillDetailSV {
             criteria.andRealServiceIdEqualTo(billDetailReqDTO.getServiceId());
         }
         if(!StringUtil.isBlank(billDetailReqDTO.getSubOrder())){
-            RechargeDTO queryRechargeDTO = new RechargeDTO();
+            RechargeReqDTO queryRechargeDTO = new RechargeReqDTO();
             queryRechargeDTO.setSubOrder(billDetailReqDTO.getSubOrder());
             List<RechargeDTO>  rechargeDTOList = rechargeSV.queryRechargeRecordListByOption(queryRechargeDTO);
             //subOrder 在充值表中是唯一所以，所以最多只会返回一个记录

@@ -1,9 +1,6 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.impl;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.BillDetailDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.BillDetailReqDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.*;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipCenterBillDetailSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipCenterDataAccountSV;
@@ -32,12 +29,12 @@ public class AipCenterDataAccountRSVImpl implements IAipCenterDataAccountRSV {
     private IAipCenterBillDetailSV aipCenterBillDetailSV;
 
     @Override
-    public void recharge(List<RechargeDTO> rechargeDTOList) throws BusinessException {
+    public void recharge(List<RechargeReqDTO> rechargeDTOList) throws BusinessException {
         rechargeSV.recharge(rechargeDTOList);
     }
 
     @Override
-    public void recharge(RechargeDTO rechargeDTO) throws BusinessException {
+    public void recharge(RechargeReqDTO rechargeDTO) throws BusinessException {
         rechargeSV.recharge(Arrays.asList(rechargeDTO));
     }
 
@@ -49,5 +46,10 @@ public class AipCenterDataAccountRSVImpl implements IAipCenterDataAccountRSV {
     @Override
     public PageResponseDTO<BillDetailDTO> queryBillDetail(BillDetailReqDTO billDetailReqDTO) throws BusinessException {
         return aipCenterBillDetailSV.queryBillDetail(billDetailReqDTO);
+    }
+
+    @Override
+    public PageResponseDTO<RechargeDTO> queryRechargePageByOption(RechargeReqDTO rechargeReqDTO) throws BusinessException {
+        return null;
     }
 }

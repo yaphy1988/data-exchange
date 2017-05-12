@@ -1,9 +1,6 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.BillDetailDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.BillDetailReqDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.*;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 
@@ -19,14 +16,14 @@ public interface IAipCenterDataAccountRSV {
      * @param rechargeDTOList
      * @throws BusinessException
      */
-    public void recharge(List<RechargeDTO> rechargeDTOList) throws BusinessException;
+    public void recharge(List<RechargeReqDTO> rechargeDTOList) throws BusinessException;
 
     /**
      * 单个充值
      * @param rechargeDTO
      * @throws BusinessException
      */
-    public void recharge(RechargeDTO rechargeDTO) throws BusinessException;
+    public void recharge(RechargeReqDTO rechargeDTO) throws BusinessException;
 
     /**
      * 根据子订单编码，查询数据账户信息
@@ -48,4 +45,12 @@ public interface IAipCenterDataAccountRSV {
      * @throws BusinessException
      */
     public PageResponseDTO<BillDetailDTO> queryBillDetail(BillDetailReqDTO billDetailReqDTO) throws BusinessException;
+
+    /**
+     * 查询充值记录信息
+     * @param rechargeReqDTO
+     * @return
+     * @throws BusinessException
+     */
+    public PageResponseDTO<RechargeDTO> queryRechargePageByOption(RechargeReqDTO rechargeReqDTO) throws BusinessException;
 }

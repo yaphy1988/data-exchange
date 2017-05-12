@@ -7,6 +7,7 @@ import com.ai.bdex.dataexchange.aipcenter.dao.model.DataAccountExample;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.DataAccountHis;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipCenterDataAccountSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IRechargeSV;
 import com.ai.bdex.dataexchange.constants.Constants;
@@ -49,7 +50,7 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         if(StringUtil.isBlank(subOrder)){
             return null;
         }
-        RechargeDTO rechargeDTO = new RechargeDTO();
+        RechargeReqDTO rechargeDTO = new RechargeReqDTO();
         rechargeDTO.setSubOrder(subOrder);
 
         List<DataAccountDTO> dataAccountDTOList = queryDataAccountByRechargInfo(rechargeDTO);
@@ -60,7 +61,7 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
     }
 
 
-    public List<DataAccountDTO> queryDataAccountByRechargInfo(RechargeDTO rechargeDTO) throws BusinessException {
+    public List<DataAccountDTO> queryDataAccountByRechargInfo(RechargeReqDTO rechargeDTO) throws BusinessException {
 
         List<RechargeDTO> rechargeDTOS = rechargeSV.queryRechargeRecordListByOption(rechargeDTO);
         if(!CollectionUtil.isEmpty(rechargeDTOS)){
@@ -81,7 +82,7 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
      * @throws BusinessException
      */
     @Override
-    public long createDataAccount(RechargeDTO rechargeDTO) throws BusinessException{
+    public long createDataAccount(RechargeReqDTO rechargeDTO) throws BusinessException{
         DataAccount dataAccountHis = null;
 
         DataAccount dataAccount = getDefaultNewDataAccount();

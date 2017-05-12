@@ -1,14 +1,13 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.dto;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
-import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
 import java.util.Date;
 
 /**
  * Created by fangyunfeng on 2017/5/4.
  */
-public class RechargeDTO extends BaseResponseDTO {
+public class RechargeReqDTO extends BaseInfo {
 
     private String rechargeReqId;
 

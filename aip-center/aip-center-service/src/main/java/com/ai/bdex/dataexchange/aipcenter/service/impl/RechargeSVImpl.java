@@ -5,6 +5,7 @@ import com.ai.bdex.dataexchange.aipcenter.dao.mapper.DataAccountMapper;
 import com.ai.bdex.dataexchange.aipcenter.dao.mapper.RechargeRecordMapper;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.*;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipCenterDataAccountSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IRechargeSV;
 import com.ai.bdex.dataexchange.constants.Constants;
@@ -38,18 +39,18 @@ public class RechargeSVImpl implements IRechargeSV {
     private IAipCenterDataAccountSV aipCenterDataAccountSV;
 
     @Override
-    public void recharge(List<RechargeDTO> rechargeDTOList) throws BusinessException {
+    public void recharge(List<RechargeReqDTO> rechargeDTOList) throws BusinessException {
         if(CollectionUtil.isEmpty(rechargeDTOList)){
             throw new BusinessException("充值列表为空！");
         }
 
-        for(RechargeDTO rechargeDTO:rechargeDTOList){
+        for(RechargeReqDTO rechargeDTO:rechargeDTOList){
             recharge(rechargeDTO);
         }
     }
 
     @Override
-    public List<RechargeDTO> queryRechargeRecordListByOption(RechargeDTO rechargeDTO) throws BusinessException{
+    public List<RechargeDTO> queryRechargeRecordListByOption(RechargeReqDTO rechargeDTO) throws BusinessException{
         RechargeRecordExample rechargeRecordExample = new RechargeRecordExample();
         RechargeRecordExample.Criteria criteria = rechargeRecordExample.createCriteria();
         if(!StringUtil.isBlank(rechargeDTO.getRechargeUserId())){
@@ -79,7 +80,7 @@ public class RechargeSVImpl implements IRechargeSV {
         }
     }
 
-    private void recharge(RechargeDTO rechargeDTO) throws BusinessException{
+    private void recharge(RechargeReqDTO rechargeDTO) throws BusinessException{
         checkRecharge(rechargeDTO);
 
         //先记录充值信息，同时也是进行去重处理
@@ -105,7 +106,7 @@ public class RechargeSVImpl implements IRechargeSV {
 
     }
 
-    private void checkRecharge(RechargeDTO rechargeDTO) throws BusinessException{
+    private void checkRecharge(RechargeReqDTO rechargeDTO) throws BusinessException{
         if(rechargeDTO == null){
             logger.error("入参对象为空!");
             throw new BusinessException("入参对象为空!");
