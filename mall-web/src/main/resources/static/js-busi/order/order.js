@@ -82,7 +82,7 @@ function reduce()
 		doAjax(url,params,callBack);  
  }
 /*//遇见问题*/
-function haveProblome(moduleId){
+function haveProblome(){
 	window.location.href=basePath+"/homePage/pageNewsInfolist?moduleId=108";
 }
 //支付成功  去我的订单

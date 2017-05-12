@@ -16,8 +16,8 @@ public class OrdInfoReqDTO extends BaseInfo{
  	    private Date orderTime;
  	    private String staffId;
  	    private String shopId;
- 	    private Integer catId; 
- 	    public Integer getCatId() {
+ 	    private Integer catId;
+ 	     public Integer getCatId() {
 			return catId;
 		}
 		public void setCatId(Integer catId) {

@@ -2,15 +2,13 @@ package com.ai.bdex.dataexchange.busi.order.controller;
 
 import java.math.BigDecimal;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.paas.utils.DateUtil;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -54,6 +52,7 @@ public class OrderController {
 
 	private final static String STATUS_VALID = "1";// 有效
 	private final static String CUSTOMDATA_STATUS_VALID = "1";// 有效
+	private final static String TMPUSERID = "tmpuser";// 临时用户
 	private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
 	@DubboConsumer(timeout = 30000)
@@ -72,12 +71,11 @@ public class OrderController {
 		//取用户ID
 		HttpSession hpptsesion = request.getSession(); 
 		String staff_id = StaffUtil.getStaffId(hpptsesion);
-	/*	if(StringUtil.isBlank(staff_id))
+ 	   if(StringUtil.isBlank(staff_id))
 		{
 			//没有登录的，就直接跳转到登录界面去了。
-			ModelAndView modelAndView = new ModelAndView("login");
-			return modelAndView;
-		}*/
+			staff_id = TMPUSERID;
+		}
 
 
 		StaffInfoDTO staffInfoDTO = StaffUtil.getStaffVO(hpptsesion);
@@ -91,6 +89,7 @@ public class OrderController {
 		String skuname = "";
 		String gdsvfsid =  "";
 		String gdsvfsurl = "";
+		int inaviDay =  Constants.Order.ORDER_AIP_ACTIVE_DAY; // 100年
 		//获取商品的价格和图
 		GdsSkuRespDTO gdsSkuRespDTO = new GdsSkuRespDTO(); 
 		GdsSkuReqDTO dsSkuReqDTO = new GdsSkuReqDTO();
@@ -98,9 +97,11 @@ public class OrderController {
 		dsSkuReqDTO.setSkuId(skusid);
 		dsSkuReqDTO.setStatus(STATUS_VALID);
 		List<GdsSkuRespDTO>  listGdsSku =new ArrayList<>();
+
 		try { 
 			//价格
-			listGdsSku = iGdsSkuRSV.queryGdsSkuList(dsSkuReqDTO); 
+			listGdsSku = iGdsSkuRSV.queryGdsSkuList(dsSkuReqDTO);
+
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}   	
@@ -129,6 +130,20 @@ public class OrderController {
 			//使用次数
 			long lbuyAllCount = gdsSkuRespDTO.getPackTimes()*orderAmount;
 			ordInfoReqDTO.setBuyAllCount(lbuyAllCount);
+
+			//不是空，就有有效天数，否则为无期西安
+			if(gdsSkuRespDTO.getPackDay() != 0)
+			{
+				//有效天数
+				inaviDay = gdsSkuRespDTO.getPackDay();
+			}
+			Date orderTime = DateUtil.getNowAsDate();
+			Calendar calendar   =   new   GregorianCalendar();
+			calendar.setTime(orderTime);
+			calendar.add(calendar.DATE,inaviDay);//把日期往后增加一年.整数往后推,负数往前移动
+			Date activeEndTime =  calendar.getTime();   //这个时间就是日期往后推一天的结果
+			ordInfoReqDTO.setActiveEndTime(activeEndTime);
+
 			long lgdsid =  (long)gdsid;
 			ordInfoReqDTO.setGdsId(lgdsid);
 			long lskuid = (long)skusid;
@@ -168,7 +183,7 @@ public class OrderController {
 			//每次进来都是讲session赋值为新的数据
 			if(StringUtil.isBlank(staff_id))
 			{
-				staff_id = "tmpuser";
+				staff_id = TMPUSERID;
 			}
 			 CacheUtil.addItem(staff_id+"_shopcart", ordInfoReqDTO);
 		}  
@@ -200,11 +215,11 @@ public class OrderController {
 			String staff_id = StaffUtil.getStaffId(hpptsesion); 
 			if(StringUtil.isBlank(staff_id))
 			{
-				staff_id = "tmpuser";
+				staff_id = TMPUSERID;
 			}
 			OrdInfoReqDTO  ordInfoReqDTO = (OrdInfoReqDTO)CacheUtil.getItem(staff_id+"_shopcart");
-			//原始单品次数
-			long skutimes = ordInfoReqDTO.getBuyAllCount()/ordInfoReqDTO.getOrderAmount();			
+			//原始单品次数 每个套餐的次数
+			long skutimes = ordInfoReqDTO.getEachCount();
 			ordInfoReqDTO.setOrderAmount(iorderamount);
 			ordInfoReqDTO.setOrderMoney(iorderamount*ordInfoReqDTO.getOrderPrice());
 			ordInfoReqDTO.setBuyAllCount(iorderamount*skutimes);
@@ -213,6 +228,7 @@ public class OrderController {
 			CacheUtil.addItem(staff_id+"_shopcart", ordInfoReqDTO);  
 			
 		 	double dmoney = iorderamount*ordInfoReqDTO.getOrderPrice();
+			//js没有做元的转换
 	     	double dmoneytmp = dmoney/100;
 	     	BigDecimal b = new BigDecimal(dmoneytmp);
 	     	double dmoneyback =  b.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue(); 
@@ -251,7 +267,7 @@ public class OrderController {
  				  }
   					if(StringUtil.isBlank(staff_id))
  					{
-						staff_id = "tmpstaff_id";
+						staff_id = TMPUSERID;
 					/*	rMap.put("success", false);
 						rMap.put("ERRORINFO", "亲，请先登录哦");
 						return rMap;*/

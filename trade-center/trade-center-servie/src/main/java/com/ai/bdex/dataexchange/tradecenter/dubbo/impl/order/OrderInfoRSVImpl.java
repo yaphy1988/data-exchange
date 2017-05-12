@@ -64,11 +64,11 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		ordInfoReqDTO.setServiceName(ordInfoReqDTO.getServiceName());
  		ordInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_0);
  		
-  	    Calendar   calendar   =   new   GregorianCalendar(); 
+  	 /*   Calendar   calendar   =   new   GregorianCalendar();
  	    calendar.setTime(orderTime); 
  	    calendar.add(calendar.DATE,Constants.Order.ORDER_AIP_ACTIVE_MON*365);//把日期往后增加一年.整数往后推,负数往前移动 
  		Date activeEndTime =  calendar.getTime();   //这个时间就是日期往后推一天的结果  
-		ordInfoReqDTO.setActiveEndTime(activeEndTime);
+		ordInfoReqDTO.setActiveEndTime(activeEndTime);*/
 		ordInfoReqDTO.setBuyAllCount(ordInfoReqDTO.getBuyAllCount());
 		ordInfoReqDTO.setStatus(Constants.Order.ORDER_STATUS_01);
 		iOrdInfoSV.creatsubOrderByweb(ordInfoReqDTO);

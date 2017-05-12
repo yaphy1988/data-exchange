@@ -55,7 +55,7 @@ public class orderManageController {
     private final static String SOLUTION_CAT_ID = "3";//解决方案catId
     private final static Integer PAGE_SIZE = 10;//页数
     private final static String ORDER_TYPE_COMMON = "10";//普通订单
-
+	private final static String TMPUSERID = "tmpuser";// 临时用户
 	@DubboConsumer(timeout = 30000)
 	private IOrderInfoRSV iOrderInfoRSV;
     @DubboConsumer
@@ -139,6 +139,9 @@ public class orderManageController {
    			ordMainReqDTO.setOrderType(ORDER_TYPE_COMMON);
 			HttpSession hpptsesion = request.getSession();
 			String staff_id = StaffUtil.getStaffId(hpptsesion);
+			if(StringUtil.isBlank(staff_id)){
+				staff_id = TMPUSERID;
+			}
 			ordMainReqDTO.setStaffId(staff_id);
    			pageInfo = iOrderMainInfoRSV.queryOrdMainInfoPage(ordMainReqDTO);
    			if(!CollectionUtils.isEmpty(pageInfo.getResult())){
