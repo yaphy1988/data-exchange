@@ -42,9 +42,15 @@ public class OrdInfoRespDTO extends BaseResponseDTO{
  	    private String aipServiceId;
  	    private Integer catId; 
 		private Integer catFirst;
-		
+		private Integer leftCount;//剩余可用次数--计费接口返回值
 
- 	    public Integer getCatId() {
+ 	    public Integer getLeftCount() {
+			return leftCount;
+		}
+		public void setLeftCount(Integer leftCount) {
+			this.leftCount = leftCount;
+		}
+		public Integer getCatId() {
 			return catId;
 		}
 		public void setCatId(Integer catId) {

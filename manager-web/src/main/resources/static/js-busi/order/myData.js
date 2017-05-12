@@ -4,10 +4,6 @@ $(function(){
 	myOrderDataList(1);
 	
 });
-
-
-
-
 function myOrderDataList(index){
 	var param={pageNo:index};
 	$.ajax({

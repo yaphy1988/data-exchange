@@ -17,11 +17,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
 import com.ai.bdex.dataexchange.busi.order.entity.OrdInfoVO;
 import com.ai.bdex.dataexchange.busi.order.entity.OrdMainInfoVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
@@ -59,6 +62,8 @@ public class orderManageController {
     private IOrderMainInfoRSV iOrderMainInfoRSV;
     @DubboConsumer
     private IAipServiceInfoRSV iAipServiceInfoRSV;
+    @DubboConsumer
+    private IAipCenterDataAccountRSV iAipCenterDataAccountRSV;
     
     /**
      * 我的数据
@@ -84,20 +89,27 @@ public class orderManageController {
 			PageResponseDTO<OrdInfoRespDTO> pageInfo = new PageResponseDTO<OrdInfoRespDTO>();
 			OrdInfoReqDTO ordReqDTO = new OrdInfoReqDTO();
 			ordReqDTO.setPageNo(ordInfoVO.getPageNo());
-			HttpSession hpptsesion = request.getSession();
-			String staff_id = StaffUtil.getStaffId(hpptsesion);
- //			if(ordInfoVO.getPageSize()!=null||ordInfoVO.getPageSize()!=0){
-//				ordReqDTO.setPageSize(ordInfoVO.getPageSize());
-//			}else{
-				ordReqDTO.setPageSize(2);
-//			}
-			ordReqDTO.setPayFlag(PAY_FLAG_SUCCESS);
+			if(ordInfoVO.getPageSize()!=null||ordInfoVO.getPageSize()!=0){
+				ordReqDTO.setPageSize(ordInfoVO.getPageSize());
+			}else{
+				ordReqDTO.setPageSize(PAGE_SIZE);
+			}
+			//支付成功
+			ordReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
 			pageInfo = iOrderInfoRSV.queryOrdInfoPage(ordReqDTO);
+			if(CollectionUtils.isNotEmpty(pageInfo.getResult())){
+				for(OrdInfoRespDTO ordInfoRespDTO : pageInfo.getResult()){
+					//根据子订单编码，查询数据账户信息
+					DataAccountDTO dataAccountDTO =	iAipCenterDataAccountRSV.queryDataAccountBySubOrder(ordInfoRespDTO.getSubOrder());
+					if(dataAccountDTO!=null&&dataAccountDTO.getLeftNum()!=null)
+					ordInfoRespDTO.setLeftCount(dataAccountDTO.getLeftNum());
+				}
+			}
 			model.addAttribute("pageInfo", pageInfo);
 		} catch (Exception e) {
 			logger.error("查询我的数据列表失败！原因是：" + e.getMessage());
 		}
-		return "order/div/myOrderData";
+		return "mydata :: #tab01";
 	}
 	 /**
      * 我的订单
