@@ -3,6 +3,26 @@ $(function(){
 		pageNo:1
 	};
 	PicInfo.gridPicInfo(param);
+	/**
+	 * 保存图片库事件绑定
+	 */
+	$("#saveBtn").click(function(){
+		PicInfo.savePicInfo();
+	});
+	
+	$("#picUpLoad").bind("change", function(e) {
+		PicLib.uploadImage(this);
+		e.preventDefault();
+	});
+	/**
+	 * 查询图片库
+	 */
+	$("#searchBtn").click(function(){
+		var param = {
+			pageNo:1
+		};
+		PicInfo.gridPicInfo(param);
+	});
 });
 
 /**
@@ -17,13 +37,21 @@ function pagerClick(pageNo) {
 }
 var PicInfo = {
 	/**
+	 * 点击查看图片
+	 */
+	showPicInfo : function(obj){
+		$("#showPicUrl").attr("src",$(obj).attr('picUrl'));
+		$("#view_pic").modal();
+	},
+	/**
 	 * 点击编辑
 	 */
-	editPicInfo : function(picName,licPic,libId,picUrl){
-		$("#libName").val();
-		$("#libPic").val();
+	editPicInfo : function(obj,picName,picId,libName){
+		$("#libName").val(libName);
+		$("#picName").val(picName);
+		$("#picId").val(libId);
+		$("#picUrl").attr("src",$(obj).parents(".edit").find("img").attr('src'));
 		$("#add_pic").modal();
-		e.preventDefault();
 	},
 	/**
 	 * 查询列表

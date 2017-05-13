@@ -17,6 +17,15 @@ $(function(){
 		PicLib.uploadImage(this);
 		e.preventDefault();
 	});
+	/**
+	 * 查询图片库
+	 */
+	$("#searchBtn").click(function(){
+		var param = {
+			pageNo:1
+		};
+		PicLib.gridPicLib(param);
+	});
 });
 
 /**

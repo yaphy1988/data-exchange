@@ -85,10 +85,10 @@
                         </td>
                         <td class="Hint">图片库名称：</td>
                         <td >
-                            <input type="text" class="form-control" placeholder="" >
+                            <input type="text" class="form-control" placeholder="请输入图片名称" id="searchPicName">
                         </td>
                         <td>
-                            <button class="btn btn-primary" >查询</button>
+                            <button class="btn btn-primary" id="searchBtn">查询</button>
                         </td>
                     </tr>
                 </table>
@@ -100,15 +100,15 @@
 		            <!-- 多媒体资料列表 -->
 		            <div class="multiMedia">
 		                <ul class="clearfix" th:remove="all-but-first">
-		                    <li th:if="${pageInfo} and ${pageInfo.result} and ${#lists.size(pageInfo.result) gt 0}" th:each="piclib,piclibStat : ${pageInfo.result}">
-		                    	 <div class="name text_overflow">需求定制类图片需求定制类图片需求定制类图片</div>
-		                    	 <div class="about mb5 text_overflow">共20张图片共20张图片共20张图片</div>
+		                    <li th:if="${pageInfo} and ${pageInfo.result} and ${#lists.size(pageInfo.result) gt 0}" th:each="picinfo,picinfoStat : ${pageInfo.result}">
+		                    	 <div class="name text_overflow" th:text="${picinfo.picName}">需求定制类图片需求定制类图片需求定制类图片</div>
+		                    	 <div class="about mb5 text_overflow" th:text="'共'+${picinfo.picMun}+'张图片'">共20张图片共20张图片共20张图片</div>
 		                    	 <div class="edit">
-		                    	 	<a data-target="#view_pic" data-toggle="modal"><img src=""></a>
+		                    	 	<a data-target="#view_pic" data-toggle="modal"><img src="" th:src="${#tools.genImageUrl(picinfo.picId,'200x200')}"></a>
 		                    	 	<span>
-		                    	 		<a data-target="#view_pic" data-toggle="modal">查看</a>
-		                    	 		<a href="#">编辑</a>
-		                    	 		<a href="#">删除</a>
+		                    	 		<a data-target="#view_pic" data-toggle="modal" th:attr="picUrl=${#tools.genImageUrl(picinfo.picId,'')}" th:onclick="|PicInfo.showPicInfo(this)|">查看</a>
+		                    	 		<a href="#" th:onclick="|PicInfo.editPicInfo(this,'${picinfo.picName}','${picinfo.picId}','${picManageVO.libName}')|">编辑</a>
+		                    	 		<a href="#" th:onclick="|PicInfo.deletePicInfo(${picinfo.picId})|">删除</a>
 		                    	 	</span>
 		                    	 </div>
 		                    </li>
@@ -388,8 +388,10 @@
 	                        <span class="col_red">*</span>上传图片:
 	                    </td>
 	                    <td>
-	                           <input type="text" class="form-control wt200 ClassItem" placeholder=""  disabled>
-	                           <input class="float_File"  type="file"  width="940" height="400" name="picUpLoad">
+	                    	<input type="hidden" value="" id="libName" name="libName"/>
+	                    	<input type="hidden" value="" id="picId" name="picId"/>
+                            <input type="text" class="form-control wt200 ClassItem" placeholder=""  disabled>
+                            <input class="float_File"  type="file"  width="940" height="400" name="picUpLoad" id="picUpLoad">
 	                        
 	                    </td>
 	                </tr>
@@ -399,7 +401,7 @@
 	                </tr>
 	                <tr>
 	                    <td class="Hint">预览:</td>
-	                    <td><img src="" width="95"  height="85"  ></td>
+	                    <td><img src="" width="95"  height="85" id="picUrl"></td>
 	                </tr>
 	                <tr>
 	                    <td class="Hint " >
@@ -414,7 +416,7 @@
 	                        	<span class="col_red">*</span>图片名称:
 	                    </td>
 	                    <td width="420">
-							<input type="text" class="form-control" placeholder="" >
+							<input type="text" class="form-control" placeholder="请输入图片名称" th:attr="id='picName'">
 	                    </td>
 	                </tr>
 	                <tr>
@@ -423,7 +425,7 @@
 	                </tr>
 	            </table>
 	            <div class="modal-footer"> 
-	          		<a href="" class="btn btn-primary">保存</a>
+	          		<a href="" class="btn btn-primary" id="saveBtn">保存</a>
 	            </div>
 				<!-- 内容 end -->
 	      </div>
@@ -444,7 +446,7 @@
       <div class="modal-body">
             <!-- 内容 -->
               <div class="viewPic">
-                  <img src="http://www.woego.cn/woego/image/58ef32efb1d0abd5beeae6c1.jpg" width="2000px" height="900px" >
+                  <img src="http://www.woego.cn/woego/image/58ef32efb1d0abd5beeae6c1.jpg" width="2000px" height="900px" id="showPicUrl">
               </div>
               <div class="modal-footer"> 
                     <a href="" class="btn btn-primary">关闭</a>
