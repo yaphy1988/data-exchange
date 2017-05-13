@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.ai.paas.sequence.SeqUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -35,7 +36,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 	 * 创建订单  -- 事物还需要处理
 	 */
 	@Override
-    public int createOrderInfo(OrdInfoReqDTO ordInfoReqDTO) throws Exception
+    public OrdInfoReqDTO createOrderInfo(OrdInfoReqDTO ordInfoReqDTO) throws Exception
     {
 		Date orderTime = DateUtil.getNowAsDate();
 		OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO ();
@@ -55,6 +56,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		long orderid = iOrdMainInfoSV.creatOrderByweb(ordMainInfoReqDTO);
 		
 		ordInfoReqDTO.setOrderId(Long.toString(orderid));
+		ordInfoReqDTO.setSubOrder(Long.toString(SeqUtil.getLong("SEQ_ORD_INFO")));
 		ordInfoReqDTO.setAgentPrice(ordInfoReqDTO.getOrderPrice());
  		ordInfoReqDTO.setDiscountPrice(ordInfoReqDTO.getOrderPrice());
 		ordInfoReqDTO.setOrderTime(orderTime);
@@ -63,12 +65,6 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		ordInfoReqDTO.setAipServiceId(ordInfoReqDTO.getAipServiceId());
 		ordInfoReqDTO.setServiceName(ordInfoReqDTO.getServiceName());
  		ordInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_0);
- 		
-  	 /*   Calendar   calendar   =   new   GregorianCalendar();
- 	    calendar.setTime(orderTime); 
- 	    calendar.add(calendar.DATE,Constants.Order.ORDER_AIP_ACTIVE_MON*365);//把日期往后增加一年.整数往后推,负数往前移动 
- 		Date activeEndTime =  calendar.getTime();   //这个时间就是日期往后推一天的结果  
-		ordInfoReqDTO.setActiveEndTime(activeEndTime);*/
 		ordInfoReqDTO.setBuyAllCount(ordInfoReqDTO.getBuyAllCount());
 		ordInfoReqDTO.setStatus(Constants.Order.ORDER_STATUS_01);
 		iOrdInfoSV.creatsubOrderByweb(ordInfoReqDTO);
@@ -79,7 +75,8 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		ordLog.setOrderId(Long.toString(orderid));
 		ordLog.setNode(Constants.Order.LOG_CODE_01);
 		ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_01);
-		return iOrdMainInfoSV.saveOrderlog(ordLog); 
+		int count =  iOrdMainInfoSV.saveOrderlog(ordLog);
+		return ordInfoReqDTO;
     }
 	@Override
 	public OrdInfoRespDTO querySubOrderDetail(OrdInfoRespDTO ordInfo) throws Exception {

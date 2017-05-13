@@ -3,6 +3,9 @@ package com.ai.bdex.dataexchange.tradecenter.service.impl.order;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfo;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfoExample;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,8 +37,8 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 	 public int creatsubOrderByweb(OrdInfoReqDTO ordInfoReqDTO)throws Exception{
 		  OrdInfo record = new OrdInfo();	
 		 BeanUtils.copyProperties(record, ordInfoReqDTO);
-		 record.setSubOrder(Long.toString(SeqUtil.getLong("SEQ_ORD_INFO"))); 
-	 	 record.setCreateTime(DateUtil.getNowAsDate()); 
+		  record.setSubOrder(ordInfoReqDTO.getSubOrder());
+	 	 record.setCreateTime(DateUtil.getNowAsDate());
    		 return ordInfoMapper.insertSelective(record); 
    		 //插入子订单-- 放到dubbol层去做
 	 }
@@ -146,6 +149,22 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 		}
 		ordInfoReqDTO.setUpdateTime(DateUtil.getNowAsDate());
         ObjectCopyUtil.copyObjValue(ordInfoReqDTO,record,null,false);
+		int code=ordInfoMapper.updateByExampleSelective(record, example);
+		return code;
+	}
+	public int updateOrderStatus(OrdInfoReqDTO ordInfoReqDTO) throws Exception {
+		OrdInfo record = new OrdInfo();
+		OrdInfoExample example = new OrdInfoExample();
+		OrdInfoExample.Criteria criteria = example.createCriteria();
+		if(StringUtil.isNotBlank(ordInfoReqDTO.getOrderId())){
+			criteria.andOrderIdEqualTo(ordInfoReqDTO.getOrderId());
+		}
+		if(StringUtil.isBlank(ordInfoReqDTO.getStatus()))
+		{
+			return 0;
+		}
+		ordInfoReqDTO.setUpdateTime(DateUtil.getNowAsDate());
+		ObjectCopyUtil.copyObjValue(ordInfoReqDTO,record,null,false);
 		int code=ordInfoMapper.updateByExampleSelective(record, example);
 		return code;
 	}

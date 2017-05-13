@@ -44,4 +44,11 @@ public interface IOrdInfoSV {
 	 * @throws Exception
 	 */
 	public int cancelOrderInfo(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
+	/**
+	 * 修改子订单的状态，支付时间，支付状态
+	 * @param ordMainInfoReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateOrderStatus(OrdInfoReqDTO ordInfoReqDTO) throws Exception ;
 }

@@ -70,6 +70,8 @@ public class Constants {
 		public final static String ORDER_INVOICE_STATUS_9 = "9";//9 拒开发票
 		
 		public final static int ORDER_AIP_ACTIVE_DAY =  36500 ;//天  -- 无期限给你100年
+        public final static String ORDER_PAY_WAY_ZHIFUBAO =  "9010" ;//支付通道 -- 9010 支付宝
+
     }
 
     public static class Bill {

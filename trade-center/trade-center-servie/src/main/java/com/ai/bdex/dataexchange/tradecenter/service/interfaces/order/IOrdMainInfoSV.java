@@ -51,7 +51,7 @@ public interface IOrdMainInfoSV {
 	public int cancelOrderMainInfo(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception;
 
 	/**
-	 * 更新订单主表信息
+	 * 更新订单主表信息：	 * 修改订单的状态，支付时间，支付状态
 	 */
 	public int updateOrderMainInfo(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception;
 }

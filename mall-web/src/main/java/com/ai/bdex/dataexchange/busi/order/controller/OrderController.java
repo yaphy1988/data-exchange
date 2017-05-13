@@ -1,14 +1,26 @@
 package com.ai.bdex.dataexchange.busi.order.controller;
 
-import java.math.BigDecimal;
-import java.net.URLDecoder;
-import java.util.*;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
 import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderMainInfoRSV;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
+import com.ai.bdex.dataexchange.util.StaffUtil;
+import com.ai.paas.util.CacheUtil;
+import com.ai.paas.util.ImageUtil;
+import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
+import com.ai.paas.utils.StringUtil;
+import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,24 +29,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+//临时用，支付回调的接口在另外的位置处理
+//import  com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
-import com.ai.bdex.dataexchange.util.StaffUtil;
-import com.ai.paas.util.CacheUtil;
-import com.ai.paas.util.ImageUtil;
-import com.ai.paas.utils.CollectionUtil;
-import com.ai.paas.utils.StringUtil;
-import com.alibaba.boot.dubbo.annotation.DubboConsumer;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.util.*;
 
 /**
  * 
@@ -57,6 +59,8 @@ public class OrderController {
 
 	@DubboConsumer(timeout = 30000)
 	IOrderInfoRSV iOrderInfoRSV;
+	@DubboConsumer(timeout = 30000)
+	IOrderMainInfoRSV iOrderMainInfoRSV ;
 	
 	@DubboConsumer(timeout = 30000)
 	IGdsSkuRSV iGdsSkuRSV;
@@ -292,7 +296,9 @@ public class OrderController {
  						ordInfoReqDTO.setCatId(gdsInfoRespDTO.getCatId());
  					}
 				    ordInfoReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
-  					iOrderInfoRSV.createOrderInfo(ordInfoReqDTO);
+			    	OrdInfoReqDTO rdInfoReqDTOResp =  iOrderInfoRSV.createOrderInfo(ordInfoReqDTO);
+				    rMap.put("orderid", rdInfoReqDTOResp.getOrderId());
+			    	rMap.put("suborderid", rdInfoReqDTOResp.getSubOrder());
  			} 
 			rMap.put("success", true);
 		} catch (Exception e) {
@@ -369,7 +375,49 @@ public class OrderController {
 			ModelAndView modelAndView = new ModelAndView("offline_remittance");
 			return modelAndView; 
 		}
-		  
+	//支付成功模拟界面
+	@RequestMapping(value = "/pay_test")
+	public ModelAndView pay_test(Model model, HttpServletRequest request) {
+		//返回预购界面
+		String orderid = request.getParameter("orderid");
+		String subordid = request.getParameter("suborderid");
+		ModelAndView modelAndView = new ModelAndView("pay_test");
+		model.addAttribute("orderid",orderid);
+		model.addAttribute("subordid",subordid);
+		return modelAndView;
+	}
+	//支付成功模拟修改后台数据
+	@RequestMapping(value = "/pay_successDone")
+	@ResponseBody
+	public String pay_successDone(Model model, HttpServletRequest request) {
+		//模拟成功
+		String orderid = request.getParameter("orderid");
+		String subordid = request.getParameter("suborderid");
+		Date orderTime = DateUtil.getNowAsDate();
+		OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
+		ordMainInfoReqDTO.setOrderId(orderid);
+		ordMainInfoReqDTO.setUpdateStaff("11");
+		ordMainInfoReqDTO.setPayWay(Constants.Order.ORDER_PAY_WAY_ZHIFUBAO);
+		ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_02);
+		ordMainInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
+		ordMainInfoReqDTO.setPayTime(orderTime);
 
-	 
+		OrdInfoReqDTO ordInfo = new OrdInfoReqDTO();
+		ordInfo.setUpdateStaff(TMPUSERID);
+		ordInfo.setOrderId(orderid);
+		ordInfo.setSubOrder(subordid);
+		ordInfo.setStatus(Constants.Order.ORDER_STATUS_02);
+		ordInfo.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
+		ordInfo.setPayTime(orderTime);
+		try {
+			iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
+			// IAipCenterDataAccountRSV/
+		}catch (Exception er)
+		{
+			System.out.print("更新失败："+er.getMessage());
+			return  "0";
+		}
+		return  "1";
+	}
+
 }

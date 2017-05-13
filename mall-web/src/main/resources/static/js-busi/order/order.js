@@ -60,14 +60,15 @@ function reduce()
  	    var url = basePath+'/order/creatOrder';
 		var params={};
 		var callBack =function(data){ 
-			if(data.success){ 
-				  //打开一个新界面
-                  // 
+			if(data.success){
 				  var paytype = $('input:radio:checked').val();
 				   if(paytype ==  "zhifubao")
 				    {
 				    	//支付宝
- 				    	 window.open("http://www.jb51.net");
+						var orderid = data.orderid;
+						var suborderid = data.suborderid;
+						var url = basePath+'/order/pay_test?orderid='+orderid+"&suborderid="+suborderid;
+ 				    	 window.open(url);
 				    	//去写一条请求支付的记录 
 				    }
 				    else
@@ -90,4 +91,25 @@ function createOrdSusse(){
 
 	window.location.href=MANAGE_ROOT+"/orderManage/myOrder";
 }
- 
+
+/*//模拟支付成功*/
+function successDone(){
+	//模拟支付成功 ,去修改状态
+	var orderid = $("#orderid").val();
+	var suborderid =  $("#suborderid").val();
+	var url = basePath+'/order/pay_successDone';
+	var params={orderid:orderid,suborderid:suborderid};
+	var callBack =function(data){
+		if(data == "1"){
+			WEB.msg.info("提示","更新状态成功");
+		}
+		else{
+			WEB.msg.info("提示","更新状态失败");
+		}
+	};
+	doAjax(url,params,callBack);
+}
+//模拟失败
+function failureDone(){
+	window.location.href=basePath+"/homePage/pageNewsInfolist?moduleId=108";
+}

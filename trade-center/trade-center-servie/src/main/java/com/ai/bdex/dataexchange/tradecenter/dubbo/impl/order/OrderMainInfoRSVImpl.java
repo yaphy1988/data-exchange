@@ -1,6 +1,7 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.impl.order;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -83,5 +84,34 @@ public class OrderMainInfoRSVImpl  implements IOrderMainInfoRSV {
 			throw new Exception(e);
 		}
 		return respDTOList;
+	}
+	/***
+	 * 更新主订单和子订单的状态信息
+	 * @param ordMainInfoReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateOrderAndSubOrdStatuss(OrdMainInfoReqDTO ordMainInfoReqDTO,OrdInfoReqDTO ordInfo) throws Exception {
+		if (ordMainInfoReqDTO ==null ||StringUtil.isBlank(ordMainInfoReqDTO.getOrderId())){
+			throw new Exception("更新订单异常，oderId入参为空");
+		}
+		int code=0;
+
+		Date updateTime =  DateUtil.getNowAsDate();
+		ordMainInfoReqDTO.setUpdateTime(updateTime);
+		ordInfo.setUpdateTime(updateTime);
+		try {
+			code= iOrdMainInfoSV.updateOrderMainInfo(ordMainInfoReqDTO);
+		} catch (Exception e) {
+			log.error("更新主订单信息异常:", e);
+			throw new Exception(e);
+		}
+		try {
+			code= iOrdInfoSV.updateOrderStatus(ordInfo);
+		} catch (Exception e) {
+			log.error("更新子订单信息异常:", e);
+			throw new Exception(e);
+		}
+		return code;
 	}
 }
