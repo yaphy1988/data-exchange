@@ -1,5 +1,7 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.impl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipClientInfo;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientInfoDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientInfoReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientInfoRSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipClientInfoSV;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.paas.utils.ObjectCopyUtil;
 
 @Service("aipClientInfoRSV")
@@ -50,5 +54,54 @@ public class AipClientInfoRSVImpl implements IAipClientInfoRSV{
 			throw e;
 		}
 	}
+
+	@Override
+	public PageResponseDTO<AipClientInfoDTO> getAipClientInfoPage(
+			AipClientInfoReqDTO req) throws Exception {		
+		try {			
+			return aipClientInfoSV.getAipClientInfoPage(req);
+		} catch (Exception e) {
+			log.error("query page info failted ", e);
+			throw e;
+		}
+	}
+
+	@Override
+	public int batchUpdateStatus(List<String> ClientIdList, String status)
+			throws Exception {		
+		try {
+			return aipClientInfoSV.batchUpdateStatus(ClientIdList,status);
+		} catch (Exception e) {
+			log.error("batch update clientList to "+status+" failted",e);
+			throw e;
+		}
+	}
+
+	@Override
+	public int updateStatus(String clientId, String status) throws Exception {	
+		try {
+			return aipClientInfoSV.updateStatus(clientId,status);
+		} catch (Exception e) {
+			log.error("update status failted,"+clientId+":"+status,e);
+			throw e;
+		}
+	}
+
+	@Override
+	public int updateAipClientInfo(AipClientInfoDTO info) throws Exception {		
+		try {
+			if(info !=null){
+				AipClientInfo vo=new AipClientInfo();
+				ObjectCopyUtil.copyObjValue(info, vo, null, false);
+				return aipClientInfoSV.updateAipClientInfo(vo);
+			}
+			return 0;
+		} catch (Exception e) {
+			log.error("update failted,"+info.getClientId(),e);
+			throw e;
+		}
+	}
+	
+	
 	
 }

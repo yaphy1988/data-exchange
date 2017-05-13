@@ -1,9 +1,10 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.dto;
 
-import java.io.Serializable;
 import java.util.Date;
 
-public class AipClientInfoDTO implements Serializable{
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+
+public class AipClientInfoDTO  extends BaseResponseDTO{
 	private static final long serialVersionUID = 1L;
     /**
     *
