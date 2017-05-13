@@ -78,10 +78,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		int count =  iOrdMainInfoSV.saveOrderlog(ordLog);
 		return ordInfoReqDTO;
     }
-	@Override
-	public OrdInfoRespDTO querySubOrderDetail(OrdInfoRespDTO ordInfo) throws Exception {
-		return null;
-	}
+
 
 	// 我的所有子订单
 	@Override

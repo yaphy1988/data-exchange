@@ -46,7 +46,7 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
    		  return lorderid;
  	 }
 	 //根据ID查询订单的详细信息
-	  @Override
+/*	  @Override
 	 public OrdMainInfo queryOrderById(OrdMainInfo ordInfo) throws Exception{
 		   
  	     if (ordInfo==null){
@@ -55,7 +55,7 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
  	    String orderid = ordInfo.getOrderId();
  	    OrdMainInfo ordMainInfo =  ordMainInfoMapper.selectByPrimaryKey(orderid);
 	    return ordMainInfo;
-	 }
+	 }*/
 	 //我的订单 （可以根据状态查询是否已经申请开票了）
 	 //渠道商申请开票
 	 //发票管理--管理员是否要查询出要开票的订单
@@ -200,5 +200,17 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 		ObjectCopyUtil.copyObjValue(ordMainInfoReqDTO, ordMainInfo, null, false);
 		int code = ordMainInfoMapper.updateByExampleSelective(ordMainInfo, example);
 		return code;
+	}
+	@Override
+	public  OrdMainInfoRespDTO  queryOrdMainInfoOne(OrdMainInfoReqDTO ordMainInfoReqDTO)
+			throws Exception {
+		OrdMainInfoExample example = new OrdMainInfoExample();
+		if (StringUtil.isBlank(ordMainInfoReqDTO.getOrderId())) {
+			throw new Exception("查询订单信息时，订单ID入参为空");
+		}
+		OrdMainInfoRespDTO resorderMaininfo = new OrdMainInfoRespDTO();
+		OrdMainInfo ordMainInfo  = ordMainInfoMapper.selectByPrimaryKey(ordMainInfoReqDTO.getOrderId());
+ 		BeanUtils.copyProperties(resorderMaininfo, ordMainInfo);
+		return resorderMaininfo;
 	}
 }

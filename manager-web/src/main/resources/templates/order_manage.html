@@ -13,6 +13,8 @@
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
 	<script type="text/javascript" src="../../static/js-busi/order/orderManager.js" th:src="@{/js-busi/order/orderManager.js}"></script>
+	<script src="../../static/js/util.js" th:src="@{/js/util.js}"></script>
+	<script src="../../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
 	<!--[if lt IE 9]>
 	<script src="../static/js/respond.min.js" ></script>
 	<script src="../static/js/html5shiv.min.js" ></script>
@@ -108,13 +110,21 @@
                                 <td th:with="orderType=${list.orderType}" th:text="${#tools.formatOrderType(orderType)}"></td>
 								<td th:if="${list.orderStatus}=='01'">
 									<p class="pop-link">
-										<a href="edit_module.html">编辑</a>
+<!--
+										<a  th:onclick="'javascript:orderChangePay(\''+${list.orderId}+'\',\''+${list.subOrder}+'\');'"   >确认已支付</a>
+-->
+
+										<a  th:onclick="'javascript:orderChangePay('+${list.orderId}+','+${list.ordInfoRespDTO.subOrder}+');'">确认已支付</a>
 									</p>
 								</td>
-								<td th:if="${list.orderStatus}!='01'">
+								<td th:if="${list.orderStatus}=='02'">
 									<p class="pop-link">
-										<a href="edit_module.html">使
-											失效</a>
+										<a   th:onclick="'javascript:orderManageoffline('+${list.orderId}+','+${list.ordInfoRespDTO.subOrder}+');'">使失效</a>
+									</p>
+								</td>
+								<td th:if="${list.orderStatus}=='03'">
+									<p class="pop-link">
+										<a >已失效</a>
 									</p>
 								</td>
 							</tr>

@@ -12,8 +12,8 @@ public interface IOrdMainInfoSV {
 	// 创建订单
 	public long creatOrderByweb(OrdMainInfoReqDTO ordMainInfoRespDTO) throws Exception;
 
-	// 根据ID查询订单的详细信息
-	public OrdMainInfo queryOrderById(OrdMainInfo ordInfo) throws Exception;
+/*	// 根据ID查询订单的详细信息
+	public OrdMainInfo queryOrderById(OrdMainInfo ordInfo) throws Exception;*/
 
 	// 我的订单 （可以根据状态查询是否已经申请开票了）
 	// 渠道商申请开票
@@ -54,4 +54,12 @@ public interface IOrdMainInfoSV {
 	 * 更新订单主表信息：	 * 修改订单的状态，支付时间，支付状态
 	 */
 	public int updateOrderMainInfo(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception;
+
+	/***
+	 * 查询单个主订单信息
+	 * @param ordMainInfoReqDTO
+	 * @return
+	 * @throws Exception
+     */
+	public  OrdMainInfoRespDTO  queryOrdMainInfoOne(OrdMainInfoReqDTO ordMainInfoReqDTO) 	throws Exception ;
 }

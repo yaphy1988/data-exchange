@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
 
@@ -48,6 +49,12 @@ public interface IOrderMainInfoRSV {
 	 * @throws Exception
      */
 	public int updateOrderAndSubOrdStatuss(OrdMainInfoReqDTO ordMainInfoReqDTO,OrdInfoReqDTO ordInfo) throws Exception;
-
+	/***
+	 * 查询订单的信息详情，包括主订单信息和子订单信息
+	 * @param ordMainInfoReqDTO
+ 	 * @return
+	 * @throws Exception
+	 */
+	public OrdMainInfoRespDTO queryOrderDetail(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception ;
 
 }

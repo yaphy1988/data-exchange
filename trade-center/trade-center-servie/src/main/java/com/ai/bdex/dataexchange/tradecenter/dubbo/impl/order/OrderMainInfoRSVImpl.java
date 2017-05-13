@@ -6,6 +6,10 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdInfo;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.paas.utils.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -114,4 +118,32 @@ public class OrderMainInfoRSVImpl  implements IOrderMainInfoRSV {
 		}
 		return code;
 	}
+	public OrdMainInfoRespDTO queryOrderDetail(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception {
+		 OrdMainInfoRespDTO  respOrderDetailDTO = new OrdMainInfoRespDTO();
+		OrdInfoRespDTO ordInfoRespDTO  =new OrdInfoRespDTO ();
+		try {
+			if(StringUtil.isBlank(ordMainInfoReqDTO.getOrderId()))
+			{
+				throw new Exception("更新订单异常，oderId入参为空");
+			}
+			respOrderDetailDTO= iOrdMainInfoSV.queryOrdMainInfoOne(ordMainInfoReqDTO);
+			//查询子订单信息
+			OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
+			ordInfoReqDTO.setOrderId(ordMainInfoReqDTO.getOrderId());
+			List<OrdInfoRespDTO> 	ordInfoRespDTOList = iOrdInfoSV.queryOrderInfoList(ordInfoReqDTO);
+			if(!CollectionUtil.isEmpty(ordInfoRespDTOList)){
+				for(OrdInfoRespDTO ordInfo :ordInfoRespDTOList){
+					OrdInfoRespDTO respDTO = new OrdInfoRespDTO();
+					//只有一个子订单
+					ordInfoRespDTO = ordInfo;
+					respOrderDetailDTO.setOrdInfoRespDTO(ordInfoRespDTO);
+ 				}
+			}
+		} catch (Exception e) {
+			log.error("获取订单主表信息异常:", e);
+			throw new Exception(e);
+		}
+		return respOrderDetailDTO;
+	}
+
 }

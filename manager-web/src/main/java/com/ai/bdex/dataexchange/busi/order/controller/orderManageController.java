@@ -1,5 +1,8 @@
 package com.ai.bdex.dataexchange.busi.order.controller;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -7,8 +10,10 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.util.StaffUtil;
+import com.ai.paas.utils.DateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
@@ -67,8 +72,8 @@ public class orderManageController {
     
     /**
      * 我的数据
-     * @param model
-     * @param gdsInfoVO
+     * @param
+     * @param
      * @return
      * @throws Exception
      */
@@ -80,7 +85,7 @@ public class orderManageController {
 	 * 我的数据
 	 * 
 	 * @param model
-	 * @param searchVO
+	 * @param
 	 * @return
 	 */
 	@RequestMapping(value = "/myOrderDataList")
@@ -114,7 +119,7 @@ public class orderManageController {
 	 /**
      * 我的订单
      * @param model
-     * @param gdsInfoVO
+     * @param
      * @return
      * @throws Exception
      */
@@ -126,7 +131,7 @@ public class orderManageController {
    	 * 查询我的订单List
    	 * 
    	 * @param model
-   	 * @param searchVO
+   	 * @param
    	 * @return
    	 */
    	@RequestMapping(value = "/myOrderList")
@@ -191,7 +196,7 @@ public class orderManageController {
 	}
 	/**
 	 * 管理员的订单管理
-	 * @param request
+	 * @param
 	 * @return
 	 */
 	@RequestMapping(value="/orderManage")
@@ -210,7 +215,7 @@ public class orderManageController {
 				OrdMainInfoReqDTO ordMainReqDTO = new OrdMainInfoReqDTO();
 				ordMainReqDTO.setPageNo(ordMainInfoVO.getPageNo());
 				ordMainReqDTO.setPageSize(PAGE_SIZE);
-					ordMainReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
+			    ordMainReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
 					pageInfo = iOrderMainInfoRSV.queryOrdMainInfoPage(ordMainReqDTO);
 					if(!CollectionUtils.isEmpty(pageInfo.getResult())){
 					for(OrdMainInfoRespDTO ordMainRespDTO :pageInfo.getResult()){
@@ -231,4 +236,205 @@ public class orderManageController {
 			}
 			return "order_manage :: #managerdata";
 		}
+	/**
+	 * 线下审核订单变为已支付
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/orderChangePay")
+	@ResponseBody
+	public  Map<String, Object> changeOrderPay(HttpServletRequest request,OrdMainInfoVO ordMainInfoVO) {
+		//模拟成功
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		HttpSession hpptsesion = request.getSession();
+		String staff_id = StaffUtil.getStaffId(hpptsesion);
+		String orderid = request.getParameter("orderid");
+		String subordid = request.getParameter("suborderid");
+		Date orderTime = DateUtil.getNowAsDate();
+		OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
+		ordMainInfoReqDTO.setOrderId(orderid);
+		ordMainInfoReqDTO.setUpdateStaff(staff_id);
+		ordMainInfoReqDTO.setPayWay(Constants.Order.ORDER_PAY_WAY_ZHIFUBAO);
+		ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_02);
+		ordMainInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
+		ordMainInfoReqDTO.setPayTime(orderTime);
+
+		OrdInfoReqDTO ordInfo = new OrdInfoReqDTO();
+		ordInfo.setUpdateStaff(staff_id);
+		ordInfo.setOrderId(orderid);
+		ordInfo.setSubOrder(subordid);
+		ordInfo.setStatus(Constants.Order.ORDER_STATUS_02);
+		ordInfo.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
+		ordInfo.setPayTime(orderTime);
+		try {
+			iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
+			OrdMainInfoRespDTO ordMainInfoRespDTO=	iOrderMainInfoRSV.queryOrderDetail(ordMainInfoReqDTO);
+			OrdInfoRespDTO ordInfoRespDTO = ordMainInfoRespDTO.getOrdInfoRespDTO();
+
+			if (ordInfoRespDTO!= null) {
+				//此处为API支付回调
+				RechargeReqDTO rechargeDTO = new RechargeReqDTO();
+      /*            * rechargeUserId
+                    * subOrder
+                    * rechargeType (1-次数，2-金额)
+                    * periodType (1-有有效期，2-永久有效)
+                    * totalNum  (当rechargeType="1")
+                    * totalMoney(当rechargeType="2")
+                    * serviceId (当rechargeType="1")
+                    *
+                    * startDate(当periodType="1")
+                    * endDate(当periodType="1")*/
+				int igdsid = new Long(ordInfoRespDTO.getGdsId()).intValue();
+				int iskuid = new Long(ordInfoRespDTO.getSkuId()).intValue();
+				String rechargeType = Constants.Order.ORDER_API_RECHARGETYPE_1;
+				rechargeDTO.setRechargeUserId(ordInfoRespDTO.getStaffId());
+				rechargeDTO.setOrderId(orderid);
+				rechargeDTO.setSubOrder(ordInfoRespDTO.getSubOrder());
+				rechargeDTO.setGdsId(igdsid);
+				rechargeDTO.setSkuId(iskuid);
+				rechargeDTO.setCatId(ordInfoRespDTO.getCatId());
+				rechargeDTO.setCatFirst(ordInfoRespDTO.getCatFirst());
+				rechargeDTO.setRechargeType(Constants.Order.ORDER_API_RECHARGETYPE_1);
+				String periodType = Constants.Order.ORDER_API_PERIODTYPE_1;
+				if (ordInfoRespDTO.getActiveEndTime().after(getNodatelength())) {
+					//大于50年,就是无限期了
+					periodType = Constants.Order.ORDER_API_PERIODTYPE_2;
+				}
+				else	{
+					periodType = Constants.Order.ORDER_API_PERIODTYPE_1;
+				}
+				rechargeDTO.setStartDate(ordInfoRespDTO.getCreateTime());
+				rechargeDTO.setEndDate(ordInfoRespDTO.getActiveEndTime());
+				rechargeDTO.setPeriodType(periodType);
+				// * rechargeType (1-次数，2-金额) 普通订单就是次数，后台订单是 金额
+			   /*	   * totalNum  (当rechargeType="1")
+						* totalMoney(当rechargeType="2")
+						* serviceId (当rechargeType="1")*/
+				if(Constants.Order.ORDER_TYPE_10.equals(ordMainInfoRespDTO.getOrderType())){
+					rechargeType = Constants.Order.ORDER_API_RECHARGETYPE_1;
+				}
+				else{
+					rechargeType = Constants.Order.ORDER_API_RECHARGETYPE_2;
+				}
+				int itotalcount = new Long(ordInfoRespDTO.getBuyAllCount()).intValue();
+				rechargeDTO.setTotalNum(itotalcount);
+				rechargeDTO.setServiceId(ordInfoRespDTO.getAipServiceId());
+				rechargeDTO.setRechargeType(rechargeType);
+				int iordermoney = new Long(ordInfoRespDTO.getOrderMoney()).intValue();
+				rechargeDTO.setTotalMoney(iordermoney);
+
+				try {
+					iAipCenterDataAccountRSV.dealRecharge(rechargeDTO);
+					rMap.put("success", true);
+				} catch (Exception e) {
+					System.out.print("更新AipCenter失败：" + e.getMessage());
+					//需要通知运维，去处理数据
+					rMap.put("success", false);
+				}
+			}
+			else
+			{
+				System.out.print("更新AipCenter失败：查不到对于的子订单" );
+				//需要通知运维，去处理数据
+				rMap.put("success", false);
+				rMap.put("err", "更新AipCenter失败");
+			}
+		} catch (Exception er) {
+			System.out.print("更新失败：" + er.getMessage());
+			rMap.put("success", false);
+			rMap.put("err", "更新订单失败");
+		}
+		return rMap;
+	}
+	/**
+	 * 线下审核订单变为已失效
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/orderManageoffline")
+	@ResponseBody
+	public  Map<String, Object>  orderManageoffline(HttpServletRequest request,OrdMainInfoVO ordMainInfoVO) {
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		HttpSession hpptsesion = request.getSession();
+		String staff_id = StaffUtil.getStaffId(hpptsesion);
+		String orderid = request.getParameter("orderid");
+		String subordid = request.getParameter("suborderid");
+
+		Date orderTime = DateUtil.getNowAsDate();
+		OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
+		ordMainInfoReqDTO.setOrderId(orderid);
+		ordMainInfoReqDTO.setUpdateStaff(staff_id);
+		ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_03);
+		OrdInfoReqDTO ordInfo = new OrdInfoReqDTO();
+		ordInfo.setUpdateStaff(staff_id);
+		ordInfo.setOrderId(orderid);
+		ordInfo.setSubOrder(subordid);
+		ordInfo.setStatus(Constants.Order.ORDER_STATUS_03);
+ 		try {
+			iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
+			//查询子订单出来去更新数据：
+			OrdMainInfoRespDTO ordMainInfoRespDTO=	iOrderMainInfoRSV.queryOrderDetail(ordMainInfoReqDTO);
+			OrdInfoRespDTO ordInfoRespDTO = ordMainInfoRespDTO.getOrdInfoRespDTO();
+			if(ordInfoRespDTO != null) {
+				RechargeReqDTO rechargeDTO = new RechargeReqDTO();
+				rechargeDTO.setRechargeUserId(ordInfoRespDTO.getStaffId());
+				rechargeDTO.setSubOrder(ordInfoRespDTO.getSubOrder());
+				int igdsid = new Long(ordInfoRespDTO.getGdsId()).intValue();
+				rechargeDTO.setGdsId(igdsid);
+				int iskuid = new Long(ordInfoRespDTO.getSkuId()).intValue();
+				rechargeDTO.setSkuId(iskuid);
+				rechargeDTO.setCatId(ordInfoRespDTO.getCatId());
+				rechargeDTO.setCatFirst(ordInfoRespDTO.getCatFirst());
+				rechargeDTO.setRechargeType(Constants.Order.ORDER_API_RECHARGETYPE_1);
+				String periodType = Constants.Order.ORDER_API_PERIODTYPE_1;
+
+				rechargeDTO.setPeriodType(periodType);
+				int itotalcount = new Long(ordInfoRespDTO.getBuyAllCount()).intValue();
+				rechargeDTO.setTotalNum(itotalcount);
+				int iordermoney = new Long(ordInfoRespDTO.getOrderMoney()).intValue();
+				rechargeDTO.setTotalMoney(iordermoney);
+				rechargeDTO.setServiceId(ordInfoRespDTO.getAipServiceId());
+				rechargeDTO.setStartDate(ordInfoRespDTO.getCreateTime());
+				rechargeDTO.setEndDate(ordInfoRespDTO.getActiveEndTime());
+				try {
+					//需要去调用接口处理，将信息失效掉。
+					//iAipCenterDataAccountRSV.dealRecharge(rechargeDTO);
+					System.out.print("设置失效时，要将计费数据处理的接口！上线一定要处理的");
+					rMap.put("success", true);
+				} catch (Exception e) {
+					System.out.print("更新AipCenter失败：" + e.getMessage());
+					//需要通知运维，去处理数据
+					rMap.put("success", false);
+					rMap.put("err", "更新AipCenter失败");
+				}
+			}
+			else
+			{
+				System.out.print("更新AipCenter失败：查不到对于的子订单" );
+				//需要通知运维，去处理数据
+				rMap.put("success", false);
+				rMap.put("err", "更新订单失败:查不到对于的子订单");
+			}
+		} catch (Exception er) {
+			rMap.put("success", false);
+			rMap.put("err", "更新订单失败");
+		}
+		return rMap;
+	}
+	/**
+	 * 获取无限期的比较日期
+	 * @param
+	 * @return date
+	 */
+	public   Date getNodatelength() {
+		String strdate =Constants.Order.ORDER_API_NODATE;
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date date = null;
+		try {
+			date = format.parse(strdate);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return date;
+	}
 }
