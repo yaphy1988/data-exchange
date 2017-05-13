@@ -26,7 +26,7 @@ public class DataAccountRSVTest {
         consumeDTO.setInvokeSeq("201705120000001");
         consumeDTO.setConsumeNum(1);
         consumeDTO.setConsumeMoney(100);
-        String result = apiGatewayDataAccountSV.dataCharge(consumeDTO);
-        System.out.println("result="+result);
+       // String result = apiGatewayDataAccountSV.dataCharge(consumeDTO);
+       // System.out.println("result="+result);
     }
 }

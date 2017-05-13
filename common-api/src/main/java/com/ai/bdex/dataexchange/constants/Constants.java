@@ -1,6 +1,9 @@
 package com.ai.bdex.dataexchange.constants;
 
-public class Constants { 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+public class Constants {
     
     public static class Page {  
         // 商品品牌展示个数
@@ -70,7 +73,19 @@ public class Constants {
 		public final static String ORDER_INVOICE_STATUS_9 = "9";//9 拒开发票
 		
 		public final static int ORDER_AIP_ACTIVE_DAY =  36500 ;//天  -- 无期限给你100年
+        //无期限给的时间限制为 100年
+        public final static String   ORDER_API_NODATE   =  "2067-10-01";// 服务计数方式：2-金额
+
         public final static String ORDER_PAY_WAY_ZHIFUBAO =  "9010" ;//支付通道 -- 9010 支付宝
+
+      //调用计费服务时的计费方式入参：1-次数，2-金额
+        public final static String ORDER_API_RECHARGETYPE_1   =  "1" ;// 服务计数方式：1-次数，2-金额
+        public final static String ORDER_API_RECHARGETYPE_2   =  "2" ;// 服务计数方式：2-金额
+
+        //调用计费服务时的 有效期类型 入参：1-有有效期，2-永久有效 PeriodType
+        public final static String ORDER_API_PERIODTYPE_1   =  "1" ;//
+        public final static String ORDER_API_PERIODTYPE_2   =  "2" ;//
+
 
     }
 

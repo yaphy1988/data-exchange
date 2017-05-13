@@ -1,6 +1,7 @@
 package com.ai.bdex.dataexchange.busi.order.controller;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
@@ -8,6 +9,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
@@ -21,6 +23,7 @@ import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
+import com.alibaba.dubbo.common.utils.CollectionUtils;
 import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -29,8 +32,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 //临时用，支付回调的接口在另外的位置处理
-//import  com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
+ import  com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -68,7 +74,9 @@ public class OrderController {
 	IGdsInfoRSV iGdsInfoRSV;
 	@DubboConsumer(timeout = 30000)
 	IAipServiceInfoRSV iAipServiceInfoRSV;
-	
+    @DubboConsumer(timeout = 30000)
+   IAipCenterDataAccountRSV iAipCenterDataAccountRSV;
+
     //预定的数据展现
 	@RequestMapping(value = "/gdshopcart")
 	public ModelAndView saveTosession(Model model, HttpServletRequest request) {
@@ -136,7 +144,7 @@ public class OrderController {
 			ordInfoReqDTO.setBuyAllCount(lbuyAllCount);
 
 			//不是空，就有有效天数，否则为无期西安
-			if(gdsSkuRespDTO.getPackDay() != 0)
+			if(gdsSkuRespDTO.getPackDay() != null)
 			{
 				//有效天数
 				inaviDay = gdsSkuRespDTO.getPackDay();
@@ -402,16 +410,69 @@ public class OrderController {
 		ordMainInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
 		ordMainInfoReqDTO.setPayTime(orderTime);
 
-		OrdInfoReqDTO ordInfo = new OrdInfoReqDTO();
-		ordInfo.setUpdateStaff(TMPUSERID);
-		ordInfo.setOrderId(orderid);
+        OrdInfoReqDTO ordInfo = new OrdInfoReqDTO();
+        ordInfo.setUpdateStaff(TMPUSERID);
+        ordInfo.setOrderId(orderid);
 		ordInfo.setSubOrder(subordid);
 		ordInfo.setStatus(Constants.Order.ORDER_STATUS_02);
 		ordInfo.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
 		ordInfo.setPayTime(orderTime);
 		try {
 			iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
-			// IAipCenterDataAccountRSV/
+            //查询子订单出来去更新数据：
+            OrdInfoReqDTO ordInfoReqDTO  = new OrdInfoReqDTO();
+            ordInfoReqDTO.setOrderId(orderid);
+            ordInfoReqDTO.setSubOrder(subordid);
+            List<OrdInfoRespDTO>  listsubOrder  = iOrderInfoRSV.queryOrderInfoList(ordInfoReqDTO);
+            OrdInfoRespDTO ordInfoRespDTO = new OrdInfoRespDTO();
+            if(CollectionUtils.isNotEmpty(listsubOrder)){
+                //一个订单只有一个子订单
+                ordInfoRespDTO=listsubOrder.get(0);
+                //此处为API支付回调
+                RechargeReqDTO rechargeDTO = new RechargeReqDTO();
+      /*            * rechargeUserId
+                    * subOrder
+                    * rechargeType (1-次数，2-金额)
+                    * periodType (1-有有效期，2-永久有效)
+                    * totalNum (当rechargeType="1")
+                    * totalMoney(当rechargeType="2")
+                    * serviceId(当rechargeType="1")
+                    * startDate(当periodType="1")
+                    * endDate(当periodType="1")*/
+                rechargeDTO.setRechargeUserId(ordInfoRespDTO.getStaffId());
+                rechargeDTO.setSubOrder(ordInfoRespDTO.getSubOrder());
+                int igdsid =   new Long(ordInfoReqDTO.getGdsId()).intValue();
+                rechargeDTO.setGdsId(igdsid);
+                int iskuid =   new Long(ordInfoReqDTO.getSkuId()).intValue();
+                rechargeDTO.setSkuId(iskuid);
+                rechargeDTO.setCatId(ordInfoRespDTO.getCatId());
+                rechargeDTO.setCatFirst(ordInfoRespDTO.getCatFirst());
+                rechargeDTO.setRechargeType(Constants.Order.ORDER_API_RECHARGETYPE_1);
+                String periodType = Constants.Order.ORDER_API_PERIODTYPE_1;
+                if(ordInfoRespDTO.getActiveEndTime().after(getNodatelength()))
+                {
+                    //大于50年,就是无限期了
+                    periodType = Constants.Order.ORDER_API_PERIODTYPE_2;
+                }
+                rechargeDTO.setPeriodType(periodType);
+                int itotalcount =  new Long(ordInfoRespDTO.getBuyAllCount()).intValue();
+
+                rechargeDTO.setTotalNum(itotalcount);
+                int iordermoney= new Long(ordInfoRespDTO.getOrderMoney()).intValue();
+                rechargeDTO.setTotalMoney(iordermoney);
+                rechargeDTO.setServiceId(ordInfoRespDTO.getAipServiceId());
+                rechargeDTO.setStartDate(ordInfoRespDTO.getCreateTime());
+                rechargeDTO.setEndDate(ordInfoRespDTO.getActiveEndTime());
+                try{
+                    iAipCenterDataAccountRSV.dealRecharge(rechargeDTO);
+                }
+                catch (Exception e)
+                {
+                    System.out.print("更新AipCenter失败："+e.getMessage());
+                    //需要通知运维，去处理数据
+                    return  "0";
+                }
+            }
 		}catch (Exception er)
 		{
 			System.out.print("更新失败："+er.getMessage());
@@ -419,5 +480,22 @@ public class OrderController {
 		}
 		return  "1";
 	}
+    /**
+     * 获取无限期的比较日期
+     * @param
+     * @return date
+     */
+    public   Date getNodatelength() {
+
+        String strdate =Constants.Order.ORDER_API_NODATE;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = null;
+        try {
+            date = format.parse(strdate);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
 
 }

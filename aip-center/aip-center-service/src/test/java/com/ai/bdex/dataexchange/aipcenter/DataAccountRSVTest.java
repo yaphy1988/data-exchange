@@ -42,6 +42,6 @@ public class DataAccountRSVTest {
         rechargeDTO.setStartDate(new Date());
         rechargeDTO.setEndDate(new Date(System.currentTimeMillis()+15552000000L));
 
-        aipCenterDataAccountRSV.recharge(rechargeDTO);
+        aipCenterDataAccountRSV.dealRecharge(rechargeDTO);
     }
 }
