@@ -159,7 +159,7 @@
 				</tr>
 			</table>
 	
-			</div>
+		</div>
 
 			<!-- 按钮 -->
 			<div class="p20 text-center " style="margin-left: 220px;">
@@ -167,14 +167,13 @@
 				<a href="javascript:void(0)" class="btn-default btn" >返回</a>
 			</div>
 		</div>
-	</div>
 
 	<div class="m_modal modal fade" id="pServiceModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document" style="width:900px;">
 			<div class="modal-content" >
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title">服务商服务列表选择</h4>
+					<h4 class="modal-title">供应商服务列表选择</h4>
 				</div>
 				<div class="modal-body clearfix">
 					<table class="editTable" style="float: left; width:40%;">
@@ -190,31 +189,40 @@
 							</td>
 						</tr>
 					</table>
-					<div class="listTable" >
-						<table class="table table-bordered table-hover" id="pServiceModal_aipTable" >
+					<div class="listTable" id="pServiceModal_aipTable"  >
+						<table class="table table-bordered table-hover"  th:if="${pageInfo}">
 							<thead>
 							<tr class="active">
-								<th>接口Id</th>
-								<th>接口名字</th>
+								<th>服务编码</th>
+								<th>服务名称</th>
+								<th>版本号</th>
+								<th>供应商</th>
 								<th >操作</th>
 							</tr>
 							</thead>
 							<tbody>
-							<tr th:if="${pageInfo}" th:each="list : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
-								<td th:text="${list.serviceId}"></td>
+							<tr th:each="list,listStat : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
+								<td th:text="${list.pServiceId}"></td>
 								<td th:text="${list.serviceName}"></td>
+								<td th:text="${list.version}"></td>
+								<td th:text="${list.providerId}"></td>
 								<td><a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsAPIInfo(this)'">选择</a></td>
 							</tr>
 							</tbody>
 						</table>
+						<div class="pagelist" th:replace="fragments/pager :: pager">
+						</div>
 					</div>
-				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+</div>
+
+
 	<div class="m_nav" th:remove="all">
 		<nav class="nav">
 			<ul>
@@ -335,6 +343,6 @@
 	</div>
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
-</div>
+<!--</div>-->
 </body>
 </html>

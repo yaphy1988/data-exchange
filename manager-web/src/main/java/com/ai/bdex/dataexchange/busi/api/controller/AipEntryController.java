@@ -1,12 +1,11 @@
 package com.ai.bdex.dataexchange.busi.api.controller;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInParaDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoReqDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceOutParaDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.*;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipProviderServiceMgrRSV;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceManagerRSV;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IServiceMessageRSV;
+import com.ai.bdex.dataexchange.busi.api.entity.AipProviderServiceInfoVO;
 import com.ai.bdex.dataexchange.busi.api.entity.AipServiceDetailsInfoVO;
 import com.ai.bdex.dataexchange.busi.api.entity.AipServiceInParaVO;
 import com.ai.bdex.dataexchange.busi.api.entity.AipServiceOutParaVO;
@@ -14,6 +13,7 @@ import com.ai.bdex.dataexchange.busi.gds.entity.AipServiceInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.MongoFileUtil;
@@ -53,6 +53,8 @@ public class AipEntryController {
     private IServiceMessageRSV iServiceMessageRSV;
     @DubboConsumer(timeout = 30000)
     private IAipServiceManagerRSV iAipServiceManagerRSV;
+    @DubboConsumer(timeout = 30000)
+    private IAipProviderServiceMgrRSV iAipProviderServiceMgrRSV;
 
     /**
      * 初始化基本信息界面
@@ -235,8 +237,30 @@ public class AipEntryController {
     }
 
     @RequestMapping(value = "/queryProviderServicePage")
-    public String queryProviderServicePage(HttpServletRequest request,HttpServletResponse response){
+    public String queryProviderServicePage(HttpServletRequest request,HttpServletResponse response,AipProviderServiceInfoReqDTO aipProviderServiceInfoReqDTO){
 
+        PageResponseDTO<AipProviderServiceInfoVO> pageInfo = new PageResponseDTO<AipProviderServiceInfoVO>();
+        try {
+            aipProviderServiceInfoReqDTO.setStatus("1");
+            aipProviderServiceInfoReqDTO.setPageSize(10);
+            PageResponseDTO<AipProviderServiceInfoRespDTO> pageResponseDTO = iAipProviderServiceMgrRSV.pagePServiceInfo(aipProviderServiceInfoReqDTO);
+            if (pageResponseDTO!=null){
+                ObjectCopyUtil.copyObjValue(pageResponseDTO,pageInfo,null,false);
+                if (!CollectionUtil.isEmpty(pageResponseDTO.getResult())){
+                    List<AipProviderServiceInfoVO> aipProviderServiceInfoVOList = new ArrayList<AipProviderServiceInfoVO>();
+                    for (AipProviderServiceInfoRespDTO aipProviderServiceInfoRespDTO : pageResponseDTO.getResult()){
+                        AipProviderServiceInfoVO aipProviderServiceInfoVO = new AipProviderServiceInfoVO();
+                        ObjectCopyUtil.copyObjValue(aipProviderServiceInfoRespDTO,aipProviderServiceInfoVO,null,false);
+                        aipProviderServiceInfoVOList.add(aipProviderServiceInfoVO);
+                    }
+                    pageInfo.setResult(aipProviderServiceInfoVOList);
+                }
+            }
+        }catch (Exception e){
+            log.error("查询供应商服务分页列表异常：",e);
+        }
+
+        request.setAttribute("pageInfo",pageInfo);
         return "aip_document_deploy :: #pServiceModal_aipTable";
     }
 }

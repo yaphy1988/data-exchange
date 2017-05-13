@@ -31,4 +31,6 @@
                  owner="zhaoyf7" timeout="3000"/>
   <dubbo:service interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceManagerRSV" ref="iAipServiceManagerRSV"
                  owner="zhaoyf7" timeout="3000"/>
+  <dubbo:service interface="com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipProviderServiceMgrRSV" ref="iAipProviderServiceMgrRSV"
+                 owner="zhaoyf7" timeout="3000"/>
 </beans>
