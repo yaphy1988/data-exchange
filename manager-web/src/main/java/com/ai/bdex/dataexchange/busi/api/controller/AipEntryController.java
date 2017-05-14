@@ -86,9 +86,25 @@ public class AipEntryController {
 
         //aip基本信息
         try {
-            AipServiceInfoDTO aipServiceInfoDTO= iAipServiceInfoRSV.selectServiceByPk(serviceId,version);
+            AipServiceInfoDTO aipServiceInfoDTO = new AipServiceInfoDTO();
+//            if (StringUtil.isBlank(version)){
+//                aipServiceInfoDTO = iAipServiceInfoRSV.selectServiceByServiceIdWithInitversion(serviceId);
+//            }else{
+//                aipServiceInfoDTO= iAipServiceInfoRSV.selectServiceByPk(serviceId,version);
+//            }
+            AipServiceInfoReqDTO aipServiceInfoReqDTO = new AipServiceInfoReqDTO();
+            aipServiceInfoReqDTO.setServiceId(serviceId);
+            if (!StringUtil.isBlank(version)){
+                aipServiceInfoReqDTO.setVersion(version);
+            }
+            aipServiceInfoReqDTO.setStatus("");
+            aipServiceInfoDTO = iAipServiceInfoRSV.queryAipServiceInfo(aipServiceInfoReqDTO);
             if (aipServiceInfoDTO!=null){
                 ObjectCopyUtil.copyObjValue(aipServiceInfoDTO,aipServiceDetailsInfoVO,null,false);
+                AipProviderInfoRespDTO aipProviderInfoRespDTO = iAipProviderServiceMgrRSV.queryAipProviderInfoByProviderId(aipServiceDetailsInfoVO.getProviderId());
+                if (aipProviderInfoRespDTO !=null){
+                    aipServiceDetailsInfoVO.setProviderName(aipProviderInfoRespDTO.getProviderName());
+                }
             }else{
                 aipServiceDetailsInfoVO = new AipServiceDetailsInfoVO();
             }
@@ -251,6 +267,8 @@ public class AipEntryController {
                     for (AipProviderServiceInfoRespDTO aipProviderServiceInfoRespDTO : pageResponseDTO.getResult()){
                         AipProviderServiceInfoVO aipProviderServiceInfoVO = new AipProviderServiceInfoVO();
                         ObjectCopyUtil.copyObjValue(aipProviderServiceInfoRespDTO,aipProviderServiceInfoVO,null,false);
+                        AipProviderInfoRespDTO aipProviderInfoRespDTO = iAipProviderServiceMgrRSV.queryAipProviderInfoByProviderId(aipProviderServiceInfoVO.getpServiceId());
+                        aipProviderServiceInfoVO.setProviderName(aipProviderInfoRespDTO.getProviderName());
                         aipProviderServiceInfoVOList.add(aipProviderServiceInfoVO);
                     }
                     pageInfo.setResult(aipProviderServiceInfoVOList);

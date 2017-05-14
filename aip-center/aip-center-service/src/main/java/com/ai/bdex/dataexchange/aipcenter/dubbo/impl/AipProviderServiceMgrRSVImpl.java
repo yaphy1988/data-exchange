@@ -1,10 +1,14 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.impl;
 
+import com.ai.bdex.dataexchange.aipcenter.dao.model.AipProviderInfo;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderInfoRespDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderServiceInfoReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderServiceInfoRespDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipProviderServiceMgrRSV;
+import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipProviderInfoSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipProviderServiceInfoSV;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,9 @@ public class AipProviderServiceMgrRSVImpl implements IAipProviderServiceMgrRSV {
     @Autowired
     private IAipProviderServiceInfoSV iAipProviderServiceInfoSV;
 
+    @Autowired
+    private IAipProviderInfoSV iAipProviderInfoSV;
+
     @Override
     public PageResponseDTO<AipProviderServiceInfoRespDTO> pagePServiceInfo(AipProviderServiceInfoReqDTO aipProviderServiceInfoReqDTO) throws Exception {
 
@@ -32,5 +39,20 @@ public class AipProviderServiceMgrRSVImpl implements IAipProviderServiceMgrRSV {
         }
 
         return pageResponseDTO;
+    }
+
+    @Override
+    public AipProviderInfoRespDTO queryAipProviderInfoByProviderId(String providerId) throws Exception {
+        AipProviderInfoRespDTO aipProviderInfoRespDTO = new AipProviderInfoRespDTO();
+        try{
+            AipProviderInfo aipProviderInfo = iAipProviderInfoSV.getAipProviderInfo(providerId);
+            if (aipProviderInfo!=null){
+                ObjectCopyUtil.copyObjValue(aipProviderInfo,aipProviderInfoRespDTO,null,false);
+            }
+        }catch (Exception e){
+            log.error("查询供应商信息异常：",e);
+        }
+
+        return aipProviderInfoRespDTO;
     }
 }

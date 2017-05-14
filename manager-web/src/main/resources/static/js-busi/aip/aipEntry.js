@@ -74,24 +74,30 @@ function initParamInfo(){
         return null;
     }
     params.serviceName = baseInfo_serviceName;
+
     var baseInfo_serviceDesc = $.trim($("#baseInfo_serviceDesc").val());
     if (baseInfo_serviceDesc == ""){
         WEB.msg.info("提示","服务描述不能为空！");
         return null;
     }
     params.serviceDesc = baseInfo_serviceDesc;
-    var baseInfo_providerId = $.trim($("#baseInfo_providerId").val());
-    if (baseInfo_providerId == ""){
-        WEB.msg.info("提示","服务供货商不能为空！");
+
+    var baseInfo_providerId = $.trim($("#baseInfo_providerServiceInfo").attr("providerId"));
+    var baseInfo_pServiceId = $.trim($("#baseInfo_providerServiceInfo").attr("pServiceId"));
+    if (baseInfo_providerId == "" || baseInfo_pServiceId == ""){
+        WEB.msg.info("提示","供应商服务不能为空！");
         return null;
     }
     params.providerId = baseInfo_providerId;
+    params.pServiceId = baseInfo_pServiceId;
+
     var baseInfo_aipUrl = $.trim($("#baseInfo_aipUrl").val());
     if (baseInfo_aipUrl == ""){
         WEB.msg.info("提示","接口地址不能为空!");
         return null;
     }
     params.apiUrl = baseInfo_aipUrl;
+
     var baseInfo_supportFormat = $.trim($("#baseInfo_supportFormat").val());
     if (baseInfo_supportFormat == ""){
         WEB.msg.info("提示","支持格式不能为空！");
@@ -211,14 +217,35 @@ function initOutParaParams(params){
  * 供应商服务点击事件
  */
 function pServiceSel() {
+    queryPServicePage(1);
+    $("#pServiceModal").modal("show");
+}
+
+function queryPServicePage(pageNo) {
+    var params = {};
+    params.pageNo = pageNo
     $.ajax({
         url:basePath + "/aipEntry/queryProviderServicePage",
         dataType:'html',
+        data:params,
         type:'post',
         async:true,
         success:function (data) {
             $("#pServiceModal_aipTable").html(data);
         }
     })
-    $("#pServiceModal").modal("show");
+}
+
+function pagerClick(pageNo) {
+    queryPServicePage(pageNo);
+}
+
+function selPService(obj) {
+    var pServiceId = $(obj).attr("pServiceId");
+    var providerId = $(obj).attr("providerId");
+    var serviceName = $(obj).attr("serviceName");
+    $("#baseInfo_providerServiceInfo").attr("providerId",providerId);
+    $("#baseInfo_providerServiceInfo").val(serviceName);
+    $("#baseInfo_providerServiceInfo").attr("pServiceId",pServiceId);
+    $("#pServiceModal").modal("hide");
 }

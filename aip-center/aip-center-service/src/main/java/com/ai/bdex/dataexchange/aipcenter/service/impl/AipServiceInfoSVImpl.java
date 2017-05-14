@@ -136,6 +136,26 @@ public class AipServiceInfoSVImpl implements IAipServiceInfoSV{
 	}
 
 	@Override
+	public AipServiceInfo queryAipServiceInfo(AipServiceInfoReqDTO aipServiceInfoReqDTO) throws Exception {
+		if (aipServiceInfoReqDTO == null){
+			throw new BusinessException("查询aip服务基本信息异常，入参为空！");
+		}
+		AipServiceInfo aipServiceInfo = null;
+		try {
+			AipServiceInfoExample example = new AipServiceInfoExample();
+			AipServiceInfoExample.Criteria criteria = example.createCriteria();
+			initCriteria(criteria,aipServiceInfoReqDTO);
+			List<AipServiceInfo> aipServiceInfoList = aipServiceInfoMapper.selectByExample(example);
+			if (!CollectionUtil.isEmpty(aipServiceInfoList)){
+				aipServiceInfo = aipServiceInfoList.get(0);
+			}
+		}catch (Exception e){
+			log.error("查询aip服务基本信息异常：",e);
+		}
+		return aipServiceInfo;
+	}
+
+	@Override
 	public PageResponseDTO<AipServiceInfoDTO> selectServiceWithPageWithInitVersion(
 			AipServiceInfoReqDTO req) throws Exception {
 		try{

@@ -69,7 +69,7 @@
 						<span class="col_red">*</span>服务描述:
 					</td>
 					<td  colspan="3">
-						<textarea class="form-control" rows="2" id="baseInfo_serviceDesc" th:value="${aipServiceBaseInfo.serviceDesc}"></textarea>
+						<textarea class="form-control" rows="2" id="baseInfo_serviceDesc" th:text="${aipServiceBaseInfo.serviceDesc}"></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -78,7 +78,7 @@
 						供应商服务:
 					</td>
 					<td width="300" colspan="2">
-						<input id="baseInfo_providerServiceInfo" type="text" class="form-control" readonly="readonly" placeholder="供应商服务" />
+						<input id="baseInfo_providerServiceInfo" th:providerId="${aipServiceBaseInfo.providerId}" th:pServiceId="${aipServiceBaseInfo.pServiceId}" th:value="${aipServiceBaseInfo.pServiceName}" providerId="" pServiceId="" type="text" class="form-control" readonly="readonly" placeholder="供应商服务" />
 						<!--<select class="form-control wt100" id="baseInfo_providerId">-->
 							<!--<option value="1">供应商1</option>-->
 							<!--<option value="2">供应商2</option>-->
@@ -123,7 +123,7 @@
 						<span class="col_red">*</span>请求实例:
 					</td>
 					<td  colspan="3">
-						<textarea class="form-control" rows="2" id="baseInfo_exampleUrl" th:value="${aipServiceBaseInfo.exampleUrl}"></textarea>
+						<textarea class="form-control" rows="2" id="baseInfo_exampleUrl" th:text="${aipServiceBaseInfo.exampleUrl}"></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -142,7 +142,7 @@
 						<span class="col_red">*</span>接口备注:
 					</td>
 					<td  colspan="3">
-						<textarea class="form-control" rows="5" id="baseInfo_apiRemark" th:value="${aipServiceBaseInfo.apiRemark}"></textarea>
+						<textarea class="form-control" rows="5" id="baseInfo_apiRemark" th:text="${aipServiceBaseInfo.apiRemark}"></textarea>
 					</td>
 				</tr>
 
@@ -205,8 +205,8 @@
 								<td th:text="${list.pServiceId}"></td>
 								<td th:text="${list.serviceName}"></td>
 								<td th:text="${list.version}"></td>
-								<td th:text="${list.providerId}"></td>
-								<td><a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:onclick="'selectGdsAPIInfo(this)'">选择</a></td>
+								<td th:text="${list.providerName}"></td>
+								<td><a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" onclick="selPService(this)" th:pServiceId="${list.pServiceId}" th:providerId="${list.providerId}" th:serviceName="${list.serviceName}">选择</a></td>
 							</tr>
 							</tbody>
 						</table>

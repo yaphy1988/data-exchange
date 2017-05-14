@@ -77,4 +77,12 @@ public interface IAipServiceInfoSV {
      */
 	void updateAipServiceByServiceId(AipServiceInfoReqDTO aipServiceInfoReqDTO) throws Exception;
 
+	/**
+	 * 查询单个aip服务信息
+	 * @param aipServiceInfoReqDTO
+	 * @return
+	 * @throws Exception
+     */
+	AipServiceInfo queryAipServiceInfo(AipServiceInfoReqDTO aipServiceInfoReqDTO) throws Exception;
+
 }

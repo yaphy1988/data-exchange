@@ -21,6 +21,8 @@ public class AipServiceDetailsInfoVO extends BaseInfo {
 
     private String providerId;
 
+    private String providerName;
+
     private String status;
 
     private Date createTime;
@@ -42,6 +44,10 @@ public class AipServiceDetailsInfoVO extends BaseInfo {
     private String apiRemark;
 
     private String testTool;
+
+    private String pServiceId;
+
+    private String pServiceName;
 
     public String getServiceId() {
         return serviceId;
@@ -177,5 +183,29 @@ public class AipServiceDetailsInfoVO extends BaseInfo {
 
     public void setTestTool(String testTool) {
         this.testTool = testTool;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
+    }
+
+    public String getpServiceId() {
+        return pServiceId;
+    }
+
+    public void setpServiceId(String pServiceId) {
+        this.pServiceId = pServiceId;
+    }
+
+    public String getpServiceName() {
+        return pServiceName;
+    }
+
+    public void setpServiceName(String pServiceName) {
+        this.pServiceName = pServiceName;
     }
 }

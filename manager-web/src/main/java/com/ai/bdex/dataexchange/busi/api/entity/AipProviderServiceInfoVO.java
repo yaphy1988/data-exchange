@@ -25,6 +25,8 @@ public class AipProviderServiceInfoVO extends BaseResponseDTO{
 
     private String providerId;
 
+    private String providerName;
+
     private Date createTime;
 
     private String createStaff;
@@ -137,5 +139,13 @@ public class AipProviderServiceInfoVO extends BaseResponseDTO{
 
     public void setpServiceCode(String pServiceCode) {
         this.pServiceCode = pServiceCode;
+    }
+
+    public String getProviderName() {
+        return providerName;
+    }
+
+    public void setProviderName(String providerName) {
+        this.providerName = providerName;
     }
 }

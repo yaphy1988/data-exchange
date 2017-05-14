@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces;
 
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderInfoRespDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderServiceInfoReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderServiceInfoRespDTO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
@@ -11,4 +12,5 @@ public interface IAipProviderServiceMgrRSV {
 
     public PageResponseDTO<AipProviderServiceInfoRespDTO> pagePServiceInfo(AipProviderServiceInfoReqDTO aipProviderServiceInfoReqDTO) throws Exception;
 
+    public AipProviderInfoRespDTO queryAipProviderInfoByProviderId(String providerId) throws Exception;
 }
