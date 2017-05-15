@@ -164,4 +164,25 @@ public class DataAccountDTO extends BaseInfo {
     public void setDataAcctStatus(String dataAcctStatus) {
         this.dataAcctStatus = dataAcctStatus;
     }
+
+    public double getTotalMoneyCent(){
+        return totalMoney / 10.0;
+    }
+    public double getLeftMoneyCent(){
+        return leftMoney / 10.0;
+    }
+    public double getTotalConsumeMoneyCent(){
+        return totalConsumeMoney / 10.0;
+    }
+
+    public void setTotalMoneyCent(double totalMoneyCent){
+        totalMoney = (int)totalMoneyCent * 10;
+    }
+
+    public void setLeftMoneyCent(double leftMoneyCent){
+        leftMoney = (int)leftMoneyCent * 10;
+    }
+    public void setTotalConsumeMoneyCent(double totalConsumeMoneyCent){
+        totalConsumeMoney = (int)totalConsumeMoneyCent * 10;
+    }
 }
