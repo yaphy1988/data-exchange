@@ -63,7 +63,8 @@ public class OrderController {
 
 	private final static String STATUS_VALID = "1";// 有效
 	private final static String CUSTOMDATA_STATUS_VALID = "1";// 有效
-	private final static String SESSION_UNION_SHOPCART = "_shopcart";// 临时用户
+	private final static String SESSION_UNION_SHOPCART = "_shopcart";//缓存数据
+    private final static String API_SERVICE_NAME_TMP = "API_SERVICE_NAME_TMP";//API服务名称接口获取不到数据
 	private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
 	@DubboConsumer(timeout = 30000)
@@ -175,11 +176,18 @@ public class OrderController {
 				if(gdsInfoRespDTO != null)
 				{ 
 					    ordInfoReqDTO.setAipServiceId(Integer.toString(gdsInfoRespDTO.getApiId()));
-						List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(String.valueOf(gdsInfoRespDTO.getApiId()));
-						if(!CollectionUtil.isEmpty(apiServiceList))
-						{
-							ordInfoReqDTO.setServiceName(apiServiceList.get(0).getServiceName());
-						}
+                        try{
+                            List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(String.valueOf(gdsInfoRespDTO.getApiId()));
+                            if(!CollectionUtil.isEmpty(apiServiceList))
+                            {
+                                ordInfoReqDTO.setServiceName(apiServiceList.get(0).getServiceName());
+                             }
+                        }
+                        catch(Exception e1){
+                            //服务名称取不到
+                            ordInfoReqDTO.setServiceName(API_SERVICE_NAME_TMP);
+                        }
+
 						ordInfoReqDTO.setCatFirst(gdsInfoRespDTO.getCatFirst());
 						ordInfoReqDTO.setCatId(gdsInfoRespDTO.getCatId());
 						gdsname = gdsInfoRespDTO.getGdsName();
@@ -294,12 +302,12 @@ public class OrderController {
  					gdsInfoRespDTO =  iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO); 
  					if(gdsInfoRespDTO != null)
  					{
- 						ordInfoReqDTO.setAipServiceId(Integer.toString(gdsInfoRespDTO.getApiId()));
+ 						/*ordInfoReqDTO.setAipServiceId(Integer.toString(gdsInfoRespDTO.getApiId()));
  						List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(String.valueOf(gdsInfoRespDTO.getApiId()));
  						if(!CollectionUtil.isEmpty(apiServiceList))
  						{
  							ordInfoReqDTO.setServiceName(apiServiceList.get(0).getServiceName());
- 						}
+ 						}*/
  						ordInfoReqDTO.setCatFirst(gdsInfoRespDTO.getCatFirst());
  						ordInfoReqDTO.setCatId(gdsInfoRespDTO.getCatId());
  					}

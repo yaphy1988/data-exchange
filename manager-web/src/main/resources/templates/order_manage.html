@@ -1,10 +1,10 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="~{fragments/syshead :: syshead}"></div>
-<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
 
 <head>
-	<meta charset="UTF-8">
+	<meta charset="UTF-8">order
 	<title>个人中心-我的订单</title>
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
@@ -202,7 +202,7 @@
             </div>
 		</div>
 	</div>
-	<div class="m_nav">
+	<div class="m_nav" th:remove="all" >
 		<nav class="nav">
 			<ul>
 				<li class="navTit">
