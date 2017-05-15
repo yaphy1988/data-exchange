@@ -74,10 +74,10 @@
                             </tr>
                             </thead>
                             <tbody th:if=" ${pageInfo}" th:remove="all-but-first" >
-                            <tr th:each="list,iterStat : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
+                            <tr th:each="list,iterStat : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}" th:with="orderMoney=${list.ordMainInfoRespDTO.orderMoney}">
 								<td th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
 								<td th:text="${list.orderId}"></td>
-								<td th:text="${list.ordMainInfoRespDTO.orderMoney/100}"></td>
+								<td th:text="${#tools.formatMoney(orderMoney)}"></td>
 								<td
 									th:text="${#calendars.format(list.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
 								<td th:text="${list.invoiceTitle}"></td>

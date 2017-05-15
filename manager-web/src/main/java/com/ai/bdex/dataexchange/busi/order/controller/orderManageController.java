@@ -104,6 +104,8 @@ public class orderManageController {
 			rechargeReqDTO.setRechargeUserId(StaffUtil.getStaffId(session));
 			//查询API分类
 			rechargeReqDTO.setCatFirst(Integer.parseInt(AIP_CAT_ID));
+			 //查询是是否要连数据账户信息一起查询
+			rechargeReqDTO.setQueryDataAccount(true);
 			pageInfo = iAipCenterDataAccountRSV.queryRechargePageByOption(rechargeReqDTO);
 			if(CollectionUtils.isNotEmpty(pageInfo.getResult())){
 				for(RechargeDTO rechargeDTO : pageInfo.getResult()){
@@ -140,6 +142,8 @@ public class orderManageController {
 				rechargeReqDTO.setPageSize(PAGE_SIZE);
 			}
 			rechargeReqDTO.setRechargeUserId(StaffUtil.getStaffId(session));
+			 //查询是是否要连数据账户信息一起查询
+			rechargeReqDTO.setQueryDataAccount(true);
 			//查询API分类
 			rechargeReqDTO.setCatFirst(Integer.parseInt(CUSTOM_CAT_ID));
 			pageInfo = iAipCenterDataAccountRSV.queryRechargePageByOption(rechargeReqDTO);
@@ -201,6 +205,11 @@ public class orderManageController {
    					if(CollectionUtils.isNotEmpty(ordInfoList)){
    						//一个订单只有一个子订单
    						ordInfoRespDTO=ordInfoList.get(0);
+   						//从计费接口去可用次数
+   						DataAccountDTO dataAccountDTO= iAipCenterDataAccountRSV.queryDataAccountBySubOrder(ordInfoRespDTO.getSubOrder());
+   						if(dataAccountDTO!=null&&dataAccountDTO.getLeftNum()!=null){
+   							ordInfoRespDTO.setLeftCount(dataAccountDTO.getLeftNum());
+   						}
    					}
    					ordMainRespDTO.setOrdInfoRespDTO(ordInfoRespDTO);
    				}

@@ -56,10 +56,10 @@ function myCustomServiceDataList(index){
  * @param gdsId
  */
 function buyGoodsAgain(gdsId,skuId){
-	var url = WEB_ROOT+"/order/gdshopcart?gdsId="+gdsId+"&skuId="+skuId;
+	var url = MALL_ROOT+"/order/gdshopcart?gdsId="+gdsId+"&skuId="+skuId;
 	window.open(url);
  	//window.location.href = basePath+"/goods/details/"+gdsId+"-"+skuId;
 }
 function jumpToInterface(gdsId,skuId){
- 	window.location.href = basePath+"/goods/details/"+gdsId+"-"+skuId;
+ 	window.location.href = MALL_ROOT+"/goods/details/"+gdsId+"-"+skuId;
 }

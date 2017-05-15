@@ -47,13 +47,39 @@ public class ThymeleafToolsUtil {
      *
      * formatMoneyClean:(返回没有元符号). <br/>
      *
-     * @author gxq
      * @param money
      * @return
      * @since JDK 1.6
      */
     public String formatMoneyClean(int money){
         return  BigDecimal.valueOf(Long.valueOf(money)).divide(new BigDecimal(100)).toString();
+    }
+    /**
+     * 将金额转换为元显示(厘转为元)
+     * 使用：<a th:href="${#tools.managerDomain()}"></a>
+     * @return http://domain/manager-web
+     */
+    public String formatLiToMoney(int money){
+     /*  	double f = 34.236323;
+    	BigDecimal b = new BigDecimal(f);
+    	double f1 = b.setScale(3,BigDecimal.ROUND_HALF_UP).doubleValue();*/
+    	
+     	double dmoney = money;
+     	double dmoneytmp = dmoney/1000;
+     	BigDecimal b = new BigDecimal(dmoneytmp);
+     	double dmoneyback =  b.setScale(3,BigDecimal.ROUND_HALF_UP).doubleValue();
+        return  "￥"+dmoneyback;
+    }
+    /**
+     *
+     * formatLiToMoneyClean:(返回没有元符号,厘转为元). <br/>
+     *
+     * @param money
+     * @return
+     * @since JDK 1.6
+     */
+    public String formatLiToMoneyClean(int money){
+        return  BigDecimal.valueOf(Long.valueOf(money)).divide(new BigDecimal(1000)).toString();
     }
     /**
      *

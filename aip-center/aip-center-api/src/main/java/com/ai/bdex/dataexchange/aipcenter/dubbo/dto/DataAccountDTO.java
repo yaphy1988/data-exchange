@@ -1,9 +1,11 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.dto;
 
+import java.io.Serializable;
+
 /**
  * Created by fangyunfeng on 2017/5/5.
  */
-public class DataAccountDTO {
+public class DataAccountDTO implements Serializable{
 
     /**
      * 数据账户id

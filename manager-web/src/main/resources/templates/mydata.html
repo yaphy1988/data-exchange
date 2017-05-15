@@ -94,7 +94,7 @@
 											th:text="${#calendars.format(list.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
 										<td th:text="${list.dataAccountDTO.leftNum}"></td>
 										<td><a href="javaScript:void(0)" th:onclick="|buyGoodsAgain('${list.gdsId}','${list.skuId}')|">再次购买</a></td>
-										<td><a href="javaScript:void(0)" th:onclick="|jumpToInterface'${list.gdsId}','${list.skuId}')|">接口</a></td>
+										<td><a href="javaScript:void(0)" th:onclick="|jumpToInterface('${list.gdsId}','${list.skuId}')|">接口</a></td>
 									</tr>
 
 									<tr>
@@ -125,7 +125,7 @@
 
 									if (typeof pagerClick === "undefined") {
 										pagerClick = function(index) {
-											myOrderDataList(index);
+											myAPIDataList(index);
 										}
 									}
 									$('#pagerId').pager({
@@ -148,17 +148,17 @@
                             </tr>
                             </thead>
                             <tbody th:if=" ${pageInfoCustom}" th:remove="all-but-first">
-									<tr th:each="list,iterStat : ${pageInfoCustom.result}"
-										th:unless="${#lists.isEmpty(pageInfoCustom.result)}">
+									<tr th:each="info,iterStat : ${pageInfoCustom.result}"
+										th:unless="${#lists.isEmpty(pageInfoCustom.result)}" th:with="leftMoney=${info.dataAccountDTO.leftMoney}">
 										<td
 											th:text="${pageInfoCustom.pageNo -1}*${pageInfoCustom.pageSize}+${iterStat.count}"></td>
-										<td th:text="${list.serviceName}"></td>
-										<td th:text="${list.serviceId}"></td>
+										<td th:text="${info.serviceName}"></td>
+										<td th:text="${info.serviceId}"></td>
 										<td
-											th:text="${#calendars.format(list.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
-										<td th:text="${list.dataAccountDTO.leftNum}"></td>
-										<td><a href="javaScript:void(0)" th:onclick="|buyGoodsAgain('${list.gdsId}','${list.skuId}')|">再次购买</a></td>
-										<td><a href="javaScript:void(0)" th:onclick="|jumpToInterface'${list.gdsId}','${list.skuId}')|">接口</a></td>
+											th:text="${#calendars.format(info.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+										<td th:text="${#tools.formatLiToMoney(leftMoney)}"></td>
+										<td><a href="javaScript:void(0)" th:onclick="|buyGoodsAgain('${info.gdsId}','${info.skuId}')|">再次购买</a></td>
+										<td><a href="javaScript:void(0)" th:onclick="|jumpToInterface('${info.gdsId}','${info.skuId}')|">接口</a></td>
 									</tr>
 
 									<tr>
@@ -189,7 +189,7 @@
 
 									if (typeof pagerClickCustom === "undefined") {
 										pagerClickCustom = function(index) {
-											myOrderDataList(index);
+											myCustomServiceDataList(index);
 										}
 									}
 									$('#pagerIdCustom').pager({
