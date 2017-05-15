@@ -63,7 +63,7 @@ public class OrderController {
 
 	private final static String STATUS_VALID = "1";// 有效
 	private final static String CUSTOMDATA_STATUS_VALID = "1";// 有效
-	private final static String TMPUSERID = "tmpuser";// 临时用户
+	private final static String SESSION_UNION_SHOPCART = "_shopcart";// 临时用户
 	private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
 	@DubboConsumer(timeout = 30000)
@@ -84,12 +84,14 @@ public class OrderController {
 	@RequestMapping(value = "/gdshopcart")
 	public ModelAndView saveTosession(Model model, HttpServletRequest request) {
 		//取用户ID
+		boolean bshowCreatebt = true;//是否顯示確認訂單
 		HttpSession hpptsesion = request.getSession(); 
 		String staff_id = StaffUtil.getStaffId(hpptsesion);
  	   if(StringUtil.isBlank(staff_id))
 		{
-			//没有登录的，就直接跳转到登录界面去了。
-			staff_id = TMPUSERID;
+			//没有登录的，不顯示確認訂單按鈕。
+			bshowCreatebt = false;
+			staff_id = SESSION_UNION_SHOPCART;
 		}
 
 
@@ -186,28 +188,22 @@ public class OrderController {
 				}
 			} catch (Exception e) {
 			    e.printStackTrace();
-			} 
-			
-			
+			}
 			//如果已经有数据了，那就先删除，然后再写入
-			Object  ordInfoDTO = CacheUtil.getItem(staff_id+"_shopcart");
+			Object  ordInfoDTO = CacheUtil.getItem(staff_id+SESSION_UNION_SHOPCART);
 			if(ordInfoDTO != null)
 			{
-				CacheUtil.delItem(staff_id+"_shopcart");
+				CacheUtil.delItem(staff_id+SESSION_UNION_SHOPCART);
 			}
 			//每次进来都是讲session赋值为新的数据
-			if(StringUtil.isBlank(staff_id))
-			{
-				staff_id = TMPUSERID;
-			}
-			 CacheUtil.addItem(staff_id+"_shopcart", ordInfoReqDTO);
+			 CacheUtil.addItem(staff_id+SESSION_UNION_SHOPCART, ordInfoReqDTO);
 		}  
 	    request.setAttribute("skuInfo",gdsSkuRespDTO);
 	    request.setAttribute("gdsname",gdsname);
 	    request.setAttribute("skuname",skuname);
 	    request.setAttribute("gdsvfsurl",gdsvfsurl); 
-	    request.setAttribute("authenflag",staffInfoDTO.getAuthenFlag());  
-	    
+	    request.setAttribute("authenflag",staffInfoDTO.getAuthenFlag());
+		request.setAttribute("bshowCreatebt",bshowCreatebt);
 		//返回预购界面
 		ModelAndView modelAndView = new ModelAndView("shopcart/shoppint_cart");
 		return modelAndView; 
@@ -230,7 +226,9 @@ public class OrderController {
 			String staff_id = StaffUtil.getStaffId(hpptsesion); 
 			if(StringUtil.isBlank(staff_id))
 			{
-				staff_id = TMPUSERID;
+				rMap.put("success", false);
+				rMap.put("ERRORINFO", "亲，请先登录哦");
+				return rMap;
 			}
 			OrdInfoReqDTO  ordInfoReqDTO = (OrdInfoReqDTO)CacheUtil.getItem(staff_id+"_shopcart");
 			//原始单品次数 每个套餐的次数
@@ -265,8 +263,8 @@ public class OrderController {
 	@ResponseBody
 	private  Map<String, Object> creatOrder(Model model, HttpServletRequest request, HttpServletResponse response) {
 		Map<String, Object> rMap = new HashMap<String, Object>();
-		try { 
-			HttpSession hpptsesion = request.getSession(); 
+		try {
+			HttpSession hpptsesion = request.getSession();
 			String staff_id = StaffUtil.getStaffId(hpptsesion);
 			
   			StaffInfoDTO staffInfoDTO = StaffUtil.getStaffVO(hpptsesion);
@@ -282,12 +280,11 @@ public class OrderController {
  				  }
   					if(StringUtil.isBlank(staff_id))
  					{
-						staff_id = TMPUSERID;
-					/*	rMap.put("success", false);
+						rMap.put("success", false);
 						rMap.put("ERRORINFO", "亲，请先登录哦");
-						return rMap;*/
+						return rMap;
 					}
- 					OrdInfoReqDTO  ordInfoReqDTO = (OrdInfoReqDTO)CacheUtil.getItem(staff_id+"_shopcart");
+ 					OrdInfoReqDTO  ordInfoReqDTO = (OrdInfoReqDTO)CacheUtil.getItem(staff_id+SESSION_UNION_SHOPCART);
  					ordInfoReqDTO.setCreateStaff(staff_id);
  					
  					GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
@@ -319,6 +316,14 @@ public class OrderController {
 		}
 		return rMap;
 	}
+
+	/***
+	 * 支付的日誌記錄
+	 * @param model
+	 * @param request
+	 * @param response
+     * @return
+     */
 	@RequestMapping(value = "/savepayLog")
 	@ResponseBody
 	private  Map<String, Object> savepayLog(Model model, HttpServletRequest request, HttpServletResponse response) {
@@ -342,7 +347,7 @@ public class OrderController {
  					{
  						staff_id = "tmpuser";
  					}
- 					OrdInfoReqDTO  ordInfoReqDTO = (OrdInfoReqDTO)CacheUtil.getItem(staff_id+"_shopcart");
+ 					OrdInfoReqDTO  ordInfoReqDTO = (OrdInfoReqDTO)CacheUtil.getItem(staff_id+SESSION_UNION_SHOPCART);
  					ordInfoReqDTO.setCreateStaff(staff_id);
  					
  					GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
