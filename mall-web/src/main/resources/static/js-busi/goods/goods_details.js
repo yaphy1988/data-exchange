@@ -116,6 +116,10 @@ function encodeURI2(strinfo) {
 }
 
 function addToCart(gdsId,skuId){
+    var skuSel =$("#skuListSel").find(".active").find("a");
+    if (skuSel.attr("skuId") !=undefined && $.trim(skuSel.attr("skuId"))!=""){
+            skuId = $.trim(skuSel.attr("skuId"));
+    }
     var staff_id = "";
     if(staffInfoDTO != null)
     {

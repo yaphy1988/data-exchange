@@ -1,5 +1,7 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.impl;
 
+import com.ai.bdex.dataexchange.aipcenter.dao.model.AipServiceInPara;
+import com.ai.bdex.dataexchange.aipcenter.dao.model.AipServiceOutPara;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInParaDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceOutParaDTO;
@@ -8,11 +10,16 @@ import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipServiceInParaSV
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipServiceInfoSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipServiceOutParaSV;
 import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by yx on 2017/5/11.
@@ -74,12 +81,12 @@ public class AipServiceManagerRSVImpl implements IAipServiceManagerRSV {
     }
 
     @Override
-    public void updateInParaByServiceId(AipServiceInParaDTO aipServiceInParaDTO) throws Exception {
+    public void updateInParaByServiceIdAndVersion(AipServiceInParaDTO aipServiceInParaDTO) throws Exception {
         if (aipServiceInParaDTO==null || aipServiceInParaDTO.getServiceId()==null){
             throw new BusinessException("更新aip入参信息列表异常，入参为空");
         }
         try{
-            iAipServiceInParaSV.updateInParaByServiceId(aipServiceInParaDTO);
+            iAipServiceInParaSV.updateInParaByServiceIdAndVersion(aipServiceInParaDTO);
         }catch (Exception e){
             log.error("更新aip入参信息列表异常：",e);
             throw new Exception("更新aip入参信息列表异常：",e);
@@ -102,15 +109,58 @@ public class AipServiceManagerRSVImpl implements IAipServiceManagerRSV {
     }
 
     @Override
-    public void updateOutParaByServiceId(AipServiceOutParaDTO aipServiceOutParaDTO) throws Exception {
+    public void updateOutParaByServiceIdAndVersion(AipServiceOutParaDTO aipServiceOutParaDTO) throws Exception {
         if (aipServiceOutParaDTO==null || aipServiceOutParaDTO.getServiceId()==null){
             throw new BusinessException("更新aip出参信息列表异常，入参为空");
         }
         try{
-            iAipServiceOutParaSV.updateOutParaByServiceId(aipServiceOutParaDTO);
+            iAipServiceOutParaSV.updateOutParaByServiceIdAndVersion(aipServiceOutParaDTO);
         }catch (Exception e){
             log.error("更新aip出参信息列表异常：",e);
             throw new Exception("更新aip出参信息列表异常：",e);
         }
+    }
+
+    @Override
+    public List<AipServiceInParaDTO> queryServiceInParaList(String serviceId, String version) throws Exception {
+        if (StringUtil.isBlank(serviceId) || StringUtil.isBlank(version)){
+            throw new BusinessException("查询aip入参信息列表异常，入参为空");
+        }
+        List<AipServiceInParaDTO> aipServiceInParaDTOList = new ArrayList<AipServiceInParaDTO>();
+        try{
+            List<AipServiceInPara> list = iAipServiceInParaSV.getBeans(serviceId, version);
+            if (!CollectionUtil.isEmpty(list)){
+                for (AipServiceInPara aipServiceInPara : list){
+                    AipServiceInParaDTO aipServiceInParaDTO = new AipServiceInParaDTO();
+                    ObjectCopyUtil.copyObjValue(aipServiceInPara,aipServiceInParaDTO,null,false);
+                    aipServiceInParaDTOList.add(aipServiceInParaDTO);
+                }
+            }
+        }catch (Exception e){
+            log.error("查询aip入参信息列表异常：",e);
+        }
+
+        return aipServiceInParaDTOList;
+    }
+
+    @Override
+    public List<AipServiceOutParaDTO> queryServiceOutParaList(String serviceId, String version) throws Exception {
+        if (StringUtil.isBlank(serviceId) || StringUtil.isBlank(version)){
+            throw new BusinessException("查询aip出参信息列表异常，入参为空");
+        }
+        List<AipServiceOutParaDTO> aipServiceOutParaDTOList = new ArrayList<AipServiceOutParaDTO>();
+        try{
+            List<AipServiceOutPara> list = iAipServiceOutParaSV.getbeans(serviceId,version);
+            if (!CollectionUtil.isEmpty(list)){
+                for (AipServiceOutPara aipServiceOutPara : list){
+                    AipServiceOutParaDTO aipServiceOutParaDTO = new AipServiceOutParaDTO();
+                    ObjectCopyUtil.copyObjValue(aipServiceOutPara,aipServiceOutParaDTO,null,false);
+                    aipServiceOutParaDTOList.add(aipServiceOutParaDTO);
+                }
+            }
+        }catch (Exception e){
+            log.error("查询aip出参信息列表异常：",e);
+        }
+        return aipServiceOutParaDTOList;
     }
 }

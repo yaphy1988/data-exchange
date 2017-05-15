@@ -23,5 +23,5 @@ public interface IAipServiceInParaSV {
 	 * @param aipServiceInParaDTO
 	 * @throws Exception
      */
-	void updateInParaByServiceId(AipServiceInParaDTO aipServiceInParaDTO) throws Exception;
+	void updateInParaByServiceIdAndVersion(AipServiceInParaDTO aipServiceInParaDTO) throws Exception;
 }

@@ -18,9 +18,9 @@ public interface IAipServiceOutParaSV {
 
 
 	/**
-	 * 根据serviceId更新所有入参
+	 * 根据serviceId更新所有出参
 	 * @param aipServiceOutParaDTO
 	 * @throws Exception
 	 */
-	void updateOutParaByServiceId(AipServiceOutParaDTO aipServiceOutParaDTO) throws Exception;
+	void updateOutParaByServiceIdAndVersion(AipServiceOutParaDTO aipServiceOutParaDTO) throws Exception;
 }

@@ -339,7 +339,25 @@ public class AipEntryController {
 
         //返回的不为空则继续保存出参入参信息
         if (!StringUtil.isBlank(serviceId) && !StringUtil.isBlank(version)){
+
             //入参信息
+            List<AipServiceInParaDTO> aipServiceInParaDTOList = new ArrayList<AipServiceInParaDTO>();
+            try {
+                aipServiceInParaDTOList = iAipServiceManagerRSV.queryServiceInParaList(serviceId,version);
+            } catch (Exception e) {
+                log.error("查询已配置入参信息异常：",e);
+            }
+            if (!CollectionUtil.isEmpty(aipServiceInParaDTOList)){
+                AipServiceInParaDTO updateInParaDTO = new AipServiceInParaDTO();
+                updateInParaDTO.setServiceId(serviceId);
+                updateInParaDTO.setVersion(version);
+                updateInParaDTO.setStatus("0");
+                try {
+                    iAipServiceManagerRSV.updateInParaByServiceIdAndVersion(updateInParaDTO);
+                } catch (Exception e) {
+                    log.error("失效已配置入参异常：",e);
+                }
+            }
             try{
                 if (!CollectionUtil.isEmpty(inParaDTOList)){
                     for (AipServiceInParaDTO aipServiceInParaDTO : inParaDTOList){
@@ -359,6 +377,24 @@ public class AipEntryController {
             }
 
             //出参信息
+            List<AipServiceOutParaDTO> aipServiceOutParaDTOList = new ArrayList<AipServiceOutParaDTO>();
+            try {
+                aipServiceOutParaDTOList = iAipServiceManagerRSV.queryServiceOutParaList(serviceId,version);
+            } catch (Exception e) {
+                log.error("查询已配置出参信息异常：",e);
+            }
+            if (!CollectionUtil.isEmpty(aipServiceOutParaDTOList)){
+                AipServiceOutParaDTO updateOutParaDTO = new AipServiceOutParaDTO();
+                updateOutParaDTO.setServiceId(serviceId);
+                updateOutParaDTO.setVersion(version);
+                updateOutParaDTO.setType("01");
+                updateOutParaDTO.setStatus("0");
+                try {
+                    iAipServiceManagerRSV.updateOutParaByServiceIdAndVersion(updateOutParaDTO);
+                } catch (Exception e) {
+                    log.error("失效已配置出参异常：",e);
+                }
+            }
             try{
                 if (!CollectionUtil.isEmpty(outParaDTOList)){
                     for (AipServiceOutParaDTO aipServiceOutParaDTO : outParaDTOList){
@@ -381,6 +417,7 @@ public class AipEntryController {
             ajaxJson.setMsg("保存aip服务基本信息异常，请联系管理员！");
             return ajaxJson;
         }
+        ajaxJson.setSuccess(true);
 
         return ajaxJson;
     }

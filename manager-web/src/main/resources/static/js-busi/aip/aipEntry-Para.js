@@ -104,6 +104,16 @@ function submitParaInfo(){
     if (!initOutParaParams(params)){
         return ;
     }
+    var serviceId = $("#para_serviceId").val();
+    if (serviceId == undefined || $.trim(serviceId) == ""){
+        serviceId="";
+    }
+    params.serviceId = serviceId;
+    var version = $("#para_version").val();
+    if (version == undefined || $.trim(version) == ""){
+        version = "";
+    }
+    params.version = version;
     $.ajax({
         url:WEB_ROOT + "/aipEntry/submitParaInfo",
         data:params,

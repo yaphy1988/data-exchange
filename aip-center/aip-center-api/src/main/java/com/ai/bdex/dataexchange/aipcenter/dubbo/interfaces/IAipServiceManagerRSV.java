@@ -4,6 +4,8 @@ import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInParaDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceOutParaDTO;
 
+import java.util.List;
+
 /**
  * Created by yx on 2017/5/11.
  */
@@ -34,11 +36,11 @@ public interface IAipServiceManagerRSV {
 
 
     /**
-     * 根据serviceId更新所有入参
+     * 根据serviceId和version更新所有入参
      * @param aipServiceInParaDTO
      * @throws Exception
      */
-    void updateInParaByServiceId(AipServiceInParaDTO aipServiceInParaDTO) throws Exception;
+    void updateInParaByServiceIdAndVersion(AipServiceInParaDTO aipServiceInParaDTO) throws Exception;
 
     /**
      * 插入aip入参信息列表，需传version
@@ -50,10 +52,14 @@ public interface IAipServiceManagerRSV {
 
 
     /**
-     * 根据serviceId更新所有入参
+     * 根据serviceId和version更新所有出参
      * @param aipServiceOutParaDTO
      * @throws Exception
      */
-    void updateOutParaByServiceId(AipServiceOutParaDTO aipServiceOutParaDTO) throws Exception;
+    void updateOutParaByServiceIdAndVersion(AipServiceOutParaDTO aipServiceOutParaDTO) throws Exception;
+
+    public List<AipServiceInParaDTO> queryServiceInParaList(String serviceId, String version) throws Exception;
+
+    public List<AipServiceOutParaDTO> queryServiceOutParaList(String serviceId,String version) throws Exception;
 
 }
