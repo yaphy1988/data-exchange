@@ -107,14 +107,14 @@ public class Constants {
         public static final String RECHARGE_TYPE_NUM = "1";//1 基于次数
         public static final String RECHARGE_TYPE_MONEY = "2";//2 基于余额
 
-    //充值状态：0-待充值，1-充值中，2-充值成功，3-充值失败
-    public static final String RECHARGE_STATUS_WAITING = "0";//0 待充值
-    public static final String RECHARGE_STATUS_GOING = "1";//1 充值中
-    public static final String RECHARGE_STATUS_SUCCESS = "2";//2 充值成功
-    public static final String RECHARGE_STATUS_FAILED = "3";//3 充值失败
+        //充值状态：0-待充值，1-充值中，2-充值成功，3-充值失败
+        public static final String RECHARGE_STATUS_WAITING = "0";//0 待充值
+        public static final String RECHARGE_STATUS_GOING = "1";//1 充值中
+        public static final String RECHARGE_STATUS_SUCCESS = "2";//2 充值成功
+        public static final String RECHARGE_STATUS_FAILED = "3";//3 充值失败
 
-    //计费结果：OK-计费扣减成功，2-计费扣减失败
-    public static final String CHARGE_RESULE_OK = "OK";// OK 计费扣减成功
-    public static final String CHARGE_RESULE_NA = "NA";// NA 计费扣减失败
-}
+        //计费结果：OK-计费扣减成功，2-计费扣减失败
+        public static final String CHARGE_RESULE_OK = "OK";// OK 计费扣减成功
+        public static final String CHARGE_RESULE_NA = "NA";// NA 计费扣减失败
+    }
 }
