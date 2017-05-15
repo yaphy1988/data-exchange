@@ -1,11 +1,13 @@
 package com.ai.bdex.dataexchange.apigateway.dubbo.dto;
 
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+
 import java.util.Date;
 
 /**
  * Created by fangyunfeng on 2017/5/8.
  */
-public class DataAccountDTO {
+public class DataAccountDTO extends BaseInfo {
 
     //数据账户id
     private Long dataAcctId;

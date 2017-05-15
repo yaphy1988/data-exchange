@@ -1,11 +1,11 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.dto;
 
-import java.io.Serializable;
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
 /**
  * Created by fangyunfeng on 2017/5/5.
  */
-public class DataAccountDTO implements Serializable{
+public class DataAccountDTO extends BaseInfo{
 
     /**
      * 数据账户id
