@@ -93,13 +93,15 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         dataAccount.setCreateStaff(rechargeDTO.getCurrentUserId());
 
         dataAccount.setCreateTime(new Date());
-        //充值类型为次数，直接创建新的账户
+
         if(Constants.Bill.RECHARGE_TYPE_NUM.equals(rechargeDTO.getRechargeType())){
+            //充值类型为次数
             dataAccount.setTotalNum(rechargeDTO.getTotalNum());
             dataAccount.setLeftNum(rechargeDTO.getTotalNum());
         }else{
-            dataAccount.setTotalMoney(rechargeDTO.getTotalMoney());
-            dataAccount.setLeftMoney(rechargeDTO.getTotalMoney());
+            //充值类型为金额，rechargeDTO中的单位是分，DataAccount单位是厘，要乘以10
+            dataAccount.setTotalMoney(rechargeDTO.getTotalMoney()*10);
+            dataAccount.setLeftMoney(rechargeDTO.getTotalMoney()*10);
         }
 
         //有有效期类型的账户，需设置生效开始时间和生效结束时间
