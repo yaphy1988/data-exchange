@@ -23,6 +23,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
 import com.ai.bdex.dataexchange.busi.order.entity.OrdInfoVO;
@@ -82,32 +84,35 @@ public class orderManageController {
         return "mydata";
     }
     /**
-	 * 我的数据
+	 * 我的数据-全部数据：查询API分类订单
 	 * 
 	 * @param model
 	 * @param
 	 * @return
 	 */
-	@RequestMapping(value = "/myOrderDataList")
-	public String myOrderDataList(Model model, OrdInfoVO ordInfoVO) {
+	@RequestMapping(value = "/myAPIDataList")
+	public String myAPIDataList(Model model, OrdInfoVO ordInfoVO,HttpSession session) {
 		try {
-			PageResponseDTO<OrdInfoRespDTO> pageInfo = new PageResponseDTO<OrdInfoRespDTO>();
-			OrdInfoReqDTO ordReqDTO = new OrdInfoReqDTO();
-			ordReqDTO.setPageNo(ordInfoVO.getPageNo());
+			PageResponseDTO<RechargeDTO> pageInfo = new PageResponseDTO<RechargeDTO>();
+			RechargeReqDTO rechargeReqDTO = new RechargeReqDTO();
+			rechargeReqDTO.setPageNo(ordInfoVO.getPageNo());
 			if(ordInfoVO.getPageSize()!=null||ordInfoVO.getPageSize()!=0){
-				ordReqDTO.setPageSize(ordInfoVO.getPageSize());
+				rechargeReqDTO.setPageSize(ordInfoVO.getPageSize());
 			}else{
-				ordReqDTO.setPageSize(PAGE_SIZE);
+				rechargeReqDTO.setPageSize(PAGE_SIZE);
 			}
-			//支付成功
-			ordReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
-			pageInfo = iOrderInfoRSV.queryOrdInfoPage(ordReqDTO);
+			rechargeReqDTO.setRechargeUserId(StaffUtil.getStaffId(session));
+			//查询API分类
+			rechargeReqDTO.setCatFirst(Integer.parseInt(AIP_CAT_ID));
+			pageInfo = iAipCenterDataAccountRSV.queryRechargePageByOption(rechargeReqDTO);
 			if(CollectionUtils.isNotEmpty(pageInfo.getResult())){
-				for(OrdInfoRespDTO ordInfoRespDTO : pageInfo.getResult()){
-					//根据子订单编码，查询数据账户信息
-					DataAccountDTO dataAccountDTO =	iAipCenterDataAccountRSV.queryDataAccountBySubOrder(ordInfoRespDTO.getSubOrder());
-					if(dataAccountDTO!=null&&dataAccountDTO.getLeftNum()!=null)
-					ordInfoRespDTO.setLeftCount(dataAccountDTO.getLeftNum());
+				for(RechargeDTO rechargeDTO : pageInfo.getResult()){
+					if(StringUtil.isNotBlank(rechargeDTO.getServiceId())){
+						List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(String.valueOf(rechargeDTO.getServiceId()));
+						if (CollectionUtils.isNotEmpty(apiServiceList)) {
+							rechargeDTO.setServiceName(apiServiceList.get(0).getServiceName());
+						}
+					}
 				}
 			}
 			model.addAttribute("pageInfo", pageInfo);
@@ -115,6 +120,44 @@ public class orderManageController {
 			logger.error("查询我的数据列表失败！原因是：" + e.getMessage());
 		}
 		return "mydata :: #tab01";
+	}
+	/**
+	 * 我的数据-定制服务数据
+	 * 
+	 * @param model
+	 * @param searchVO
+	 * @return
+	 */
+	@RequestMapping(value = "/myCustomServiceDataList")
+	public String myCustomServiceDataList(Model model, OrdInfoVO ordInfoVO,HttpSession session) {
+		try {
+			PageResponseDTO<RechargeDTO> pageInfo = new PageResponseDTO<RechargeDTO>();
+			RechargeReqDTO rechargeReqDTO = new RechargeReqDTO();
+			rechargeReqDTO.setPageNo(ordInfoVO.getPageNo());
+			if(ordInfoVO.getPageSize()!=null||ordInfoVO.getPageSize()!=0){
+				rechargeReqDTO.setPageSize(ordInfoVO.getPageSize());
+			}else{
+				rechargeReqDTO.setPageSize(PAGE_SIZE);
+			}
+			rechargeReqDTO.setRechargeUserId(StaffUtil.getStaffId(session));
+			//查询API分类
+			rechargeReqDTO.setCatFirst(Integer.parseInt(CUSTOM_CAT_ID));
+			pageInfo = iAipCenterDataAccountRSV.queryRechargePageByOption(rechargeReqDTO);
+			if(CollectionUtils.isNotEmpty(pageInfo.getResult())){
+				for(RechargeDTO rechargeDTO : pageInfo.getResult()){
+					if(StringUtil.isNotBlank(rechargeDTO.getServiceId())){
+						List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(String.valueOf(rechargeDTO.getServiceId()));
+	        			if(CollectionUtils.isNotEmpty(apiServiceList)){
+	        				rechargeDTO.setServiceName(apiServiceList.get(0).getServiceName());
+	        			}	
+					}
+				}
+			}
+			model.addAttribute("pageInfoCustom", pageInfo);
+		} catch (Exception e) {
+			logger.error("查询我的数据列表失败！原因是：" + e.getMessage());
+		}
+		return "mydata :: #tab02";
 	}
 	 /**
      * 我的订单

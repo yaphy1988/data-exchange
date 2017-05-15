@@ -62,7 +62,7 @@
             <div class="tab-slide pl20 pr20" id="ordListContent">
 
                 <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist" >
+                <ul class="nav nav-tabs" role="tablist" id="tabList" >
                     <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">我的数据</a></li>
                     <li><a href="#tab02" aria-controls="profile" role="tab" data-toggle="tab">定制数据</a></li>
                    
@@ -88,13 +88,13 @@
 										th:unless="${#lists.isEmpty(pageInfo.result)}">
 										<td
 											th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
-										<td th:text="${list.gdsName}"></td>
 										<td th:text="${list.serviceName}"></td>
+										<td th:text="${list.serviceId}"></td>
 										<td
-											th:text="${#calendars.format(list.orderTime,'yyyy-MM-dd HH:mm:ss')}"></td>
-										<td th:text="${list.leftCount}"></td>
-										<td><a href="">再次购买</a></td>
-										<td><a href="">接口</a></td>
+											th:text="${#calendars.format(list.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+										<td th:text="${list.dataAccountDTO.leftNum}"></td>
+										<td><a href="javaScript:void(0)" th:onclick="|buyGoodsAgain('${list.gdsId}','${list.skuId}')|">再次购买</a></td>
+										<td><a href="javaScript:void(0)" th:onclick="|jumpToInterface'${list.gdsId}','${list.skuId}')|">接口</a></td>
 									</tr>
 
 									<tr>
@@ -147,26 +147,56 @@
                                 <th>操作</th>
                             </tr>
                             </thead>
-                            <tbody >
-                            <tr th:remove="all">
-                                <td>1</td>
-                                <td> 跨类套餐名称</td>
-                                <td>调用token1</td>
-                                <td>2017-04-10 12:25:23（首次订购该数据API套餐的时间）</td>
-                                <td>
-                                   当前的实时余额
-                                </td>
-                                <td>
-                                     <a href="">再次购买</a>
-                                </td>
-                                <td>
-                                    <a href="">接口</a>
-                                </td>
-                            </tr>
-                          
-                            </tbody>
-                        </table>
-                    </div>
+                            <tbody th:if=" ${pageInfoCustom}" th:remove="all-but-first">
+									<tr th:each="list,iterStat : ${pageInfoCustom.result}"
+										th:unless="${#lists.isEmpty(pageInfoCustom.result)}">
+										<td
+											th:text="${pageInfoCustom.pageNo -1}*${pageInfoCustom.pageSize}+${iterStat.count}"></td>
+										<td th:text="${list.serviceName}"></td>
+										<td th:text="${list.serviceId}"></td>
+										<td
+											th:text="${#calendars.format(list.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+										<td th:text="${list.dataAccountDTO.leftNum}"></td>
+										<td><a href="javaScript:void(0)" th:onclick="|buyGoodsAgain('${list.gdsId}','${list.skuId}')|">再次购买</a></td>
+										<td><a href="javaScript:void(0)" th:onclick="|jumpToInterface'${list.gdsId}','${list.skuId}')|">接口</a></td>
+									</tr>
+
+									<tr>
+										<td>1</td>
+										<td>API的名称1</td>
+										<td>调用token1</td>
+										<td>2017-04-10 12:25:23（首次订购该数据API套餐的时间）</td>
+										<td>可调用次数总和</td>
+										<td><a href="">再次购买</a></td>
+										<td><a href="">接口</a></td>
+									</tr>
+								</tbody>
+							</table>
+							<!-- 分页-->
+							<div th:if=" ${pageInfoCustom}"  th:fragment="pager" class="pagerBar pagelist pull-right"
+								style="margin-top: 0px;">
+								<script type="text/javascript"
+									src="../static/js-busi/common/pager.js"
+									th:src="@{/js-busi/common/pager.js}"></script>
+								<span data-toggle="pager" id="pagerIdCustom"
+									th:data-count="${pageInfoCustom.count}"
+									th:data-size="${pageInfoCustom.pageSize}"
+									th:data-currentindex="${pageInfoCustom.pageNo}"></span>
+								<script th:inline="javascript">
+									var total = '[[${pageInfoCustom.count}]]';
+									var pageNum = '[[${pageInfoCustom.pageNo}]]';
+									var pageSize = '[[${pageInfoCustom.pageSize}]]';
+
+									if (typeof pagerClickCustom === "undefined") {
+										pagerClickCustom = function(index) {
+											myOrderDataList(index);
+										}
+									}
+									$('#pagerIdCustom').pager({
+										callback : pagerClickCustom
+									});
+								</script>
+							</div>
                      <!-- 分页-->
                     <div class="pagelist" th:remove="all" >
                         <nav aria-label="Page navigation">

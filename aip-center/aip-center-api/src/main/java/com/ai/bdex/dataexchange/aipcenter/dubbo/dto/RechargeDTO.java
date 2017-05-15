@@ -53,9 +53,20 @@ public class RechargeDTO extends BaseResponseDTO {
 
     //查询是是否要连数据账户信息一起查询
     private boolean queryDataAccount = false;
+    
     private DataAccountDTO dataAccountDTO;
+    
+    private String serviceName;
+    
+    public String getServiceName() {
+		return serviceName;
+	}
 
-    public String getRechargeReqId() {
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+
+	public String getRechargeReqId() {
         return rechargeReqId;
     }
 
