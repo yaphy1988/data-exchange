@@ -36,6 +36,20 @@ public interface IAipCenterDataAccountRSV {
     public void dealRecharge(RechargeReqDTO rechargeDTO) throws BusinessException;
 
     /**
+     * 数据账户失效操作
+     * @param dataAccountId
+     * @throws BusinessException
+     */
+    public void dealDisableDataAccount(long dataAccountId) throws BusinessException;
+
+    /**
+     * 数据账户生效操作
+     * @param dataAccountId
+     * @throws BusinessException
+     */
+    public void dealEnableDataAccount(long dataAccountId) throws BusinessException;
+
+    /**
      * 根据子订单编码，查询数据账户信息
      * 主要用于余额查询
      * @param subOrder

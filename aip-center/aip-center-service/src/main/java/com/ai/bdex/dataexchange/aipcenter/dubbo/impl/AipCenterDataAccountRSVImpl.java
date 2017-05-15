@@ -39,6 +39,16 @@ public class AipCenterDataAccountRSVImpl implements IAipCenterDataAccountRSV {
     }
 
     @Override
+    public void dealDisableDataAccount(long dataAccountId) throws BusinessException {
+        dataAccountSV.dealDisableDataAccount(dataAccountId);
+    }
+
+    @Override
+    public void dealEnableDataAccount(long dataAccountId) throws BusinessException {
+        dataAccountSV.dealEnableDataAccount(dataAccountId);
+    }
+
+    @Override
     public DataAccountDTO queryDataAccountBySubOrder(String subOrder) throws BusinessException {
         return dataAccountSV.queryDataAccountBySubOrder(subOrder);
     }

@@ -123,6 +123,42 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
     }
 
     @Override
+    public void dealDisableDataAccount(long dataAccountId) throws BusinessException {
+        DataAccount dataAccount = new DataAccount();
+        dataAccount.setDataAcctId(dataAccountId);
+        dataAccount.setDataAcctStatus(Constants.Bill.DATA_ACCT_STATUS_INVALID);
+
+        DataAccountExample dataAccountExample = new DataAccountExample();
+        DataAccountExample.Criteria updateCriteria = dataAccountExample.createCriteria();
+        updateCriteria.andDataAcctIdEqualTo(dataAccountId);
+        updateCriteria.andDataAcctStatusNotIn(Arrays.asList(Constants.Bill.DATA_ACCT_STATUS_OK));
+
+        if(dataAccountMapper.updateByExample(dataAccount,dataAccountExample) <= 0){
+            String errorMsg = "找不到id:"+dataAccountId+" 状态是:"+Constants.Bill.DATA_ACCT_STATUS_OK+" 的记录。";
+            logger.error(errorMsg);
+            throw new BusinessException(errorMsg);
+        }
+    }
+
+    @Override
+    public void dealEnableDataAccount(long dataAccountId) throws BusinessException {
+        DataAccount dataAccount = new DataAccount();
+        dataAccount.setDataAcctId(dataAccountId);
+        dataAccount.setDataAcctStatus(Constants.Bill.DATA_ACCT_STATUS_OK);
+
+        DataAccountExample dataAccountExample = new DataAccountExample();
+        DataAccountExample.Criteria updateCriteria = dataAccountExample.createCriteria();
+        updateCriteria.andDataAcctIdEqualTo(dataAccountId);
+        updateCriteria.andDataAcctStatusNotIn(Arrays.asList(Constants.Bill.DATA_ACCT_STATUS_OK));
+
+        if(dataAccountMapper.updateByExample(dataAccount,dataAccountExample) <= 0){
+            String errorMsg = "找不到id:"+dataAccountId+" 状态不是:"+Constants.Bill.DATA_ACCT_STATUS_OK+" 的记录。";
+            logger.error(errorMsg);
+            throw new BusinessException(errorMsg);
+        }
+    }
+
+    @Override
     public List<DataAccountDTO> queryDataAccountListByOption(DataAccountDTO dataAccountDTO) throws BusinessException{
         DataAccountExample dataAccountExample = new DataAccountExample();
         DataAccountExample.Criteria criteria = dataAccountExample.createCriteria();
