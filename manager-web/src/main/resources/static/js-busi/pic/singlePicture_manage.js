@@ -106,7 +106,7 @@ var PicInfo = {
 	        	if(data.success){
 	        		WEB.msg.info("提示", "保存成功", function(r) {
 	        			var param = {
-        					pageNo:pageNo
+        					pageNo:1
         				};
 	        			PicInfo.gridPicInfo(param);
 	        			$(".close").trigger('click');
