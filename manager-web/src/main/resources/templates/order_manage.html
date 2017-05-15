@@ -110,10 +110,6 @@
                                 <td th:with="orderType=${list.orderType}" th:text="${#tools.formatOrderType(orderType)}"></td>
 								<td th:if="${list.orderStatus}=='01'">
 									<p class="pop-link">
-<!--
-										<a  th:onclick="'javascript:orderChangePay(\''+${list.orderId}+'\',\''+${list.subOrder}+'\');'"   >确认已支付</a>
--->
-
 										<a  th:onclick="'javascript:orderChangePay('+${list.orderId}+','+${list.ordInfoRespDTO.subOrder}+');'">确认已支付</a>
 									</p>
 								</td>
@@ -148,7 +144,7 @@
                             </tr>
                             </tbody>
                         </table>
-						<div class="overflow-hidden clearfix">
+						<div class="pagelist">
 							<div th:fragment="pager" class="pagerBar pagelist pull-right"
 								 th:if=" ${pageInfo}">
 								<script type="text/javascript"
