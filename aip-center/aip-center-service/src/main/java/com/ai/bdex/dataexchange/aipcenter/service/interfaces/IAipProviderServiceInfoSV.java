@@ -14,4 +14,6 @@ import java.util.List;
 public interface IAipProviderServiceInfoSV {
 
     public PageResponseDTO<AipProviderServiceInfoRespDTO> pagePServiceInfo(AipProviderServiceInfoReqDTO aipProviderServiceInfoReqDTO) throws Exception;
+
+    public AipProviderServiceInfo queryAipProviderServiceInfoByKey(String serviceId,String version) throws Exception;
 }

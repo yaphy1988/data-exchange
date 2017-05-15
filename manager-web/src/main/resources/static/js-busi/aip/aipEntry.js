@@ -6,21 +6,9 @@ var basePath = WEB_ROOT;
 $(function () {
 
     createEditor("outParaExampleCkeditor");
+    setCkeditValue();
 })
 
-function inParaAddRow(obj) {
-    var html =  $(obj).parent().parent().prev().html();
-    $(obj).parent().parent().before('<tr class="inParaTr">'+html+'</tr>');
-}
-
-function outParaAddRow(obj){
-    var html =  $(obj).parent().parent().prev().html();
-    $(obj).parent().parent().before('<tr class="outParaTr">'+html+'</tr>');
-}
-
-function delRow(obj){
-    $(obj).parent().parent().parent().remove();
-}
 
 
 //创建编辑器
@@ -68,6 +56,11 @@ function submitInfo(){
  */
 function initParamInfo(){
     var params = {};
+    var baseInfo_serviceId = $("#baseInfo_serviceId").val();
+    if (baseInfo_serviceId == undefined || $.trim(baseInfo_serviceId)==""){
+        baseInfo_serviceId = "";
+    }
+    params.serviceId = baseInfo_serviceId;
     var baseInfo_serviceName = $.trim($("#baseInfo_serviceName").val());
     if (baseInfo_serviceName == ""){
         WEB.msg.info("提示","服务名称不能为空！");
@@ -136,81 +129,7 @@ function initParamInfo(){
     return params;
 }
 
-/**
- * 获取请求参数
- * @returns {Array}
- */
-function initInParaParams(params){
-    var inParaStr = "";
-    var inParaArr = new Array();
-    var len = $(".inParaTr").length;
-    var flag = true;
-    for (var i = 0 ; i < len ; i++){
-        var inPara = {};
-        var paraCode = $(".inParaTr").eq(i).find("td").eq(0).find("input").val();
-        var paraType = $(".inParaTr").eq(i).find("td").eq(1).find("select").val();
-        var type = $(".inParaTr").eq(i).find("td").eq(2).find("select").val();
-        var remark = $(".inParaTr").eq(i).find("td").eq(3).find("input").val();
-        if ($.trim(paraCode) == ""){
-            WEB.msg.info("提示","请求参数名称不能为空！");
-            flag = false;
-            break;
-        }
-        if ($.trim(paraType)==""){
-            WEB.msg.info("提示","请求参数类型不能为空！");
-            flag = false;
-            break;
-        }
-        inPara.paraCode = $.trim(paraCode);
-        inPara.paraType = $.trim(paraType);
-        inPara.type = $.trim(type);
-        inPara.remark = $.trim(remark);
-        inParaArr.push(inPara);
-    }
-    if (!flag){
-        return false;
-    }
-    inParaStr = JSON.stringify(inParaArr);
-    params.inParaStr = inParaStr;
-    return true;
-}
 
-/**
- * 获取返回参数
- * @returns {Array}
- */
-function initOutParaParams(params){
-    var outParaStr = "";
-    var outParaArr = new Array();
-    var flag = true;
-    var len = $(".outParaTr").length;
-    for (var i = 0 ; i < len ; i++){
-        var outPara = {};
-        var paraCode = $(".outParaTr").eq(i).find("td").eq(0).find("input").val();
-        var paraType = $(".outParaTr").eq(i).find("td").eq(1).find("select").val();
-        var remark = $(".outParaTr").eq(i).find("td").eq(2).find("input").val();
-        if ($.trim(paraCode) == ""){
-            WEB.msg.info("提示","返回参数名称不能为空！");
-            flag = false;
-            break;
-        }
-        if ($.trim(paraType)==""){
-            WEB.msg.info("提示","返回参数类型不能为空！");
-            flag = false;
-            break;
-        }
-        outPara.paraCode = $.trim(paraCode);
-        outPara.paraType = $.trim(paraType);
-        outPara.remark = $.trim(remark);
-        outParaArr.push(outPara);
-    }
-    if (!flag){
-        return false;
-    }
-    outParaStr = JSON.stringify(outParaArr);
-    params.outParaStr = outParaStr;
-    return true;
-}
 
 
 /**
@@ -244,8 +163,26 @@ function selPService(obj) {
     var pServiceId = $(obj).attr("pServiceId");
     var providerId = $(obj).attr("providerId");
     var serviceName = $(obj).attr("serviceName");
+    var version = $(obj).attr("version");
     $("#baseInfo_providerServiceInfo").attr("providerId",providerId);
     $("#baseInfo_providerServiceInfo").val(serviceName);
     $("#baseInfo_providerServiceInfo").attr("pServiceId",pServiceId);
+    $("#baseInfo_providerServiceInfo").attr("version",version);
     $("#pServiceModal").modal("hide");
+}
+
+function setCkeditValue() {
+    var htmlId = $("#outParaExampleCkeditor").attr("htmlId");
+    if (htmlId!=undefined && $.trim(htmlId) != ""){
+        htmlId = htmlId + ".html";
+        $.appAjax({
+            url:htmlId,
+            async : true,
+            dataType : 'jsonp',
+            jsonp :'jsonpCallback',//注意此处写死jsonCallback
+            success: function (data) {
+                outParaExampleCkeditor.setData(data.result);
+            }
+        });
+    }
 }

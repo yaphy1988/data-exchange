@@ -56,6 +56,8 @@ public class AipServiceInfoReqDTO extends BaseInfo{
 
 	private String pServiceId;
 
+	private String pVersion;
+
 	private String returnExample;
 	
 	public String getType() {
@@ -197,5 +199,13 @@ public class AipServiceInfoReqDTO extends BaseInfo{
 
 	public void setReturnExample(String returnExample) {
 		this.returnExample = returnExample;
+	}
+
+	public String getpVersion() {
+		return pVersion;
+	}
+
+	public void setpVersion(String pVersion) {
+		this.pVersion = pVersion;
 	}
 }

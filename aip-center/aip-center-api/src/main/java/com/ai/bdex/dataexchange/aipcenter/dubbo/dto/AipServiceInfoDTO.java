@@ -436,6 +436,34 @@ public class AipServiceInfoDTO extends BaseResponseDTO{
 	public void setTestTool(String testTool) {
 		this.testTool = testTool;
 	}
-	   
-   
+
+    private String pServiceId;
+
+    private String pVersion;
+
+    private String returnExample;
+
+    public String getpServiceId() {
+        return pServiceId;
+    }
+
+    public void setpServiceId(String pServiceId) {
+        this.pServiceId = pServiceId;
+    }
+
+    public String getpVersion() {
+        return pVersion;
+    }
+
+    public void setpVersion(String pVersion) {
+        this.pVersion = pVersion;
+    }
+
+    public String getReturnExample() {
+        return returnExample;
+    }
+
+    public void setReturnExample(String returnExample) {
+        this.returnExample = returnExample;
+    }
 }

@@ -11,7 +11,7 @@
 	<script type="text/javascript" src="../../static/component/ckeditor/ckeditor.js" th:src="@{/component/ckeditor/ckeditor.js}"></script>
 
 
-	<script src="../../static/js-busi/aip/aipEntry.js" th:src="@{/js-busi/aip/aipEntry.js}"></script>
+	<script src="../../static/js-busi/aip/aipEntry-para.js" th:src="@{/js-busi/aip/aipEntry-para.js}"></script>
 	
 </head>
 <body>
@@ -55,58 +55,6 @@
 		<div class="m_con">
 			<div class="title">API</div>
 			<table class="editTable">
-				<tr>
-					<td class="Hint" width="140">
-						<span class="col_red">*</span>
-						接口地址:
-					</td>
-					<td width="520" colspan="3">
-						<input type="text" class="form-control" placeholder="" th:value="${aipServiceBaseInfo.apiUrl}" id="baseInfo_aipUrl">
-					</td>
-					<td ><span class="tip">必填</span></td>
-				</tr>
-				
-				<tr>
-					<td class="Hint" >
-						<span class="col_red">*</span>支持格式:
-					</td>
-					<td>
-						<input type="text" class="form-control" placeholder="" id="baseInfo_supportFormat" th:value="${aipServiceBaseInfo.supportFormat}">
-					</td>
-					<td class="Hint" width="140">
-						<span class="col_red">*</span>请求方式:
-					</td>
-					<td>
-						<input type="text" class="form-control" placeholder="" id="baseInfo_reqType" th:value="${aipServiceBaseInfo.reqType}">
-					</td>
-				</tr>
-				<tr>
-					<td class="Hint ">
-						<span class="col_red">*</span>请求实例:
-					</td>
-					<td  colspan="3">
-						<textarea class="form-control" rows="2" id="baseInfo_exampleUrl" th:value="${aipServiceBaseInfo.exampleUrl}"></textarea>
-					</td>
-				</tr>
-				<tr>
-					<td class="Hint" >
-						<span class="col_red">*</span>
-						在线测试地址:
-					</td>
-					<td width="520" colspan="3">
-						<input type="text" class="form-control" placeholder="" id="baseInfo_testTool" th:value="${aipServiceBaseInfo.testTool}">
-					</td>
-				</tr>
-
-
-				<tr th:remove="all" >
-					<td class="Hint">
-						<span class="col_red">*</span>接口备注:
-					</td>
-					<td  colspan="3">
-						<textarea class="form-control" rows="5" id="baseInfo_apiRemark" th:value="${aipServiceBaseInfo.apiRemark}"></textarea>
-					</td>
-				</tr>
 
 				<tr>
 					<td class="Hint"><span class="col_red">*</span>请求参数说明:</td>
@@ -239,17 +187,6 @@
 							</tr>
 							</tbody>
 						</table>
-					</td>
-				</tr>
-				<tr>
-					<td class="Hint">
-						<span class="col_red">*</span>返回示例:
-					</td>
-					<td  colspan="3">
-						<div id="outParaExampleCkeditor">
-
-						</div>
-						<textarea class="form-control" rows="5" th:remove="all"></textarea>
 					</td>
 				</tr>
 			</table>
@@ -385,6 +322,6 @@
 	</div>
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
-</div>
+<!--</div>-->
 </body>
 </html>

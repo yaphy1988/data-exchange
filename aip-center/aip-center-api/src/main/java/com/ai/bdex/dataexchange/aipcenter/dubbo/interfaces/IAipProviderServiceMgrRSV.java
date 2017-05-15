@@ -13,4 +13,6 @@ public interface IAipProviderServiceMgrRSV {
     public PageResponseDTO<AipProviderServiceInfoRespDTO> pagePServiceInfo(AipProviderServiceInfoReqDTO aipProviderServiceInfoReqDTO) throws Exception;
 
     public AipProviderInfoRespDTO queryAipProviderInfoByProviderId(String providerId) throws Exception;
+
+    public AipProviderServiceInfoRespDTO queryPServiceByKey(String serviceId,String version) throws Exception;
 }

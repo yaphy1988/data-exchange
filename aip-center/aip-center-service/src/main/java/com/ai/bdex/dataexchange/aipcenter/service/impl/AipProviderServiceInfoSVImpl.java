@@ -3,6 +3,7 @@ package com.ai.bdex.dataexchange.aipcenter.service.impl;
 import com.ai.bdex.dataexchange.aipcenter.dao.mapper.AipProviderServiceInfoMapper;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipProviderServiceInfo;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipProviderServiceInfoExample;
+import com.ai.bdex.dataexchange.aipcenter.dao.model.AipProviderServiceInfoKey;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderServiceInfoReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderServiceInfoRespDTO;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipProviderServiceInfoSV;
@@ -45,6 +46,16 @@ public class AipProviderServiceInfoSVImpl implements IAipProviderServiceInfoSV {
         pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,AipProviderServiceInfoRespDTO.class);
 
         return pageResponseDTO;
+    }
+
+    @Override
+    public AipProviderServiceInfo queryAipProviderServiceInfoByKey(String serviceId, String version) throws Exception {
+        AipProviderServiceInfo aipProviderServiceInfo = null;
+        AipProviderServiceInfoKey aipProviderServiceInfoKey = new AipProviderServiceInfoKey();
+        aipProviderServiceInfoKey.setpServiceId(serviceId);
+        aipProviderServiceInfoKey.setVersion(version);
+        aipProviderServiceInfo = aipProviderServiceInfoMapper.selectByPrimaryKey(aipProviderServiceInfoKey);
+        return aipProviderServiceInfo;
     }
 
     private void initCriteria(AipProviderServiceInfoExample.Criteria criteria,AipProviderServiceInfoReqDTO aipProviderServiceInfoReqDTO){

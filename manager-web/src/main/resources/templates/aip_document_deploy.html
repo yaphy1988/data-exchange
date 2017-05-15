@@ -55,6 +55,7 @@
 		<div class="m_con">
 			<div class="title">API</div>
 			<table class="editTable">
+				<input type="hidden" id="baseInfo_serviceId" th:value="${aipServiceBaseInfo.serviceId}">
 				<tr>
 					<td class="Hint" width="140">
 						<span class="col_red">*</span>
@@ -78,7 +79,7 @@
 						供应商服务:
 					</td>
 					<td width="300" colspan="2">
-						<input id="baseInfo_providerServiceInfo" th:providerId="${aipServiceBaseInfo.providerId}" th:pServiceId="${aipServiceBaseInfo.pServiceId}" th:value="${aipServiceBaseInfo.pServiceName}" providerId="" pServiceId="" type="text" class="form-control" readonly="readonly" placeholder="供应商服务" />
+						<input id="baseInfo_providerServiceInfo" th:providerId="${aipServiceBaseInfo.providerId}" th:version="${aipServiceBaseInfo.pVersion}" th:pServiceId="${aipServiceBaseInfo.pServiceId}" th:value="${aipServiceBaseInfo.pServiceName}" providerId="" pServiceId="" type="text" class="form-control" readonly="readonly" placeholder="供应商服务" />
 						<!--<select class="form-control wt100" id="baseInfo_providerId">-->
 							<!--<option value="1">供应商1</option>-->
 							<!--<option value="2">供应商2</option>-->
@@ -150,8 +151,8 @@
 					<td class="Hint">
 						<span class="col_red">*</span>返回示例:
 					</td>
-					<td  colspan="3">
-						<div id="outParaExampleCkeditor">
+					<td  colspan="3" style="padding-top: 10px;">
+						<div id="outParaExampleCkeditor" th:htmlId="${aipServiceBaseInfo.returnExample}">
 
 						</div>
 						<textarea class="form-control" rows="5" th:remove="all"></textarea>
@@ -206,7 +207,7 @@
 								<td th:text="${list.serviceName}"></td>
 								<td th:text="${list.version}"></td>
 								<td th:text="${list.providerName}"></td>
-								<td><a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" onclick="selPService(this)" th:pServiceId="${list.pServiceId}" th:providerId="${list.providerId}" th:serviceName="${list.serviceName}">选择</a></td>
+								<td><a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" onclick="selPService(this)" th:pServiceId="${list.pServiceId}" th:providerId="${list.providerId}" th:serviceName="${list.serviceName}" th:version="${list.version}">选择</a></td>
 							</tr>
 							</tbody>
 						</table>

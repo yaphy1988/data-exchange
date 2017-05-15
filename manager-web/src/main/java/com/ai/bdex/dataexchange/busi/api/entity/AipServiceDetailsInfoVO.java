@@ -49,6 +49,10 @@ public class AipServiceDetailsInfoVO extends BaseInfo {
 
     private String pServiceName;
 
+    private String pVersion;
+
+    private String returnExample;
+
     public String getServiceId() {
         return serviceId;
     }
@@ -207,5 +211,21 @@ public class AipServiceDetailsInfoVO extends BaseInfo {
 
     public void setpServiceName(String pServiceName) {
         this.pServiceName = pServiceName;
+    }
+
+    public String getpVersion() {
+        return pVersion;
+    }
+
+    public void setpVersion(String pVersion) {
+        this.pVersion = pVersion;
+    }
+
+    public String getReturnExample() {
+        return returnExample;
+    }
+
+    public void setReturnExample(String returnExample) {
+        this.returnExample = returnExample;
     }
 }

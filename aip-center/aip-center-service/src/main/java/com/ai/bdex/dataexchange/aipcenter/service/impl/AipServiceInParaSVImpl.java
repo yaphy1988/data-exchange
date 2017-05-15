@@ -60,6 +60,7 @@ public class AipServiceInParaSVImpl implements IAipServiceInParaSV{
 		AipServiceInParaExample example = new AipServiceInParaExample();
 		AipServiceInParaExample.Criteria criteria = example.createCriteria();
 		criteria.andServiceIdEqualTo(aipServiceInParaDTO.getServiceId());
+		criteria.andVersionEqualTo(aipServiceInParaDTO.getVersion());
 		AipServiceInPara aipServiceInPara = new AipServiceInPara();
 		String notCopy = "inputId,serviceId,version";
 		ObjectCopyUtil.copyObjValue(aipServiceInParaDTO,aipServiceInPara,notCopy,false);
