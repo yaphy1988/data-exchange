@@ -59,6 +59,7 @@ public class PicManageController {
         picLibReqDTO.setStatus("1");
         picLibReqDTO.setPageNo(picManageVO.getPageNo());
         picLibReqDTO.setPageSize(10);
+        picLibReqDTO.setLibName(picManageVO.getLibName());
         try {
             PageResponseDTO<PicLibRespDTO> pageInfo = iPicLibRSV.queryPicLibPage(picLibReqDTO);
             model.addAttribute("pageInfo", pageInfo);
@@ -181,6 +182,7 @@ public class PicManageController {
         picInfoReqDTO.setLibId(picManageVO.getLibId());
         picInfoReqDTO.setPageNo(picManageVO.getPageNo());
         picInfoReqDTO.setPageSize(10);
+        picInfoReqDTO.setPicName(picManageVO.getPicName());
         try {
             PageResponseDTO<PicInfoRespDTO> pageInfo = iPicInfoRSV.queryPicInfoPage(picInfoReqDTO);
             model.addAttribute("pageInfo", pageInfo);
@@ -208,7 +210,7 @@ public class PicManageController {
         try {
             PicInfoReqDTO picInfoReqDTO = new PicInfoReqDTO();
             picInfoReqDTO.setCreateUser(StaffUtil.getStaffId(session));
-            ObjectCopyUtil.copyObjValue(iPicInfoRSV, picInfoReqDTO, null, false);
+            ObjectCopyUtil.copyObjValue(picManageVO, picInfoReqDTO, null, false);
             iPicInfoRSV.insertPicInfo(picInfoReqDTO);
             ajaxJson.setSuccess(true);
         } catch (BusinessException e) {

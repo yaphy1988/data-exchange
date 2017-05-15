@@ -28,6 +28,10 @@ public class PicManageVO implements Serializable{
      * 图片id
     */
     private Integer picId;
+    /**
+     * 图片地址（存的mongodbId）
+     */
+    private String picUuid;
 
    /**
     * 图片库id
@@ -167,6 +171,14 @@ public class PicManageVO implements Serializable{
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public String getPicUuid() {
+        return picUuid;
+    }
+
+    public void setPicUuid(String picUuid) {
+        this.picUuid = picUuid;
     }
 }
 

@@ -97,11 +97,11 @@
 		                <ul class="clearfix" th:remove="all-but-first">
 		                     <li th:if="${pageInfo} and ${pageInfo.result} and ${#lists.size(pageInfo.result) gt 0}" th:each="piclib,piclibStat : ${pageInfo.result}">
 		                    	 <div class="name text_overflow" th:attr="title='${piclib.libName}'" th:text="${piclib.libName}">需求定制类图片需求定制类图片需求定制类图片</div>
-		                    	 <div class="about mb5 text_overflow" th:text="'共'+${piclib.picMun}+'张图片'">共20张图片共20张图片共20张图片</div>
+		                    	 <div class="about mb5 text_overflow" th:text="'共'+${piclib.picNum}+'张图片'">共20张图片共20张图片共20张图片</div>
 		                    	 <div class="edit">
 		                    	 	<a href="singlePicture_manage.html"><img src="" th:src="${#tools.genImageUrl(piclib.libPic,'200x200')}"></a>
 		                    	 	<span>
-		                    	 		<a href="singlePicture_manage.html" th:href="@{'/picmanage/picinfo?libId='+${piclib.libId}}">查看</a>
+		                    	 		<a href="singlePicture_manage.html" th:href="@{'/picmanage/picinfo?libId='+${piclib.libId}+'&libName='+${piclib.libName}}">查看</a>
 		                    	 		<a href="#" th:onclick="|PicLib.editPicLib(this,'${piclib.libName}','${piclib.libPic}',${piclib.libId})|">编辑</a>
 		                    	 		<a href="#" th:onclick="|PicLib.deletePicLib(${piclib.libId})|">删除</a>
 		                    	 	</span>
@@ -378,6 +378,7 @@
 	      </div>
 	      <div class="modal-body">
 	            <!-- 内容 -->
+	            <input type="hidden" value="" id="editFlag"/>
 	            <input type="hidden" value="" id="libId"/>
 	            <table class="editTable">
 	                <tr>

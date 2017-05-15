@@ -64,6 +64,12 @@ public class PicInfoRSVImpl implements IPicInfoRSV{
         if(picInfoReqDTO == null){
             throw new BusinessException("入参picInfoReqDTO不能为null");
         }
+        if(picInfoReqDTO.getLibId() == null){
+            throw new BusinessException("入参libId不能为null");
+        }
+        if(picInfoReqDTO.getPicId() == null){
+            throw new BusinessException("入参picId不能为null");
+        }
         try {
             return  iPicInfoSV.updatePicInfo(picInfoReqDTO);
         } catch (Exception e) {

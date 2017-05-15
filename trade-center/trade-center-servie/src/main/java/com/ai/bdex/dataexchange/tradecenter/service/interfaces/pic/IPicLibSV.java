@@ -81,5 +81,28 @@ public interface IPicLibSV {
      * @return
      */
     public PageResponseDTO<PicLibRespDTO> queryPicLibPage(PicLibReqDTO picLibReqDTO) throws BusinessException;
+    /**
+     * 
+     * increasePicNum:(增加图片数量). <br/> 
+     * 
+     * @author gxq 
+     * @param picLibReqDTO
+     * @return
+     * @throws BusinessException 
+     * @since JDK 1.6
+     */
+    public int increasePicNum(PicLibReqDTO picLibReqDTO) throws BusinessException;
+    
+    /**
+     * 
+     * increasePicNum:(减少图片数量). <br/> 
+     * 
+     * @author gxq 
+     * @param picLibReqDTO
+     * @return
+     * @throws BusinessException 
+     * @since JDK 1.6
+     */
+    public int reducePicNum(PicLibReqDTO picLibReqDTO) throws BusinessException;
 }
 

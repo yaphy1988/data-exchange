@@ -10,7 +10,12 @@ $(function(){
 	 * 保存图片库事件绑定
 	 */
 	$("#saveBtn").click(function(){
-		PicLib.savePicLib();
+		if($("#editFlag").val()=="true"){
+			PicLib.updatePicLib();
+		}else{
+			PicLib.savePicLib();
+		}
+		
 	});
 	
 	$("#picUpLoad").bind("change", function(e) {
@@ -47,6 +52,7 @@ var PicLib = {
 		$("#libPic").val(licPic);
 		$("#libId").val(libId);
 		$("#libPicUrl").attr("src",$(obj).parents(".edit").find("img").attr('src'));
+		$("#editFlag").val("true");
 		$("#add_pic").modal();
 		e.preventDefault();
 	},
@@ -54,7 +60,7 @@ var PicLib = {
 	 * 查询图片库列表
 	 */
 	gridPicLib : function(param){
-		param.libName = $.trim($("#searhLibName").val());
+		param.libName = $.trim($("#searchLibName").val());
 		$.ajax({
 	        url:WEB_ROOT+"/picmanage/gridpiclib",
 	        async:true,
@@ -87,6 +93,7 @@ var PicLib = {
         					pageNo:1
         				};
         				PicLib.gridPicLib(param);
+        				$(".close").trigger('click');
         				/**
 	        			 * 清除弹出的各种隐藏域和input值
 	        			 */
@@ -103,9 +110,9 @@ var PicLib = {
 	 */
 	updatePicLib : function(){
 		var param ={
-			catId : $("#editCatId").val(),
-			catName : $.trim($("#catName").val()),
-			showOrder : $.trim($("#showOrder").val())
+			libName : $.trim($("#libName").val()),
+			libPic : $.trim($("#libPic").val()),
+			libId : $("#libId").val()
 		};
 		$.ajax({
 	        url:WEB_ROOT+"/picmanage/updatepiclib",
@@ -117,9 +124,10 @@ var PicLib = {
 	        	if(data.success){
 	        		WEB.msg.info("提示", "更新成功", function(r) {
 	        			var param = {
-        					pageNo:pageNo
+        					pageNo:1
         				};
         				PicLib.gridPicLib(param);
+        				$(".close").trigger('click');
 	        			/**
 	        			 * 清除弹出的各种隐藏域和input值
 	        			 */
@@ -164,6 +172,7 @@ var PicLib = {
 		$("#libName").val('');
 		$("#libPic").val('');
 		$("#libId").val('');
+		$("#editFlag").val('');
 		$("#libPicUrl").attr("src",'')
 		
 	},
@@ -202,8 +211,8 @@ var PicLib = {
 			});
 		};
 		var params={
-				width:width,
-				height:height
+			width:width,
+			height:height
 		}
 		PicLib.ajaxFileUpload(url, false, $(object).attr('id'), "POST", "json",params, callback);
 	},

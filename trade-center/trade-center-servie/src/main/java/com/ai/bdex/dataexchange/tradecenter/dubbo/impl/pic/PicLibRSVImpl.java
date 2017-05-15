@@ -62,6 +62,9 @@ public class PicLibRSVImpl implements IPicLibRSV{
         if(picLibReqDTO == null){
             throw new BusinessException("入参picLibReqDTO不能为null");
         }
+        if(picLibReqDTO.getLibId() == null){
+            throw new BusinessException("入参libId不能为null");
+        }
         try {
             return  iPicLibSV.updatePicLib(picLibReqDTO);
         } catch (Exception e) {

@@ -18,7 +18,9 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.PicInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PicInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicLibReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.pic.IPicInfoSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.pic.IPicLibSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;
@@ -43,6 +45,8 @@ public class PicInfoSVImpl implements IPicInfoSV{
     private static Logger logger = LoggerFactory.getLogger(PicInfoSVImpl.class.getName());
     @Resource
     private PicInfoMapper PicInfoMapper;
+    @Resource
+    private IPicLibSV iPicLibSV;
     
     @Override
     public List<PicInfoRespDTO> queryPicInfoList(
@@ -79,7 +83,13 @@ public class PicInfoSVImpl implements IPicInfoSV{
         picInfo.setPicId(picId);
         Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
         picInfo.setCreateTime(time);
+        picInfo.setUpdateTime(time);
+        picInfo.setStatus("1");
         int code = PicInfoMapper.insert(picInfo);
+        PicLibReqDTO picLibReqDTO = new PicLibReqDTO();
+        picLibReqDTO.setLibId(picInfo.getLibId());
+        picLibReqDTO.setPicNum(1);
+        code = iPicLibSV.increasePicNum(picLibReqDTO);
         return code;
     }
 
@@ -89,14 +99,11 @@ public class PicInfoSVImpl implements IPicInfoSV{
         if(picInfoReqDTO == null){
             throw new BusinessException("入参picInfoReqDTO不能为null");
         }
-        PicInfoExample example = new PicInfoExample();
-        PicInfoExample.Criteria criteria = example.createCriteria();
-        initCriteria(criteria,picInfoReqDTO);
         PicInfo picInfo = new PicInfo();
         ObjectCopyUtil.copyObjValue(picInfoReqDTO, picInfo, null, false);
         Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
         picInfo.setUpdateTime(time);
-        int code = PicInfoMapper.updateByExampleSelective(picInfo, example);
+        int code = PicInfoMapper.updateByPrimaryKeySelective(picInfo);
         return code;
     }
 
@@ -110,6 +117,14 @@ public class PicInfoSVImpl implements IPicInfoSV{
         PicInfoExample.Criteria criteria = example.createCriteria();
         initCriteria(criteria,picInfoReqDTO);
         int code = PicInfoMapper.deleteByExample(example);
+        List<PicInfo> picInfos = PicInfoMapper.selectByExample(example);
+        if(picInfos != null && picInfos.size() >= 1){
+            PicLibReqDTO picLibReqDTO = new PicLibReqDTO();
+            picLibReqDTO.setLibId(picInfos.get(0).getLibId());
+            picLibReqDTO.setPicNum(1);
+            code = iPicLibSV.reducePicNum(picLibReqDTO);
+        }
+       
         return code;
     }
 
@@ -155,13 +170,13 @@ public class PicInfoSVImpl implements IPicInfoSV{
         PicInfoExample example = new PicInfoExample();
         PicInfoExample.Criteria criteria = example.createCriteria();
         initCriteria(criteria,picInfoReqDTO);
-        example.setOrderByClause("create_time desc");
+        example.setOrderByClause("update_time desc");
         //开启分页查询，使用mybatis-PageHelper分页插件，第三个条件是排序子句
         PageHelper.startPage(page, rows);
         List<PicInfo> picInfos = PicInfoMapper.selectByExample(example);
         //使用PageInfo对结果进行包装
         PageInfo pageInfo = new PageInfo(picInfos);
-        logger.info("IGdsInfoSV查询完成，总数：" + pageInfo.getTotal() + "当前页内记录数：" + picInfos.size());
+        logger.info("查询完成，总数：" + pageInfo.getTotal() + "当前页内记录数：" + picInfos.size());
         //按照返回数据结构封装分页数据，本项目中分页统一返回PageResponseDTO。入参pageInfo，返回的数据传输对象DTO的class
         PageResponseDTO<PicInfoRespDTO> resultDTO = PageResponseFactory.genPageResponse(pageInfo,PicInfoRespDTO.class);
         return resultDTO;

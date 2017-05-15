@@ -7,12 +7,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PicLibExtendsMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.PicLibMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PicLib;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PicLibExample;
@@ -46,6 +48,8 @@ public class PicLibSVImpl implements IPicLibSV{
     private static Logger logger = LoggerFactory.getLogger(PicLibSVImpl.class.getName());
     @Resource
     private PicLibMapper PicLibMapper;
+    @Resource
+    private PicLibExtendsMapper picLibExtendsMapper;
     @Resource
     private IPicInfoSV iPicInfoSV;
     
@@ -85,6 +89,7 @@ public class PicLibSVImpl implements IPicLibSV{
         Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
         picLib.setCreateTime(time);
         picLib.setUpdateTime(time);
+        picLib.setPicNum(0);
         int code = PicLibMapper.insert(picLib);
         return code;
     }
@@ -95,14 +100,11 @@ public class PicLibSVImpl implements IPicLibSV{
         if(picLibReqDTO == null){
             throw new BusinessException("入参picLibReqDTO不能为null");
         }
-        PicLibExample example = new PicLibExample();
-        PicLibExample.Criteria criteria = example.createCriteria();
-        initCriteria(criteria,picLibReqDTO);
         PicLib picLib = new PicLib();
         ObjectCopyUtil.copyObjValue(picLibReqDTO, picLib, null, false);
         Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
         picLib.setUpdateTime(time);
-        int code = PicLibMapper.updateByExampleSelective(picLib, example);
+        int code = PicLibMapper.updateByPrimaryKeySelective(picLib);
         return code;
     }
 
@@ -205,6 +207,34 @@ public class PicLibSVImpl implements IPicLibSV{
             criteria.andCreateUserEqualTo(picLibReqDTO.getCreateUser());
         }
         
+    }
+
+    @Override
+    public int increasePicNum(PicLibReqDTO picLibReqDTO) throws BusinessException {
+        if(picLibReqDTO== null || picLibReqDTO.getLibId()==null || picLibReqDTO.getLibId().intValue()<1){
+            throw new BusinessException("入参libId不能为空");
+        }
+        PicLib picLib = new PicLib();
+        try {
+            PropertyUtils.copyProperties(picLib, picLibReqDTO);
+        } catch (Exception e) {
+            throw new BusinessException("picLib，picLibReqDTO属性赋值错误"+e);
+        }
+        return picLibExtendsMapper.increasePicNum(picLib);
+    }
+
+    @Override
+    public int reducePicNum(PicLibReqDTO picLibReqDTO) throws BusinessException {
+        if(picLibReqDTO== null || picLibReqDTO.getLibId()==null || picLibReqDTO.getLibId().intValue()<1){
+            throw new BusinessException("入参libId不能为空");
+        }
+        PicLib picLib = new PicLib();
+        try {
+            PropertyUtils.copyProperties(picLib, picLibReqDTO);
+        } catch (Exception e) {
+            throw new BusinessException("picLib，picLibReqDTO属性赋值错误"+e);
+        }
+        return picLibExtendsMapper.reducePicNum(picLib);
     }
 
 }

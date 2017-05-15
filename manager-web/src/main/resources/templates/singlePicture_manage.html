@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
 	<link rel="stylesheet" href="../static/css/multiMedia_manage.css" th:href="@{/css/multiMedia_manage.css}">    <!-- 多媒体资料管理 tangyk -->
+	<script type="text/javascript" src="../static/js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
 	<script th:src="@{/js-busi/pic/singlePicture_manage.js}"></script
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
@@ -78,8 +79,8 @@
                     <tr>
                         <td class="Hint">图片库：</td>
                         <td>
-                            <input  value="" type="hidden">
-                            <select class="form-control" >
+                            <input  th:attr="value=${picManageVO.libName}" type="hidden" id="searchLibName">
+                            <select class="form-control" id="searchLibId">
                                 <option value="" th:attr="value=${picManageVO.libId}" th:text="${picManageVO.libName}">请选择</option>
                             </select>
                         </td>
@@ -102,12 +103,12 @@
 		                <ul class="clearfix" th:remove="all-but-first">
 		                    <li th:if="${pageInfo} and ${pageInfo.result} and ${#lists.size(pageInfo.result) gt 0}" th:each="picinfo,picinfoStat : ${pageInfo.result}">
 		                    	 <div class="name text_overflow" th:text="${picinfo.picName}">需求定制类图片需求定制类图片需求定制类图片</div>
-		                    	 <div class="about mb5 text_overflow" th:text="'共'+${picinfo.picMun}+'张图片'">共20张图片共20张图片共20张图片</div>
+		                    	 <div class="about mb5 text_overflow" th:remove="All">共20张图片共20张图片共20张图片</div>
 		                    	 <div class="edit">
-		                    	 	<a data-target="#view_pic" data-toggle="modal"><img src="" th:src="${#tools.genImageUrl(picinfo.picId,'200x200')}"></a>
+		                    	 	<a data-target="#view_pic" data-toggle="modal"><img src="" th:src="${#tools.genImageUrl(picinfo.picUuid,'200x200')}"></a>
 		                    	 	<span>
-		                    	 		<a data-target="#view_pic" data-toggle="modal" th:attr="picUrl=${#tools.genImageUrl(picinfo.picId,'')}" th:onclick="|PicInfo.showPicInfo(this)|">查看</a>
-		                    	 		<a href="#" th:onclick="|PicInfo.editPicInfo(this,'${picinfo.picName}','${picinfo.picId}','${picManageVO.libName}')|">编辑</a>
+		                    	 		<a data-target="#view_pic" th:attr="picUrl=${#tools.genImageUrl(picinfo.picUuid,'')}" th:onclick="|PicInfo.showPicInfo(this)|">查看</a>
+		                    	 		<a href="#" th:onclick="|PicInfo.editPicInfo(this,${picinfo.picId},'${picinfo.picName}','${picinfo.picUuid}')|">编辑</a>
 		                    	 		<a href="#" th:onclick="|PicInfo.deletePicInfo(${picinfo.picId})|">删除</a>
 		                    	 	</span>
 		                    	 </div>
@@ -286,7 +287,7 @@
 		
 		            <div class="overflow-hidden clearfix">
 		                  <div class="pull-left mt20">
-		                      <button class="btn btn-primary" data-target="#add_pic" data-toggle="modal"><i class="glyphicon glyphicon-plus"></i>新增图片</button>
+		                      <button class="btn btn-primary" data-target="#add_pic" data-toggle="modal" th:onclick="|PicInfo.newPicInfo()|"><i class="glyphicon glyphicon-plus"></i>新增图片</button>
 		                  </div>
 		
 		                  <!-- pagerBar -->
@@ -382,16 +383,16 @@
 	      </div>
 	      <div class="modal-body">
 	            <!-- 内容 -->
+	             <input type="hidden" value="" id="editFlag"/>
 	            <table class="editTable">
 	                <tr>
 	                    <td class="Hint tips">
 	                        <span class="col_red">*</span>上传图片:
 	                    </td>
 	                    <td>
-	                    	<input type="hidden" value="" id="libName" name="libName"/>
 	                    	<input type="hidden" value="" id="picId" name="picId"/>
-                            <input type="text" class="form-control wt200 ClassItem" placeholder=""  disabled>
-                            <input class="float_File"  type="file"  width="940" height="400" name="picUpLoad" id="picUpLoad">
+	                    	<input type="hidden" value="" id="picUuid" name="picUuid"/>
+                            <input class="float_File"  type="file" name="picUpLoad" id="picUpLoad">
 	                        
 	                    </td>
 	                </tr>
@@ -408,7 +409,8 @@
 	                           归属图片库:
 	                    </td>
 	                    <td >
-	                        XXXX图片库
+	                    	<input type="hidden" value="" id="libId" name="libId"/>
+	                        <input type="text" value="" id="libName" name="libName" disabled/>
 	                    </td>
 	                </tr>
 	                <tr>
@@ -446,7 +448,7 @@
       <div class="modal-body">
             <!-- 内容 -->
               <div class="viewPic">
-                  <img src="http://www.woego.cn/woego/image/58ef32efb1d0abd5beeae6c1.jpg" width="2000px" height="900px" id="showPicUrl">
+                  <img src="http://www.woego.cn/woego/image/58ef32efb1d0abd5beeae6c1.jpg" id="showPicUrl">
               </div>
               <div class="modal-footer"> 
                     <a href="" class="btn btn-primary">关闭</a>
