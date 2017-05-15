@@ -137,6 +137,9 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
             String errorMsg = "找不到id:"+dataAccountId+" 状态是:"+Constants.Bill.DATA_ACCT_STATUS_OK+" 的记录。";
             logger.error(errorMsg);
             throw new BusinessException(errorMsg);
+        }else{
+            DataAccount dataAccountHis = dataAccountMapper.selectByPrimaryKey(dataAccountId);
+            saveDataAccountHis(dataAccountHis,"后台人员操作订单失效。");
         }
     }
 
@@ -155,6 +158,9 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
             String errorMsg = "找不到id:"+dataAccountId+" 状态不是:"+Constants.Bill.DATA_ACCT_STATUS_OK+" 的记录。";
             logger.error(errorMsg);
             throw new BusinessException(errorMsg);
+        }else{
+            DataAccount dataAccountHis = dataAccountMapper.selectByPrimaryKey(dataAccountId);
+            saveDataAccountHis(dataAccountHis,"后台人员操作订单生效。");
         }
     }
 
