@@ -18,6 +18,11 @@ public class DataAccountDTO extends BaseInfo{
     private String dataAcctType;
 
     /**
+     * 套餐类型：01-固定套餐，02-自定义套餐，03-跨类套餐
+     */
+    private String packageType;
+
+    /**
      * 归属用户id
      */
     private String userId;
@@ -71,6 +76,14 @@ public class DataAccountDTO extends BaseInfo{
 
     public void setDataAcctType(String dataAcctType) {
         this.dataAcctType = dataAcctType;
+    }
+
+    public String getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(String packageType) {
+        this.packageType = packageType;
     }
 
     public String getUserId() {

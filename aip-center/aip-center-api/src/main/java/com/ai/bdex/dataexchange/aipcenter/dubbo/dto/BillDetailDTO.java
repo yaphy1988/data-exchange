@@ -21,6 +21,16 @@ public class BillDetailDTO extends BaseResponseDTO {
 
     private String dataAcctType;
 
+    private String packageType;
+
+    public String getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(String packageType) {
+        this.packageType = packageType;
+    }
+
     private Integer consumeNum;
 
     //消费金额，单位厘

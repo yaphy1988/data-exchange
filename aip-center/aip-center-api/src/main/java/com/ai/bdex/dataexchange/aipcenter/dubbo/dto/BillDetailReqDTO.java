@@ -18,8 +18,18 @@ public class BillDetailReqDTO extends BaseInfo {
 
     private Long dataAcctId;
 
+    private String packageType;
+
     //用户id
     private String userId;
+
+    public String getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(String packageType) {
+        this.packageType = packageType;
+    }
 
     //服务编码
     private String serviceId;

@@ -38,6 +38,8 @@ public class RechargeDTO extends BaseResponseDTO {
 
     private Integer skuId;
 
+    private String packageType;
+
     private Integer totalNum;
 
     /**
@@ -170,6 +172,14 @@ public class RechargeDTO extends BaseResponseDTO {
 
     public void setSkuId(Integer skuId) {
         this.skuId = skuId;
+    }
+
+    public String getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(String packageType) {
+        this.packageType = packageType;
     }
 
     public Integer getTotalNum() {
