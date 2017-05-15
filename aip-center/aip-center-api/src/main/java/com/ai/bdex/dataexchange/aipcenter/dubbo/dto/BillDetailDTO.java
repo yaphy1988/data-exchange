@@ -23,6 +23,7 @@ public class BillDetailDTO extends BaseResponseDTO {
 
     private Integer consumeNum;
 
+    //消费金额，单位厘
     private Integer consumeMoney;
 
     private Date consumeTime;
@@ -97,5 +98,13 @@ public class BillDetailDTO extends BaseResponseDTO {
 
     public void setConsumeTime(Date consumeTime) {
         this.consumeTime = consumeTime;
+    }
+
+    /**
+     * 将消费金额转化陈分返回，原来是厘
+     * @return
+     */
+    public double getConsumeMoneyCent(){
+        return consumeMoney / 10.0;
     }
 }
