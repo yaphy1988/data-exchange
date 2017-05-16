@@ -107,6 +107,11 @@ public class Constants {
         public static final String RECHARGE_TYPE_NUM = "1";//1 基于次数
         public static final String RECHARGE_TYPE_MONEY = "2";//2 基于余额
 
+        //套餐类型，10-固定套餐，20-自定义套餐，30-跨类套餐
+        public static final String PACKAGE_TYPE_FIX = "10";//固定套餐
+        public static final String PACKAGE_TYPE_CUSTOM = "20";//自定义套餐
+        public static final String PACKAGE_TYPE_MIX = "30";//跨类套餐
+
         //充值状态：0-待充值，1-充值中，2-充值成功，3-充值失败
         public static final String RECHARGE_STATUS_WAITING = "0";//0 待充值
         public static final String RECHARGE_STATUS_GOING = "1";//1 充值中
