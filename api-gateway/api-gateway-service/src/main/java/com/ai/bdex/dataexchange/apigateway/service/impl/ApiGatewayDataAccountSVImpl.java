@@ -60,13 +60,26 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
         String result = Constants.Bill.CHARGE_RESULE_NA;
         //扣减账户
         for(DataAccount dataAccount : dataAccountList){
-            if(Constants.Bill.DATA_ACCT_TYPE_NUM.equals(dataAccount.getDataAcctType())){
-                if(manualDataAccountMapper.updateByConsumeNum(dataAccount,consumeDTO.getConsumeNum()) > 0){
-                    dataAccountSelected = dataAccount;
-                    result = Constants.Bill.CHARGE_RESULE_OK;
-                    break;
+            if(Constants.Bill.PACKAGE_TYPE_FIX.equals(dataAccount.getPackageType())){
+                //10 固定套餐基于次数进行扣减
+                if(dataAccount.getLeftNum()>consumeDTO.getConsumeNum()){
+                    if(manualDataAccountMapper.updateByConsumeNum(dataAccount,consumeDTO.getConsumeNum()) > 0){
+                        dataAccountSelected = dataAccount;
+                        result = Constants.Bill.CHARGE_RESULE_OK;
+                        break;
+                    }
                 }
-            }else{
+            }else if(Constants.Bill.PACKAGE_TYPE_CUSTOM.equals(dataAccount.getPackageType())){
+                //20 自定义套餐基于次数进行扣减
+                if(dataAccount.getLeftNum()>consumeDTO.getConsumeNum()){
+                    if(manualDataAccountMapper.updateByConsumeNum(dataAccount,consumeDTO.getConsumeNum()) > 0){
+                        dataAccountSelected = dataAccount;
+                        result = Constants.Bill.CHARGE_RESULE_OK;
+                        break;
+                    }
+                }
+            }else if(Constants.Bill.PACKAGE_TYPE_MIX.equals(dataAccount.getPackageType())){
+                //30 跨类套餐基于金额进行扣减
                 if(manualDataAccountMapper.updateByConsumeMoney(dataAccount,consumeDTO.getConsumeMoney()) > 0){
                     dataAccountSelected = dataAccount;
                     result = Constants.Bill.CHARGE_RESULE_OK;
@@ -97,6 +110,7 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
             billDetail.setUserId(consumeDTO.getUserId());
             billDetail.setDataAcctId(dataAccountSelected.getDataAcctId());
             billDetail.setDataAcctType(dataAccountSelected.getDataAcctType());
+            billDetail.setPackageType(dataAccountSelected.getPackageType());
             billDetail.setRealServiceId(consumeDTO.getRealServiceId());
             if(Constants.Bill.DATA_ACCT_TYPE_NUM.equals(dataAccountSelected.getDataAcctType())){
                 billDetail.setConsumeNum(consumeDTO.getConsumeNum());
@@ -142,22 +156,19 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
         //查找次数类型账户，次数类型账户都是有有效期的，且具体到特定的服务编码
         DataAccountExample.Criteria criteria1 = dataAccountExample.createCriteria();
         criteria1.andUserIdEqualTo(consumeDTO.getUserId());
-        criteria1.andDataAcctTypeEqualTo(Constants.Bill.DATA_ACCT_TYPE_NUM);
         criteria1.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_VALID);
         criteria1.andServiceIdEqualTo(consumeDTO.getRealServiceId());
         criteria1.andStartDateLessThanOrEqualTo(now);
         criteria1.andEndDateGreaterThanOrEqualTo(now);
-        criteria1.andLeftNumGreaterThanOrEqualTo(consumeDTO.getConsumeNum());
 
         //查找余额类型账户，余额类型账户是没有有效期的，且对所有接口有效
         DataAccountExample.Criteria criteria2 = dataAccountExample.createCriteria();
         criteria2.andUserIdEqualTo(consumeDTO.getUserId());
         criteria2.andDataAcctTypeEqualTo(Constants.Bill.DATA_ACCT_TYPE_MONEY);
         criteria2.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_PERMANENT);
-        criteria2.andLeftMoneyGreaterThanOrEqualTo(consumeDTO.getConsumeMoney());
 
         //把次数账户排在前面，相同有效账户则按创建时间排序
-        dataAccountExample.setOrderByClause("data_acct_type,create_time");
+        dataAccountExample.setOrderByClause("period_type asc,end_date");
 
         return dataAccountMapper.selectByExample(dataAccountExample);
     }
