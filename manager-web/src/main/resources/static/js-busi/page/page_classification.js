@@ -1,5 +1,5 @@
 $(function(){
-	querySortInfo('-1','1')
+	querySortInfo('-1','1');
 });
 
 function querySortInfo(sortParentId,sortLever){
@@ -124,7 +124,8 @@ function updateSortInfo(params){
 	var url = WEB_ROOT+'/pageManage/updateSortInfo';
 	var callBack = function(data){
 		if(data.success){
-			querySortInfo('-1','1')
+			querySortInfo('-1','1');
+			WEB.msg.info('提示','操作成功！');
 		}else{
 			WEB.msg.info('提示','操作失败！'+data.erroMsg);
 		}
@@ -142,7 +143,8 @@ function editSaveSortInfo(){
 	var params={sortId:sortId,sortLever:sortLever,pSortId:parentSortId,sortName:sortName,contentLink:contentLink}
 	var callBack = function(data){
 		if(data.success){
-			querySortInfo('-1','1')
+			querySortInfo('-1','1');
+			WEB.msg.info('提示','操作成功！');
 		}else{
 			WEB.msg.info('提示','保存失败！'+data.erroMsg);
 		}
@@ -168,7 +170,8 @@ function saveSortInfo(){
 	var url = WEB_ROOT+'/pageManage/saveSortInfo';
 	var callBack = function(data){
 		if(data.success){
-			querySortInfo('-1','1')
+			querySortInfo('-1','1');
+			WEB.msg.info('提示','操作成功！');
 		}else{
 			WEB.msg.info('提示','保存失败！'+data.erroMsg);
 		}

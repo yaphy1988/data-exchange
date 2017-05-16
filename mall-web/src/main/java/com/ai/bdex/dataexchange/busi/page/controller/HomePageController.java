@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ai.bdex.dataexchange.busi.page.entity.PageModuleGoodsVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageNewsInfoVO;
 import com.ai.bdex.dataexchange.busi.page.entity.SortContentVO;
@@ -139,11 +140,15 @@ public class HomePageController {
 			pageModuleGoodsReqDTO.setStatus(STATUS_VALID);  
 			pageModuleGoodsReqDTO.setPageSize(count);
 			PageResponseDTO<PageModuleGoodsRespDTO> moduleGoodsList = iPageDisplayRSV.queryPageModuleGoodsList(pageModuleGoodsReqDTO);
+			List<PageModuleGoodsVO> resultList = new ArrayList<PageModuleGoodsVO>();
 			if(moduleGoodsList !=null && moduleGoodsList.getCount()>0)
 			{
 				try{
-					   for(int i = 0 ; i < moduleGoodsList.getResult().size();i++) {
-							int gdsid =  moduleGoodsList.getResult().get(i).getGdsId();
+					   for(PageModuleGoodsRespDTO source: moduleGoodsList.getResult()) {
+						   PageModuleGoodsVO target = new PageModuleGoodsVO();
+						   BeanUtils.copyProperties(source, target);
+						   resultList.add(target);
+							int gdsid =  source.getGdsId();
 							//通过商品id去搜索商品信息，获取到商品的图片ID
 							GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
 							GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
@@ -152,7 +157,8 @@ public class HomePageController {
 							if(gdsInfoRespDTO!= null && !StringUtil.isBlank(gdsInfoRespDTO.getGdsPic()) )
 							{
 								  String vfsid= ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_86x86!");
-								  moduleGoodsList.getResult().get(i).setVfsid(vfsid); 
+								  source.setVfsid(vfsid); 
+								  target.setGdsName(gdsInfoRespDTO.getGdsName());
 							}
 					   }
 					}
@@ -162,7 +168,7 @@ public class HomePageController {
 					}
 			}
 		
-			rMap.put("moduleGoodsList",moduleGoodsList);
+			rMap.put("moduleGoodsList",resultList);
  			rMap.put("success", true);
  		
 		} catch (Exception e) {

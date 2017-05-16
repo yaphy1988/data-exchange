@@ -75,18 +75,17 @@ function querydata_recommend102(moduleId){
 		var html = "";
 		if(data.success){
 	        if(data.success){
-	        	if(data.moduleGoodsList.count > 0)
-	        	{ 
-	        			var obj = data.moduleGoodsList ;
-	        			for(var i = 0 ; i < obj.result.length; i++)
-		        		{
-	        				var name =  obj.result[i].recommendName;
-	        				var gdsid =  obj.result[i].gdsId; 
-	        				var gdsdetailurl = basePath+"/goods/details/"+gdsid+"-";
-	        				var vfsid= obj.result[i].vfsid;
-	 					    html +='<li><a href='+gdsdetailurl+' target="_blank"><img src="'+vfsid+'"><span>'+name+'</span></a></li>';
-	        		   }
-	        	} 
+    			var obj = data.moduleGoodsList ;
+    			$(obj).each(function(i,d){
+    				var name =  d.gdsName;
+    				if(name ==null || name == undefined)
+    					name="";
+    				var gdsid =  d.gdsId; 
+    				var gdsdetailurl = basePath+"/goods/details/"+gdsid+"-";
+    				var vfsid= d.vfsid;
+				    html +='<li><a href='+gdsdetailurl+' target="_blank"><img src="'+vfsid+'"><span>'+name+'</span></a></li>';
+    		   
+    			});
 			}
 		 }
 		$('#data_recommend').html(html);
