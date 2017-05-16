@@ -51,53 +51,64 @@ public class UserFootPrintVO implements Serializable{
     * 状态
     */
     private String status;
+    
+    private String gdsName;
 
-public Integer getFpId() {
-    return fpId;
-}
+    public Integer getFpId() {
+        return fpId;
+    }
+    
+    public void setFpId(Integer fpId) {
+        this.fpId = fpId;
+    }
+    
+    public Integer getCatFirst() {
+        return catFirst;
+    }
+    
+    public void setCatFirst(Integer catFirst) {
+        this.catFirst = catFirst;
+    }
+    
+    public Integer getGdsId() {
+        return gdsId;
+    }
+    
+    public void setGdsId(Integer gdsId) {
+        this.gdsId = gdsId;
+    }
+    
+    public Integer getSeeNum() {
+        return seeNum;
+    }
+    
+    public void setSeeNum(Integer seeNum) {
+        this.seeNum = seeNum;
+    }
+    
+    public String getStaffId() {
+        return staffId;
+    }
+    
+    public void setStaffId(String staffId) {
+        this.staffId = staffId;
+    }
+    
+    public String getStatus() {
+        return status;
+    }
+    
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
-public void setFpId(Integer fpId) {
-    this.fpId = fpId;
-}
+    public String getGdsName() {
+        return gdsName;
+    }
 
-public Integer getCatFirst() {
-    return catFirst;
-}
-
-public void setCatFirst(Integer catFirst) {
-    this.catFirst = catFirst;
-}
-
-public Integer getGdsId() {
-    return gdsId;
-}
-
-public void setGdsId(Integer gdsId) {
-    this.gdsId = gdsId;
-}
-
-public Integer getSeeNum() {
-    return seeNum;
-}
-
-public void setSeeNum(Integer seeNum) {
-    this.seeNum = seeNum;
-}
-
-public String getStaffId() {
-    return staffId;
-}
-
-public void setStaffId(String staffId) {
-    this.staffId = staffId;
-}
-
-public String getStatus() {
-    return status;
-}
-
-public void setStatus(String status) {
-    this.status = status;
-}
+    public void setGdsName(String gdsName) {
+        this.gdsName = gdsName;
+    }
+    
 }
 
