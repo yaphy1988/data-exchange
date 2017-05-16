@@ -215,7 +215,7 @@
 				<li >
 					<a href="">
 						<i class=""></i>
-						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+						一级目录一级目录
 					</a>
 				</li>
 				<li >
@@ -247,78 +247,6 @@
 							<a href=""></i>二级分类</a>
 						</li>
 					</ol>
-				</li>
-				<li >
-					<a href="">
-						<i ></i>
-						一级目录
-						<span class="caret"></span>
-					</a>
-					<ul class="infoItem">
-						<li >
-							<a href="">二级分类</a>
-						</li>
-						<li >
-							<a href="">二级分类</a>
-						</li>
-						<li >
-							<a href="">二级分类</a>
-						</li>
-					</ul>
-				</li>
-				<li>
-					<a href="">
-						<i class=""></i>
-						一级目录
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class=""></i>
-						一级目录
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class=""></i>
-						一级目录
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class=""></i>
-						一级目录
-						<span class="caret"></span>
-					</a>
-					<ul class="infoItem">
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
-						</li>
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
-						</li>
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
-						</li>
-					</ul>
-				</li>
-				<li >
-					<span>
-						<i class=""></i>
-						一级目录
-						<span class="caret"></span>
-					</span>
-					<ul class="infoItem">
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
-						</li>
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
-						</li>
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
-						</li>
-					</ul>
 				</li>
 			</ul>
 		</nav>
@@ -362,6 +290,7 @@
 						<td>
 							<div class="input-group tips">
 								<input class="form-control" placeholder="" id="gdsid" type="hidden">
+								<input class="form-control" placeholder="" id="api_id" type="hidden">
 								<input class="form-control" placeholder="" id="gdsname" type="text">
 								<span class="input-group-btn">
 					        		<button class="btn btn-default" type="button" data-toggle="modal" data-target="#gdsModal">请选择</button>
@@ -376,7 +305,7 @@
 							<input class="form-control" placeholder="" id="skuid" type="hidden">
 							<input class="form-control" placeholder="" id="skuname" type="text">
 							<span class="input-group-btn">
-					        		<button class="btn btn-default" type="button" data-toggle="modal" data-target="#skuModal">请选择</button>
+					        		<button class="btn btn-default" type="button" data-toggle="modal" data-target="#skuModal">请选择套餐</button>
 					      		</span>
 						</div>
 					</td>
@@ -532,43 +461,49 @@
 						<table class="editTable">
 							<tbody><tr>
 								<td class="Hint" width="100">
-									用户名称：
+									商品名称：
 								</td>
 								<td>
-									<input class="form-control" placeholder="商品名称" type="text">
+									<input class="form-control" value="接口" placeholder="商品名称" type="text" id="querygdsname">
 								</td>
-
-
 								<td>
-									<button class="btn btn-primary">查询</button>
+									<button class="btn btn-primary" th:onclick="'javascript:qryModuleGoods(1);'" >查询</button>
 								</td>
 							</tr>
 							</tbody></table>
 					</div>
-
 					<!-- Tab panes -->
 					<div class="tab-content p10">
-						<div role="tabpanel" class="tab-pane active" id="tab01">
+						<div role="tabpanel" class="tab-pane active"  id="gdsquery">
 							<table class="table table-bordered text-center">
 								<thead>
 								<tr class="active">
-									<th>xx</th>
-									<th>xx</th>
+									<th>商品编码</th>
+									<th>商品名称</th>
+									<th>选择</th>
 								</tr>
 								</thead>
-								<tbody>
-								<tr>
-									<td>商品名</td>
+								<tbody th:if="${gdspageInfo}" th:remove="all-but-first">
+								<tr th:each="list,iterStat : ${gdspageInfo.result}"
+									th:unless="${#lists.isEmpty(gdspageInfo.result)}">
+									<td th:text="${list.gdsId}">商品ID</td>
+									<td th:text="${list.gdsName}">商品名称</td>
 									<td>
-										<input type="radio">
+										<input type="radio" name="radiogds" th:value="${list.gdsId}" th:gdstname_tmp="${list.gdsName}" th:api_id_tmp="${list.apiId}" >
+									</td>
+								</tr>
+								</tbody>
+								<tbody >
+								<tr th:remove="all" >
+									<td >编码</td>
+									<td >商品名</td>
+									<td>
+										<input type="radio" name="radiogds" th:value="1022" >
 									</td>
 								</tr>
 								</tbody>
 							</table>
-
-
-
-							<div class="pagelist">
+							<div class="pagelist" th:remove="all">
 								<nav aria-label="Page navigation">
 									<ul class="pagination">
 										<li>
@@ -593,16 +528,38 @@
 									</ul>
 
 								</nav>
+							  </div>
+							<!-- 分页-->
+							<div th:fragment="pager" class="pagelist" >
+								<script type="text/javascript"
+										src="../static/js-busi/common/pager.js"
+										th:src="@{/js-busi/common/pager.js}"></script>
+								<span data-toggle="pager" id="pagerIdgds"  th:if="${gdspageInfo}"
+									  th:data-count="${gdspageInfo.count}"
+									  th:data-size="${gdspageInfo.pageSize}"
+									  th:data-currentindex="${gdspageInfo.pageNo}"></span>
+								<script th:inline="javascript">
+									var total = '[[${gdspageInfo.count}]]';
+									var pageNum = '[[${gdspageInfo.pageNo}]]';
+									var pageSize = '[[${gdspageInfo.pageSize}]]';
+									if (typeof pagerClick === "undefined") {
+										pagerClick = function(index) {
+											qryModuleGoods(index);
+										}
+									}
+									$('#pagerIdgds').pager({
+										callback : pagerClick
+									});
+								</script>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-primary"  data-dismiss="modal" th:onclick="'javascript:setGetgdsinfo();'" >确定</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 							</div>
 						</div>
 					</div>
-
 				</div>
-				<div class="modal-footer">
-					<button type="button" class="btn btn-primary">确定</button>
-					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 
-				</div>
 			</div>
 		</div>
 	</div>
@@ -619,15 +576,13 @@
 						<table class="editTable">
 							<tbody><tr>
 								<td class="Hint" width="100">
-									用户名称：
+									套餐名称：
 								</td>
 								<td>
-									<input class="form-control" placeholder="商品名称" type="text">
+									<input class="form-control" placeholder="套餐名称" type="text">
 								</td>
-
-
 								<td>
-									<button class="btn btn-primary">查询</button>
+									<button class="btn btn-primary"   > 查询</button>
 								</td>
 							</tr>
 							</tbody></table>
@@ -635,7 +590,7 @@
 
 					<!-- Tab panes -->
 					<div class="tab-content p10">
-						<div role="tabpanel" class="tab-pane active" id="tab01">
+						<div role="tabpanel" class="tab-pane active" id="tab011">
 							<table class="table table-bordered text-center">
 								<thead>
 								<tr class="active">
@@ -643,13 +598,15 @@
 									<th>xx</th>
 								</tr>
 								</thead>
-								<tbody>
-								<tr>
-									<td>商品名</td>
+								<tbody >
+								<tr th:remove="all" >
+									<td >编码</td>
+									<td >商品名</td>
 									<td>
-										<input type="radio">
+										<input type="radio" name="radiosku" th:value="1022" >
 									</td>
 								</tr>
+								</tbody>
 								</tbody>
 							</table>
 
@@ -695,6 +652,6 @@
 	</div>
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
-
+</div>
 </body>
 </html>

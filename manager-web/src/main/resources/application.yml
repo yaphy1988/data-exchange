@@ -40,6 +40,6 @@ application:
     zkaddress: 127.0.0.1:2181
     login: admin:admin
   filter:
-    enabled: true
+    enabled: false
     ignoreSuffix: ".ico,.swf,.flv,.png,.jpg,.jpeg,.gif,.css,.js,.html,.htm,.eot,.svg,.ttf,.woff,.mp4,.woff2,.map"
     unloginflag: false

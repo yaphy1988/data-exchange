@@ -1,6 +1,9 @@
 package com.ai.bdex.dataexchange.tradecenter.service.impl.order;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.beanutils.BeanUtils;
@@ -37,14 +40,27 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 	 //创建订单
 	  @Override
 	 public long creatOrderByweb(OrdMainInfoReqDTO ordMainInfoRespDTO)throws Exception{
-		 OrdMainInfo record = new OrdMainInfo();	
-		 BeanUtils.copyProperties(record, ordMainInfoRespDTO);
-		 long lorderid = SeqUtil.getLong("SEQ_ORD_MAIN_INFO");
-		 record.setOrderId(Long.toString(lorderid)); 
-	 	 record.setCreateTime(DateUtil.getNowAsDate()); 
-   		  ordMainInfoMapper.insertSelective(record); 
+		  OrdMainInfo record = new OrdMainInfo();
+		  BeanUtils.copyProperties(record, ordMainInfoRespDTO);
+ 		  String tmporderid =  SeqUtil.getString("SEQ_ORD_MAIN_INFO",8);
+		  tmporderid =  createMainOrderId(tmporderid);
+ 		  record.setOrderId(tmporderid);
+	 	  record.setCreateTime(DateUtil.getNowAsDate());
+   		  ordMainInfoMapper.insertSelective(record);
+		  long lorderid = Long.parseLong(tmporderid);
    		  return lorderid;
  	 }
+	/**
+	 * 对主订单编号的封装
+	 */
+	public static String createMainOrderId(String mainOrdSeqId ) {
+		// 主订单ID生成规则：省份编码2位+年月日YYmmdd+序列号8位补齐 ，一共16位
+		DateFormat dfmt = new SimpleDateFormat("yyyyMMdd");
+		String nowDate = dfmt.format(new Date());
+		String mainOrdId = "";
+			mainOrdId =  nowDate + mainOrdSeqId;
+		return mainOrdId;
+	}
 	 //根据ID查询订单的详细信息
 /*	  @Override
 	 public OrdMainInfo queryOrderById(OrdMainInfo ordInfo) throws Exception{

@@ -89,7 +89,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		ordMainInfoReqDTO.setOrderAmount(ordInfoReqDTO.getOrderAmount());
 		ordMainInfoReqDTO.setOrderMoney(ordInfoReqDTO.getOrderMoney());
 		ordMainInfoReqDTO.setRealMoney(ordInfoReqDTO.getOrderMoney());
-		ordMainInfoReqDTO.setStaffId(ordInfoReqDTO.getCreateStaff());
+		ordMainInfoReqDTO.setStaffId(ordInfoReqDTO.getStaffId());
 		ordMainInfoReqDTO.setShopId(ordInfoReqDTO.getShopId());
 		ordMainInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_0);
 		ordMainInfoReqDTO.setOrderTime(orderTime);
@@ -106,7 +106,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		ordInfoReqDTO.setAgentPrice(ordInfoReqDTO.getOrderPrice());
 		ordInfoReqDTO.setDiscountPrice(ordInfoReqDTO.getOrderPrice());
 		ordInfoReqDTO.setOrderTime(orderTime);
-		ordInfoReqDTO.setStaffId(ordInfoReqDTO.getCreateStaff());
+		ordInfoReqDTO.setStaffId(ordInfoReqDTO.getStaffId());
 		ordInfoReqDTO.setProductType(ordInfoReqDTO.getProductType());//一级大类
 		ordInfoReqDTO.setAipServiceId(ordInfoReqDTO.getAipServiceId());
 		ordInfoReqDTO.setServiceName(ordInfoReqDTO.getServiceName());

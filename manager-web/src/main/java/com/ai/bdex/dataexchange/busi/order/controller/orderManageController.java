@@ -1,24 +1,29 @@
 package com.ai.bdex.dataexchange.busi.order.controller;
 
+import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
+ import com.ai.bdex.dataexchange.busi.page.entity.PageModuleGoodsVO;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
+ import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.CacheUtil;
+import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -32,15 +37,13 @@ import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccount
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
 import com.ai.bdex.dataexchange.busi.order.entity.OrdInfoVO;
 import com.ai.bdex.dataexchange.busi.order.entity.OrdMainInfoVO;
-import com.ai.bdex.dataexchange.busi.page.entity.PageModuleAdVO;
-import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+ import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
+ import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderMainInfoRSV;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
@@ -66,6 +69,8 @@ public class orderManageController {
     private final static Integer PAGE_SIZE = 10;//页数
     private final static String ORDER_TYPE_COMMON = "10";//普通订单
 	private final static String TMPUSERID = "tmpuser";// 临时用户
+	private static final Logger log = LoggerFactory.getLogger(orderManageController.class);
+
 	@DubboConsumer(timeout = 30000)
 	private IOrderInfoRSV iOrderInfoRSV;
     @DubboConsumer
@@ -74,6 +79,9 @@ public class orderManageController {
     private IAipServiceInfoRSV iAipServiceInfoRSV;
     @DubboConsumer
     private IAipCenterDataAccountRSV iAipCenterDataAccountRSV;
+	@DubboConsumer
+	private IGdsInfoRSV iGdsInfoRSV;
+
     
     /**
      * 我的数据
@@ -191,7 +199,6 @@ public class orderManageController {
    			OrdMainInfoReqDTO ordMainReqDTO = new OrdMainInfoReqDTO();
    			ordMainReqDTO.setPageNo(ordMainInfoVO.getPageNo());
    			ordMainReqDTO.setPageSize(PAGE_SIZE);
-   			ordMainReqDTO.setOrderType(ORDER_TYPE_COMMON);
 			HttpSession hpptsesion = request.getSession();
 			String staff_id = StaffUtil.getStaffId(hpptsesion);
 			if(StringUtil.isBlank(staff_id)){
@@ -508,13 +515,14 @@ public class orderManageController {
 		HttpSession hpptsesion = request.getSession();
 		String createStaff_id = StaffUtil.getStaffId(hpptsesion); //创建人
 
-		String gdsid = request.getParameter("gdsid");
-		String skuid = request.getParameter("skuid");
-		String staffid = request.getParameter("staffid");
-		String skunum = request.getParameter("skunum");
-		String ordertype = request.getParameter("ordertype");
+		String gdsid      = request.getParameter("gdsid");
+		String skuid      = request.getParameter("skuid");
+		String api_id     = request.getParameter("api_id");
+		String staffid    = request.getParameter("staffid");
+		String skunum     = request.getParameter("skunum");
+		String ordertype  = request.getParameter("ordertype");
 		String ordermoney = request.getParameter("ordermoney");
-		String inavidate = request.getParameter("inavidate");
+		String inavidate  = request.getParameter("inavidate");
         //ordertype = 30
 		/**
 		 * 静态商品id
@@ -522,7 +530,6 @@ public class orderManageController {
 		 * 有效期
 		 * 总金额
          */
-
 		try {
 
 			OrdInfoReqDTO  ordInfoReqDTO =  new OrdInfoReqDTO();
@@ -533,8 +540,8 @@ public class orderManageController {
 			ordInfoReqDTO.setGdsName(Constants.Order.ORDER_GDS_30_GDSNAME);
 			ordInfoReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
 			ordInfoReqDTO.setOrdertype(Constants.Order.ORDER_TYPE_30);
-
-			ordInfoReqDTO.setActiveEndTime(getNodatelength(inavidate));
+ 			ordInfoReqDTO.setActiveEndTime(getNodatelength(inavidate));
+			ordInfoReqDTO.setServiceName(Constants.Order.ORDER_GDS_30_GDSNAME);
 			long lordermoney = Long.parseLong(ordermoney);//单位元
 			ordInfoReqDTO.setOrderMoney(lordermoney*100);
 			OrdInfoReqDTO rdInfoReqDTOResp =  iOrderInfoRSV.createOrderByallClass(ordInfoReqDTO);
@@ -562,4 +569,52 @@ public class orderManageController {
 		}
 		return date;
 	}
+	/**
+	 * 商品模块查询未选择商品
+	 * @param model
+	 * @param request
+	 * @param pageModuleGoodsVO
+	 * @return
+	 */
+	@RequestMapping(value = "/qryModuleGoods")
+	public String qryModuleGoodsUnSelList(Model model, HttpServletRequest request) {
+		PageResponseDTO<GdsInfoVO> pageInfo = new PageResponseDTO<GdsInfoVO>();
+		try {
+			String gdsname = request.getParameter("gdsName");
+			int pagesize = Integer.parseInt( request.getParameter("pageSize"));
+			int pageno = Integer.parseInt( request.getParameter("pageNo"));
+			GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
+			gdsInfoReqDTO.setGdsName(uRLDecoderStr(gdsname));
+			gdsInfoReqDTO.setStatus("1");//已上架
+			gdsInfoReqDTO.setPageSize(pagesize);
+			gdsInfoReqDTO.setPageNo(pageno);
+  			PageResponseDTO<GdsInfoRespDTO> gdsInfoRespPage = iGdsInfoRSV.queryGdsInfoPage(gdsInfoReqDTO);
+			ObjectCopyUtil.copyObjValue(gdsInfoRespPage,pageInfo,null,false);
+			List<GdsInfoVO> gdsInfoVOList = new ArrayList<GdsInfoVO>();
+			if(!CollectionUtil.isEmpty(gdsInfoRespPage.getResult())){
+				for (GdsInfoRespDTO gdsInfoRespDTO : gdsInfoRespPage.getResult()){
+					GdsInfoVO gdsInfoVO = new GdsInfoVO();
+					ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,gdsInfoVO,null,false);
+/*
+					gdsInfoVO.setCatName(traslateCatName(gdsInfoVO.getCatId()));
+*/
+					gdsInfoVOList.add(gdsInfoVO);
+				}
+			}
+			pageInfo.setResult(gdsInfoVOList);
+			model.addAttribute("gdspageInfo", pageInfo);
+		}catch (Exception e){
+			log.error("查询商品列表异常");
+		}
+		return "order_manage :: #gdsquery" ;
+	}
+	private String uRLDecoderStr(String strinfo) {
+		String newstrinfo = "";
+		try {
+			newstrinfo = URLDecoder.decode(strinfo, "utf-8");
+		} catch (Exception e) {
+		}
+		return newstrinfo;
+	}
+
 }
