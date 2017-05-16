@@ -1,6 +1,7 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page;
 
 import java.util.Date;
+import java.util.List;
 
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
@@ -17,14 +18,23 @@ public class SortInfoRespDTO  extends BaseResponseDTO {
 	private Date createTime;
 	private String updateStaffId;
 	private Date updateTime;
-	private SortContentRespDTO sortContentRespDTO;
-
-	public SortContentRespDTO getSortContentRespDTO() {
-		return sortContentRespDTO;
+	private List<SortInfoRespDTO> sortInfoRespDTOList;
+	private SortContentRespDTO contentRespDTO;
+	
+	public SortContentRespDTO getContentRespDTO() {
+		return contentRespDTO;
 	}
 
-	public void setSortContentRespDTO(SortContentRespDTO sortContentRespDTO) {
-		this.sortContentRespDTO = sortContentRespDTO;
+	public void setContentRespDTO(SortContentRespDTO contentRespDTO) {
+		this.contentRespDTO = contentRespDTO;
+	}
+
+	public List<SortInfoRespDTO> getSortInfoRespDTOList() {
+		return sortInfoRespDTOList;
+	}
+
+	public void setSortInfoRespDTOList(List<SortInfoRespDTO> sortInfoRespDTOList) {
+		this.sortInfoRespDTOList = sortInfoRespDTOList;
 	}
 
 	public Integer getSortId() {

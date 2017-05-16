@@ -194,24 +194,30 @@
 					<!--右边-->
 			        <div class="col-md-7" id="sortInfo-content">
 						<div class="box" id="sortInfo" th:if="${sortInfo}">
-							<input type="hidden" id="sortId" th:value="${sortInfo.sortId}">
-							<table width="100%" border="0" class="editTable table-hover" id="firstlever_tab">
+							<table width="100%" border="0" class="editTable table-hover" id="sortcontent_table">
+								<input type="hidden" id="parentSortId" th:value="${parentSortId}">
+								<input type="hidden" id="sortId" th:value="${sortInfo.sortId}">
+								<input type="hidden" id="sortLever" th:value="${sortLever}">
 								<tbody>
 								
 									<tr>
-										<td class="Hint class-zi">一级分类：
-										</td>
+										<td class="Hint class-zi" th:if="${sortLever} == '1'">一级分类：</td>
+										<td class="Hint class-zi" th:if="${sortLever} == '2'">二级分类：</td>
+										<td class="Hint class-zi" th:if="${sortLever} == '3'">子类内容：</td>
+										
 									</tr>
 									<tr>
 										<td class="Hint" width="120"><span class="red">*</span>分类名称：</td>
 										<td>
-											<input class="form-control" type="text" id="sortName" th:if="${sortInfo.sortContentRespDTO}"  th:value="${sortInfo.sortContentRespDTO.contentName}">
+											<input class="form-control" type="text" name="sortName" th:if="${sortInfo.sortContentRespDTO}"  th:value="${sortInfo.sortContentRespDTO.contentName}">
+											<input class="form-control" type="text" name="sortName" th:if="${sortInfo.sortContentRespDTO == null}">
 										</td>
 									</tr>
 									<tr>
 										<td class="Hint">链接地址：</td>
 										<td>
-											<input class="form-control" maxlength="512" type="text" id="contentLink_1" th:if="${sortInfo.sortContentRespDTO}" th:value="${sortInfo.sortContentRespDTO.contentLink}">
+											<input class="form-control" maxlength="512" type="text" name="contentLink" th:if="${sortInfo.sortContentRespDTO}" th:value="${sortInfo.sortContentRespDTO.contentLink}">
+											<input class="form-control" maxlength="512" type="text" name="contentLink" th:if="${sortInfo.sortContentRespDTO} == null">
 										</td>
 									</tr>
 									<tr>
@@ -220,7 +226,6 @@
 									
 								</tbody>
 							</table>
-							
 							<table width="100%" border="0" class="editTable table-hover" th:remove="all">
 								<tbody>
 								
@@ -238,7 +243,7 @@
 									<tr>
 										<td class="Hint">链接地址：</td>
 										<td>
-											<input class="form-control" maxlength="512" type="text" id="contentLink_1"
+											<input class="form-control" maxlength="512" type="text" id="contentLink"
 											value="">
 										</td>
 									</tr>
@@ -248,8 +253,9 @@
 								</tbody>
 							</table>
 							<div class="text-center">
-								<button th:if="${sortLever} == '1'" th:onclick="|addSortInfoLever2()|" class="btn btn-default btn-sm"  data-toggle="modal" onclick=""><i class="glyphicon glyphicon-plus"></i> 添加二级分类</button>
-								<input type="submit" value="保存" th:onclick="|saveSortInfo()|" class="btn btn-primary btn-sm">
+								<button th:if="${sortAdd} == 'add' and ${sortLever} !='2'" th:onclick="|addSortInfo(${sortInfo.sortId},${sortLever})|" class="btn btn-default btn-sm"  data-toggle="modal" onclick=""><i class="glyphicon glyphicon-plus"></i> 添加</button>
+								<input th:if="${sortAdd} == 'add'" type="submit" value="保存" th:onclick="|saveSortInfo()|" class="btn btn-primary btn-sm">
+								<input th:if="${sortAdd} != 'add'" type="submit" value="保存" th:onclick="|editSaveSortInfo()|" class="btn btn-primary btn-sm">
 							</div>
 						</div>
 					
@@ -262,12 +268,14 @@
 		<!-- 右边内容 end-->
 		<!-- 隐藏区域 -->
 		
-		<table width="100%" border="0" style="display:none" class="editTable table-hover" name="seclever_tab">
+		<table width="100%" border="0" style="display:none" class="addsort_table editTable table-hover">
+			
 			<tbody>
 			
 				<tr>
-					<td class="Hint class-zi">二级分类：
-					</td>
+					<td class="Hint class-zi" th:if="${sortLever} == '1'">一级分类：</td>
+					<td class="Hint class-zi" th:if="${sortLever} == '2'">二级分类：</td>
+					<td><a class="pull-right p10 close" th:onclick="|deleteAddedSort(this)|">✖️</a></td>
 				</tr>
 				<tr>
 					<td class="Hint" width="120"><span class="red">*</span>分类名称：</td>

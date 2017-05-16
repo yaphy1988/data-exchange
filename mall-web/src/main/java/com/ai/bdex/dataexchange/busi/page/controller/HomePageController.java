@@ -254,48 +254,9 @@ public class HomePageController {
 				sortInfoRespDTO.setSortLevel(sortLever);
 			}
 			List<SortInfoRespDTO> sortInfos = iPageDisplayRSV.querySortInfos(sortInfoRespDTO);
-			List<SortInfoVO>  sortInfoResult = new ArrayList<>();
-			if(!CollectionUtils.isEmpty(sortInfos)){
-				
-				SortInfoRespDTO sortInfoDTO = new SortInfoRespDTO();
-				for(SortInfoRespDTO infoRespDTO : sortInfos){
-					//copy菜单内容Resp to VO
-					SortInfoVO sortInfoVO = new SortInfoVO();
-					BeanUtils.copyProperties(infoRespDTO, sortInfoVO);
-					sortInfoResult.add(sortInfoVO);
-					SortContentVO sortContentVO = new SortContentVO();
-					//copy菜单内容
-					SortContentRespDTO contentRespDTO = infoRespDTO.getSortContentRespDTO();
-					if(contentRespDTO != null){
-						BeanUtils.copyProperties(contentRespDTO, sortContentVO);
-						sortInfoVO.setSortContentVO(sortContentVO);
-					}
-					//查询二级子菜单
-					sortInfoDTO.setParentSortId(infoRespDTO.getSortId());
-					sortInfoDTO.setSortLevel("2");
-					sortInfoDTO.setStatus(STATUS_VALID);
-					List<SortInfoRespDTO> subSortInfos = iPageDisplayRSV.querySortInfos(sortInfoDTO);
-					if(!CollectionUtils.isEmpty(subSortInfos)){
-						List<SortInfoVO> subSortInfoVos = new ArrayList<>();
-						for(SortInfoRespDTO respDTO : subSortInfos){
-							//copy菜单内容Resp to VO
-							SortInfoVO sortInfoVO2 = new SortInfoVO();
-							BeanUtils.copyProperties(respDTO, sortInfoVO2);
-							//copy菜单内容
-							SortContentVO sortContentVO2 = new SortContentVO();
-							SortContentRespDTO contentRespDTO2 = respDTO.getSortContentRespDTO();
-							if(contentRespDTO2 != null){
-								BeanUtils.copyProperties(contentRespDTO2, sortContentVO2);
-								sortInfoVO2.setSortContentVO(sortContentVO2);
-							}
-							subSortInfoVos.add(sortInfoVO2);
-						}
-						sortInfoVO.setSubSortInfoList(subSortInfoVos);
-					}
-				}
-			}
+			
 			rMap.put("success", true);
-			rMap.put("sortInfos", sortInfoResult);
+			rMap.put("sortInfos", sortInfos);
 		} catch (Exception e) {
 			rMap.put("success", false);
 			log.error("查询商品分类信息异常：" + e.getMessage());

@@ -57,35 +57,32 @@ var header = new Object({
 				if(data.success){
 					var sortInfos = data.sortInfos;
 					$(sortInfos).each(function(i,d){
-						var content = d.sortContentVO;
-						if(content == null || content == undefined){
-							htmlLever1 +='<li pSortId='+d.sortId+'><a href="javascript:;"  target="_blank"><i>&rsaquo;</i>'+d.sortName+'</a> </li>';
+						//一级菜单：
+						var c = d.contentRespDTO;
+						if(c != null){
+							htmlLever1 +='<li pSortId='+c.sortId+'><a href="'+setLinkUrk(c.contentLink)+'"  target="_blank"><i>&rsaquo;</i>'+c.contentName+'</a> </li>';
 
 						}else{
-							htmlLever1 +='<li pSortId='+d.sortId+'><a href="'+setLinkUrk(content.contentLink)+'"  target="_blank"><i>&rsaquo;</i>'+d.contentName+'</a> </li>';
+							htmlLever1 +='<li pSortId='+d.sortId+'><a href="javascript:;"  target="_blank"><i>&rsaquo;</i>'+d.sortName+'</a> </li>';
 						}
-						var subSortInfoList = d.subSortInfoList;
-						if(subSortInfoList != null && subSortInfoList.length >0){
-							htmlLever2 += '<div pSortId='+d.sortId+' class="sidebar-hidden" style="display: none">'+
-							'<h4>'+d.sortName+'</h4>'+
-							'<div class="sidebar-link">';
-							
+						var subSortInfoList = d.sortInfoRespDTOList;
+						if(subSortInfoList == null || subSortInfoList.length ==0){
+							return;
 						}
-						$(subSortInfoList).each(function(i,d){
-							var subContent = d.sortContentVO;
-							if(subContent == null || subContent == undefined){
-								return false;
-							}
-							htmlLever2 +='<a href="'+setLinkUrk(subContent.contentLink)+'"  target="_blank">'+subContent.contentName+'</a>';
-							if(parseInt(i+1)%5 == 0){
-								if(parseInt(i+1)== data.sortInfos.length){
-									htmlLever2 +='</div>'; 
-								}else{
-									htmlLever2 +='</div><div class="sidebar-link">';
-								}
+						//子菜单：目前只取一个
+						var subMenu = subSortInfoList[0];
+						htmlLever2 += '<div pSortId='+subMenu.parentSortId+' class="sidebar-hidden" style="display: none">'+
+						'<h4>'+subMenu.sortName+'</h4>'+
+						'<div class="sidebar-link">';
+						//子菜单内容	
+						var contentVOList = subMenu.sortInfoRespDTOList;
+						$(contentVOList).each(function(i,d){
+							var k = d.contentRespDTO;
+							if(k != null){
+								htmlLever2 +='<a href="'+setLinkUrk(k.contentLink)+'"  target="_blank">'+k.contentName+'</a>';
 							}
 						});
-						htmlLever2 +='</div></div>'
+						htmlLever2 +='</div></div>';
 					});
 					html += htmlLever1 +'</ul><!--二级导航开始-->'+htmlLever2+'<!--二级导航结束-->';
 					$('#head_sidebar').html(html);

@@ -25,7 +25,6 @@ import org.springframework.ui.Model;
 import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -678,12 +677,12 @@ public class PageManageController {
 		}
 	}
 	/**
-	 * 首页商品菜单新增、编辑
+	 * 首页商品编辑、删除
 	 * @return
 	 */
-	@RequestMapping(value="/insetOrUpdateSortInfo")
+	@RequestMapping(value="/updateSortInfo")
 	@ResponseBody
-	private Map<String,Object> insetOrUpdateSortInfo(HttpServletRequest request,HttpSession session){
+	private Map<String,Object> updateSortInfo(HttpServletRequest request,HttpSession session){
 		String pSortId = request.getParameter("pSortId");
 		String sortId = request.getParameter("sortId");
 		String sortName = request.getParameter("sortName");
@@ -692,17 +691,11 @@ public class PageManageController {
 		String contentLink = request.getParameter("contentLink");
 		Map<String,Object> rMap = new HashMap<>();
 		try {
-			if("-1".equals(pSortId)){
-				sortLever ="1";
-			}else{
-				sortLever ="2";
-			}
 			SortInfoReqDTO sortInfoReqDTO = new SortInfoReqDTO();
 			SortContentReqDTO sortContentReqDTO = new SortContentReqDTO();
 			if(!StringUtils.isBlank(pSortId)){
 				sortInfoReqDTO.setParentSortId(Integer.valueOf(pSortId));
 			}
-			
 			if(!StringUtils.isBlank(sortId)){
 				sortInfoReqDTO.setSortId(Integer.valueOf(sortId));
 				sortContentReqDTO.setSortId(Integer.valueOf(sortId));
@@ -717,37 +710,26 @@ public class PageManageController {
 			if(!StringUtils.isBlank(contentLink)){
 				sortContentReqDTO.setContentLink(contentLink);
 			}
-			
+			if(!StringUtils.isBlank(status)){
+				sortInfoReqDTO.setStatus(status);
+				sortContentReqDTO.setStatus(status);
+			}
 			sortInfoReqDTO.setUpdateStaffId(StaffUtil.getStaffId(session));
 			sortInfoReqDTO.setUpdateTime(DateUtil.getNowAsDate());
 			sortContentReqDTO.setUpdateStaffId(StaffUtil.getStaffId(session));
 			sortContentReqDTO.setUpdateTime(DateUtil.getNowAsDate());
 			if(!StringUtils.isBlank(sortId)){
-				if(!StringUtils.isBlank(status)){
-					sortInfoReqDTO.setStatus(status);
-					sortContentReqDTO.setStatus(status);
-				}
 				long sortInfoById = iPageDisplayRSV.updateSortInfoById(sortInfoReqDTO);
 				if(sortInfoById >0){
-					iPageDisplayRSV.updateSortContent(sortContentReqDTO);
-				}
-			}else{
-				sortInfoReqDTO.setStatus(Constants.Page.STATUS_VALID);
-				sortInfoReqDTO.setCreateStaffId(StaffUtil.getStaffId(session));
-				sortInfoReqDTO.setCreateTime(DateUtil.getNowAsDate());
-				long insertSortInfoId = iPageDisplayRSV.insertSortInfo(sortInfoReqDTO);
-				if(insertSortInfoId > 0){
-					sortContentReqDTO.setStatus(Constants.Page.STATUS_VALID);
-					sortContentReqDTO.setCreateStaffId(StaffUtil.getStaffId(session));
-					sortContentReqDTO.setCreateTime(DateUtil.getNowAsDate());
-					iPageDisplayRSV.insertSortContent(sortContentReqDTO);
+					long updateId = iPageDisplayRSV.updateSortContent(sortContentReqDTO);
+					System.out.println(updateId);
 				}
 			}
 			rMap.put("success", true);
 		} catch (Exception e) {
-			rMap.put("success", true);
+			rMap.put("success", false);
 			rMap.put("erroMsg", e.getMessage());
-			log.error("【首页商品菜单分类新增、编辑】异常信息：" + e);
+			log.error("【首页商品编辑、删除】异常信息：" + e);
 		}
 		return rMap;
 
@@ -829,36 +811,125 @@ public class PageManageController {
 		 return rMap;
 	}
 	@RequestMapping(value="/querySortInfoById")
-	private String querySortInfoById(@RequestParam Integer sortId ,Model mode){
+	private String querySortInfoById(HttpServletRequest request,Model mode){
+		String parentSortId = request.getParameter("parentSortId");
+		String sortId = request.getParameter("sortId");
+		String sortLever = request.getParameter("sortLever");
+		String sortAdd = request.getParameter("sortAdd");
 		try {
 			SortInfoVO sortInfo = new SortInfoVO();
-			if(sortId != null){
+			if(!StringUtils.isBlank(sortId)){
 				SortInfoReqDTO sortInfoReqDTO = new SortInfoReqDTO();
-				sortInfoReqDTO.setSortId(sortId);
+				sortInfoReqDTO.setSortId(Integer.valueOf(sortId));
 				SortInfoRespDTO sortInfoRespDTO = iPageDisplayRSV.querySortInfoById(sortInfoReqDTO);
 				if(sortInfoRespDTO != null){
 					BeanUtils.copyProperties(sortInfoRespDTO, sortInfo);
 					SortContentReqDTO sortContentReqDTO = new SortContentReqDTO();
 					sortContentReqDTO.setSortId(sortInfoRespDTO.getSortId());
 					List<SortContentRespDTO> sortContenList = iPageDisplayRSV.querysortContenList(sortContentReqDTO);
-					SortContentRespDTO sortContentRespDTO = sortContenList.get(0);
-					SortContentVO sortContentVO = new SortContentVO();
-					if(sortContentRespDTO != null){
-						BeanUtils.copyProperties(sortContentRespDTO, sortContentVO);
-						sortInfo.setSortContentRespDTO(sortContentVO);
-					}else{
-						sortInfo.setSortContentRespDTO(sortContentVO);
+					if(!CollectionUtils.isEmpty(sortContenList)){
+						SortContentRespDTO sortContentRespDTO = sortContenList.get(0);
+						SortContentVO sortContentVO = new SortContentVO();
+						if(sortContentRespDTO != null){
+							BeanUtils.copyProperties(sortContentRespDTO, sortContentVO);
+							sortInfo.setSortContentRespDTO(sortContentVO);
+						}else{
+							sortInfo.setSortContentRespDTO(sortContentVO);
+						}
 					}
 				}
 			}
-			if("1".equals(sortInfo.getSortLevel())){
-				mode.addAttribute("sortLever", "1");
-			}
+			mode.addAttribute("sortLever", !StringUtils.isBlank(sortLever)?sortLever:sortInfo.getSortLevel());
 			mode.addAttribute("sortInfo", sortInfo);
+			mode.addAttribute("sortAdd", sortAdd);
+			mode.addAttribute("parentSortId", sortInfo.getParentSortId() !=null ? sortInfo.getParentSortId():parentSortId);
 		} catch (Exception e) {
 			log.error("【首页商品菜单分类查询】异常信息：" + e);
 		}
 		return "page_classification :: #sortInfo";
 	}
+	/**
+	 * 首页商品菜单保存
+	 * @return
+	 */
+	@RequestMapping(value="/saveSortInfo")
+	@ResponseBody
+	private Map<String,Object> saveSortInfo(HttpServletRequest request,HttpSession session){
+		
+		String sortLever = request.getParameter("sortLever");
+		String parentSortId = request.getParameter("parentSortId");
+		String sortContentArry = request.getParameter("sortContentArry");
+		Map<String,Object> rMap = new HashMap<>();
+		try {
+			List<SortContentVO> sortContentList = new ArrayList<SortContentVO>();
+			if(!StringUtils.isBlank(sortContentArry)){
+				sortContentList = JSONObject.parseArray(sortContentArry, SortContentVO.class);
+			}
+			//查询排序
+			SortContentReqDTO sortContent = new SortContentReqDTO();
+			sortContent.setStatus(Constants.Page.STATUS_VALID);
+			List<SortContentRespDTO> querysortContenList = iPageDisplayRSV.querysortContenList(sortContent);
+			int contentCount=1;
+			if(!CollectionUtils.isEmpty(querysortContenList)){
+				String orderNo = querysortContenList.get(querysortContenList.size()-1).getOrderNo();
+				contentCount = Integer.valueOf(orderNo);
+			}
+			SortInfoRespDTO sortInfoResp = new SortInfoRespDTO();
+			sortInfoResp.setStatus(Constants.Page.STATUS_VALID);
+			sortInfoResp.setParentSortId(Integer.valueOf(parentSortId));
+			sortInfoResp.setSortLevel(sortLever);
+			List<SortInfoRespDTO> sortInfoRespList = iPageDisplayRSV.querySortInfos(sortInfoResp);
+			int sortCount=1;
+			if(!CollectionUtils.isEmpty(sortInfoRespList)){
+				String orderNo = sortInfoRespList.get(sortInfoRespList.size()-1).getOrderNo();
+				sortCount = Integer.valueOf(orderNo);
+			}
+			if(!CollectionUtils.isEmpty(sortContentList)){
+				SortInfoVO sortInfoVO = new SortInfoVO();
+				for(SortContentVO sortContentVO : sortContentList){
+					contentCount++;
+					sortCount++;
+					sortInfoVO.setSortLevel(sortLever);
+					sortInfoVO.setSortName(sortContentVO.getContentName());
+					if(!StringUtils.isBlank(parentSortId)){
+						sortInfoVO.setParentSortId(Integer.valueOf(parentSortId));
+					}else{
+						sortInfoVO.setParentSortId(-1);
+					}
+					sortInfoVO.setOrderNo(sortCount+"");
+					sortInfoVO.setStatus(Constants.Page.STATUS_VALID);
+					sortInfoVO.setCreateStaffId(StaffUtil.getStaffId(session));
+					sortInfoVO.setUpdateStaffId(StaffUtil.getStaffId(session));
+					SortInfoReqDTO sortInfoReqDTO = new SortInfoReqDTO();
+					BeanUtils.copyProperties(sortInfoVO, sortInfoReqDTO);
+					long sortId = iPageDisplayRSV.insertSortInfo(sortInfoReqDTO);
+					
+					sortContentVO.setSortId(Integer.valueOf(sortId+""));
+					sortContentVO.setStatus(Constants.Page.STATUS_VALID);
+					sortContentVO.setOrderNo(contentCount+"");
+					sortContentVO.setCreateStaffId(StaffUtil.getStaffId(session));
+					sortContentVO.setUpdateStaffId(StaffUtil.getStaffId(session));
+					SortContentReqDTO sortContentReqDTO = new SortContentReqDTO();
+					BeanUtils.copyProperties(sortContentVO, sortContentReqDTO);
+					iPageDisplayRSV.insertSortContent(sortContentReqDTO);
+				}
+			}
+			rMap.put("success", true);
+		} catch (Exception e) {
+			rMap.put("success", false);
+			rMap.put("erroMsg", e.getMessage());
+			log.error("【首页商品菜单保存】异常信息：" + e);
+		}
+		return rMap;
 
+	}
+	
+	@RequestMapping(value="/addsort")
+	private String addsort(HttpServletRequest request,Model mode){
+		String sortId = request.getParameter("sortId");
+		String sortLever = request.getParameter("sortLever");
+		mode.addAttribute("sortLever", sortLever);
+		mode.addAttribute("sortId", sortId);
+		return "page_classification :: .addsort_table";
+	}
 }
