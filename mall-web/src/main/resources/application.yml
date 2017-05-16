@@ -17,7 +17,6 @@ spring:
   data:
    solr:
      host: http://112.74.163.29:8983/solr
- ##    zk-host:
 
 ## woego-frame框架包配置
 application:
@@ -25,6 +24,7 @@ application:
     confpath: /com/ai/paas/cache/conf
   session:
     confpath: /com/ai/paas/session/conf
+    systemcode: "01"
   image:
     confpath: /com/ai/paas/gmimage/conf
   file:
@@ -41,5 +41,5 @@ application:
     login: admin:admin
   filter:
     enabled: true
-    ignoreSuffix: .ico,.swf,.flv,.png,.jpg,.jpeg,.gif,.css,.js,.html,.htm,.eot,.svg,.ttf,.woff,.mp4,.woff2,.map
+    ignoreSuffix: ".ico,.swf,.flv,.png,.jpg,.jpeg,.gif,.css,.js,.html,.htm,.eot,.svg,.ttf,.woff,.mp4,.woff2,.map"
     unloginflag: true

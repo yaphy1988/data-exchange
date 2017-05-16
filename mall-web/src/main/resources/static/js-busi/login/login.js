@@ -39,7 +39,11 @@ function doLogin(){
 			},
 		success : function(obj){
 			if(obj.success){
-				window.location.href = WEB_ROOT + "/homePage/pageInit";
+			    if(login_toPage != null && login_toPage != ""){
+			        window.location.href = login_toPage;
+				}else{
+				    window.location.href = WEB_ROOT + "/homePage/pageInit";
+				}
 			}else{
 				//刷新验证码
 				WEB.msg.info('提示',obj.errorMsg);

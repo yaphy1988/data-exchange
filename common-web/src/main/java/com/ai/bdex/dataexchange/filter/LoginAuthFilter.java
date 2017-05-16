@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.filter;
 
+import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
@@ -53,6 +54,11 @@ public class LoginAuthFilter implements Filter {
     @DubboConsumer
     private ILoginRSV iLoginRSV;
 
+    /**
+     * 初始化
+     * @param filterConfig
+     * @throws ServletException
+     */
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         //忽略的访问后缀
@@ -61,15 +67,25 @@ public class LoginAuthFilter implements Filter {
         }
     }
 
+    /**
+     * 处理请求
+     * @param servletRequest
+     * @param servletResponse
+     * @param filterChain
+     * @throws IOException
+     * @throws ServletException
+     */
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
-        LogFactory.getLog(LoginAuthFilter.class).info("receive url:"+request.getRequestURI());
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
 
-        // 过滤不需要权限控制的请求后缀
+        String uri =request.getRequestURI();
+        LogFactory.getLog(LoginAuthFilter.class).info("receive url:"+uri);
+
+        // 过滤不需要权限控制的请求后缀,或者不启用filter时
         if (shouldFilter(request) || filterEnabled == false) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
@@ -78,56 +94,94 @@ public class LoginAuthFilter implements Filter {
         //当前登录用户
         StaffInfoDTO staffInfo = StaffUtil.getStaffVO(session);
         String mallDomain = SystemConfUtil.getSystemModuleInfo("01","1").genFullUrl();
+
         if(staffInfo != null && staffInfo.isLoginIn()){
-            //已登陆
-            if("1".equals(staffInfo.getLoginType())) {
-                //如果是用户手动登陆的，则允许访问
-                filterChain.doFilter(request, response);
+            //通过记住密码登陆，且url配置成需确认登陆的，则跳转到登陆界面
+            if("2".equals(staffInfo.getLoginType()) && unLoginUrl(uri,"2")) {
+                response.sendRedirect(mallDomain+this.loginPage+"?toPage="+ LoginAuthFilter.getRequestUrl(request));
                 return;
-            }else{
-                //如果是记住密码系统自动登陆的，且请求的url需要确认登陆，则跳转到登陆界面
+            }
+
+            //剩下的都允许访问
+            filterChain.doFilter(request, response);
+            return;
+        }else{
+            //未登陆
+            //校验是否记住密码且当前请求无需确认登陆
+            if(isRememberPaas(request,response) == true && unLoginUrl(uri,"2") == false){
+                //如果记住密码，则自动登陆并允许访问
                 filterChain.doFilter(request, response);
                 return;
             }
 
-        }else{
-            //未登陆
-            // 如果是AJAX请求，则返回json格式提示未登陆
-            if (isAjaxRequest(request)) {
-                if(this.unLoginFlag == true) {
+            //校验是否开启免登陆
+            if(this.unLoginFlag == true){
+                //如果开启免登陆，则只校验需要登录的URL（在t_base_login_url中配置）
+
+                // AJAX请求，校验的是它的referer URL
+                if (isAjaxRequest(request)) {
+                    //获取referer URL
+                    String refererUrl = request.getHeader("referer");
+                    String requestUrl = request.getRequestURL().toString();
+                    String host = requestUrl.replace(uri,"");
+                    String refererUri = refererUrl.replace(host,"");
+
+                    //如果配置了需要登陆
+                    if(unLoginUrl(refererUri,"1")){
+                        //ajax请求的referer 需要登录，则不允许ajax访问
+                        response.getWriter().write("{errorCode:\"999999\",\"errorMsg\":\"unlogin\"}");
+                        return;
+                    }else{
+                        filterChain.doFilter(request, response);
+                        return;
+                    }
+                }
+
+                //非AJAX请求则校验请求URI
+                //判断是否需要登录
+                if(unLoginUrl(uri,"1")){
+                    //需要登录
+                    response.sendRedirect(mallDomain+this.loginPage+"?toPage="+ LoginAuthFilter.getRequestUrl(request));
+                    return;
+                }else{
+                    //不需要登陆
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+            }else{
+                //如果没有开启免登陆，则只校验不需要登录的URL（在t_base_login_url中配置）
+
+                // AJAX请求，校验的是它的referer URL
+                if (isAjaxRequest(request)) {
+                    //获取referer URL
+                    String refererUrl = request.getHeader("referer");
+                    String requestUrl = request.getRequestURL().toString();
+                    String host = requestUrl.replace(uri,"");
+                    String refererUri = refererUrl.replace(host,"");
+
+                    //如果配置了免登陆
+                    if(unLoginUrl(refererUri,"0")){
+                        filterChain.doFilter(request, response);
+                        return;
+                    }else{
+                        //ajax请求的referer没有配置登录，则不允许ajax访问
+                        response.getWriter().write("{errorCode:\"999999\",\"errorMsg\":\"unlogin\"}");
+                        return;
+                    }
+                }
+
+                //判断是否需要登录
+                if(unLoginUrl(uri,"0")){
+                    //不需要登陆
                     filterChain.doFilter(request, response);
                     return;
                 }else{
-                    //没开免登陆
-                    response.getWriter().write("{errorCode:\"999999\",\"errorMsg\":\"unlogin\"}");
+                    //需要登录
+                    response.sendRedirect(mallDomain+this.loginPage+"?toPage="+ LoginAuthFilter.getRequestUrl(request));
                     return;
                 }
             }
-
-            //非AJAX请求，则校验是否记住密码，记住的话，做登陆操作
-            //如果记住密码，则跳转到自动登陆操作
-            if(isRememberPaas(request,response) == true){
-                filterChain.doFilter(request, response);
-                return;
-            }
-
-            //url 配置在表 t_base_login_url
-            if(this.unLoginFlag == true){
-                //如果开启免登陆，则只校验需要登录的URL，
-                //请求的url在t_base_login_url中则跳转到登陆界面
-                //否则允许访问
-                filterChain.doFilter(request, response);
-                return;
-
-            }else{
-                //如果没有开启免登陆，则只校验不需要登录的URL
-                //请求的url在t_base_login_url中且标识为免登陆则允许访问
-                //否则不允许访问，跳转到登陆界面
-            }
         }
-
-        //其他返回登陆界面
-        response.sendRedirect(mallDomain+this.loginPage+"?toPage="+ LoginAuthFilter.getRequestUrl(request));
     }
 
     /**
@@ -138,6 +192,11 @@ public class LoginAuthFilter implements Filter {
      */
     private boolean shouldFilter(HttpServletRequest request) {
         String uri = request.getRequestURI();
+
+        if(StringUtils.isBlank(uri) || "/".equals(uri)){
+            return true;
+        }
+
         //过滤后缀
         for (String suffix : IGNORE_SUFFIX) {
             if (uri!= null && uri.toLowerCase().endsWith(suffix)) {
@@ -152,6 +211,36 @@ public class LoginAuthFilter implements Filter {
         //如果是登出界面
         if (uri.endsWith(this.logoutPage)) {
             return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * 免登陆控制
+     * @param unloginAccess （0：免登陆，1：登录访问，2：记住密码登录时还需要登录）
+     * @return
+     */
+    private boolean unLoginUrl(String uri,String unloginAccess){
+
+        //获取当前子系统编码
+        SessionManager sessionManager = Utils.getInstance(SessionManager.class);
+        String systemCode = sessionManager.getSystemCode();
+
+        //保存url的key
+        String key = Constants.Cache.UN_LOGIN_URL_PRE + systemCode + "_" + uri.trim();
+
+        String redisloginAccess = CacheUtil.getMapItem(Constants.Cache.UN_LOGIN_URL_MAP,key);
+
+        if(unloginAccess.equals(redisloginAccess)){
+            return true;
+        }
+
+        //如果是登录访问，那么1,2都满足条件
+        if("1".equals(unloginAccess)){
+            if("1".equals(redisloginAccess) || "2".equals(redisloginAccess)){
+                return true;
+            }
         }
 
         return false;

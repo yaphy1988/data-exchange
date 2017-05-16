@@ -12,10 +12,10 @@ import com.ai.paas.utils.SignUtil;
 public class ThymeleafToolsUtil {
     /**
      * 获取商城全路径
-     * 使用：<a th:href="${#tools.mailDomain()}"></a>
+     * 使用：<a th:href="${#tools.mallDomain()}"></a>
      * @return http://domain/mall-web
      */
-    public String mailDomain(){
+    public String mallDomain(){
         return SystemConfUtil.getSystemModuleInfo("01","1").genFullUrl();
     }
 

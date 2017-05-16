@@ -14,10 +14,13 @@
 </head>
 <body class="bgf1">
 	<div class="clearfix m_header" th:fragment="top">
-	<a href="" class="Logo" target="_blank" >
+	<a href="" class="Logo" target="_blank" th:href="${#tools.mallDomain()}+'/homePage/pageInit'">
 		<img width="160" src="../static/images/manage_logo.png"  th:src="@{/images/manage_logo.png}" alt="广州数据" >
 	</a>
 	<ul class="m_hdlist clearfix" th:with="staffInfoDTO=${session.staffInfoDTO}">
+		<li>
+			<a class="item" href="" th:href="${#tools.mallDomain()}+'/homePage/pageInit'">返回商城</a>
+		</li>
 		<li>
 			<a class="item" href="" target="_blank">联系我们</a>
 		</li>
@@ -42,7 +45,12 @@
 					<span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu" aria-labelledby="dLabel">
-					<li><a  href="" th:href="${#tools.mailDomain()}+'/login/doLogout'">退出登录</a></li>
+					<li>
+						<a  href="#"
+							th:text="${staffInfoDTO!=null and staffInfoDTO.loginIn}? '退出登录':'登录'"
+							th:href="${staffInfoDTO!=null and staffInfoDTO.loginIn}? ${#tools.mallDomain()}+'/login/doLogout':${#tools.mallDomain()}+'/login/pageInit'">退出登录
+						</a>
+					</li>
 				</ul>
 			</div>
 		</li>

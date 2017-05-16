@@ -6,12 +6,16 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.captcha.CaptchaServlet;
+import com.ai.paas.session.impl.SessionManager;
+import com.ai.paas.util.CacheUtil;
+import com.ai.paas.util.Utils;
 import com.ai.paas.utils.InetTool;
 import com.ai.paas.utils.SignUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -21,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping(value = "/login")
@@ -31,7 +36,10 @@ public class LoginController {
 	private ILoginRSV iLoginRSV;
 
 	@RequestMapping(value="/pageInit")
-	public String pageInit(HttpServletRequest request) {
+	public String pageInit(HttpServletRequest request, Model model) {
+
+		model.addAttribute("toPage",request.getParameter("toPage"));
+
 		return "login";
 	}
 
@@ -70,7 +78,7 @@ public class LoginController {
 			//先校验登录,重要重要重要：所有登陆后要写session的请在LoginAuthFilter.loginVerify写
 			StaffInfoDTO staffInfoVO = LoginAuthFilter.loginVerify(request,response,loginInfo,iLoginRSV,"1");
 			//记住密码
-			LoginAuthFilter.rememberPaas(request, response,loginInfo);
+			this.rememberPaas(request, response,loginInfo);
 
 			rMap.put("success", true);
 			rMap.put("data", staffInfoVO);
@@ -97,5 +105,24 @@ public class LoginController {
 			log.error("退出异常", e.getMessage());
 		}
 		return "redirect:/login/pageInit";
+	}
+
+	private void rememberPaas(HttpServletRequest request, HttpServletResponse response,LoginInfoDTO loginInfo){
+		//是否记住密码
+		String rememberPaas = request.getParameter("rememberPaas");
+		SessionManager sessionManager = Utils.getInstance(SessionManager.class);
+
+		if("true".equals(rememberPaas)){
+			int expiryTime = 10*24*60*60;//10天
+			//cookie值
+			String rememberPaasCookieValue = UUID.randomUUID().toString().replaceAll("-", "");
+			//保存cookie到客户端
+			LoginAuthFilter.addCookie(response, LoginAuthFilter.remember_Paas_CookieKey, rememberPaasCookieValue,expiryTime);
+			//保存在服务端的cookie值对应的用户信息
+			CacheUtil.addItem(LoginAuthFilter.remember_PaasKey_Pre+rememberPaasCookieValue,loginInfo.getLoginName()+":"+ loginInfo.getLoginPwd(),expiryTime);
+		}else{
+			//移除服务端记住密码的信息
+			LoginAuthFilter.unRememberPaas(request,response);
+		}
 	}
 }
