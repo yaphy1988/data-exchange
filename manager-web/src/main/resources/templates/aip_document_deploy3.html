@@ -4,7 +4,7 @@
 	  layout:decorate="~{fragments/layout}">
 <head>
 	<meta charset="UTF-8">
-	<title>api接口配置3</title>
+	<title>aip示例信息</title>
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
@@ -50,11 +50,11 @@
 	<div class="m_main">
 		<div class="m_con">
 			<div class="title">示例代码</div>
-				<div class="text-right mb10">
-					 <a href="javascript:void(0)" class="btn-primary btn mr10" ">新增实例</a>
-					 <a href="javascript:void(0)" class="btn-default btn mr10" ">删除</a>
-				</div>
-				<div style="background: #fbfbfb;" class="p10 mb10">
+				<!--<div class="text-right mb10">-->
+					 <!--<a href="javascript:void(0)" class="btn-primary btn mr10" >新增实例</a>-->
+					 <!--<a href="javascript:void(0)" class="btn-default btn mr10" >删除</a>-->
+				<!--</div>-->
+				<div style="background: #fbfbfb;position: relative" class="p10 mb10">
 					<h5 class="">示例</h5>
 					<table class="editTable">
 						<tbody>
@@ -86,11 +86,17 @@
 							<tr>
 								<td class="Hint"><span class="col_red">*</span>示例代码：</td>
 								<td colspan="3">
-									<textarea class="form-control" rows="5" ></textarea>
+									<div class="exampleCode">
+
+									</div>
+									<textarea class="form-control" rows="5" th:remove="all"></textarea>
 								</td>
 							</tr>
 						</tbody>
 					</table>
+					<div style="position: absolute;bottom: 10px;right: 10px;">
+						<a href="javascript:void(0)" class="btn-primary btn mr10" >隐藏</a>
+					</div>
 				</div>
 
 				<div style="background: #fbfbfb;" class="p10 mb10">
@@ -132,16 +138,16 @@
 					</table>
 				</div>
 				<div class="text-right ">
-					 <a href="javascript:void(0)" class="btn-primary btn mr10" ">新增实例</a>
-					 <a href="javascript:void(0)" class="btn-default btn mr10" ">删除</a>
+					 <a href="javascript:void(0)" class="btn-primary btn mr10" >新增实例</a>
+					 <a href="javascript:void(0)" class="btn-default btn mr10" >删除</a>
 				</div>
 			</div>
 			<hr>
 			<!-- 按钮 -->
 			
 			<div class="p20 text-center " style="margin-left: 220px;">
-				 <a href="javascript:void(0)" class="btn-primary btn mr10" ">保存</a>
-				 <a href="javascript:void(0)" class="btn-default btn mr10" ">返回</a>
+				 <a href="javascript:void(0)" class="btn-primary btn mr10" >保存</a>
+				 <a href="javascript:void(0)" class="btn-default btn mr10" >返回</a>
 			</div>
 		</div>
 	</div>
@@ -267,6 +273,6 @@
 	</div>
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
-</div>
+<!--</div>-->
 </body>
 </html>

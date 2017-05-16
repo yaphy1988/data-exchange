@@ -5,10 +5,7 @@ import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipProviderServiceMg
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceManagerRSV;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IServiceMessageRSV;
-import com.ai.bdex.dataexchange.busi.api.entity.AipProviderServiceInfoVO;
-import com.ai.bdex.dataexchange.busi.api.entity.AipServiceDetailsInfoVO;
-import com.ai.bdex.dataexchange.busi.api.entity.AipServiceInParaVO;
-import com.ai.bdex.dataexchange.busi.api.entity.AipServiceOutParaVO;
+import com.ai.bdex.dataexchange.busi.api.entity.*;
 import com.ai.bdex.dataexchange.busi.gds.entity.AipServiceInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
 import com.ai.bdex.dataexchange.common.AjaxJson;
@@ -131,20 +128,10 @@ public class AipEntryController {
     public AjaxJson submitInfo(HttpServletRequest request, HttpServletResponse response, HttpSession session, AipServiceInfoReqDTO aipServiceInfoReqDTO){
         AjaxJson ajaxJson = new AjaxJson();
 
-        if (aipServiceInfoReqDTO!=null){
+        if (aipServiceInfoReqDTO==null){
             ajaxJson.setSuccess(false);
             ajaxJson.setMsg("保存失败，入参为空！");
         }
-//        String inParaStr = request.getParameter("inParaStr");
-//        String outParaStr = request.getParameter("outParaStr");
-//        List<AipServiceInParaDTO> inParaDTOList = new ArrayList<AipServiceInParaDTO>();
-//        List<AipServiceOutParaDTO> outParaDTOList = new ArrayList<AipServiceOutParaDTO>();
-//        if (!StringUtil.isBlank(inParaStr)){
-//            inParaDTOList = JSONArray.parseArray(inParaStr,AipServiceInParaDTO.class);
-//        }
-//        if (!StringUtil.isBlank(outParaStr)){
-//            outParaDTOList = JSONArray.parseArray(outParaStr,AipServiceOutParaDTO.class);
-//        }
 
         if (StringUtil.isBlank(aipServiceInfoReqDTO.getServiceId()) && StringUtil.isBlank(aipServiceInfoReqDTO.getVersion())){//新增
             aipServiceInfoReqDTO.setVersion("1.0");
@@ -162,6 +149,8 @@ public class AipEntryController {
                     aipServiceInfoReqDTO.setReturnExample(staticUrl);
                 }
                 serviceId = iAipServiceManagerRSV.insertAipService(aipServiceInfoReqDTO);
+                ajaxJson.setSuccess(true);
+                ajaxJson.setMsg("serviceId="+serviceId+"&version=1.0");
             }catch (Exception e){
                 log.error("保存aip服务基本信息异常：",e);
                 ajaxJson.setSuccess(false);
@@ -173,58 +162,31 @@ public class AipEntryController {
                 ajaxJson.setMsg("保存aip服务基本信息异常，请联系管理员！");
                 return ajaxJson;
             }
-            //返回的不为空则继续保存出参入参信息
-//            if (!StringUtil.isBlank(serviceId)){
-//                //入参信息
-//                try{
-//                    if (!CollectionUtil.isEmpty(inParaDTOList)){
-//                        for (AipServiceInParaDTO aipServiceInParaDTO : inParaDTOList){
-//                            aipServiceInParaDTO.setServiceId(serviceId);
-//                            aipServiceInParaDTO.setVersion("1.0");
-//                            aipServiceInParaDTO.setStatus("1");
-//                            aipServiceInParaDTO.setCreateStaff(StaffUtil.getStaffId(session));
-//                            aipServiceInfoReqDTO.setCreateTime(new Date());
-//                            iAipServiceManagerRSV.insertInPara(aipServiceInParaDTO);
-//                        }
-//                    }
-//                }catch (Exception e){
-//                    log.error("插入aip服务的入参信息列表异常：",e);
-//                    ajaxJson.setSuccess(false);
-//                    ajaxJson.setMsg("保存aip服务信息异常！");
-//                    return ajaxJson;
-//                }
-//
-//                //出参信息
-//                try{
-//                    if (!CollectionUtil.isEmpty(outParaDTOList)){
-//                        for (AipServiceOutParaDTO aipServiceOutParaDTO : outParaDTOList){
-//                            aipServiceOutParaDTO.setServiceId(serviceId);
-//                            aipServiceOutParaDTO.setVersion("1.0");
-//                            aipServiceOutParaDTO.setStatus("1");
-//                            aipServiceOutParaDTO.setCreateStaff(StaffUtil.getStaffId(session));
-//                            aipServiceOutParaDTO.setCreateTime(new Date());
-//                            iAipServiceManagerRSV.insertOutPara(aipServiceOutParaDTO);
-//                        }
-//                    }
-//                }catch (Exception e){
-//                    log.error("插入aip服务的出参信息列表异常：",e);
-//                    ajaxJson.setSuccess(false);
-//                    ajaxJson.setMsg("保存aip服务信息异常！");
-//                    return ajaxJson;
-//                }
-//
-//            }else{
-//                ajaxJson.setSuccess(false);
-//                ajaxJson.setMsg("保存aip服务基本信息异常，请联系管理员！");
-//                return ajaxJson;
-//            }
 
-        }else if (!StringUtil.isBlank(aipServiceInfoReqDTO.getServiceId()) && !StringUtil.isBlank(aipServiceInfoReqDTO.getVersion())){//编辑
-
+        }else if (!StringUtil.isBlank(aipServiceInfoReqDTO.getServiceId())){//编辑
+            if (!StringUtil.isBlank(aipServiceInfoReqDTO.getVersion())){
+                aipServiceInfoReqDTO.setVersion("");
+            }
+            aipServiceInfoReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+            aipServiceInfoReqDTO.setUpdateTime(new Date());
+            try{
+                if (!StringUtil.isBlank(aipServiceInfoReqDTO.getReturnExample())){
+                    String htmlData= HtmlUtils.htmlUnescape(aipServiceInfoReqDTO.getReturnExample());
+                    //保存静态文件到静态文件服务器
+                    String staticUrl = MongoFileUtil.saveFile(htmlData.getBytes("utf-8"),"gdsContent", ".html");
+                    aipServiceInfoReqDTO.setReturnExample(staticUrl);
+                }
+                iAipServiceManagerRSV.updateAipServiceByServiceId(aipServiceInfoReqDTO);
+                ajaxJson.setSuccess(true);
+            }catch (Exception e){
+                log.error("保存aip服务基本信息异常：",e);
+                ajaxJson.setSuccess(false);
+                ajaxJson.setMsg("保存aip服务基本信息异常!");
+                return ajaxJson;
+            }
         }
 
-        ajaxJson.setSuccess(true);
-        ajaxJson.setMsg("保存成功！");
+
         return ajaxJson;
     }
 
@@ -420,5 +382,179 @@ public class AipEntryController {
         ajaxJson.setSuccess(true);
 
         return ajaxJson;
+    }
+
+    /**
+     * 错误代码信息录入初始化页面
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/errorCodeInfoInit")
+    public String errorCodeInfoInit(HttpServletRequest request,HttpServletResponse response) throws Exception {
+        String serviceId = request.getParameter("serviceId");
+        String version = request.getParameter("version");
+        request.setAttribute("serviceId",serviceId);
+        request.setAttribute("version",version);
+
+        if (StringUtil.isBlank(serviceId)){
+            throw new BusinessException("初始化页面异常，serviceId为空");
+        }
+        if (StringUtil.isBlank(version)){
+            version = "1.0";
+        }
+
+        List<AipServiceErrorInfoVO> systemErrorInfoVOList = new ArrayList<AipServiceErrorInfoVO>();
+        List<AipServiceErrorInfoVO> serviceErrorInfoVOList = new ArrayList<AipServiceErrorInfoVO>();
+        List<AipServiceErrorInfoDTO> aipServiceErrorInfoDTOList = new ArrayList<AipServiceErrorInfoDTO>();
+        try {
+            aipServiceErrorInfoDTOList = iAipServiceManagerRSV.queryServiceErrorInfoList(serviceId,version);
+        }catch (Exception e){
+            log.error("查询aip服务已配置的错误代码信息异常：",e);
+        }
+        if (!CollectionUtil.isEmpty(aipServiceErrorInfoDTOList)){
+            for (AipServiceErrorInfoDTO aipServiceErrorInfoDTO : aipServiceErrorInfoDTOList){
+                AipServiceErrorInfoVO aipServiceErrorInfoVO = new AipServiceErrorInfoVO();
+                ObjectCopyUtil.copyObjValue(aipServiceErrorInfoDTO,aipServiceErrorInfoVO,null,false);
+                if ("00".equals(aipServiceErrorInfoVO.getType())){//服务级错误
+                    serviceErrorInfoVOList.add(aipServiceErrorInfoVO);
+                }else if ("01".equals(aipServiceErrorInfoVO.getType())){//系统级错误
+                    systemErrorInfoVOList.add(aipServiceErrorInfoVO);
+                }
+            }
+        }
+
+        request.setAttribute("serviceErrorList",serviceErrorInfoVOList);
+        request.setAttribute("systemErrorList",systemErrorInfoVOList);
+        return "aip_document_deploy2";
+    }
+
+    /**
+     * 提交错误代码信息
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/submitErrCodeInfo")
+    @ResponseBody
+    public AjaxJson submitErrCodeInfo(HttpServletRequest request,HttpServletResponse response,HttpSession session){
+        AjaxJson ajaxJson = new AjaxJson();
+
+        String serviceId = request.getParameter("serviceId");
+        String version = request.getParameter("version");
+        if (StringUtil.isBlank(serviceId) || StringUtil.isBlank(version)){
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("保存失败，服务ID或版本号为空！");
+            return ajaxJson;
+        }
+        String sysErrCodeStr = request.getParameter("sysErrCodeStr");
+        String serErrCodeStr = request.getParameter("serErrCodeStr");
+        List<AipServiceErrorInfoReqDTO> sysErrCodeReqList = new ArrayList<AipServiceErrorInfoReqDTO>();
+        List<AipServiceErrorInfoReqDTO> serErrCodeReqList = new ArrayList<AipServiceErrorInfoReqDTO>();
+        if (!StringUtil.isBlank(sysErrCodeStr)){
+            sysErrCodeReqList = JSONArray.parseArray(sysErrCodeStr,AipServiceErrorInfoReqDTO.class);
+        }
+        if (!StringUtil.isBlank(serErrCodeStr)){
+            serErrCodeReqList = JSONArray.parseArray(serErrCodeStr,AipServiceErrorInfoReqDTO.class);
+        }
+        if (!StringUtil.isBlank(serviceId) && !StringUtil.isBlank(version)){
+            List<AipServiceErrorInfoDTO> aipServiceErrorInfoDTOList = new ArrayList<AipServiceErrorInfoDTO>();
+            try{
+                aipServiceErrorInfoDTOList = iAipServiceManagerRSV.queryServiceErrorInfoList(serviceId,version);
+            }catch (Exception e){
+                log.error("根据serviceId和version查询已配置的错误代码信息异常：",e);
+                ajaxJson.setSuccess(false);
+                ajaxJson.setMsg("根据serviceId和version查询已配置的错误代码信息异常!");
+                return ajaxJson;
+            }
+
+            try{
+                if (!CollectionUtil.isEmpty(aipServiceErrorInfoDTOList)){
+                        AipServiceErrorInfoReqDTO invalidSerErrorReq = new AipServiceErrorInfoReqDTO();
+                        invalidSerErrorReq.setStatus("0");
+                        invalidSerErrorReq.setUpdateTime(new Date());
+                        invalidSerErrorReq.setUpdateStaff(StaffUtil.getStaffId(session));
+                        invalidSerErrorReq.setServiceId(serviceId);
+                        invalidSerErrorReq.setVersion(version);
+                        iAipServiceManagerRSV.updateErrorInfoByServiceIdAndVersion(invalidSerErrorReq);
+                }
+            }catch (Exception e){
+                log.error("失效原有错误代码信息异常：",e);
+                ajaxJson.setMsg("失效原有错误代码信息异常！");
+                ajaxJson.setSuccess(false);
+                return ajaxJson;
+            }
+
+            //服务级
+            try{
+                for (AipServiceErrorInfoReqDTO serviceErrorInfoReqDTO : serErrCodeReqList){
+                    serviceErrorInfoReqDTO.setServiceId(serviceId);
+                    serviceErrorInfoReqDTO.setVersion(version);
+                    serviceErrorInfoReqDTO.setStatus("1");
+                    serviceErrorInfoReqDTO.setCreateStaff(StaffUtil.getStaffId(session));
+                    serviceErrorInfoReqDTO.setCreateTime(new Date());
+                    serviceErrorInfoReqDTO.setType("00");
+                }
+                String errorStr = iAipServiceManagerRSV.insertErrorInfoBatch(serErrCodeReqList);
+                if (StringUtil.isBlank(errorStr)){
+                    ajaxJson.setSuccess(false);
+                    ajaxJson.setMsg("保存aip服务级错误代码信息异常！");
+                    return ajaxJson;
+                }else{
+                    ajaxJson.setSuccess(true);
+                }
+            }catch (Exception e){
+                log.error("保存aip服务服务级错误代码信息异常：",e);
+                ajaxJson.setSuccess(false);
+                ajaxJson.setMsg("保存aip服务级错误代码信息异常！");
+                return ajaxJson;
+            }
+
+            //系统级
+            try{
+                for (AipServiceErrorInfoReqDTO systemErrorInfoReqDTO : sysErrCodeReqList){
+                    systemErrorInfoReqDTO.setServiceId(serviceId);
+                    systemErrorInfoReqDTO.setVersion(version);
+                    systemErrorInfoReqDTO.setStatus("1");
+                    systemErrorInfoReqDTO.setCreateStaff(StaffUtil.getStaffId(session));
+                    systemErrorInfoReqDTO.setCreateTime(new Date());
+                    systemErrorInfoReqDTO.setType("01");
+                }
+                String errorStr = iAipServiceManagerRSV.insertErrorInfoBatch(sysErrCodeReqList);
+                if (StringUtil.isBlank(errorStr)){
+                    ajaxJson.setSuccess(false);
+                    ajaxJson.setMsg("保存aip系统级错误代码信息异常！");
+                    return ajaxJson;
+                }else{
+                    ajaxJson.setSuccess(true);
+                }
+            }catch (Exception e){
+                log.error("保存aip服务系统级错误代码信息异常：",e);
+                ajaxJson.setSuccess(false);
+                ajaxJson.setMsg("保存aip系统级错误代码信息异常！");
+                return ajaxJson;
+            }
+        }
+        return ajaxJson;
+    }
+
+
+    /**
+     * 初始化示例录入界面
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/exampleInfoInit")
+    public String exampleInfoInit(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        String serviceId = request.getParameter("serviceId");
+        String version = request.getParameter("version");
+        if (StringUtil.isBlank(serviceId) || StringUtil.isBlank(version)){
+            throw new BusinessException("初始化示例录入界面异常，服务ID或版本号为空！");
+        }
+
+
+        return "aip_document_deploy3";
     }
 }

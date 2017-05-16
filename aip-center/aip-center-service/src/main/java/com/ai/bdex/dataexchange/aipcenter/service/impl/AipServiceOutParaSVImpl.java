@@ -56,7 +56,7 @@ public class AipServiceOutParaSVImpl implements IAipServiceOutParaSV{
 
 	@Override
 	public void updateOutParaByServiceIdAndVersion(AipServiceOutParaDTO aipServiceOutParaDTO) throws Exception {
-		if (aipServiceOutParaDTO == null || StringUtil.isBlank(aipServiceOutParaDTO.getServiceId())){
+		if (aipServiceOutParaDTO == null || StringUtil.isBlank(aipServiceOutParaDTO.getServiceId()) || StringUtil.isBlank(aipServiceOutParaDTO.getVersion())){
 			throw new BusinessException("更新aip服务出参列表异常，入参为空");
 		}
 		AipServiceOutParaExample example = new AipServiceOutParaExample();

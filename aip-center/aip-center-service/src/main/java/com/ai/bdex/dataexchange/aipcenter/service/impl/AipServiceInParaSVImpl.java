@@ -54,7 +54,7 @@ public class AipServiceInParaSVImpl implements IAipServiceInParaSV{
 
 	@Override
 	public void updateInParaByServiceIdAndVersion(AipServiceInParaDTO aipServiceInParaDTO) throws Exception {
-		if (aipServiceInParaDTO == null || StringUtil.isBlank(aipServiceInParaDTO.getServiceId())){
+		if (aipServiceInParaDTO == null || StringUtil.isBlank(aipServiceInParaDTO.getServiceId()) || StringUtil.isBlank(aipServiceInParaDTO.getVersion())){
 			throw new BusinessException("更新aip服务入参列表异常，入参为空");
 		}
 		AipServiceInParaExample example = new AipServiceInParaExample();

@@ -39,7 +39,11 @@ function submitInfo(){
         async:false,
         success:function (jsonObj) {
             if(jsonObj.success){
-                WEB.msg.info("提示","保存成功！");
+                WEB.msg.info("提示","保存成功！",function () {
+                    if (params.serviceId == ""){
+                        window.location.href = basePath + "/aipEntry/paraInfoInit?"+jsonObj.msg;
+                    }
+                });
             }else{
                 WEB.msg.info("提示",jsonObj.msg);
             }

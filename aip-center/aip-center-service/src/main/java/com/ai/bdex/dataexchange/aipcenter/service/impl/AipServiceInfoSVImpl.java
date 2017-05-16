@@ -128,7 +128,7 @@ public class AipServiceInfoSVImpl implements IAipServiceInfoSV{
 		}
 		AipServiceInfoExample example = new AipServiceInfoExample();
 		AipServiceInfoExample.Criteria criteria = example.createCriteria();
-		criteria.andServiceIdEqualTo(aipServiceInfoReqDTO.getpServiceId());
+		criteria.andServiceIdEqualTo(aipServiceInfoReqDTO.getServiceId());
 		AipServiceInfo aipServiceInfo = new AipServiceInfo();
 		String notCopy = "serviceId,version";
 		ObjectCopyUtil.copyObjValue(aipServiceInfoReqDTO,aipServiceInfo,notCopy,false);

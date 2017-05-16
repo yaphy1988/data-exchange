@@ -1,11 +1,11 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.impl;
 
+import com.ai.bdex.dataexchange.aipcenter.dao.model.AipServiceErrorInfo;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipServiceInPara;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipServiceOutPara;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInParaDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoReqDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceOutParaDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.*;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceManagerRSV;
+import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipServiceErrorInfoSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipServiceInParaSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipServiceInfoSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipServiceOutParaSV;
@@ -35,6 +35,8 @@ public class AipServiceManagerRSVImpl implements IAipServiceManagerRSV {
     private IAipServiceInParaSV iAipServiceInParaSV;
     @Autowired
     private IAipServiceOutParaSV iAipServiceOutParaSV;
+    @Autowired
+    private IAipServiceErrorInfoSV iAipServiceErrorInfoSV;
 
 
     @Override
@@ -54,7 +56,7 @@ public class AipServiceManagerRSVImpl implements IAipServiceManagerRSV {
 
     @Override
     public void updateAipServiceByServiceId(AipServiceInfoReqDTO aipServiceInfoReqDTO) throws Exception {
-        if (aipServiceInfoReqDTO==null || !StringUtil.isBlank(aipServiceInfoReqDTO.getServiceId())){
+        if (aipServiceInfoReqDTO==null || StringUtil.isBlank(aipServiceInfoReqDTO.getServiceId())){
             throw new BusinessException("更新aip服务基本信息异常，入参为空");
         }
         try {
@@ -82,7 +84,7 @@ public class AipServiceManagerRSVImpl implements IAipServiceManagerRSV {
 
     @Override
     public void updateInParaByServiceIdAndVersion(AipServiceInParaDTO aipServiceInParaDTO) throws Exception {
-        if (aipServiceInParaDTO==null || aipServiceInParaDTO.getServiceId()==null){
+        if (aipServiceInParaDTO==null || StringUtil.isBlank(aipServiceInParaDTO.getServiceId()) ||  StringUtil.isBlank(aipServiceInParaDTO.getVersion())){
             throw new BusinessException("更新aip入参信息列表异常，入参为空");
         }
         try{
@@ -110,7 +112,7 @@ public class AipServiceManagerRSVImpl implements IAipServiceManagerRSV {
 
     @Override
     public void updateOutParaByServiceIdAndVersion(AipServiceOutParaDTO aipServiceOutParaDTO) throws Exception {
-        if (aipServiceOutParaDTO==null || aipServiceOutParaDTO.getServiceId()==null){
+        if (aipServiceOutParaDTO==null || StringUtil.isBlank(aipServiceOutParaDTO.getServiceId()) || StringUtil.isBlank(aipServiceOutParaDTO.getVersion())){
             throw new BusinessException("更新aip出参信息列表异常，入参为空");
         }
         try{
@@ -162,5 +164,52 @@ public class AipServiceManagerRSVImpl implements IAipServiceManagerRSV {
             log.error("查询aip出参信息列表异常：",e);
         }
         return aipServiceOutParaDTOList;
+    }
+
+    @Override
+    public List<AipServiceErrorInfoDTO> queryServiceErrorInfoList(String serviceId, String version) throws Exception {
+        if (StringUtil.isBlank(serviceId) || StringUtil.isBlank(version)){
+            throw  new BusinessException("查询aip服务错误代码信息列表异常，入参为空");
+        }
+        List<AipServiceErrorInfoDTO> aipServiceErrorInfoDTOList = new ArrayList<AipServiceErrorInfoDTO>();
+        try {
+            List<AipServiceErrorInfo> list = iAipServiceErrorInfoSV.getbeans(serviceId, version);
+            if (!CollectionUtil.isEmpty(list)){
+                for (AipServiceErrorInfo aipServiceErrorInfo : list){
+                    AipServiceErrorInfoDTO aipServiceErrorInfoDTO = new AipServiceErrorInfoDTO();
+                    ObjectCopyUtil.copyObjValue(aipServiceErrorInfo,aipServiceErrorInfoDTO,null,false);
+                    aipServiceErrorInfoDTOList.add(aipServiceErrorInfoDTO);
+                }
+            }
+        }catch (Exception e){
+            log.error("查询aip服务错误代码信息列表异常：",e);
+        }
+        return aipServiceErrorInfoDTOList;
+    }
+
+    @Override
+    public String insertErrorInfoBatch(List<AipServiceErrorInfoReqDTO> aipServiceErrorInfoReqDTOList) throws Exception {
+        if (CollectionUtil.isEmpty(aipServiceErrorInfoReqDTOList)){
+            throw new BusinessException("批量插入aip服务错误代码信息异常，入参为空！");
+        }
+        String returnId = "";
+        try{
+            returnId = iAipServiceErrorInfoSV.insertErrorInfoBatch(aipServiceErrorInfoReqDTOList);
+        }catch (Exception e){
+            log.error("批量插入aip服务错误代码信息异常：",e);
+        }
+        return returnId;
+    }
+
+    @Override
+    public void updateErrorInfoByServiceIdAndVersion(AipServiceErrorInfoReqDTO aipServiceErrorInfoReqDTO) throws Exception {
+        if (aipServiceErrorInfoReqDTO == null || StringUtil.isBlank(aipServiceErrorInfoReqDTO.getServiceId()) || StringUtil.isBlank(aipServiceErrorInfoReqDTO.getVersion())){
+            throw new BusinessException("更新aip服务错误代码信息异常，入参为空");
+        }
+        try{
+            iAipServiceErrorInfoSV.updateErrorInfoByServiceIdAndVersion(aipServiceErrorInfoReqDTO);
+        }catch (Exception e){
+            log.error("更新aip服务错误代码信息异常：",e);
+        }
     }
 }
