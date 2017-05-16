@@ -153,19 +153,51 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
         Date now = new Date();
         DataAccountExample dataAccountExample = new DataAccountExample();
 
-        //查找次数类型账户，次数类型账户都是有有效期的，且具体到特定的服务编码
-        DataAccountExample.Criteria criteria1 = dataAccountExample.createCriteria();
-        criteria1.andUserIdEqualTo(consumeDTO.getUserId());
-        criteria1.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_VALID);
-        criteria1.andServiceIdEqualTo(consumeDTO.getRealServiceId());
-        criteria1.andStartDateLessThanOrEqualTo(now);
-        criteria1.andEndDateGreaterThanOrEqualTo(now);
+        //获取固定套餐，有指定有效期的数据
+        DataAccountExample.Criteria fixValidCriteria = dataAccountExample.createCriteria();
+        fixValidCriteria.andUserIdEqualTo(consumeDTO.getUserId());
+        fixValidCriteria.andPackageTypeEqualTo(Constants.Bill.PACKAGE_TYPE_FIX);
+        fixValidCriteria.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_VALID);
+        fixValidCriteria.andServiceIdEqualTo(consumeDTO.getRealServiceId());
+        fixValidCriteria.andStartDateLessThanOrEqualTo(now);
+        fixValidCriteria.andEndDateGreaterThanOrEqualTo(now);
 
-        //查找余额类型账户，余额类型账户是没有有效期的，且对所有接口有效
-        DataAccountExample.Criteria criteria2 = dataAccountExample.createCriteria();
-        criteria2.andUserIdEqualTo(consumeDTO.getUserId());
-        criteria2.andDataAcctTypeEqualTo(Constants.Bill.DATA_ACCT_TYPE_MONEY);
-        criteria2.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_PERMANENT);
+        //获取固定套餐，永久有效的数据
+        DataAccountExample.Criteria fixPermanentCriteria = dataAccountExample.createCriteria();
+        fixPermanentCriteria.andUserIdEqualTo(consumeDTO.getUserId());
+        fixPermanentCriteria.andPackageTypeEqualTo(Constants.Bill.PACKAGE_TYPE_FIX);
+        fixPermanentCriteria.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_PERMANENT);
+        fixPermanentCriteria.andServiceIdEqualTo(consumeDTO.getRealServiceId());
+
+        //获取自定义套餐，有指定有效期的数据
+        DataAccountExample.Criteria customValidCriteria = dataAccountExample.createCriteria();
+        customValidCriteria.andUserIdEqualTo(consumeDTO.getUserId());
+        customValidCriteria.andPackageTypeEqualTo(Constants.Bill.PACKAGE_TYPE_CUSTOM);
+        customValidCriteria.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_VALID);
+        customValidCriteria.andServiceIdEqualTo(consumeDTO.getRealServiceId());
+        customValidCriteria.andStartDateLessThanOrEqualTo(now);
+        customValidCriteria.andEndDateGreaterThanOrEqualTo(now);
+
+        //获取自定义套餐，永久有效的数据
+        DataAccountExample.Criteria customPermanentCriteria = dataAccountExample.createCriteria();
+        customPermanentCriteria.andUserIdEqualTo(consumeDTO.getUserId());
+        customPermanentCriteria.andPackageTypeEqualTo(Constants.Bill.PACKAGE_TYPE_CUSTOM);
+        customPermanentCriteria.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_PERMANENT);
+        customPermanentCriteria.andServiceIdEqualTo(consumeDTO.getRealServiceId());
+
+        //获取跨类套餐，有指定有效期的数据
+        DataAccountExample.Criteria mixValidCriteria = dataAccountExample.createCriteria();
+        mixValidCriteria.andUserIdEqualTo(consumeDTO.getUserId());
+        mixValidCriteria.andPackageTypeEqualTo(Constants.Bill.PACKAGE_TYPE_CUSTOM);
+        mixValidCriteria.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_VALID);
+        mixValidCriteria.andStartDateLessThanOrEqualTo(now);
+        mixValidCriteria.andEndDateGreaterThanOrEqualTo(now);
+
+        //获取跨类套餐，永久有效的数据
+        DataAccountExample.Criteria mixtomPermanentCriteria = dataAccountExample.createCriteria();
+        mixtomPermanentCriteria.andUserIdEqualTo(consumeDTO.getUserId());
+        mixtomPermanentCriteria.andPackageTypeEqualTo(Constants.Bill.PACKAGE_TYPE_CUSTOM);
+        mixtomPermanentCriteria.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_PERMANENT);
 
         //把次数账户排在前面，相同有效账户则按创建时间排序
         dataAccountExample.setOrderByClause("period_type asc,end_date");
