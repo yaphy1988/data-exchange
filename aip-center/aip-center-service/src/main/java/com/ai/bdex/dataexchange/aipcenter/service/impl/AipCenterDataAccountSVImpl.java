@@ -88,20 +88,30 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         DataAccount dataAccount = getDefaultNewDataAccount();
         dataAccount.setUserId(rechargeDTO.getRechargeUserId());
         dataAccount.setServiceId(rechargeDTO.getServiceId());
-        dataAccount.setDataAcctType(rechargeDTO.getRechargeType());
         dataAccount.setPeriodType(rechargeDTO.getPeriodType());
         dataAccount.setCreateStaff(rechargeDTO.getCurrentUserId());
+        dataAccount.setPackageType(rechargeDTO.getPackageType());
 
         dataAccount.setCreateTime(new Date());
 
-        if(Constants.Bill.RECHARGE_TYPE_NUM.equals(rechargeDTO.getRechargeType())){
-            //充值类型为次数
+        if(Constants.Bill.PACKAGE_TYPE_FIX.equals(dataAccount.getPackageType())){
+            //固定套餐是基于次数的
             dataAccount.setTotalNum(rechargeDTO.getTotalNum());
             dataAccount.setLeftNum(rechargeDTO.getTotalNum());
-        }else{
-            //充值类型为金额，rechargeDTO中的单位是分，DataAccount单位是厘，要乘以10
+            dataAccount.setDataAcctType(Constants.Bill.DATA_ACCT_TYPE_NUM);
+        }else if(Constants.Bill.PACKAGE_TYPE_CUSTOM.equals(dataAccount.getPackageType())){
+            //自定义套餐是基于次数的
+            dataAccount.setTotalNum(rechargeDTO.getTotalNum());
+            dataAccount.setLeftNum(rechargeDTO.getTotalNum());
+            dataAccount.setDataAcctType(Constants.Bill.DATA_ACCT_TYPE_NUM);
+        }else if(Constants.Bill.PACKAGE_TYPE_MIX.equals(dataAccount.getPackageType())){
+            //跨类套餐是基于金额的，rechargeDTO中的单位是分，DataAccount单位是厘，要乘以10
             dataAccount.setTotalMoney(rechargeDTO.getTotalMoney()*10);
             dataAccount.setLeftMoney(rechargeDTO.getTotalMoney()*10);
+            dataAccount.setDataAcctType(Constants.Bill.DATA_ACCT_TYPE_MONEY);
+        }else {
+            logger.error("不支持的套餐类型packageType="+dataAccount.getPackageType());
+            throw new BusinessException("不支持的套餐类型packageType="+dataAccount.getPackageType());
         }
 
         //有有效期类型的账户，需设置生效开始时间和生效结束时间
@@ -117,7 +127,7 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         dataAccountHis = dataAccount;
 
         //保存到历史记录表
-        saveDataAccountHis(dataAccountHis,"用户下单");
+        saveDataAccountHis(dataAccountHis,"创建数据账户");
 
         return dataAccount.getDataAcctId();
     }

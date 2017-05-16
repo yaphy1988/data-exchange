@@ -158,6 +158,11 @@ public class RechargeSVImpl implements IRechargeSV {
 
     }
 
+    /**
+     * 参数合法性检查
+     * @param rechargeDTO
+     * @throws BusinessException
+     */
     private void checkRecharge(RechargeReqDTO rechargeDTO) throws BusinessException{
         if(rechargeDTO == null){
             logger.error("入参对象为空!");
@@ -167,23 +172,26 @@ public class RechargeSVImpl implements IRechargeSV {
             logger.error("用户id不能为空!");
             throw new BusinessException("用户id不能为空!");
         }
-        if(StringUtil.isBlank(rechargeDTO.getRechargeType())){
-            logger.error("充值类型不能为空!");
-            throw new BusinessException("充值类型不能为空!");
+        if(Constants.Bill.PACKAGE_TYPE_FIX.equals(rechargeDTO.getPackageType())){
+            if(rechargeDTO.getTotalNum() == null || rechargeDTO.getTotalNum() <= 0){
+                logger.error("固定套餐,totalNum必须大于0!");
+                throw new BusinessException("固定套餐,totalNum必须大于0!");
+            }
+        }else if(Constants.Bill.PACKAGE_TYPE_CUSTOM.equals(rechargeDTO.getPackageType())){
+            if(rechargeDTO.getTotalNum() == null || rechargeDTO.getTotalNum() <= 0){
+                logger.error("自定义套餐,totalNum必须大于0!");
+                throw new BusinessException("自定义套餐,totalNum必须大于0!");
+            }
+        }else if(Constants.Bill.PACKAGE_TYPE_MIX.equals(rechargeDTO.getRechargeType())){
+            if(rechargeDTO.getTotalMoney() == null || rechargeDTO.getTotalMoney() <= 0){
+                logger.error("跨类套餐,totalMoney必须大于0!");
+                throw new BusinessException("跨类套餐,totalMoney必须大于0!");
+            }
+        }else {
+            logger.error("无法识别的套餐类型packageType="+rechargeDTO.getPackageType());
+            throw new BusinessException("无法识别的有效期类型periodType="+rechargeDTO.getPeriodType());
         }
-        if(Constants.Bill.RECHARGE_TYPE_NUM.equals(rechargeDTO.getRechargeType())&&(rechargeDTO.getTotalNum() == null || rechargeDTO.getTotalNum() <= 0)){
-            logger.error("充值类型为次数时,totalNum必须大于0!");
-            throw new BusinessException("充值类型为次数时,totalNum必须大于0!");
-        }
-        if(Constants.Bill.RECHARGE_TYPE_MONEY.equals(rechargeDTO.getRechargeType())&&(rechargeDTO.getTotalMoney() == null || rechargeDTO.getTotalMoney() <= 0)){
-            logger.error("充值类型为金额时,totalMoney必须大于0!");
-            throw new BusinessException("充值类型为金额时,totalMoney必须大于0!");
-        }
-        if(StringUtil.isBlank(rechargeDTO.getPeriodType())){
-            logger.error("有效期类型不能为空!");
-            throw new BusinessException("有效期类型不能为空!");
-        }
-        if(rechargeDTO.getPeriodType().equals(Constants.Bill.DATA_ACCT_PERIOD_VALID)){
+        if(Constants.Bill.DATA_ACCT_PERIOD_VALID.equals(rechargeDTO.getPeriodType())){
             if(rechargeDTO.getStartDate() == null){
                 logger.error("非永久有效类型，生效开始日期不能为空!");
                 throw new BusinessException("非永久有效类型，生效开始日期不能为空!");
@@ -196,6 +204,13 @@ public class RechargeSVImpl implements IRechargeSV {
                 logger.error("非永久有效类型，服务编码不能为空!");
                 throw new BusinessException("非永久有效类型，服务编码不能为空!");
             }
+        }else if(Constants.Bill.DATA_ACCT_PERIOD_PERMANENT.equals(rechargeDTO.getPeriodType())){
+            if(rechargeDTO.getEndDate() != null){
+                logger.error("永久有效，结束日期应为null!");
+            }
+        }else{
+            logger.error("无法识别的有效期类型periodType="+rechargeDTO.getPeriodType());
+            throw new BusinessException("无法识别的有效期类型periodType="+rechargeDTO.getPeriodType());
         }
         if(StringUtil.isBlank(rechargeDTO.getSubOrder())){
             logger.error("子订单编码不能为空!");
