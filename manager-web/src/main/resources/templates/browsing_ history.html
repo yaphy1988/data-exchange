@@ -113,13 +113,13 @@
 	                            </thead>
 	                            <tbody >
 	                              <tr th:if="${pageInfo} and ${pageInfo.result} and ${#lists.size(pageInfo.result) gt 0}" th:each="footPrint,footPrintStat : ${pageInfo.result}">
-	                                <td><img src="" width="80" height="80" th:src="${footPrint.gdsPic}"></td>
+	                                <td><img src="" width="80" height="80" th:src="${#tools.genImageUrl(footPrint.gdsPic,'200x200')}"></td>
 	                                <td th:text="${footPrint.gdsName}">全部全部全部全部全部全部全部</td>
 	                                <td th:text="${footPrint.catFirstName}">API</td>
 	                                <td th:text="${#dates.format(footPrint.createTime, 'yyyy-MM-dd  HH:mm:ss')}">2017-04-10 12:25:23</td>
 	                                <td>
 	                                    <p class="pop-link">
-	                                        <a th:if="${footPrint.catFirst==1}" href="javascript:void(0)" th:href="@{'/goods/details/'+${footPrint.id}+'-'+${footPrint.skuId}}">购买</a>
+	                                        <a href="javascript:void(0)" th:if="${footPrint.catFirst}=='1'" target="_blank" th:href="@{'/order/gdshopcart?gdsId='+${footPrint.gdsId}+'&skuId='+${footPrint.skuId}}">购买</a>
 	                                        <a href="javascript:void(0)" th:onclick="|MyFavorite.deleteUserFootPrint(${footPrint.fpId})|">删除</a>
 	                                    </p>
 	                                </td>

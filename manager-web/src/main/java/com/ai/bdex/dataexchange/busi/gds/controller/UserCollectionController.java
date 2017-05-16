@@ -14,14 +14,11 @@ import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserCollectionReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserCollectionRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IUserCollectionRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
-import com.ai.bdex.dataexchange.util.StringUtil;
-import com.ai.paas.util.ImageUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
 @RequestMapping(value="/usercollection")
@@ -59,18 +56,14 @@ public class UserCollectionController {
             UserCollectionReqDTO userCollectionReqDTO = new UserCollectionReqDTO();
             ObjectCopyUtil.copyObjValue(userCollectionVO, userCollectionReqDTO, null, false);
             userCollectionReqDTO.setPageSize(10);
-            PageResponseDTO<UserCollectionRespDTO> pageInfo = iUserCollectionRSV.queryUserCollectionPage(userCollectionReqDTO);
+            userCollectionReqDTO.setStatus("1");
+            PageResponseDTO<UserCollectionRespDTO> pageInfo = iUserCollectionRSV.queryUserCollectionPageExtends(userCollectionReqDTO);
             if(pageInfo != null&& pageInfo.getResult() != null && pageInfo.getResult().size() >=1){
                 List<UserCollectionRespDTO> list = pageInfo.getResult();
                 GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
                 for(UserCollectionRespDTO userCollectionRespDTO : list){
                     gdsInfoReqDTO.setGdsId(userCollectionRespDTO.getGdsId());
                     try {
-                        GdsInfoRespDTO gdsInfo = iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO);
-                        userCollectionRespDTO.setGdsName(gdsInfo.getGdsName());
-                        if(StringUtil.isNotBlank(gdsInfo.getGdsPic())){
-                            userCollectionRespDTO.setGdsPic(ImageUtil.getImageUrl(gdsInfo.getGdsPic() + "_200x200"));
-                        }
                         userCollectionRespDTO.setCatFirstName(parseFirstCatName(userCollectionRespDTO.getCatFirst()));
                     } catch (Exception e) {
                         logger.error("获取商品信息失败", e);

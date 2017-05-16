@@ -32,12 +32,29 @@ public class UserCollectionRespDTO extends BaseResponseDTO{
 
     private Date updateTime;
     
-    private String gdsName;
-    
-    private String gdsPic;
-    
     private String catFirstName;
-
+    
+    /**
+     * 商品名称
+     */
+    private String gdsName;
+    /**
+     * 商品图片uuid
+     */
+    private String gdsPic;
+    /**
+     * 商品描述
+     */
+    private String funIntroduction;
+    /**
+     * 商品副标题
+     */
+    private String gdsSubtitle;
+    /**
+     * 商品狀態
+     */
+    private String gdsStatus;
+    
     public Integer getColId() {
         return colId;
     }
@@ -140,6 +157,34 @@ public class UserCollectionRespDTO extends BaseResponseDTO{
 
     public void setCatFirstName(String catFirstName) {
         this.catFirstName = catFirstName;
+    }
+
+    public String getFunIntroduction() {
+        return funIntroduction;
+    }
+
+    public void setFunIntroduction(String funIntroduction) {
+        this.funIntroduction = funIntroduction;
+    }
+
+    public String getGdsSubtitle() {
+        return gdsSubtitle;
+    }
+
+    public void setGdsSubtitle(String gdsSubtitle) {
+        this.gdsSubtitle = gdsSubtitle;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public String getGdsStatus() {
+        return gdsStatus;
+    }
+
+    public void setGdsStatus(String gdsStatus) {
+        this.gdsStatus = gdsStatus;
     }
     
 }

@@ -13,9 +13,12 @@ import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.tradecenter.dao.mapper.UserCollectionExtendsMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.UserCollectionMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.UserCollection;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.UserCollectionExample;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.UserCollectionExtends;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.UserCollectionExtendsExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserCollectionReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserCollectionRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IUserCollectionSV;
@@ -32,6 +35,8 @@ public class UserCollectionSVImpl implements IUserCollectionSV{
     private static Logger logger = LoggerFactory.getLogger(UserCollectionSVImpl.class.getName());
     @Resource
     private UserCollectionMapper userCollectionMapper;
+    @Resource
+    private UserCollectionExtendsMapper userCollectionExtendsMapper;
     
     @Override
     public List<UserCollectionRespDTO> queryUserCollectionList(
@@ -177,6 +182,58 @@ public class UserCollectionSVImpl implements IUserCollectionSV{
         }
         if(!CollectionUtil.isEmpty(userCollectionReqDTO.getGdsIds())){
             criteria.andGdsIdIn(userCollectionReqDTO.getGdsIds());
+        }
+        
+    }
+
+    @Override
+    public PageResponseDTO<UserCollectionRespDTO> queryUserCollectionPageExtends(
+            UserCollectionReqDTO userCollectionReqDTO) throws BusinessException {
+        if(userCollectionReqDTO == null){
+            throw new BusinessException("入参userCollectionReqDTO不能为null");
+        }
+        int page = userCollectionReqDTO.getPageNo();
+        int rows = userCollectionReqDTO.getPageSize();
+        //执行查询第一个mybatis查询方法，会被进行分页
+        UserCollectionExtendsExample example = new UserCollectionExtendsExample();
+        UserCollectionExtendsExample.Criteria criteria = example.createCriteria();
+        initCriteria(criteria,userCollectionReqDTO);
+        example.setOrderByClause("create_time desc");
+        //开启分页查询，使用mybatis-PageHelper分页插件，第三个条件是排序子句
+        PageHelper.startPage(page, rows);
+        List<UserCollectionExtends> userCollections = userCollectionExtendsMapper.selectByExampleExtends(example);
+        //使用PageInfo对结果进行包装
+        PageInfo pageInfo = new PageInfo(userCollections);
+        logger.info("查询完成，总数：" + pageInfo.getTotal() + "当前页内记录数：" + userCollections.size());
+        //按照返回数据结构封装分页数据，本项目中分页统一返回PageResponseDTO。入参pageInfo，返回的数据传输对象DTO的class
+        PageResponseDTO<UserCollectionRespDTO> resultDTO = PageResponseFactory.genPageResponse(pageInfo,UserCollectionRespDTO.class);
+        return resultDTO;
+    }
+    
+    private void initCriteria(UserCollectionExtendsExample.Criteria criteria, UserCollectionReqDTO userCollectionReqDTO){
+        if(userCollectionReqDTO.getColId()!=null && userCollectionReqDTO.getColId().intValue()>0){
+            criteria.andColIdEqualTo(userCollectionReqDTO.getColId());
+        }
+        if(userCollectionReqDTO.getGdsId()!=null && userCollectionReqDTO.getGdsId().intValue()>0){
+            criteria.andGdsIdEqualTo(userCollectionReqDTO.getGdsId());
+        }
+        if(userCollectionReqDTO.getSkuId()!=null && userCollectionReqDTO.getSkuId().intValue()>0){
+            criteria.andSkuIdEqualTo(userCollectionReqDTO.getSkuId());
+        }
+        if (userCollectionReqDTO.getCatFirst()!=null && userCollectionReqDTO.getCatFirst().intValue()>0){
+            criteria.andCatFirstEqualTo(userCollectionReqDTO.getCatFirst());
+        }
+        if (StringUtil.isNotBlank(userCollectionReqDTO.getStaffId())){
+            criteria.andStaffIdEqualTo(userCollectionReqDTO.getStaffId());
+        }
+        if (!StringUtil.isBlank(userCollectionReqDTO.getStatus())){
+            criteria.andStatusEqualTo(userCollectionReqDTO.getStatus());
+        }
+        if(!CollectionUtil.isEmpty(userCollectionReqDTO.getGdsIds())){
+            criteria.andGdsIdIn(userCollectionReqDTO.getGdsIds());
+        }
+        if(StringUtil.isNotBlank(userCollectionReqDTO.getGdsName())){
+            criteria.andGdsNameLike("%"+userCollectionReqDTO.getGdsName()+"%");
         }
         
     }

@@ -92,5 +92,12 @@ public interface IUserCollectionRSV {
      * @return
      */
     public PageResponseDTO<UserCollectionRespDTO> queryUserCollectionPage(UserCollectionReqDTO userCollectionReqDTO) throws BusinessException;
+    
+    /**
+    *   这里关联了表t_gds_info，为了取gdsName,gdsSubtitle,gdsPic,funIntroduction,status 。主要目的是用gdsName 来关联查询的哦
+    * @param gdsInfoReqDTO
+    * @return
+    */
+   public PageResponseDTO<UserCollectionRespDTO> queryUserCollectionPageExtends(UserCollectionReqDTO userCollectionReqDTO) throws BusinessException;
 }
 

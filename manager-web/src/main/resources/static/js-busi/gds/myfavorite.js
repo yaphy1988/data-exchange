@@ -7,7 +7,7 @@ $(function(){
 	$("#searchBtn").click(function(){
 		var param = {
 			pageNo : 1,
-			gdsId : $.trim($("#gdsId").val())
+			gdsName : $.trim($("#gdsName").val())
 		}
 		MyFavorite.gridUserCollection(param);
 	});
@@ -55,7 +55,7 @@ var MyFavorite = {
 	    });
 	},
 	deleteUserCollect : function(colId){
-		WEB.msg.confirm("提示", "确定要删除当前分类和该分类下的所有分类吗？", function(r) {
+		WEB.msg.confirm("提示", "确定要删除当前收藏的商品吗？", function(r) {
 			$.ajax({
 		        url:WEB_ROOT+"/usercollection/deleteusercollect",
 		        async:true,

@@ -129,5 +129,19 @@ public class UserFootPrintRSVImpl implements IUserFootPrintRSV{
         }
     }
 
+    @Override
+    public PageResponseDTO<UserFootPrintRespDTO> queryUserFootPrintPageExtends(
+            UserFootPrintReqDTO userFootPrintReqDTO) throws BusinessException {
+        if(userFootPrintReqDTO == null){
+            throw new BusinessException("入参userFootPrintReqDTO不能为null");
+        }
+        try {
+            return  iUserFootPrintSV.queryUserFootPrintPageExtends(userFootPrintReqDTO);
+        } catch (Exception e) {
+            logger.error("获取商品浏览历史分页列表失败：",e);
+            throw new BusinessException("获取商品浏览历史分页列表失败："+e.getMessage());
+        }
+    }
+
 }
 

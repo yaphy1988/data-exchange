@@ -13,15 +13,11 @@ import com.ai.bdex.dataexchange.busi.gds.entity.UserFootPrintVO;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserFootPrintReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserFootPrintRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IUserFootPrintRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
-import com.ai.bdex.dataexchange.util.StringUtil;
-import com.ai.paas.util.ImageUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
 @RequestMapping(value="/userfootprint")
@@ -59,18 +55,11 @@ public class UserFootPrintController {
             UserFootPrintReqDTO userFootPrintReqDTO = new UserFootPrintReqDTO();
             ObjectCopyUtil.copyObjValue(userFootPrintVO, userFootPrintReqDTO, null, false);
             userFootPrintReqDTO.setPageSize(10);
-            PageResponseDTO<UserFootPrintRespDTO> pageInfo = iUserFootPrintRSV.queryUserFootPrintPage(userFootPrintReqDTO);
+            PageResponseDTO<UserFootPrintRespDTO> pageInfo = iUserFootPrintRSV.queryUserFootPrintPageExtends(userFootPrintReqDTO);
             if(pageInfo != null&& pageInfo.getResult() != null && pageInfo.getResult().size() >=1){
                 List<UserFootPrintRespDTO> list = pageInfo.getResult();
-                GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
                 for(UserFootPrintRespDTO userFootPrintRespDTO : list){
-                    gdsInfoReqDTO.setGdsId(userFootPrintRespDTO.getGdsId());
                     try {
-                        GdsInfoRespDTO gdsInfo = iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO);
-                        userFootPrintRespDTO.setGdsName(gdsInfo.getGdsName());
-                        if(StringUtil.isNotBlank(gdsInfo.getGdsPic())){
-                            userFootPrintRespDTO.setGdsPic(ImageUtil.getImageUrl(gdsInfo.getGdsPic() + "_200x200"));
-                        }
                         userFootPrintRespDTO.setCatFirstName(parseFirstCatName(userFootPrintRespDTO.getCatFirst()));
                     } catch (Exception e) {
                         logger.error("获取商品信息失败", e);

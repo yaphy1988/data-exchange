@@ -82,5 +82,12 @@ public interface IUserFootPrintSV {
      * @return
      */
     public PageResponseDTO<UserFootPrintRespDTO> queryUserFootPrintPage(UserFootPrintReqDTO userFootPrintReqDTO) throws BusinessException;
+    
+    /**
+     *   这个扩展只为了 关联商品表，用gdsname 来查询记录而已。
+     * @param gdsInfoReqDTO
+     * @return
+     */
+    public PageResponseDTO<UserFootPrintRespDTO> queryUserFootPrintPageExtends(UserFootPrintReqDTO userFootPrintReqDTO) throws BusinessException;
 }
 

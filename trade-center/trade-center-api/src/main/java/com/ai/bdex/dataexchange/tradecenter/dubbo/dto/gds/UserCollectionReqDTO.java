@@ -47,6 +47,10 @@ public class UserCollectionReqDTO extends BaseInfo{
     * 商品列表id
     */
    private List<Integer> gdsIds;
+   /**
+    * 商品名称
+    */
+   private String gdsName;
 
     public Integer getColId() {
         return colId;
@@ -134,6 +138,14 @@ public class UserCollectionReqDTO extends BaseInfo{
 
     public void setGdsIds(List<Integer> gdsIds) {
         this.gdsIds = gdsIds;
+    }
+
+    public String getGdsName() {
+        return gdsName;
+    }
+
+    public void setGdsName(String gdsName) {
+        this.gdsName = gdsName;
     }
    
 }

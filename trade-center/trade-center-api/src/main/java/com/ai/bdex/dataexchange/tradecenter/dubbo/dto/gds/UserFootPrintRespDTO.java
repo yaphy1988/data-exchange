@@ -99,9 +99,26 @@ public class UserFootPrintRespDTO extends BaseResponseDTO{
     */
     private Date updateTime;
     
+    /**
+     * 商品名称
+     */
     private String gdsName;
-    
+    /**
+     * 商品图片uuid
+     */
     private String gdsPic;
+    /**
+     * 商品描述
+     */
+    private String funIntroduction;
+    /**
+     * 商品副标题
+     */
+    private String gdsSubtitle;
+    /**
+     * 商品狀態
+     */
+    private String gdsStatus;
     
     public Integer getFpId() {
         return fpId;
@@ -213,6 +230,34 @@ public class UserFootPrintRespDTO extends BaseResponseDTO{
 
     public void setCatFirstName(String catFirstName) {
         this.catFirstName = catFirstName;
+    }
+
+    public String getFunIntroduction() {
+        return funIntroduction;
+    }
+
+    public void setFunIntroduction(String funIntroduction) {
+        this.funIntroduction = funIntroduction;
+    }
+
+    public String getGdsSubtitle() {
+        return gdsSubtitle;
+    }
+
+    public void setGdsSubtitle(String gdsSubtitle) {
+        this.gdsSubtitle = gdsSubtitle;
+    }
+
+    public String getGdsStatus() {
+        return gdsStatus;
+    }
+
+    public void setGdsStatus(String gdsStatus) {
+        this.gdsStatus = gdsStatus;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
     }
 }
 

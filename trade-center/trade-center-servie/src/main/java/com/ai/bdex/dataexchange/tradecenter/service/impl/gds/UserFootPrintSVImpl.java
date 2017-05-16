@@ -13,9 +13,12 @@ import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.tradecenter.dao.mapper.UserFootPrintExtendsMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.UserFootPrintMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.UserFootPrint;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.UserFootPrintExample;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.UserFootPrintExtends;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.UserFootPrintExtendsExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserFootPrintReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserFootPrintRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IUserFootPrintSV;
@@ -33,6 +36,8 @@ public class UserFootPrintSVImpl implements IUserFootPrintSV{
     
     @Resource
     private UserFootPrintMapper userFootPrintMapper;
+    @Resource
+    private UserFootPrintExtendsMapper userFootPrintExtendsMapper;
     
     @Override
     public List<UserFootPrintRespDTO> queryUserFootPrintList(
@@ -175,6 +180,54 @@ public class UserFootPrintSVImpl implements IUserFootPrintSV{
         }
         if(userFootPrintReqDTO.getSeeNum()!=null && userFootPrintReqDTO.getSeeNum().intValue()>0){
             criteria.andSeeNumEqualTo(userFootPrintReqDTO.getSeeNum());
+        }
+    }
+
+    @Override
+    public PageResponseDTO<UserFootPrintRespDTO> queryUserFootPrintPageExtends(
+            UserFootPrintReqDTO userFootPrintReqDTO) throws BusinessException {
+        if(userFootPrintReqDTO == null){
+            throw new BusinessException("入参userFootPrintReqDTO不能为null");
+        }
+        int page = userFootPrintReqDTO.getPageNo();
+        int rows = userFootPrintReqDTO.getPageSize();
+        //执行查询第一个mybatis查询方法，会被进行分页
+        UserFootPrintExtendsExample example = new UserFootPrintExtendsExample();
+        UserFootPrintExtendsExample.Criteria criteria = example.createCriteria();
+        initCriteria(criteria,userFootPrintReqDTO);
+        example.setOrderByClause("create_time desc");
+        //开启分页查询，使用mybatis-PageHelper分页插件，第三个条件是排序子句
+        PageHelper.startPage(page, rows);
+        List<UserFootPrintExtends> userFootPrints = userFootPrintExtendsMapper.selectByExampleExtends(example);
+        //使用PageInfo对结果进行包装
+        PageInfo pageInfo = new PageInfo(userFootPrints);
+        logger.info("查询完成，总数：" + pageInfo.getTotal() + "当前页内记录数：" + userFootPrints.size());
+        //按照返回数据结构封装分页数据，本项目中分页统一返回PageResponseDTO。入参pageInfo，返回的数据传输对象DTO的class
+        PageResponseDTO<UserFootPrintRespDTO> resultDTO = PageResponseFactory.genPageResponse(pageInfo,UserFootPrintRespDTO.class);
+        return resultDTO;
+    }
+    
+    private void initCriteria(UserFootPrintExtendsExample.Criteria criteria, UserFootPrintReqDTO userFootPrintReqDTO){
+        if(userFootPrintReqDTO.getFpId()!=null && userFootPrintReqDTO.getFpId().intValue()>0){
+            criteria.andFpIdEqualTo(userFootPrintReqDTO.getFpId());
+        }
+        if(userFootPrintReqDTO.getGdsId()!=null && userFootPrintReqDTO.getGdsId().intValue()>0){
+            criteria.andGdsIdEqualTo(userFootPrintReqDTO.getGdsId());
+        }
+        if (userFootPrintReqDTO.getCatFirst()!=null && userFootPrintReqDTO.getCatFirst().intValue()>0){
+            criteria.andCatFirstEqualTo(userFootPrintReqDTO.getCatFirst());
+        }
+        if (StringUtil.isNotBlank(userFootPrintReqDTO.getStaffId())){
+            criteria.andStaffIdEqualTo(userFootPrintReqDTO.getStaffId());
+        }
+        if (!StringUtil.isBlank(userFootPrintReqDTO.getStatus())){
+            criteria.andStatusEqualTo(userFootPrintReqDTO.getStatus());
+        }
+        if(userFootPrintReqDTO.getSeeNum()!=null && userFootPrintReqDTO.getSeeNum().intValue()>0){
+            criteria.andSeeNumEqualTo(userFootPrintReqDTO.getSeeNum());
+        }
+        if(StringUtil.isNotBlank(userFootPrintReqDTO.getGdsName())){
+            criteria.andGdsNameLike("%"+userFootPrintReqDTO.getGdsName()+"%");
         }
     }
 }

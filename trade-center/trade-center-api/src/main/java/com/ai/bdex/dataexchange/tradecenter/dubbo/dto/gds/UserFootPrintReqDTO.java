@@ -95,6 +95,8 @@ public class UserFootPrintReqDTO extends BaseInfo{
     */
     private Date updateTime;
     
+    private String gdsName;
+    
     public Integer getFpId() {
         return fpId;
     }
@@ -181,6 +183,14 @@ public class UserFootPrintReqDTO extends BaseInfo{
     
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getGdsName() {
+        return gdsName;
+    }
+
+    public void setGdsName(String gdsName) {
+        this.gdsName = gdsName;
     }
 
 }

@@ -54,6 +54,8 @@ public class UserCollectionVO implements Serializable{
    private int pageNo;
    
    private int pageSize;
+   
+   private String gdsName;
 
     public Integer getColId() {
         return colId;
@@ -117,6 +119,14 @@ public class UserCollectionVO implements Serializable{
 
     public void setPageSize(int pageSize) {
         this.pageSize = pageSize;
+    }
+
+    public String getGdsName() {
+        return gdsName;
+    }
+
+    public void setGdsName(String gdsName) {
+        this.gdsName = gdsName;
     }
 
    
