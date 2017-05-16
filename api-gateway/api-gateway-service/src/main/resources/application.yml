@@ -1,4 +1,6 @@
 spring:
+  jps:
+    showsql: true
   dubbo:
     application:
       name: apigateway-dubbo-demo

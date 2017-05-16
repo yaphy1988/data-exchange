@@ -3,6 +3,7 @@ package com.ai.bdex.dataexchange.apigateway;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.DataConsumeDTO;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IApiGatewayDataAccountSV;
 import com.ai.bdex.dataexchange.exception.BusinessException;
+import org.apache.ibatis.logging.LogFactory;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +23,11 @@ public class DataAccountRSVTest {
     public void dataChargeTest() throws BusinessException {
         DataConsumeDTO consumeDTO = new DataConsumeDTO();
         consumeDTO.setUserId("fangyf007");
-        consumeDTO.setRealServiceId("getlocationinterface");
-        consumeDTO.setInvokeSeq("201705120000001");
+        consumeDTO.setRealServiceId("12");
+        consumeDTO.setInvokeSeq("201705120000002");
         consumeDTO.setConsumeNum(1);
         consumeDTO.setConsumeMoney(100);
-       // String result = apiGatewayDataAccountSV.dataCharge(consumeDTO);
-       // System.out.println("result="+result);
+        String result = apiGatewayDataAccountSV.dealDataCharge(consumeDTO);
+        System.out.println("result="+result);
     }
 }

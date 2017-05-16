@@ -9,6 +9,7 @@ import com.ai.bdex.dataexchange.apigateway.dao.model.DataAccount;
 import com.ai.bdex.dataexchange.apigateway.dao.model.DataAccountExample;
 import com.ai.bdex.dataexchange.apigateway.dao.model.DataAccountHis;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.DataConsumeDTO;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.DataConsumeRespDTO;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IApiGatewayDataAccountSV;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.exception.BusinessException;
@@ -16,6 +17,7 @@ import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.ObjectCopyUtil;
 import com.ai.paas.utils.StringUtil;
+import com.alibaba.fastjson.JSON;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,7 +47,9 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
     private ManualDataAccountMapper manualDataAccountMapper;
 
     @Override
-    public String dealDataCharge(DataConsumeDTO consumeDTO) throws BusinessException {
+    public DataConsumeRespDTO dealDataCharge(DataConsumeDTO consumeDTO) throws BusinessException {
+        DataConsumeRespDTO respDTO = new DataConsumeRespDTO();
+        respDTO.setResult(Constants.Bill.CHARGE_RESULE_NA);
         //参数合法性检查
         checkDataConsumeParams(consumeDTO);
 
@@ -53,11 +57,10 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
         List<DataAccount> dataAccountList = queryAvailableDataAccountList(consumeDTO);
         if(CollectionUtil.isEmpty(dataAccountList)){
             logger.info("no available data account for user_id:"+consumeDTO.getUserId()+",service_id:"+consumeDTO.getRealServiceId());
-            return Constants.Bill.CHARGE_RESULE_NA;
+            return respDTO;
         }
 
         DataAccount dataAccountSelected = null;
-        String result = Constants.Bill.CHARGE_RESULE_NA;
         //扣减账户
         for(DataAccount dataAccount : dataAccountList){
             if(Constants.Bill.PACKAGE_TYPE_FIX.equals(dataAccount.getPackageType())){
@@ -65,7 +68,7 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
                 if(dataAccount.getLeftNum()>consumeDTO.getConsumeNum()){
                     if(manualDataAccountMapper.updateByConsumeNum(dataAccount,consumeDTO.getConsumeNum()) > 0){
                         dataAccountSelected = dataAccount;
-                        result = Constants.Bill.CHARGE_RESULE_OK;
+                        respDTO.setResult(Constants.Bill.CHARGE_RESULE_OK);
                         break;
                     }
                 }
@@ -74,7 +77,7 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
                 if(dataAccount.getLeftNum()>consumeDTO.getConsumeNum()){
                     if(manualDataAccountMapper.updateByConsumeNum(dataAccount,consumeDTO.getConsumeNum()) > 0){
                         dataAccountSelected = dataAccount;
-                        result = Constants.Bill.CHARGE_RESULE_OK;
+                        respDTO.setResult(Constants.Bill.CHARGE_RESULE_OK);
                         break;
                     }
                 }
@@ -82,14 +85,14 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
                 //30 跨类套餐基于金额进行扣减
                 if(manualDataAccountMapper.updateByConsumeMoney(dataAccount,consumeDTO.getConsumeMoney()) > 0){
                     dataAccountSelected = dataAccount;
-                    result = Constants.Bill.CHARGE_RESULE_OK;
+                    respDTO.setResult(Constants.Bill.CHARGE_RESULE_OK);
                     break;
                 }
             }
         }
 
 
-        if(Constants.Bill.CHARGE_RESULE_OK.equals(result)){
+        if(Constants.Bill.CHARGE_RESULE_OK.equals(respDTO.getResult())){
             //保存扣减历史
             if(Constants.Bill.DATA_ACCT_TYPE_NUM.equals(dataAccountSelected.getDataAcctType())){
                 dataAccountSelected.setLeftNum(dataAccountSelected.getLeftNum() - consumeDTO.getConsumeNum());
@@ -119,9 +122,14 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
             }
             billDetail.setInvokeSeq(consumeDTO.getInvokeSeq());
             billDetail.setConsumeTime(new Date());
-            billDetailMapper.insertSelective(billDetail);
+            if(billDetailMapper.insertSelective(billDetail)>0){
+                respDTO.setBillId(billDetail.getBillId());
+            }else{
+                logger.error("生成账单失败，账单信息："+ JSON.toJSONString(billDetail));
+                throw new BusinessException("生成账单失败，账单id:"+billDetail.getBillId());
+            }
         }
-        return result;
+        return respDTO;
     }
 
 
