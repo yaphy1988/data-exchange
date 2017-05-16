@@ -115,15 +115,12 @@ public class OrderController {
 		dsSkuReqDTO.setSkuId(skusid);
 		dsSkuReqDTO.setStatus(STATUS_VALID);
 		List<GdsSkuRespDTO>  listGdsSku =new ArrayList<>();
-
-		try { 
+		try {
 			//价格
 			listGdsSku = iGdsSkuRSV.queryGdsSkuList(dsSkuReqDTO);
-
 		} catch (Exception e) {
 		    e.printStackTrace();
 		}   	
-			
 		OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
 		if(!CollectionUtil.isEmpty(listGdsSku) )
 		{
@@ -302,16 +299,11 @@ public class OrderController {
  					gdsInfoRespDTO =  iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO); 
  					if(gdsInfoRespDTO != null)
  					{
- 						/*ordInfoReqDTO.setAipServiceId(Integer.toString(gdsInfoRespDTO.getApiId()));
- 						List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(String.valueOf(gdsInfoRespDTO.getApiId()));
- 						if(!CollectionUtil.isEmpty(apiServiceList))
- 						{
- 							ordInfoReqDTO.setServiceName(apiServiceList.get(0).getServiceName());
- 						}*/
  						ordInfoReqDTO.setCatFirst(gdsInfoRespDTO.getCatFirst());
  						ordInfoReqDTO.setCatId(gdsInfoRespDTO.getCatId());
  					}
 				    ordInfoReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
+                    ordInfoReqDTO.setOrdertype(Constants.Order.ORDER_TYPE_10);
 			    	OrdInfoReqDTO rdInfoReqDTOResp =  iOrderInfoRSV.createOrderInfo(ordInfoReqDTO);
 				    rMap.put("orderid", rdInfoReqDTOResp.getOrderId());
 			    	rMap.put("suborderid", rdInfoReqDTOResp.getSubOrder());

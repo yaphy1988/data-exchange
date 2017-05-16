@@ -52,9 +52,17 @@ public class OrdInfoReqDTO extends BaseInfo{
    	    private Long belanceAllCount;
  	    private String status;
  	    private String serviceName;
-	    private String aipServiceId; 
-	   
-		public String getServiceName() {
+	    private String aipServiceId;
+	    private String ordertype;
+
+	public String getOrdertype() {
+		return ordertype;
+	}
+	public void setOrdertype(String ordertype) {
+		this.serviceName = ordertype;
+	}
+
+	    public String getServiceName() {
 			return serviceName;
 		}
 		public void setServiceName(String serviceName) {

@@ -21,8 +21,11 @@ public interface IOrderInfoRSV {
 	// 我的数据：为我的订单中已经支付成功的数据: 根据API key做唯一值
 	public List<OrdInfoRespDTO> queryAllDataByStaff(OrdInfoRespDTO ordInfo) throws Exception;
 
-	// 订单生成
+	// 固定和自定义订单生成
 	public OrdInfoReqDTO createOrderInfo(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
+	// 订单生成
+	public OrdInfoReqDTO createOrderByallClass(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
+
  	/**
 	 * 分页查询子订单数据
 	 * 

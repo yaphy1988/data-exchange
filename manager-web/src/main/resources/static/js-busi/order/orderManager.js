@@ -36,19 +36,19 @@ function orderChangePay(orderid,suborderid){
 		else{
 			WEB.msg.info("提示",data.ERRORINFO);
 		}
-	};
-	doAjax(url,param,callBack);
-}
+		};
+		doAjax(url,param,callBack);
+	}
 //使订单变为已失效
-function orderManageoffline(orderid,suborderid){
-	var param={orderid:orderid,suborderid:suborderid};
-	var url = basePath+'/orderManage/orderManageoffline';
-	var callBack =function(data){
-		if(data.success){
-			WEB.msg.info("提示","更新成功");
-			orderManagequery(1);
-		}
-		else{
+	function orderManageoffline(orderid,suborderid){
+		var param={orderid:orderid,suborderid:suborderid};
+		var url = basePath+'/orderManage/orderManageoffline';
+		var callBack =function(data){
+			if(data.success){
+				WEB.msg.info("提示","更新成功");
+				orderManagequery(1);
+			}
+			else{
 			WEB.msg.info("提示",data.ERRORINFO);
 		}
 	};
@@ -58,9 +58,62 @@ function doAjax(url,params,callBack){
 	$.ajax({
 		url : url,
 		type : "POST",
-		dataType : "json",
-		async : true,
-		data : params,
-		success : callBack
+dataType : "json",
+	async : true,
+	data : params,
+	success : callBack
 	})
+}
+function changeCreateType(){
+	//10固定套餐订单; 20自定义套餐订单； 30跨类套餐订单//
+	var seleopValue = $("#typeOption").val();
+	if(seleopValue == "10"){
+     //单价，接口次数，总额不能修改
+
+	}
+	//20
+	 if(seleopValue == "20"){
+
+     }
+	if(seleopValue == "20"){
+
+	}
+	//30
+}
+//管理员生成订单
+function createOrderBymaneger(){
+	var gdsid = $("#gdsid").val();
+	var skuid = $("#skuid").val();
+	var staffid =  $("#staffid").val();
+	var skunum =  $("#skunum").val();
+	var ordertype = $("#typeOption").val();
+	var ordermoney = $("#allmoney").val();
+	var inavidate = $("#innavateDate").val();
+	//总额和有效期都是从后台取数
+    // 30
+	/*
+	* gdsid
+	*
+	*
+	* */
+	var param={
+		gdsid:gdsid,
+		skuid:skuid,
+		staffid:staffid,
+		skunum:skunum,
+		ordertype:ordertype,
+		ordermoney:ordermoney,
+		inavidate:inavidate
+	};
+	var url = basePath+'/orderManage/createOrderBymaneger';
+	var callBack =function(data){
+		if(data.success){
+			WEB.msg.info("提示","创建成功");
+			orderManagequery(1);
+		}
+		else{
+			WEB.msg.info("提示",data.ERRORINFO);
+		}
+	};
+	doAjax(url,param,callBack);
 }

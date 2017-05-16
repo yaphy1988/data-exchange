@@ -12,7 +12,10 @@ import javax.servlet.http.HttpSession;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
 import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.util.StaffUtil;
+import com.ai.paas.util.CacheUtil;
 import com.ai.paas.utils.DateUtil;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -127,7 +130,7 @@ public class orderManageController {
 	 * 我的数据-定制服务数据
 	 * 
 	 * @param model
-	 * @param searchVO
+	 * @param
 	 * @return
 	 */
 	@RequestMapping(value = "/myCustomServiceDataList")
@@ -279,7 +282,25 @@ public class orderManageController {
 							//一个订单只有一个子订单
 							ordInfoRespDTO=ordInfoList.get(0);
 						}
+						//去查询可用次数
+						try{
+							String suborderid = ordInfoRespDTO.getSubOrder();
+							DataAccountDTO dataAccountDTO= iAipCenterDataAccountRSV.queryDataAccountBySubOrder(suborderid);
+							if(dataAccountDTO != null){
+								int iLeftNum = dataAccountDTO.getLeftNum();
+								long lLeftNum=(long)iLeftNum;
+								ordInfoRespDTO.setBelanceAllCount(lLeftNum);
+								/*int iUsedAll = dataAccountDTO.getTotalConsumeNum();
+								long lUsedAll=(long)iUsedAll;
+								ordInfoRespDTO.setUsedAllCount(lUsedAll);*/
+							}
+						}
+						catch(Exception e2){
+							logger.error("查询我的订单列表失败！原因是：" + e2.getMessage());
+						}
 						ordMainRespDTO.setOrdInfoRespDTO(ordInfoRespDTO);
+
+
 					}
 				}
 				model.addAttribute("pageInfo", pageInfo);
@@ -348,7 +369,8 @@ public class orderManageController {
 				rechargeDTO.setCatFirst(ordInfoRespDTO.getCatFirst());
 				rechargeDTO.setRechargeType(Constants.Order.ORDER_API_RECHARGETYPE_1);
 				String periodType = Constants.Order.ORDER_API_PERIODTYPE_1;
-				if (ordInfoRespDTO.getActiveEndTime().after(getNodatelength())) {
+				String  inavidate =  Constants.Order.ORDER_API_NODATE;
+				if (ordInfoRespDTO.getActiveEndTime().after(getNodatelength(inavidate))) {
 					//大于50年,就是无限期了
 					periodType = Constants.Order.ORDER_API_PERIODTYPE_2;
 				}
@@ -473,13 +495,64 @@ public class orderManageController {
 		}
 		return rMap;
 	}
+
+	/**
+	 * 管理员手动创建订单
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/createOrderBymaneger")
+	@ResponseBody
+	public  Map<String, Object>  createOrderBymaneger(HttpServletRequest request,OrdMainInfoVO ordMainInfoVO) {
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		HttpSession hpptsesion = request.getSession();
+		String createStaff_id = StaffUtil.getStaffId(hpptsesion); //创建人
+
+		String gdsid = request.getParameter("gdsid");
+		String skuid = request.getParameter("skuid");
+		String staffid = request.getParameter("staffid");
+		String skunum = request.getParameter("skunum");
+		String ordertype = request.getParameter("ordertype");
+		String ordermoney = request.getParameter("ordermoney");
+		String inavidate = request.getParameter("inavidate");
+        //ordertype = 30
+		/**
+		 * 静态商品id
+		 * 静态商品名称
+		 * 有效期
+		 * 总金额
+         */
+
+		try {
+
+			OrdInfoReqDTO  ordInfoReqDTO =  new OrdInfoReqDTO();
+			ordInfoReqDTO.setStaffId(staffid); //用户
+			ordInfoReqDTO.setCreateStaff(createStaff_id);
+			ordInfoReqDTO.setSkuName(Constants.Order.ORDER_GDS_30_GDSNAME);
+			ordInfoReqDTO.setGdsId(Constants.Order.ORDER_GDS_30_GDSID);
+			ordInfoReqDTO.setGdsName(Constants.Order.ORDER_GDS_30_GDSNAME);
+			ordInfoReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
+			ordInfoReqDTO.setOrdertype(Constants.Order.ORDER_TYPE_30);
+
+			ordInfoReqDTO.setActiveEndTime(getNodatelength(inavidate));
+			long lordermoney = Long.parseLong(ordermoney);//单位元
+			ordInfoReqDTO.setOrderMoney(lordermoney*100);
+			OrdInfoReqDTO rdInfoReqDTOResp =  iOrderInfoRSV.createOrderByallClass(ordInfoReqDTO);
+			rMap.put("success", true);
+ 		} catch (Exception er) {
+			rMap.put("success", false);
+			rMap.put("err", "创建订单失败");
+		}
+		return rMap;
+	}
+
 	/**
 	 * 获取无限期的比较日期
 	 * @param
 	 * @return date
 	 */
-	public   Date getNodatelength() {
-		String strdate =Constants.Order.ORDER_API_NODATE;
+	public   Date getNodatelength(String strdate) {
+
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date date = null;
 		try {
