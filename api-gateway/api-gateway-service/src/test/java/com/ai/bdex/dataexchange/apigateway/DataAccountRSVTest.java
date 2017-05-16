@@ -1,6 +1,7 @@
 package com.ai.bdex.dataexchange.apigateway;
 
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.DataConsumeDTO;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.DataConsumeRespDTO;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IApiGatewayDataAccountSV;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import org.apache.ibatis.logging.LogFactory;
@@ -27,7 +28,7 @@ public class DataAccountRSVTest {
         consumeDTO.setInvokeSeq("201705120000002");
         consumeDTO.setConsumeNum(1);
         consumeDTO.setConsumeMoney(100);
-        String result = apiGatewayDataAccountSV.dealDataCharge(consumeDTO);
-        System.out.println("result="+result);
+        DataConsumeRespDTO result = apiGatewayDataAccountSV.dealDataCharge(consumeDTO);
+        System.out.println("result="+result.getResult());
     }
 }
