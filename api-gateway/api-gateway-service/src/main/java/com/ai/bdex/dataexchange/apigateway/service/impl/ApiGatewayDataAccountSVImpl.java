@@ -163,14 +163,14 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
         fixValidCriteria.andEndDateGreaterThanOrEqualTo(now);
 
         //获取固定套餐，永久有效的数据
-        DataAccountExample.Criteria fixPermanentCriteria = dataAccountExample.createCriteria();
+        DataAccountExample.Criteria fixPermanentCriteria = dataAccountExample.or();
         fixPermanentCriteria.andUserIdEqualTo(consumeDTO.getUserId());
         fixPermanentCriteria.andPackageTypeEqualTo(Constants.Bill.PACKAGE_TYPE_FIX);
         fixPermanentCriteria.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_PERMANENT);
         fixPermanentCriteria.andServiceIdEqualTo(consumeDTO.getRealServiceId());
 
         //获取自定义套餐，有指定有效期的数据
-        DataAccountExample.Criteria customValidCriteria = dataAccountExample.createCriteria();
+        DataAccountExample.Criteria customValidCriteria = dataAccountExample.or();
         customValidCriteria.andUserIdEqualTo(consumeDTO.getUserId());
         customValidCriteria.andPackageTypeEqualTo(Constants.Bill.PACKAGE_TYPE_CUSTOM);
         customValidCriteria.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_VALID);
@@ -179,24 +179,24 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
         customValidCriteria.andEndDateGreaterThanOrEqualTo(now);
 
         //获取自定义套餐，永久有效的数据
-        DataAccountExample.Criteria customPermanentCriteria = dataAccountExample.createCriteria();
+        DataAccountExample.Criteria customPermanentCriteria = dataAccountExample.or();
         customPermanentCriteria.andUserIdEqualTo(consumeDTO.getUserId());
         customPermanentCriteria.andPackageTypeEqualTo(Constants.Bill.PACKAGE_TYPE_CUSTOM);
         customPermanentCriteria.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_PERMANENT);
         customPermanentCriteria.andServiceIdEqualTo(consumeDTO.getRealServiceId());
 
         //获取跨类套餐，有指定有效期的数据
-        DataAccountExample.Criteria mixValidCriteria = dataAccountExample.createCriteria();
+        DataAccountExample.Criteria mixValidCriteria = dataAccountExample.or();
         mixValidCriteria.andUserIdEqualTo(consumeDTO.getUserId());
-        mixValidCriteria.andPackageTypeEqualTo(Constants.Bill.PACKAGE_TYPE_CUSTOM);
+        mixValidCriteria.andPackageTypeEqualTo(Constants.Bill.PACKAGE_TYPE_MIX);
         mixValidCriteria.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_VALID);
         mixValidCriteria.andStartDateLessThanOrEqualTo(now);
         mixValidCriteria.andEndDateGreaterThanOrEqualTo(now);
 
         //获取跨类套餐，永久有效的数据
-        DataAccountExample.Criteria mixtomPermanentCriteria = dataAccountExample.createCriteria();
+        DataAccountExample.Criteria mixtomPermanentCriteria = dataAccountExample.or();
         mixtomPermanentCriteria.andUserIdEqualTo(consumeDTO.getUserId());
-        mixtomPermanentCriteria.andPackageTypeEqualTo(Constants.Bill.PACKAGE_TYPE_CUSTOM);
+        mixtomPermanentCriteria.andPackageTypeEqualTo(Constants.Bill.PACKAGE_TYPE_MIX);
         mixtomPermanentCriteria.andPeriodTypeEqualTo(Constants.Bill.DATA_ACCT_PERIOD_PERMANENT);
 
         //把次数账户排在前面，相同有效账户则按创建时间排序
