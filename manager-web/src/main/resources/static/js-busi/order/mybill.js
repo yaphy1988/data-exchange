@@ -49,15 +49,15 @@ function saveInvoiceTax(){
 		WEB.msg.info("提示","请输入正确的电话号码！");
 		return;
 	}
+	if(bankName==""){
+		WEB.msg.info("提示","请输入开户行！");
+		return;
+	}
 	if(bankName.length>256){
 		WEB.msg.info("提示","开户行不能超过256个字符！");
 		return;
 	}
-	if(!isInteger(acctInfo)){
-		WEB.msg.info("提示","请输入正确的账户！");
-		return;
-	}
-	if(acctInfo.length<12){
+	if(!isInteger(acctInfo)||acctInfo.length<12){
 		WEB.msg.info("提示","请输入正确的账户！");
 		return;
 	}
