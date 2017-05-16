@@ -157,7 +157,7 @@ public class HomePageController {
 							if(gdsInfoRespDTO!= null && !StringUtil.isBlank(gdsInfoRespDTO.getGdsPic()) )
 							{
 								  String vfsid= ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_86x86!");
-								  source.setVfsid(vfsid); 
+								  target.setVfsId(vfsid); 
 								  target.setGdsName(gdsInfoRespDTO.getGdsName());
 							}
 					   }

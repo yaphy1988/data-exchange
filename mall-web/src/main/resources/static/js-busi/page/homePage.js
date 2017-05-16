@@ -82,7 +82,7 @@ function querydata_recommend102(moduleId){
     					name="";
     				var gdsid =  d.gdsId; 
     				var gdsdetailurl = basePath+"/goods/details/"+gdsid+"-";
-    				var vfsid= d.vfsid;
+    				var vfsid= d.vfsId;
 				    html +='<li><a href='+gdsdetailurl+' target="_blank"><img src="'+vfsid+'"><span>'+name+'</span></a></li>';
     		   
     			});

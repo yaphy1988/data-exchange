@@ -24,7 +24,15 @@ public class PageModuleGoodsVO {
     private String updateStaffId;
 
     private String status;
+    private String vfsId;
 
+	public String getVfsId() {
+		return vfsId;
+	}
+
+	public void setVfsId(String vfsId) {
+		this.vfsId = vfsId;
+	}
 
 	public String getGdsName() {
 		return gdsName;
