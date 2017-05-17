@@ -22,7 +22,7 @@ $(function(){
 		$("#catText").val(catText);
 		queryGdsInfo2Prop(gdsId);
 	}
-	
+	gridPicInfoList(1);
 });
 /**
  * 弹出商品标签选择框
@@ -855,4 +855,29 @@ function selectGdsAPIInfo(obj){
 function isInteger(str){
 	 var reg = /^(([1-9][0-9]*))$/;
 	 return reg.test(str);
+}
+
+function gridPicInfoList(index){
+	var param={
+		pageNo:index,
+		libId:$("#libId").val(),
+		gdsName : $.trim($("#gdsNameInput").val())
+	};
+	$.ajax({
+		url:WEB_ROOT+'/gdsEdit/gridPicList',
+		cache:false,
+		async:true,
+		dataType:'html',
+		data : param,
+		success:function(data){
+			$('#gdsPicList').empty();
+			$('#gdsPicList').html(data);
+		}
+	});
+}
+function selectGdsPicInfo(obj,picUuid){
+	var picUrl=$(obj).attr('picUrl');
+	$("#gdsPicUrl").attr("src",picUrl);
+	$("#gdsPic").val(picUuid);
+	$("#myModal4").modal('hide');
 }

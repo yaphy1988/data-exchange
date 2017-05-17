@@ -211,13 +211,13 @@
 				<tr >
 					<td class="Hint"></td>
 					<td>
-						 <div class="form-inline">
+						<div class="form-inline">
                              <div class="form-group">
                              <input  type="hidden" class="form-control" placeholder="" id="gdsPic" th:value="${gdsInfoVO.gdsPic}">
                              <input type="file" class="float_File form-control"  name="picUpLoad" id="picUpLoad" th:onchange="'uploadImage(this)'">
-                              </div>
-                          </div>
-						
+                             </div>
+                             <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal4"  th:if="${isView==false}">从图片库选择图片</button>
+                        </div>
 					</td>
 				</tr>
 			</table>
@@ -449,6 +449,56 @@
 				</div>
 				<div class="modal-body clearfix">
 					<div class="listTable" id="gdsAPIList">
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 图片弹出接口选择 modal-->
+	<div class="m_modal modal fade" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document" style="width:900px;">
+			<div class="modal-content" >
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">图片选择</h4>
+				</div>
+				<div class="top-table">
+	                <table class="editTable">
+	                    <tr>
+	                    	<td class="Hint" >
+	                            <span class="col_red">*</span>
+	                           	 图片库：
+	                        </td>
+	                        <td width="20%">
+	                            <div class="input-group02">
+	                                <select class="form-control" id="libId">
+	                               		<option th:if="${picLibList} and ${#lists.size(picLibList) gt 0}" th:each="picLib,picLibStat : ${picLibList}" th:value="${picLib.libId}" th:text="${picLib.libName}">全部</option>
+	                                    <option value=""  th:if="!${picLibList} and ${#lists.size(picLibList) == 0}">全部</option>
+	                                </select>
+	                            </div>
+	                        </td>
+	                        <td class="Hint">
+	                            <span class="col_red">*</span>
+	                           	 图片名称：
+	                        </td>
+	                        <td width="20%">
+	                            <div class="input-group02">
+	                                <input type="text" class="form-control" placeholder="商品名称" id="gdsNameInput">
+	                            </div>
+	                        </td>
+	                        <td>
+	                            <div class="input-group02">
+	                                <button class="btn btn-primary" onclick="queryGdsList(1)">查询</button>
+	                            </div>
+	                        </td>
+	                    </tr>
+	                </table>
+				</div>
+				<div class="modal-body clearfix">
+					<div class="listTable" id="gdsPicList">
 					</div>
 				</div>
 				<div class="modal-footer">
