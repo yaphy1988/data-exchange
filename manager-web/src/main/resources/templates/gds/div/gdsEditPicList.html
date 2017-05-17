@@ -10,8 +10,8 @@
 	<tbody>
     	<tr th:each="list : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}" style="text-align:center">
     		<td><img th:src="${#tools.genImageUrl(list.picUuid,'50x50')}"/></td>
-    		<td th:text="${list.picSpe}"></td>
     		<td th:text="${list.picName}"></td>
+    		<td th:text="${list.picSpe}"></td>
     		<td><a href="javascript:void(0)" class="btn btn-default  btn-sm ml20" th:attr="picUrl=${#tools.genImageUrl(list.picUuid,'')}" th:onclick="|selectGdsPicInfo(this,'${list.picUuid}')|">选择</a></td>
    		</tr>
 	</tbody>

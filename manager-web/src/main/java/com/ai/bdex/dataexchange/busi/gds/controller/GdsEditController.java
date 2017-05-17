@@ -836,7 +836,9 @@ public class GdsEditController {
             PicInfoReqDTO picInfoReqDTO = new PicInfoReqDTO();
             picInfoReqDTO.setPageNo(picManageVO.getPageNo());
             picInfoReqDTO.setPageSize(6);
+            ObjectCopyUtil.copyObjValue(picManageVO, picInfoReqDTO, null, false);
             pageInfo = iPicInfoRSV.queryPicInfoPage(picInfoReqDTO);
+            pageInfo.setPageSize(6);
             model.addAttribute("pageInfo", pageInfo);
         } catch (Exception e) {
             logger.error("查询图片列表失败！原因是：" + e.getMessage());

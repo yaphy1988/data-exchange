@@ -861,7 +861,7 @@ function gridPicInfoList(index){
 	var param={
 		pageNo:index,
 		libId:$("#libId").val(),
-		gdsName : $.trim($("#gdsNameInput").val())
+		picName : $.trim($("#picNameInput").val())
 	};
 	$.ajax({
 		url:WEB_ROOT+'/gdsEdit/gridPicList',

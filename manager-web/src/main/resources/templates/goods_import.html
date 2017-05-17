@@ -216,7 +216,7 @@
                              <input  type="hidden" class="form-control" placeholder="" id="gdsPic" th:value="${gdsInfoVO.gdsPic}">
                              <input type="file" class="float_File form-control"  name="picUpLoad" id="picUpLoad" th:onchange="'uploadImage(this)'">
                              </div>
-                             <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal4"  th:if="${isView==false}">从图片库选择图片</button>
+                             <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal4">从图片库选择图片</button>
                         </div>
 					</td>
 				</tr>
@@ -481,17 +481,16 @@
 	                            </div>
 	                        </td>
 	                        <td class="Hint">
-	                            <span class="col_red">*</span>
 	                           	 图片名称：
 	                        </td>
 	                        <td width="20%">
 	                            <div class="input-group02">
-	                                <input type="text" class="form-control" placeholder="商品名称" id="gdsNameInput">
+	                                <input type="text" class="form-control" placeholder="请输入图片名称" id=picNameInput>
 	                            </div>
 	                        </td>
 	                        <td>
 	                            <div class="input-group02">
-	                                <button class="btn btn-primary" onclick="queryGdsList(1)">查询</button>
+	                                <button class="btn btn-primary" onclick="gridPicInfoList(1)">查询</button>
 	                            </div>
 	                        </td>
 	                    </tr>
