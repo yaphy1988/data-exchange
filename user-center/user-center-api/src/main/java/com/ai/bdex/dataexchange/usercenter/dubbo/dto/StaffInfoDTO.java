@@ -1,8 +1,8 @@
 package com.ai.bdex.dataexchange.usercenter.dubbo.dto;
 
-import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
-public class StaffInfoDTO extends BaseInfo{
+public class StaffInfoDTO extends BaseResponseDTO {
 	
 	private static final long serialVersionUID = 1L;
 	private String staffId;
