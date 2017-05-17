@@ -1,8 +1,33 @@
 var basePath = WEB_ROOT;
 
 $(function(){
+	// 数量input框的x修改
+	$("#ordernum").bind('change', function() {
+		var ordernum   =  $("#ordernum").val();
+		var packprice  =  $("#packprice").val();
+        var ordermoney = parseInt(ordernum)* parseInt(packprice);
+		if (typeof(ordermoney) != "undefined")
+		{
+			$("#allmoney").val(ordermoney);
+		}
+	});
+	$("#packprice").bind('change', function() {
+		var ordernum   =  $("#ordernum").val();
+		var packprice  =  $("#packprice").val();
+		var ordermoney = parseInt(ordernum)* parseInt(packprice);
+		if (typeof(ordermoney) != "undefined")
+		{
+			$("#allmoney").val(ordermoney);
+		}
+	});
+
+	$("#trsku").hide();
+	$("#gdsname").attr("readonly","readonly");
+	$("#skuname").attr("readonly","readonly");
 	orderManagequery(1);
+
 });
+
 //订单管理界面查询
 function orderManagequery(index){
 	var param={pageNo:index};
@@ -64,8 +89,8 @@ function changeCreateType(){
 	$("#packprice").removeAttr("readonly");
 	$("#innavateDate").removeAttr("readonly");
 	$("#allmoney").removeAttr("readonly");
-	$("#gdsname").removeAttr("readonly");
-	$("#gdsid").val();
+	$("#packtimes").removeAttr("readonly");
+ 	$("#gdsid").val();
 	$("#gdsname").val();
 
 	var seleopValue = $("#typeOption").val();
@@ -79,6 +104,7 @@ function changeCreateType(){
 		$("#trinavitime").show(); //有截止日期
 		$("#trallmoney").show(); //总金额，单位元
 
+		$("#packtimes").attr("readonly","readonly");
 		$("#echecount").attr("readonly","readonly");
 		$("#packprice").attr("readonly","readonly");
 		$("#innavateDate").attr("readonly","readonly");
@@ -110,14 +136,19 @@ function changeCreateType(){
 }
 //管理员生成订单
 function createOrderBymaneger(){
-	var gdsid = $("#gdsid").val();
-	var skuid = $("#skuid").val();
-	var staffid =  $("#staffid").val();
-	var skunum =  $("#skunum").val();
-	var ordertype = $("#typeOption").val();
-	var ordermoney = $("#allmoney").val();
-	var inavidate = $("#innavateDate").val();
-	var api_id = $("#api_id").val();
+	var ordertype    = $("#typeOption").val();//订单类型
+	var staffid      = $("#staffid").val();//用户ID
+	var gdsid        = $("#gdsid").val();//商品ID
+	var skuid        = $("#skuid").val();//套餐ID
+	var api_id       = $("#api_id").val();//接口ID
+	var inavidate    = $("#innavateDate").val();//失效日期
+	var packtimes    = $("#packtimes").val();//套餐里面的次数
+	var packprice    = $("#packprice").val();//套餐的单价 --单位元
+	var ordernum     = $("#ordernum").val();//购买的套餐数量
+	var ordermoney   = $("#allmoney").val();//总金额
+    var skuname         = $("#skuname").val();//套餐名称 -- skuname
+	var gdsname         = $("#gdsname").val();//商品名称 --  商品名称
+
 	//总额和有效期都是从后台取数
     // 30
 	/*staffid
@@ -135,16 +166,28 @@ function createOrderBymaneger(){
 	 *inavidate
 	 * */
 	var param={
+		ordertype:ordertype,
+		staffid:staffid,
 		gdsid:gdsid,
 		skuid:skuid,
 		api_id:api_id,
-		staffid:staffid,
-		skunum:skunum,
-		ordertype:ordertype,
+		inavidate:inavidate,
+		packtimes:packtimes,
+		packprice:packprice,
+		ordernum:ordernum,
 		ordermoney:ordermoney,
-		inavidate:inavidate
+		skuname:encodeURI2(skuname),
+		gdsname:encodeURI2(gdsname)
 	};
-	var url = basePath+'/orderManage/createOrderBymaneger';
+	var url = "";
+	if(ordertype  == "30")
+	{
+		url = basePath+'/orderManage/createOrderBymaneger';
+	}
+	else{
+		//固定和自定义套餐
+		url = basePath+'/orderManage/createStaticOrderBymaneger';
+	}
 	var callBack =function(data){
 		if(data.success){
 			WEB.msg.info("提示","创建成功");
@@ -224,7 +267,7 @@ function  setGetgdsinfo() {
 	 $("#skuname").val(skuname);
 	 $("#skuid").val(skuid);
 	 $("#innavateDate").val(inavitime);
-	 $("#echecount").val(packtimes);
+	 $("#packtimes").val(packtimes);
 	 $("#packprice").val(yuanpackprice);
 	 var allmoney = parseInt(yuanpackprice) * parseInt($("#ordernum").val());
      $("#allmoney").val(allmoney);

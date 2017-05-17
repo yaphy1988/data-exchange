@@ -59,7 +59,7 @@ public class OrdInfoReqDTO extends BaseInfo{
 		return ordertype;
 	}
 	public void setOrdertype(String ordertype) {
-		this.serviceName = ordertype;
+		this.ordertype = ordertype;
 	}
 
 	    public String getServiceName() {

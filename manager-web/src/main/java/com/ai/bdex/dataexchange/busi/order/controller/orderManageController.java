@@ -73,7 +73,8 @@ public class orderManageController {
     private final static String ORDER_TYPE_COMMON = "10";//普通订单
 	private final static String TMPUSERID = "tmpuser";// 临时用户
 	private static final Logger log = LoggerFactory.getLogger(orderManageController.class);
-
+	private final static String STATUS_VALID = "1";// 有效
+	private final static String API_SERVICE_NAME_TMP = "API_SERVICE_NAME_TMP";//API服务名称接口获取不到数据
 	@DubboConsumer(timeout = 30000)
 	private IOrderInfoRSV iOrderInfoRSV;
     @DubboConsumer
@@ -559,7 +560,143 @@ public class orderManageController {
 		}
 		return rMap;
 	}
+	/**
+	 * 管理员手动创建订单
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value="/createStaticOrderBymaneger")
+	@ResponseBody
+	public  Map<String, Object>  createStaticOrderBymaneger(HttpServletRequest request,OrdMainInfoVO ordMainInfoVO) {
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		HttpSession hpptsesion = request.getSession();
+		String createStaff_id = StaffUtil.getStaffId(hpptsesion); //创建人
+		String ordertype  = request.getParameter("ordertype");
+		String staffid    = request.getParameter("staffid");
+		String gdsid      = request.getParameter("gdsid");
+		String skuid      = request.getParameter("skuid");
+		String api_id     = request.getParameter("api_id");
+		String inavidate  = request.getParameter("inavidate");
+		String packtimes     = request.getParameter("packtimes");
+		String packprice     = request.getParameter("packprice");
+		String ordernum     = request.getParameter("ordernum");
+		String ordermoney = request.getParameter("ordermoney");
 
+
+		//ordertype = 30
+		/**
+		 * 静态商品id
+		 * 静态商品名称
+		 * 有效期
+		 * 总金额
+		 */
+		try {
+            if(Constants.Order.ORDER_TYPE_30.equals(ordertype))
+			{
+				OrdInfoReqDTO  ordInfoReqDTO =  new OrdInfoReqDTO();
+				ordInfoReqDTO.setStaffId(staffid); //用户
+				ordInfoReqDTO.setCreateStaff(createStaff_id);
+				ordInfoReqDTO.setSkuName(Constants.Order.ORDER_GDS_30_GDSNAME);
+				ordInfoReqDTO.setGdsId(Constants.Order.ORDER_GDS_30_GDSID);
+				ordInfoReqDTO.setGdsName(Constants.Order.ORDER_GDS_30_GDSNAME);
+				ordInfoReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
+				ordInfoReqDTO.setOrdertype(Constants.Order.ORDER_TYPE_30);
+				ordInfoReqDTO.setActiveEndTime(getNodatelength(inavidate));
+				ordInfoReqDTO.setServiceName(Constants.Order.ORDER_GDS_30_GDSNAME);
+				long lordermoney = Long.parseLong(ordermoney);//单位元
+				ordInfoReqDTO.setOrderMoney(lordermoney*100);
+				OrdInfoReqDTO rdInfoReqDTOResp =  iOrderInfoRSV.createOrderByallClass(ordInfoReqDTO);
+				rMap.put("success", true);
+			}
+			else if (Constants.Order.ORDER_TYPE_10.equals(ordertype) || Constants.Order.ORDER_TYPE_20.equals(ordertype)){
+				String skuname = request.getParameter("skuname");
+				String gdsname = request.getParameter("gdsname");
+				int  ipacktimes = Integer.parseInt(packtimes);
+				long lorderprice = Long.parseLong(packprice)*100;
+				int iordernum = Integer.parseInt(ordernum);
+				Date activeEndTime = new Date();//失效日期
+				//固定的，只要sku和gds就可以搞定了
+				GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
+				GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
+				int igdsid =   new Long(gdsid).intValue();
+				gdsInfoReqDTO.setGdsId(igdsid);
+				gdsInfoRespDTO =  iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO);
+				OrdInfoReqDTO  ordInfoReqDTO =  new OrdInfoReqDTO();
+				ordInfoReqDTO.setCreateStaff(createStaff_id);
+                long lordermoney = 0L;
+				if(gdsInfoRespDTO != null)
+				{
+					api_id = gdsInfoRespDTO.getApiId().toString();
+					//查固定套餐的价格--10
+					if(Constants.Order.ORDER_TYPE_10.equals(ordertype)){
+						GdsSkuRespDTO gdsSkuRespDTO = new GdsSkuRespDTO();
+						GdsSkuReqDTO dsSkuReqDTO = new GdsSkuReqDTO();
+						dsSkuReqDTO.setGdsId(Integer.parseInt(gdsid));
+						dsSkuReqDTO.setSkuId(Integer.parseInt(skuid)); //10 才有skuid
+						dsSkuReqDTO.setStatus(STATUS_VALID);
+						List<GdsSkuRespDTO>  listGdsSku =new ArrayList<>();
+						try {
+							//价格
+							listGdsSku = iGdsSkuRSV.queryGdsSkuList(dsSkuReqDTO);
+							gdsSkuRespDTO = new GdsSkuRespDTO();
+							if(!CollectionUtil.isEmpty(listGdsSku))
+							{
+								gdsSkuRespDTO = listGdsSku.get(0);
+								ipacktimes = gdsSkuRespDTO.getPackTimes();
+								lorderprice = gdsSkuRespDTO.getPackPrice();
+								int inaviDay = gdsSkuRespDTO.getPackDay();
+								Date orderTime = DateUtil.getNowAsDate();
+								Calendar calendar   =   new   GregorianCalendar();
+								calendar.setTime(orderTime);
+								calendar.add(calendar.DATE,inaviDay);//把日期往后增加一年.整数往后推,负数往前移动
+								activeEndTime =  calendar.getTime();   //这个时间就是日期往后推一天的结果
+ 							}
+
+						}catch (Exception Er) {
+
+						}
+					}
+					else {
+						activeEndTime = getNodatelength(inavidate);
+					}
+					//取服务ID和名称
+					ordInfoReqDTO.setAipServiceId(api_id);
+					try{
+						List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(api_id);
+						if(!CollectionUtil.isEmpty(apiServiceList))
+						{
+							ordInfoReqDTO.setServiceName(apiServiceList.get(0).getServiceName());
+						}
+					}
+					catch(Exception e1){
+						//服务名称取不到
+						ordInfoReqDTO.setServiceName(API_SERVICE_NAME_TMP);
+					}
+					ordInfoReqDTO.setActiveEndTime(activeEndTime);
+					ordInfoReqDTO.setGdsId(Long.parseLong(gdsid));
+					ordInfoReqDTO.setCatFirst(gdsInfoRespDTO.getCatFirst());
+					ordInfoReqDTO.setCatId(gdsInfoRespDTO.getCatId());
+					ordInfoReqDTO.setEachCount(ipacktimes);
+					ordInfoReqDTO.setAipServiceId(api_id );
+					ordInfoReqDTO.setOrderPrice(lorderprice);
+					ordInfoReqDTO.setOrderAmount(iordernum);
+					ordInfoReqDTO.setSkuName(uRLDecoderStr(skuname));
+					ordInfoReqDTO.setGdsName(uRLDecoderStr(gdsname));
+					lordermoney  = iordernum * lorderprice;
+					ordInfoReqDTO.setOrderMoney(lordermoney);
+				}
+				ordInfoReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
+				ordInfoReqDTO.setOrdertype(Constants.Order.ORDER_TYPE_10);
+				OrdInfoReqDTO rdInfoReqDTOResp =  iOrderInfoRSV.createOrderInfo(ordInfoReqDTO);
+				rMap.put("success", true);
+			}
+
+		} catch (Exception er) {
+			rMap.put("success", false);
+			rMap.put("err", "创建订单失败");
+		}
+		return rMap;
+	}
 	/**
 	 * 获取无限期的比较日期
 	 * @param
@@ -580,7 +717,7 @@ public class orderManageController {
 	 * 商品模块查询未选择商品
 	 * @param model
 	 * @param request
-	 * @param pageModuleGoodsVO
+	 * @param
 	 * @return
 	 */
 	@RequestMapping(value = "/qryModuleGoods")
@@ -648,6 +785,11 @@ public class orderManageController {
 		return "order_manage :: #skuquery" ;
 	}
 
+	/***
+	 * 解析js包装的中文
+	 * @param strinfo
+     * @return
+     */
 	private String uRLDecoderStr(String strinfo) {
 		String newstrinfo = "";
 		try {
