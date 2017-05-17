@@ -16,6 +16,7 @@ import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientInfoReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipClientInfoSV;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
+import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -114,10 +115,10 @@ public class AipClientInfoSVImpl implements IAipClientInfoSV{
 	}
 	
 	private void initParam(AipClientInfoExample.Criteria sql,AipClientInfoReqDTO req){
-		if(req.getClientId()!=null){
+		if(StringUtil.isNotBlank(req.getClientId())){
 			sql.andClientIdEqualTo(req.getClientId());
 		}
-		if(req.getCreateStaff()!=null){
+		if(StringUtil.isNotBlank(req.getCreateStaff())){
 			sql.andCreateStaffEqualTo(req.getCreateStaff());
 		}
 		if(req.getFromCreateTime()!=null&&req.getToCreateTime()!=null){
@@ -133,7 +134,7 @@ public class AipClientInfoSVImpl implements IAipClientInfoSV{
 				sql.andStatusEqualTo(req.getStatusList().get(0));
 			}
 		}
-		if(req.getUsername()!=null){
+		if(StringUtil.isNotBlank(req.getUsername())){
 			sql.andUsernameEqualTo(req.getUsername());
 		}
 	}

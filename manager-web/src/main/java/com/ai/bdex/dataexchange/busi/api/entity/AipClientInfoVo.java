@@ -7,7 +7,7 @@ import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 public class AipClientInfoVo extends BaseInfo{
 	private String clientId;
 	private String clientSecret;
-	private String userName;
+	private String username;
 	private String password;
 	private String status;
 
@@ -22,11 +22,12 @@ public class AipClientInfoVo extends BaseInfo{
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
-	public String getUserName() {
-		return userName;
+	
+	public String getUsername() {
+		return username;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getStatus() {
 		return status;

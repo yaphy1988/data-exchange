@@ -2,11 +2,13 @@ package com.ai.bdex.dataexchange.busi.api.controller;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -46,10 +48,16 @@ public class ApiKeyManageController {
 		 AipClientInfoReqDTO dto=new AipClientInfoReqDTO();
 		 dto.setPageNo(1);
 		 dto.setPageSize(10);
-		 String status="1";//ALL:所有状态，0失效，1有效，2冻结
+		 String status="";//ALL:所有状态，0失效，1有效，2冻结
 		 try{		
 			 List<String> stateList=new ArrayList<String>();
-			 stateList.add(status);
+			 if(StringUtil.isBlank(status)){
+				 stateList.add("1");
+				 stateList.add("0");
+				 stateList.add("2");
+			 }else{
+				 stateList.add(status);
+			 }
 			 dto.setStatusList(stateList);					
 			 PageResponseDTO<AipClientInfoDTO> pageInfo=aipClientInfoRSV.getAipClientInfoPage(dto);
 			 if(null==pageInfo){
@@ -73,17 +81,15 @@ public class ApiKeyManageController {
 		 String viewPartName="apikey_manage :: #tab01";
 		 try{
 			 AipClientInfoReqDTO dto=new AipClientInfoReqDTO();
-			 ObjectCopyUtil.copyObjValue(vo, dto, null, false);
-			 String status=vo.getStatus();//ALL:所有状态，0失效，1有效，2冻结
+			 ObjectCopyUtil.copyObjValue(vo, dto, null, true);
+			 String status=vo.getStatus();//"":所有状态，0失效，1有效，2冻结
 			 List<String> stateList=new ArrayList<String>();
 			 if(!StringUtil.isBlank(status)){
-				 if("ALL".equals(status)){
-					 stateList.add("0");
-					 stateList.add("1");
-					 stateList.add("2");
-				 }else{
-					 stateList.add(status);
-				 }
+				stateList.add(status);			 
+			 }else{
+				 stateList.add("0");
+				 stateList.add("1");
+				 stateList.add("2");
 			 }
 			 dto.setStatusList(stateList);
 			 PageResponseDTO<AipClientInfoDTO> pageInfo=aipClientInfoRSV.getAipClientInfoPage(dto);
@@ -130,8 +136,13 @@ public class ApiKeyManageController {
 		 int cnt=0;
 		 AjaxJson ajx=new AjaxJson();		 
 		 try{
-			String clientIdes=request.getParameter("ClientIdList");
+			
+			String[] clientIdesArr=request.getParameterValues("ClientIdList");
+			
 			List<String> clientIdList=null;
+			if(!CollectionUtil.isEmpty(clientIdesArr)){
+				clientIdList=Arrays.asList(clientIdesArr);
+			}
 			String status=request.getParameter("status");
 			if(!CollectionUtil.isEmpty(clientIdList)){
 				cnt=aipClientInfoRSV.batchUpdateStatus(clientIdList, status);
@@ -165,7 +176,7 @@ public class ApiKeyManageController {
 				AipClientInfoDTO old=aipClientInfoRSV.getAipClientInfoByKey(clientId);
 				if(null==old){
 					AipClientInfoDTO dto=new AipClientInfoDTO();
-					ObjectCopyUtil.copyObjValue(vo, dto, null, false);
+					ObjectCopyUtil.copyObjValue(vo, dto, null, true);
 					dto.setCreateStaff("");
 					Timestamp nowTime=new Timestamp(System.currentTimeMillis());
 					dto.setCreateTime(nowTime);
@@ -213,7 +224,7 @@ public class ApiKeyManageController {
 			String clientId=vo.getClientId();		
 			if(!StringUtil.isBlank(clientId)){		
 				AipClientInfoDTO dto=new AipClientInfoDTO();
-				ObjectCopyUtil.copyObjValue(vo, dto, null, false);					
+				ObjectCopyUtil.copyObjValue(vo, dto, null, true);					
 				Timestamp nowTime=new Timestamp(System.currentTimeMillis());
 				dto.setClientSecret(null);
 				dto.setPassword(null);
