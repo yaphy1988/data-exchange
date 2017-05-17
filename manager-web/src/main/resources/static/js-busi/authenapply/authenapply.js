@@ -32,12 +32,39 @@ function saveapply(){
 		showwarm('detailAddress','请填写详细地址！');
 		return;
 	}
-	var contactInfo = provinceName+cityName+countryName+detailAddress;
+	var contactInfo = detailAddress;
 	if(WEB.fucCheckLength(contactInfo)>512){
 		showwarm('detailAddress','地址太长！');
 		return;
 	}
-	
+
+	//企业人数
+	var companyPeople = $("#companyPeople").val();
+    if(isNaN(companyPeople)){
+        companyPeople = "";
+        $("#companyPeople").val(companyPeople);
+        showwarm('companyPeople','企业人数只能是数字！');
+        return;
+    }
+    companyPeople = parseInt(companyPeople);
+
+    if(WEB.fucCheckLength(companyPeople)>6){
+        showwarm('companyPeople','企业人数太长！');
+        return;
+    }
+	//主营业务
+	var companyBusi = $("#companyBusi").val();
+    if(WEB.fucCheckLength(companyBusi)>200){
+        showwarm('companyBusi','主营业务太长！');
+        return;
+    }
+	//企业网址
+	var companyUrl = $("#companyUrl").val();
+    if(WEB.fucCheckLength(companyUrl)>120){
+        showwarm('companyUrl','企业网址太长！');
+        return;
+    }
+
 	var taxpayerNo = $("#taxpayerNo").val();
 	if(!taxpayerNo){
 		showwarm('taxpayerNo','请填写营业执照编号！');
@@ -61,6 +88,30 @@ function saveapply(){
 		showwarm('phone','手机号码格式不正确！');
 		return;
 	}
+
+	//固话
+	var companyTel = $("#companyTel").val();
+	if(WEB.fucCheckLength(companyTel)>20){
+        showwarm('companyTel','固话太长！');
+        return;
+    }
+	//传真
+	var companyFax = $("#companyFax").val();
+	if(WEB.fucCheckLength(companyFax)>20){
+        showwarm('companyFax','传真太长！');
+        return;
+    }
+	//邮箱
+	var companyMail = $("#companyMail").val();
+    if(WEB.check.isEmail(companyMail) == false){
+        showwarm('companyMail','邮箱格式错误！');
+        return;
+    }
+    if(WEB.fucCheckLength(companyMail)>60){
+        showwarm('companyMail','邮箱太长！');
+        return;
+    }
+
 	var param = {
 			invoiceTitle : invoiceTitle,
 			contactInfo : contactInfo,
@@ -69,7 +120,16 @@ function saveapply(){
 			organCode : organCode,
 			vfsId1 : vfsId1,
 			relName : relName,
-			phone : phone
+			phone : phone,
+			companyPeople:companyPeople,
+            companyBusi:companyBusi,
+            companyUrl:companyUrl,
+            companyTel:companyTel,
+            companyFax:companyFax,
+            companyMail:companyMail,
+            provinceCode:provinceCode,
+            cityCode:cityCode,
+            countryCode:countryCode
 	};
 	$("#savebtn").attr('disabled',true);
 	$.ajax({
@@ -136,7 +196,7 @@ $(function(){
 			type:'post',
 			async:true,
 			success:function (data) {
-				$("#city").html(data);
+				$("#city").html($(data).html());
 			}
 		})
 	})
@@ -156,7 +216,7 @@ $(function(){
 			type:'post',
 			async:true,
 			success:function (data) {
-				$("#country").html(data);
+				$("#country").html($(data).html());
 			}
 		})
 	})

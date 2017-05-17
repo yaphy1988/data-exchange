@@ -61,50 +61,74 @@
 					<span >用户信息管理</span>
 				</div>
 				<!-- <hr> -->
-
 				<div class="title">基本信息</div>
-				<table class="editTable ">
-
+				<table class="editTable">
 						<tr>
 							<td class="Hint tips" width="140">
-								用户ID:
+								用户ID：
 							</td>
 							<td width="520">
 								<input class="form-control" placeholder="" type="text"  maxlength="128" disabled th:value="${userinfo.staffId}">
 							</td>
-							<!-- <td class="tip"><span class="">已实名认证/去实名认证</span></td> -->
 						</tr>
 						<tr>
 							<td ></td>
 							<td>
-								<span class="col_green" th:if=    "${userinfo.authenFlag=='1'}">已实名认证</span>
-								<span class="col_red" th:unless="${userinfo.authenFlag=='1'}">
-									<a th:href="@{/authenapply/userinfo}">去实名认证</a>
-								</span>
+								<span class="col_green" th:if="${userinfo.authenFlag=='1'}">已认证通过（<a th:href="@{/authenapply/userinfo}">查看</a>）</span>
+								<span class="col_green" th:if="${userinfo.authenFlag=='2'}">正在认证中（<a th:href="@{/authenapply/userinfo}">修改</a>）</span>
+								<span class="col_red"   th:if="${userinfo.authenFlag=='9'}">认证失败（<a th:href="@{/authenapply/userinfo}">修改</a>）</span>
+								<span class="col_red"   th:if="${userinfo.authenFlag=='0'}">未认证（<a th:href="@{/authenapply/userinfo}">去认证</a>）</span>
 							</td>
 						</tr>
 						<tr>
 							<td class="Hint">
-								用户名称:
+								手机号：
 							</td>
 							<td >
-								<input class="form-control" placeholder="" type="text"  maxlength="128"  th:value="${userinfo.staffName}" id="staffName">
-							</td>
-						</tr>
-						<tr>
-							<td class="Hint">
-								电话:
-							</td>
-							<td >
-							<span th:text="${userinfo.serialNumber}" id="spanphone"></span>
+								<span th:text="${userinfo.serialNumber}" id="spanphone"></span>
 								<input class="form-control" id="phoneHidden" placeholder="" type="hidden"  maxlength="11" th:value="${userinfo.serialNumber}" disabled>
 								<button class="btn btn-default btn-sm " style="margin-left:30px;" onclick="initModifyPhone();">修改号码</button>
 							</td>
 							<td class="pl5"></td>
 						</tr>
+						<tr th:if="${userinfo.authenFlag!='0'}">
+							<td class="Hint">
+								企业名称：
+							</td>
+							<td >
+								<input class="form-control" placeholder="" type="text"  maxlength="128"  th:value="${vodata.invoiceTitle}" disabled>
+							</td>
+						</tr>
+						<tr th:if="${userinfo.authenFlag!='0'}">
+							<td class="Hint">
+								企业人数：
+							</td>
+							<td >
+								<input class="form-control" placeholder="" type="text" onkeyup="WEB.checkNum(this)" maxlength="6" id="companyPeople" th:value="${vodata.companyPeople}">
+								<p class="error-tip" style="display:none;" id="companyPeople_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
+							</td>
+						</tr>
+						<tr th:if="${userinfo.authenFlag!='0'}">
+							<td class="Hint">
+								主营业务：
+							</td>
+							<td >
+								<input class="form-control" placeholder="" type="text"  maxlength="200" id="companyBusi" th:value="${vodata.companyBusi}">
+								<p class="error-tip" style="display:none;" id="companyBusi_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
+							</td>
+						</tr>
+						<tr th:if="${userinfo.authenFlag!='0'}">
+							<td class="Hint">
+								企业网址：
+							</td>
+							<td >
+								<input class="form-control" placeholder="" type="text"  maxlength="120" id="companyUrl" th:value="${vodata.companyUrl}">
+								<p class="error-tip" style="display:none;" id="companyUrl_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
+							</td>
+						</tr>
 						<tr>
 							<td class="Hint">
-								用户头像:
+								用户头像：
 							</td>
 							<td >
 								<img src="" width="80" height="80" th:src="${userinfo.headSrc}" id="headVfsid" th:vfsId="${userinfo.headVfsid}">
@@ -115,7 +139,7 @@
 						</tr>
 						<tr>
 							<td class="Hint">
-								QQ号:
+								QQ号：
 							</td>
 							<td >
 								<input class="form-control" placeholder="" type="text"  maxlength="16" th:value="${userinfo.qq}" id="qq" >
@@ -123,7 +147,7 @@
 						</tr>
 						<tr>
 							<td class="Hint">
-								微信号:
+								微信号：
 							</td>
 							<td >
 								<input class="form-control" placeholder="" type="text"  maxlength="56" th:value="${userinfo.weChat}" id="weChat" >
@@ -131,7 +155,7 @@
 						</tr>
 						<tr>
 							<td class="Hint">
-								性别:
+								性别：
 							</td>
 							<td >
 								<select  class="form-control" id="gender">
@@ -143,19 +167,100 @@
 						</tr>
 						<tr>
 							<td class="Hint">
-								职位:
+								职位：
 							</td>
 							<td >
 								<input class="form-control" placeholder="" type="text"  maxlength="128" th:value="${userinfo.job}" id="job" >
 							</td>
 						</tr>
 				</table>
+
+				<div th:if="${userinfo.authenFlag!='0'}">
+				<div class="title">联系信息</div>
+				<table class="editTable">
+					<tr>
+						<td class="Hint" width="140">联系人：</td>
+						<td width="520">
+							<input class="form-control" placeholder="" type="text" id="relName" maxlength="16" onfocus="hiddenwarm('relName');" th:value="${vodata.relName}">
+							<p class="error-tip" style="display:none;" id="relName_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
+
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint" width="140">联系人电话：</td>
+						<td>
+							<input class="form-control" placeholder="" type="text" id="phone" maxlength="11" onfocus="hiddenwarm('phone');" th:value="${vodata.phone}">
+							<p class="error-tip" style="display:none;" id="phone_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint" width="140">固话：</td>
+						<td>
+							<input class="form-control" placeholder="" type="text"  maxlength="20" id="companyTel" th:value="${vodata.companyTel}">
+							<p class="error-tip" style="display:none;" id="companyTel_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint" width="140">传真：</td>
+						<td>
+							<input class="form-control" placeholder="" type="text"  maxlength="20" id="companyFax" th:value="${vodata.companyFax}">
+							<p class="error-tip" style="display:none;" id="companyFax_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint" width="140">邮箱：</td>
+						<td>
+							<input class="form-control" placeholder="" type="text"  maxlength="60" id="companyMail" th:value="${vodata.companyMail}">
+							<p class="error-tip" style="display:none;" id="companyMail_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							<span class="col_red">*</span>公司地址：
+						</td>
+						<td >
+							<form class="form-inline">
+								<div class="form-group">
+									<select  class="form-control" id="province" onfocus="hiddenwarm('areainfo');">
+										<option value="">省份</option>
+										<option value="59" th:each="province,provinceStat:${provinceList}" th:text="${province.areaName}" th:value="${province.areaCode}" th:selected="${vodata != null} and ${#strings.equals(province.areaCode, vodata.provinceCode)}">广西</option>
+										<option value="71" th:remove="all">湖南</option>
+										<option value="74" th:remove="all">广东</option>
+									</select>
+									<select  class="form-control" id="city" onfocus="hiddenwarm('areainfo');">
+										<option value="">地级市</option>
+										<option value="59" th:each="city,cityStat:${cityList}" th:value="${city.areaCode}" th:text="${city.areaName}" th:selected="${vodata != null} and ${#strings.equals(city.areaCode, vodata.cityCode)}">广西</option>
+										<option value="71" th:remove="all">湖南</option>
+										<option value="74" th:remove="all">广东</option>
+									</select>
+									<select  class="form-control" id="country" onfocus="hiddenwarm('areainfo');">
+										<option value="">市、县级市、县</option>
+										<option value="59" th:each="country,countryStat:${countryList}" th:value="${country.areaCode}" th:text="${country.areaName}" th:selected="${vodata != null} and ${#strings.equals(country.areaCode, vodata.countryCode)}">广西</option>
+										<option value="71" th:remove="all">湖南</option>
+										<option value="74" th:remove="all">广东</option>
+									</select>
+								</div>
+								<p class="error-tip" style="display:none;" id="areainfo_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
+							</form>
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							<span class="col_red">*</span>详细地址：
+						</td>
+						<td >
+							<input class="form-control" placeholder="" type="text" id="detailAddress" maxlength="256" onfocus="hiddenwarm('detailAddress');" th:value="${vodata.contactInfo}">
+							<p class="error-tip" style="display:none;" id="detailAddress_msg"><i class="icon iconfont icon-cuowu"></i><span></span></p>
+						</td>
+					</tr>
+				</table>
+				</div>
 			</div>
 			<!-- 按钮 -->
-				<hr>
-				<div class="p20 text-center " style="margin-left: 220px;">
-					<a href="javascript:;" class="btn-primary btn mr10" onclick="updateInfo();">保存</a>
-				</div>
+			<hr>
+			<div class="p20 text-center " style="margin-left: 220px;">
+				<a href="javascript:;" class="btn-primary btn mr10" onclick="updateInfo();">保存</a>
+			</div>
 		</div>
 		<!-- Modal -->
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
