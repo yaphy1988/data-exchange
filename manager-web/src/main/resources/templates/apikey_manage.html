@@ -127,7 +127,7 @@
                                     <p class="pop-link">
                                         <a th:if="${vo.status}!='1'" href="javascript:void(0)" th:onclick="|changeStatus(${vo.clientId},'1')|">生效</a>
                                         <a th:if="${vo.status}!='0'" href="javascript:void(0)" th:onclick="|changeStatus(${vo.clientId},'0')|">失效</a>
-                                        <a href="javascript:void(0)" th:onclick="|edit(${vo})|">编辑</a>
+                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal3" th:onclick="|edit(${vo})|">编辑</a>
                                     </p>
                                 </td>
                             </tr>
@@ -135,7 +135,7 @@
                         </table>
                       
                         <div class="text-right">
-                        	 <button class="btn btn-default " onclick="createClient()">新增</button>
+                        	 <button class="btn btn-default " data-toggle="modal" data-target="#myModal" onclick="createClient()">新增</button>
                         	 <button class="btn btn-default" onclick="delAllSel()">删除</button>
                         </div>
                      	<div class="pagelist" th:replace="fragments/pager :: pager">
@@ -291,6 +291,206 @@
 		</nav>
 	</div>
 
+	<!-- 编辑 -->
+	<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">编辑</h4>
+	      </div>
+	      <div class="modal-body">
+	        <table class="editTable">
+				<tbody>
+				
+				<tr >
+					<td class="Hint" width="120">用户名称:</td>
+					<td width="320">
+						<div class="input-group " >
+							<input class="form-control" placeholder="" id="" >
+						</div>
+					</td>
+				</tr>
+				<tr >
+					<td class="Hint" >有效期:</td>
+					<td>
+						<div class="input-group ">
+							<input class="form-control" placeholder="" id="" >
+						</div>
+					</td>
+				</tr>
+				<!-- <tr>
+					<td class="Hint" width="120">选择:</td>
+					<td  width="320">
+						<select  class="form-control"  id="">
+							<option value="20"></option>
+							<option value="10"></option>
+							<option value="30"></option>
+						</select>
+					</td>
+				</tr>
+				<tr >
+					<td class="Hint" >纯文本:</td>
+					<td>
+						<div class="input-group ">
+							<input class="form-control" placeholder="" id="" >
+						</div>
+					</td>
+				</tr> -->
+				</tbody>
+			</table>
+			
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary"  th:onclick="'javascript:createOrderBymaneger();'" >确定</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        
+	      </div>
+	    </div>
+	  </div>
+	  
+	</div>
+
+	
+
+	<!-- Modal -->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">新增</h4>
+	      </div>
+	      <div class="modal-body">
+	        <table class="editTable">
+				<tbody>
+				<tr>
+						<td class="Hint" width="120">用户名称:</td>
+						<td  width="320">
+							<div class="input-group ">
+ 								<input class="form-control" placeholder="" id="" type="text">
+								<span class="input-group-btn">
+					        		<button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal2">请选择</button>
+					      		</span>
+							</div>
+						</td>
+					</tr>
+				<tr>
+					<td class="Hint" width="120">有效期:</td>
+					<td  width="320">
+						<select  class="form-control"  id="">
+							<option value="20">自定义套餐</option>
+							<option value="10">固定套餐</option>
+							<option value="30">跨类套餐</option>
+						</select>
+					</td>
+				</tr>
+					
+				
+				
+				</tbody>
+			</table>
+			
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary"  th:onclick="'javascript:createOrderBymaneger();'" >确定</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	        
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 条件选择 -->
+	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			  <div class="modal-header">
+				  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				  <h4 class="modal-title" id="myModalLabel1">新增</h4>
+			  </div>
+			  <div class="modal-body">
+				  <div class="top-table">
+					  <table class="editTable">
+						  <tbody>
+						  <tr>
+							  <td class="Hint" width="100">
+								 用户编码：
+							  </td>
+							  <td>
+								  <input class="form-control" placeholder="商品名称" type="text">
+							  </td>
+								<td class="Hint" width="100">
+								 用户名称：
+							  </td>
+							  <td>
+								  <input class="form-control" placeholder="商品名称" type="text">
+							  </td>
+
+							  <td>
+								  <button class="btn btn-primary">查询</button>
+							  </td>
+						  </tr>
+						  </tbody>
+						</table>
+				  </div>
+
+				  <!-- Tab panes -->
+	       			<div class="tab-content p10">
+					    <div role="tabpanel" class="tab-pane active" id="tab01">
+					        <table class="table table-bordered text-center">
+					            <thead>
+					            <tr class="active">
+					                <th>用户编码</th>
+					                <th>用户名称</th>
+					                <th>选择</th>
+					            </tr>
+					            </thead>
+					            <tbody>
+					            <tr>
+					                <td>……</td>
+					                <td>……</td>
+					                <td>
+					                    <input type="radio">
+					                </td>
+					            </tr>
+					            </tbody>
+					        </table>
+
+
+
+					       <div class="pagelist">
+								<nav aria-label="Page navigation">
+								  <ul class="pagination">
+								    <li>
+								      <a href="#" aria-label="Previous">
+								        <span aria-hidden="true">上一页</span>
+								      </a>
+								    </li>
+								    <li class="active"><a href="#">1</a></li>
+								    <li><a href="#">2</a></li>
+								    <li><a href="#">3</a></li>
+								    <li><a href="#">4</a></li>
+								    <li><a href="#">5</a></li>
+								    <li>
+								      <a href="#" aria-label="Next">
+								        <span aria-hidden="true">下一页</span>
+								      </a>
+								    </li>
+								    <div class="pageskip">
+								  	<span class="pr10">到第<input class="pageskip_box" type="text">页</span>
+								  	<a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+								  </div>
+								  </ul>
+								  
+								</nav>
+							</div>
+					    </div>
+				    </div>
+		    	</div>
+	    	</div>
+    	</div>
+	</div>
+    
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
 
