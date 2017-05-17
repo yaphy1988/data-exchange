@@ -22,6 +22,13 @@ $(function(){
     });
 
     queryRecGdsList();
+    
+    /**
+     * 用户浏览商品记录保存。gongxq
+     * @param obj
+     * @returns
+     */
+    userfootprint();
 })
 
 function changeGdsSku(obj) {
@@ -131,4 +138,16 @@ function addToCart(gdsId,skuId){
         return;
     }
 	window.location.href=WEB_ROOT+"/order/gdshopcart?gdsId="+gdsId+"&skuId="+skuId;
+}
+
+function userfootprint(){
+	 $.ajax({
+	        url:basePath + "/goods/userfootprint",
+	        async:true,
+	        type:'post',
+	        dataType:'json',
+	        data:{gdsId:$("#gdsId_detail").val(),catFirst:($("#catFirst_detail").val())},
+	        success:function (jsonObj) {
+	        }
+	    })
 }

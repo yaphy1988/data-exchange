@@ -33,8 +33,8 @@
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
         <if test="criteria.valid">
-          <trim prefix="(" prefixOverrides="and" suffix=")">
-         	 C.gds_id=G.gds_id 
+          <trim prefix="" prefixOverrides="and" suffix="">
+          	F.gds_id=G.gds_id 
             <foreach collection="criteria.criteria" item="criterion">
               <choose>
                 <when test="criterion.noValue">

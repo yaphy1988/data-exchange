@@ -43,6 +43,7 @@ function pagerClick(pageNo) {
 var BrowsingHistory = {
 	gridUserfootprint : function(param){
 		param.gdsName = $.trim($("#gdsName").val());
+		param.catFirst = $(".tabSelect.active").attr('catFirst');
 		$.ajax({
 	        url:WEB_ROOT+"/userfootprint/griduserfootprint",
 	        async:true,

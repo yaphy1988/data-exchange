@@ -14,6 +14,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserFootPrintReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserFootPrintRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IUserFootPrintRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.gds.IUserFootPrintSV;
+import com.ai.bdex.dataexchange.util.StringUtil;
 /**
  * 
  * Title: ECP <br>
@@ -140,6 +141,44 @@ public class UserFootPrintRSVImpl implements IUserFootPrintRSV{
         } catch (Exception e) {
             logger.error("获取商品浏览历史分页列表失败：",e);
             throw new BusinessException("获取商品浏览历史分页列表失败："+e.getMessage());
+        }
+    }
+
+    @Override
+    public int increaseSeeNum(UserFootPrintReqDTO userFootPrintReqDTO) throws BusinessException {
+        if(userFootPrintReqDTO == null){
+            throw new BusinessException("入参userFootPrintReqDTO不能为null");
+        }
+        if(userFootPrintReqDTO.getGdsId()==null || userFootPrintReqDTO.getGdsId().intValue()<1){
+            throw new BusinessException("入参gdsId不能为空");
+        }
+        if(StringUtil.isBlank(userFootPrintReqDTO.getStaffId())){
+            throw new BusinessException("入参staffId不能为空");
+        }
+        try {
+            return  iUserFootPrintSV.increaseSeeNum(userFootPrintReqDTO);
+        } catch (Exception e) {
+            logger.error("商品浏览记录更新失败：",e);
+            throw new BusinessException("商品浏览记录更新失败："+e.getMessage());
+        }
+    }
+
+    @Override
+    public int reduceSeeNum(UserFootPrintReqDTO userFootPrintReqDTO) throws BusinessException {
+        if(userFootPrintReqDTO == null){
+            throw new BusinessException("入参userFootPrintReqDTO不能为null");
+        }
+        if(userFootPrintReqDTO.getGdsId()==null || userFootPrintReqDTO.getGdsId().intValue()<1){
+            throw new BusinessException("入参gdsId不能为空");
+        }
+        if(StringUtil.isBlank(userFootPrintReqDTO.getStaffId())){
+            throw new BusinessException("入参staffId不能为空");
+        }
+        try {
+            return  iUserFootPrintSV.reduceSeeNum(userFootPrintReqDTO);
+        } catch (Exception e) {
+            logger.error("商品浏览记录更新失败：",e);
+            throw new BusinessException("商品浏览记录更新失败："+e.getMessage());
         }
     }
 

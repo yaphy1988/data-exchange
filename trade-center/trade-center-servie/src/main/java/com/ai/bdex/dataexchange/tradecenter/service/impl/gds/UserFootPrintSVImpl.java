@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.beanutils.PropertyUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -15,6 +16,7 @@ import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.UserFootPrintExtendsMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.UserFootPrintMapper;
+import com.ai.bdex.dataexchange.tradecenter.dao.mapper.UserFootPrintUpdateExtendsMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.UserFootPrint;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.UserFootPrintExample;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.UserFootPrintExtends;
@@ -38,6 +40,8 @@ public class UserFootPrintSVImpl implements IUserFootPrintSV{
     private UserFootPrintMapper userFootPrintMapper;
     @Resource
     private UserFootPrintExtendsMapper userFootPrintExtendsMapper;
+    @Resource
+    private UserFootPrintUpdateExtendsMapper userFootPrintUpdateExtendsMapper;
     
     @Override
     public List<UserFootPrintRespDTO> queryUserFootPrintList(
@@ -74,6 +78,7 @@ public class UserFootPrintSVImpl implements IUserFootPrintSV{
         userFootPrint.setFpId(fpId);
         Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
         userFootPrint.setCreateTime(time);
+        userFootPrint.setUpdateTime(time);
         int code = userFootPrintMapper.insert(userFootPrint);
         return code;
     }
@@ -229,6 +234,35 @@ public class UserFootPrintSVImpl implements IUserFootPrintSV{
         if(StringUtil.isNotBlank(userFootPrintReqDTO.getGdsName())){
             criteria.andGdsNameLike("%"+userFootPrintReqDTO.getGdsName()+"%");
         }
+    }
+
+    @Override
+    public int increaseSeeNum(UserFootPrintReqDTO userFootPrintReqDTO) throws BusinessException {
+        UserFootPrint userFootPrint = new UserFootPrint();
+        try {
+            PropertyUtils.copyProperties(userFootPrint, userFootPrintReqDTO);
+            Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            userFootPrint.setLastTime(time);
+            userFootPrint.setUpdateTime(time);
+        } catch (Exception e) {
+            throw new BusinessException("userFootPrint，userFootPrintReqDTO属性赋值错误"+e);
+        }
+        
+        return userFootPrintUpdateExtendsMapper.increaseSeeNum(userFootPrint);
+    }
+
+    @Override
+    public int reduceSeeNum(UserFootPrintReqDTO userFootPrintReqDTO) throws BusinessException {
+        UserFootPrint userFootPrint = new UserFootPrint();
+        try {
+            PropertyUtils.copyProperties(userFootPrint, userFootPrintReqDTO);
+            Timestamp time = new Timestamp(Calendar.getInstance().getTimeInMillis());
+            userFootPrint.setLastTime(time);
+            userFootPrint.setUpdateTime(time);
+        } catch (Exception e) {
+            throw new BusinessException("userFootPrint，userFootPrintReqDTO属性赋值错误"+e);
+        }
+        return userFootPrintUpdateExtendsMapper.reduceSeeNum(userFootPrint);
     }
 }
 

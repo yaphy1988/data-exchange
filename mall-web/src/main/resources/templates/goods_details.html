@@ -130,6 +130,10 @@
 			<a href="" th:remove="all"><span>生活服务</span></a>
 			<span class="col_999" th:remove="all">常用快递</span>
 		</div>
+		<!-- 隱藏域 -->
+		<input type="hidden" th:attr="value=${gdsInfo.gdsId}" id="gdsId_detail"/>
+		<input type="hidden" th:attr="value=${gdsInfo.catFirst}" id="catFirst_detail"/>
+		
 		<div class="gd_etails clearfix">
 			<div class="gd_Left">
 				<div class="gd_hd clearfix">

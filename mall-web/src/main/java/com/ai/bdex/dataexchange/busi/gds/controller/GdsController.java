@@ -1,15 +1,61 @@
 package com.ai.bdex.dataexchange.busi.gds.controller;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.*;
+import java.net.InetAddress;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceCodeInfoDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceErrorInfoDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInParaDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceOutParaDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.ServiceDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IServiceMessageRSV;
-import com.ai.bdex.dataexchange.busi.api.entity.*;
-import com.ai.bdex.dataexchange.busi.gds.entity.*;
+import com.ai.bdex.dataexchange.busi.api.entity.AipServiceCodeInfoVO;
+import com.ai.bdex.dataexchange.busi.api.entity.AipServiceErrorInfoVO;
+import com.ai.bdex.dataexchange.busi.api.entity.AipServiceInParaVO;
+import com.ai.bdex.dataexchange.busi.api.entity.AipServiceOutParaVO;
+import com.ai.bdex.dataexchange.busi.api.entity.ServiceVO;
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsDetailTabContent;
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfo2PropVO;
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsLabelVO;
+import com.ai.bdex.dataexchange.busi.gds.entity.GdsSkuVO;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.*;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserFootPrintReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserFootPrintRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.*;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfo2PropRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsLabelRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IUserFootPrintRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
@@ -17,21 +63,6 @@ import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 /**
  * Created by yx on 2017/4/18.
@@ -60,6 +91,8 @@ public class GdsController {
     private IServiceMessageRSV iServiceMessageRSV;
     @DubboConsumer 
     private IOrderInfoRSV iOrderInfoRSV;
+    @DubboConsumer 
+    private IUserFootPrintRSV iUserFootPrintRSV;
 
     @RequestMapping(value = "/details/{gdsId}-{skuId}")
     public String pageInit(HttpServletRequest request, HttpServletResponse response, @PathVariable Integer gdsId,@PathVariable Integer skuId){
@@ -375,5 +408,52 @@ public class GdsController {
 
         return  returnNum;
     }
-
+    
+    /**
+     * 
+     * userFootPrint:(用户浏览记录). <br/> 
+     * 
+     * @author gxq 
+     * @param model
+     * @param gdsInfoVO
+     * @return 
+     * @since JDK 1.6
+     */
+    @RequestMapping(value="/userfootprint")
+    @ResponseBody
+    public AjaxJson userFootPrint(Model model,GdsInfoVO gdsInfoVO,HttpSession session){
+        AjaxJson ajaxJson = new AjaxJson();
+        try {
+            String staffId = StaffUtil.getStaffId(session);
+            if(StringUtil.isBlank(staffId)){
+                try {
+                    staffId = InetAddress.getLocalHost().getHostAddress();
+                } catch (Exception e) {
+                    log.error("获取ip错误", e);
+                }
+            }
+            UserFootPrintReqDTO userFootPrintReqDTO = new UserFootPrintReqDTO();
+            userFootPrintReqDTO.setGdsId(gdsInfoVO.getGdsId());
+            userFootPrintReqDTO.setStatus("1");
+            userFootPrintReqDTO.setStaffId(staffId);
+            userFootPrintReqDTO.setCatFirst(gdsInfoVO.getCatFirst());
+            List<UserFootPrintRespDTO> userFootInfo = iUserFootPrintRSV.queryUserFootPrintList(userFootPrintReqDTO);
+            if(userFootInfo != null && userFootInfo.size()>=1){
+                //已经有记录，那么就更新浏览次数，
+                userFootPrintReqDTO.setSeeNum(1);
+                userFootPrintReqDTO.setUpdateUser(staffId);
+                iUserFootPrintRSV.increaseSeeNum(userFootPrintReqDTO);
+            }else{
+                //尚未有记录，则直接插入
+                userFootPrintReqDTO.setUpdateUser(staffId);
+                userFootPrintReqDTO.setCreateUser(staffId);
+                userFootPrintReqDTO.setCatFirst(gdsInfoVO.getCatFirst());
+                userFootPrintReqDTO.setSeeNum(0);
+                iUserFootPrintRSV.insertUserFootPrint(userFootPrintReqDTO);
+            }
+        } catch (Exception e) {
+            log.error("保存用户浏览历史失败", e);
+        }
+        return ajaxJson;
+    }
 }

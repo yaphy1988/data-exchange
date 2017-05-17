@@ -55,12 +55,15 @@ public class UserFootPrintController {
             UserFootPrintReqDTO userFootPrintReqDTO = new UserFootPrintReqDTO();
             ObjectCopyUtil.copyObjValue(userFootPrintVO, userFootPrintReqDTO, null, false);
             userFootPrintReqDTO.setPageSize(10);
+            userFootPrintReqDTO.setStatus("1");
             PageResponseDTO<UserFootPrintRespDTO> pageInfo = iUserFootPrintRSV.queryUserFootPrintPageExtends(userFootPrintReqDTO);
             if(pageInfo != null&& pageInfo.getResult() != null && pageInfo.getResult().size() >=1){
                 List<UserFootPrintRespDTO> list = pageInfo.getResult();
                 for(UserFootPrintRespDTO userFootPrintRespDTO : list){
                     try {
-                        userFootPrintRespDTO.setCatFirstName(parseFirstCatName(userFootPrintRespDTO.getCatFirst()));
+                        if(userFootPrintRespDTO.getCatFirst()!=null && userFootPrintRespDTO.getCatFirst().intValue()>=1){
+                            userFootPrintRespDTO.setCatFirstName(parseFirstCatName(userFootPrintRespDTO.getCatFirst()));
+                        }
                     } catch (Exception e) {
                         logger.error("获取商品信息失败", e);
                     }

@@ -89,5 +89,19 @@ public interface IUserFootPrintSV {
      * @return
      */
     public PageResponseDTO<UserFootPrintRespDTO> queryUserFootPrintPageExtends(UserFootPrintReqDTO userFootPrintReqDTO) throws BusinessException;
+    
+    /**
+     *   这个扩展只为了 更新商品浏览次数而已
+     * @param gdsInfoReqDTO
+     * @return
+     */
+    public int increaseSeeNum(UserFootPrintReqDTO userFootPrintReqDTO) throws BusinessException;
+    
+    /**
+     *   这个扩展只为了 更新商品浏览次数而已
+     * @param gdsInfoReqDTO
+     * @return
+     */
+    public int reduceSeeNum(UserFootPrintReqDTO userFootPrintReqDTO) throws BusinessException;
 }
 
