@@ -60,10 +60,13 @@ function doAjax(url,params,callBack){
 }
 function changeCreateType(){
 	//10固定套餐订单; 20自定义套餐订单； 30跨类套餐订单//
- 	$("#trechecount").removeAttr("readonly");
-	$("#trorderprice").removeAttr("readonly");
-	$("#trinavitime").removeAttr("readonly");
-	$("#trallmoney").removeAttr("readonly");
+ 	$("#echecount").removeAttr("readonly");
+	$("#packprice").removeAttr("readonly");
+	$("#innavateDate").removeAttr("readonly");
+	$("#allmoney").removeAttr("readonly");
+	$("#gdsname").removeAttr("readonly");
+	$("#gdsid").val();
+	$("#gdsname").val();
 
 	var seleopValue = $("#typeOption").val();
 	if(seleopValue == "10"){
@@ -76,10 +79,10 @@ function changeCreateType(){
 		$("#trinavitime").show(); //有截止日期
 		$("#trallmoney").show(); //总金额，单位元
 
-		$("#trechecount").attr("readonly","readonly");
-		$("#trorderprice").attr("readonly","readonly");
-		$("#trinavitime").attr("readonly","readonly");
-		$("#trallmoney").attr("readonly","readonly");
+		$("#echecount").attr("readonly","readonly");
+		$("#packprice").attr("readonly","readonly");
+		$("#innavateDate").attr("readonly","readonly");
+		$("#allmoney").attr("readonly","readonly");
 	}
 	//20 --自定义套餐
 	 if(seleopValue == "20"){
@@ -88,18 +91,21 @@ function changeCreateType(){
 		 $("#trechecount").show();//每份多少次
 		 $("#trorderprice").show();//单价
 		 $("#trordernum").show();//购买套餐数量，默认1
-		 $("#trinavitime").show(); //有截止日期
+		 $("#innavateDate").show(); //有截止日期
 		 $("#trallmoney").show(); //总金额，单位元
      }
 	//30跨类套餐订单
 	if(seleopValue == "30"){
-        $("#trgds").hide();//商品
+        $("#trgds").show();//商品
 		$("#trsku").hide();//套餐
 		$("#trechecount").hide();//每份多少次
 		$("#trorderprice").hide();//单价
 		$("#trordernum").show();//购买套餐数量，默认1
 		$("#trinavitime").show(); //有截止日期
 		$("#trallmoney").show(); //总金额，单位元
+		$("#gdsname").attr("readonly","readonly");
+		$("#gdsid").val($("#staticgdsid").val());
+		$("#gdsname").val($("#staticgdsname").val());
 	}
 }
 //管理员生成订单
@@ -142,7 +148,10 @@ function createOrderBymaneger(){
 	var callBack =function(data){
 		if(data.success){
 			WEB.msg.info("提示","创建成功");
-			orderManagequery(1);
+			$("#myModal").attr("class", "modal");
+			$("#myModal").hide();
+			$(".modal-backdrop").attr("class", "modal-backdrop");
+ 			orderManagequery(1);
 		}
 		else{
 			WEB.msg.info("提示",data.ERRORINFO);
@@ -194,8 +203,53 @@ function  setGetgdsinfo() {
 	$("#gdsname").val(gdsname);
 	$("#gdsid").val(gdsid);
 	$("#api_id").val(api_id);
+   // 设置类数据为空
+	$(".skuclass").val("");
  }
- function  getskuBygds() {
+ function setGetskuinfo() {
+	 var skuid     = $("input[name='radiosku']:checked").val();
+	 if (typeof(skuid) == "undefined")
+	 {
+	 	return ;
+	 }
+ 	 var skuname =  $("input[name='radiosku']:checked").attr("skutname_tmp");
+	 var packprice =  $("input[name='radiosku']:checked").attr("packPrice");
+	 var packtimes =  $("input[name='radiosku']:checked").attr("packTimes");
+	 var inavitime = $("input[name='radiosku']:checked").attr("activeEndTime");
+	 //如果是无期限，则inavitime 为空
+
+	 //设置上级窗口
+	 //单价设置为元
+	 var yuanpackprice = packprice/100;
+	 $("#skuname").val(skuname);
+	 $("#skuid").val(skuid);
+	 $("#innavateDate").val(inavitime);
+	 $("#echecount").val(packtimes);
+	 $("#packprice").val(yuanpackprice);
+	 var allmoney = parseInt(yuanpackprice) * parseInt($("#ordernum").val());
+     $("#allmoney").val(allmoney);
+ }
+ function  getskuBygds(index) {
 	var gdsid =  $("#gdsid").val();
-	 WEB.msg.info("提示","要根据gds去获取skuID"+gdsid);
- }
+	 if(gdsid == "")
+	 {
+		 WEB.msg.info("提示","先选择商品");
+		 return;
+	 }
+ 	 var param={
+		 gdsid:gdsid,
+		 pageSize:6,
+		 pageNo:index
+	 };
+	 $.ajax({
+		 url:basePath+'/orderManage/qryskubyGds',
+		 cache:false,
+		 async:true,
+		 dataType:'html',
+		 data : param,
+		 success:function(data){
+			 $('#skuquery').empty();
+			 $('#skuquery').html(data);
+		 }
+	 });
+  }

@@ -32,7 +32,15 @@ public class GdsSkuRespDTO implements Serializable {
     private Date updateTime;
 
     private String gdsPic;
+    private Date inavitime;
 
+    public Date getInavitime() {
+        return inavitime;
+    }
+
+    public void setInavitime(Date inavitime) {
+        this.inavitime = inavitime;
+    }
     public Integer getSkuId() {
         return skuId;
     }

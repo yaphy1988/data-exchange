@@ -14,7 +14,10 @@ import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
- import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.CacheUtil;
@@ -81,6 +84,9 @@ public class orderManageController {
     private IAipCenterDataAccountRSV iAipCenterDataAccountRSV;
 	@DubboConsumer
 	private IGdsInfoRSV iGdsInfoRSV;
+	@DubboConsumer
+	private  IGdsSkuRSV iGdsSkuRSV;
+
 
     
     /**
@@ -262,7 +268,8 @@ public class orderManageController {
 	 * @return
 	 */
 	@RequestMapping(value="/orderManage")
-	public String orderManage(){
+	public String orderManage(Model model){
+
 		return "order_manage";
 	}
 	/**
@@ -306,14 +313,14 @@ public class orderManageController {
 							logger.error("查询我的订单列表失败！原因是：" + e2.getMessage());
 						}
 						ordMainRespDTO.setOrdInfoRespDTO(ordInfoRespDTO);
-
-
 					}
 				}
 				model.addAttribute("pageInfo", pageInfo);
 			} catch (Exception e) {
 				logger.error("查询我的订单列表失败！原因是：" + e.getMessage());
 			}
+			model.addAttribute("staticgdsid", Constants.Order.ORDER_GDS_30_GDSID);
+			model.addAttribute("staticgdsname", Constants.Order.ORDER_GDS_30_GDSNAME);
 			return "order_manage :: #managerdata";
 		}
 	/**
@@ -595,9 +602,6 @@ public class orderManageController {
 				for (GdsInfoRespDTO gdsInfoRespDTO : gdsInfoRespPage.getResult()){
 					GdsInfoVO gdsInfoVO = new GdsInfoVO();
 					ObjectCopyUtil.copyObjValue(gdsInfoRespDTO,gdsInfoVO,null,false);
-/*
-					gdsInfoVO.setCatName(traslateCatName(gdsInfoVO.getCatId()));
-*/
 					gdsInfoVOList.add(gdsInfoVO);
 				}
 			}
@@ -608,6 +612,42 @@ public class orderManageController {
 		}
 		return "order_manage :: #gdsquery" ;
 	}
+	/**
+	 * 商品模块查询未选择商品
+	 * @param model
+	 * @param request
+	 * @param
+	 * @return
+	 */
+	@RequestMapping(value = "/qryskubyGds")
+	public String qryskubyGds(Model model, HttpServletRequest request) {
+		PageResponseDTO<GdsInfoVO> pageInfo = new PageResponseDTO<GdsInfoVO>();
+		try {
+			String gdsid = request.getParameter("gdsid");
+			int pagesize = Integer.parseInt( request.getParameter("pageSize"));
+			int pageno = Integer.parseInt( request.getParameter("pageNo"));
+			GdsSkuReqDTO gdsSkuReqDTO = new GdsSkuReqDTO();
+			gdsSkuReqDTO.setGdsId( Integer.parseInt(gdsid));
+			List<GdsSkuRespDTO>  ListGdsSkuRespDTO = iGdsSkuRSV.queryGdsSkuList(gdsSkuReqDTO);
+			//有效日期得处理一下,界面显示为最终的有效日期
+			if(!CollectionUtil.isEmpty(ListGdsSkuRespDTO)){
+				for (int i = 0 ; i < ListGdsSkuRespDTO.size();i++ ) {
+					int inaviDay = ListGdsSkuRespDTO.get(i).getPackDay();
+					Date orderTime = DateUtil.getNowAsDate();
+					Calendar calendar   =   new   GregorianCalendar();
+					calendar.setTime(orderTime);
+					calendar.add(calendar.DATE,inaviDay);//把日期往后增加一年.整数往后推,负数往前移动
+					Date activeEndTime =  calendar.getTime();   //这个时间就是日期往后推一天的结果
+					ListGdsSkuRespDTO.get(i).setInavitime(activeEndTime);
+				}
+			}
+ 			model.addAttribute("skupageInfo", ListGdsSkuRespDTO);
+		}catch (Exception e){
+			log.error("查询sku列表异常");
+		}
+		return "order_manage :: #skuquery" ;
+	}
+
 	private String uRLDecoderStr(String strinfo) {
 		String newstrinfo = "";
 		try {

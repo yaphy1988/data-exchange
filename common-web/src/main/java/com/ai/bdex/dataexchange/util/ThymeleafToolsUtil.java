@@ -139,10 +139,13 @@ public class ThymeleafToolsUtil {
         switch(orderType)
         {
             case "10":
-                orderTypeShow = "普通订单";
+                orderTypeShow = "固定套餐订单";
                 break;
             case "20":
-                orderTypeShow = "手动创建订单";
+                orderTypeShow = "自定义套餐订单";
+                break;
+            case "30":
+                orderTypeShow = "跨类套餐订单";
                 break;
             default:
                 orderTypeShow = "未知的类型";
