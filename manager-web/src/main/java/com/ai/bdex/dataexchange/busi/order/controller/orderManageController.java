@@ -78,9 +78,9 @@ public class orderManageController {
 	private static final Logger log = LoggerFactory.getLogger(orderManageController.class);
 	private final static String STATUS_VALID = "1";// 有效
 	private final static String API_SERVICE_NAME_TMP = "API_SERVICE_NAME_TMP";//API服务名称接口获取不到数据
-	@DubboConsumer(timeout = 30000)
+	@DubboConsumer(timeout = 300000)
 	private IOrderInfoRSV iOrderInfoRSV;
-    @DubboConsumer
+    @DubboConsumer(timeout = 300000)
     private IOrderMainInfoRSV iOrderMainInfoRSV;
     @DubboConsumer
     private IAipServiceInfoRSV iAipServiceInfoRSV;
@@ -377,17 +377,30 @@ public class orderManageController {
                     * startDate(当periodType="1")
                     * endDate(当periodType="1")*/
 				int igdsid = new Long(ordInfoRespDTO.getGdsId()).intValue();
-				int iskuid = new Long(ordInfoRespDTO.getSkuId()).intValue();
-				String rechargeType = Constants.Order.ORDER_API_RECHARGETYPE_1;
+
+ 				if(Constants.Order.ORDER_TYPE_30.equals(ordMainInfoRespDTO.getOrderType()))
+				{
+					/*int itotalcount = new Long(ordInfoRespDTO.getBuyAllCount()).intValue();
+					rechargeDTO.setTotalNum(itotalcount);*/
+				}
+				else if(Constants.Order.ORDER_TYPE_10.equals(ordMainInfoRespDTO.getOrderType()) || Constants.Order.ORDER_TYPE_20.equals(ordMainInfoRespDTO.getOrderType()) ){
+					int iskuid = new Long(ordInfoRespDTO.getSkuId()).intValue();
+					rechargeDTO.setSkuId(iskuid);
+					int itotalcount = new Long(ordInfoRespDTO.getBuyAllCount()).intValue();
+					rechargeDTO.setTotalNum(itotalcount);
+					rechargeDTO.setCatId(ordInfoRespDTO.getCatId());
+					rechargeDTO.setCatFirst(ordInfoRespDTO.getCatFirst());
+					if(ordInfoRespDTO.getAipServiceId() != null)
+					{
+						rechargeDTO.setServiceId(ordInfoRespDTO.getAipServiceId() );
+					}
+				}
 				rechargeDTO.setRechargeUserId(ordInfoRespDTO.getStaffId());
 				rechargeDTO.setOrderId(orderid);
 				rechargeDTO.setSubOrder(ordInfoRespDTO.getSubOrder());
 				rechargeDTO.setGdsId(igdsid);
-				rechargeDTO.setSkuId(iskuid);
-				rechargeDTO.setCatId(ordInfoRespDTO.getCatId());
-				rechargeDTO.setCatFirst(ordInfoRespDTO.getCatFirst());
-				rechargeDTO.setRechargeType(Constants.Order.ORDER_API_RECHARGETYPE_1);
-				String periodType = Constants.Order.ORDER_API_PERIODTYPE_1;
+
+ 				String periodType = Constants.Order.ORDER_API_PERIODTYPE_1;
 				String  inavidate =  Constants.Order.ORDER_API_NODATE;
 				if (ordInfoRespDTO.getActiveEndTime().after(getNodatelength(inavidate))) {
 					//大于50年,就是无限期了
@@ -399,23 +412,10 @@ public class orderManageController {
 				rechargeDTO.setStartDate(ordInfoRespDTO.getCreateTime());
 				rechargeDTO.setEndDate(ordInfoRespDTO.getActiveEndTime());
 				rechargeDTO.setPeriodType(periodType);
-				// * rechargeType (1-次数，2-金额) 普通订单就是次数，后台订单是 金额
-			   /*	   * totalNum  (当rechargeType="1")
-						* totalMoney(当rechargeType="2")
-						* serviceId (当rechargeType="1")*/
-				if(Constants.Order.ORDER_TYPE_10.equals(ordMainInfoRespDTO.getOrderType())){
-					rechargeType = Constants.Order.ORDER_API_RECHARGETYPE_1;
-				}
-				else{
-					rechargeType = Constants.Order.ORDER_API_RECHARGETYPE_2;
-				}
-				int itotalcount = new Long(ordInfoRespDTO.getBuyAllCount()).intValue();
-				rechargeDTO.setTotalNum(itotalcount);
-				rechargeDTO.setServiceId(ordInfoRespDTO.getAipServiceId());
-				rechargeDTO.setRechargeType(rechargeType);
+				String packageType = ordMainInfoRespDTO.getOrderType();
+				rechargeDTO.setPackageType(packageType);
 				int iordermoney = new Long(ordInfoRespDTO.getOrderMoney()).intValue();
 				rechargeDTO.setTotalMoney(iordermoney);
-
 				try {
 					iAipCenterDataAccountRSV.dealRecharge(rechargeDTO);
 					rMap.put("success", true);
@@ -539,7 +539,7 @@ public class orderManageController {
 
 		Date activeEndTime = new Date();//失效日期
 		if(StringUtil.isBlank(inavidate)){   //没有传入的，就获取系统配置的100年 36500天
-			activeEndTime = Constants.Order.getActiveEndTimeForEver();
+			//activeEndTime = Constants.Order.getActiveEndTimeForEver();
 		}
 		else{
 			//有传入的，那就写获取当前输入的地址
@@ -631,7 +631,9 @@ public class orderManageController {
 						//服务名称取不到
 						ordInfoReqDTO.setServiceName(API_SERVICE_NAME_TMP);
 					}
-					ordInfoReqDTO.setActiveEndTime(activeEndTime);
+					if(!StringUtil.isBlank(inavidate)) {
+						ordInfoReqDTO.setActiveEndTime(activeEndTime);
+					}
 					ordInfoReqDTO.setGdsId(Long.parseLong(gdsid));
 					ordInfoReqDTO.setCatFirst(gdsInfoRespDTO.getCatFirst());
 					ordInfoReqDTO.setCatId(gdsInfoRespDTO.getCatId());

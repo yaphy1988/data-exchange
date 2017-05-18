@@ -182,7 +182,7 @@ public class RechargeSVImpl implements IRechargeSV {
                 logger.error("自定义套餐,totalNum必须大于0!");
                 throw new BusinessException("自定义套餐,totalNum必须大于0!");
             }
-        }else if(Constants.Bill.PACKAGE_TYPE_MIX.equals(rechargeDTO.getRechargeType())){
+        }else if(Constants.Bill.PACKAGE_TYPE_MIX.equals(rechargeDTO.getPackageType())){
             if(rechargeDTO.getTotalMoney() == null || rechargeDTO.getTotalMoney() <= 0){
                 logger.error("跨类套餐,totalMoney必须大于0!");
                 throw new BusinessException("跨类套餐,totalMoney必须大于0!");
@@ -201,8 +201,9 @@ public class RechargeSVImpl implements IRechargeSV {
                 throw new BusinessException("非永久有效类型，生效结束日期不能为空!");
             }
             if(StringUtil.isBlank(rechargeDTO.getServiceId())){
+                //跨类套餐没有服务编码，他有有效性
                 logger.error("非永久有效类型，服务编码不能为空!");
-                throw new BusinessException("非永久有效类型，服务编码不能为空!");
+               // throw new BusinessException("非永久有效类型，服务编码不能为空!");
             }
         }else if(Constants.Bill.DATA_ACCT_PERIOD_PERMANENT.equals(rechargeDTO.getPeriodType())){
             if(rechargeDTO.getEndDate() != null){
