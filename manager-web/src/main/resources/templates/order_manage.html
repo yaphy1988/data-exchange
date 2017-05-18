@@ -15,6 +15,21 @@
 	<script type="text/javascript" src="../../static/js-busi/order/orderManager.js" th:src="@{/js-busi/order/orderManager.js}"></script>
 	<script src="../../static/js/util.js" th:src="@{/js/util.js}"></script>
 	<script src="../../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
+
+	<link rel="stylesheet" href="../static/component/datetimepicker/css/bootstrap-datetimepicker.css" th:href="@{/component/datetimepicker/css/bootstrap-datetimepicker.css}">
+	<script src="../../static/component/datetimepicker/js/bootstrap-datetimepicker.js" th:src="@{/component/datetimepicker/js/bootstrap-datetimepicker.js}"></script>
+	<script src="../../static/component/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" th:src="@{/component/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+	<script type="text/javascript">
+		$(function () {
+			$('.form_datetime').datetimepicker({
+				//不要选择小时的minView: 2,
+				minView: 2,
+				language: 'zh-CN',
+				format: 'yyyy-mm-dd'
+			});
+		})//end document.ready
+
+	</script>
 	<!--[if lt IE 9]>
 	<script src="../static/js/respond.min.js" ></script>
 	<script src="../static/js/html5shiv.min.js" ></script>
@@ -68,34 +83,34 @@
 				<a href=""><span>个人中心</span></a>
 				<span class="col_999"> 订单管理</span>
 			</div>
-            <!--tab切换内容-->
-            <div class="tab-slide pl20 pr20">
-                <!-- Nav tabs -->
-                <ul class="nav nav-tabs" role="tablist">
-                    <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">订单管理</a></li>
-                </ul>
-                <!-- Tab panes -->
-                <div class="tab-content pt15">
-                    <div role="tabpanel" class="tab-pane active" id="managerdata">
-                        <input class="form-control" placeholder="" id="staticgdsid" type="hidden" th:value="${staticgdsid}"/>
-                        <input class="form-control" placeholder="" id="staticgdsname" type="hidden" th:value="${staticgdsname}"/>
-                        <table class="table table-bordered text-center" >
-                            <thead>
-                            <tr class="active">
-                                <th>序号</th>
-                                <th>订单号</th>
-                                <th>购买时间</th>
-                                <th>数据名称</th>
-                                <th>套餐类别</th>
-                                <th>分数</th>
-                                <th>剩余次数</th>
-                                <th>金额</th>
-                                <th>有效期</th>
-                                <th>订单状态</th>
-                                <th>订单类型</th>
-                                <th>操作</th>
-                            </tr>
-                            </thead>
+			<!--tab切换内容-->
+			<div class="tab-slide pl20 pr20">
+				<!-- Nav tabs -->
+				<ul class="nav nav-tabs" role="tablist">
+					<li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">订单管理</a></li>
+				</ul>
+				<!-- Tab panes -->
+				<div class="tab-content pt15">
+					<div role="tabpanel" class="tab-pane active" id="managerdata">
+						<input class="form-control" placeholder="" id="staticgdsid" type="hidden" th:value="${staticgdsid}"/>
+						<input class="form-control" placeholder="" id="staticgdsname" type="hidden" th:value="${staticgdsname}"/>
+						<table class="table table-bordered text-center" >
+							<thead>
+							<tr class="active">
+								<th>序号</th>
+								<th>订单号</th>
+								<th>购买时间</th>
+								<th>数据名称</th>
+								<th>套餐类别</th>
+								<th>分数</th>
+								<th>剩余次数</th>
+								<th>金额</th>
+								<th>有效期</th>
+								<th>订单状态</th>
+								<th>订单类型</th>
+								<th>操作</th>
+							</tr>
+							</thead>
 							<tbody th:if=" ${pageInfo}" th:remove="all-but-first">
 							<tr th:each="list,iterStat : ${pageInfo.result}"
 								th:unless="${#lists.isEmpty(pageInfo.result)}">
@@ -107,9 +122,9 @@
 								<td	th:text="${list.ordInfoRespDTO.buyAllCount}"></td>
 								<td th:text="${list.ordInfoRespDTO.belanceAllCount}"></td>
 								<td th:with="packPrice=${list.orderMoney}"th:text="${#tools.formatMoney(packPrice)}"></td>
-								 <td   th:with="activeEndTime=${list.ordInfoRespDTO.activeEndTime}" th:text="${#dates.format(activeEndTime,'yyyy-MM-dd HH:mm')}"></td>
-                                 <td  th:with="orderstatus=${list.orderStatus}" th:text="${#tools.formatOrderStatus (orderstatus)}"></td>
-                                <td th:with="orderType=${list.orderType}" th:text="${#tools.formatOrderType(orderType)}"></td>
+								<td   th:with="activeEndTime=${list.ordInfoRespDTO.activeEndTime}" th:text="${#dates.format(activeEndTime,'yyyy-MM-dd')}"></td>
+								<td  th:with="orderstatus=${list.orderStatus}" th:text="${#tools.formatOrderStatus (orderstatus)}"></td>
+								<td th:with="orderType=${list.orderType}" th:text="${#tools.formatOrderType(orderType)}"></td>
 								<td th:if="${list.orderStatus}=='01'">
 									<p class="pop-link">
 										<a  th:onclick="'javascript:orderChangePay('+${list.orderId}+','+${list.ordInfoRespDTO.subOrder}+');'">确认已支付</a>
@@ -122,38 +137,38 @@
 								</td>
 								<td th:if="${list.orderStatus}=='03'">
 									<p class="pop-link">
-										 已失效
+										已失效
 									</p>
 								</td>
-                                <td th:if="${list.orderStatus}=='99'">
-                                    <p class="pop-link">
-                                        - -
-                                    </p>
-                                </td>
+								<td th:if="${list.orderStatus}=='99'">
+									<p class="pop-link">
+										- -
+									</p>
+								</td>
 							</tr>
- 							<tr>
-                                <td>12</td>
-                                <td>201703270001</td>
-                                <td>2017-03-27</td>
-                                <td>API接口产品名称</td>
-                                <td>套餐档次</td>
-                                <td>订购的数量</td>
-                                <td>剩余次数/总量</td>
-                                <td>订单金额</td>
-                                <td>2017-10-10</td>
-                                <td>已支付</td>
-                                <td>普通</td>
-                                <td>
-                                    <p class="pop-link">
-                                        <a href="edit_module.html">编辑</a>
-                                    </p>
-                                </td>
-                            </tr>
-                            </tbody>
-                        </table>
-                        <div class="text-right">
-                        	 <button class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">创建订单</button>
-                        </div> 
+							<tr>
+								<td>12</td>
+								<td>201703270001</td>
+								<td>2017-03-27</td>
+								<td>API接口产品名称</td>
+								<td>套餐档次</td>
+								<td>订购的数量</td>
+								<td>剩余次数/总量</td>
+								<td>订单金额</td>
+								<td>2017-10-10</td>
+								<td>已支付</td>
+								<td>普通</td>
+								<td>
+									<p class="pop-link">
+										<a href="edit_module.html">编辑</a>
+									</p>
+								</td>
+							</tr>
+							</tbody>
+						</table>
+						<div class="text-right">
+							<button class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">创建订单</button>
+						</div>
 						<div class="pagelist">
 							<div th:fragment="pager" class="pagerBar pagelist"
 								 th:if=" ${pageInfo}">
@@ -171,7 +186,7 @@
 
 									if (typeof pagerClick === "undefined") {
 										pagerClick = function(index) {
-											 orderManagequery(index);
+											orderManagequery(index);
 										}
 									}
 									$('#pagerId').pager({
@@ -180,36 +195,36 @@
 								</script>
 							</div>
 						</div>
-                       <div class="pagelist" th:remove="all">
+						<div class="pagelist" th:remove="all">
 							<nav aria-label="Page navigation">
-							  <ul class="pagination">
-							    <li >
-							      <a href="#" aria-label="Previous">
-							        <span aria-hidden="true">上一页</span>
-							      </a>
-							    </li>
-							    <li class="active"><a href="#">1</a></li>
-							    <li><a href="#">2</a></li>
-							    <li><a href="#">3</a></li>
-							    <li><a href="#">4</a></li>
-							    <li><a href="#">5</a></li>
-							    <li>
-							      <a href="#" aria-label="Next">
-							        <span aria-hidden="true">下一页</span>
-							      </a>
-							    </li>
-							    <div class="pageskip">
-							  	<span class="pr10">到第<input type="text" class="pageskip_box">页</span>
-							  	<a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
-							  </div>
-							  </ul>
-							  
+								<ul class="pagination">
+									<li >
+										<a href="#" aria-label="Previous">
+											<span aria-hidden="true">上一页</span>
+										</a>
+									</li>
+									<li class="active"><a href="#">1</a></li>
+									<li><a href="#">2</a></li>
+									<li><a href="#">3</a></li>
+									<li><a href="#">4</a></li>
+									<li><a href="#">5</a></li>
+									<li>
+										<a href="#" aria-label="Next">
+											<span aria-hidden="true">下一页</span>
+										</a>
+									</li>
+									<div class="pageskip">
+										<span class="pr10">到第<input type="text" class="pageskip_box">页</span>
+										<a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+									</div>
+								</ul>
+
 							</nav>
 						</div>
-                    </div>
-                </div>
+					</div>
+				</div>
 
-            </div>
+			</div>
 		</div>
 	</div>
 	<div class="m_nav" th:remove="all" >
@@ -262,131 +277,134 @@
 
 	<!-- 创建订单 -->
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">创建订单</h4>
-	      </div>
-	      <div class="modal-body">
-	        <table class="editTable">
-				<tbody>
-				<tr>
-					<td class="Hint" width="120">创建类型:</td>
-					<td  width="320">
-						<select  class="form-control" th:onclick="'javascript:changeCreateType();'"  id="typeOption">
-							<option value="20">自定义套餐</option>
-							<option value="10">固定套餐</option>
-							<option value="30">跨类套餐</option>
-						</select>
-					</td>
-				</tr>
-                <tr>
-						<td class="Hint" width="120">用户账户:</td>
-						<td  width="320">
-							<div class="input-group tips">
- 								<input class="form-control" placeholder="" id="staffid" type="text">
-								<span class="input-group-btn">
-					        		<button class="btn btn-default" type="button" data-toggle="modal" data-target="#userModal">请选择</button>
-					      		</span>
-							</div>
-						</td>
-					</tr>
-				<tr id="trgds">
-						<td class="Hint" >商品:</td>
-						<td>
-							<div class="input-group tips">
-								<input class="form-control" placeholder="" id="gdsid" type="hidden">
-								<input class="form-control" placeholder="" id="api_id" type="hidden">
-								<input class="form-control" placeholder="" id="gdsname" type="text">
-								<span class="input-group-btn">
-					        		<button class="btn btn-default" type="button" data-toggle="modal" data-target="#gdsModal" >请选择</button>
-					      		</span>
-							</div>
-						</td>
-					</tr>
-                <tr id="trsku">
-					<td class="Hint" width="120">套餐:</td>
-					<td  width="320">
-						<div class="input-group tips">
-                            <input class="form-control" placeholder="" id="skuid" type="hidden">
-                            <input class="form-control skuclass" placeholder="" id="skuname" type="text">
-							<span class="input-group-btn">
-					        		<button class="btn btn-default" type="button" data-toggle="modal" data-target="#skuModal" th:onclick="'javascript:getskuBygds(1);'">请选择</button>
-					      		</span>
-						</div>
-					</td>
-				</tr>
-				<tr id="trinavitime"  class="tips">
-					<td class="Hint" >截止有效期:</td>
-					<td>
-						<input class="form-control skuclass" placeholder="格式：2017-05-02" id="innavateDate" type="text">
-					</td>
-				</tr>
- 				<tr id="trechecount">
-					<td class="Hint" >次数:</td>
-					<td>
-						<div class="form-inline">
-							<input class="form-control skuclass " placeholder="" id="packtimes" type="text" value=""><span class="pl15">次</span>
-						</div>
-					</td>
-				</tr>
-				<tr id="trorderprice">
-					<td class="Hint" >单价:</td>
-					<td>
-						<div class="form-inline">
-							<input class="form-control skuclass" placeholder="" id="packprice" type="text"><span class="pl15">元</span>
-						</div>
-					</td>
-				</tr>
-				<tr id="trordernum">
-					<td class="Hint" >购买数量:</td>
-					<td>
-						<div class="form-inline">
-							<input class="form-control  " placeholder="" id="ordernum" type="text" value="1"> <span class="pl15">套</span>
-						</div>
-					</td>
-				</tr>
-				<tr id="trallmoney">
-				<td class="Hint" >总金额:</td>
-						<td>
-							<div class="form-inline">
-								<input class="form-control skuclass" placeholder="" id="allmoney" type="text"><span class="pl15">元</span>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-			
-	      </div>
-	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-primary"  th:onclick="'javascript:createOrderBymaneger();'" >确定</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal" id="closeCreatedialo" >关闭</button>
-	        
-	      </div>
-	    </div>
-	  </div>
-	</div>
-    <!-- 查询用户 Modal -->
-    <div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-					<h4 class="modal-title" id="">账户userModal1</h4>
+					<h4 class="modal-title" id="myModalLabel">创建订单</h4>
+				</div>
+				<div class="modal-body">
+					<table class="editTable">
+						<tbody>
+						<tr>
+							<td class="Hint" width="120">创建类型:</td>
+							<td  width="320">
+								<select  class="form-control" th:onclick="'javascript:changeCreateType();'"  id="typeOption">
+									<option value="20">自定义套餐</option>
+									<option value="10">固定套餐</option>
+									<option value="30">跨类套餐</option>
+								</select>
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint" width="120">用户账户:</td>
+							<td  width="320">
+								<div class="input-group tips">
+									<input class="form-control changetype" placeholder="" id="staffid" type="text">
+									<span class="input-group-btn">
+					        		<button class="btn btn-default" type="button" data-toggle="modal" data-target="#userModal">请选择</button>
+					      		</span>
+								</div>
+							</td>
+						</tr>
+						<tr id="trgds">
+							<td class="Hint" >商品:</td>
+							<td>
+								<div class="input-group tips">
+									<input class="form-control  changetype"  placeholder="" id="gdsid" type="hidden">
+									<input class="form-control  changetype" placeholder="" id="api_id" type="hidden">
+									<input class="form-control  changetype" placeholder="" id="gdsname" type="text">
+									<span class="input-group-btn">
+					        		<button class="btn btn-default" type="button" data-toggle="modal" data-target="#gdsModal" >请选择</button>
+					      		</span>
+								</div>
+							</td>
+						</tr>
+						<tr id="trsku">
+							<td class="Hint" width="120">套餐:</td>
+							<td  width="320">
+								<div class="input-group tips">
+									<input class="form-control  changetype skuclass" placeholder="" id="skuid" type="hidden">
+									<input class="form-control  changetype skuclass" placeholder="" id="skuname" type="text">
+									<span class="input-group-btn">
+					        		<button class="btn btn-default" type="button" data-toggle="modal" data-target="#skuModal" th:onclick="'javascript:getskuBygds(1);'" id="skunamebtn">请选择</button>
+					      		</span>
+								</div>
+							</td>
+						</tr>
+						<tr id="trinavitime"  class="tips">
+							<td class="Hint" >截止有效期:</td>
+							<td>
+								<div class="input-group date form_datetime col-md-2" >
+									<input class="form-control  changetype skuclass"   id="innavateDate" type="text"/>
+									<span class="input-group-addon"> <span class="glyphicon glyphicon-th"></span>  </span>
+								</div>
+ 							</td>
+						</tr>
+						<tr id="trechecount">
+							<td class="Hint" >次数:</td>
+							<td>
+								<div class="form-inline">
+									<input class="form-control  changetype " placeholder="" id="packtimes" type="text" value=""  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"><span class="pl15">次</span>
+								</div>
+							</td>
+						</tr>
+						<tr id="trorderprice">
+							<td class="Hint" >单价:</td>
+							<td>
+								<div class="form-inline">
+									<input class="form-control  changetype skuclass" placeholder="" id="packprice" type="text" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" ><span class="pl15">元</span>
+								</div>
+							</td>
+						</tr>
+						<tr id="trordernum">
+							<td class="Hint" >购买数量:</td>
+							<td>
+								<div class="form-inline">
+									<input class="form-control   changetype" placeholder="" id="ordernum" type="text" value="1"  onkeyup="this.value=this.value.replace(/\D/g,'')" onafterpaste="this.value=this.value.replace(/\D/g,'')"> <span class="pl15">套</span>
+								</div>
+							</td>
+						</tr>
+						<tr id="trallmoney">
+							<td class="Hint" >总金额:</td>
+							<td>
+								<div class="form-inline">
+									<input class="form-control   changetype skuclass" placeholder="" id="allmoney" type="text" onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" ><span class="pl15">元</span>
+								</div>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary"  th:onclick="'javascript:createOrderBymaneger();'" >确定</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal" id="closeCreatedialo" >关闭</button>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 查询用户 Modal -->
+	<div class="modal fade" id="userModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="">账户查询</h4>
 				</div>
 				<div class="modal-body">
 					<div class="top-table">
 						<table class="editTable">
 							<tbody><tr>
 								<td class="Hint" width="100">
-									用户名称22：
+									用户ID：
 								</td>
 								<td>
-									<input class="form-control" placeholder="商品名称" type="text">
+									<input class="form-control" placeholder="用户ID，请至少输入两个字" type="text" id="querystaffid">
 								</td>
 								<td>
-									<button class="btn btn-primary">查询</button>
+									<button class="btn btn-primary" th:onclick="'javascript:queryUserinfo(1);'" >查询</button>
 								</td>
 							</tr>
 							</tbody></table>
@@ -394,24 +412,39 @@
 
 					<!-- Tab panes -->
 					<div class="tab-content p10">
-						<div role="tabpanel" class="tab-pane active" id="tab012">
+						<div role="tabpanel" class="tab-pane active" id="userquerydiv">
 							<table class="table table-bordered text-center">
 								<thead>
 								<tr class="active">
-									<th>xx</th>
-									<th>xx</th>
+									<th>序号</th>
+									<th>用户ID</th>
+									<th>选择</th>
 								</tr>
 								</thead>
-								<tbody>
+								<tbody th:if="${userpageInfo}">
+								<tr th:each="list,iterStat : ${userpageInfo.result}"
+									th:unless="${#lists.isEmpty(userpageInfo.result)}">
+									<td th:text="${userpageInfo.pageNo -1}*${userpageInfo.pageSize}+${iterStat.count}"></td>
+									<td th:text="${list.staffId}">用户ID</td>
+ 									<td>
+										<input type="radio" name="radiouser" th:value="${list.staffId}" >
+									</td>
+								</tr>
+								<tr th:if="${userpageInfo.count} == 0">
+									<td  colspan="3">没有查到任何信息</td>
+								</tr>
+								</tbody>
+
+								<tbody th:remove="all" >
 								<tr>
-									<td>商品名</td>
+									<td>用户ID</td>
 									<td>
 										<input type="radio">
 									</td>
 								</tr>
 								</tbody>
 							</table>
-							<div class="pagelist">
+							<div class="pagelist" th:remove="all">
 								<nav aria-label="Page navigation">
 									<ul class="pagination">
 										<li>
@@ -440,64 +473,64 @@
 						</div>
 					</div>
 				</div>
-				  <div class="modal-footer">
-					<button type="button" class="btn btn-primary">确定</button>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary" data-dismiss="modal" th:onclick="'javascript:setUserinfo();'" >确定</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-				  </div>
+				</div>
 			</div>
 		</div>
 	</div>
-     <!--查询sku -->
-    <div class="modal fade" id="skuModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                    <h4 class="modal-title" id="skuModalLabel">套餐查询</h4>
-                </div>
-                <div class="modal-body">
-                    <!-- Tab panes -->
-                    <div class="tab-content p10</tr>">
-                        <div role="tabpanel" class="tab-pane active"  id="skuquery">
-                            <table class="table table-bordered text-center">
-                                <thead>
-                                <tr class="active">
-                                    <th>套餐编码</th>
-                                    <th>套餐名称</th>
-                                    <th>选择</th>
+	<!--查询sku -->
+	<div class="modal fade" id="skuModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="skuModalLabel">套餐查询</h4>
+				</div>
+				<div class="modal-body">
+					<!-- Tab panes -->
+					<div class="tab-content p10</tr>">
+						<div role="tabpanel" class="tab-pane active"  id="skuquery">
+							<table class="table table-bordered text-center">
+								<thead>
+								<tr class="active">
+									<th>套餐编码</th>
+									<th>套餐名称</th>
+									<th>选择</th>
 
-                                </thead>
-                                <tbody th:if="${skupageInfo}" th:remove="all-but-first">
-                                <tr th:each="list,iterStat : ${skupageInfo}"
-                                    th:unless="${#lists.isEmpty(skupageInfo)}">
-                                    <td th:text="${list.skuId}">套餐ID</td>
-                                    <td th:text="${list.skuName}">套餐名称</td>
-                                    <td>
-                                        <input type="radio" name="radiosku" th:value="${list.skuId}" th:skutname_tmp="${list.skuName}"  th:packTimes="${list.packTimes}" th:with="endtime=${list.inavitime}"  th:activeEndTime="${#dates.format(endtime, 'yyyy-MM-dd HH:mm')}"   th:packPrice="${list.packPrice}"  >
-                                    </td>
-                                </tr>
-                                </tbody>
-                                <tbody >
-                                <tr th:remove="all" >
-                                    <td >套餐编码</td>
-                                    <td >套餐名称</td>
-                                    <td>
-                                        <input type="radio" name="radiogds" th:value="1022" >
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                             <div class="modal-footer">
-                                <button type="button" class="btn btn-primary"  data-dismiss="modal" th:onclick="'javascript:setGetskuinfo();'" >确定</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- 查询  gds  -->
+								</thead>
+								<tbody th:if="${skupageInfo}" th:remove="all-but-first">
+								<tr th:each="list,iterStat : ${skupageInfo}"
+									th:unless="${#lists.isEmpty(skupageInfo)}">
+									<td th:text="${list.skuId}">套餐ID</td>
+									<td th:text="${list.skuName}">套餐名称</td>
+									<td>
+										<input type="radio" name="radiosku" th:value="${list.skuId}" th:skutname_tmp="${list.skuName}"  th:packTimes="${list.packTimes}" th:with="endtime=${list.inavitime}"  th:activeEndTime="${#dates.format(endtime, 'yyyy-MM-dd HH:mm')}"   th:packPrice="${list.packPrice}"  >
+									</td>
+								</tr>
+								</tbody>
+								<tbody >
+								<tr th:remove="all" >
+									<td >套餐编码</td>
+									<td >套餐名称</td>
+									<td>
+										<input type="radio" name="radiogds" th:value="1022" >
+									</td>
+								</tr>
+								</tbody>
+							</table>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-primary"  data-dismiss="modal" th:onclick="'javascript:setGetskuinfo();'" >确定</button>
+								<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 查询  gds  -->
 	<div class="modal fade" id="gdsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
@@ -509,20 +542,20 @@
 					<div class="top-table">
 						<table class="editTable">
 							<tbody>
-                            <tr>
+							<tr>
 								<td class="Hint" width="100">
 									商品名称：
 								</td>
 								<td>
-									<input class="form-control" value="接口" placeholder="商品名称" type="text" id="querygdsname"/>
+									<input class="form-control" value="接口" placeholder="请输入至少两个字" type="text" id="querygdsname"/>
 								</td>
 								<td>
 									<button class="btn btn-primary" th:onclick="'javascript:qryModuleGoods(1);'" >查询</button>
 								</td>
 							</tr>
 							</tbody>
-                        </table>
-                    </div>
+						</table>
+					</div>
 					<!-- Tab panes -->
 					<div class="tab-content p10">
 						<div role="tabpanel" class="tab-pane active"  id="gdsquery">
@@ -554,7 +587,7 @@
 								</tr>
 								</tbody>
 							</table>
-							<div th:fragment="pager" class="pagelist" >
+							<div th:fragment="pager" class="pagelist" th:remove="all" info="暂时不用显示分页">
 								<div class="pagelist" th:remove="all">
 									<nav aria-label="Page navigation">
 										<ul class="pagination">
@@ -610,12 +643,12 @@
 						</div>
 					</div>
 				</div>
-            </div>
 			</div>
 		</div>
+	</div>
 
 
-    <script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
 </div>
 </body>

@@ -336,7 +336,7 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 		AuthStaffExample example = new AuthStaffExample();
 		AuthStaffExample.Criteria sql = example.createCriteria();
 		if(StringUtil.isBlank(vo.getStaffId()) == false){
-			sql.andStaffIdEqualTo(vo.getStaffId());
+			sql.andStaffIdLike(vo.getStaffId());
 		}
 
 		//设置分页

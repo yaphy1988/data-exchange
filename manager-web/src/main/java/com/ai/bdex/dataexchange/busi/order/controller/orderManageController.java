@@ -18,6 +18,9 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.CacheUtil;
@@ -87,7 +90,8 @@ public class orderManageController {
 	private IGdsInfoRSV iGdsInfoRSV;
 	@DubboConsumer
 	private  IGdsSkuRSV iGdsSkuRSV;
-
+	@DubboConsumer
+	 IAuthStaffRSV   iAuthStaffRSV;
 
     
     /**
@@ -512,56 +516,7 @@ public class orderManageController {
 	}
 
 	/**
-	 * 管理员手动创建订单
-	 * @param request
-	 * @return
-	 */
-	@RequestMapping(value="/createOrderBymaneger")
-	@ResponseBody
-	public  Map<String, Object>  createOrderBymaneger(HttpServletRequest request,OrdMainInfoVO ordMainInfoVO) {
-		Map<String, Object> rMap = new HashMap<String, Object>();
-		HttpSession hpptsesion = request.getSession();
-		String createStaff_id = StaffUtil.getStaffId(hpptsesion); //创建人
-
-		String gdsid      = request.getParameter("gdsid");
-		String skuid      = request.getParameter("skuid");
-		String api_id     = request.getParameter("api_id");
-		String staffid    = request.getParameter("staffid");
-		String skunum     = request.getParameter("skunum");
-		String ordertype  = request.getParameter("ordertype");
-		String ordermoney = request.getParameter("ordermoney");
-		String inavidate  = request.getParameter("inavidate");
-        //ordertype = 30
-		/**
-		 * 静态商品id
-		 * 静态商品名称
-		 * 有效期
-		 * 总金额
-         */
-		try {
-
-			OrdInfoReqDTO  ordInfoReqDTO =  new OrdInfoReqDTO();
-			ordInfoReqDTO.setStaffId(staffid); //用户
-			ordInfoReqDTO.setCreateStaff(createStaff_id);
-			ordInfoReqDTO.setSkuName(Constants.Order.ORDER_GDS_30_GDSNAME);
-			ordInfoReqDTO.setGdsId(Constants.Order.ORDER_GDS_30_GDSID);
-			ordInfoReqDTO.setGdsName(Constants.Order.ORDER_GDS_30_GDSNAME);
-			ordInfoReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
-			ordInfoReqDTO.setOrdertype(Constants.Order.ORDER_TYPE_30);
- 			ordInfoReqDTO.setActiveEndTime(getNodatelength(inavidate));
-			ordInfoReqDTO.setServiceName(Constants.Order.ORDER_GDS_30_GDSNAME);
-			long lordermoney = Long.parseLong(ordermoney);//单位元
-			ordInfoReqDTO.setOrderMoney(lordermoney*100);
-			OrdInfoReqDTO rdInfoReqDTOResp =  iOrderInfoRSV.createOrderByallClass(ordInfoReqDTO);
-			rMap.put("success", true);
- 		} catch (Exception er) {
-			rMap.put("success", false);
-			rMap.put("err", "创建订单失败");
-		}
-		return rMap;
-	}
-	/**
-	 * 管理员手动创建订单
+	 * 管理员手动创建订单-- 固定套餐和自定义套餐
 	 * @param request
 	 * @return
 	 */
@@ -582,7 +537,14 @@ public class orderManageController {
 		String ordernum     = request.getParameter("ordernum");
 		String ordermoney = request.getParameter("ordermoney");
 
-
+		Date activeEndTime = new Date();//失效日期
+		if(StringUtil.isBlank(inavidate)){   //没有传入的，就获取系统配置的100年 36500天
+			activeEndTime = Constants.Order.getActiveEndTimeForEver();
+		}
+		else{
+			//有传入的，那就写获取当前输入的地址
+			activeEndTime = getNodatelength(inavidate);
+		}
 		//ordertype = 30
 		/**
 		 * 静态商品id
@@ -601,7 +563,7 @@ public class orderManageController {
 				ordInfoReqDTO.setGdsName(Constants.Order.ORDER_GDS_30_GDSNAME);
 				ordInfoReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
 				ordInfoReqDTO.setOrdertype(Constants.Order.ORDER_TYPE_30);
-				ordInfoReqDTO.setActiveEndTime(getNodatelength(inavidate));
+				ordInfoReqDTO.setActiveEndTime(activeEndTime);
 				ordInfoReqDTO.setServiceName(Constants.Order.ORDER_GDS_30_GDSNAME);
 				long lordermoney = Long.parseLong(ordermoney);//单位元
 				ordInfoReqDTO.setOrderMoney(lordermoney*100);
@@ -614,7 +576,7 @@ public class orderManageController {
 				int  ipacktimes = Integer.parseInt(packtimes);
 				long lorderprice = Long.parseLong(packprice)*100;
 				int iordernum = Integer.parseInt(ordernum);
-				Date activeEndTime = new Date();//失效日期
+
 				//固定的，只要sku和gds就可以搞定了
 				GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
 				GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
@@ -651,13 +613,10 @@ public class orderManageController {
 								calendar.add(calendar.DATE,inaviDay);//把日期往后增加一年.整数往后推,负数往前移动
 								activeEndTime =  calendar.getTime();   //这个时间就是日期往后推一天的结果
  							}
-
 						}catch (Exception Er) {
-
+							rMap.put("success", false);
+							rMap.put("err", "创建订单失败：获取不到单品");
 						}
-					}
-					else {
-						activeEndTime = getNodatelength(inavidate);
 					}
 					//取服务ID和名称
 					ordInfoReqDTO.setAipServiceId(api_id);
@@ -682,12 +641,13 @@ public class orderManageController {
 					ordInfoReqDTO.setOrderAmount(iordernum);
 					ordInfoReqDTO.setSkuName(uRLDecoderStr(skuname));
 					ordInfoReqDTO.setGdsName(uRLDecoderStr(gdsname));
+					ordInfoReqDTO.setBuyAllCount((long)iordernum*ipacktimes);
 					lordermoney  = iordernum * lorderprice;
 					ordInfoReqDTO.setOrderMoney(lordermoney);
 				}
 				ordInfoReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
 				ordInfoReqDTO.setOrdertype(ordertype);
-				ordInfoReqDTO.setSource(Constants.Order.ORDER_SOURCE_1);
+			//	ordInfoReqDTO.setSource(Constants.Order.ORDER_SOURCE_1);
  				OrdInfoReqDTO rdInfoReqDTOResp =  iOrderInfoRSV.createOrderInfo(ordInfoReqDTO);
 				rMap.put("success", true);
 			}
@@ -798,6 +758,32 @@ public class orderManageController {
 		} catch (Exception e) {
 		}
 		return newstrinfo;
+	}
+	/**
+	 * 创建订单时，需要搜索用户，因界面小，故，不做分页
+	 * @param model
+	 * @param request
+	 * @param
+	 * @return
+	 */
+	@RequestMapping(value = "/queryUserinfo")
+	public String queryUserinfo(Model model, HttpServletRequest request) {
+		PageResponseDTO<StaffInfoDTO> pageInfo = new PageResponseDTO<StaffInfoDTO>();
+		try {
+			String staffid = request.getParameter("staffid");
+			AuthStaffDTO vo = new AuthStaffDTO();
+			int pagesize = Integer.parseInt( request.getParameter("pageSize"));
+			int pageno = Integer.parseInt( request.getParameter("pageNo"));
+			vo.setPageSize(pagesize);
+			vo.setPageNo(pageno);
+			vo.setStaffId(staffid);
+			PageResponseDTO<StaffInfoDTO> pStaffInfoDTO = 	iAuthStaffRSV.getStaffInfoPage(vo);
+ 			ObjectCopyUtil.copyObjValue(pStaffInfoDTO,pageInfo,null,false);
+ 			model.addAttribute("userpageInfo", pageInfo);
+		}catch (Exception e){
+			log.error("查询商品列表异常");
+		}
+		return "order_manage :: #userquerydiv" ;
 	}
 
 }

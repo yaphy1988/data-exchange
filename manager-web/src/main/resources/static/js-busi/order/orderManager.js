@@ -6,7 +6,7 @@ $(function(){
 		var ordernum   =  $("#ordernum").val();
 		var packprice  =  $("#packprice").val();
         var ordermoney = parseInt(ordernum)* parseInt(packprice);
-		if (typeof(ordermoney) != "undefined")
+		if (typeof(ordermoney) != "undefined"  && ordermoney != "NaN" )
 		{
 			$("#allmoney").val(ordermoney);
 		}
@@ -15,15 +15,16 @@ $(function(){
 		var ordernum   =  $("#ordernum").val();
 		var packprice  =  $("#packprice").val();
 		var ordermoney = parseInt(ordernum)* parseInt(packprice);
-		if (typeof(ordermoney) != "undefined")
+		if (typeof(ordermoney) != "undefined"  && ordermoney != "NaN" )
 		{
 			$("#allmoney").val(ordermoney);
 		}
 	});
-
-	$("#trsku").hide();
+ 	$("#innavateDate").attr("readonly","readonly");
 	$("#gdsname").attr("readonly","readonly");
 	$("#skuname").attr("readonly","readonly");
+	$("#staffid").attr("readonly","readonly");
+	$("#skunamebtn").attr('disabled',true);//设置disabled属性为true，按钮不可用
 	orderManagequery(1);
 
 });
@@ -84,12 +85,17 @@ function doAjax(url,params,callBack){
 	})
 }
 function changeCreateType(){
+	//全部设置为空值
+    $(".changetype").val("");
+	$("#ordernum").val(1);
 	//10固定套餐订单; 20自定义套餐订单； 30跨类套餐订单//
  	$("#echecount").removeAttr("readonly");
 	$("#packprice").removeAttr("readonly");
-	$("#innavateDate").removeAttr("readonly");
-	$("#allmoney").removeAttr("readonly");
+ 	$("#allmoney").removeAttr("readonly");
 	$("#packtimes").removeAttr("readonly");
+	$("#ordernum").removeAttr("readonly");
+	$('#skunamebtn').removeAttr("disabled");
+
  	$("#gdsid").val();
 	$("#gdsname").val();
 
@@ -103,17 +109,16 @@ function changeCreateType(){
 		$("#trordernum").show();//购买套餐数量，默认1
 		$("#trinavitime").show(); //有截止日期
 		$("#trallmoney").show(); //总金额，单位元
-
-		$("#packtimes").attr("readonly","readonly");
+  		$("#packtimes").attr("readonly","readonly");
 		$("#echecount").attr("readonly","readonly");
 		$("#packprice").attr("readonly","readonly");
-		$("#innavateDate").attr("readonly","readonly");
-		$("#allmoney").attr("readonly","readonly");
+ 		$("#allmoney").attr("readonly","readonly");
 	}
 	//20 --自定义套餐
 	 if(seleopValue == "20"){
 		 $("#trgds").show();//商品
-		 $("#trsku").hide();//套餐 --自定义不用显示这个
+		 $("#trsku").show();//套餐 --自定义不用显示这个
+ 		 $("#skunamebtn").attr('disabled',true);//设置disabled属性为true，按钮不可用
 		 $("#trechecount").show();//每份多少次
 		 $("#trorderprice").show();//单价
 		 $("#trordernum").show();//购买套餐数量，默认1
@@ -127,6 +132,7 @@ function changeCreateType(){
 		$("#trechecount").hide();//每份多少次
 		$("#trorderprice").hide();//单价
 		$("#trordernum").show();//购买套餐数量，默认1
+		$("#ordernum").attr("readonly","readonly");
 		$("#trinavitime").show(); //有截止日期
 		$("#trallmoney").show(); //总金额，单位元
 		$("#gdsname").attr("readonly","readonly");
@@ -146,25 +152,9 @@ function createOrderBymaneger(){
 	var packprice    = $("#packprice").val();//套餐的单价 --单位元
 	var ordernum     = $("#ordernum").val();//购买的套餐数量
 	var ordermoney   = $("#allmoney").val();//总金额
-    var skuname         = $("#skuname").val();//套餐名称 -- skuname
-	var gdsname         = $("#gdsname").val();//商品名称 --  商品名称
-
-	//总额和有效期都是从后台取数
-    // 30
-	/*staffid
-	* ordermoney
-	*inavidate
-	* */
-
-	// 20 - 10
-	/*staffid
-	 * gdsid
-	 * skuid
-	 * skunum
-	 * ordertype
-	 * ordermoney
-	 *inavidate
-	 * */
+    var skuname      = $("#skuname").val();//套餐名称 -- skuname
+	var gdsname      = $("#gdsname").val();//商品名称 --  商品名称
+   // 检验
 	var param={
 		ordertype:ordertype,
 		staffid:staffid,
@@ -179,22 +169,57 @@ function createOrderBymaneger(){
 		skuname:encodeURI2(skuname),
 		gdsname:encodeURI2(gdsname)
 	};
-	var url = "";
-	if(ordertype  == "30")
+	if(staffid == "")
 	{
-		url = basePath+'/orderManage/createOrderBymaneger';
+		WEB.msg.info("提示","请输入用户ID");
+		return;
 	}
-	else{
-		//固定和自定义套餐
-		url = basePath+'/orderManage/createStaticOrderBymaneger';
+
+	//固定-自由
+	if(ordertype == '10' || ordertype == '20')
+	{
+		if(gdsid == ""){
+			WEB.msg.info("提示","请先选择一个商品");
+			return;
+		}
 	}
+	if(ordertype == '10' ){
+		if(skuid == ""){
+			WEB.msg.info("提示","请先选择一个套餐");
+			return;
+		}
+	}
+	//固定-自由
+	if(ordertype == '10' || ordertype == '20')
+	{ 
+		//times
+		if(packtimes == ""){
+			WEB.msg.info("提示","请先填写次数");
+			return;
+		}
+		// price
+		if(packprice == ""){
+			WEB.msg.info("提示","请先填写价格");
+			return;
+		}
+	}
+	//跨类：校验必须的数字： 用户ID，价格
+
+	if(ordermoney == "" || ordermoney == "NaN"){
+		WEB.msg.info("提示","请输入订单金额");
+		return;
+	}
+	var  url = basePath+'/orderManage/createStaticOrderBymaneger';
+
 	var callBack =function(data){
 		if(data.success){
 			WEB.msg.info("提示","创建成功");
-			$("#myModal").attr("class", "modal");
+/*
+		 	$("#myModal").attr("class", "modal");
+*/
 			$("#myModal").hide();
-			$(".modal-backdrop").attr("class", "modal-backdrop");
- 			orderManagequery(1);
+			$(".modal-backdrop").attr("class", "modal");
+  			orderManagequery(1);
 		}
 		else{
 			WEB.msg.info("提示",data.ERRORINFO);
@@ -217,6 +242,11 @@ function qryModuleGoods(index){
 	if(gdsName == "")
 	{
 		WEB.msg.info("提示","请输入商品名称");
+		return;
+	}
+	else if(gdsName.length < 2)
+	{
+		WEB.msg.info("提示","请输入至少两个字");
 		return;
 	}
 	var gdsName=encodeURI2($("#querygdsname").val());
@@ -248,6 +278,12 @@ function  setGetgdsinfo() {
 	$("#api_id").val(api_id);
    // 设置类数据为空
 	$(".skuclass").val("");
+	$("#packtimes").val("");
+	var seleopValue = $("#typeOption").val();
+	if(seleopValue == "20"){
+		$("#skuname").val(gdsname+"自定义套餐");
+	}
+
  }
  function setGetskuinfo() {
 	 var skuid     = $("input[name='radiosku']:checked").val();
@@ -295,4 +331,38 @@ function  setGetgdsinfo() {
 			 $('#skuquery').html(data);
 		 }
 	 });
+  }
+  function queryUserinfo(index) {
+	  var staffid= $("#querystaffid").val() ;
+	  if(staffid == "")
+	  {
+		  WEB.msg.info("提示","请输入用户ID");
+		  return;
+	  }
+	  else if(staffid.length < 2)
+	  {
+		  WEB.msg.info("提示","请输入至少两个字");
+		  return;
+	  }
+ 	  var param={
+		  staffid:staffid,
+		  pageSize:6,
+		  pageNo:index
+	  };
+	  $.ajax({
+		  url:basePath+'/orderManage/queryUserinfo',
+		  cache:false,
+		  async:true,
+		  dataType:'html',
+		  data : param,
+		  success:function(data){
+			  $('#userquerydiv').empty();
+			  $('#userquerydiv').html(data);
+		  }
+	  });
+  }
+  function setUserinfo() {
+	  var staffid  = $("input[name='radiouser']:checked").val();
+	  //设置上级窗口
+	  $("#staffid").val(staffid);
   }

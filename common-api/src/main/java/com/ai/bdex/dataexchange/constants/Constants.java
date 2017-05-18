@@ -1,7 +1,11 @@
 package com.ai.bdex.dataexchange.constants;
 
+import com.ai.paas.utils.DateUtil;
+
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Constants {
     
@@ -91,6 +95,15 @@ public class Constants {
         //跨类套餐的商品给一个ID，给一个名称
         public final static long ORDER_GDS_30_GDSID   =   100  ;//
         public final static String ORDER_GDS_30_GDSNAME   =  "跨类套餐商品" ;//
+
+        public static Date getActiveEndTimeForEver(){
+            Date orderTime = DateUtil.getNowAsDate();
+            Calendar calendar   =   new GregorianCalendar();
+            calendar.setTime(orderTime);
+            calendar.add(calendar.DATE,ORDER_AIP_ACTIVE_DAY);//把日期往后增加一年.整数往后推,负数往前移动
+            Date activeEndTime =  calendar.getTime();   //这个时间就是日期往后推一天的结果
+            return activeEndTime;
+        }
     }
 
     public static class Bill {
@@ -133,4 +146,6 @@ public class Constants {
         //免登陆url缓存key前缀  格式：UL_{系统编码}_{URL}
         public static String UN_LOGIN_URL_PRE = "UL_"; //UL:un login 简写
     }
+
+
 }
