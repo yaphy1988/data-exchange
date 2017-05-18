@@ -1,14 +1,12 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.impl;
 
+import com.ai.bdex.dataexchange.aipcenter.dao.model.AipServiceCodeInfo;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipServiceErrorInfo;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipServiceInPara;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipServiceOutPara;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.*;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceManagerRSV;
-import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipServiceErrorInfoSV;
-import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipServiceInParaSV;
-import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipServiceInfoSV;
-import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipServiceOutParaSV;
+import com.ai.bdex.dataexchange.aipcenter.service.interfaces.*;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.paas.utils.CollectionUtil;
@@ -37,6 +35,8 @@ public class AipServiceManagerRSVImpl implements IAipServiceManagerRSV {
     private IAipServiceOutParaSV iAipServiceOutParaSV;
     @Autowired
     private IAipServiceErrorInfoSV iAipServiceErrorInfoSV;
+    @Autowired
+    private IAipServiceCodeInfoSV iAipServiceCodeInfoSV;
 
 
     @Override
@@ -210,6 +210,53 @@ public class AipServiceManagerRSVImpl implements IAipServiceManagerRSV {
             iAipServiceErrorInfoSV.updateErrorInfoByServiceIdAndVersion(aipServiceErrorInfoReqDTO);
         }catch (Exception e){
             log.error("更新aip服务错误代码信息异常：",e);
+        }
+    }
+
+    @Override
+    public List<AipServiceCodeInfoDTO> queryAipServiceCodeList(String serviceId, String version) throws Exception {
+        if (StringUtil.isBlank(serviceId) || StringUtil.isBlank(version)){
+            throw new BusinessException("查询服务示例代码信息列表异常，入参为空");
+        }
+        List<AipServiceCodeInfoDTO> aipServiceCodeInfoDTOList = new ArrayList<AipServiceCodeInfoDTO>();
+        try {
+            List<AipServiceCodeInfo> aipServiceCodeInfoList = iAipServiceCodeInfoSV.getBeans(serviceId, version);
+            if (!CollectionUtil.isEmpty(aipServiceCodeInfoList)){
+                for (AipServiceCodeInfo aipServiceCodeInfo : aipServiceCodeInfoList){
+                    AipServiceCodeInfoDTO aipServiceCodeInfoDTO = new AipServiceCodeInfoDTO();
+                    ObjectCopyUtil.copyObjValue(aipServiceCodeInfo,aipServiceCodeInfoDTO,null,false);
+                    aipServiceCodeInfoDTOList.add(aipServiceCodeInfoDTO);
+                }
+            }
+        }catch (Exception e){
+            log.error("查询服务示例代码信息列表异常：",e);
+        }
+        return aipServiceCodeInfoDTOList;
+    }
+
+    @Override
+    public String insertServiceCodeBatch(List<AipServiceCodeInfoReqDTO> aipServiceCodeInfoReqDTOList) throws Exception {
+        if (CollectionUtil.isEmpty(aipServiceCodeInfoReqDTOList)){
+            throw new BusinessException("批量插入服务示例代码信息异常，入参为空！");
+        }
+        String codeStr = "";
+        try {
+            codeStr = iAipServiceCodeInfoSV.insertServiceCodeBatch(aipServiceCodeInfoReqDTOList);
+        }catch (Exception e){
+            log.error("批量插入服务示例代码信息异常：",e);
+        }
+        return codeStr;
+    }
+
+    @Override
+    public void updateServiceCodeByServiceIdAndVersion(AipServiceCodeInfoReqDTO aipServiceCodeInfoReqDTO) throws Exception {
+        if (aipServiceCodeInfoReqDTO == null || StringUtil.isBlank(aipServiceCodeInfoReqDTO.getServiceId()) || StringUtil.isBlank(aipServiceCodeInfoReqDTO.getVersion())){
+            throw new BusinessException("根据serviceId和version更新服务示例代码信息异常，入参为空");
+        }
+        try {
+            iAipServiceCodeInfoSV.updateServiceCodeByServiceIdAndVersion(aipServiceCodeInfoReqDTO);
+        }catch (Exception e){
+            log.error("根据serviceId和version更新服务示例代码信息异常：",e);
         }
     }
 }

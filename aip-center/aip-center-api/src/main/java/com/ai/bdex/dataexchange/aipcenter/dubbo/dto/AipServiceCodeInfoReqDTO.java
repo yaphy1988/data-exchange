@@ -1,13 +1,12 @@
-package com.ai.bdex.dataexchange.busi.api.entity;
+package com.ai.bdex.dataexchange.aipcenter.dubbo.dto;
 
-import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
+import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by yx on 2017/5/16.
- */
-public class AipServiceCodeInfoVO extends BaseResponseDTO {
+public class AipServiceCodeInfoReqDTO extends BaseInfo{
+
     private String codeId;
 
     private String docId;

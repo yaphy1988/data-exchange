@@ -8,6 +8,9 @@
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<script type="text/javascript" src="../../static/component/ckeditor/ckeditor.js" th:src="@{/component/ckeditor/ckeditor.js}"></script>
+
+	<script src="../static/js-busi/aip/aipEntry-exampleCode.js" th:src="@{/js-busi/aip/aipEntry-exampleCode.js}"></script>
 	
 </head>
 <body>
@@ -47,14 +50,64 @@
 	</ul>
 </header>
 <div  layout:fragment="screen_content">
+	<input type="hidden" id="exampleInfo_serviceId" th:value="${serviceId}">
+	<input type="hidden" id="exampleInfo_version" th:value="${version}">
 	<div class="m_main">
-		<div class="m_con">
+		<div class="m_con" id="exampleCodeContent">
 			<div class="title">示例代码</div>
 				<!--<div class="text-right mb10">-->
 					 <!--<a href="javascript:void(0)" class="btn-primary btn mr10" >新增实例</a>-->
 					 <!--<a href="javascript:void(0)" class="btn-default btn mr10" >删除</a>-->
 				<!--</div>-->
-				<div style="background: #fbfbfb;position: relative" class="p10 mb10">
+			<div id="exampleCodeHidden" style="display: none">
+				<div style="background: #fbfbfb;position: relative" class="p10 mb10 exampleCodeDiv" >
+					<h5 class="">示例</h5>
+					<table class="editTable">
+						<tbody>
+						<tr>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								语言：
+							</td>
+							<td width="300">
+								<input type="text" class="form-control exampleCode_program" name="">
+							</td>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								提供者：
+							</td>
+							<td>
+								<input type="text" class="form-control exampleCode_author" name="">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								标题：
+							</td>
+							<td colspan="3">
+								<input type="text" class="form-control exampleCode_title" name="">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint"><span class="col_red">*</span>示例代码：</td>
+							<td colspan="3">
+								<div class="exampleCode" id="">
+
+								</div>
+								<textarea class="form-control" rows="5" th:remove="all"></textarea>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+					<div style="position: absolute;bottom: 10px;right: 10px;">
+						<a href="javascript:void(0)" class="btn-primary btn mr10 closeBtn" onclick="hiddenCode(this)">收起</a>
+						<a href="javascript:void(0)" class="btn-primary btn mr10 openBtn" style="display: none" onclick="showCode(this)">展开</a>
+						<a href="javascript:void(0)" class="btn-default btn mr10 deleteBtn" onclick="deleteExample(this)">删除</a>
+					</div>
+				</div>
+			</div>
+				<div style="background: #fbfbfb;position: relative" class="p10 mb10 exampleCodeDiv" th:if="${#lists.size(aipServiceCodeList)} gt 0" th:each="exampleCode,exampleCodeStat : ${aipServiceCodeList}">
 					<h5 class="">示例</h5>
 					<table class="editTable">
 						<tbody>
@@ -64,14 +117,14 @@
 									语言：
 								</td>
 								<td width="300">
-									<input type="text" class="form-control" name="">
+									<input type="text" class="form-control exampleCode_program" name="" th:value="${exampleCode.program}">
 								</td>
 								<td class="Hint">
 									<span class="col_red">*</span>
 									提供者：
 								</td>
 								<td>
-									<input type="text" class="form-control" name="">
+									<input type="text" class="form-control exampleCode_author" name="" th:value="${exampleCode.author}">
 								</td>
 							</tr>
 							<tr>
@@ -80,13 +133,13 @@
 									标题：
 								</td>
 								<td colspan="3">
-									<input type="text" class="form-control" name="">
+									<input type="text" class="form-control exampleCode_author" name="" th:value="${exampleCode.title}">
 								</td>
 							</tr>
-							<tr>
+							<tr style="display:none">
 								<td class="Hint"><span class="col_red">*</span>示例代码：</td>
 								<td colspan="3">
-									<div class="exampleCode">
+									<div class="exampleCode" th:htmlId="${exampleCode.docId}" th:id="'exampleCode'+${exampleCodeStat.index}">
 
 									</div>
 									<textarea class="form-control" rows="5" th:remove="all"></textarea>
@@ -95,11 +148,60 @@
 						</tbody>
 					</table>
 					<div style="position: absolute;bottom: 10px;right: 10px;">
-						<a href="javascript:void(0)" class="btn-primary btn mr10" >隐藏</a>
+						<a href="javascript:void(0)" class="btn-primary btn mr10 closeBtn" style="display: none" onclick="hiddenCode(this)">收起</a>
+						<a href="javascript:void(0)" class="btn-primary btn mr10 openBtn" onclick="showCode(this)">展开</a>
+						<a href="javascript:void(0)" class="btn-default btn mr10 deleteBtn" onclick="deleteExample(this)">删除</a>
+					</div>
+				</div>
+				<div style="background: #fbfbfb;position: relative" class="p10 mb10 exampleCodeDiv" th:unless="${#lists.size(aipServiceCodeList)} gt 0" >
+					<h5 class="">示例</h5>
+					<table class="editTable">
+						<tbody>
+						<tr>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								语言：
+							</td>
+							<td width="300">
+								<input type="text" class="form-control exampleCode_program" name="">
+							</td>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								提供者：
+							</td>
+							<td>
+								<input type="text" class="form-control exampleCode_author" name="">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								标题：
+							</td>
+							<td colspan="3">
+								<input type="text" class="form-control exampleCode_title" name="">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint"><span class="col_red">*</span>示例代码：</td>
+							<td colspan="3">
+								<div class="exampleCode" id="exampleCode0">
+
+								</div>
+								<textarea class="form-control" rows="5" th:remove="all"></textarea>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+					<div style="position: absolute;bottom: 10px;right: 10px;">
+						<a href="javascript:void(0)" class="btn-primary btn mr10 closeBtn" onclick="hiddenCode(this)">收起</a>
+						<a href="javascript:void(0)" class="btn-primary btn mr10 openBtn" style="display: none" onclick="showCode(this)">展开</a>
+						<a href="javascript:void(0)" class="btn-default btn mr10 deleteBtn" onclick="deleteExample(this)">删除</a>
 					</div>
 				</div>
 
-				<div style="background: #fbfbfb;" class="p10 mb10">
+
+				<div style="background: #fbfbfb;" class="p10 mb10 " th:remove="all">
 					<h5 class="">示例</h5>
 					<table class="editTable">
 						<tbody>
@@ -138,15 +240,15 @@
 					</table>
 				</div>
 				<div class="text-right ">
-					 <a href="javascript:void(0)" class="btn-primary btn mr10" >新增实例</a>
-					 <a href="javascript:void(0)" class="btn-default btn mr10" >删除</a>
+					 <a href="javascript:void(0)" class="btn-primary btn mr10" onclick="addExample(this)">新增实例</a>
+
 				</div>
 			</div>
 			<hr>
 			<!-- 按钮 -->
 			
 			<div class="p20 text-center " style="margin-left: 220px;">
-				 <a href="javascript:void(0)" class="btn-primary btn mr10" >保存</a>
+				 <a href="javascript:void(0)" class="btn-primary btn mr10" onclick="sumbitExampleInfo()">保存</a>
 				 <a href="javascript:void(0)" class="btn-default btn mr10" >返回</a>
 			</div>
 		</div>

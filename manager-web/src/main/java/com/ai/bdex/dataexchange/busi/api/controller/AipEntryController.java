@@ -551,10 +551,114 @@ public class AipEntryController {
         String serviceId = request.getParameter("serviceId");
         String version = request.getParameter("version");
         if (StringUtil.isBlank(serviceId) || StringUtil.isBlank(version)){
-            throw new BusinessException("初始化示例录入界面异常，服务ID或版本号为空！");
+            throw new BusinessException("初始化示例代码录入界面异常，服务ID或版本号为空！");
+        }
+
+        List<AipServiceCodeInfoVO> aipServiceCodeInfoVOList = new ArrayList<AipServiceCodeInfoVO>();
+        try {
+            List<AipServiceCodeInfoDTO> aipServiceCodeInfoDTOList = iAipServiceManagerRSV.queryAipServiceCodeList(serviceId,version);
+            if (!CollectionUtil.isEmpty(aipServiceCodeInfoDTOList)){
+                for (AipServiceCodeInfoDTO aipServiceCodeInfoDTO : aipServiceCodeInfoDTOList){
+                    AipServiceCodeInfoVO aipServiceCodeInfoVO = new AipServiceCodeInfoVO();
+                    ObjectCopyUtil.copyObjValue(aipServiceCodeInfoDTO,aipServiceCodeInfoVO,null,false);
+                    if (!StringUtil.isBlank(aipServiceCodeInfoVO.getDocId())){
+                        aipServiceCodeInfoVO.setDocId(ImageUtil.getStaticDocUrl(aipServiceCodeInfoVO.getDocId(),"html"));
+                    }
+                    aipServiceCodeInfoVOList.add(aipServiceCodeInfoVO);
+                }
+            }
+        }catch (Exception e){
+            log.error("查询已配置的aip服务示例代码信息异常：",e);
+        }
+
+        request.setAttribute("aipServiceCodeList",aipServiceCodeInfoVOList);
+        request.setAttribute("serviceId",serviceId);
+        request.setAttribute("version",version);
+        return "aip_document_deploy3";
+    }
+
+    /**
+     * 保存示例代码信息
+     * @param request
+     * @param response
+     * @param session
+     * @return
+     */
+    @RequestMapping(value = "/sumbitExampleInfo")
+    @ResponseBody
+    public AjaxJson sumbitExampleInfo(HttpServletRequest request,HttpServletResponse response,HttpSession session){
+        AjaxJson ajaxJson = new AjaxJson();
+        String serviceId = request.getParameter("serviceId");
+        String version = request.getParameter("version");
+        if (StringUtil.isBlank(serviceId) || StringUtil.isBlank(version)){
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("保存失败！");
+            return ajaxJson;
+        }
+
+        String exampleStr = request.getParameter("exampleStr");
+        List<AipServiceCodeInfoReqDTO> aipServiceCodeInfoReqDTOList = new ArrayList<AipServiceCodeInfoReqDTO>();
+        if (!StringUtil.isBlank(exampleStr)){
+            aipServiceCodeInfoReqDTOList = JSONArray.parseArray(exampleStr,AipServiceCodeInfoReqDTO.class);
+        }
+
+        List<AipServiceCodeInfoDTO> aipServiceCodeInfoDTOList = new ArrayList<AipServiceCodeInfoDTO>();
+        try {
+            aipServiceCodeInfoDTOList = iAipServiceManagerRSV.queryAipServiceCodeList(serviceId,version);
+        }catch (Exception e){
+            log.error("查询已配置的aip服务示例代码列表异常：",e);
+            ajaxJson.setMsg("保存失败，请联系管理员!");
+            ajaxJson.setSuccess(false);
+            return ajaxJson;
+        }
+
+        if (!CollectionUtil.isEmpty(aipServiceCodeInfoDTOList)){
+            try {
+                AipServiceCodeInfoReqDTO updateReq = new AipServiceCodeInfoReqDTO();
+                updateReq.setServiceId(serviceId);
+                updateReq.setVersion(version);
+                updateReq.setStatus("0");
+                updateReq.setCreateStaff(StaffUtil.getStaffId(session));
+                updateReq.setUpdateTime(new Date());
+                iAipServiceManagerRSV.updateServiceCodeByServiceIdAndVersion(updateReq);
+            }catch (Exception e){
+                log.error("失效已配置的aip示例代码异常：",e);
+                ajaxJson.setSuccess(false);
+                ajaxJson.setMsg("保存失败，请重试或联系管理员！");
+                return ajaxJson;
+            }
+        }
+
+        try{
+            if (!CollectionUtil.isEmpty(aipServiceCodeInfoReqDTOList)){
+                for (AipServiceCodeInfoReqDTO aipServiceCodeInfoReqDTO : aipServiceCodeInfoReqDTOList){
+                    if (!StringUtil.isBlank(aipServiceCodeInfoReqDTO.getDocId())){
+                        String htmlData= HtmlUtils.htmlUnescape(aipServiceCodeInfoReqDTO.getDocId());
+                        //保存静态文件到静态文件服务器
+                        String staticUrl = MongoFileUtil.saveFile(htmlData.getBytes("utf-8"),"gdsContent", ".html");
+                        aipServiceCodeInfoReqDTO.setDocId(staticUrl);
+                    }
+                    aipServiceCodeInfoReqDTO.setStatus("1");
+                    aipServiceCodeInfoReqDTO.setServiceId(serviceId);
+                    aipServiceCodeInfoReqDTO.setVersion(version);
+                    aipServiceCodeInfoReqDTO.setCreateStaff(StaffUtil.getStaffId(session));
+                    aipServiceCodeInfoReqDTO.setCreateTime(new Date());
+                }
+                String codeReturn = iAipServiceManagerRSV.insertServiceCodeBatch(aipServiceCodeInfoReqDTOList);
+
+                if (StringUtil.isBlank(codeReturn)){
+                    ajaxJson.setSuccess(false);
+                    ajaxJson.setMsg("保存失败，请重试或联系管理员！");
+                    return ajaxJson;
+                }
+            }
+        }catch (Exception e){
+            log.error("插入aip示例代码信息异常：",e);
+            ajaxJson.setSuccess(true);
+            ajaxJson.setMsg("保存失败，请重试或联系管理员！");
         }
 
 
-        return "aip_document_deploy3";
+        return ajaxJson;
     }
 }

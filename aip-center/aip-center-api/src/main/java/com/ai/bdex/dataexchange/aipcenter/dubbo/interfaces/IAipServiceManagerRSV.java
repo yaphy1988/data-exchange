@@ -84,4 +84,29 @@ public interface IAipServiceManagerRSV {
      */
     public void updateErrorInfoByServiceIdAndVersion(AipServiceErrorInfoReqDTO aipServiceErrorInfoReqDTO) throws Exception;
 
+    /**
+     * 根据serviceId和version查询示例代码列表
+     * @param serviceId
+     * @param version
+     * @return
+     * @throws Exception
+     */
+    public List<AipServiceCodeInfoDTO> queryAipServiceCodeList(String serviceId,String version) throws Exception;
+
+    /**
+     * 批量插入示例代码信息
+     * @param aipServiceCodeInfoReqDTOList
+     * @return
+     * @throws Exception
+     */
+    public String insertServiceCodeBatch(List<AipServiceCodeInfoReqDTO> aipServiceCodeInfoReqDTOList) throws Exception;
+
+    /**
+     * 根据serviceId和version更新示例代码信息
+     * @param aipServiceCodeInfoReqDTO
+     * @return
+     * @throws Exception
+     */
+    public void updateServiceCodeByServiceIdAndVersion(AipServiceCodeInfoReqDTO aipServiceCodeInfoReqDTO) throws Exception;
+
 }
