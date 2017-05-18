@@ -200,11 +200,6 @@ public class RechargeSVImpl implements IRechargeSV {
                 logger.error("非永久有效类型，生效结束日期不能为空!");
                 throw new BusinessException("非永久有效类型，生效结束日期不能为空!");
             }
-            if(StringUtil.isBlank(rechargeDTO.getServiceId())){
-                //跨类套餐没有服务编码，他有有效性
-                logger.error("非永久有效类型，服务编码不能为空!");
-               // throw new BusinessException("非永久有效类型，服务编码不能为空!");
-            }
         }else if(Constants.Bill.DATA_ACCT_PERIOD_PERMANENT.equals(rechargeDTO.getPeriodType())){
             if(rechargeDTO.getEndDate() != null){
                 logger.error("永久有效，结束日期应为null!");
