@@ -304,6 +304,7 @@ public class OrderController {
  					}
 				    ordInfoReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
                     ordInfoReqDTO.setOrdertype(Constants.Order.ORDER_TYPE_10);
+                    ordInfoReqDTO.setSource(Constants.Order.ORDER_SOURCE_0);
 			    	OrdInfoReqDTO rdInfoReqDTOResp =  iOrderInfoRSV.createOrderInfo(ordInfoReqDTO);
 				    rMap.put("orderid", rdInfoReqDTOResp.getOrderId());
 			    	rMap.put("suborderid", rdInfoReqDTOResp.getSubOrder());

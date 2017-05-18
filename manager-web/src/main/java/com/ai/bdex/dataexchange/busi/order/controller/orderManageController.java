@@ -686,8 +686,9 @@ public class orderManageController {
 					ordInfoReqDTO.setOrderMoney(lordermoney);
 				}
 				ordInfoReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
-				ordInfoReqDTO.setOrdertype(Constants.Order.ORDER_TYPE_10);
-				OrdInfoReqDTO rdInfoReqDTOResp =  iOrderInfoRSV.createOrderInfo(ordInfoReqDTO);
+				ordInfoReqDTO.setOrdertype(ordertype);
+				ordInfoReqDTO.setSource(Constants.Order.ORDER_SOURCE_1);
+ 				OrdInfoReqDTO rdInfoReqDTOResp =  iOrderInfoRSV.createOrderInfo(ordInfoReqDTO);
 				rMap.put("success", true);
 			}
 
