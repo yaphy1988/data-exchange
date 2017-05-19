@@ -43,6 +43,14 @@ public class OrdInfoRespDTO extends BaseResponseDTO{
  	    private Integer catId; 
 		private Integer catFirst;
 		private Integer leftCount;//剩余可用次数--计费接口返回值
+	    private Long dataAccountId;//每个子订单对于的数据账户信息
+
+	    public Long getDataAccountId() {
+		return dataAccountId;
+	}
+	    public void setDataAccountId(Long dataAccountId) {
+		this.dataAccountId = dataAccountId;
+	}
 
  	    public Integer getLeftCount() {
 			return leftCount;

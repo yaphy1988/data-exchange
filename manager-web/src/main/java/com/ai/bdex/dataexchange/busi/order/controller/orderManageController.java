@@ -309,6 +309,7 @@ public class orderManageController {
 								int iLeftNum = dataAccountDTO.getLeftNum();
 								long lLeftNum=(long)iLeftNum;
 								ordInfoRespDTO.setBelanceAllCount(lLeftNum);
+                                ordInfoRespDTO.setDataAccountId(dataAccountDTO.getDataAcctId());
 								/*int iUsedAll = dataAccountDTO.getTotalConsumeNum();
 								long lUsedAll=(long)iUsedAll;
 								ordInfoRespDTO.setUsedAllCount(lUsedAll);*/
@@ -359,8 +360,12 @@ public class orderManageController {
 		ordInfo.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
 		ordInfo.setPayTime(orderTime);
 		try {
-			iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
 			OrdMainInfoRespDTO ordMainInfoRespDTO=	iOrderMainInfoRSV.queryOrderDetail(ordMainInfoReqDTO);
+            if(ordMainInfoRespDTO.getOrderStatus().equals(Constants.Order.ORDER_STATUS_02))
+            {
+                rMap.put("success", true);
+                return  rMap;
+            }
 			OrdInfoRespDTO ordInfoRespDTO = ordMainInfoRespDTO.getOrdInfoRespDTO();
 
 			if (ordInfoRespDTO!= null) {
@@ -377,15 +382,18 @@ public class orderManageController {
                     * startDate(当periodType="1")
                     * endDate(当periodType="1")*/
 				int igdsid = new Long(ordInfoRespDTO.getGdsId()).intValue();
-
+                rechargeDTO.setRechargeUserId(ordMainInfoRespDTO.getStaffId());
  				if(Constants.Order.ORDER_TYPE_30.equals(ordMainInfoRespDTO.getOrderType()))
 				{
 					/*int itotalcount = new Long(ordInfoRespDTO.getBuyAllCount()).intValue();
 					rechargeDTO.setTotalNum(itotalcount);*/
 				}
 				else if(Constants.Order.ORDER_TYPE_10.equals(ordMainInfoRespDTO.getOrderType()) || Constants.Order.ORDER_TYPE_20.equals(ordMainInfoRespDTO.getOrderType()) ){
-					int iskuid = new Long(ordInfoRespDTO.getSkuId()).intValue();
-					rechargeDTO.setSkuId(iskuid);
+					if(Constants.Order.ORDER_TYPE_10.equals(ordMainInfoRespDTO.getOrderType()) ){
+                        int iskuid = new Long(ordInfoRespDTO.getSkuId()).intValue();
+                        rechargeDTO.setSkuId(iskuid);
+                    }
+
 					int itotalcount = new Long(ordInfoRespDTO.getBuyAllCount()).intValue();
 					rechargeDTO.setTotalNum(itotalcount);
 					rechargeDTO.setCatId(ordInfoRespDTO.getCatId());
@@ -402,7 +410,7 @@ public class orderManageController {
 
  				String periodType = Constants.Order.ORDER_API_PERIODTYPE_1;
 				String  inavidate =  Constants.Order.ORDER_API_NODATE;
-				if (ordInfoRespDTO.getActiveEndTime().after(getNodatelength(inavidate))) {
+				if (  ordInfoRespDTO.getActiveEndTime() == null || ordInfoRespDTO.getActiveEndTime().after(getNodatelength(inavidate)) ) {
 					//大于50年,就是无限期了
 					periodType = Constants.Order.ORDER_API_PERIODTYPE_2;
 				}
@@ -418,24 +426,26 @@ public class orderManageController {
 				rechargeDTO.setTotalMoney(iordermoney);
 				try {
 					iAipCenterDataAccountRSV.dealRecharge(rechargeDTO);
-					rMap.put("success", true);
+                    iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
+                    rMap.put("success", true);
 				} catch (Exception e) {
 					System.out.print("更新AipCenter失败：" + e.getMessage());
-					//需要通知运维，去处理数据
-					rMap.put("success", false);
-				}
-			}
+			       //需要通知运维，去处理数据
+                    rMap.put("ERRORINFO", "更新AipCenter失败");
+                    rMap.put("success", false);
+                    }
+                }
 			else
 			{
 				System.out.print("更新AipCenter失败：查不到对于的子订单" );
 				//需要通知运维，去处理数据
 				rMap.put("success", false);
-				rMap.put("err", "更新AipCenter失败");
+				rMap.put("ERRORINFO", "更新AipCenter失败");
 			}
 		} catch (Exception er) {
 			System.out.print("更新失败：" + er.getMessage());
 			rMap.put("success", false);
-			rMap.put("err", "更新订单失败");
+			rMap.put("ERRORINFO", "更新订单失败");
 		}
 		return rMap;
 	}
@@ -452,47 +462,29 @@ public class orderManageController {
 		String staff_id = StaffUtil.getStaffId(hpptsesion);
 		String orderid = request.getParameter("orderid");
 		String subordid = request.getParameter("suborderid");
-
+        String dataAccountId  = request.getParameter("dataAccountId");
+        long ldataAccountId = Long.parseLong(dataAccountId);
 		Date orderTime = DateUtil.getNowAsDate();
 		OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
 		ordMainInfoReqDTO.setOrderId(orderid);
 		ordMainInfoReqDTO.setUpdateStaff(staff_id);
-		ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_03);
-		OrdInfoReqDTO ordInfo = new OrdInfoReqDTO();
-		ordInfo.setUpdateStaff(staff_id);
-		ordInfo.setOrderId(orderid);
-		ordInfo.setSubOrder(subordid);
+        ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_03);
+        OrdInfoReqDTO ordInfo = new OrdInfoReqDTO();
+        ordInfo.setUpdateStaff(staff_id);
+        ordInfo.setOrderId(orderid);
+        ordInfo.setSubOrder(subordid);
 		ordInfo.setStatus(Constants.Order.ORDER_STATUS_03);
  		try {
-			iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
-			//查询子订单出来去更新数据：
-			OrdMainInfoRespDTO ordMainInfoRespDTO=	iOrderMainInfoRSV.queryOrderDetail(ordMainInfoReqDTO);
-			OrdInfoRespDTO ordInfoRespDTO = ordMainInfoRespDTO.getOrdInfoRespDTO();
-			if(ordInfoRespDTO != null) {
-				RechargeReqDTO rechargeDTO = new RechargeReqDTO();
-				rechargeDTO.setRechargeUserId(ordInfoRespDTO.getStaffId());
-				rechargeDTO.setSubOrder(ordInfoRespDTO.getSubOrder());
-				int igdsid = new Long(ordInfoRespDTO.getGdsId()).intValue();
-				rechargeDTO.setGdsId(igdsid);
-				int iskuid = new Long(ordInfoRespDTO.getSkuId()).intValue();
-				rechargeDTO.setSkuId(iskuid);
-				rechargeDTO.setCatId(ordInfoRespDTO.getCatId());
-				rechargeDTO.setCatFirst(ordInfoRespDTO.getCatFirst());
-				rechargeDTO.setRechargeType(Constants.Order.ORDER_API_RECHARGETYPE_1);
-				String periodType = Constants.Order.ORDER_API_PERIODTYPE_1;
-
-				rechargeDTO.setPeriodType(periodType);
-				int itotalcount = new Long(ordInfoRespDTO.getBuyAllCount()).intValue();
-				rechargeDTO.setTotalNum(itotalcount);
-				int iordermoney = new Long(ordInfoRespDTO.getOrderMoney()).intValue();
-				rechargeDTO.setTotalMoney(iordermoney);
-				rechargeDTO.setServiceId(ordInfoRespDTO.getAipServiceId());
-				rechargeDTO.setStartDate(ordInfoRespDTO.getCreateTime());
-				rechargeDTO.setEndDate(ordInfoRespDTO.getActiveEndTime());
+            OrdMainInfoRespDTO ordMainInfoRespDTO=	iOrderMainInfoRSV.queryOrderDetail(ordMainInfoReqDTO);
+            if(ordMainInfoRespDTO.getOrderStatus().equals(Constants.Order.ORDER_STATUS_03))
+            {
+                rMap.put("success", true);
+             }
 				try {
 					//需要去调用接口处理，将信息失效掉。
-					//iAipCenterDataAccountRSV.dealRecharge(rechargeDTO);
-					System.out.print("设置失效时，要将计费数据处理的接口！上线一定要处理的");
+					 iAipCenterDataAccountRSV.dealDisableDataAccount(ldataAccountId);
+                    //更新人：staff_id
+                    iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
 					rMap.put("success", true);
 				} catch (Exception e) {
 					System.out.print("更新AipCenter失败：" + e.getMessage());
@@ -500,14 +492,6 @@ public class orderManageController {
 					rMap.put("success", false);
 					rMap.put("err", "更新AipCenter失败");
 				}
-			}
-			else
-			{
-				System.out.print("更新AipCenter失败：查不到对于的子订单" );
-				//需要通知运维，去处理数据
-				rMap.put("success", false);
-				rMap.put("err", "更新订单失败:查不到对于的子订单");
-			}
 		} catch (Exception er) {
 			rMap.put("success", false);
 			rMap.put("err", "更新订单失败");
@@ -597,6 +581,7 @@ public class orderManageController {
 						dsSkuReqDTO.setSkuId(Integer.parseInt(skuid)); //10 才有skuid
 						dsSkuReqDTO.setStatus(STATUS_VALID);
 						List<GdsSkuRespDTO>  listGdsSku =new ArrayList<>();
+                        ordInfoReqDTO.setSkuId(Long.parseLong(skuid));
 						try {
 							//价格
 							listGdsSku = iGdsSkuRSV.queryGdsSkuList(dsSkuReqDTO);
@@ -634,6 +619,8 @@ public class orderManageController {
 					if(!StringUtil.isBlank(inavidate)) {
 						ordInfoReqDTO.setActiveEndTime(activeEndTime);
 					}
+                    ordInfoReqDTO.setStaffId(staffid);
+                    ordInfoReqDTO.setCreateStaff(createStaff_id);
 					ordInfoReqDTO.setGdsId(Long.parseLong(gdsid));
 					ordInfoReqDTO.setCatFirst(gdsInfoRespDTO.getCatFirst());
 					ordInfoReqDTO.setCatId(gdsInfoRespDTO.getCatId());

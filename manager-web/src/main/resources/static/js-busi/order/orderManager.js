@@ -24,7 +24,9 @@ $(function(){
 	$("#gdsname").attr("readonly","readonly");
 	$("#skuname").attr("readonly","readonly");
 	$("#staffid").attr("readonly","readonly");
+	$("#allmoney").attr("readonly","readonly");
 	$("#skunamebtn").attr('disabled',true);//设置disabled属性为true，按钮不可用
+
 	orderManagequery(1);
 
 });
@@ -60,8 +62,8 @@ function orderChangePay(orderid,suborderid){
 		doAjax(url,param,callBack);
 	}
 //使订单变为已失效
-	function orderManageoffline(orderid,suborderid){
-		var param={orderid:orderid,suborderid:suborderid};
+	function orderManageoffline(orderid,suborderid,dataAccountId){
+		var param={orderid:orderid,suborderid:suborderid,dataAccountId:dataAccountId};
 		var url = basePath+'/orderManage/orderManageoffline';
 		var callBack =function(data){
 			if(data.success){
@@ -95,7 +97,7 @@ function changeCreateType(){
 	$("#packtimes").removeAttr("readonly");
 	$("#ordernum").removeAttr("readonly");
 	$('#skunamebtn').removeAttr("disabled");
-
+	$("#allmoney").attr("readonly","readonly");
  	$("#gdsid").val();
 	$("#gdsname").val();
 
@@ -138,10 +140,12 @@ function changeCreateType(){
 		$("#gdsname").attr("readonly","readonly");
 		$("#gdsid").val($("#staticgdsid").val());
 		$("#gdsname").val($("#staticgdsname").val());
+		$("#allmoney").removeAttr("readonly");
 	}
 }
 //管理员生成订单
 function createOrderBymaneger(){
+
 	var ordertype    = $("#typeOption").val();//订单类型
 	var staffid      = $("#staffid").val();//用户ID
 	var gdsid        = $("#gdsid").val();//商品ID
@@ -210,19 +214,18 @@ function createOrderBymaneger(){
 		return;
 	}
 	var  url = basePath+'/orderManage/createStaticOrderBymaneger';
-
+ 	$("#createOrderbtn").attr('disabled',true);
 	var callBack =function(data){
 		if(data.success){
 			WEB.msg.info("提示","创建成功");
-/*
-		 	$("#myModal").attr("class", "modal");
-*/
+			$("#createOrderbtn").removeAttr("disabled");
 			$("#myModal").hide();
 			$(".modal-backdrop").attr("class", "modal");
   			orderManagequery(1);
 		}
 		else{
 			WEB.msg.info("提示",data.ERRORINFO);
+			$("#createOrderbtn").removeAttr("disabled");
 		}
 	};
 	doAjax(url,param,callBack);

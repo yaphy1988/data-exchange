@@ -43,12 +43,12 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		ordMainInfoReqDTO.setOrderAmount(ordInfoReqDTO.getOrderAmount());
 		ordMainInfoReqDTO.setOrderMoney(ordInfoReqDTO.getOrderMoney());
 		ordMainInfoReqDTO.setRealMoney(ordInfoReqDTO.getOrderMoney());
-		ordMainInfoReqDTO.setStaffId(ordInfoReqDTO.getCreateStaff());
+		ordMainInfoReqDTO.setStaffId(ordInfoReqDTO.getStaffId());
 		ordMainInfoReqDTO.setShopId(ordInfoReqDTO.getShopId());
 		ordMainInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_0);
  		ordMainInfoReqDTO.setOrderTime(orderTime);
 		ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_01);
-		ordMainInfoReqDTO.setOrderType(Constants.Order.ORDER_TYPE_10);
+		ordMainInfoReqDTO.setOrderType(ordInfoReqDTO.getOrdertype());
 		ordMainInfoReqDTO.setSource(Constants.Order.ORDER_SOURCE_0);
  		ordMainInfoReqDTO.setInvoiceModType(Constants.Order.ORDER_invoiceModType_1);
 		ordMainInfoReqDTO.setInvoiceStatus(Constants.Order.ORDER_INVOICE_STATUS_0);
@@ -60,7 +60,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		ordInfoReqDTO.setAgentPrice(ordInfoReqDTO.getOrderPrice());
  		ordInfoReqDTO.setDiscountPrice(ordInfoReqDTO.getOrderPrice());
 		ordInfoReqDTO.setOrderTime(orderTime);
-		ordInfoReqDTO.setStaffId(ordInfoReqDTO.getCreateStaff());
+		ordInfoReqDTO.setStaffId(ordInfoReqDTO.getStaffId());
 		ordInfoReqDTO.setProductType(ordInfoReqDTO.getProductType());//一级大类
 		ordInfoReqDTO.setAipServiceId(ordInfoReqDTO.getAipServiceId());
 		ordInfoReqDTO.setServiceName(ordInfoReqDTO.getServiceName());
@@ -74,7 +74,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		ordLog.setCreateStaff(ordMainInfoReqDTO.getCreateStaff());
 		ordLog.setOrderId(Long.toString(orderid));
 		ordLog.setNode(Constants.Order.LOG_CODE_01);
-		ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_01);
+ 		ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_01);
 		int count =  iOrdMainInfoSV.saveOrderlog(ordLog);
 		return ordInfoReqDTO;
     }

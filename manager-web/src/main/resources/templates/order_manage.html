@@ -132,7 +132,7 @@
 								</td>
 								<td th:if="${list.orderStatus}=='02'">
 									<p class="pop-link">
-										<a   th:onclick="'javascript:orderManageoffline('+${list.orderId}+','+${list.ordInfoRespDTO.subOrder}+');'">使失效</a>
+										<a   th:onclick="'javascript:orderManageoffline('+${list.orderId}+','+${list.ordInfoRespDTO.subOrder}+','+${list.ordInfoRespDTO.dataAccountId}+');'">使失效</a>
 									</p>
 								</td>
 								<td th:if="${list.orderStatus}=='03'">
@@ -378,7 +378,7 @@
 
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary"  th:onclick="'javascript:createOrderBymaneger();'" >确定</button>
+					<button type="button" class="btn btn-primary"  th:onclick="'javascript:createOrderBymaneger();'" id="createOrderbtn" >确定</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal" id="closeCreatedialo" >关闭</button>
 
 				</div>
@@ -547,7 +547,7 @@
 									商品名称：
 								</td>
 								<td>
-									<input class="form-control" value="接口" placeholder="请输入至少两个字" type="text" id="querygdsname"/>
+									<input class="form-control" value="" placeholder="请输入至少两个字" type="text" id="querygdsname"/>
 								</td>
 								<td>
 									<button class="btn btn-primary" th:onclick="'javascript:qryModuleGoods(1);'" >查询</button>

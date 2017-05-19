@@ -291,7 +291,7 @@ public class OrderController {
 					}
  					OrdInfoReqDTO  ordInfoReqDTO = (OrdInfoReqDTO)CacheUtil.getItem(staff_id+SESSION_UNION_SHOPCART);
  					ordInfoReqDTO.setCreateStaff(staff_id);
- 					
+			    	ordInfoReqDTO.setStaffId(staff_id);
  					GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
  					GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
  					int igdsid =   new Long(ordInfoReqDTO.getGdsId()).intValue();  
