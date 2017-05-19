@@ -141,9 +141,9 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         DataAccountExample dataAccountExample = new DataAccountExample();
         DataAccountExample.Criteria updateCriteria = dataAccountExample.createCriteria();
         updateCriteria.andDataAcctIdEqualTo(dataAccountId);
-        updateCriteria.andDataAcctStatusNotIn(Arrays.asList(Constants.Bill.DATA_ACCT_STATUS_OK));
+        updateCriteria.andDataAcctStatusEqualTo(Constants.Bill.DATA_ACCT_STATUS_OK);
 
-        if(dataAccountMapper.updateByExample(dataAccount,dataAccountExample) <= 0){
+        if(dataAccountMapper.updateByExampleSelective(dataAccount,dataAccountExample) <= 0){
             String errorMsg = "找不到id:"+dataAccountId+" 状态是:"+Constants.Bill.DATA_ACCT_STATUS_OK+" 的记录。";
             logger.error(errorMsg);
             throw new BusinessException(errorMsg);
@@ -162,9 +162,9 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         DataAccountExample dataAccountExample = new DataAccountExample();
         DataAccountExample.Criteria updateCriteria = dataAccountExample.createCriteria();
         updateCriteria.andDataAcctIdEqualTo(dataAccountId);
-        updateCriteria.andDataAcctStatusNotIn(Arrays.asList(Constants.Bill.DATA_ACCT_STATUS_OK));
+        updateCriteria.andDataAcctStatusEqualTo(Constants.Bill.DATA_ACCT_STATUS_INVALID);
 
-        if(dataAccountMapper.updateByExample(dataAccount,dataAccountExample) <= 0){
+        if(dataAccountMapper.updateByExampleSelective(dataAccount,dataAccountExample) <= 0){
             String errorMsg = "找不到id:"+dataAccountId+" 状态不是:"+Constants.Bill.DATA_ACCT_STATUS_OK+" 的记录。";
             logger.error(errorMsg);
             throw new BusinessException(errorMsg);
