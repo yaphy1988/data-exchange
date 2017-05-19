@@ -40,14 +40,14 @@ public interface IAipCenterDataAccountRSV {
      * @param dataAccountId
      * @throws BusinessException
      */
-    public void dealDisableDataAccount(long dataAccountId) throws BusinessException;
+    public void dealDisableDataAccount(DataAccountDTO dataAccountDTO) throws BusinessException;
 
     /**
      * 数据账户生效操作
      * @param dataAccountId
      * @throws BusinessException
      */
-    public void dealEnableDataAccount(long dataAccountId) throws BusinessException;
+    public void dealEnableDataAccount(DataAccountDTO dataAccountDTO) throws BusinessException;
 
     /**
      * 根据子订单编码，查询数据账户信息

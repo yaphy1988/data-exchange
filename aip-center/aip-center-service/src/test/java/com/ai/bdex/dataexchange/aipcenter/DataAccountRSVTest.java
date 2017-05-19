@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.aipcenter;
 
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
@@ -47,6 +48,8 @@ public class DataAccountRSVTest {
 
     @Test
     public void testDealDisableDataAccount() throws BusinessException {
-        aipCenterDataAccountRSV.dealDisableDataAccount(10022);
+        DataAccountDTO dataAccountDTO = new DataAccountDTO();
+        dataAccountDTO.setDataAcctId(10022l);
+        aipCenterDataAccountRSV.dealDisableDataAccount(dataAccountDTO);
     }
 }

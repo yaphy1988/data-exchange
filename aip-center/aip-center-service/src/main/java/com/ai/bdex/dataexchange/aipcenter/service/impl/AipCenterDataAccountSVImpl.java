@@ -133,45 +133,47 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
     }
 
     @Override
-    public void dealDisableDataAccount(long dataAccountId) throws BusinessException {
+    public void dealDisableDataAccount(DataAccountDTO dataAccountDTO) throws BusinessException {
         DataAccount dataAccount = new DataAccount();
-        dataAccount.setDataAcctId(dataAccountId);
+        dataAccount.setDataAcctId(dataAccountDTO.getDataAcctId());
         dataAccount.setDataAcctStatus(Constants.Bill.DATA_ACCT_STATUS_INVALID);
         dataAccount.setUpdateTime(new Date());
+        dataAccount.setUpdateStaff(dataAccountDTO.getCurrentUserId());
 
         DataAccountExample dataAccountExample = new DataAccountExample();
         DataAccountExample.Criteria updateCriteria = dataAccountExample.createCriteria();
-        updateCriteria.andDataAcctIdEqualTo(dataAccountId);
+        updateCriteria.andDataAcctIdEqualTo(dataAccountDTO.getDataAcctId());
         updateCriteria.andDataAcctStatusEqualTo(Constants.Bill.DATA_ACCT_STATUS_OK);
 
         if(dataAccountMapper.updateByExampleSelective(dataAccount,dataAccountExample) <= 0){
-            String errorMsg = "找不到id:"+dataAccountId+" 状态是:"+Constants.Bill.DATA_ACCT_STATUS_OK+" 的记录。";
+            String errorMsg = "找不到id:"+dataAccountDTO.getDataAcctId()+" 状态是:"+Constants.Bill.DATA_ACCT_STATUS_OK+" 的记录。";
             logger.error(errorMsg);
             throw new BusinessException(errorMsg);
         }else{
-            DataAccount dataAccountHis = dataAccountMapper.selectByPrimaryKey(dataAccountId);
+            DataAccount dataAccountHis = dataAccountMapper.selectByPrimaryKey(dataAccountDTO.getDataAcctId());
             saveDataAccountHis(dataAccountHis,"后台人员操作订单失效。");
         }
     }
 
     @Override
-    public void dealEnableDataAccount(long dataAccountId) throws BusinessException {
+    public void dealEnableDataAccount(DataAccountDTO dataAccountDTO) throws BusinessException {
         DataAccount dataAccount = new DataAccount();
-        dataAccount.setDataAcctId(dataAccountId);
+        dataAccount.setDataAcctId(dataAccountDTO.getDataAcctId());
         dataAccount.setDataAcctStatus(Constants.Bill.DATA_ACCT_STATUS_OK);
         dataAccount.setUpdateTime(new Date());
+        dataAccount.setUpdateStaff(dataAccountDTO.getCurrentUserId());
 
         DataAccountExample dataAccountExample = new DataAccountExample();
         DataAccountExample.Criteria updateCriteria = dataAccountExample.createCriteria();
-        updateCriteria.andDataAcctIdEqualTo(dataAccountId);
+        updateCriteria.andDataAcctIdEqualTo(dataAccountDTO.getDataAcctId());
         updateCriteria.andDataAcctStatusEqualTo(Constants.Bill.DATA_ACCT_STATUS_INVALID);
 
         if(dataAccountMapper.updateByExampleSelective(dataAccount,dataAccountExample) <= 0){
-            String errorMsg = "找不到id:"+dataAccountId+" 状态不是:"+Constants.Bill.DATA_ACCT_STATUS_OK+" 的记录。";
+            String errorMsg = "找不到id:"+dataAccountDTO.getDataAcctId()+" 状态不是:"+Constants.Bill.DATA_ACCT_STATUS_OK+" 的记录。";
             logger.error(errorMsg);
             throw new BusinessException(errorMsg);
         }else{
-            DataAccount dataAccountHis = dataAccountMapper.selectByPrimaryKey(dataAccountId);
+            DataAccount dataAccountHis = dataAccountMapper.selectByPrimaryKey(dataAccountDTO.getDataAcctId());
             saveDataAccountHis(dataAccountHis,"后台人员操作订单生效。");
         }
     }
