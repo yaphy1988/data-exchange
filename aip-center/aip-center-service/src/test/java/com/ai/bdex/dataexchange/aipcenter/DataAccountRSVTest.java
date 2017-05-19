@@ -44,4 +44,9 @@ public class DataAccountRSVTest {
 
         aipCenterDataAccountRSV.dealRecharge(rechargeDTO);
     }
+
+    @Test
+    public void testDealDisableDataAccount() throws BusinessException {
+        aipCenterDataAccountRSV.dealDisableDataAccount(10022);
+    }
 }

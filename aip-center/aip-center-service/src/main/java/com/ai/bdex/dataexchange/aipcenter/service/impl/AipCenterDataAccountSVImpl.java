@@ -137,6 +137,7 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         DataAccount dataAccount = new DataAccount();
         dataAccount.setDataAcctId(dataAccountId);
         dataAccount.setDataAcctStatus(Constants.Bill.DATA_ACCT_STATUS_INVALID);
+        dataAccount.setUpdateTime(new Date());
 
         DataAccountExample dataAccountExample = new DataAccountExample();
         DataAccountExample.Criteria updateCriteria = dataAccountExample.createCriteria();
@@ -158,6 +159,7 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         DataAccount dataAccount = new DataAccount();
         dataAccount.setDataAcctId(dataAccountId);
         dataAccount.setDataAcctStatus(Constants.Bill.DATA_ACCT_STATUS_OK);
+        dataAccount.setUpdateTime(new Date());
 
         DataAccountExample dataAccountExample = new DataAccountExample();
         DataAccountExample.Criteria updateCriteria = dataAccountExample.createCriteria();
