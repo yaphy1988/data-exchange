@@ -50,6 +50,6 @@ public class DataAccountRSVTest {
     public void testDealDisableDataAccount() throws BusinessException {
         DataAccountDTO dataAccountDTO = new DataAccountDTO();
         dataAccountDTO.setDataAcctId(10022l);
-        aipCenterDataAccountRSV.dealDisableDataAccount(dataAccountDTO);
+        aipCenterDataAccountRSV.dealEnableDataAccount(dataAccountDTO);
     }
 }
