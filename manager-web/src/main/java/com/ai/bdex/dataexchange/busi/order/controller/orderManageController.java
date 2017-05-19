@@ -482,7 +482,11 @@ public class orderManageController {
              }
 				try {
 					//需要去调用接口处理，将信息失效掉。
-					 iAipCenterDataAccountRSV.dealDisableDataAccount(ldataAccountId);
+
+					DataAccountDTO dataAccountDTO = new DataAccountDTO();
+					dataAccountDTO.setDataAcctId(ldataAccountId);
+					dataAccountDTO.setCurrentUserId(staff_id);
+					 iAipCenterDataAccountRSV.dealDisableDataAccount(dataAccountDTO);
                     //更新人：staff_id
                     iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
 					rMap.put("success", true);
