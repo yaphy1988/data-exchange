@@ -4,6 +4,7 @@ import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
+import com.ai.bdex.dataexchange.util.StaffLocaleUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.session.impl.SessionManager;
 import com.ai.paas.util.CacheUtil;
@@ -96,6 +97,9 @@ public class LoginAuthFilter implements Filter {
         String mallDomain = SystemConfUtil.getSystemModuleInfo("01","1").genFullUrl();
 
         if(staffInfo != null && staffInfo.isLoginIn()){
+
+            StaffLocaleUtil.setCurrentStaffId(staffInfo.getStaffId());
+
             //通过记住密码登陆，且url配置成需确认登陆的，则跳转到登陆界面
             if("2".equals(staffInfo.getLoginType()) && unLoginUrl(uri,"2")) {
                 response.sendRedirect(mallDomain+this.loginPage+"?toPage="+ LoginAuthFilter.getRequestUrl(request));
