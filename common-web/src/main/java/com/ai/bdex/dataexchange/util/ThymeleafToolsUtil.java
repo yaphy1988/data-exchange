@@ -27,6 +27,10 @@ public class ThymeleafToolsUtil {
     public String managerDomain(){
         return SystemConfUtil.getSystemModuleInfo("02","1").genFullUrl();
     }
+
+    public String reportDomain() {
+        return SystemConfUtil.getSystemModuleInfo("03","1").genFullUrl();
+    }
     /**
      * 将金额转换为元显示
      * 使用：<a th:href="${#tools.managerDomain()}"></a>

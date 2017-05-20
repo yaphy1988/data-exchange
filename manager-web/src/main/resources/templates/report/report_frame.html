@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>报表统计</title>
+    <link rel="stylesheet" href="../../static/component/bootstrap/css/bootstrap.css" th:remove="all"/>
+    <link rel="stylesheet" href="../../static/css/global.css" th:remove="all"/>
+    <link rel="stylesheet" href="../../static/js/frameajax/frameajax.css" th:remove="all"/>
+    <link rel="stylesheet" href="../../static/css/index.css" th:remove="all"/>
+
+</head>
+<body>
+<div layout:fragment="screen_content">
+    <script th:inline="javascript">
+        var reportId = [[${reportId}]];
+
+        var url =[[${#tools.reportDomain()}]]+ '/reportdata/' + reportId;
+        $.ajax({
+            url:url,
+            dataType:'html',
+            cacha:false,
+            async:true,
+            data:{
+                pageNo : 1,
+                pageSize: 10
+            },
+            success:function(data){
+                $('#report_content').html(data).show();
+            }
+        });
+    </script>
+    <div class="m_main">
+        <div class="m_con">
+            <div class="classify">
+                <i class="iconfont"></i>
+                <span>当前位置：</span>
+                <a href=""><span>广州数据交易中心</span></a>
+                <a href=""><span>个人中心</span></a>
+                <span class="col_999"> 报表统计</span>
+            </div>
+
+            <div id="report_content">
+                <h1>这里是报表的主工作区，通过js异步查询报表数据然后显示在这里！</h1>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>
