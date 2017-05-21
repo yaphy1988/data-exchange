@@ -18,15 +18,17 @@
 
         var url =[[${#tools.reportDomain()}]]+ '/reportdata/' + reportId;
         $.ajax({
-            url:url,
-            dataType:'html',
-            cacha:false,
-            async:true,
-            data:{
-                pageNo : 1,
-                pageSize: 10
+            url: url,
+            type: "POST",
+            dataType: "html",
+            contentType: "text/html; charset=utf-8",
+            cache: false,
+            async: true,
+            crossDomain: true,
+            xhrFields: {
+                withCredentials: true
             },
-            success:function(data){
+            success: function(data){
                 $('#report_content').html(data).show();
             }
         });

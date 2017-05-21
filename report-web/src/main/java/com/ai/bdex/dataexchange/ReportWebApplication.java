@@ -5,9 +5,10 @@ import com.alibaba.boot.dubbo.annotation.EnableDubboConfiguration;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 
-@SpringBootApplication
+@SpringBootApplication(exclude = MongoAutoConfiguration.class)
 @EnableDubboConfiguration
 @MapperScan("com.ai.bdex.dataexchange.report.dao.mapper")
 public class ReportWebApplication {
