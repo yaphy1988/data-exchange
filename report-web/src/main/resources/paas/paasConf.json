@@ -51,16 +51,9 @@
             "moduleContext": "",
             "moduleDomain": "localhost:8082",
             "protocolType": "http"
-          }
-        ]
-      },
-      {
-        "code": "03",
-        "name": "报表WEB",
-        "version": "1.0",
-        "moduleList": [
+          },
           {
-            "moduleId": "1",
+            "moduleId": "2",
             "moduleName": "报表模块",
             "moduleContext": "",
             "moduleDomain": "localhost:8083",
