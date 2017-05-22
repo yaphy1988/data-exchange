@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="~{fragments/syshead :: syshead}"></div>
-
-<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
-<script type="text/javascript" src="../../static/js-busi/order/mybill.js" th:src="@{/js-busi/order/mybill.js}"></script>
-<head th:remove="all">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
 	<meta charset="UTF-8">
 	<title>我的发票开具申请</title>
 	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
-	
+
+	<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+	<script type="text/javascript" src="../../static/js-busi/order/mybill.js" th:src="@{/js-busi/order/mybill.js}"></script>
 </head>
 
 <body>
 <div th:replace="~{fragments/top :: top}"></div>
-<header class="clearfix m_header" th:remove="all">
+ <header class="clearfix m_header" th:remove="all">
 	<a href="" class="Logo" target="_blank" >
 		<img  src="../static/images/manage_logo.png" alt="广州数据" >
 	</a>
@@ -149,9 +149,7 @@
 				<a href="javascript:;" class="btn-default btn mr10" >取消</a>
 			</div>
 	</div>
-
-
-		<div class="m_nav">
+	<div class="m_nav" th:remove="all">
 		<nav class="nav">
 			<ul>
 				<li class="navTit">
@@ -197,12 +195,9 @@
 			</ul>
 		</nav>
 	</div>
-	
-	
-	
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
 	
-
+</div>
 </body>
 </html>

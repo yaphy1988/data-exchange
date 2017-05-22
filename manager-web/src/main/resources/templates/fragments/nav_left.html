@@ -23,6 +23,15 @@
 						<li >
 							<a th:href="@{/infomanager/pageInit}">资料修改</a>
 						</li>
+						<li >
+							<a th:href="@{/orderManage/myOrder}">我的订单</a>
+						</li>
+						<li >
+							<a th:href="@{/orderManage/myData}">我的数据</a>
+						</li>
+						<li >
+							<a th:href="@{/invoiceManage/mybill}">发票申请</a>
+						</li>
 					</ol>
 				</li>
 				<li >
@@ -55,6 +64,21 @@
 						</li> 
 					</ol>
 				</li>
+				<li >
+					<a href="javascript:void(0)">
+						<i class=""></i>
+						后台运营
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li>
+							<a th:href="@{/orderManage/orderManage}"></i>订单管理</a>
+						</li>
+						<li >
+							<a th:href="@{/invoiceManage/mybillCheck}"></i>发票管理</a>
+						</li>
+					</ol>
+				</li>
 				<li>
 					<a href="javascript:void(0)">
 						<i ></i>
@@ -73,7 +97,7 @@
 						</li>  
 						<li >
 							<a th:href="@{/pageManage/newsInfo}">新闻维护</a>
-						</li>  
+						</li>
 						<li >
 							<a th:href="@{/pageManage/pageClassify}">首页菜单分类</a>
 						</li>

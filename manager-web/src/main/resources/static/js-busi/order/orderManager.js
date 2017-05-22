@@ -50,31 +50,47 @@ function orderManagequery(index){
 function orderChangePay(orderid,suborderid){
 	var param={orderid:orderid,suborderid:suborderid};
 	var url = basePath+'/orderManage/orderChangePay';
-	var callBack =function(data){
-			if(data.success){
-				WEB.msg.info("提示","更新成功");
-				orderManagequery(1);
-		}
-		else{
-			WEB.msg.info("提示",data.ERRORINFO);
-		}
-		};
-		doAjax(url,param,callBack);
+		WEB.msg.confirm("提示","您确定要将此订单设置为已支付？",function(){
+			$.ajax({
+				url:url,
+				cache:false,
+				async:true,
+				dataType:'json',
+				data : param,
+				success:function(data){
+					if(data.success){
+						WEB.msg.info("提示","设置支付成功");
+						orderManagequery(1);
+					}
+					else{
+						WEB.msg.info("提示",data.ERRORINFO);
+					}
+					}
+			});
+		});
 	}
 //使订单变为已失效
-	function orderManageoffline(orderid,suborderid,dataAccountId){
+function orderManageoffline(orderid,suborderid,dataAccountId){
 		var param={orderid:orderid,suborderid:suborderid,dataAccountId:dataAccountId};
 		var url = basePath+'/orderManage/orderManageoffline';
-		var callBack =function(data){
-			if(data.success){
-				WEB.msg.info("提示","更新成功");
-				orderManagequery(1);
-			}
-			else{
-			WEB.msg.info("提示",data.ERRORINFO);
-		}
-	};
-	doAjax(url,param,callBack);
+        WEB.msg.confirm("提示","您确定要失效该订单吗？",function(){
+            $.ajax({
+                url:url,
+                cache:false,
+                async:true,
+                dataType:'json',
+                data : param,
+                success:function(data){
+                    if(data.success){
+                        WEB.msg.info("提示","失效成功");
+                        orderManagequery(1);
+                    }
+                    else{
+                        WEB.msg.info("提示",data.ERRORINFO);
+                    }
+                }
+             });
+     });
 }
 function doAjax(url,params,callBack){
 	$.ajax({

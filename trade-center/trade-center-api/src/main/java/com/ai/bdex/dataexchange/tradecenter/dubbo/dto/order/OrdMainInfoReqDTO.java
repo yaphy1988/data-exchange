@@ -33,7 +33,14 @@ public class OrdMainInfoReqDTO  extends BaseInfo{
     private String invoiceModType;
     private String invoiceStatus;
     private List<String> invoiceModTypeList;//发票类型List
-   
+	private List<String> ordertypeList;//发票类型List
+	public List<String> getordertypeList() {
+		return ordertypeList;
+	}
+	public void setordertypeList(List<String> ordertypeList) {
+		this.ordertypeList = ordertypeList;
+	}
+
 	public List<String> getInvoiceModTypeList() {
 		return invoiceModTypeList;
 	}

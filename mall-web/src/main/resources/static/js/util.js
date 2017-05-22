@@ -322,12 +322,16 @@ WEB.check.isPhone=function(phone){
 
 //邮箱校验
 WEB.check.isEmail = function(email){
-	var emailReg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
+	var szReg=/^[A-Za-zd]+([-_.][A-Za-zd]+)*@([A-Za-zd]+[-.])+[A-Za-zd]{2,5}$/;
+	var bChk=szReg.test(email);
+	return bChk;
+
+/*	var emailReg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/;
 	if(!(emailReg.test(email))){
 		return false;
 	}else{
 		return true;
-	}
+	}*/
 }
 
 WEB.cookie.getCookie = function(l) {

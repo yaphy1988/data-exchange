@@ -80,7 +80,6 @@ public class OrderController {
 	IAipServiceInfoRSV iAipServiceInfoRSV;
     @DubboConsumer(timeout = 30000)
    IAipCenterDataAccountRSV iAipCenterDataAccountRSV;
-
     //预定的数据展现
 	@RequestMapping(value = "/gdshopcart")
 	public ModelAndView saveTosession(Model model, HttpServletRequest request) {
@@ -412,6 +411,8 @@ public class OrderController {
 		String staff_id = StaffUtil.getStaffId(hpptsesion);
 		String orderid = request.getParameter("orderid");
 		String subordid = request.getParameter("suborderid");
+		//模拟成功
+		Map<String, Object> rMap = new HashMap<String, Object>();
 		Date orderTime = DateUtil.getNowAsDate();
 		OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
 		ordMainInfoReqDTO.setOrderId(orderid);
@@ -429,8 +430,12 @@ public class OrderController {
 		ordInfo.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
 		ordInfo.setPayTime(orderTime);
 		try {
-			iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
 			OrdMainInfoRespDTO ordMainInfoRespDTO=	iOrderMainInfoRSV.queryOrderDetail(ordMainInfoReqDTO);
+			if(ordMainInfoRespDTO.getOrderStatus().equals(Constants.Order.ORDER_STATUS_02))
+			{
+				rMap.put("success", true);
+				return  "1";
+			}
 			OrdInfoRespDTO ordInfoRespDTO = ordMainInfoRespDTO.getOrdInfoRespDTO();
 
 			if (ordInfoRespDTO!= null) {
@@ -447,62 +452,70 @@ public class OrderController {
                     * startDate(当periodType="1")
                     * endDate(当periodType="1")*/
 				int igdsid = new Long(ordInfoRespDTO.getGdsId()).intValue();
-				int iskuid = new Long(ordInfoRespDTO.getSkuId()).intValue();
-				String rechargeType = Constants.Order.ORDER_API_RECHARGETYPE_1;
+				rechargeDTO.setRechargeUserId(ordMainInfoRespDTO.getStaffId());
+				if(Constants.Order.ORDER_TYPE_30.equals(ordMainInfoRespDTO.getOrderType()))
+				{
+					/*int itotalcount = new Long(ordInfoRespDTO.getBuyAllCount()).intValue();
+					rechargeDTO.setTotalNum(itotalcount);*/
+				}
+				else if(Constants.Order.ORDER_TYPE_10.equals(ordMainInfoRespDTO.getOrderType()) || Constants.Order.ORDER_TYPE_20.equals(ordMainInfoRespDTO.getOrderType()) ){
+					if(Constants.Order.ORDER_TYPE_10.equals(ordMainInfoRespDTO.getOrderType()) ){
+						int iskuid = new Long(ordInfoRespDTO.getSkuId()).intValue();
+						rechargeDTO.setSkuId(iskuid);
+					}
+
+					int itotalcount = new Long(ordInfoRespDTO.getBuyAllCount()).intValue();
+					rechargeDTO.setTotalNum(itotalcount);
+					rechargeDTO.setCatId(ordInfoRespDTO.getCatId());
+					rechargeDTO.setCatFirst(ordInfoRespDTO.getCatFirst());
+					if(ordInfoRespDTO.getAipServiceId() != null)
+					{
+						rechargeDTO.setServiceId(ordInfoRespDTO.getAipServiceId() );
+					}
+				}
 				rechargeDTO.setRechargeUserId(ordInfoRespDTO.getStaffId());
 				rechargeDTO.setOrderId(orderid);
 				rechargeDTO.setSubOrder(ordInfoRespDTO.getSubOrder());
 				rechargeDTO.setGdsId(igdsid);
-				rechargeDTO.setSkuId(iskuid);
-				rechargeDTO.setCatId(ordInfoRespDTO.getCatId());
-				rechargeDTO.setCatFirst(ordInfoRespDTO.getCatFirst());
-				rechargeDTO.setRechargeType(Constants.Order.ORDER_API_RECHARGETYPE_1);
+
 				String periodType = Constants.Order.ORDER_API_PERIODTYPE_1;
-				if (ordInfoRespDTO.getActiveEndTime().after(getNodatelength())) {
+				String  inavidate =  Constants.Order.ORDER_API_NODATE;
+				if (  ordInfoRespDTO.getActiveEndTime() == null  ) {
 					//大于50年,就是无限期了
 					periodType = Constants.Order.ORDER_API_PERIODTYPE_2;
 				}
 				else	{
 					periodType = Constants.Order.ORDER_API_PERIODTYPE_1;
-					rechargeDTO.setStartDate(ordInfoRespDTO.getCreateTime());
-					rechargeDTO.setEndDate(ordInfoRespDTO.getActiveEndTime());
 				}
-
+				rechargeDTO.setStartDate(ordInfoRespDTO.getCreateTime());
+				rechargeDTO.setEndDate(ordInfoRespDTO.getActiveEndTime());
 				rechargeDTO.setPeriodType(periodType);
-				// * rechargeType (1-次数，2-金额) 普通订单就是次数，后台订单是 金额
-			   /*	   * totalNum  (当rechargeType="1")
-						* totalMoney(当rechargeType="2")
-						* serviceId (当rechargeType="1")*/
-				if(Constants.Order.ORDER_TYPE_10.equals(ordMainInfoRespDTO.getOrderType())){
-					rechargeType = Constants.Order.ORDER_API_RECHARGETYPE_1;
-					int itotalcount = new Long(ordInfoRespDTO.getBuyAllCount()).intValue();
-					rechargeDTO.setTotalNum(itotalcount);
-					rechargeDTO.setServiceId(ordInfoRespDTO.getAipServiceId());
- 				}
-				else{
-					//金额计算
-					rechargeType = Constants.Order.ORDER_API_RECHARGETYPE_2;
-					int iordermoney = new Long(ordInfoRespDTO.getOrderMoney()).intValue();
-					rechargeDTO.setTotalMoney(iordermoney);
-				}
+				String packageType = ordMainInfoRespDTO.getOrderType();
+				rechargeDTO.setPackageType(packageType);
+				int iordermoney = new Long(ordInfoRespDTO.getOrderMoney()).intValue();
+				rechargeDTO.setTotalMoney(iordermoney);
 				try {
-					rechargeDTO.setRechargeType(rechargeType);
 					iAipCenterDataAccountRSV.dealRecharge(rechargeDTO);
+					iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
+					rMap.put("success", true);
 				} catch (Exception e) {
 					System.out.print("更新AipCenter失败：" + e.getMessage());
 					//需要通知运维，去处理数据
-					return "0";
+					rMap.put("ERRORINFO", "更新AipCenter失败");
+					rMap.put("success", false);
 				}
 			}
 			else
 			{
 				System.out.print("更新AipCenter失败：查不到对于的子订单" );
 				//需要通知运维，去处理数据
-				return "0";
+				rMap.put("success", false);
+				rMap.put("ERRORINFO", "更新AipCenter失败");
 			}
 		} catch (Exception er) {
 			System.out.print("更新失败：" + er.getMessage());
-			return "0";
+			rMap.put("success", false);
+			rMap.put("ERRORINFO", "更新订单失败");
 		}
 		return "1";
 	}

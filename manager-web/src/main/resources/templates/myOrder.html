@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="~{fragments/syshead :: syshead}"></div>
-<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
 <head>
 	<meta charset="UTF-8">
 	<title>个人中心-我的订单</title>
@@ -74,17 +74,17 @@
 						class="table table-bordered table-striped table-hover text-center table-th-nowrap">
 						<thead>
 							<tr>
-								<th>序号</th>
+								<th th:width="60">序号</th>
 								<th>订单号</th>
 								<th>购买时间</th>
 								<th>数据名称</th>
 								<th>套餐类别</th>
-								<th>份数数</th>
-								<th>剩余次数</th>
+								<th>份数</th>
+								<th th:width="100">剩余次数</th>
 								<th>金额</th>
 								<th>有效期</th>
-								<th>订单状态</th>
-								<th>操作</th>
+								<th th:width="100">订单状态</th>
+								<th th:width="80">操作</th>
 							</tr>
 						</thead>
 						<tbody th:if=" ${pageInfo}" th:remove="all-but-first">

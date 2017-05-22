@@ -67,7 +67,7 @@ public class invoiceManageController {
     /**
      * 发票管理
      * @param model
-     * @param gdsInfoVO
+     * @param
      * @return
      * @throws Exception
      */
@@ -78,14 +78,16 @@ public class invoiceManageController {
     /**
      * 发票开具申请
      * @param model
-     * @param session
+     * @param
      * @return
      * @throws Exception
      */
     @RequestMapping(value="/applyInvoice")
-	public String applyInvoice(Model model,HttpSession session,OrdInvoiceTaxVO ordInvoiceTaxVO) throws Exception{
+	public String applyInvoice(Model model ,HttpServletRequest request ,OrdInvoiceTaxVO ordInvoiceTaxVO) throws Exception{
 		ReqInvoiceTaxDTO input = new ReqInvoiceTaxDTO();
-		input.setStaffId(StaffUtil.getStaffVO(session).getStaffId());
+		HttpSession hpptsesion = request.getSession();
+		String staff_id = StaffUtil.getStaffId(hpptsesion);
+		input.setStaffId(staff_id);
 		List<ChnlInvoiceTaxDTO> datas = new ArrayList<>();
 		ChnlInvoiceTaxDTO invoiceTaxDTO =new  ChnlInvoiceTaxDTO();
 		input.setStatus("20");
@@ -138,7 +140,7 @@ public class invoiceManageController {
 	 /**
      * 发票管理-管理员审核
      * @param model
-     * @param gdsInfoVO
+     * @param
      * @return
      * @throws Exception
      */
@@ -150,7 +152,7 @@ public class invoiceManageController {
    	 * 查询发票管理审核列表
    	 * 
    	 * @param model
-   	 * @param searchVO
+   	 * @param
    	 * @return
    	 */
    	@RequestMapping(value = "/myOrderInvoiceList")

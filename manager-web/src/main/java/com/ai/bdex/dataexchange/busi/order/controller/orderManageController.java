@@ -216,6 +216,11 @@ public class orderManageController {
 				staff_id = TMPUSERID;
 			}
 			ordMainReqDTO.setStaffId(staff_id);
+			//不是30的数据要查询出来
+			 List<String> listOrderType = new ArrayList<String>();
+			listOrderType.add(Constants.Order.ORDER_TYPE_10);
+			listOrderType.add(Constants.Order.ORDER_TYPE_20);
+ 			ordMainReqDTO.setordertypeList(listOrderType)  ;
    			pageInfo = iOrderMainInfoRSV.queryOrdMainInfoPage(ordMainReqDTO);
    			if(!CollectionUtils.isEmpty(pageInfo.getResult())){
    				for(OrdMainInfoRespDTO ordMainRespDTO :pageInfo.getResult()){
