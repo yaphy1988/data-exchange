@@ -71,6 +71,8 @@ public class BdxpayController {
     public void alipayRequestPage(Model model,HttpServletRequest request,HttpServletResponse httpResponse){
     	String orderId = request.getParameter("orderId");
     	String suborderId = request.getParameter("subOrderid");
+    	log.debug("调用支付宝接口");
+    	log.equals("调用支付宝接口");
     	try {
     		//查询订单/商品信息
     		OrdInfoRespDTO ordInfoRespDTO = this.queryOrdMainInfoByorderId(orderId,suborderId);
@@ -130,7 +132,7 @@ public class BdxpayController {
     @RequestMapping(value="/alipayNotify")
     @ResponseBody
     private void alipayNotify(HttpServletRequest request,HttpServletResponse response){
-    	log.debug("支付宝异步通知日志开始");
+    	log.error("支付宝异步通知日志开始");
     	Map<String,String> params = new HashMap<String,String>();
     	Map requestParams = request.getParameterMap();
     	try {
@@ -144,20 +146,20 @@ public class BdxpayController {
         		}
         		//乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
         		valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-        		log.debug("支付宝异步通知日志：key="+name+";value="+valueStr);
+        		log.error("支付宝异步通知日志：key="+name+";value="+valueStr);
         		params.put(name, valueStr);
         	}
     		//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
     		//商户订单号
 
     		String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
-    		log.debug("商户订单号：out_trade_no="+out_trade_no);
+    		log.error("商户订单号：out_trade_no="+out_trade_no);
     		//支付宝交易号
     		String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
-    		log.debug("支付宝交易号：trade_no="+trade_no);
+    		log.error("支付宝交易号：trade_no="+trade_no);
     		//交易状态
     		String trade_status = new String(request.getParameter("trade_status").getBytes("ISO-8859-1"),"UTF-8");
-    		log.debug("交易状态：trade_status="+trade_status);
+    		log.error("交易状态：trade_status="+trade_status);
     		//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
     		//计算得出通知验证结果
     		//boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String publicKey, String charset, String sign_type)
