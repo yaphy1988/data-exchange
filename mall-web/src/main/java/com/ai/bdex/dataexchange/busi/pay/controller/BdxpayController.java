@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
+import com.ai.bdex.dataexchange.busi.order.controller.OrderController;
 import com.ai.bdex.dataexchange.busi.page.controller.HomePageController;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
@@ -43,7 +44,7 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 public class BdxpayController {
 
     private static final String MODULE = BdxpayController.class.getName();
-	private static final Logger log = LoggerFactory.getLogger(HomePageController.class);
+	private static final Logger log = LoggerFactory.getLogger(BdxpayController.class);
 	private final static String API_SERVICE_NAME_TMP = "API_SERVICE_NAME_TMP";//API服务名称接口获取不到数据
 	@DubboConsumer(timeout = 30000)
 	IPageDisplayRSV iPageDisplayRSV;
