@@ -81,12 +81,14 @@ function initParamInfo(){
 
     var baseInfo_providerId = $.trim($("#baseInfo_providerServiceInfo").attr("providerId"));
     var baseInfo_pServiceId = $.trim($("#baseInfo_providerServiceInfo").attr("pServiceId"));
+    var baseInfo_pVersion = $.trim($("#baseInfo_providerServiceInfo").attr("version"));
     if (baseInfo_providerId == "" || baseInfo_pServiceId == ""){
         WEB.msg.info("提示","供应商服务不能为空！");
         return null;
     }
     params.providerId = baseInfo_providerId;
     params.pServiceId = baseInfo_pServiceId;
+    params.pVersion = baseInfo_pVersion;
 
     var baseInfo_aipUrl = $.trim($("#baseInfo_aipUrl").val());
     if (baseInfo_aipUrl == ""){
@@ -189,4 +191,8 @@ function setCkeditValue() {
             }
         });
     }
+}
+
+function backToList() {
+    window.location.href=basePath + "/aipManager/pageInit";
 }

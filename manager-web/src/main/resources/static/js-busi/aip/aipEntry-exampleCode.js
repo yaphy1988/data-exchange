@@ -149,7 +149,7 @@ function initExampleParams(params) {
     return true;
 }
 
-function sumbitExampleInfo() {
+function sumbitExampleInfo(obj) {
     var params = {};
     if (!initExampleParams(params)){
         return;
@@ -173,9 +173,20 @@ function sumbitExampleInfo() {
         success:function (data) {
             if (data.success){
                 WEB.msg.info("提示","保存成功");
+                if ($(obj).attr("isEdit") == "0"){
+                    window.location.href = WEB_ROOT + "/aipManager/pageInit";
+                }
             }else {
                 WEB.msg.info("提示",data.msg);
             }
         }
     })
+}
+
+function backToList() {
+    window.location.href=basePath + "/aipManager/pageInit";
+}
+
+function bactToPrev() {
+    history.back(-1);
 }

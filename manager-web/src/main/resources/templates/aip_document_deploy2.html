@@ -77,11 +77,11 @@
 								</td>
 							</tr>
 							<tr class="serviceErrorCodeTr" th:each="errorCode,errorCodeStat:${serviceErrorList}">
-								<td><input type="text" class="form-control" name="" th:value="${errorCode.errorCode}"></td>
+								<td><input type="text" class="form-control" name="" th:value="${errorCode.errorCode}" th:disabled="${isView}=='1'"></td>
 								<td>
 									<div class="check-link">
-										<input type="text" class="form-control" name="" th:value="${errorCode.errorMsg}">
-										<a href="javascript:void(0)" onclick="delRow(this)">删除</a>
+										<input type="text" class="form-control" name="" th:value="${errorCode.errorMsg}" th:disabled="${isView}=='1'">
+										<a href="javascript:void(0)" onclick="delRow(this)" th:disabled="${isView}=='1'">删除</a>
 									</div>
 								</td>
 							</tr>
@@ -89,7 +89,7 @@
 						</table>
 						<!-- 按钮 -->
 						<div class="text-right ">
-							<a href="javascript:void(0)" class="btn-default btn" onclick="serviceErrorCodeAddRow()">新增</a>
+							<a href="javascript:void(0)" class="btn-default btn" onclick="serviceErrorCodeAddRow()" th:disabled="${isView}=='1'">新增</a>
 						</div>
 					</td>
 				</tr>
@@ -115,11 +115,11 @@
 								</td>
 							</tr>
 							<tr class="systemErrorCodeTr"  th:each="errorCode,errorCodeStat:${systemErrorList}">
-								<td><input type="text" class="form-control" name="" th:value="${errorCode.errorCode}"></td>
+								<td><input type="text" class="form-control" name="" th:value="${errorCode.errorCode}" th:disabled="${isView}=='1'"></td>
 								<td>
 									<div class="check-link">
-										<input type="text" class="form-control" name="" th:value="${errorCode.errorMsg}">
-										<a href="javascript:void(0)" onclick="delRow(this)">删除</a>
+										<input type="text" class="form-control" name="" th:value="${errorCode.errorMsg}" th:disabled="${isView}=='1'">
+										<a href="javascript:void(0)" onclick="delRow(this)" th:disabled="${isView}=='1'">删除</a>
 									</div>
 								</td>
 							</tr>
@@ -127,7 +127,7 @@
 						</table>
 						<!-- 按钮 -->
 						<div class="text-right ">
-							<a href="javascript:void(0)" class="btn-default btn" onclick="systemErrorCodeAddRow()">新增</a>
+							<a href="javascript:void(0)" class="btn-default btn" onclick="systemErrorCodeAddRow()" th:disabled="${isView}=='1'">新增</a>
 						</div>
 					</td>
 				</tr>
@@ -177,9 +177,11 @@
 
 			<!-- 按钮 -->
 			<div class="p20 text-center " style="margin-left: 220px;">
-					 <a href="javascript:void(0)" class="btn-primary btn mr10" onclick="submitErrCodeInfo()">保存并下一步</a>
-					<a href="javascript:void(0)" class="btn-default btn" >返回</a>
-				</div>
+				<a href="javascript:void(0)" class="btn-primary btn mr10" onclick="submitErrCodeInfo(this)" isEdit="0" th:if="${isView}=='0' and ${isEdit}=='0'">保存并下一步</a>
+				<a href="javascript:void(0)" class="btn-primary btn mr10" onclick="submitErrCodeInfo(this)" isEdit="1" th:if="${isView}=='0' and ${isEdit}=='1'">保存</a>
+				<a href="javascript:void(0)" class="btn-default btn" onclick="backToPrev()" th:if="${isView}=='0' and ${isEdit}=='0'">返回上一级</a>
+				<a href="javascript:void(0)" class="btn-default btn" onclick="backToList()" th:if="${isView}=='1' or ${isEdit}=='1'">返回</a>
+			</div>
 		</div>
 	</div>
 

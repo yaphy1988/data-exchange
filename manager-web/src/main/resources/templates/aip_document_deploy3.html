@@ -117,14 +117,14 @@
 									语言：
 								</td>
 								<td width="300">
-									<input type="text" class="form-control exampleCode_program" name="" th:value="${exampleCode.program}">
+									<input type="text" class="form-control exampleCode_program" name="" th:value="${exampleCode.program}" th:disabled="${isView}=='1'">
 								</td>
 								<td class="Hint">
 									<span class="col_red">*</span>
 									提供者：
 								</td>
 								<td>
-									<input type="text" class="form-control exampleCode_author" name="" th:value="${exampleCode.author}">
+									<input type="text" class="form-control exampleCode_author" name="" th:value="${exampleCode.author}" th:disabled="${isView}=='1'">
 								</td>
 							</tr>
 							<tr>
@@ -133,7 +133,7 @@
 									标题：
 								</td>
 								<td colspan="3">
-									<input type="text" class="form-control exampleCode_author" name="" th:value="${exampleCode.title}">
+									<input type="text" class="form-control exampleCode_author" name="" th:value="${exampleCode.title}" th:disabled="${isView}=='1'">
 								</td>
 							</tr>
 							<tr style="display:none">
@@ -148,9 +148,9 @@
 						</tbody>
 					</table>
 					<div style="position: absolute;bottom: 10px;right: 10px;">
-						<a href="javascript:void(0)" class="btn-primary btn mr10 closeBtn" style="display: none" onclick="hiddenCode(this)">收起</a>
+						<a href="javascript:void(0)" class="btn-primary btn mr10 closeBtn" style="display: none" onclick="hiddenCode(this)" >收起</a>
 						<a href="javascript:void(0)" class="btn-primary btn mr10 openBtn" onclick="showCode(this)">展开</a>
-						<a href="javascript:void(0)" class="btn-default btn mr10 deleteBtn" onclick="deleteExample(this)">删除</a>
+						<a href="javascript:void(0)" class="btn-default btn mr10 deleteBtn" onclick="deleteExample(this)" th:disabled="${isView}=='1'">删除</a>
 					</div>
 				</div>
 				<div style="background: #fbfbfb;position: relative" class="p10 mb10 exampleCodeDiv" th:unless="${#lists.size(aipServiceCodeList)} gt 0" >
@@ -196,7 +196,7 @@
 					<div style="position: absolute;bottom: 10px;right: 10px;">
 						<a href="javascript:void(0)" class="btn-primary btn mr10 closeBtn" onclick="hiddenCode(this)">收起</a>
 						<a href="javascript:void(0)" class="btn-primary btn mr10 openBtn" style="display: none" onclick="showCode(this)">展开</a>
-						<a href="javascript:void(0)" class="btn-default btn mr10 deleteBtn" onclick="deleteExample(this)">删除</a>
+						<a href="javascript:void(0)" class="btn-default btn mr10 deleteBtn" onclick="deleteExample(this)" th:disabled="${isView}=='1'">删除</a>
 					</div>
 				</div>
 
@@ -240,7 +240,7 @@
 					</table>
 				</div>
 				<div class="text-right ">
-					 <a href="javascript:void(0)" class="btn-primary btn mr10" onclick="addExample(this)">新增实例</a>
+					 <a href="javascript:void(0)" class="btn-primary btn mr10" onclick="addExample(this)" th:disabled="${isView}=='1'">新增实例</a>
 
 				</div>
 			</div>
@@ -248,8 +248,10 @@
 			<!-- 按钮 -->
 			
 			<div class="p20 text-center " style="margin-left: 220px;">
-				 <a href="javascript:void(0)" class="btn-primary btn mr10" onclick="sumbitExampleInfo()">保存</a>
-				 <a href="javascript:void(0)" class="btn-default btn mr10" >返回</a>
+				 <a href="javascript:void(0)" class="btn-primary btn mr10" onclick="sumbitExampleInfo(this)" isEdit="0" th:if="${isView} == '0' and ${isEdit} == '0'">保存并下一步</a>
+				 <a href="javascript:void(0)" class="btn-primary btn mr10" onclick="sumbitExampleInfo(this)" isEdit="1" th:if="${isView} == '0' and ${isEdit} == '1'">保存</a>
+				 <a href="javascript:void(0)" class="btn-default btn mr10" onclick="backToPrev()" th:if="${isView}=='0' and ${isEdit}=='0'">返回上一级</a>
+				 <a href="javascript:void(0)" class="btn-default btn mr10" onclick="backToList()" th:if="${isView}=='1' or ${isEdit}=='1'">返回</a>
 			</div>
 		</div>
 	</div>
