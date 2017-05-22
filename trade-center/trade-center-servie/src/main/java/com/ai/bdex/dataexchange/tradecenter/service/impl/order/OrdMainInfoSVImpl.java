@@ -131,8 +131,8 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getShopId())) {
 			criteria.andShopIdEqualTo(ordMainInfoReqDTO.getShopId());
 		}
-		if (StringUtil.isNotBlank(ordMainInfoReqDTO.getOrderType())) {
-			criteria.andOrderTypeNotEqualTo(ordMainInfoReqDTO.getOrderType());
+		if (!CollectionUtil.isEmpty(ordMainInfoReqDTO.getordertypeList())) {
+			criteria.andOrderTypeIn(ordMainInfoReqDTO.getordertypeList());
 		}
 		example.setOrderByClause("ORDER_TIME desc");
 		PageHelper.startPage(pageNo, pageSize);
