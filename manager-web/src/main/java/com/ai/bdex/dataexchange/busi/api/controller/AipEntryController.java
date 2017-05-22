@@ -67,7 +67,15 @@ public class AipEntryController {
         String serviceId = request.getParameter("serviceId");
         String version = request.getParameter("version");
         String isView = request.getParameter("isView");//是否是查看页面，1是，0否
+        if (StringUtil.isBlank(isView)){
+            isView = "0";
+        }
         request.setAttribute("isView",isView);
+        String isEdit = request.getParameter("isEdit");//是否是编辑页面，1是，0否
+        if(StringUtil.isBlank(isEdit)){
+            isEdit = "0";
+        }
+        request.setAttribute("isEdit",isEdit);
 
         String viewName = "aip_document_deploy";
         ModelAndView mv = new ModelAndView(viewName);
@@ -231,6 +239,16 @@ public class AipEntryController {
     public String paraInfoInit(HttpServletRequest request,HttpServletResponse response) throws BusinessException {
         String serviceId = request.getParameter("serviceId");
         String version = request.getParameter("version");
+        String isView = request.getParameter("isView");//是否是查看页面，1是，0否
+        if(StringUtil.isBlank(isView)){
+            isView = "0";
+        }
+        request.setAttribute("isView",isView);
+        String isEdit = request.getParameter("isEdit");//是否是编辑页面，1是，0否
+        if(StringUtil.isBlank(isEdit)){
+            isEdit = "0";
+        }
+        request.setAttribute("isEdit",isEdit);
 
         List<AipServiceInParaVO> aipServiceInParaVOList = new ArrayList<AipServiceInParaVO>();
         List<AipServiceOutParaVO> aipServiceOutParaVOList = new ArrayList<AipServiceOutParaVO>();
@@ -349,7 +367,6 @@ public class AipEntryController {
                 AipServiceOutParaDTO updateOutParaDTO = new AipServiceOutParaDTO();
                 updateOutParaDTO.setServiceId(serviceId);
                 updateOutParaDTO.setVersion(version);
-                updateOutParaDTO.setType("01");
                 updateOutParaDTO.setStatus("0");
                 try {
                     iAipServiceManagerRSV.updateOutParaByServiceIdAndVersion(updateOutParaDTO);
@@ -363,6 +380,7 @@ public class AipEntryController {
                         aipServiceOutParaDTO.setServiceId(serviceId);
                         aipServiceOutParaDTO.setVersion("1.0");
                         aipServiceOutParaDTO.setStatus("1");
+                        aipServiceOutParaDTO.setType("01");
                         aipServiceOutParaDTO.setCreateStaff(StaffUtil.getStaffId(session));
                         aipServiceOutParaDTO.setCreateTime(new Date());
                         iAipServiceManagerRSV.insertOutPara(aipServiceOutParaDTO);
@@ -380,6 +398,7 @@ public class AipEntryController {
             return ajaxJson;
         }
         ajaxJson.setSuccess(true);
+        ajaxJson.setMsg("serviceId="+serviceId+"&version=1.0");
 
         return ajaxJson;
     }
@@ -397,6 +416,16 @@ public class AipEntryController {
         String version = request.getParameter("version");
         request.setAttribute("serviceId",serviceId);
         request.setAttribute("version",version);
+        String isView = request.getParameter("isView");//是否是查看页面，1是，0否
+        if (StringUtil.isBlank(isView)){
+            isView = "0";
+        }
+        request.setAttribute("isView",isView);
+        String isEdit = request.getParameter("isEdit");//是否是编辑页面，1是，0否
+        if(StringUtil.isBlank(isEdit)){
+            isEdit = "0";
+        }
+        request.setAttribute("isEdit",isEdit);
 
         if (StringUtil.isBlank(serviceId)){
             throw new BusinessException("初始化页面异常，serviceId为空");
@@ -528,6 +557,7 @@ public class AipEntryController {
                     return ajaxJson;
                 }else{
                     ajaxJson.setSuccess(true);
+                    ajaxJson.setMsg("serviceId="+serviceId+"&version=1.0");
                 }
             }catch (Exception e){
                 log.error("保存aip服务系统级错误代码信息异常：",e);
@@ -550,6 +580,16 @@ public class AipEntryController {
     public String exampleInfoInit(HttpServletRequest request,HttpServletResponse response) throws Exception{
         String serviceId = request.getParameter("serviceId");
         String version = request.getParameter("version");
+        String isView = request.getParameter("isView");//是否是查看页面，1是，0否
+        if (StringUtil.isBlank(isView)){
+            isView = "0";
+        }
+        request.setAttribute("isView",isView);
+        String isEdit = request.getParameter("isEdit");//是否是编辑页面，1是，0否
+        if(StringUtil.isBlank(isEdit)){
+            isEdit = "0";
+        }
+        request.setAttribute("isEdit",isEdit);
         if (StringUtil.isBlank(serviceId) || StringUtil.isBlank(version)){
             throw new BusinessException("初始化示例代码录入界面异常，服务ID或版本号为空！");
         }

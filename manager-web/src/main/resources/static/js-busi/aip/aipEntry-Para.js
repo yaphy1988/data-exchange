@@ -96,7 +96,7 @@ function initOutParaParams(params){
     return true;
 }
 
-function submitParaInfo(){
+function submitParaInfo(obj){
     var params = {};
     if (!initInParaParams(params)){
         return ;
@@ -123,9 +123,20 @@ function submitParaInfo(){
         success:function (data) {
             if (data.success){
                 WEB.msg.info("提示","保存成功");
+                if ($(obj).attr("isEdit") == "0"){
+                    window.location.href = WEB_ROOT + "/aipEntry/errorCodeInfoInit?"+data.msg;
+                }
             }else{
                 WEB.msg.info("提示",data.msg);
             }
         }
     })
+}
+
+function backToList() {
+    window.location.href=basePath + "/aipManager/pageInit";
+}
+
+function backToPrev(){
+    history.back(-1);
 }

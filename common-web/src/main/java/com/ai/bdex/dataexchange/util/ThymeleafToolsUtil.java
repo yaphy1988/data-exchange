@@ -1,7 +1,12 @@
 package com.ai.bdex.dataexchange.util;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Vector;
 
+import com.ai.paas.config.ModuleInfo;
+import com.ai.paas.config.SystemInfo;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.util.SystemConfUtil;
 import com.ai.paas.utils.SignUtil;
@@ -28,9 +33,15 @@ public class ThymeleafToolsUtil {
         return SystemConfUtil.getSystemModuleInfo("02","1").genFullUrl();
     }
 
+    /**
+     * 获取报表模块全路径
+     * 使用：<a th:href="${#tools.reportDomain()}"></a>
+     * @return http://domain/report-web
+     */
     public String reportDomain() {
-        return SystemConfUtil.getSystemModuleInfo("03","1").genFullUrl();
+        return SystemConfUtil.getSystemModuleInfo("02","2").genFullUrl();
     }
+
     /**
      * 将金额转换为元显示
      * 使用：<a th:href="${#tools.managerDomain()}"></a>

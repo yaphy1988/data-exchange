@@ -62,7 +62,7 @@
 						服务名称:
 					</td>
 					<td width="520" colspan="3">
-						<input type="text" class="form-control" placeholder="" th:value="${aipServiceBaseInfo.serviceName}" id="baseInfo_serviceName">
+						<input type="text" class="form-control" placeholder="" th:value="${aipServiceBaseInfo.serviceName}" id="baseInfo_serviceName" th:disabled="${isView}=='1'">
 					</td>
 				</tr>
 				<tr>
@@ -70,7 +70,7 @@
 						<span class="col_red">*</span>服务描述:
 					</td>
 					<td  colspan="3">
-						<textarea class="form-control" rows="2" id="baseInfo_serviceDesc" th:text="${aipServiceBaseInfo.serviceDesc}"></textarea>
+						<textarea class="form-control" rows="2" id="baseInfo_serviceDesc" th:text="${aipServiceBaseInfo.serviceDesc}" th:disabled="${isView}=='1'"></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -79,7 +79,7 @@
 						供应商服务:
 					</td>
 					<td width="300" colspan="2">
-						<input id="baseInfo_providerServiceInfo" th:providerId="${aipServiceBaseInfo.providerId}" th:version="${aipServiceBaseInfo.pVersion}" th:pServiceId="${aipServiceBaseInfo.pServiceId}" th:value="${aipServiceBaseInfo.pServiceName}" providerId="" pServiceId="" type="text" class="form-control" readonly="readonly" placeholder="供应商服务" />
+						<input id="baseInfo_providerServiceInfo" th:providerId="${aipServiceBaseInfo.providerId}" th:version="${aipServiceBaseInfo.pVersion}" th:pServiceId="${aipServiceBaseInfo.pServiceId}" th:value="${aipServiceBaseInfo.pServiceName}" providerId="" pServiceId="" type="text" class="form-control" readonly="readonly" placeholder="供应商服务"  th:disabled="${isView}=='1'"/>
 						<!--<select class="form-control wt100" id="baseInfo_providerId">-->
 							<!--<option value="1">供应商1</option>-->
 							<!--<option value="2">供应商2</option>-->
@@ -91,7 +91,7 @@
 						<!--<input type="text" class="form-control" placeholder="" th:value="${aipServiceBaseInfo.serviceName}" id="baseInfo_serviceName">-->
 					</td>
 					<td style="padding-left: 10px;">
-						<button type="button" onclick="pServiceSel()">选择</button>
+						<button type="button" onclick="pServiceSel()"  th:disabled="${isView}=='1'">选择</button>
 					</td>
 				</tr>
 				<tr>
@@ -100,7 +100,7 @@
 						接口地址:
 					</td>
 					<td width="520" colspan="3">
-						<input type="text" class="form-control" placeholder="" th:value="${aipServiceBaseInfo.apiUrl}" id="baseInfo_aipUrl">
+						<input type="text" class="form-control" placeholder="" th:value="${aipServiceBaseInfo.apiUrl}" id="baseInfo_aipUrl"  th:disabled="${isView}=='1'">
 					</td>
 					<td ><span class="tip">必填</span></td>
 				</tr>
@@ -110,13 +110,13 @@
 						<span class="col_red">*</span>支持格式:
 					</td>
 					<td>
-						<input type="text" class="form-control" placeholder="" id="baseInfo_supportFormat" th:value="${aipServiceBaseInfo.supportFormat}">
+						<input type="text" class="form-control" placeholder="" id="baseInfo_supportFormat" th:value="${aipServiceBaseInfo.supportFormat}"  th:disabled="${isView}=='1'">
 					</td>
 					<td class="Hint" width="140">
 						<span class="col_red">*</span>请求方式:
 					</td>
 					<td>
-						<input type="text" class="form-control" placeholder="" id="baseInfo_reqType" th:value="${aipServiceBaseInfo.reqType}">
+						<input type="text" class="form-control" placeholder="" id="baseInfo_reqType" th:value="${aipServiceBaseInfo.reqType}"  th:disabled="${isView}=='1'">
 					</td>
 				</tr>
 				<tr>
@@ -124,7 +124,7 @@
 						<span class="col_red">*</span>请求实例:
 					</td>
 					<td  colspan="3">
-						<textarea class="form-control" rows="2" id="baseInfo_exampleUrl" th:text="${aipServiceBaseInfo.exampleUrl}"></textarea>
+						<textarea class="form-control" rows="2" id="baseInfo_exampleUrl" th:text="${aipServiceBaseInfo.exampleUrl}" th:disabled="${isView}=='1'"></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -133,7 +133,7 @@
 						在线测试地址:
 					</td>
 					<td width="520" colspan="3">
-						<input type="text" class="form-control" placeholder="" id="baseInfo_testTool" th:value="${aipServiceBaseInfo.testTool}">
+						<input type="text" class="form-control" placeholder="" id="baseInfo_testTool" th:value="${aipServiceBaseInfo.testTool}" th:disabled="${isView}=='1'">
 					</td>
 				</tr>
 
@@ -143,7 +143,7 @@
 						<span class="col_red">*</span>接口备注:
 					</td>
 					<td  colspan="3">
-						<textarea class="form-control" rows="5" id="baseInfo_apiRemark" th:text="${aipServiceBaseInfo.apiRemark}"></textarea>
+						<textarea class="form-control" rows="5" id="baseInfo_apiRemark" th:text="${aipServiceBaseInfo.apiRemark}" th:disabled="${isView}=='1'"></textarea>
 					</td>
 				</tr>
 
@@ -164,8 +164,9 @@
 
 			<!-- 按钮 -->
 			<div class="p20 text-center " style="margin-left: 220px;">
-				<a href="javascript:void(0)" class="btn-primary btn mr10 " onclick="submitInfo()">保存并下一步</a>
-				<a href="javascript:void(0)" class="btn-default btn" >返回</a>
+				<a href="javascript:void(0)" class="btn-primary btn mr10 " onclick="submitInfo()" isEdit="0" th:if="${isView} == '0' and ${serviceId} == ''" >保存并下一步</a>
+				<a href="javascript:void(0)" class="btn-primary btn mr10 " onclick="submitInfo()" isEdit="1" th:if="${isView} == '0' and ${serviceId} !='' " >保存</a>
+				<a href="javascript:void(0)" class="btn-default btn" onclick="backToList()">返回</a>
 			</div>
 		</div>
 

@@ -91,7 +91,7 @@ function initSystemErrorCodeParam(params){
     return true;
 }
 
-function submitErrCodeInfo(){
+function submitErrCodeInfo(obj){
     var params = {};
     if (!initServiceErrorCodeParam(params)){
         return;
@@ -118,9 +118,20 @@ function submitErrCodeInfo(){
         success:function (data) {
             if (data.success){
                 WEB.msg.info("提示","保存成功");
+                if ($(obj).attr("isEdit") == "0"){
+                    window.location.href = WEB_ROOT + "/aipEntry/exampleInfoInit?"+data.msg;
+                }
             }else{
                 WEB.msg.info("提示",data.msg);
             }
         }
     })
+}
+
+function backToList() {
+    window.location.href=basePath + "/aipManager/pageInit";
+}
+
+function backToPrev(){
+    history.back(-1);
 }

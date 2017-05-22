@@ -3,10 +3,13 @@ package com.ai.bdex.dataexchange.busi.api.controller;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceManagerRSV;
 import com.ai.bdex.dataexchange.busi.api.entity.AipServiceDetailsInfoVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.AipServiceInfoVO;
+import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
@@ -14,11 +17,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -32,6 +38,8 @@ public class AipManagerController {
 
     @DubboConsumer
     private IAipServiceInfoRSV iAipServiceInfoRSV;
+    @DubboConsumer
+    private IAipServiceManagerRSV iAipServiceManagerRSV;
 
 
     /**
@@ -79,6 +87,44 @@ public class AipManagerController {
         request.setAttribute("pageInfo",pageInfo);
 
         return "aip_document :: #aipManagerList";
+    }
+
+    /**
+     * 生效失效
+     * @param request
+     * @param response
+     * @param aipServiceInfoReqDTO
+     * @return
+     */
+    @RequestMapping(value = "/doAipStatus")
+    @ResponseBody
+    public AjaxJson doAipStatus(HttpServletRequest request , HttpServletResponse response, HttpSession session ,AipServiceInfoReqDTO aipServiceInfoReqDTO){
+        AjaxJson ajaxJson = new AjaxJson();
+
+        if (aipServiceInfoReqDTO == null || StringUtil.isBlank(aipServiceInfoReqDTO.getServiceId()) || StringUtil.isBlank(aipServiceInfoReqDTO.getVersion())){
+            ajaxJson.setMsg("系统错误，请联系管理员！");
+            ajaxJson.setSuccess(false);
+            return ajaxJson;
+        }
+
+        try {
+            aipServiceInfoReqDTO.setUpdateTime(new Date());
+            aipServiceInfoReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+            iAipServiceManagerRSV.updateAipServiceByServiceId(aipServiceInfoReqDTO);
+            ajaxJson.setSuccess(true);
+        }catch (Exception e){
+            if ("1".equals(aipServiceInfoReqDTO.getStatus())){
+                log.error("生效aip服务异常：",e);
+                ajaxJson.setMsg("生效aip服务异常，请重新操作或联系管理员！");
+            }else if ("2".equals(aipServiceInfoReqDTO.getStatus())){
+                log.error("失效aip服务异常：",e);
+                ajaxJson.setMsg("失效aip服务异常，请重新操作或联系管理员！");
+            }
+            ajaxJson.setSuccess(false);
+            return ajaxJson;
+        }
+
+        return ajaxJson;
     }
 
     private String traslateStatusName(String status){

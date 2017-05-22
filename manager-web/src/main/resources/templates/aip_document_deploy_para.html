@@ -97,9 +97,9 @@
 								</td>
 							</tr>
 							<tr class="inParaTr" th:if="${#lists.size(aipServiceInParaList)} gt 0" th:each="aipServiceInPara,aipServiceInParaStat:${aipServiceInParaList}">
-								<td><input type="text" class="form-control" name="" th:value="${aipServiceInPara.paraCode}"></td>
+								<td><input type="text" class="form-control" name="" th:value="${aipServiceInPara.paraCode}" th:disabled="${isView}=='1'"></td>
 								<td colspan="">
-									<select class="form-control wt100" >
+									<select class="form-control wt100" th:disabled="${isView}=='1'">
 										<option value="00" th:selected="(${aipServiceInPara.paraType}=='00')">Object</option>
 										<option value="01" th:selected="(${aipServiceInPara.paraType}=='01')">String</option>
 										<option value="02" th:selected="(${aipServiceInPara.paraType}=='02')">Interger</option>
@@ -109,15 +109,15 @@
 									</select>
 								</td>
 								<td>
-									<select class="form-control wt100">
+									<select class="form-control wt100" th:disabled="${isView}=='1'">
 										<option value="00" th:selected="(${aipServiceInPara.type}=='00')">可空</option>
 										<option value="01" th:selected="(${aipServiceInPara.type}=='01')">必填</option>
 									</select>
 								</td>
 								<td>
 								<div class="check-link">
-									<input type="text" class="form-control" name="" th:value="${aipServiceInPara.remark}">
-									<a href="javascript:void(0)" onclick="delRow(this)">删除</a>
+									<input type="text" class="form-control" name="" th:value="${aipServiceInPara.remark}" th:disabled="${isView}=='1'">
+									<a href="javascript:void(0)" onclick="delRow(this)" th:disabled="${isView}=='1'">删除</a>
 								</div>
 								</td>
 							</tr>
@@ -163,9 +163,9 @@
 								</td>
 							</tr>
 							<tr class="outParaTr" th:if="${#lists.size(aipServiceInParaList)} gt 0" th:each="aipServiceOutPara,aipServiceOutParaStat:${aipServiceOutParaList}">
-								<td><input type="text" class="form-control" name="" th:value="${aipServiceOutPara.paraCode}"></td>
+								<td><input type="text" class="form-control" name="" th:value="${aipServiceOutPara.paraCode}" th:disabled="${isView}=='1'"></td>
 								<td colspan="">
-									<select class="form-control wt100" >
+									<select class="form-control wt100" th:disabled="${isView}=='1'">
 										<option value="00" th:selected="(${aipServiceOutPara.paraType}=='00')">Object</option>
 										<option value="01" th:selected="(${aipServiceOutPara.paraType}=='01')">String</option>
 										<option value="02" th:selected="(${aipServiceOutPara.paraType}=='02')">Interger</option>
@@ -176,15 +176,15 @@
 								</td>
 								<td>
 								<div class="check-link">
-									<input type="text" class="form-control" name="" th:value="${aipServiceOutPara.remark}">
-									<a href="javascritp:void(0)" onclick="delRow(this)">删除</a>
+									<input type="text" class="form-control" name="" th:value="${aipServiceOutPara.remark}" th:disabled="${isView}=='1'">
+									<a href="javascritp:void(0)" onclick="delRow(this)" th:disabled="${isView}=='1'">删除</a>
 								</div>
 								</td>
 							</tr>
 
 							<tr>
 								<td colspan="3" style="text-align: right">
-									<button type="button" onclick="outParaAddRow(this)">新增一行</button>
+									<button type="button" onclick="outParaAddRow(this)" th:disabled="${isView}=='1'">新增一行</button>
 								</td>
 							</tr>
 							</tbody>
@@ -197,8 +197,10 @@
 
 			<!-- 按钮 -->
 			<div class="p20 text-center " style="margin-left: 220px;">
-				<a href="javascript:void(0)" class="btn-primary btn mr10 " onclick="submitParaInfo()">保存并下一步</a>
-				<a href="javascript:void(0)" class="btn-default btn" >返回</a>
+				<a href="javascript:void(0)" class="btn-primary btn mr10 " onclick="submitParaInfo(this)" isEdit="0" th:if="${isView}=='0' and ${isEdit} == '0'">保存并下一步</a>
+				<a href="javascript:void(0)" class="btn-primary btn mr10 " onclick="submitParaInfo(this)" isEdit="1" th:if="${isView}=='0' and ${isEdit} == '1'">保存</a>
+				<a href="javascript:void(0)" class="btn-default btn" onclick="backToPrev()" th:if="${isView}=='0' and ${isEdit}=='0'">返回上一级</a>
+				<a href="javascript:void(0)" class="btn-default btn" onclick="backToList()" th:if="${isView}=='1' or ${isEdit}=='1'">返回</a>
 			</div>
 		</div>
 	</div>

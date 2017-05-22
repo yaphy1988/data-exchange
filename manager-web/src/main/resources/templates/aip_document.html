@@ -114,9 +114,20 @@
 									<td th:text="${#dates.format(aipService.createTime, 'yyyy-mm-dd HH:mm:ss')}">2017-04-10 12:25:23</td>
 									<td>
 										<p class="pop-link">
-											<a href="">配置</a>
-											<a href="">编辑</a>
-											<a href="">预览</a>
+											<a href="javascript:void(0)" th:if="${aipService.status} != '1'" onclick="gotoBaseInfoEdit(this)" th:serviceId="${aipService.serviceId}" th:version="${aipService.version}">基本信息编辑</a>
+											<a href="javascript:void(0)" th:if="${aipService.status} != '1'" onclick="gotoParaInfoEdit(this)" th:serviceId="${aipService.serviceId}" th:version="${aipService.version}">参数信息编辑</a>
+											<a href="javascript:void(0)" th:if="${aipService.status} != '1'" onclick="gotoErrorInfoEdit(this)" th:serviceId="${aipService.serviceId}" th:version="${aipService.version}">错误代码信息编辑</a>
+											<a href="javascript:void(0)" th:if="${aipService.status} != '1'" onclick="gotoExampleInfoEdit(this)" th:serviceId="${aipService.serviceId}" th:version="${aipService.version}">示例代码编辑</a>
+											<a href="javascript:void(0)" th:if="${aipService.status} != '1'" onclick="doAipStatus(this)" targetStatus="1" th:serviceId="${aipService.serviceId}" th:version="${aipService.version}">生效</a>
+											<a href="javascript:void(0)" th:if="${aipService.status} == '1'" onclick="doAipStatus(this)" targetStatus="2" th:serviceId="${aipService.serviceId}" th:version="${aipService.version}">失效</a>
+											<a href="javascript:void(0)" th:if="${aipService.status} != '1'" onclick="checkBaseInfoEdit(this)" th:serviceId="${aipService.serviceId}" th:version="${aipService.version}">基本信息预览</a>
+											<a href="javascript:void(0)" th:if="${aipService.status} != '1'" onclick="checkParaInfoEdit(this)" th:serviceId="${aipService.serviceId}" th:version="${aipService.version}">参数信息预览</a>
+											<a href="javascript:void(0)" th:if="${aipService.status} != '1'" onclick="checkErrorInfoEdit(this)" th:serviceId="${aipService.serviceId}" th:version="${aipService.version}">错误代码信息预览</a>
+											<a href="javascript:void(0)" th:if="${aipService.status} != '1'" onclick="checkExampleInfoEdit(this)" th:serviceId="${aipService.serviceId}" th:version="${aipService.version}">示例代码预览</a>
+											<!--<a href="javascript:void(0)" onclick="checkAip(this)" th:serviceId="${aipService.serviceId}" th:version="aipService.version">预览</a>-->
+											<!--<a href="">配置</a>-->
+											<!--<a href="">编辑</a>-->
+											<!--<a href="">预览</a>-->
 										</p>
 									</td>
 								</tr>
