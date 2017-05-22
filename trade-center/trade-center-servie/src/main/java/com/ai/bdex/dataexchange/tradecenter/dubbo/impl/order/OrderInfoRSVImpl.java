@@ -1,5 +1,7 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.impl.order;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -39,7 +41,10 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
     public OrdInfoReqDTO createOrderInfo(OrdInfoReqDTO ordInfoReqDTO) throws Exception
     {
 		Date orderTime = DateUtil.getNowAsDate();
+		String tmorderid =  SeqUtil.getString("SEQ_ORD_MAIN_INFO",8);
+		String strOrderid  =  createMainOrderId(tmorderid);
 		OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO ();
+		ordMainInfoReqDTO.setOrderId(strOrderid);
 		ordMainInfoReqDTO.setOrderAmount(ordInfoReqDTO.getOrderAmount());
 		ordMainInfoReqDTO.setOrderMoney(ordInfoReqDTO.getOrderMoney());
 		ordMainInfoReqDTO.setRealMoney(ordInfoReqDTO.getOrderMoney());
@@ -53,10 +58,13 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
  		ordMainInfoReqDTO.setInvoiceModType(Constants.Order.ORDER_invoiceModType_1);
 		ordMainInfoReqDTO.setInvoiceStatus(Constants.Order.ORDER_INVOICE_STATUS_0);
 		ordMainInfoReqDTO.setCreateStaff(ordInfoReqDTO.getCreateStaff()); 
-		long orderid = iOrdMainInfoSV.creatOrderByweb(ordMainInfoReqDTO);
+		 iOrdMainInfoSV.creatOrderByweb(ordMainInfoReqDTO);
 		
-		ordInfoReqDTO.setOrderId(Long.toString(orderid));
-		ordInfoReqDTO.setSubOrder(Long.toString(SeqUtil.getLong("SEQ_ORD_INFO")));
+		ordInfoReqDTO.setOrderId(strOrderid);
+		String tmpsuborderid =  SeqUtil.getString("SEQ_ORD_INFO",8);
+		String subOrderid  =  createMainOrderId(tmpsuborderid);
+
+		ordInfoReqDTO.setSubOrder(subOrderid);
 		ordInfoReqDTO.setAgentPrice(ordInfoReqDTO.getOrderPrice());
  		ordInfoReqDTO.setDiscountPrice(ordInfoReqDTO.getOrderPrice());
 		ordInfoReqDTO.setOrderTime(orderTime);
@@ -72,7 +80,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		//写日志
 		OrdLog ordLog = new OrdLog();
 		ordLog.setCreateStaff(ordMainInfoReqDTO.getCreateStaff());
-		ordLog.setOrderId(Long.toString(orderid));
+		ordLog.setOrderId(strOrderid);
 		ordLog.setNode(Constants.Order.LOG_CODE_01);
  		ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_01);
 		int count =  iOrdMainInfoSV.saveOrderlog(ordLog);
@@ -86,6 +94,9 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 	{
 		Date orderTime = DateUtil.getNowAsDate();
 		OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO ();
+		String tmorderid =  SeqUtil.getString("SEQ_ORD_MAIN_INFO",8);
+		String strOrderid  =  createMainOrderId(tmorderid);
+		ordMainInfoReqDTO.setOrderId(strOrderid);
 		ordMainInfoReqDTO.setOrderAmount(ordInfoReqDTO.getOrderAmount());
 		ordMainInfoReqDTO.setOrderMoney(ordInfoReqDTO.getOrderMoney());
 		ordMainInfoReqDTO.setRealMoney(ordInfoReqDTO.getOrderMoney());
@@ -99,10 +110,13 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		ordMainInfoReqDTO.setInvoiceModType(Constants.Order.ORDER_invoiceModType_1);
 		ordMainInfoReqDTO.setInvoiceStatus(Constants.Order.ORDER_INVOICE_STATUS_0);
 		ordMainInfoReqDTO.setCreateStaff(ordInfoReqDTO.getCreateStaff());
-		long orderid = iOrdMainInfoSV.creatOrderByweb(ordMainInfoReqDTO);
+		iOrdMainInfoSV.creatOrderByweb(ordMainInfoReqDTO);
 
-		ordInfoReqDTO.setOrderId(Long.toString(orderid));
-		ordInfoReqDTO.setSubOrder(Long.toString(SeqUtil.getLong("SEQ_ORD_INFO")));
+		ordInfoReqDTO.setOrderId(strOrderid);
+		String tmpsuborderid =  SeqUtil.getString("SEQ_ORD_INFO",8);
+		String subOrderid  =  createMainOrderId(tmpsuborderid);
+		ordInfoReqDTO.setSubOrder(subOrderid);
+
 		ordInfoReqDTO.setAgentPrice(ordInfoReqDTO.getOrderPrice());
 		ordInfoReqDTO.setDiscountPrice(ordInfoReqDTO.getOrderPrice());
 		ordInfoReqDTO.setOrderTime(orderTime);
@@ -118,7 +132,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		//写日志
 		OrdLog ordLog = new OrdLog();
 		ordLog.setCreateStaff(ordMainInfoReqDTO.getCreateStaff());
-		ordLog.setOrderId(Long.toString(orderid));
+		ordLog.setOrderId(strOrderid);
 		ordLog.setNode(Constants.Order.LOG_CODE_01);
 		ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_01);
 		int count =  iOrdMainInfoSV.saveOrderlog(ordLog);
@@ -148,6 +162,17 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 	@Override
 	public List<OrdInfoRespDTO> queryAllDataByStaff(OrdInfoRespDTO ordInfo) throws Exception {
 		return null;
+	}
+	/**
+	 * 对主订单编号的封装
+	 */
+	public static String createMainOrderId(String mainOrdSeqId ) {
+		// 主订单ID生成规则：省份编码2位+年月日YYmmdd+序列号8位补齐 ，一共16位
+		DateFormat dfmt = new SimpleDateFormat("yyyyMMdd");
+		String nowDate = dfmt.format(new Date());
+		String mainOrdId = "";
+		mainOrdId =  nowDate + mainOrdSeqId;
+		return mainOrdId;
 	}
 
 	@Override

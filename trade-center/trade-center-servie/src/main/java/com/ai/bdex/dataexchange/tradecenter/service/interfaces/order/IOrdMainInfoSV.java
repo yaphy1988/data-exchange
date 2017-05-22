@@ -10,7 +10,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
 
 public interface IOrdMainInfoSV {
 	// 创建订单
-	public long creatOrderByweb(OrdMainInfoReqDTO ordMainInfoRespDTO) throws Exception;
+	public void creatOrderByweb(OrdMainInfoReqDTO ordMainInfoRespDTO) throws Exception;
 
 /*	// 根据ID查询订单的详细信息
 	public OrdMainInfo queryOrderById(OrdMainInfo ordInfo) throws Exception;*/
