@@ -25,9 +25,9 @@ public class CustomCorsConfiguration {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/reportdata/**")
-                        .allowedOrigins("*")
+                        .allowedOrigins("http://localhost:8082")
                         .allowedHeaders("Cache-Control", "Pragma", "Accept", "Origin", "Authorization", "Content-Type", "X-Requested-With")
-                        .allowedMethods("GET","POST","OPTIONS")
+                        .allowedMethods("POST")
                         .allowCredentials(true)
                         .maxAge(3600);
                 logger.info("CustomCorsConfiguration addCorsMappings success!!!");
