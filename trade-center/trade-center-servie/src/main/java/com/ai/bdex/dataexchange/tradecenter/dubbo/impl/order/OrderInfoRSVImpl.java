@@ -35,7 +35,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 	private IOrdInfoSV iOrdInfoSV;
  
 	/**
-	 * 创建订单  -- 事物还需要处理
+	 * 创建订单  -- 事物还需要处理 新的获取订单ID
 	 */
 	@Override
     public OrdInfoReqDTO createOrderInfo(OrdInfoReqDTO ordInfoReqDTO) throws Exception
