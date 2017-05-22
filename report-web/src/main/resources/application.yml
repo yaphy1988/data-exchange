@@ -1,0 +1,46 @@
+server:
+  port: 8083
+
+spring:
+  session:
+    store-type: none
+  dubbo:
+    appname: manager-web
+    registry: zookeeper://127.0.0.1:2181
+    protocol: dubbo
+    group: devGroup
+  thymeleaf:
+    enabled: true
+    cache: false
+    suffix: .html
+    encoding: UTF-8
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://112.74.163.29:3306/bdex?useUnicode=true&characterEncoding=utf8
+    username: bdex
+    password: bdex1234
+
+mybatis:
+  mapper-locations: classpath:/sqlmapper/**/*.xml
+  type-aliases-package: com.ai.bdex.dataexchange.*.dao.model
+pagehelper:
+  helperDialect: mysql
+
+## woego-frame框架包配置
+application:
+  cache:
+    confpath: /com/ai/paas/cache/conf
+  session:
+    confpath: /com/ai/paas/session/conf
+    systemcode: "03"
+  system:
+    confpath: /com/ai/paas/system/conf
+  configcenter:
+    runmode: D
+    zkaddress: 127.0.0.1:2181
+    login: admin:admin
+  filter:
+    enabled: true
+    ignoreSuffix: ".ico,.swf,.flv,.png,.jpg,.jpeg,.gif,.css,.js,.html,.htm,.eot,.svg,.ttf,.woff,.mp4,.woff2,.map"
+    unloginflag: false

@@ -23,11 +23,7 @@
 	    <jdbc.connectionURL>jdbc:mysql://112.74.163.29:3306/bdex</jdbc.connectionURL>
 	    <jdbc.userId>bdex</jdbc.userId>
 	    <jdbc.password>bdex1234</jdbc.password>
-	    
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-		<java.version>1.8</java.version>
-		
+
 	</properties>
 
 	<dependencies>

@@ -1,13 +1,14 @@
 package com.ai.bdex.dataexchange.busi.api.entity;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
 import java.util.Date;
 
 /**
  * Created by yx on 2017/5/8.
  */
-public class AipServiceDetailsInfoVO extends BaseInfo {
+public class AipServiceDetailsInfoVO extends BaseResponseDTO {
 
     private String serviceId;
 
@@ -52,6 +53,16 @@ public class AipServiceDetailsInfoVO extends BaseInfo {
     private String pVersion;
 
     private String returnExample;
+
+    private String statusName;
+
+    public String getStatusName() {
+        return statusName;
+    }
+
+    public void setStatusName(String statusName) {
+        this.statusName = statusName;
+    }
 
     public String getServiceId() {
         return serviceId;
