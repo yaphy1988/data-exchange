@@ -35,7 +35,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-import java.util.Date;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 //临时用，支付回调的接口在另外的位置处理
@@ -406,30 +406,63 @@ public class OrderController {
 	@RequestMapping(value = "/pay_successDone")
 	@ResponseBody
 	public String pay_successDone(Model model, HttpServletRequest request) {
-		//模拟成功
-		HttpSession hpptsesion = request.getSession();
-		String staff_id = StaffUtil.getStaffId(hpptsesion);
-		String orderid = request.getParameter("orderid");
-		String subordid = request.getParameter("suborderid");
-		//模拟成功
-		Map<String, Object> rMap = new HashMap<String, Object>();
-		Date orderTime = DateUtil.getNowAsDate();
-		OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
-		ordMainInfoReqDTO.setOrderId(orderid);
-		ordMainInfoReqDTO.setUpdateStaff(staff_id);
-		ordMainInfoReqDTO.setPayWay(Constants.Order.ORDER_PAY_WAY_ZHIFUBAO);
-		ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_02);
-		ordMainInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
-		ordMainInfoReqDTO.setPayTime(orderTime);
-
-		OrdInfoReqDTO ordInfo = new OrdInfoReqDTO();
-		ordInfo.setUpdateStaff(staff_id);
-		ordInfo.setOrderId(orderid);
-		ordInfo.setSubOrder(subordid);
-		ordInfo.setStatus(Constants.Order.ORDER_STATUS_02);
-		ordInfo.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
-		ordInfo.setPayTime(orderTime);
-		try {
+		Map<String,String> params = new HashMap<String,String>();
+    	Map requestParams = request.getParameterMap();
+    	Map<String, Object> rMap = new HashMap<String, Object>();
+    	try {
+	    	for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
+	    		String name = (String) iter.next();
+	    		String[] values = (String[]) requestParams.get(name);
+	    		String valueStr = "";
+	    		for (int i = 0; i < values.length; i++) {
+	    			valueStr = (i == values.length - 1) ? valueStr + values[i]
+	    					: valueStr + values[i] + ",";
+	    		}
+	    		//乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
+	    		valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+	    		log.error("支付宝异步通知日志：key="+name+";value="+valueStr);
+	    		params.put(name, valueStr);
+	    	}
+			//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
+			//商户订单号
+			String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
+			log.error("商户订单号：out_trade_no="+out_trade_no);
+			
+			//支付宝交易号
+			String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
+			log.error("支付宝交易号：trade_no="+trade_no);
+			//交易状态
+			String trade_status = new String(request.getParameter("trade_status").getBytes("ISO-8859-1"),"UTF-8");
+			log.error("交易状态：trade_status="+trade_status);
+			//子订单编号
+			String subOrderId = new String(request.getParameter("passback_params").getBytes("ISO-8859-1"),"UTF-8");
+			log.error("商户订单号：out_trade_no="+out_trade_no);
+			
+			//模拟成功
+			HttpSession hpptsesion = request.getSession();
+			String staff_id = StaffUtil.getStaffId(hpptsesion);
+			
+			String orderid = trade_no;
+			String subordid = subOrderId;
+			//模拟成功
+			
+			Date orderTime = DateUtil.getNowAsDate();
+			OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
+			ordMainInfoReqDTO.setOrderId(orderid);
+			ordMainInfoReqDTO.setUpdateStaff(staff_id);
+			ordMainInfoReqDTO.setPayWay(Constants.Order.ORDER_PAY_WAY_ZHIFUBAO);
+			ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_02);
+			ordMainInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
+			ordMainInfoReqDTO.setPayTime(orderTime);
+	
+			OrdInfoReqDTO ordInfo = new OrdInfoReqDTO();
+			ordInfo.setUpdateStaff(staff_id);
+			ordInfo.setOrderId(orderid);
+			ordInfo.setSubOrder(subordid);
+			ordInfo.setStatus(Constants.Order.ORDER_STATUS_02);
+			ordInfo.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
+			ordInfo.setPayTime(orderTime);
+		
 			OrdMainInfoRespDTO ordMainInfoRespDTO=	iOrderMainInfoRSV.queryOrderDetail(ordMainInfoReqDTO);
 			if(ordMainInfoRespDTO.getOrderStatus().equals(Constants.Order.ORDER_STATUS_02))
 			{
