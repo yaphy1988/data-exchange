@@ -2,6 +2,9 @@ package com.ai.bdex.dataexchange.config;
 
 import com.ai.bdex.dataexchange.thymeleaf.ToolExpressionDialect;
 import com.ai.paas.session.filter.CacheSessionFilter;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,6 +27,29 @@ public class FilterConfiguration {
     @Value("${application.filter.ignoreSuffix:.ico,.swf,.flv,.png,.jpg,.jpeg,.gif,.css,.js,.html,.htm,.eot,.svg,.ttf,.woff,.mp4,.woff2,.map}")
     private String ignoreSuffix;
 
+    @Value("${application.alipay.aliGateway:'https://openapi.alipay.com/gateway.do'}")
+    private  String aliGateway;
+    
+    @Value("${application.alipay.appId:}")
+    private  String appId;
+    
+    @Value("${application.alipay.privateKey:}")
+    private  String privateKey;
+    
+    @Value("${application.alipay.format:}")
+    private  String format;
+    
+    @Value("${application.alipay.charset:}")
+    private  String charset;
+    
+    @Value("${application.alipay.alipayPulicKey:}")
+    private  String alipayPulicKey;
+    
+    @Value("${application.alipay.signType:}")
+    private  String signType;
+    
+    
+    
     public FilterConfiguration() {
     }
 
@@ -45,5 +71,10 @@ public class FilterConfiguration {
     @ConditionalOnMissingBean
     public ToolExpressionDialect toolExpressionDialect() {
         return new ToolExpressionDialect();
+    }
+    @Bean(name="alipayClient")
+    public AlipayClient getAlipayClient() {
+    	DefaultAlipayClient alipayClient = new DefaultAlipayClient(aliGateway, appId, privateKey, format, charset, alipayPulicKey,signType);
+    	return alipayClient;
     }
 }

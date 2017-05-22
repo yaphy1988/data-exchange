@@ -59,6 +59,7 @@ function reduce()
 
  	    var url = basePath+'/order/creatOrder';
 		var params={};
+		
 		var callBack =function(data){ 
 			if(data.success){
 				  var paytype = $('input:radio:checked').val();
@@ -67,9 +68,10 @@ function reduce()
 				    	//支付宝
 						var orderid = data.orderid;
 						var suborderid = data.suborderid;
-						var url = basePath+'/order/pay_test?orderid='+orderid+"&suborderid="+suborderid;
- 				    	 window.open(url);
-				    	//去写一条请求支付的记录 
+						var url = basePath+'/bdxalipay/alipayRequestPage?orderId='+orderid+"&subOrderid="+suborderid;
+//						window.location.href=url;
+						var tempwindow=window.open('_blank');
+						tempwindow.location=url;
 				    }
 				    else
 				    {

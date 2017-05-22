@@ -1,5 +1,3 @@
-
-
 package com.ai.bdex.dataexchange.busi.page.controller;
 
 import java.net.URLDecoder;
@@ -25,8 +23,6 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleGoodsVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageNewsInfoVO;
-import com.ai.bdex.dataexchange.busi.page.entity.SortContentVO;
-import com.ai.bdex.dataexchange.busi.page.entity.SortInfoVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
@@ -41,7 +37,6 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;

@@ -67,5 +67,10 @@
       <artifactId>commons-lang</artifactId>
       <optional>true</optional>
     </dependency>
+    <dependency>
+	  <groupId>com.alipay.api</groupId>
+	  <artifactId>k12-alipay-sdk</artifactId>
+	  <version>0.0.1-beta</version>
+	</dependency>
   </dependencies>
 </project>
