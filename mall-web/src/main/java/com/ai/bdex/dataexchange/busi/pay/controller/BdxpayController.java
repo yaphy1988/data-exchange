@@ -83,7 +83,7 @@ public class BdxpayController {
 //    				+URLEncoder.encode(String.valueOf(suborderId),"utf-8")+"&gdsName"+URLEncoder.encode(gdsName, "utf-8");
     		String passbackParams = URLEncoder.encode(orderId, "utf-8");
     		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-	        alipayRequest.setReturnUrl("http://127.0.0.1:8082/orderManage/myOrder");
+	        alipayRequest.setReturnUrl("http://112.74.163.29:8083/manage-web/orderManage/myOrder");
 	        alipayRequest.setNotifyUrl("http://112.74.163.29:8082/mall-web/bdxalipay/alipayNotify");//在公共参数中设置回跳和通知地址
 	        String biz_content =  
 		        "{" +
