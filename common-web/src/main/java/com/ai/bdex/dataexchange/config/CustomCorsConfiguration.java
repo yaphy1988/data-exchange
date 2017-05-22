@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.report;
+package com.ai.bdex.dataexchange.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,9 +25,9 @@ public class CustomCorsConfiguration {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/reportdata/**")
-                        .allowedOrigins("http://localhost:8082")
+                        .allowedOrigins("http://localhost:8081","http://localhost:8082","http://localhost:8083")
                         .allowedHeaders("Cache-Control", "Pragma", "Accept", "Origin", "Authorization", "Content-Type", "X-Requested-With")
-                        .allowedMethods("POST")
+                        .allowedMethods("GET","POST","OPTIONS")
                         .allowCredentials(true)
                         .maxAge(3600);
                 logger.info("CustomCorsConfiguration addCorsMappings success!!!");
