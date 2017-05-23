@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.busi.pay.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -129,11 +130,10 @@ public class BdxpayController {
 		        "{" +
 	            "    \"out_trade_no\":\""+orderId+"\"," +
 	            "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-	            "    \"total_amount\":"+0.01+"," +
+	            "    \"total_amount\":"+moneyAmout+"," +
 	            "    \"subject\":\""+gdsName+"\"," +
 	            "    \"body\":\""+skuName+"\"," +
-//	            "    \"passback_params\":\""+passbackParams+"\"," +
-	            "    \"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"," +
+	            "    \"passback_params\":\""+passbackParams+"\"," +
 	            "    \"extend_params\":{" +
 	            "    \"sys_service_provider_id\":\""+APPID+"\"" +
 	            "    }"+
@@ -193,16 +193,15 @@ public class BdxpayController {
 			log.error("交易状态：trade_status="+trade_status);
 			//子订单编号
 			String passback_params = new String(request.getParameter("passback_params").getBytes("ISO-8859-1"),"UTF-8");
-//			String[] parms = passback_params.split(",");
-//			String subOrderId = parms[0];
-//			String staffId = parms[1];
-			String subOrderId = "";
-			String staffId = "";
+			String[] parms = passback_params.split(",");
+			String subOrderId = parms[0];
+			String staffId = parms[1];
 			log.error("子订单编号：out_trade_no="+subOrderId);
 			log.error("staffId：staffId="+staffId);
 			//异步通知验签结果
 			boolean verify_result=false;
 			try {
+				//验签SIGNTYPE必须与加签中的一致
 				verify_result = AlipaySignature.rsaCheckV1(params, ALIPAY_PUBLIC_KEY, CHARSET, SIGNTYPE);
 			} catch (AlipayApiException e) {
 				log.error("异步通知验签：code="+e.getErrCode()+",msg="+e.getErrMsg()+"ee:"+e);
@@ -210,8 +209,7 @@ public class BdxpayController {
 				log.error("异步通知验签："+e.getMessage()+"ee:"+e);
 			}
 			log.error("异步通知验签：verify_result="+verify_result);
-			
-//			if(verify_result){
+			if(verify_result){
 				if (trade_status.equals("TRADE_SUCCESS")){
 					boolean baseResponse= this.pay_successDone(out_trade_no,subOrderId,staffId);
 		            if (baseResponse) {
@@ -222,18 +220,12 @@ public class BdxpayController {
 		            	writer.write("fail");  
 		            } 
 				}
-			/*}else{//验证失败
+			}else{//验证失败
 				writer.write("fail");
 				log.error("[支付宝异步通知验签失败]异常信息:"+verify_result);
-			}*/
+			}
 			writer.flush();
 			writer.close();
-			//degug--begin
-			/*if (trade_status.equals("TRADE_SUCCESS")){
-				log.error("已成功，成功停止通知:");
-				writer.write("success"); 
-			}*/
-			//---degug---end
     	}
     	
     	catch (Exception e) {
