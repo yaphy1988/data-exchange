@@ -191,30 +191,34 @@ public class BdxpayController {
 			String trade_status = new String(request.getParameter("trade_status").getBytes("ISO-8859-1"),"UTF-8");
 			log.error("交易状态：trade_status="+trade_status);
 			//子订单编号
-			String subOrderId = new String(request.getParameter("passback_params").getBytes("ISO-8859-1"),"UTF-8");
+			String passback_params = new String(request.getParameter("passback_params").getBytes("ISO-8859-1"),"UTF-8");
+			String[] parms = passback_params.split(",");
+			String subOrderId = parms[0];
+			String staffId = parms[1];
 			log.error("子订单编号：out_trade_no="+subOrderId);
 			//异步通知验签结果
-			boolean verify_result = AlipaySignature.rsaCheckV1(params, alipayPulicKey, charset, signType);
+			boolean verify_result=false;
+			try {
+				
+				verify_result = AlipaySignature.rsaCheckV1(params, alipayPulicKey, charset, signType);
+			} catch (AlipayApiException e) {
+				log.error("异步通知验签：code="+e.getErrCode()+",msg="+e.getErrMsg());
+			}catch (Exception e) {
+				log.error("异步通知验签："+e.getMessage());
+			}
 			log.error("异步通知验签：verify_result="+verify_result);
 			
 			if(verify_result){
 				log.error("异步通知验签成功:"+verify_result);
 				if (trade_status.equals("TRADE_SUCCESS")){
-					//判断该笔订单是否在商户网站中已经做过处理
-						//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
-						//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
-						//如果有做过处理，不执行商户的业务程序
-						
-					/*String baseResponse= this.pay_successDone(out_trade_no,subOrderId,staffId);
-					
-		            if (null != baseResponse && "success".equals(baseResponse)) {  
+					boolean baseResponse= this.pay_successDone(out_trade_no,subOrderId,staffId);
+		            if (baseResponse) {  
 		            	writer.write("success"); 
 		            } else {  
 		            	writer.write("fail");// 更新状态失败  
-		            } */
+		            } 
 				}
 			}else{//验证失败
-//				outputText(response, "fail", "application/json", charset);
 				writer.write("fail");
 				log.error("[支付宝异步通知验签失败]异常信息:"+verify_result);
 			}
@@ -232,13 +236,17 @@ public class BdxpayController {
     		log.error("[支付宝异步通知异常]异常信息:" + e.getMessage());
     	}
 	}
+	@RequestMapping(value="/testPaySuccessDo")
+	public void testPaySuccessDo(){
+		pay_successDone("2017052300001218","2017052300001217","liangwy7");
+	}
 	/**
 	 * 支付成功模拟修改后台数据
 	 * @param model
 	 * @param request
 	 * @return
 	 */
-	public String pay_successDone(String orderId,String subOrderId,String staffId) {
+	public boolean pay_successDone(String orderId,String subOrderId,String staffId) {
     	Map<String, Object> rMap = new HashMap<String, Object>();
     	try {
 	    	
@@ -270,7 +278,7 @@ public class BdxpayController {
 			if(ordMainInfoRespDTO.getOrderStatus().equals(Constants.Order.ORDER_STATUS_02))
 			{
 				rMap.put("success", true);
-				return  "1";
+				return  true;
 			}
 			OrdInfoRespDTO ordInfoRespDTO = ordMainInfoRespDTO.getOrdInfoRespDTO();
 
@@ -335,25 +343,19 @@ public class BdxpayController {
 					iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
 					rMap.put("success", true);
 				} catch (Exception e) {
-					System.out.print("更新AipCenter失败：" + e.getMessage());
-					//需要通知运维，去处理数据
-					rMap.put("ERRORINFO", "更新AipCenter失败");
-					rMap.put("success", false);
+					log.error("更新AipCenter失败：" + e.getMessage());
+					return false;
 				}
 			}
 			else
 			{
-				System.out.print("更新AipCenter失败：查不到对于的子订单" );
-				//需要通知运维，去处理数据
-				rMap.put("success", false);
-				rMap.put("ERRORINFO", "更新AipCenter失败");
+				return false;
 			}
 		} catch (Exception er) {
 			System.out.print("更新失败：" + er.getMessage());
-			rMap.put("success", false);
-			rMap.put("ERRORINFO", "更新订单失败");
+			return false;
 		}
-		return "1";
+		return true;
 	}
     private OrdInfoRespDTO queryOrdMainInfoByorderId(String orderId,String subOrderId) throws Exception{
     	if(StringUtils.isBlank(orderId)){
