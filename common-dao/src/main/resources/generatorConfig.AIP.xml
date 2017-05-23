@@ -30,10 +30,8 @@
     </javaClientGenerator>
     
     <!--需要生成的表请按以下配置（tableName 是实际的表名  domainObjectName 映射成的java对象名） -->
-    <table tableName="T_RECHARGE_RECORD" domainObjectName="RechargeRecord"></table>
-    <table tableName="T_DATA_ACCOUNT" domainObjectName="DataAccount"></table>
-    <table tableName="T_DATA_ACCOUNT_HIS" domainObjectName="DataAccountHis"></table>
-    <table tableName="T_BILL_DETAIL" domainObjectName="BillDetail"></table>
+    <table tableName="t_aip_cfca_conf" domainObjectName="AipCfcaConf"></table>
+
 
   </context>
 </generatorConfiguration>

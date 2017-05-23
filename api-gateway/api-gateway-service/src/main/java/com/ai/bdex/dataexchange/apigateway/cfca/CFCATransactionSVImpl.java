@@ -1,17 +1,20 @@
 package com.ai.bdex.dataexchange.apigateway.cfca;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.ai.bdex.dataexchange.apigateway.dao.mapper.AipCfcaConfMapper;
+import com.ai.bdex.dataexchange.apigateway.dao.model.AipCfcaConf;
+import com.ai.bdex.dataexchange.apigateway.dao.model.AipCfcaConfKey;
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipPServiceUsedLog;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.AipPServiceUsedLogDTO;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IAipPServiceUsedLogSV;
 import com.ai.paas.utils.ObjectCopyUtil;
+import com.ai.paas.utils.StringUtil;
 import com.alibaba.fastjson.JSON;
 
 public class CFCATransactionSVImpl {
@@ -19,9 +22,11 @@ public class CFCATransactionSVImpl {
 	private static final String providerId="";
 	 @Autowired
 	 private IAipPServiceUsedLogSV aipPServiceUsedLogSV;
+	 @Autowired
+	 private AipCfcaConfMapper aipCfcaConfMapper;
 	 
 	 /**
-	  * CF00000001,加密同步接口
+	  * CF00000001,加密同步接口,密钥申请接口
 	  * @param lastKey
 	  * @param dto
 	  * @return
@@ -46,29 +51,58 @@ public class CFCATransactionSVImpl {
 		 return key;
 	 }
 	 /**
-	  * CF209a0005,明文异步接口
+	  * 根据配置进行查询
 	  * @param map
-	  * @param dto
+	  * @param dto not null,serviceId,version non-null
 	  * @return
 	  */
-	 @SuppressWarnings({ "unchecked", "rawtypes" })
+	 @SuppressWarnings({ "rawtypes" })
 	 public Map  getCompanyName(Map<String,String> map,AipPServiceUsedLogDTO dto){
 		 Map resultMap=null;
-		 String	serviceId="";
-		 String version="";
-		 String transactionCode="CF209a0005";
-		 String urlSuffix="check-company-name.json";
-		 Map requestMap=null;
+		 String	serviceId=null;
+		 String version=null;
+		 String transactionCode=null;
+		 String urlSuffix=null;
+		
 		 try{
-			 requestMap=getFromCF209a0005toCF209a0010(map);
-			 if(null!=requestMap){		 
-				 resultMap=CFCATransactionBase.notEncryptedAsync(transactionCode, urlSuffix, requestMap);
+			 serviceId=dto.getServiceId();
+			 version=dto.getVersion();
+			 if(StringUtil.isBlank(serviceId)||StringUtil.isBlank(version)){
+				 throw new Exception("serviceId,version non-null");
+			 }
+			 AipCfcaConf conf= getCfcaConf(serviceId,version);
+			 if(null!=conf){
+				 transactionCode=conf.getTransactionCode();
+				 urlSuffix=conf.getUrlSuffix();
+				 String encryptFlag=conf.getEncryptFlag();
+				 String asyncFlag=conf.getAsyncFlag();				 
+				 if(null!=map){	
+					 if("1".equals(encryptFlag)){
+						 //加密
+						 if("1".equals(asyncFlag)){
+							//异步 
+							 resultMap=CFCATransactionBase.encryptAsync(transactionCode, urlSuffix, map);
+						 }else if("0".equals(asyncFlag)){
+							 //同步
+							 resultMap=CFCATransactionBase.encryptSync(transactionCode, urlSuffix, map);
+						 }
+					 }else if("0".equals(encryptFlag)){
+						 //明文
+						 if("1".equals(asyncFlag)){
+							//异步 
+							 resultMap=CFCATransactionBase.notEncryptedAsync(transactionCode, urlSuffix, map);
+						 }else if("0".equals(asyncFlag)){
+							 //同步
+							 resultMap=CFCATransactionBase.notEncryptSync(transactionCode, urlSuffix, map);
+						 }
+					 }					 
+				 }
 			 }
 		 }catch(Exception e){
 			 log.error("query  failted", e);
 		 }finally{
 			 //记录日志
-			 dto.setRequestMsg(JSON.toJSONString(requestMap));
+			 dto.setRequestMsg(JSON.toJSONString(map));
 			 dto.setResponseMsg(JSON.toJSONString(resultMap));
 			 dto.setServiceId(serviceId);
 			 dto.setVersion(version);			 
@@ -76,68 +110,6 @@ public class CFCATransactionSVImpl {
 		 }
 		 return resultMap;
 	 }
-	 /**
-	  * CF209a0006,明文异步接口
-	  * @param map
-	  * @param dto
-	  * @return
-	  */
-	 @SuppressWarnings({ "unchecked", "rawtypes" })
-	 public Map  getCompanyType(Map<String,String> map,AipPServiceUsedLogDTO dto){
-		 Map resultMap=null;
-		 String	serviceId="";
-		 String version="";
-		 String transactionCode="CF209a0006";
-		 String urlSuffix="check-company-type.json";
-		 Map requestMap=null;
-		 try{		 
-			 requestMap=getFromCF209a0005toCF209a0010(map);
-			 if(null!=requestMap){				 
-				 resultMap=CFCATransactionBase.notEncryptedAsync(transactionCode, urlSuffix, requestMap);
-			 }
-		 }catch(Exception e){
-			 log.error("query  failted", e);
-		 }finally{
-			 //记录日志
-			 dto.setRequestMsg(JSON.toJSONString(requestMap));
-			 dto.setResponseMsg(JSON.toJSONString(resultMap));
-			 dto.setServiceId(serviceId);
-			 dto.setVersion(version);			 
-			 saveLog(dto);
-		 }
-		 return resultMap;
-	 }	 
-	 /**
-	  * CF209a0007,明文异步接口,每月最大交易金额接口
-	  * @param map
-	  * @param dto
-	  * @return
-	  */
-	 @SuppressWarnings({ "unchecked", "rawtypes" })
-	 public Map  getMaxPosBalancePerMonth(Map<String,String> map,AipPServiceUsedLogDTO dto){
-		 Map resultMap=null;
-		 String	serviceId="";
-		 String version="";
-		 String transactionCode="CF209a0007";
-		 String urlSuffix="check-POS-balance-max.json";
-		 Map requestMap=null;
-		 try{
-			 requestMap=getFromCF209a0005toCF209a0010(map);
-			 if(null!=requestMap){				 
-				 resultMap=CFCATransactionBase.notEncryptedAsync(transactionCode, urlSuffix, requestMap);
-			 }
-		 }catch(Exception e){
-			 log.error("query  failted", e);
-		 }finally{
-			 //记录日志
-			 dto.setRequestMsg(JSON.toJSONString(requestMap));
-			 dto.setResponseMsg(JSON.toJSONString(resultMap));
-			 dto.setServiceId(serviceId);
-			 dto.setVersion(version);			 
-			 saveLog(dto);
-		 }
-		 return resultMap;
-	 }	 
 	 
 	 
 	 private void saveLog(AipPServiceUsedLogDTO dto){
@@ -152,15 +124,11 @@ public class CFCATransactionSVImpl {
 			 log.error("save record failted", e);
 		 }
 	 }
-	 private Map<String,String> getFromCF209a0005toCF209a0010(Map<String,String> map){
-		 Map<String,String> requestMap=null;
-		 if(null!=map){
-			 requestMap=new HashMap<String,String>();
-			 requestMap.put("companyMID", map.get("companyMID"));
-			 requestMap.put("companyName", map.get("companyName"));
-			 requestMap.put("registrationNumber", map.get("registrationNumber"));
-			 requestMap.put("personName", map.get("personName"));			 
-		 }
-		 return requestMap;
+	 
+	 private AipCfcaConf getCfcaConf(String pServiceId,String version)throws Exception{
+		 AipCfcaConfKey key=new AipCfcaConfKey();
+		 key.setpServiceId(pServiceId);
+		 key.setVersion(version);
+		 return aipCfcaConfMapper.selectByPrimaryKey(key);
 	 }
 }
