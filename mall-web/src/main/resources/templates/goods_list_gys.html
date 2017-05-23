@@ -1,17 +1,23 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
 <head>
-	<meta charset="UTF-8">
+	<meta charset="UTF-8" th:remove="all">
 	<title>商品搜索结果-供应商</title>
-	<link rel="stylesheet" href="../static/css/bootstrap.css">
-	<link rel="stylesheet" href="../static/css/global.css">
-	<link rel="stylesheet" href="../static/css/index.css">
-	<link rel="stylesheet" href="../static/css/goods_details.css">
-	<link rel="stylesheet" href="../static/fonts/iconfont.css">
+	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/index.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/goods_details.css" th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
+
+	<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
+
+	<script src="../static/js-busi/aipProvider/aipProvider.js" th:src="@{/js-busi/aipProvider/aipProvider.js}"></script>
 </head>
 <body>
 	
-	<div class="top">
+	<div class="top" th:remove="all">
 	    <div class="wrap1200">
 	        <div class="top-left floatL">
 	            <span>欢迎来到广州数据中心</span>
@@ -27,7 +33,7 @@
 	        </div>
 	    </div>
 	</div>
-	<div class="header">
+	<div class="header" th:remove="all">
 	    <div class="wrap1200 clearfix">
 	        <div class="logo floatL"><img src="../static/images/logo.png" title="广州数据中心"></div>
 	        <div class="search floatR">
@@ -116,37 +122,42 @@
 	</div>
 	
 
-	<div class="main">
+	<div class="main" layout:fragment="screen_content">
+		<input type="hidden" id="providerId" th:value="${aipProviderInfo.providerId}">
 		<div class="gl_banner gysbg">
 			<!-- 供应商LOGO  最大传120*120图片-->
-			<div class="gyslogo"><img src="../static/images/gys_ex1.jpg"></div>
+			<div class="gyslogo"><img src="../static/images/gys_ex1.jpg" th:src="${aipProviderInfo.providerLogo}"></div>
 			<dl>
 				<dt>供应商介绍</dt>
-				<dd>站酷（ZCOOL），中国人气设计师互动平台，2006年8月创立于北京。深耕设计领域十年，站酷聚集了480万杰出设计师、摄影师、插画师、艺术家、创意人，每日会员发布原创作品20000幅，产生互动交流200000次，覆盖中国300+城市，在设计创意群体中具有强大的影响力与号召力  </dd>
+				<dd th:text="${aipProviderInfo.providerDesc}">站酷（ZCOOL），中国人气设计师互动平台，2006年8月创立于北京。深耕设计领域十年，站酷聚集了480万杰出设计师、摄影师、插画师、艺术家、创意人，每日会员发布原创作品20000幅，产生互动交流200000次，覆盖中国300+城市，在设计创意群体中具有强大的影响力与号召力  </dd>
 			</dl>
 		</div>
-		<div class="gl_list">
+		<div class="gl_list" id="aipProvider_goodsList">
 			
 			<div class="goodslist clearfix">
-				<ul >
-					<li>
+				<ul th:remove="all-but-first">
+					<li th:unless="${#lists.isEmpty(pageInfo.result)}" th:each="list,listStat : ${pageInfo.result}">
 						<div class="glist_items">
 							<div class="collect active">
 								<span class="bg"></span>
 								<i class="iconfont icon-xingxing"></i>
 							</div>
 							<div class="pic">
-								<img src="">
+								<a href="" target="_blank" th:href="@{'/goods/details/'+${list.id}+'-'+${list.skuId}}" th:attr="title=${list.gdsNameSrc}">
+									<img src="" style="width:80px;height:80px" th:src="${#tools.genImageUrl(list.gdsPic,'80x80')}">
+								</a>
 							</div>
-							<div class="tit">我是商品名称最长配置十四字我|是多余的文字</div>
+							<div class="tit"><a href="" target="_blank" th:href="@{'/goods/details/'+${list.id}+'-'+${list.skuId}}" th:utext="${list.gdsName}">我是商品名称最长配置十四字我|是多余的文字</a></div>
 							<div class="info">
 								<div class="pirce">
 									<small>￥</small>
-									<strong>499.00</strong>
-									<small>/10000次</small>
+									<strong th:text="${#tools.formatMoneyClean(list.packPrice)}">499.00</strong>
+									<small th:text="'/'+${list.packTimes}+'次'">/10000次</small>
 								</div>
 								<div class="sale">
-									首次申请赠送50次
+									<a href="" target="_blank" th:href="@{'/goods/details/'+${list.id}+'-'+${list.skuId}}" th:attr="title=${list.gdsSubtitleSrc}" th:utext="${list.gdsSubtitle}">
+										首次申请赠送50次
+									</a>
 								</div>
 								<a href="" class="btn btn-primary btn_rec">
 									申请数据
@@ -310,7 +321,7 @@
 					</li>
 				</ul>
 			</div>
-			<div class="pagelist">
+			<div class="pagelist" th:replace="~{fragments/pager :: pager}">
 				<nav aria-label="Page navigation">
 				  <ul class="pagination">
 				    <li >
@@ -339,7 +350,7 @@
 		</div>
 	</div>
 	
-	<div class="footer">
+	<div class="footer" th:remove="all">
 	    <div class="wrap1200 ptb40">
 	        <div class="left floatL">
 	            <img src="../static/images/logo-footer.png" >
@@ -383,7 +394,7 @@
 	    </div>
 	    <div class="copyright"> © 2016 版权所有 亚信科技(中国)有限公司 京ICP备11005544号-15 京公网安备 11010802022324号</div>
 	</div>
-	<script src="../static/js/jquery-1.12.4.js"></script>
-	<script src="../static/js/bootstrap.min.js"></script>
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
 </body>
 </html>

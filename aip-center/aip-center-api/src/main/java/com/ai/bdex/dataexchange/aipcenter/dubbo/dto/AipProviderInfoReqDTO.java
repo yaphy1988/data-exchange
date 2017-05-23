@@ -22,6 +22,12 @@ public class AipProviderInfoReqDTO extends BaseInfo{
 
     private String updateStaff;
 
+    private String providerDesc;
+
+    private String providerLogo;
+
+    private Integer providerSort;
+
     public String getProviderId() {
         return providerId;
     }
@@ -76,5 +82,29 @@ public class AipProviderInfoReqDTO extends BaseInfo{
 
     public void setUpdateStaff(String updateStaff) {
         this.updateStaff = updateStaff;
+    }
+
+    public String getProviderDesc() {
+        return providerDesc;
+    }
+
+    public void setProviderDesc(String providerDesc) {
+        this.providerDesc = providerDesc;
+    }
+
+    public String getProviderLogo() {
+        return providerLogo;
+    }
+
+    public void setProviderLogo(String providerLogo) {
+        this.providerLogo = providerLogo;
+    }
+
+    public Integer getProviderSort() {
+        return providerSort;
+    }
+
+    public void setProviderSort(Integer providerSort) {
+        this.providerSort = providerSort;
     }
 }
