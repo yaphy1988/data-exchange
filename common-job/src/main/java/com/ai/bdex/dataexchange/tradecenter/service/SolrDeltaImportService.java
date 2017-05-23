@@ -1,5 +1,7 @@
 package com.ai.bdex.dataexchange.tradecenter.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.exception.BusinessException;
@@ -20,13 +22,14 @@ import com.alibaba.boot.dubbo.annotation.DubboConsumer;
  */
 @Service
 public class SolrDeltaImportService {
+    private static Logger logger = LoggerFactory.getLogger(SolrDeltaImportService.class);
     @DubboConsumer
     private IDeltaIndexServiceRSV iDeltaIndexServiceRSV;
     public void deltaClear(){
         try {
             iDeltaIndexServiceRSV.deltaFullImport(SolrCoreEnum.GDS.getCode(), true);
         } catch (BusinessException e) {
-            e.printStackTrace();
+            logger.error("重建索引失败", e);
         }
     }
     
@@ -34,7 +37,7 @@ public class SolrDeltaImportService {
         try {
             iDeltaIndexServiceRSV.deltaFullImport(SolrCoreEnum.GDS.getCode(), false);
         } catch (BusinessException e) {
-            e.printStackTrace();
+            logger.error("重建索引失败", e);
         }
     }
 }

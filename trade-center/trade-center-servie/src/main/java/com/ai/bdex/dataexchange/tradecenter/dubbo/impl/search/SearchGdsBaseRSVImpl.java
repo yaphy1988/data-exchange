@@ -51,5 +51,10 @@ public class SearchGdsBaseRSVImpl implements ISearchGdsBaseRSV{
         return iSearchGdsBaseSV.querySearchGdsBasePageInfo(searchGdsBaseReqDTO);
     }
 
+    @Override
+    public int callProcedure() throws BusinessException {
+        return iSearchGdsBaseSV.callProcedure();
+    }
+
 }
 

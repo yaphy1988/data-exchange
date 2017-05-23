@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.tradecenter.dao.mapper.SearchGdsBaseExtendsMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.SearchGdsBaseMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SearchGdsBase;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SearchGdsBaseExample;
@@ -40,7 +41,8 @@ public class SearchGdsBaseSVImpl implements ISearchGdsBaseSV{
     private static final Logger logger = LoggerFactory.getLogger(SearchGdsBaseSVImpl.class.getName());
     @Autowired
     private SearchGdsBaseMapper searchGdsBaseMapper;
-    
+    @Autowired
+    private SearchGdsBaseExtendsMapper searchGdsBaseExtendsMapper;
     @Override
     public SearchGdsBaseRespDTO querySearchGdsBaseInfo(SearchGdsBaseReqDTO searchGdsBaseReqDTO)
             throws BusinessException {
@@ -118,6 +120,12 @@ public class SearchGdsBaseSVImpl implements ISearchGdsBaseSV{
         if (!StringUtil.isBlank(status)){
             criteria.andStatusEqualTo(status);
         }
+    }
+
+    @Override
+    public int callProcedure() throws BusinessException {
+        SearchGdsBaseExample example = new SearchGdsBaseExample();
+        return searchGdsBaseExtendsMapper.callProcedure(example);
     }
 }
 
