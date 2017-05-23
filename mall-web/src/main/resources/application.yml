@@ -51,3 +51,5 @@ application:
     charset: "UTF-8"
     alipayPulicKey: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0lPriVLxTwgue5D8VSCTP9toiSwLKB+qzceMFblxqaMi80iimYYHTIlvm1AeUMuzgn4Yc+JnGFsVNcEcz0ytzg7LQ1ep2vRfCZjkGxS37XumN3+IL1wlnBBnUn0+TvveE5c5Z7FsMsLyjQ3qHM45LK1DG/wnIJrAAykfgzpU1BaZjKpjeEHpcRWqQzZrmRxTVn8QbDphyW9OsSinW4n+zU/g7hRRfQbPOLjc4gE3XILjtHH/SrjN2tZ25szJ93XA+qolIkfzgdd+A7ABfoFT0aKkwdFiuACpLU4XebLszxU3/LJFrkaVTGw4shLCK0QD8vDSV3bDX6g8j6v/FOSNwQIDAQAB"
     signType: "RSA2"
+    returnUrl: "http://112.74.163.29:8083/manager-web/orderManage/myOrder"
+    notifyUrl: "http://112.74.163.29:8082/mall-web/bdxalipay/alipayNotify"

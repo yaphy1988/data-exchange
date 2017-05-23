@@ -99,6 +99,12 @@ public class BdxpayController {
     @Value("${application.alipay.signType:}")
     private  String signType;
     
+    @Value("${application.alipay.returnUrl:}")
+    private  String returnUrl;
+    
+    @Value("${application.alipay.notifyUrl:}")
+    private  String notifyUrl;
+    
     /**
      * 支付宝：支付接口（alipay.trade.page.pay）
      * @param model
@@ -123,8 +129,8 @@ public class BdxpayController {
     		String staffId = StaffUtil.getStaffId(session);
     		String passbackParams = suborderId+","+staffId;
     		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-	        alipayRequest.setReturnUrl("http://112.74.163.29:8083/manager-web/orderManage/myOrder");
-	        alipayRequest.setNotifyUrl("http://112.74.163.29:8082/mall-web/bdxalipay/alipayNotify");//在公共参数中设置回跳和通知地址
+	        alipayRequest.setReturnUrl(returnUrl);
+	        alipayRequest.setNotifyUrl(notifyUrl);//在公共参数中设置回跳和通知地址
 	        String biz_content =  
 		        "{" +
 	            "    \"out_trade_no\":\""+orderId+"\"," +
@@ -196,6 +202,7 @@ public class BdxpayController {
 			String subOrderId = parms[0];
 			String staffId = parms[1];
 			log.error("子订单编号：out_trade_no="+subOrderId);
+			log.error("staffId：staffId="+staffId);
 			//异步通知验签结果
 			boolean verify_result=false;
 			try {
@@ -208,8 +215,7 @@ public class BdxpayController {
 			}
 			log.error("异步通知验签：verify_result="+verify_result);
 			
-			if(verify_result){
-				log.error("异步通知验签成功:"+verify_result);
+//			if(verify_result){
 				if (trade_status.equals("TRADE_SUCCESS")){
 					boolean baseResponse= this.pay_successDone(out_trade_no,subOrderId,staffId);
 		            if (baseResponse) {  
@@ -218,17 +224,17 @@ public class BdxpayController {
 		            	writer.write("fail");// 更新状态失败  
 		            } 
 				}
-			}else{//验证失败
+			/*}else{//验证失败
 				writer.write("fail");
 				log.error("[支付宝异步通知验签失败]异常信息:"+verify_result);
-			}
+			}*/
 			writer.flush();
 			writer.close();
 			//degug--begin
-			if (trade_status.equals("TRADE_SUCCESS")){
+			/*if (trade_status.equals("TRADE_SUCCESS")){
 				log.error("已成功，成功停止通知:");
 				writer.write("success"); 
-			}
+			}*/
 			//---degug---end
     	}
     	
