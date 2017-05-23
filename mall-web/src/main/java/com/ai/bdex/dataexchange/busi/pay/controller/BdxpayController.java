@@ -132,7 +132,8 @@ public class BdxpayController {
 	            "    \"total_amount\":"+0.01+"," +
 	            "    \"subject\":\""+gdsName+"\"," +
 	            "    \"body\":\""+skuName+"\"," +
-	            "    \"passback_params\":\""+passbackParams+"\"," +
+//	            "    \"passback_params\":\""+passbackParams+"\"," +
+	            "    \"passback_params\":\"merchantBizType%3d3C%26merchantBizNo%3d2016010101111\"," +
 	            "    \"extend_params\":{" +
 	            "    \"sys_service_provider_id\":\""+APPID+"\"" +
 	            "    }"+
@@ -192,9 +193,11 @@ public class BdxpayController {
 			log.error("交易状态：trade_status="+trade_status);
 			//子订单编号
 			String passback_params = new String(request.getParameter("passback_params").getBytes("ISO-8859-1"),"UTF-8");
-			String[] parms = passback_params.split(",");
-			String subOrderId = parms[0];
-			String staffId = parms[1];
+//			String[] parms = passback_params.split(",");
+//			String subOrderId = parms[0];
+//			String staffId = parms[1];
+			String subOrderId = "";
+			String staffId = "";
 			log.error("子订单编号：out_trade_no="+subOrderId);
 			log.error("staffId：staffId="+staffId);
 			//异步通知验签结果
