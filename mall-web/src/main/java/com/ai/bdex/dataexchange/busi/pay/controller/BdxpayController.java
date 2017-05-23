@@ -203,7 +203,7 @@ public class BdxpayController {
 			//异步通知验签结果
 			boolean verify_result=false;
 			try {
-				verify_result = AlipaySignature.rsaCheckV1(params, ALIPAY_PUBLIC_KEY, CHARSET, "RSA");
+				verify_result = AlipaySignature.rsaCheckV1(params, ALIPAY_PUBLIC_KEY, CHARSET, SIGNTYPE);
 			} catch (AlipayApiException e) {
 				log.error("异步通知验签：code="+e.getErrCode()+",msg="+e.getErrMsg()+"ee:"+e);
 			}catch (Exception e) {
