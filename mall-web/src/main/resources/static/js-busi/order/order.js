@@ -59,7 +59,7 @@ function reduce()
 
  	    var url = basePath+'/order/creatOrder';
 		var params={};
-		
+		var tempwindow=window.open('_blank');
 		var callBack =function(data){ 
 			if(data.success){
 				  var paytype = $('input:radio:checked').val();
@@ -69,8 +69,6 @@ function reduce()
 						var orderid = data.orderid;
 						var suborderid = data.suborderid;
 						var url = basePath+'/bdxalipay/alipayRequestPage?orderId='+orderid+"&subOrderid="+suborderid;
-//						window.location.href=url;
-						var tempwindow=window.open('_blank');
 						tempwindow.location=url;
 				    }
 				    else

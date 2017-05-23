@@ -1,7 +1,34 @@
 package com.ai.bdex.dataexchange.busi.order.controller;
 
+import java.math.BigDecimal;
+import java.net.URLDecoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
+//临时用，支付回调的接口在另外的位置处理
+ import  com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
@@ -24,28 +51,6 @@ import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
-import com.alibaba.dubbo.common.utils.CollectionUtils;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
-
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-//临时用，支付回调的接口在另外的位置处理
- import  com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
-
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
-import java.net.URLDecoder;
-import java.util.*;
 
 /**
  * 
@@ -402,10 +407,16 @@ public class OrderController {
 		model.addAttribute("subordid",subordid);
 		return modelAndView;
 	}
-	//支付成功模拟修改后台数据
-	@RequestMapping(value = "/pay_successDone")
+	/**
+	 * 异步通知：获取支付宝POST过来反馈信息
+	 * 支付成功模拟修改后台数据
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/alipayNotify")
 	@ResponseBody
-	public String pay_successDone(Model model, HttpServletRequest request) {
+	public String alipayNotify(Model model, HttpServletRequest request) {
 		Map<String,String> params = new HashMap<String,String>();
     	Map requestParams = request.getParameterMap();
     	Map<String, Object> rMap = new HashMap<String, Object>();
@@ -420,7 +431,7 @@ public class OrderController {
 	    		}
 	    		//乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
 	    		valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-	    		log.error("支付宝异步通知日志：key="+name+";value="+valueStr);
+	    		log.error("支付宝通知：key="+name+";value="+valueStr);
 	    		params.put(name, valueStr);
 	    	}
 			//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
