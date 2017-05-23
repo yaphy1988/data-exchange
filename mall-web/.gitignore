@@ -22,3 +22,6 @@ nbbuild/
 dist/
 nbdist/
 .nb-gradle/
+
+### ignore webjars temporary files
+**/META-INF/resources/webjars/**/*

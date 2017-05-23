@@ -4,16 +4,16 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="renderer" content="webkit">
-	<link rel="icon" type="../static/image/png" href="../../static/images/favicon.png">
-	<link rel="stylesheet" href="../../static/css/bootstrap.css">
-	<link rel="stylesheet" href="../../static/css/global.css">
-	<link rel="stylesheet" href="../../static/css/index.css">
+	<link rel="icon" type="../static/image/png" href="/webjars/images/favicon.png" th:remove="all">
+	<link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="/webjars/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="/webjars/css/index.css" th:remove="all">
 </head>
 <body class="bgf1"> 
 	<div class="footer" th:fragment="footer">
 	    <div class="wrap1200 ptb40">
 	        <div class="left floatL">
-	             <img src="../../static/images/logo-footer.png"  th:src="@{/images/logo-footer.png}">
+	             <img src="/webjars/images/logo-footer.png"  th:src="@{/images/logo-footer.png}">
  	        </div>
 	        <div class="right floatR">
 	            <div class="footer-item">
@@ -43,7 +43,7 @@
 	            <div class="footer-item">
 	                <h4>官方微信</h4>
 	                <p>
-	                    <img src="../../static/images/wexin.jpg"  th:src="@{/images/wexin.jpg}">
+	                    <img src="/webjars/images/wexin.jpg"  th:src="@{/images/wexin.jpg}">
 	                </p>
 	            </div>
 	        </div>

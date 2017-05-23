@@ -6,11 +6,11 @@
 	<meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all">
 	<meta name="renderer" content="webkit" th:remove="all">
 	<title th:remove="all">广州数据交易</title>
-	<link rel="icon" type="../static/image/png" href="../../static/images/favicon.png" th:remove="all">
-	<link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
-	<link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
-	<link rel="stylesheet" href="../../static/css/index.css" th:remove="all">
-	<script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
+	<link rel="icon" type="../static/image/png" href="/webjars/images/favicon.png" th:remove="all">
+	<link rel="stylesheet" href="/webjars/bootstrap/3.3.7/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="/webjars/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="/webjars/css/index.css" th:remove="all">
+	<script src="/webjars/js/util.js" th:src="@{/js/util.js}"></script>
 </head>
 <body class="bgf1">
 	<div class="top" th:fragment="top" id="mainTopDiv">
@@ -24,7 +24,7 @@
 	            <a th:text="${staffInfoDTO!=null and staffInfoDTO.loginIn}? '退出':'免费注册'" href="#" th:href="${staffInfoDTO!=null and staffInfoDTO.loginIn}?@{/login/doLogout}:@{/regist/pageInit}">免费注册</a>
 	            <i>|</i>
                 <a href="#" class="follow">关注广数<i class="glyphicon glyphicon-menu-down"></i>
-                	<div class="guangshu"><i></i><img src="../static/images/wexin.jpg" th:src="@{/images/wexin.jpg}"></div>
+                	<div class="guangshu"><i></i><img src="/webjars/images/wexin.jpg" th:src="@{/images/wexin.jpg}"></div>
             	</a>
 	            <a href="#" th:href="@{/homePage/pageNewsInfolist?moduleId=108}">常见问题</a>
 	            <a href="#" th:href="@{/homePage/contactouer}">联系我们</a>

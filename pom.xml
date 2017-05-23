@@ -8,6 +8,7 @@
   <version>0.0.1-SNAPSHOT</version>
   <modules>
     <module>common-api</module>
+    <module>common-static</module>
     <module>aip-center</module>
     <module>api-gateway</module>
     <module>user-center</module>
@@ -58,6 +59,20 @@
     <zkclient.version>0.10</zkclient.version>
     <codehaus.jackson.version>1.9.13</codehaus.jackson.version>
     <solr-solrj.version>5.3.0</solr-solrj.version>
+    <!-- WebJars管理前端框架版本，统一各web子模块引用 -->
+    <webjars.jquery.version>3.2.0</webjars.jquery.version>
+    <webjars.bootstrap.version>3.3.7</webjars.bootstrap.version>
+    <webjars.bootstrap-table.version>1.11.1</webjars.bootstrap-table.version>
+    <webjars.smalot-datetimepicker.version>2.4.4</webjars.smalot-datetimepicker.version>
+    <webjars.kartik-v-bootstrap-fileinput.version>4.4.0</webjars.kartik-v-bootstrap-fileinput.version>
+    <webjars.fontawesome.version>4.7.0</webjars.fontawesome.version>
+    <webjars.awesome-bootstrap-checkbox.version>1.0.0-alpha.5</webjars.awesome-bootstrap-checkbox.version>
+    <webjars.jquery-cookie.version>1.4.1</webjars.jquery-cookie.version>
+    <webjars.jquery-migrate.version>3.0.0</webjars.jquery-migrate.version>
+    <webjars.html5shiv.version>3.7.0</webjars.html5shiv.version>
+    <webjars.respond.version>1.3.0</webjars.respond.version>
+    <webjars.zTree.version>3.5.18</webjars.zTree.version>
+    <webjars.ckeditor.version>4.4.7</webjars.ckeditor.version>
   </properties>
 
   <dependencyManagement>
@@ -179,6 +194,73 @@
         <groupId>org.apache.solr</groupId>
         <artifactId>solr-solrj</artifactId>
         <version>${solr-solrj.version}</version>
+      </dependency>
+
+      <!-- 前端组件版本使用webjars方式管理 -->
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>jquery</artifactId>
+        <version>${webjars.jquery.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>bootstrap</artifactId>
+        <version>${webjars.bootstrap.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars.bower</groupId>
+        <artifactId>bootstrap-table</artifactId>
+        <version>${webjars.bootstrap-table.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars.bower</groupId>
+        <artifactId>smalot-bootstrap-datetimepicker</artifactId>
+        <version>${webjars.smalot-datetimepicker.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars.bower</groupId>
+        <artifactId>bootstrap-fileinput</artifactId>
+        <version>${webjars.kartik-v-bootstrap-fileinput.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>font-awesome</artifactId>
+        <version>${webjars.fontawesome.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars.bower</groupId>
+        <artifactId>awesome-bootstrap-checkbox</artifactId>
+        <version>${webjars.awesome-bootstrap-checkbox.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>jquery-cookie</artifactId>
+        <version>${webjars.jquery-cookie.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>jquery-migrate</artifactId>
+        <version>${webjars.jquery-migrate.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>html5shiv</artifactId>
+        <version>${webjars.html5shiv.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>respond</artifactId>
+        <version>${webjars.respond.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>zTree</artifactId>
+        <version>${webjars.zTree.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>ckeditor</artifactId>
+        <version>${webjars.ckeditor.version}</version>
       </dependency>
 
     </dependencies>

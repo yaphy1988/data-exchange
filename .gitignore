@@ -57,3 +57,7 @@ generatorConfig.xml
 
 /bin/
 *.db
+
+
+### ignore webjars temporary files
+**/META-INF/resources/webjars/**/*
