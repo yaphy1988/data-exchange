@@ -39,6 +39,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderMainInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.bdex.dataexchange.util.ThymeleafToolsUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
@@ -114,15 +115,15 @@ public class BdxpayController {
     		//查询订单/商品信息
     		OrdInfoRespDTO ordInfoRespDTO = this.queryOrdMainInfoByorderId(orderId,suborderId);
     		Long gdsId = ordInfoRespDTO.getGdsId();
-    		int orderAmout = ordInfoRespDTO.getOrderAmount();
-    		String moneyAmout = new ThymeleafToolsUtil().formatMoneyClean(orderAmout);
+    		long orderAmout = ordInfoRespDTO.getOrderMoney();
+    		String moneyAmout = new ThymeleafToolsUtil().formatMoneyClean(new Long(orderAmout).intValue());
     		String gdsName = ordInfoRespDTO.getGdsName();
     		String skuName = ordInfoRespDTO.getSkuName();
-//    		String passbackParams = "orderId="+URLEncoder.encode(orderId, "utf-8")+"&suborderId="
-//    				+URLEncoder.encode(String.valueOf(suborderId),"utf-8")+"&gdsName"+URLEncoder.encode(gdsName, "utf-8");
-    		String passbackParams = suborderId;
+    		
+    		String staffId = StaffUtil.getStaffId(session);
+    		String passbackParams = suborderId+","+staffId;
     		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-	        alipayRequest.setReturnUrl("http://112.74.163.29:8083/manage-web/orderManage/myOrder");
+	        alipayRequest.setReturnUrl("http://112.74.163.29:8083/manager-web/orderManage/myOrder");
 	        alipayRequest.setNotifyUrl("http://112.74.163.29:8082/mall-web/bdxalipay/alipayNotify");//在公共参数中设置回跳和通知地址
 	        String biz_content =  
 		        "{" +
@@ -175,9 +176,10 @@ public class BdxpayController {
 	    			valueStr = (i == values.length - 1) ? valueStr + values[i]
 	    					: valueStr + values[i] + ",";
 	    		}
+	    		log.error("解码前：key="+name+";value="+valueStr);
 	    		//乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
 	    		valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-	    		log.error("支付宝通知：key="+name+";value="+valueStr);
+	    		log.error("解码后：key="+name+";value="+valueStr);
 	    		params.put(name, valueStr);
 	    	}
 			//商户订单号
@@ -222,7 +224,7 @@ public class BdxpayController {
 			}else{//验证失败
 //				outputText(response, "fail", "application/json", charset);
 				writer.write("fail");
-				log.error("[支付宝异步通知验签失败]异常信息,trade_status:" + trade_status);
+				log.error("[支付宝异步通知验签失败]异常信息:"+verify_result);
 			}
 			writer.flush();
 			writer.close();
