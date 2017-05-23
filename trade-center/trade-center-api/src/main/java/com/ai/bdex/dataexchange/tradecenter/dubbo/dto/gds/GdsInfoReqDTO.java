@@ -62,6 +62,8 @@ public class GdsInfoReqDTO extends BaseInfo implements Serializable{
     private List<Integer> gdsIds;
     private List<Integer> gdsIdsNotIn;
     
+    private String providerId;//供应商id
+    
     public List<Integer> getGdsIdsNotIn() {
 		return gdsIdsNotIn;
 	}
@@ -237,5 +239,13 @@ public class GdsInfoReqDTO extends BaseInfo implements Serializable{
 
     public void setGdsIds(List<Integer> gdsIds) {
         this.gdsIds = gdsIds;
+    }
+
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
     }
 }

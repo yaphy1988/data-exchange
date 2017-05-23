@@ -200,6 +200,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                 solrInputDocument.addField("createTime", gdsInfo.getCreateTime());
                 solrInputDocument.addField("catId", gdsInfo.getCatId());
                 solrInputDocument.addField("commpanyName", gdsInfo.getCommpanyName());
+                solrInputDocument.addField("providerId", gdsInfo.getProviderId());
             }
             //获取单品主表信息
             GdsSkuReqDTO gdsSkuReqDTO = new GdsSkuReqDTO();
@@ -278,6 +279,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                     solrInputDocument.addField("createTime", gdsInfo.getCreateTime());
                     solrInputDocument.addField("catId", gdsInfo.getCatId());
                     solrInputDocument.addField("commpanyName", gdsInfo.getCommpanyName());
+                    solrInputDocument.addField("providerId", gdsInfo.getProviderId());
                     //获取单品主表信息
                     GdsSkuReqDTO gdsSkuReqDTO = new GdsSkuReqDTO();
                     gdsSkuReqDTO.setGdsId(gdsInfo.getGdsId());
@@ -365,6 +367,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                     solrInputDocument.addField("createTime", gdsInfoRespDTO.getCreateTime());
                     solrInputDocument.addField("catId", gdsInfoRespDTO.getCatId());
                     solrInputDocument.addField("commpanyName", gdsInfoRespDTO.getCommpanyName());
+                    solrInputDocument.addField("providerId", gdsInfoRespDTO.getProviderId());
                     //获取单品主表信息
                     GdsSkuReqDTO gdsSkuReqDTO = new GdsSkuReqDTO();
                     gdsSkuReqDTO.setGdsId( gdsInfoRespDTO.getGdsId());

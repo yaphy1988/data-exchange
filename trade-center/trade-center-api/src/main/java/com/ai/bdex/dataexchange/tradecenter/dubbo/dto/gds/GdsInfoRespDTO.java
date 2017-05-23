@@ -57,6 +57,8 @@ public class GdsInfoRespDTO extends BaseResponseDTO implements Serializable {
     private List<GdsInfo2PropRespDTO> gdsInfo2PropRespDTOList;//商品属性列表
 
     private Integer catId;
+    
+    private String providerId;//供应商id
 
     public Integer getGdsId() {
         return gdsId;
@@ -224,5 +226,13 @@ public class GdsInfoRespDTO extends BaseResponseDTO implements Serializable {
 
     public void setCatId(Integer catId) {
         this.catId = catId;
+    }
+
+    public String getProviderId() {
+        return providerId;
+    }
+
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
     }
 }
