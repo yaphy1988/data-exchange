@@ -176,10 +176,9 @@ public class BdxpayController {
 	    			valueStr = (i == values.length - 1) ? valueStr + values[i]
 	    					: valueStr + values[i] + ",";
 	    		}
-	    		log.error("解码前：key="+name+";value="+valueStr);
 	    		//乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
-	    		valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-	    		log.error("解码后：key="+name+";value="+valueStr);
+//	    		valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+	    		log.error("解析参数：key="+name+";value="+valueStr);
 	    		params.put(name, valueStr);
 	    	}
 			//商户订单号
@@ -197,30 +196,23 @@ public class BdxpayController {
 			//异步通知验签结果
 			boolean verify_result = AlipaySignature.rsaCheckV1(params, alipayPulicKey, charset, signType);
 			log.error("异步通知验签：verify_result="+verify_result);
+			
 			if(verify_result){
 				log.error("异步通知验签成功:"+verify_result);
-				if(trade_status.equals("TRADE_FINISHED")){
+				if (trade_status.equals("TRADE_SUCCESS")){
 					//判断该笔订单是否在商户网站中已经做过处理
 						//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 						//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
 						//如果有做过处理，不执行商户的业务程序
 						
-					//注意：
-					//如果签约的是可退款协议，退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
-					//如果没有签约可退款协议，那么付款完成后，支付宝系统发送该交易状态通知。
-				} else if (trade_status.equals("TRADE_SUCCESS")){
-					//判断该笔订单是否在商户网站中已经做过处理
-						//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
-						//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
-						//如果有做过处理，不执行商户的业务程序
-						
-					//注意：
-					//如果签约的是可退款协议，那么付款完成后，支付宝系统发送该交易状态通知。
-//					this.pay_successDone(out_trade_no,subOrderId,staffId);
+					/*String baseResponse= this.pay_successDone(out_trade_no,subOrderId,staffId);
+					
+		            if (null != baseResponse && "success".equals(baseResponse)) {  
+		            	writer.write("success"); 
+		            } else {  
+		            	writer.write("fail");// 更新状态失败  
+		            } */
 				}
-				//反馈给支付宝，否则支付宝会一直通知
-//				outputText(response, "success", "application/json", charset);
-				writer.write("success");
 			}else{//验证失败
 //				outputText(response, "fail", "application/json", charset);
 				writer.write("fail");
@@ -228,7 +220,14 @@ public class BdxpayController {
 			}
 			writer.flush();
 			writer.close();
+			//degug--begin
+			if (trade_status.equals("TRADE_SUCCESS")){
+				log.error("已成功，成功停止通知:");
+				writer.write("success"); 
+			}
+			//---degug---end
     	}
+    	
     	catch (Exception e) {
     		log.error("[支付宝异步通知异常]异常信息:" + e.getMessage());
     	}
