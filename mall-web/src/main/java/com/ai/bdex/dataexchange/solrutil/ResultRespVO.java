@@ -65,6 +65,8 @@ public class ResultRespVO  extends BaseResponseDTO implements Serializable{
     private int gdsSale;
     @Field
     private List<String> gdsLabel;
+    @Field
+    private String providerId;//供应商id
     
     private List<GdsLabelRespDTO> gdsLabelParse;
     public String getId() {
@@ -224,6 +226,12 @@ public class ResultRespVO  extends BaseResponseDTO implements Serializable{
     }
     public void setPackPriceShow(String packPriceShow) {
         this.packPriceShow = packPriceShow;
+    }
+    public String getProviderId() {
+        return providerId;
+    }
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
     }
 
     
