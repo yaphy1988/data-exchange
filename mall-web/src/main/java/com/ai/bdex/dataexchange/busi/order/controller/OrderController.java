@@ -447,7 +447,7 @@ public class OrderController {
 			log.error("交易状态：trade_status="+trade_status);
 			//子订单编号
 			String subOrderId = new String(request.getParameter("passback_params").getBytes("ISO-8859-1"),"UTF-8");
-			log.error("商户订单号：out_trade_no="+out_trade_no);
+			log.error("子订单编号：out_trade_no="+subOrderId);
 			
 			//模拟成功
 			HttpSession hpptsesion = request.getSession();

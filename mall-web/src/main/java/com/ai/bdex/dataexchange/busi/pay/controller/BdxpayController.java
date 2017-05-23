@@ -85,8 +85,7 @@ public class BdxpayController {
     		String skuName = ordInfoRespDTO.getSkuName();
 //    		String passbackParams = "orderId="+URLEncoder.encode(orderId, "utf-8")+"&suborderId="
 //    				+URLEncoder.encode(String.valueOf(suborderId),"utf-8")+"&gdsName"+URLEncoder.encode(gdsName, "utf-8");
-    		String passbackParams = "suborderId="+URLEncoder.encode(suborderId, "utf-8")+
-    				"staffId="+StaffUtil.getStaffId(session);
+    		String passbackParams = suborderId;
     		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
 	        alipayRequest.setReturnUrl("http://112.74.163.29:8083/manage-web/orderManage/myOrder");
 	        alipayRequest.setNotifyUrl("http://112.74.163.29:8082/mall-web/order/alipayNotify");//在公共参数中设置回跳和通知地址
