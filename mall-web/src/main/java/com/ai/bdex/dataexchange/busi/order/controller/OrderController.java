@@ -1,5 +1,8 @@
 package com.ai.bdex.dataexchange.busi.order.controller;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
 import java.math.BigDecimal;
 import java.net.URLDecoder;
 import java.text.ParseException;
@@ -19,6 +22,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -51,6 +55,7 @@ import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.DateUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
+import com.alipay.api.internal.util.AlipaySignature;
 
 /**
  * 
@@ -72,6 +77,24 @@ public class OrderController {
     private final static String API_SERVICE_NAME_TMP = "API_SERVICE_NAME_TMP";//API服务名称接口获取不到数据
 	private static final Logger log = LoggerFactory.getLogger(OrderController.class);
 
+    @Value("${application.alipay.appId:}")
+    private  String appId;
+    
+    @Value("${application.alipay.privateKey:}")
+    private  String privateKey;
+    
+    @Value("${application.alipay.format:}")
+    private  String format;
+    
+    @Value("${application.alipay.charset:}")
+    private  String charset;
+    
+    @Value("${application.alipay.alipayPulicKey:}")
+    private  String alipayPulicKey;
+    
+    @Value("${application.alipay.signType:}")
+    private  String signType;
+    
 	@DubboConsumer(timeout = 30000)
 	IOrderInfoRSV iOrderInfoRSV;
 	@DubboConsumer(timeout = 30000)
@@ -409,18 +432,22 @@ public class OrderController {
 	}
 	/**
 	 * 异步通知：获取支付宝POST过来反馈信息
-	 * 支付成功模拟修改后台数据
+	 * 注意：异步的，第一次收到订单信息（以下都称之为“通知”）是与返回页近乎等同或等同的同步时间，
+	 * 	        在判断不成功的情况下，会收到第二次第三次等次数的通知，时间间隔从最先的一两分钟，到后面的几个小时。
+	 *      失效时间是48小时
 	 * @param model
 	 * @param request
 	 * @return
 	 */
 	@RequestMapping(value = "/alipayNotify")
 	@ResponseBody
-	public String alipayNotify(Model model, HttpServletRequest request) {
+	public void alipayNotify(Model model, HttpServletRequest request,HttpServletResponse response) {
 		Map<String,String> params = new HashMap<String,String>();
     	Map requestParams = request.getParameterMap();
-    	Map<String, Object> rMap = new HashMap<String, Object>();
+    	response.setContentType("application/json;charset=" + charset);
+    	PrintWriter writer = null;
     	try {
+    		writer = response.getWriter();
 	    	for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
 	    		String name = (String) iter.next();
 	    		String[] values = (String[]) requestParams.get(name);
@@ -438,7 +465,6 @@ public class OrderController {
 			//商户订单号
 			String out_trade_no = new String(request.getParameter("out_trade_no").getBytes("ISO-8859-1"),"UTF-8");
 			log.error("商户订单号：out_trade_no="+out_trade_no);
-			
 			//支付宝交易号
 			String trade_no = new String(request.getParameter("trade_no").getBytes("ISO-8859-1"),"UTF-8");
 			log.error("支付宝交易号：trade_no="+trade_no);
@@ -448,15 +474,64 @@ public class OrderController {
 			//子订单编号
 			String subOrderId = new String(request.getParameter("passback_params").getBytes("ISO-8859-1"),"UTF-8");
 			log.error("子订单编号：out_trade_no="+subOrderId);
-			
+			//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
+			//计算得出通知验证结果
+			//boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String publicKey, String charset, String sign_type)
+			boolean verify_result = AlipaySignature.rsaCheckV1(params, alipayPulicKey, charset, signType);
+			log.error("验证结果：verify_result="+verify_result);
+			if(verify_result){//验证成功
+				log.error("验证成功:"+verify_result);
+				if(trade_status.equals("TRADE_FINISHED")){
+					//判断该笔订单是否在商户网站中已经做过处理
+						//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
+						//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
+						//如果有做过处理，不执行商户的业务程序
+						
+					//注意：
+					//如果签约的是可退款协议，退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
+					//如果没有签约可退款协议，那么付款完成后，支付宝系统发送该交易状态通知。
+				} else if (trade_status.equals("TRADE_SUCCESS")){
+					//判断该笔订单是否在商户网站中已经做过处理
+						//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
+						//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
+						//如果有做过处理，不执行商户的业务程序
+						
+					//注意：
+					//如果签约的是可退款协议，那么付款完成后，支付宝系统发送该交易状态通知。
+//					this.pay_successDone(out_trade_no,subOrderId,staffId);
+				}
+				//反馈给支付宝，否则支付宝会一直通知
+//				outputText(response, "success", "application/json", charset);
+				writer.write("success");
+			}else{//验证失败
+//				outputText(response, "fail", "application/json", charset);
+				writer.write("fail");
+				log.error("[支付宝异步通知验证失败]异常信息,trade_status:" + trade_status);
+			}
+			writer.flush();
+			writer.close();
+    	}
+    	catch (Exception e) {
+    		log.error("[支付宝异步通知异常]异常信息:" + e.getMessage());
+    	}
+	}
+	/**
+	 * 支付成功模拟修改后台数据
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	public String pay_successDone(String orderId,String subOrderId,String staffId) {
+    	Map<String, Object> rMap = new HashMap<String, Object>();
+    	try {
+	    	
 			//模拟成功
-			HttpSession hpptsesion = request.getSession();
-			String staff_id = StaffUtil.getStaffId(hpptsesion);
+			String staff_id = staffId;
 			
-			String orderid = trade_no;
+			String orderid = orderId;
 			String subordid = subOrderId;
 			//模拟成功
-			
+		
 			Date orderTime = DateUtil.getNowAsDate();
 			OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
 			ordMainInfoReqDTO.setOrderId(orderid);
@@ -579,5 +654,36 @@ public class OrderController {
         }
         return date;
     }
-
+    /**
+     * 向HttpServletResponse输出文本
+     * @param text 输出的字符串
+     * @param contentType 类型
+     * @param charset 编码
+     */
+    final public void outputText(HttpServletResponse response,String text, String contentType, String charset) {
+    	response.setCharacterEncoding(charset);
+        //指定内容类型
+    	response.setContentType(contentType + ";charset=" + charset);
+        //禁止缓存
+    	response.setHeader("Pragma", "no-cache");
+    	response.setHeader("Cache-Control", "no-cache");
+    	response.setDateHeader("Expires", 0);
+    	OutputStream o = null;
+        try {
+        	byte[] content = text.getBytes(charset);
+        	o = response.getOutputStream();
+        	o.write(content);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally{
+        	try {
+        		if(o!=null){
+        			o.close();
+        		}
+        		o = null;
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+        }
+    }
 }
