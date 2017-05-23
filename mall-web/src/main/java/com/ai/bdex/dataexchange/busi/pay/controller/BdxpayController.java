@@ -128,7 +128,7 @@ public class BdxpayController {
 	        String biz_content =  
 		        "{" +
 	            "    \"out_trade_no\":\""+orderId+"\"," +
-	            "    \"product_code\":\""+gdsId+"\"," +
+	            "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
 	            "    \"total_amount\":"+0.01+"," +
 	            "    \"subject\":\""+gdsName+"\"," +
 	            "    \"body\":\""+skuName+"\"," +
@@ -202,9 +202,9 @@ public class BdxpayController {
 			try {
 				verify_result = AlipaySignature.rsaCheckV1(params, ALIPAY_PUBLIC_KEY, CHARSET, "RSA");
 			} catch (AlipayApiException e) {
-				log.error("异步通知验签：code="+e.getErrCode()+",msg="+e.getErrMsg());
+				log.error("异步通知验签：code="+e.getErrCode()+",msg="+e.getErrMsg()+"ee:"+e);
 			}catch (Exception e) {
-				log.error("异步通知验签："+e.getMessage());
+				log.error("异步通知验签："+e.getMessage()+"ee:"+e);
 			}
 			log.error("异步通知验签：verify_result="+verify_result);
 			
