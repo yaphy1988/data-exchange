@@ -473,6 +473,9 @@ public class GdsEditController {
 			if(StringUtil.isNotBlank(baseInfoJson.getString("apiId"))){
 				vo.setApiId(Integer.parseInt(baseInfoJson.getString("apiId")));
 			}
+			if(StringUtil.isNotBlank(baseInfoJson.getString("providerId"))){
+				vo.setProviderId(baseInfoJson.getString("providerId"));
+			}
 			if(StringUtil.isNotBlank(baseInfoJson.getString("gdsPic"))){
 				vo.setGdsPic(baseInfoJson.getString("gdsPic"));
 			}
@@ -816,7 +819,7 @@ public class GdsEditController {
 		} catch (Exception e) {
 			logger.error("查询API接口失败！原因是：" + e.getMessage());
 		}
-		return "gds/div/gdsEditAPIList";
+		return "goods_import :: #gdsAPIList";
 	}
 	
 	/**

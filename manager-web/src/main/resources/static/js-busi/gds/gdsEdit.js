@@ -415,6 +415,7 @@ function createGdsInfoVO(){
 	var gdsName = $("#gdsName").val();
 	var gdsSubTitle = $("#gdsSubTitle").val();
 	var apiId = $("#apiId").val();
+	var providerId=$("#providerId").val();
 	var gdsPic = $("#gdsPic").val();
 	var ifRecommend = $("#ifRecommend").val();
 	var funIntroduction = $("#funIntroduction").val();
@@ -480,6 +481,7 @@ function createGdsInfoVO(){
 			catFirst:catFirst,
 			catId:catId,
 			apiId:apiId,
+			providerId:providerId,
 			gdsPic:gdsPic,
 			ifRecommend:ifRecommend,
 			funIntroduction:funIntroduction,
@@ -844,8 +846,10 @@ function gridAPIInfoList(index){
 	});
 }
 function selectGdsAPIInfo(obj){
-	var apiId=$(obj).parent().siblings().eq(0).text();
-	var apiName=$(obj).parent().siblings().eq(1).text();
+	var providerId=$(obj).parent().siblings().eq(0).text();
+	var apiId=$(obj).parent().siblings().eq(1).text();
+	var apiName=$(obj).parent().siblings().eq(2).text();
+	$("#providerId").val(providerId);
 	$("#apiId").val(apiId);
 	$("#apiText").val(apiName);
 	$("#myModal3").modal('hide');

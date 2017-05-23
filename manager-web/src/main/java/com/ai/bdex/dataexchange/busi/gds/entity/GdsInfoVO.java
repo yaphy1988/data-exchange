@@ -60,7 +60,17 @@ public class GdsInfoVO extends BaseResponseDTO implements Serializable{
 	    
 	    private String apiIdName;
 	    
-	    public String getApiIdName() {
+	    private String providerId;//供应商id
+
+	    public String getProviderId() {
+			return providerId;
+		}
+
+		public void setProviderId(String providerId) {
+			this.providerId = providerId;
+		}
+
+		public String getApiIdName() {
 			return apiIdName;
 		}
 
