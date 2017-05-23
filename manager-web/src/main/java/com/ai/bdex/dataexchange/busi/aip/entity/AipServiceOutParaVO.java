@@ -1,16 +1,14 @@
-package com.ai.bdex.dataexchange.busi.api.entity;
+package com.ai.bdex.dataexchange.busi.aip.entity;
 
-import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
 import java.util.Date;
 
 /**
- * Created by yx on 2017/5/16.
+ * Created by yx on 2017/5/9.
  */
-public class AipServiceCodeInfoVO extends BaseResponseDTO {
-    private String codeId;
-
-    private String docId;
+public class AipServiceOutParaVO extends BaseInfo {
+    private String outputId;
 
     private String serviceId;
 
@@ -18,11 +16,13 @@ public class AipServiceCodeInfoVO extends BaseResponseDTO {
 
     private String status;
 
-    private String program;
+    private String type;
 
-    private String author;
+    private String paraCode;
 
-    private String title;
+    private String paraType;
+
+    private String paraFormat;
 
     private Date createTime;
 
@@ -32,20 +32,14 @@ public class AipServiceCodeInfoVO extends BaseResponseDTO {
 
     private String updateStaff;
 
-    public String getCodeId() {
-        return codeId;
+    private String remark;
+
+    public String getOutputId() {
+        return outputId;
     }
 
-    public void setCodeId(String codeId) {
-        this.codeId = codeId;
-    }
-
-    public String getDocId() {
-        return docId;
-    }
-
-    public void setDocId(String docId) {
-        this.docId = docId;
+    public void setOutputId(String outputId) {
+        this.outputId = outputId;
     }
 
     public String getServiceId() {
@@ -72,28 +66,36 @@ public class AipServiceCodeInfoVO extends BaseResponseDTO {
         this.status = status;
     }
 
-    public String getProgram() {
-        return program;
+    public String getType() {
+        return type;
     }
 
-    public void setProgram(String program) {
-        this.program = program;
+    public void setType(String type) {
+        this.type = type;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getParaCode() {
+        return paraCode;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setParaCode(String paraCode) {
+        this.paraCode = paraCode;
     }
 
-    public String getTitle() {
-        return title;
+    public String getParaType() {
+        return paraType;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setParaType(String paraType) {
+        this.paraType = paraType;
+    }
+
+    public String getParaFormat() {
+        return paraFormat;
+    }
+
+    public void setParaFormat(String paraFormat) {
+        this.paraFormat = paraFormat;
     }
 
     public Date getCreateTime() {
@@ -126,5 +128,13 @@ public class AipServiceCodeInfoVO extends BaseResponseDTO {
 
     public void setUpdateStaff(String updateStaff) {
         this.updateStaff = updateStaff;
+    }
+
+    public String getRemark() {
+        return remark;
+    }
+
+    public void setRemark(String remark) {
+        this.remark = remark;
     }
 }

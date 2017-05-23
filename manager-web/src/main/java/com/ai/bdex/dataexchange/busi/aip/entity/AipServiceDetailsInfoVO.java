@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.busi.api.entity;
+package com.ai.bdex.dataexchange.busi.aip.entity;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;

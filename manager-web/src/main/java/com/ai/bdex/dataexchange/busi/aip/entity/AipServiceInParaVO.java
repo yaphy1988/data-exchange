@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.busi.api.entity;
+package com.ai.bdex.dataexchange.busi.aip.entity;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
@@ -7,8 +7,9 @@ import java.util.Date;
 /**
  * Created by yx on 2017/5/9.
  */
-public class AipServiceOutParaVO extends BaseInfo {
-    private String outputId;
+public class AipServiceInParaVO extends BaseInfo {
+
+    private String inputId;
 
     private String serviceId;
 
@@ -22,8 +23,6 @@ public class AipServiceOutParaVO extends BaseInfo {
 
     private String paraType;
 
-    private String paraFormat;
-
     private Date createTime;
 
     private String createStaff;
@@ -34,12 +33,12 @@ public class AipServiceOutParaVO extends BaseInfo {
 
     private String remark;
 
-    public String getOutputId() {
-        return outputId;
+    public String getInputId() {
+        return inputId;
     }
 
-    public void setOutputId(String outputId) {
-        this.outputId = outputId;
+    public void setInputId(String inputId) {
+        this.inputId = inputId;
     }
 
     public String getServiceId() {
@@ -88,14 +87,6 @@ public class AipServiceOutParaVO extends BaseInfo {
 
     public void setParaType(String paraType) {
         this.paraType = paraType;
-    }
-
-    public String getParaFormat() {
-        return paraFormat;
-    }
-
-    public void setParaFormat(String paraFormat) {
-        this.paraFormat = paraFormat;
     }
 
     public Date getCreateTime() {

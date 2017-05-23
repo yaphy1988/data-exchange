@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.busi.api.entity;
+package com.ai.bdex.dataexchange.busi.aip.entity;
 
 import java.io.Serializable;
 import java.util.Date;

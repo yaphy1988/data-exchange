@@ -8,7 +8,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.commons.collections.CollectionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -20,7 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientInfoDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientInfoReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientInfoRSV;
-import com.ai.bdex.dataexchange.busi.api.entity.AipClientInfoVo;
+import com.ai.bdex.dataexchange.busi.aip.entity.AipClientInfoVo;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.util.StringUtil;

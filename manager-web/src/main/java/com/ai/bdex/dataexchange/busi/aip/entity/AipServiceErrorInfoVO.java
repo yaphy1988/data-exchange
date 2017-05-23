@@ -1,27 +1,27 @@
-package com.ai.bdex.dataexchange.busi.api.entity;
+package com.ai.bdex.dataexchange.busi.aip.entity;
 
-import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
 import java.util.Date;
 
 /**
- * Created by yx on 2017/5/9.
+ * Created by yx on 2017/5/15.
  */
-public class AipServiceInParaVO extends BaseInfo {
+public class AipServiceErrorInfoVO extends BaseResponseDTO {
 
-    private String inputId;
+    private String errorId;
 
     private String serviceId;
 
     private String version;
 
-    private String status;
-
     private String type;
 
-    private String paraCode;
+    private String errorCode;
 
-    private String paraType;
+    private String errorMsg;
+
+    private String status;
 
     private Date createTime;
 
@@ -31,14 +31,12 @@ public class AipServiceInParaVO extends BaseInfo {
 
     private String updateStaff;
 
-    private String remark;
-
-    public String getInputId() {
-        return inputId;
+    public String getErrorId() {
+        return errorId;
     }
 
-    public void setInputId(String inputId) {
-        this.inputId = inputId;
+    public void setErrorId(String errorId) {
+        this.errorId = errorId;
     }
 
     public String getServiceId() {
@@ -57,14 +55,6 @@ public class AipServiceInParaVO extends BaseInfo {
         this.version = version;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public String getType() {
         return type;
     }
@@ -73,20 +63,28 @@ public class AipServiceInParaVO extends BaseInfo {
         this.type = type;
     }
 
-    public String getParaCode() {
-        return paraCode;
+    public String getErrorCode() {
+        return errorCode;
     }
 
-    public void setParaCode(String paraCode) {
-        this.paraCode = paraCode;
+    public void setErrorCode(String errorCode) {
+        this.errorCode = errorCode;
     }
 
-    public String getParaType() {
-        return paraType;
+    public String getErrorMsg() {
+        return errorMsg;
     }
 
-    public void setParaType(String paraType) {
-        this.paraType = paraType;
+    public void setErrorMsg(String errorMsg) {
+        this.errorMsg = errorMsg;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public Date getCreateTime() {
@@ -119,13 +117,5 @@ public class AipServiceInParaVO extends BaseInfo {
 
     public void setUpdateStaff(String updateStaff) {
         this.updateStaff = updateStaff;
-    }
-
-    public String getRemark() {
-        return remark;
-    }
-
-    public void setRemark(String remark) {
-        this.remark = remark;
     }
 }

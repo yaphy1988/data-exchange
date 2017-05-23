@@ -1,27 +1,28 @@
-package com.ai.bdex.dataexchange.busi.api.entity;
+package com.ai.bdex.dataexchange.busi.aip.entity;
 
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
 import java.util.Date;
 
 /**
- * Created by yx on 2017/5/15.
+ * Created by yx on 2017/5/16.
  */
-public class AipServiceErrorInfoVO extends BaseResponseDTO {
+public class AipServiceCodeInfoVO extends BaseResponseDTO {
+    private String codeId;
 
-    private String errorId;
+    private String docId;
 
     private String serviceId;
 
     private String version;
 
-    private String type;
-
-    private String errorCode;
-
-    private String errorMsg;
-
     private String status;
+
+    private String program;
+
+    private String author;
+
+    private String title;
 
     private Date createTime;
 
@@ -31,12 +32,20 @@ public class AipServiceErrorInfoVO extends BaseResponseDTO {
 
     private String updateStaff;
 
-    public String getErrorId() {
-        return errorId;
+    public String getCodeId() {
+        return codeId;
     }
 
-    public void setErrorId(String errorId) {
-        this.errorId = errorId;
+    public void setCodeId(String codeId) {
+        this.codeId = codeId;
+    }
+
+    public String getDocId() {
+        return docId;
+    }
+
+    public void setDocId(String docId) {
+        this.docId = docId;
     }
 
     public String getServiceId() {
@@ -55,36 +64,36 @@ public class AipServiceErrorInfoVO extends BaseResponseDTO {
         this.version = version;
     }
 
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public String getErrorCode() {
-        return errorCode;
-    }
-
-    public void setErrorCode(String errorCode) {
-        this.errorCode = errorCode;
-    }
-
-    public String getErrorMsg() {
-        return errorMsg;
-    }
-
-    public void setErrorMsg(String errorMsg) {
-        this.errorMsg = errorMsg;
-    }
-
     public String getStatus() {
         return status;
     }
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getProgram() {
+        return program;
+    }
+
+    public void setProgram(String program) {
+        this.program = program;
+    }
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public Date getCreateTime() {
