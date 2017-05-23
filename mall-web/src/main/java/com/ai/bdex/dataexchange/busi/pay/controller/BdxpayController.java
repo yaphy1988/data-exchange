@@ -82,28 +82,22 @@ public class BdxpayController {
 	private AlipayClient alipayClient;
 	
     @Value("${application.alipay.appId:}")
-    private  String appId;
-    
-    @Value("${application.alipay.privateKey:}")
-    private  String privateKey;
-    
-    @Value("${application.alipay.format:}")
-    private  String format;
+    private  String APPID;
     
     @Value("${application.alipay.charset:}")
-    private  String charset;
+    private  String CHARSET;
     
     @Value("${application.alipay.alipayPulicKey:}")
-    private  String alipayPulicKey;
+    private  String ALIPAY_PUBLIC_KEY;
     
     @Value("${application.alipay.signType:}")
-    private  String signType;
+    private  String SIGNTYPE;
     
     @Value("${application.alipay.returnUrl:}")
-    private  String returnUrl;
+    private  String RETURN_URL;
     
     @Value("${application.alipay.notifyUrl:}")
-    private  String notifyUrl;
+    private  String NOTIFY_URL;
     
     /**
      * 支付宝：支付接口（alipay.trade.page.pay）
@@ -129,8 +123,8 @@ public class BdxpayController {
     		String staffId = StaffUtil.getStaffId(session);
     		String passbackParams = suborderId+","+staffId;
     		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
-	        alipayRequest.setReturnUrl(returnUrl);
-	        alipayRequest.setNotifyUrl(notifyUrl);//在公共参数中设置回跳和通知地址
+	        alipayRequest.setReturnUrl(RETURN_URL);
+	        alipayRequest.setNotifyUrl(NOTIFY_URL);//在公共参数中设置回跳和通知地址
 	        String biz_content =  
 		        "{" +
 	            "    \"out_trade_no\":\""+orderId+"\"," +
@@ -140,12 +134,12 @@ public class BdxpayController {
 	            "    \"body\":\""+skuName+"\"," +
 	            "    \"passback_params\":\""+passbackParams+"\"," +
 	            "    \"extend_params\":{" +
-	            "    \"sys_service_provider_id\":\""+appId+"\"" +
+	            "    \"sys_service_provider_id\":\""+APPID+"\"" +
 	            "    }"+
 	            "  }";
 	        alipayRequest.setBizContent(biz_content);//填充业务参数
 	        String form = alipayClient.pageExecute(alipayRequest).getBody(); //调用SDK生成表单
-            httpResponse.setContentType("text/html;charset=" + charset);
+            httpResponse.setContentType("text/html;charset=" + CHARSET);
             httpResponse.getWriter().write(form);//直接将完整的表单html输出到页面
             httpResponse.getWriter().flush();
             httpResponse.getWriter().close();
@@ -170,7 +164,7 @@ public class BdxpayController {
 	public void alipayNotify(Model model, HttpServletRequest request,HttpServletResponse response) {
 		Map<String,String> params = new HashMap<String,String>();
     	Map requestParams = request.getParameterMap();
-    	response.setContentType("application/json;charset=" + charset);
+    	response.setContentType("text/html;charset=" + CHARSET);
     	PrintWriter writer = null;
     	try {
     		writer = response.getWriter();
@@ -207,7 +201,7 @@ public class BdxpayController {
 			boolean verify_result=false;
 			try {
 				
-				verify_result = AlipaySignature.rsaCheckV1(params, alipayPulicKey, charset, signType);
+				verify_result = AlipaySignature.rsaCheckV1(params, ALIPAY_PUBLIC_KEY, CHARSET, SIGNTYPE);
 			} catch (AlipayApiException e) {
 				log.error("异步通知验签：code="+e.getErrCode()+",msg="+e.getErrMsg());
 			}catch (Exception e) {
@@ -218,10 +212,12 @@ public class BdxpayController {
 //			if(verify_result){
 				if (trade_status.equals("TRADE_SUCCESS")){
 					boolean baseResponse= this.pay_successDone(out_trade_no,subOrderId,staffId);
-		            if (baseResponse) {  
+		            if (baseResponse) {
+		            	log.error("支付反馈：success");
 		            	writer.write("success"); 
-		            } else {  
-		            	writer.write("fail");// 更新状态失败  
+		            } else { 
+		            	log.error("支付反馈：fail");
+		            	writer.write("fail");  
 		            } 
 				}
 			/*}else{//验证失败

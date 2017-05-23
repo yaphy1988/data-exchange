@@ -1,10 +1,5 @@
 package com.ai.bdex.dataexchange.config;
 
-import com.ai.bdex.dataexchange.thymeleaf.ToolExpressionDialect;
-import com.ai.paas.session.filter.CacheSessionFilter;
-import com.alipay.api.AlipayClient;
-import com.alipay.api.DefaultAlipayClient;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +7,11 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import com.ai.bdex.dataexchange.thymeleaf.ToolExpressionDialect;
+import com.ai.paas.session.filter.CacheSessionFilter;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
 
 /**
  * @author xiongqian
@@ -28,25 +28,25 @@ public class FilterConfiguration {
     private String ignoreSuffix;
 
     @Value("${application.alipay.aliGateway:'https://openapi.alipay.com/gateway.do'}")
-    private  String aliGateway;
+    private  String GATE_WAY_URL;
     
     @Value("${application.alipay.appId:}")
-    private  String appId;
+    private  String APPID;
     
     @Value("${application.alipay.privateKey:}")
-    private  String privateKey;
+    private  String APP_PRIVATE_KEY;
     
     @Value("${application.alipay.format:}")
-    private  String format;
+    private  String FORMAT;
     
     @Value("${application.alipay.charset:}")
-    private  String charset;
+    private  String CHARSET;
     
     @Value("${application.alipay.alipayPulicKey:}")
-    private  String alipayPulicKey;
+    private  String ALIPAY_PUBLIC_KEY;
     
     @Value("${application.alipay.signType:}")
-    private  String signType;
+    private  String SIGNTYPE;
     
     
     
@@ -74,7 +74,7 @@ public class FilterConfiguration {
     }
     @Bean(name="alipayClient")
     public AlipayClient getAlipayClient() {
-    	DefaultAlipayClient alipayClient = new DefaultAlipayClient(aliGateway, appId, privateKey, format, charset, alipayPulicKey,signType);
+    	DefaultAlipayClient alipayClient = new DefaultAlipayClient(GATE_WAY_URL, APPID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY,SIGNTYPE);
     	return alipayClient;
     }
 }
