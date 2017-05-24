@@ -41,7 +41,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderMainInfoRSV;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.pay.IOrdPayRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.pay.IPayInfoRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.bdex.dataexchange.util.ThymeleafToolsUtil;
 import com.ai.paas.utils.CollectionUtil;
@@ -61,7 +61,7 @@ public class BdxpayController {
 	private static final Logger log = LoggerFactory.getLogger(BdxpayController.class);
 	private final static String API_SERVICE_NAME_TMP = "API_SERVICE_NAME_TMP";//API服务名称接口获取不到数据
 	@DubboConsumer(timeout = 30000)
-	IOrdPayRSV iOrdPayRSV;
+	IPayInfoRSV iOrdPayRSV;
 	
 	@DubboConsumer(timeout = 30000)
 	IOrderInfoRSV iOrderInfoRSV;
@@ -151,7 +151,7 @@ public class BdxpayController {
          		payRequestReqDTO.setPayment(orderAmout);
          		payRequestReqDTO.setRequestTime(DateUtil.getNowAsDate());
          		payRequestReqDTO.setCreateTime(DateUtil.getNowAsDate());
-//         		payRequestReqDTO.setCreateStaff("liangwy");
+         		payRequestReqDTO.setCreateStaff(staffId);
          		iOrdPayRSV.insertPayRequst(payRequestReqDTO);
              
 			} catch (Exception e) {
@@ -226,7 +226,8 @@ public class BdxpayController {
 			if(verify_result){
 				if (trade_status.equals("TRADE_SUCCESS")){
 					//
-					/*PayResultReqDTO payResultReqDTO = new PayResultReqDTO();
+					/*
+					PayResultReqDTO payResultReqDTO = new PayResultReqDTO();
 					payResultReqDTO.setOrderId(out_trade_no);//商户订单号
 					payResultReqDTO.setPayTransNo(trade_no);//支付宝交易号
 					payResultReqDTO.setPayStatus("00");
