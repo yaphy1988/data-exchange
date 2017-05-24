@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.busi.pay.controller;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
@@ -205,7 +206,7 @@ public class BdxpayController {
 			log.error("交易状态：trade_status="+trade_status);
 			//子订单编号
 			String passback_params = new String(request.getParameter("passback_params").getBytes("ISO-8859-1"),"UTF-8");
-			passback_params = URLEncoder.encode(passback_params, "utf-8");
+			passback_params = URLDecoder.decode(passback_params, "utf-8");
 			String[] parms = passback_params.split(",");
 			String subOrderId = parms[0];
 			String staffId = parms[1];
