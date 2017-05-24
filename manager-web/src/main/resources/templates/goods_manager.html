@@ -8,8 +8,12 @@
 	<link rel="stylesheet" href="../static/component/bootstrap/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
-    <link rel="stylesheet" href="../static/component/ztree/css/zTreeStyle/zTreeStyle.css" th:remove="all">
+
+    <link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
+    <link rel="stylesheet" href="../META-INF/resources/webjars/zTree/3.5.18/css/zTreeStyle/zTreeStyle.css" th:href="@{/webjars/zTree/3.5.18/zTreeStyle/zTreeStyle.css}">
+
+    <script src="../static/component/ztree/js/jquery.ztree.all.min.js" th:src="@{/component/ztree/js/jquery.ztree.all.min.js}"></script>
+    <script th:src="@{/js-busi/gds/gdsManager.js}"></script>
 </head>
 <body>
 <header class="clearfix m_header">
@@ -48,9 +52,7 @@
 	</ul>
 </header>
 <div  layout:fragment="screen_content">
-    <link rel="stylesheet" href="../static/component/ztree/css/zTreeStyle/zTreeStyle.css" th:href="@{/component/ztree/css/zTreeStyle/zTreeStyle.css}">
-    <link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
-    <script th:src="@{/js-busi/gds/gdsManager.js}"></script>
+
 	<div class="m_main">
 		<div class="m_con">
 			<div class="top-table">
@@ -460,7 +462,6 @@
 
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
-    <script src="../static/component/ztree/js/jquery.ztree.all.min.js" th:src="@{/component/ztree/js/jquery.ztree.all.min.js}"></script>
     <script th:remove="all">
         var zTreeObj;
         var setting = {
