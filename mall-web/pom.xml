@@ -141,6 +141,14 @@
     </dependency>
     <dependency>
       <groupId>org.webjars</groupId>
+      <artifactId>jquery-cookie</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>jquery-migrate</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
       <artifactId>html5shiv</artifactId>
     </dependency>
     <dependency>
@@ -234,6 +242,14 @@
                 <artifactItem>
                   <groupId>org.webjars.bower</groupId>
                   <artifactId>awesome-bootstrap-checkbox</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars</groupId>
+                  <artifactId>jquery-cookie</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars</groupId>
+                  <artifactId>jquery-migrate</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.webjars</groupId>

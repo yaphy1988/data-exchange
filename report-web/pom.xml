@@ -90,6 +90,10 @@
     </dependency>
     <dependency>
       <groupId>org.webjars</groupId>
+      <artifactId>jquery-validation</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
       <artifactId>bootstrap</artifactId>
     </dependency>
     <dependency>
@@ -167,6 +171,10 @@
                 <artifactItem>
                   <groupId>org.webjars</groupId>
                   <artifactId>jquery</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars</groupId>
+                  <artifactId>jquery-validation</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.webjars</groupId>

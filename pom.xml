@@ -64,11 +64,12 @@
     <webjars.bootstrap.version>3.3.7</webjars.bootstrap.version>
     <webjars.bootstrap-table.version>1.11.1</webjars.bootstrap-table.version>
     <webjars.smalot-datetimepicker.version>2.4.4</webjars.smalot-datetimepicker.version>
-    <webjars.kartik-v-bootstrap-fileinput.version>4.4.0</webjars.kartik-v-bootstrap-fileinput.version>
+    <webjars.kartik-v-bootstrap-fileinput.version>4.3.9</webjars.kartik-v-bootstrap-fileinput.version>
     <webjars.fontawesome.version>4.7.0</webjars.fontawesome.version>
     <webjars.awesome-bootstrap-checkbox.version>1.0.0-alpha.5</webjars.awesome-bootstrap-checkbox.version>
     <webjars.jquery-cookie.version>1.4.1</webjars.jquery-cookie.version>
     <webjars.jquery-migrate.version>3.0.0</webjars.jquery-migrate.version>
+    <webjars.jquery-validation.version>1.16.0</webjars.jquery-validation.version>
     <webjars.html5shiv.version>3.7.0</webjars.html5shiv.version>
     <webjars.respond.version>1.3.0</webjars.respond.version>
     <webjars.zTree.version>3.5.18</webjars.zTree.version>
@@ -241,6 +242,11 @@
         <groupId>org.webjars</groupId>
         <artifactId>jquery-migrate</artifactId>
         <version>${webjars.jquery-migrate.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
+        <artifactId>jquery-validation</artifactId>
+        <version>${webjars.jquery-validation.version}</version>
       </dependency>
       <dependency>
         <groupId>org.webjars</groupId>

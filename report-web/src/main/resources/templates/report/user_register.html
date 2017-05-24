@@ -1,16 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
 
-    <script type="text/javascript" src="/webjars/jquery/1.11.3/jquery.js"></script>
-    <script type="text/javascript" src="/webjars/js/util.js"></script>
+    <script type="text/javascript" src="../../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:remove="all"></script>
 
 </head>
 <body>
-<div class="panel-body" style="padding-bottom:0px;">
-    <h1>这里是报表模块返回的数据！！！</h1>
+<div layout:fragment="screen_content">
+    <table id="table"
+           data-toolbar="#toolbar"
+           data-search="true"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+           data-show-export="true"
+           data-detail-view="true"
+           data-detail-formatter="detailFormatter"
+           data-minimum-count-columns="2"
+           data-show-pagination-switch="true"
+           data-pagination="true"
+           data-id-field="id"
+           data-page-list="[10, 25, 50, 100]"
+           data-show-footer="false"
+           data-side-pagination="server"
+           data-url="/reportdata/userregister"
+           data-response-handler="responseHandler">
+    </table>
 </div>
 
 </body>
