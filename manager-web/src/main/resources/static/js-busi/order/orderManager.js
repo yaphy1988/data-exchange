@@ -1,4 +1,4 @@
-var basePath = WEB_ROOT;
+var basePath = MANAGE_ROOT;
 
 $(function(){
 	// 数量input框的x修改

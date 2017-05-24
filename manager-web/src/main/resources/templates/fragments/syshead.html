@@ -14,7 +14,9 @@
     <link rel="stylesheet" href="../../META-INF/resources/webjars/css/index.css" th:href="@{/webjars/css/index.css}"/>
     <link rel="stylesheet" href="../../static/css/manage.css" th:href="@{/css/manage.css}">
     <script th:inline="javascript">
-        var WEB_ROOT  = [[${#tools.mallDomain()}]];
+        //manager工程的WEB_ROOT 是自己的路径
+        var WEB_ROOT  = [[${#tools.managerDomain()}]];
+        //MALL_ROOT 是前店的路径
         var MALL_ROOT = [[${#tools.mallDomain()}]];
         var MANAGE_ROOT = [[${#tools.managerDomain()}]];
         var staffInfoDTO = [[${session.staffInfoDTO}]];
