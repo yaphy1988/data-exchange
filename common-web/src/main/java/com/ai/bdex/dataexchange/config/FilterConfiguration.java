@@ -74,7 +74,6 @@ public class FilterConfiguration {
     }
     @Bean(name="alipayClient")
     public AlipayClient getAlipayClient() {
-    	DefaultAlipayClient alipayClient = new DefaultAlipayClient(GATE_WAY_URL, APPID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY,SIGNTYPE);
-    	return alipayClient;
+    	return  new DefaultAlipayClient(GATE_WAY_URL, APPID, APP_PRIVATE_KEY, FORMAT, CHARSET, ALIPAY_PUBLIC_KEY,SIGNTYPE);
     }
 }

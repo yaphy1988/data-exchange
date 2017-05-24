@@ -35,11 +35,13 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.PayRequestReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.PayResultReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderMainInfoRSV;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.pay.IOrdPayRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.bdex.dataexchange.util.ThymeleafToolsUtil;
 import com.ai.paas.utils.CollectionUtil;
@@ -59,7 +61,7 @@ public class BdxpayController {
 	private static final Logger log = LoggerFactory.getLogger(BdxpayController.class);
 	private final static String API_SERVICE_NAME_TMP = "API_SERVICE_NAME_TMP";//API服务名称接口获取不到数据
 	@DubboConsumer(timeout = 30000)
-	IPageDisplayRSV iPageDisplayRSV;
+	IOrdPayRSV iOrdPayRSV;
 	
 	@DubboConsumer(timeout = 30000)
 	IOrderInfoRSV iOrderInfoRSV;
@@ -117,17 +119,16 @@ public class BdxpayController {
     		OrdInfoRespDTO ordInfoRespDTO = this.queryOrdMainInfoByorderId(orderId,suborderId);
     		int gdsId = ordInfoRespDTO.getGdsId();
     		long orderAmout = ordInfoRespDTO.getOrderMoney();
-    		String moneyAmout = new ThymeleafToolsUtil().formatMoneyClean(new Long(orderAmout).intValue());
+    		String payment = new ThymeleafToolsUtil().formatMoneyClean(new Long(orderAmout).intValue());
     		String gdsName = ordInfoRespDTO.getGdsName();
     		String skuName = ordInfoRespDTO.getSkuName();
     		
     		String staffId = StaffUtil.getStaffId(session);
-    		String passbackParams = suborderId+","+staffId;
+    		String passbackParams = URLEncoder.encode(suborderId+","+staffId, "utf-8");
     		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
 	        alipayRequest.setReturnUrl(RETURN_URL);
 	        alipayRequest.setNotifyUrl(NOTIFY_URL);//在公共参数中设置回跳和通知地址
-	        String biz_content =  
-		        "{" +
+	        String biz_content = "{" +
 	            "    \"out_trade_no\":\""+orderId+"\"," +
 	            "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
 	            "    \"total_amount\":"+0.01+"," +
@@ -144,7 +145,19 @@ public class BdxpayController {
             httpResponse.getWriter().write(form);//直接将完整的表单html输出到页面
             httpResponse.getWriter().flush();
             httpResponse.getWriter().close();
-        } catch (AlipayApiException | IOException e) {
+            try {
+            	PayRequestReqDTO payRequestReqDTO = new PayRequestReqDTO();
+         		payRequestReqDTO.setOrderId(orderId);
+         		payRequestReqDTO.setPayment(orderAmout);
+         		payRequestReqDTO.setRequestTime(DateUtil.getNowAsDate());
+         		payRequestReqDTO.setCreateTime(DateUtil.getNowAsDate());
+//         		payRequestReqDTO.setCreateStaff("liangwy");
+         		iOrdPayRSV.insertPayRequst(payRequestReqDTO);
+             
+			} catch (Exception e) {
+				log.error("[发起支付请求写入t_pay_requst失败]异常信息:" + e.getMessage());
+			}
+    	} catch (AlipayApiException | IOException e) {
             log.error("[发起支付请求失败]异常信息:" + e.getMessage());
         } catch (Exception e) {
         	log.error("[发起支付请求失败]异常信息:" + e.getMessage());
@@ -179,7 +192,7 @@ public class BdxpayController {
 	    		}
 	    		//乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
 //	    		valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-	    		log.error("解析参数：key="+name+";value="+valueStr);
+	    		log.error("通知参数：key="+name+";value="+valueStr);
 	    		params.put(name, valueStr);
 	    	}
 			//商户订单号
@@ -193,6 +206,7 @@ public class BdxpayController {
 			log.error("交易状态：trade_status="+trade_status);
 			//子订单编号
 			String passback_params = new String(request.getParameter("passback_params").getBytes("ISO-8859-1"),"UTF-8");
+			passback_params = URLEncoder.encode(passback_params, "utf-8");
 			String[] parms = passback_params.split(",");
 			String subOrderId = parms[0];
 			String staffId = parms[1];
@@ -204,13 +218,23 @@ public class BdxpayController {
 				//验签SIGNTYPE必须与加签中的一致
 				verify_result = AlipaySignature.rsaCheckV1(params, ALIPAY_PUBLIC_KEY, CHARSET, SIGNTYPE);
 			} catch (AlipayApiException e) {
-				log.error("异步通知验签：code="+e.getErrCode()+",msg="+e.getErrMsg()+"ee:"+e);
+				log.error("异步通知验签：code="+e.getErrCode()+",msg="+e.getErrMsg()+",e:"+e);
 			}catch (Exception e) {
-				log.error("异步通知验签："+e.getMessage()+"ee:"+e);
+				log.error("异步通知验签："+e.getMessage()+",e:"+e);
 			}
 			log.error("异步通知验签：verify_result="+verify_result);
 			if(verify_result){
 				if (trade_status.equals("TRADE_SUCCESS")){
+					//
+					/*PayResultReqDTO payResultReqDTO = new PayResultReqDTO();
+					payResultReqDTO.setOrderId(out_trade_no);//商户订单号
+					payResultReqDTO.setPayTransNo(trade_no);//支付宝交易号
+					payResultReqDTO.setPayStatus("00");
+					payResultReqDTO.setPayment(Long.valueOf("100"));
+					payResultReqDTO.setCreateTime(DateUtil.getNowAsDate());
+					payResultReqDTO.setRequestTime(requestTime);
+					this.payInsertPayResult(payResultReqDTO);
+					*/
 					boolean baseResponse= this.pay_successDone(out_trade_no,subOrderId,staffId);
 		            if (baseResponse) {
 		            	log.error("支付反馈：success");
@@ -222,7 +246,7 @@ public class BdxpayController {
 				}
 			}else{//验证失败
 				writer.write("fail");
-				log.error("[支付宝异步通知验签失败]异常信息:"+verify_result);
+				log.error("[支付宝异步通知验签失败]异常信息fail:"+verify_result);
 			}
 			writer.flush();
 			writer.close();
@@ -232,9 +256,13 @@ public class BdxpayController {
     		log.error("[支付宝异步通知异常]异常信息:" + e.getMessage());
     	}
 	}
-	@RequestMapping(value="/testPaySuccessDo")
-	public void testPaySuccessDo(){
-		pay_successDone("2017052300001218","2017052300001217","liangwy7");
+	
+	private void payInsertPayResult(PayResultReqDTO payResultReqDTO){
+		try {
+			iOrdPayRSV.insertPayResult(payResultReqDTO);
+		} catch (Exception e) {
+			log.equals("[支付成功写入支付结果失败]，异常："+e.getMessage());
+		}
 	}
 	/**
 	 * 支付成功模拟修改后台数据
@@ -246,14 +274,11 @@ public class BdxpayController {
     	Map<String, Object> rMap = new HashMap<String, Object>();
     	try {
 	    	
-			//模拟成功
 			String staff_id = staffId;
-			
 			String orderid = orderId;
 			String subordid = subOrderId;
-			//模拟成功
-		
 			Date orderTime = DateUtil.getNowAsDate();
+			
 			OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
 			ordMainInfoReqDTO.setOrderId(orderid);
 			ordMainInfoReqDTO.setUpdateStaff(staff_id);
@@ -273,7 +298,6 @@ public class BdxpayController {
 			OrdMainInfoRespDTO ordMainInfoRespDTO=	iOrderMainInfoRSV.queryOrderDetail(ordMainInfoReqDTO);
 			if(ordMainInfoRespDTO.getOrderStatus().equals(Constants.Order.ORDER_STATUS_02))
 			{
-				rMap.put("success", true);
 				return  true;
 			}
 			OrdInfoRespDTO ordInfoRespDTO = ordMainInfoRespDTO.getOrdInfoRespDTO();
@@ -337,21 +361,18 @@ public class BdxpayController {
 				try {
 					iAipCenterDataAccountRSV.dealRecharge(rechargeDTO);
 					iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
-					rMap.put("success", true);
+					return true;
 				} catch (Exception e) {
 					log.error("更新AipCenter失败：" + e.getMessage());
 					return false;
 				}
-			}
-			else
-			{
+			}else{
 				return false;
 			}
 		} catch (Exception er) {
 			System.out.print("更新失败：" + er.getMessage());
 			return false;
 		}
-		return true;
 	}
     private OrdInfoRespDTO queryOrdMainInfoByorderId(String orderId,String subOrderId) throws Exception{
     	if(StringUtils.isBlank(orderId)){
