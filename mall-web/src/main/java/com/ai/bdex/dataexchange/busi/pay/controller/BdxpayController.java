@@ -158,10 +158,9 @@ public class BdxpayController {
 				log.error("[发起支付请求写入t_pay_requst失败]异常信息:" + e.getMessage());
 			}
     	} catch (AlipayApiException | IOException e) {
-            log.error("[发起支付请求失败]异常信息:" + e.getMessage());
+            log.error("[发起支付请求失败]异常信息:" + e);
         } catch (Exception e) {
-        	log.error("[发起支付请求失败]异常信息:" + e.getMessage());
-			e.printStackTrace();
+        	log.error("[发起支付请求失败]异常信息:" + e);
 		}
     }
 	/**
@@ -251,10 +250,8 @@ public class BdxpayController {
 			}
 			writer.flush();
 			writer.close();
-    	}
-    	
-    	catch (Exception e) {
-    		log.error("[支付宝异步通知异常]异常信息:" + e.getMessage());
+    	}catch (Exception e) {
+    		log.error("[支付宝异步通知异常]异常信息:" + e);
     	}
 	}
 	
