@@ -130,7 +130,7 @@ public class BdxpayController {
 		        "{" +
 	            "    \"out_trade_no\":\""+orderId+"\"," +
 	            "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-	            "    \"total_amount\":"+moneyAmout+"," +
+	            "    \"total_amount\":"+0.01+"," +
 	            "    \"subject\":\""+gdsName+"\"," +
 	            "    \"body\":\""+skuName+"\"," +
 	            "    \"passback_params\":\""+passbackParams+"\"," +
