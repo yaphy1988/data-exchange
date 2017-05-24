@@ -1,5 +1,5 @@
 var basePath = WEB_ROOT;
-
+var basemailPath = MALL_ROOT;
 $(function(){
 	myOrderList(1);
 	
@@ -53,21 +53,33 @@ function cancelOrder(obj,orderId){
  * 去支付 弹出框
  * @param obj
  * @param orderId
- */
-function toPayModal(obj,orderId,subOrderId){
-	$("#orderId").val(orderId);
-	$("#myModalPay").modal();
-	//支付宝
-	var tempwindow=window.open('_blank');
-	var url = basePath+'/bdxalipay/alipayRequestPage?orderId='+orderId+"&subOrderid="+subOrderId;
-	tempwindow.location=url;
+*/
+	function setPayModal(obj,orderId,subOrderId){
+		$("#payOrderid").val(orderId);
+		$("#paySubOrderid").val(subOrderId);
+	    $("#myModalPay").modal();
+	/*	//支付宝
+		var tempwindow=window.open('_blank');
+		var url = basemailPath+'/bdxalipay/alipayRequestPage?orderId='+orderId+"&subOrderid="+subOrderId;
+		tempwindow.location=url;*/
 }
 /**
  * 去支付
  */
 function toPay(){
-	var orderId = $("#orderId").val();
+	var orderId = $("#payOrderid").val();
+	var suborderId = $("#paySubOrderid").val();
 	var payWay = $('input[name="payWay"]:checked').val();
- 	window.location.href = basePath+"/orderManage/myOrder?orderId="+orderId+"&payWay="+payWay;
+	if(payWay == "1"){
+		//支付宝
+		var tempwindow=window.open('_blank');
+		var url =  basemailPath+'/bdxalipay/alipayRequestPage?orderId='+orderId+"&subOrderid="+suborderId;
+  		tempwindow.location=url;
+  	}
+	else {
+		//线下支付
+		window.location.href=basemailPath+"/order/offline_remittance";
+	}
+
 
 }

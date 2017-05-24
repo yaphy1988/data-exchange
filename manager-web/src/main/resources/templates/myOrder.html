@@ -17,7 +17,6 @@
 	        <script src="../static/js/html5shiv.min.js" ></script>
 	<![endif]-->
 </head>
-
 <body>
 <div th:replace="~{fragments/top :: top}"></div>
 <!-- 头部 -->
@@ -112,7 +111,7 @@
 								<td >
 									<p class="pop-link" th:if="${list.ordInfoRespDTO.status=='01'}">
 										<a href="javaScript:void(0)"
-											th:onclick="'toPayModal(this,'+@{${list.orderId}}+','+@{${list.subOrder}}+')'">去支付</a>
+											th:onclick="'setPayModal(this,'+@{${list.orderId}}+','+@{${list.ordInfoRespDTO.subOrder}}+')'">去支付</a>
 									</p>
 									<p class="pop-link" th:if="${list.ordInfoRespDTO.status=='01'}">
 										<a href="javaScript:void(0)"
@@ -216,8 +215,7 @@
 				</div>
 			</div>
 		</div>
-	<!-- 右边内容 end--> 
-
+	<!-- 右边内容 end-->
     <!-- 左边菜单 -->
 	<div class="m_nav" >
 		<nav class="nav">
@@ -266,7 +264,6 @@
 		</nav>
     </div>
     <!-- 左边菜单 -->
-	
 	<!-- Modal -->
 	<!-- Modal -->
 	<div class="modal fade" id="myModalPay" tabindex="-1" role="dialog"
@@ -286,9 +283,10 @@
 							<td class="Hint"></td>
 							<td width="260">
 								<div class="radio">
+
 								<input type="hidden" id="orderId">
-									<label> <input type="radio"  checked name="payWay" value="1">支付宝</label> 
-									<label> <input type="radio"  name="payWay" value="2">线下支付</label>
+									<label> <input type="radio"  checked name="payWay" value="1"/>支付宝</label>
+									<label> <input type="radio"  name="payWay" value="2"/>线下支付</label>
 								</div>
 							</td>
 
@@ -299,13 +297,11 @@
 					<button type="button" class="btn btn-primary" th:onclick="'toPay()'">确定</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 				</div>
+				<input type="hidden" id="payOrderid"/>
+				<input type="hidden" id="paySubOrderid"/>
 			</div>
 		</div>
 	</div>
-	
-
-
-	
-
+</div>
 </body>
 </html>
