@@ -112,7 +112,7 @@
 								<td >
 									<p class="pop-link" th:if="${list.ordInfoRespDTO.status=='01'}">
 										<a href="javaScript:void(0)"
-											th:onclick="'toPayModal(this,'+@{${list.orderId}}+')'">去支付</a>
+											th:onclick="'toPayModal(this,'+@{${list.orderId}}+','+@{${list.subOrder}}+')'">去支付</a>
 									</p>
 									<p class="pop-link" th:if="${list.ordInfoRespDTO.status=='01'}">
 										<a href="javaScript:void(0)"

@@ -124,7 +124,8 @@ public class BdxpayController {
     		String skuName = ordInfoRespDTO.getSkuName();
     		
     		String staffId = StaffUtil.getStaffId(session);
-    		String passbackParams = URLEncoder.encode(suborderId+","+staffId, "utf-8");
+    		String passbackParams = suborderId+","+staffId;
+//    		String passbackParams = URLEncoder.encode(suborderId+","+staffId, "utf-8");
     		AlipayTradePagePayRequest alipayRequest = new AlipayTradePagePayRequest();//创建API对应的request
 	        alipayRequest.setReturnUrl(RETURN_URL);
 	        alipayRequest.setNotifyUrl(NOTIFY_URL);//在公共参数中设置回跳和通知地址
@@ -149,11 +150,10 @@ public class BdxpayController {
             	PayRequestReqDTO payRequestReqDTO = new PayRequestReqDTO();
          		payRequestReqDTO.setOrderId(orderId);
          		payRequestReqDTO.setPayment(orderAmout);
-         		payRequestReqDTO.setRequestTime(DateUtil.getNowAsDate());
-         		payRequestReqDTO.setCreateTime(DateUtil.getNowAsDate());
+         		payRequestReqDTO.setCreateStaff(staffId);
          		payRequestReqDTO.setCreateStaff(staffId);
          		iOrdPayRSV.insertPayRequst(payRequestReqDTO);
-             
+         		
 			} catch (Exception e) {
 				log.error("[发起支付请求写入t_pay_requst失败]异常信息:" + e.getMessage());
 			}
@@ -224,17 +224,28 @@ public class BdxpayController {
 			log.error("异步通知验签：verify_result="+verify_result);
 			if(verify_result){
 				if (trade_status.equals("TRADE_SUCCESS")){
-					//
-					/*
+					//支付发起时间
+	         		String gmtCreate = new String(request.getParameter("gmt_create").getBytes("ISO-8859-1"),"UTF-8");
+	         		//支付时间
+	         		String gmtPayment = new String(request.getParameter("gmt_payment").getBytes("ISO-8859-1"),"UTF-8");
+	         		//支付金额
+	         		String receipAmount = new String(request.getParameter("receipt_amount").getBytes("ISO-8859-1"),"UTF-8");
+	         		//支付发起时间
+//	         		String gmtCreate = new String(request.getParameter("gmt_create").getBytes("ISO-8859-1"),"UTF-8");
+	         		
 					PayResultReqDTO payResultReqDTO = new PayResultReqDTO();
 					payResultReqDTO.setOrderId(out_trade_no);//商户订单号
+					payResultReqDTO.setStaffId(staffId);
+					
+					payResultReqDTO.setCreateStaff(staffId);
 					payResultReqDTO.setPayTransNo(trade_no);//支付宝交易号
 					payResultReqDTO.setPayStatus("00");
-					payResultReqDTO.setPayment(Long.valueOf("100"));
-					payResultReqDTO.setCreateTime(DateUtil.getNowAsDate());
-					payResultReqDTO.setRequestTime(requestTime);
+					payResultReqDTO.setPayDesc(trade_status);
+					payResultReqDTO.setPayment(Long.valueOf(receipAmount));
+					payResultReqDTO.setRequestTime(DateUtil.parse(gmtCreate));
+					payResultReqDTO.setPayTime(DateUtil.parse(gmtPayment));
+					
 					this.payInsertPayResult(payResultReqDTO);
-					*/
 					boolean baseResponse= this.pay_successDone(out_trade_no,subOrderId,staffId);
 		            if (baseResponse) {
 		            	log.error("支付反馈：success");
@@ -244,7 +255,7 @@ public class BdxpayController {
 		            	writer.write("fail");  
 		            } 
 				}
-			}else{//验证失败
+			}else{
 				writer.write("fail");
 				log.error("[支付宝异步通知验签失败]异常信息fail:"+verify_result);
 			}

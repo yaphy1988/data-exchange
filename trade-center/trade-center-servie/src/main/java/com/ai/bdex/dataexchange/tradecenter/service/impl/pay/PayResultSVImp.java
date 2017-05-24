@@ -18,13 +18,10 @@ public class PayResultSVImp implements IPayResultSV {
 	@Override
 	public long insertPayResult(PayResultReqDTO payResultReqDTO) throws Exception {
 		PayResult record = new PayResult();
-		BeanUtils.copyProperties(record, payResultReqDTO);
+		BeanUtils.copyProperties(payResultReqDTO, record);
 		Long seq =  SeqUtil.getLong("SEQ_PAY_RESULT");
 	    record.setPayResultSn(seq);
-		//record.setStaffId(payResultReqDTO.getStaffId());
-		record.setStaffId(payResultReqDTO.getStaffId());
  	    record.setCreateTime(DateUtil.getNowAsDate());
- 	    record.setRequestTime(DateUtil.getNowAsDate());
 		return payResultMapper.insert(record);
 	}
 

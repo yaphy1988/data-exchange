@@ -54,9 +54,13 @@ function cancelOrder(obj,orderId){
  * @param obj
  * @param orderId
  */
-function toPayModal(obj,orderId){
+function toPayModal(obj,orderId,subOrderId){
 	$("#orderId").val(orderId);
 	$("#myModalPay").modal();
+	//支付宝
+	var tempwindow=window.open('_blank');
+	var url = basePath+'/bdxalipay/alipayRequestPage?orderId='+orderId+"&subOrderid="+subOrderId;
+	tempwindow.location=url;
 }
 /**
  * 去支付
