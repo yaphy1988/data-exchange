@@ -17,7 +17,7 @@ public class OrdInfoReqDTO extends BaseInfo{
  	    private String staffId;
  	    private String shopId;
  	    private Integer catId;
- 	     public Integer getCatId() {
+	    public Integer getCatId() {
 			return catId;
 		}
 		public void setCatId(Integer catId) {
@@ -31,9 +31,9 @@ public class OrdInfoReqDTO extends BaseInfo{
 		}
 		private Integer catFirst;
  	    private String productType;
- 	    private Long gdsId;
+ 	    private Integer gdsId;
  	    private String gdsName;
- 	    private Long skuId;
+ 	    private Integer skuId;
  	    private String skuInfo;
  	    private String skuName;
  	    private Integer eachCount;
@@ -47,9 +47,9 @@ public class OrdInfoReqDTO extends BaseInfo{
 	    private String payFlag;
  	    private Date activeEndTime;
 	    private Date payTime;
- 	    private Long buyAllCount;
- 	    private Long usedAllCount;
-   	    private Long belanceAllCount;
+ 	    private Integer buyAllCount;
+ 	    private Integer usedAllCount;
+   	    private Integer belanceAllCount;
  	    private String status;
  	    private String serviceName;
 	    private String aipServiceId;
@@ -148,10 +148,10 @@ public class OrdInfoReqDTO extends BaseInfo{
 		public void setProductType(String productType) {
 			this.productType = productType;
 		}
-		public Long getGdsId() {
+		public Integer getGdsId() {
 			return gdsId;
 		}
-		public void setGdsId(Long gdsId) {
+		public void setGdsId(Integer gdsId) {
 			this.gdsId = gdsId;
 		}
 		public String getGdsName() {
@@ -160,10 +160,10 @@ public class OrdInfoReqDTO extends BaseInfo{
 		public void setGdsName(String gdsName) {
 			this.gdsName = gdsName;
 		}
-		public Long getSkuId() {
+		public int getSkuId() {
 			return skuId;
 		}
-		public void setSkuId(Long skuId) {
+		public void setSkuId(int skuId) {
 			this.skuId = skuId;
 		}
 		public String getSkuInfo() {
@@ -244,22 +244,22 @@ public class OrdInfoReqDTO extends BaseInfo{
 		public void setPayTime(Date payTime) {
 			this.payTime = payTime;
 		}
-		public Long getBuyAllCount() {
+		public Integer getBuyAllCount() {
 			return buyAllCount;
 		}
-		public void setBuyAllCount(Long buyAllCount) {
+		public void setBuyAllCount(int buyAllCount) {
 			this.buyAllCount = buyAllCount;
 		}
-		public Long getUsedAllCount() {
+		public Integer getUsedAllCount() {
 			return usedAllCount;
 		}
-		public void setUsedAllCount(Long usedAllCount) {
+		public void setUsedAllCount(int usedAllCount) {
 			this.usedAllCount = usedAllCount;
 		}
-		public Long getBelanceAllCount() {
+		public Integer getBelanceAllCount() {
 			return belanceAllCount;
 		}
-		public void setBelanceAllCount(Long belanceAllCount) {
+		public void setBelanceAllCount(int belanceAllCount) {
 			this.belanceAllCount = belanceAllCount;
 		}
 		public String getStatus() {

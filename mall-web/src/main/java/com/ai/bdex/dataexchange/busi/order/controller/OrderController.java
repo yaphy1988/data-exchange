@@ -145,7 +145,7 @@ public class OrderController {
 			long lorderMoney = lprice * orderAmount;
 			ordInfoReqDTO.setOrderMoney(lorderMoney); 
 			//使用次数
-			long lbuyAllCount = gdsSkuRespDTO.getPackTimes()*orderAmount;
+			int lbuyAllCount = gdsSkuRespDTO.getPackTimes()*orderAmount;
 			ordInfoReqDTO.setBuyAllCount(lbuyAllCount);
 
 			//不是空，就有有效天数，否则为无期西安
@@ -161,10 +161,9 @@ public class OrderController {
 			Date activeEndTime =  calendar.getTime();   //这个时间就是日期往后推一天的结果
 			ordInfoReqDTO.setActiveEndTime(activeEndTime);
 
-			long lgdsid =  (long)gdsid;
-			ordInfoReqDTO.setGdsId(lgdsid);
+ 			ordInfoReqDTO.setGdsId(gdsid);
 			long lskuid = (long)skusid;
-			ordInfoReqDTO.setSkuId(lskuid);
+			ordInfoReqDTO.setSkuId(skusid);
 			//获取服务ID，服务名称，商品名称
 			//获取名称
 			try { 
@@ -239,7 +238,7 @@ public class OrderController {
 			}
 			OrdInfoReqDTO  ordInfoReqDTO = (OrdInfoReqDTO)CacheUtil.getItem(staff_id+"_shopcart");
 			//原始单品次数 每个套餐的次数
-			long skutimes = ordInfoReqDTO.getEachCount();
+			int skutimes = ordInfoReqDTO.getEachCount();
 			ordInfoReqDTO.setOrderAmount(iorderamount);
 			ordInfoReqDTO.setOrderMoney(iorderamount*ordInfoReqDTO.getOrderPrice());
 			ordInfoReqDTO.setBuyAllCount(iorderamount*skutimes);

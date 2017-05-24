@@ -312,8 +312,7 @@ public class orderManageController {
 							DataAccountDTO dataAccountDTO= iAipCenterDataAccountRSV.queryDataAccountBySubOrder(suborderid);
 							if(dataAccountDTO != null){
 								int iLeftNum = dataAccountDTO.getLeftNum();
-								long lLeftNum=(long)iLeftNum;
-								ordInfoRespDTO.setBelanceAllCount(lLeftNum);
+ 								ordInfoRespDTO.setBelanceAllCount(iLeftNum);
                                 ordInfoRespDTO.setDataAccountId(dataAccountDTO.getDataAcctId());
 								/*int iUsedAll = dataAccountDTO.getTotalConsumeNum();
 								long lUsedAll=(long)iUsedAll;
@@ -590,7 +589,7 @@ public class orderManageController {
 						dsSkuReqDTO.setSkuId(Integer.parseInt(skuid)); //10 才有skuid
 						dsSkuReqDTO.setStatus(STATUS_VALID);
 						List<GdsSkuRespDTO>  listGdsSku =new ArrayList<>();
-                        ordInfoReqDTO.setSkuId(Long.parseLong(skuid));
+                        ordInfoReqDTO.setSkuId( Integer.parseInt(skuid ));
 						try {
 							//价格
 							listGdsSku = iGdsSkuRSV.queryGdsSkuList(dsSkuReqDTO);
@@ -630,7 +629,7 @@ public class orderManageController {
 					}
                     ordInfoReqDTO.setStaffId(staffid);
                     ordInfoReqDTO.setCreateStaff(createStaff_id);
-					ordInfoReqDTO.setGdsId(Long.parseLong(gdsid));
+					ordInfoReqDTO.setGdsId( Integer.parseInt(gdsid));
 					ordInfoReqDTO.setCatFirst(gdsInfoRespDTO.getCatFirst());
 					ordInfoReqDTO.setCatId(gdsInfoRespDTO.getCatId());
 					ordInfoReqDTO.setEachCount(ipacktimes);
@@ -639,7 +638,7 @@ public class orderManageController {
 					ordInfoReqDTO.setOrderAmount(iordernum);
 					ordInfoReqDTO.setSkuName(uRLDecoderStr(skuname));
 					ordInfoReqDTO.setGdsName(uRLDecoderStr(gdsname));
-					ordInfoReqDTO.setBuyAllCount((long)iordernum*ipacktimes);
+					ordInfoReqDTO.setBuyAllCount( iordernum*ipacktimes);
 					lordermoney  = iordernum * lorderprice;
 					ordInfoReqDTO.setOrderMoney(lordermoney);
 				}

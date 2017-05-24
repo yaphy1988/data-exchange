@@ -367,7 +367,7 @@ public class GdsController {
 
     @RequestMapping(value = "/applyDataValidate")
     @ResponseBody
-    public AjaxJson applyDataValidate(HttpServletRequest request, HttpServletResponse response,@PathVariable Long gdsId,@PathVariable Long skuId){
+    public AjaxJson applyDataValidate(HttpServletRequest request, HttpServletResponse response,@PathVariable int gdsId,@PathVariable int skuId){
         AjaxJson ajaxJson = new AjaxJson();
         HttpSession session = request.getSession();
 

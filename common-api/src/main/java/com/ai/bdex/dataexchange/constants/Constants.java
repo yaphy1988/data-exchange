@@ -93,7 +93,7 @@ public class Constants {
         public final static String ORDER_API_PERIODTYPE_2   =  "2" ;//
 
         //跨类套餐的商品给一个ID，给一个名称
-        public final static long ORDER_GDS_30_GDSID   =   100  ;//
+        public final static Integer ORDER_GDS_30_GDSID   =   100  ;//
         public final static String ORDER_GDS_30_GDSNAME   =  "跨类套餐商品" ;//
 
         public static Date getActiveEndTimeForEver(){

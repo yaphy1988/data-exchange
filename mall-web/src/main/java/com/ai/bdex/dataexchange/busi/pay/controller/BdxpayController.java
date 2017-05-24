@@ -115,7 +115,7 @@ public class BdxpayController {
     	try {
     		//查询订单/商品信息
     		OrdInfoRespDTO ordInfoRespDTO = this.queryOrdMainInfoByorderId(orderId,suborderId);
-    		Long gdsId = ordInfoRespDTO.getGdsId();
+    		int gdsId = ordInfoRespDTO.getGdsId();
     		long orderAmout = ordInfoRespDTO.getOrderMoney();
     		String moneyAmout = new ThymeleafToolsUtil().formatMoneyClean(new Long(orderAmout).intValue());
     		String gdsName = ordInfoRespDTO.getGdsName();
@@ -238,8 +238,8 @@ public class BdxpayController {
 	}
 	/**
 	 * 支付成功模拟修改后台数据
-	 * @param model
-	 * @param request
+	 * @param
+	 * @param
 	 * @return
 	 */
 	public boolean pay_successDone(String orderId,String subOrderId,String staffId) {
@@ -371,8 +371,8 @@ public class BdxpayController {
 			//获取名称
 			GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
 			GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
-			Long gdsId = ordInfoRespDTO.getGdsId();
- 			gdsInfoReqDTO.setGdsId(gdsId.intValue());
+			int gdsId = ordInfoRespDTO.getGdsId();
+ 			gdsInfoReqDTO.setGdsId(gdsId);
 			gdsInfoRespDTO =  iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO); 
 			if(gdsInfoRespDTO != null)
 			{ 
