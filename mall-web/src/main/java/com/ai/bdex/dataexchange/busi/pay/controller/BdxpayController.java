@@ -225,36 +225,39 @@ public class BdxpayController {
 			log.error("异步通知验签：verify_result="+verify_result);
 			if(verify_result){
 				if (trade_status.equals("TRADE_SUCCESS")){
-					//支付发起时间
-	         		String gmtCreate = new String(request.getParameter("gmt_create").getBytes("ISO-8859-1"),"UTF-8");
-	         		//支付时间
-	         		String gmtPayment = new String(request.getParameter("gmt_payment").getBytes("ISO-8859-1"),"UTF-8");
-	         		//支付金额
-	         		String receipAmount = new String(request.getParameter("receipt_amount").getBytes("ISO-8859-1"),"UTF-8");
-	         		//支付发起时间
-//	         		String gmtCreate = new String(request.getParameter("gmt_create").getBytes("ISO-8859-1"),"UTF-8");
-	         		
-					PayResultReqDTO payResultReqDTO = new PayResultReqDTO();
-					payResultReqDTO.setOrderId(out_trade_no);//商户订单号
-					payResultReqDTO.setStaffId(staffId);
-					
-					payResultReqDTO.setCreateStaff(staffId);
-					payResultReqDTO.setPayTransNo(trade_no);//支付宝交易号
-					payResultReqDTO.setPayStatus("00");
-					payResultReqDTO.setPayDesc(trade_status);
-					payResultReqDTO.setPayment(Long.valueOf(receipAmount));
-					payResultReqDTO.setRequestTime(DateUtil.parse(gmtCreate));
-					payResultReqDTO.setPayTime(DateUtil.parse(gmtPayment));
-					
-					this.payInsertPayResult(payResultReqDTO);
 					boolean baseResponse= this.pay_successDone(out_trade_no,subOrderId,staffId);
-		            if (baseResponse) {
+					if (baseResponse) {
 		            	log.error("支付反馈：success");
 		            	writer.write("success"); 
 		            } else { 
 		            	log.error("支付反馈：fail");
 		            	writer.write("fail");  
 		            } 
+					try {
+					
+						//支付发起时间
+		         		String gmtCreate = new String(request.getParameter("gmt_create").getBytes("ISO-8859-1"),"UTF-8");
+		         		//支付时间
+		         		String gmtPayment = new String(request.getParameter("gmt_payment").getBytes("ISO-8859-1"),"UTF-8");
+		         		//支付金额
+		         		String receipAmount = new String(request.getParameter("receipt_amount").getBytes("ISO-8859-1"),"UTF-8");
+		         		//支付发起时间
+	//	         		String gmtCreate = new String(request.getParameter("gmt_create").getBytes("ISO-8859-1"),"UTF-8");
+		         		PayResultReqDTO payResultReqDTO = new PayResultReqDTO();
+						payResultReqDTO.setOrderId(out_trade_no);//商户订单号
+						payResultReqDTO.setStaffId(staffId);
+						payResultReqDTO.setCreateStaff(staffId);
+						payResultReqDTO.setPayTransNo(trade_no);//支付宝交易号
+						payResultReqDTO.setPayStatus("00");
+						payResultReqDTO.setPayDesc(trade_status);
+						payResultReqDTO.setPayment(Long.valueOf(receipAmount));
+						payResultReqDTO.setRequestTime(DateUtil.parse(gmtCreate));
+						payResultReqDTO.setPayTime(DateUtil.parse(gmtPayment));
+						
+						this.payInsertPayResult(payResultReqDTO);
+					} catch (Exception e) {
+						log.error("[支付通知写入T_PAY_RESUL表异常，异常信息：]："+e);
+					}
 				}
 			}else{
 				writer.write("fail");
