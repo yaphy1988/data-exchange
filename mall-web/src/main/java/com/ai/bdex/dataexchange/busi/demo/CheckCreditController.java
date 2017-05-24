@@ -36,7 +36,7 @@ public class CheckCreditController {
 
     @RequestMapping(value="/pageInit")
     public String pageInit(Model model){
-        return "/demo/checkCredit";
+        return "demo/checkCredit";
     }
 
     @RequestMapping(value="/check",method= RequestMethod.POST)
