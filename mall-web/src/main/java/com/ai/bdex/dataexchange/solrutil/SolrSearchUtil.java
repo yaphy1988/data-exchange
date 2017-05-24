@@ -313,7 +313,7 @@ public class SolrSearchUtil {
          * 设置排序条件
          */
         List<SortField> sortfield = searchParam.getSortField();
-        if (null != sortfield || sortfield.size() >= 1) {  
+        if (null != sortfield && sortfield.size() >= 1) {
             for (SortField sortField : sortfield) { 
                 query.addSort(sortField.getName(),  SolrQuery.ORDER.valueOf(sortField.getValue().getSort()));  
             }  

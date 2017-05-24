@@ -14,6 +14,9 @@
 	<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
 
 	<script src="../static/js-busi/aipProvider/aipProvider.js" th:src="@{/js-busi/aipProvider/aipProvider.js}"></script>
+	<style>
+		.bgf1{background:white}
+	</style>
 </head>
 <body>
 	
@@ -132,10 +135,11 @@
 				<dd th:text="${aipProviderInfo.providerDesc}">站酷（ZCOOL），中国人气设计师互动平台，2006年8月创立于北京。深耕设计领域十年，站酷聚集了480万杰出设计师、摄影师、插画师、艺术家、创意人，每日会员发布原创作品20000幅，产生互动交流200000次，覆盖中国300+城市，在设计创意群体中具有强大的影响力与号召力  </dd>
 			</dl>
 		</div>
+		<div id="aipProvider_goodsListDiv">
 		<div class="gl_list" id="aipProvider_goodsList">
 			
 			<div class="goodslist clearfix">
-				<ul th:remove="all-but-first">
+				<ul th:remove="all-but-first" th:if="${pageInfo}">
 					<li th:unless="${#lists.isEmpty(pageInfo.result)}" th:each="list,listStat : ${pageInfo.result}">
 						<div class="glist_items">
 							<div class="collect active">
@@ -321,7 +325,7 @@
 					</li>
 				</ul>
 			</div>
-			<div class="pagelist" th:replace="~{fragments/pager :: pager}">
+			<div class="pagelist" th:if="${pageInfo}" th:replace="fragments/pager :: pager">
 				<nav aria-label="Page navigation">
 				  <ul class="pagination">
 				    <li >
@@ -347,6 +351,7 @@
 				  
 				</nav>
 			</div>
+		</div>
 		</div>
 	</div>
 	

@@ -7,11 +7,15 @@ import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.solrutil.ResultRespVO;
 import com.ai.bdex.dataexchange.solrutil.SearchParam;
+import com.ai.bdex.dataexchange.solrutil.SolrCoreEnum;
 import com.ai.bdex.dataexchange.solrutil.SolrSearchUtil;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.paas.utils.StringUtil;
+import com.alibaba.boot.dubbo.annotation.DubboConsumer;
+import org.apache.solr.client.solrj.SolrClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
@@ -30,7 +34,10 @@ public class AipProviderController {
 
     private final static Logger log = LoggerFactory.getLogger(AipProviderController.class);
 
+    @DubboConsumer
     private IAipProviderServiceMgrRSV iAipProviderServiceMgrRSV;
+    @Autowired
+    private SolrClient solrClient;
 
     /**
      * 初始化供应商首页
@@ -40,8 +47,7 @@ public class AipProviderController {
      * @throws Exception
      */
     @RequestMapping(value = "/pageInit")
-    public ModelAndView pageInit(HttpServletRequest request, HttpServletResponse response) throws Exception{
-        String viewName = "goods_list_gys";
+    public String pageInit(HttpServletRequest request, HttpServletResponse response) throws Exception{
 
         String providerId = request.getParameter("providerId");
         if (StringUtil.isBlank(providerId)){
@@ -58,9 +64,10 @@ public class AipProviderController {
             log.error("查询aip供应商信息异常：",e);
         }
 
-        ModelAndView mv = new ModelAndView(viewName);
-        mv.addObject("aipProviderInfo",aipProviderInfoVO);
-        return mv;
+//        ModelAndView mv = new ModelAndView(viewName);
+        request.setAttribute("aipProviderInfo",aipProviderInfoVO);
+//        mv.addObject("aipProviderInfo",aipProviderInfoVO);
+        return "goods_list_gys";
     }
 
     /**
@@ -88,6 +95,8 @@ public class AipProviderController {
             }else {
                 searchParam.setPageNo(Integer.parseInt(pageNo));
             }
+            searchParam.setCollectionName(SolrCoreEnum.GDS.getCode());
+            searchParam.setSolrClient(solrClient);
             pageInfo = SolrSearchUtil.Search(searchParam);
         }catch (Exception e){
             log.error("供应商首页查询商品列表异常");
