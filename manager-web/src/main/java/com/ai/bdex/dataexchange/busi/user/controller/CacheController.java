@@ -3,7 +3,9 @@ package com.ai.bdex.dataexchange.busi.user.controller;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.BaseLoginUrlDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.MenuDisPlayDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthBusiRSV;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.CacheUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
@@ -24,6 +26,7 @@ public class CacheController {
 	private static final Logger log = LoggerFactory.getLogger(CacheController.class);
 
 	private static String UN_LOGIN_URL = "UN_LOGIN_URL";
+	private static String STAFF_AUTH_MENU = "STAFF_AUTH_MENU";
 
 	@DubboConsumer
 	private IAuthBusiRSV iAuthBusiRSV;
@@ -38,9 +41,13 @@ public class CacheController {
 	public String init(HttpServletRequest request,Model model) throws Exception{
 
 		String busiType = request.getParameter("busiType");
-
+		//刷新免登陆URL缓存
 		if(UN_LOGIN_URL.equals(busiType)){
 			this.loadUnLoginUrlToCache(model);
+		}
+		//刷新用户角色菜单权限
+		if(STAFF_AUTH_MENU.equals(busiType)){
+			this.loadRoleAuthMenuCache(model);
 		}
 
 		if(StringUtil.isBlank(busiType)){
@@ -50,38 +57,61 @@ public class CacheController {
 		}
 	}
 
+	/**
+	 * 刷新免登陆URL缓存
+	 * @param model
+     */
 	private void loadUnLoginUrlToCache(Model model){
 		try {
-
-			//查询要刷新的Urls
-			List<BaseLoginUrlDTO> list = iAuthBusiRSV.loadUnLoginUrls();
-
-			//删除旧的Urls
-			CacheUtil.delItem(Constants.Cache.UN_LOGIN_URL_MAP);
-
-			//刷新新的Urls
-			if(list != null && list.size()>0) {
-				int size = 0;
-				for (BaseLoginUrlDTO dto : list) {
-					if(StringUtil.isBlank(dto.getSysCode())
-					|| StringUtil.isBlank(dto.getUrl())
-					|| StringUtil.isBlank(dto.getUnloginAccess())){
-						continue;
-					}
-
-					String key =Constants.Cache.UN_LOGIN_URL_PRE + dto.getSysCode().trim() + "_" + dto.getUrl().trim();
-
-					CacheUtil.addMapItem(Constants.Cache.UN_LOGIN_URL_MAP,key,dto.getUnloginAccess().trim());
-
-					size++;
-				}
-			}
+			//刷新免登陆Urls缓存
+			int size = iAuthBusiRSV.loadUnLoginUrls();
 
 			model.addAttribute("success",true);
-			model.addAttribute("size",(list==null?0:list.size()));
+			model.addAttribute("size",size);
 		} catch (BusinessException e) {
 			model.addAttribute("success",false);
 			model.addAttribute("msg","加载失败："+ e.getMessage());
 		}
 	}
+
+	/**
+	 * 刷新用户角色菜单权限
+	 * @param model
+	 */
+	private void loadRoleAuthMenuCache(Model model){
+		try {
+			//刷新用户角色菜单权限缓存
+			int size = iAuthBusiRSV.loadRoleMenus();
+
+			model.addAttribute("success",true);
+			model.addAttribute("size",size);
+		} catch (BusinessException e) {
+			model.addAttribute("success",false);
+			model.addAttribute("msg","加载失败："+ e.getMessage());
+		}
+	}
+
+//	/**
+//	 * 获取用户菜单
+//	 * @param model
+//	 * @param session
+//	 * @return
+//	 * @throws Exception
+//     */
+//	@RequestMapping(value="/loadsysmenu")
+//	public String loadsysmenu(Model model,HttpSession session) throws Exception{
+//
+//		//从session 获取
+//		List<MenuDisPlayDTO> staffAuthMenus = StaffUtil.getStaffMenus(session);
+//		if(staffAuthMenus == null){
+//			//从缓存获取
+//			String staffId = StaffUtil.getStaffId(session);
+//			staffAuthMenus = iAuthBusiRSV.getStaffAuthMenus(staffId);
+//			StaffUtil.setStaffMenus(session,staffAuthMenus);
+//		}
+//
+//		model.addAttribute("staffAuthMenus",staffAuthMenus);
+//
+//		return "fragments/nav_left :: #systemmenu";
+//	}
 }

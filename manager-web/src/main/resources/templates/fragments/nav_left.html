@@ -1,85 +1,89 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 
 <body class="bgf1">
 	<div class="m_nav" th:fragment="nav_left">
 		<nav class="nav">
-			<ul>
+			<ul id="systemmenu" th:with="staffAuthMenus=${session.staffMenuInfo}">
 				<li class="navTit">
 					<i class="glyphicon glyphicon-compressed"></i>
 					个人中心
 				</li>
-				<li >
+				<li th:if="${staffAuthMenus}" th:each="menu,menuStat:${staffAuthMenus}" th:with="currentUrl=${#request.getRequestURL().toString()}">
 					<a href="javascript:void(0)">
 						<i class=""></i>
-						用户中心
+						<span th:text="${menu.menuTitle}">用户中心</span>
 						<span class="caret"></span>
 					</a>
-					<ol class="infoItem">
-						<li >
-							<a th:href="@{/password/modify}">密码修改</a>
+					<ul class="infoItem" th:if="${menu.subMenus}">
+						<li th:each="subMenu,subMenuStat:${menu.subMenus}"
+							th:class="${#strings.startsWith(subMenu.absoluteMenuUrl,currentUrl)}?'active':''">
+							<a th:href="${subMenu.absoluteMenuUrl}"
+							   th:text="${subMenu.menuTitle}">
+								密码修改
+							</a>
 						</li>
-						<li >
+						<li th:remove="all">
 							<a th:href="@{/infomanager/pageInit}">资料修改</a>
 						</li>
-						<li >
+						<li th:remove="all">
 							<a th:href="@{/orderManage/myOrder}">我的订单</a>
 						</li>
-						<li >
+						<li th:remove="all">
 							<a th:href="@{/orderManage/myData}">我的数据</a>
 						</li>
-						<li >
+						<li th:remove="all">
 							<a th:href="@{/invoiceManage/mybill}">发票申请</a>
 						</li>
-					</ol>
+					</ul>
 				</li>
-				<li >
+
+				<li th:remove="all">
 					<a href="javascript:void(0)">
 						<i class=""></i>
 						企业认证
 						<span class="caret"></span>
 					</a>
-					<ol class="infoItem">
+					<ul class="infoItem">
 						<li >
 							<a th:href="@{/authencheck/pageInit}">认证审核</a>
 						</li>
 						<li >
 							<a th:href="@{/authenapply/userinfo}">认证申请</a>
 						</li>
-					</ol>
+					</ul>
 				</li>
-				<li >
+				<li th:remove="all">
 					<a href="javascript:void(0)">
 						<i class=""></i>
 						商品管理
 						<span class="caret"></span>
 					</a>
-					<ol class="infoItem">
+					<ul class="infoItem">
 						<li>
 							<a th:href="@{/gdsEdit/pageInit}"></i>商品录入</a>
 						</li>
 						<li >
 							<a th:href="@{/gdsManage/index}"></i>商品管理</a>
 						</li> 
-					</ol>
+					</ul>
 				</li>
-				<li >
+				<li th:remove="all">
 					<a href="javascript:void(0)">
 						<i class=""></i>
 						后台运营
 						<span class="caret"></span>
 					</a>
-					<ol class="infoItem">
+					<ul class="infoItem">
 						<li>
 							<a th:href="@{/orderManage/orderManage}"></i>订单管理</a>
 						</li>
 						<li >
 							<a th:href="@{/invoiceManage/mybillCheck}"></i>发票管理</a>
 						</li>
-					</ol>
+					</ul>
 				</li>
-				<li>
+				<li th:remove="all">
 					<a href="javascript:void(0)">
 						<i ></i>
 						页面管理
@@ -103,7 +107,7 @@
 						</li>
 					</ul>
 				</li>
-				<li>
+				<li th:remove="all">
 					<a href="javascript:void(0)">
 						<i ></i>
 						报表统计
@@ -131,8 +135,7 @@
 
 					</ul>
 				</li>
-
-				<li>
+				<li th:remove="all">
 					<a href="javascript:void(0)">
 						<i ></i>
 						系统管理
@@ -144,9 +147,9 @@
 						</li>
 					</ul>
 				</li>
-
 			</ul>
 		</nav>
+		<script type="text/javascript" src="../static/js-busi/user/menu.js" th:src="@{/js-busi/user/menu.js}"></script>
 	</div>
 </body>
 </html>

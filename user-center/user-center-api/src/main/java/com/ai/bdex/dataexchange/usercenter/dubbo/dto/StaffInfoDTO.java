@@ -2,6 +2,8 @@ package com.ai.bdex.dataexchange.usercenter.dubbo.dto;
 
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
+import java.util.List;
+
 public class StaffInfoDTO extends BaseResponseDTO {
 	
 	private static final long serialVersionUID = 1L;
@@ -17,6 +19,14 @@ public class StaffInfoDTO extends BaseResponseDTO {
 	private String isFirst;
 	private boolean loginIn;
 	private String loginType; //登陆类型（1：用户手动登陆，2：记住密码系统自动登陆）
+	private List<String> menuUrls;
+
+	public List<String> getMenuUrls() {
+		return menuUrls;
+	}
+	public void setMenuUrls(List<String> menuUrls) {
+		this.menuUrls = menuUrls;
+	}
 	public String getLoginType() {
 		return loginType;
 	}

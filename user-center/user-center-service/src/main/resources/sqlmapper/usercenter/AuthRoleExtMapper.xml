@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthRoleExtMapper">
+  <resultMap id="BaseResultMap" type="com.ai.bdex.dataexchange.usercenter.dao.model.AuthRole">
+    <id column="role_id" jdbcType="INTEGER" property="roleId" />
+    <result column="role_name" jdbcType="VARCHAR" property="roleName" />
+  </resultMap>
+  <select id="selectByStaffId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select r.role_id,r.role_name from t_auth_role r, t_auth_role_2_staff s
+    where r.role_id = s.role_id
+    and s.staff_id = #{staffId,jdbcType=VARCHAR}
+    and s.status='1'
+    and r.status='1'
+  </select>
+
+</mapper>

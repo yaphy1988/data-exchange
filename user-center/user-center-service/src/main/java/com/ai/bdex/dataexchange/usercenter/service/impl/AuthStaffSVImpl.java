@@ -7,6 +7,9 @@ import java.util.List;
 import java.util.Map;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthRole2StaffMapper;
+import com.ai.bdex.dataexchange.usercenter.dao.model.*;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.*;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.github.pagehelper.PageHelper;
@@ -18,10 +21,6 @@ import org.springframework.stereotype.Service;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffSignMapper;
-import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaff;
-import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffExample;
-import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffSign;
-import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffSignExample;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffPassSV;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffSV;
 import com.ai.bdex.dataexchange.usercenter.util.SendMailUtil;
@@ -42,6 +41,9 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 	
 	@Autowired
 	private IAuthStaffPassSV iAuthStaffPassSV;
+
+	@Autowired
+	private AuthRole2StaffMapper authRole2StaffMapper;
 	
 	@Override
 	public void sendEmalForActive(SignInfoDTO info) throws Exception {
@@ -257,6 +259,21 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 			pass.setStaffId(info.getStaffId());
 			pass.setStaffPasswd(info.getConfirmPass());
 			iAuthStaffPassSV.savePassInfo(pass);
+
+			//增加默认角色
+			AuthRole2StaffKey key = new AuthRole2StaffKey();
+			key.setStaffId(info.getStaffId());
+			key.setRoleId(Constants.Role.buyerRoleId);
+			AuthRole2Staff authRole2Staff = authRole2StaffMapper.selectByPrimaryKey(key);
+			if(authRole2Staff == null){
+				authRole2Staff = new AuthRole2Staff();
+				authRole2Staff.setStaffId(info.getStaffId());
+				authRole2Staff.setRoleId(Constants.Role.buyerRoleId);
+				authRole2Staff.setStatus("1");
+				authRole2Staff.setUpdateId("system");
+				authRole2Staff.setUpdateDate(new Date());
+				authRole2StaffMapper.insertSelective(authRole2Staff);
+			}
 		}
 		return count;
 	}

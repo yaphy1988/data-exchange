@@ -143,9 +143,17 @@ public class Constants {
     public static class Cache{
         //免登陆url缓存map
         public static String UN_LOGIN_URL_MAP = "AUTH.UNLOGIN.URL.MAP";
-        //免登陆url缓存key前缀  格式：UL_{系统编码}_{URL}
+        //免登陆url缓存key前缀  格式：key=UL_{系统编码}_{URL} value=免登陆标识（0：免登陆，1：登陆，2：强制登陆）
         public static String UN_LOGIN_URL_PRE = "UL_"; //UL:un login 简写
+        //用户权限URL
+        public static String AUTH_MENU_MAP = "AUTH_MENU_MAP";
+        //角色对应的菜单key前缀 格式：key=RL_{角色ID} value=角色对应的菜单
+        public static String AUTH_MENU_PRE = "RL_";//RL:role 简写
+
     }
 
+    public static class Role{
 
+        public static int buyerRoleId = 2;//买家角色ID
+    }
 }

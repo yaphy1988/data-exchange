@@ -3,6 +3,7 @@ package com.ai.bdex.dataexchange.busi.login.controller;
 import com.ai.bdex.dataexchange.filter.LoginAuthFilter;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthBusiRSV;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.captcha.CaptchaServlet;
@@ -35,12 +36,20 @@ public class LoginController {
 	@DubboConsumer
 	private ILoginRSV iLoginRSV;
 
+	@DubboConsumer
+	private IAuthBusiRSV iAuthBusiRSV;
+
 	@RequestMapping(value="/pageInit")
 	public String pageInit(HttpServletRequest request, Model model) {
 
 		model.addAttribute("toPage",request.getParameter("toPage"));
 
 		return "login";
+	}
+
+	@RequestMapping(value="/noAuth")
+	public String noAuth(HttpServletRequest request, Model model) {
+		return "noAuth";
 	}
 
 	/**
@@ -76,7 +85,7 @@ public class LoginController {
 
 		try {
 			//先校验登录,重要重要重要：所有登陆后要写session的请在LoginAuthFilter.loginVerify写
-			StaffInfoDTO staffInfoVO = LoginAuthFilter.loginVerify(request,response,loginInfo,iLoginRSV,"1");
+			StaffInfoDTO staffInfoVO = LoginAuthFilter.loginVerify(request,response,loginInfo,iLoginRSV,iAuthBusiRSV,"1");
 			//记住密码
 			this.rememberPaas(request, response,loginInfo);
 

@@ -59,10 +59,15 @@
                     <a href=""><span>系统管理</span></a>
                     <span >刷新缓存</span>
                 </div>
-                <button class="btn-primary btn mr10" onclick="loadDataToCache('UN_LOGIN_URL')">刷新免登陆URL缓存</button>
-        </div>
-        <div id="loadResult" style="display:none;">
-            <span th:text="${success}?|成功加载${size}条|:${msg}"></span>
+
+                <table class="editTable">
+                    <tr><td  class="label"><button class="btn-primary btn mr10" onclick="loadDataToCache('UN_LOGIN_URL')">刷新免登陆URL缓存</button></td></tr>
+                    <tr><td  class="label"><button class="btn-primary btn mr10" onclick="loadDataToCache('STAFF_AUTH_MENU')">刷新用户角色菜单权限</button></td></tr>
+                </table>
+            </div>
+            <div id="loadResult" style="display:none;">
+                <span th:text="${success}?|成功加载${size}条|:${msg}"></span>
+            </div>
         </div>
     </div>
 

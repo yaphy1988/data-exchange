@@ -7,19 +7,22 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <title>广州数据中心_用户注册</title>
-    <link rel="icon" type="../../static/image/png" href="../static/images/favicon.png" th:type="@{/image/png}" th:href="@{/images/favicon.png}">
-    <link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}">
-    <link rel="stylesheet" href="../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
-    <link rel="stylesheet" href="../static/css/global.css" th:href="@{/css/global.css}">
+    <link rel="icon" type="image/png" href="../../META-INF/resources/webjars/images/favicon.png" th:href="@{/webjars/images/favicon.png}">
+    <link rel="stylesheet" href="../../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}"/>
+    <link rel="stylesheet" href="../../META-INF/resources/webjars/fonts/iconfont.css" th:href="@{/webjars/fonts/iconfont.css}">
+    <link rel="stylesheet" href="../../META-INF/resources/webjars/css/global.css" th:href="@{/webjars/css/global.css}"/>
+
     <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
-    <script src="../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
-    <script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+
+    <script src="../../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:src="@{/webjars/jquery/3.2.0/jquery.min.js}"></script>
+    <script src="../../META-INF/resources/webjars/bootstrap/3.3.7/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <script src="../../META-INF/resources/webjars/js/jquery.bootstrap.message.js" th:src="@{/webjars/js/jquery.bootstrap.message.js}"></script>
+    <script src="../../META-INF/resources/webjars/js/util.js" th:src="@{/webjars/js/util.js}"></script>
+
     <script src="../static/js-busi/register/register.js" th:src="@{/js-busi/register/register.js}"></script>
-    <script src="../static/js-busi/common/sms.js" th:src="@{/js-busi/common/sms.js}"></script>
-    <script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
-    <script src="../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
-    <script type="text/javascript">
-        var WEB_ROOT = '[[${#httpServletRequest.contextPath}]]';
+
+    <script type="text/javascript" th:inline="javascript">
+        var WEB_ROOT = [[${#httpServletRequest.contextPath}]];
     </script>
 </head>
 <body  class="bgf1">
@@ -39,6 +42,18 @@
                 <!--error-tip可见或不可见方式请用visibility-->
                 <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>用户ID必须由字母和数字组成，不能使用特殊符合，如-、*、#等</span></p>
             </div>
+            <div class="register-input" id="signpassDiv">
+                <label>设置密码</label>
+                <input type="password" class="form-control" placeholder="请设置密码，最少8个字符" id="signpass" onfouce="hiddenpass();" maxlength="18">
+                <!--error-tip可见或不可见方式请用visibility-->
+                <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入至少8个字符的密码</span></p>
+            </div>
+            <div class="register-input" id="confirmPassDiv">
+                <label>确认密码</label>
+                <input type="password" class="form-control" placeholder="请确认设置的密码" id="confirmPass" onfouce="hiddenpass();" maxlength="18">
+                <!--error-tip可见或不可见方式请用visibility-->
+                <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>确认密码和设置密码不一致，请重新输入</span></p>
+            </div>
             <div class="register-input" id="phoneNoDiv">
                 <label>手机号码</label>
                 <input type="text" class="form-control" placeholder="请填写手机号码，以便接收验证码" id="phoneNo" maxlength="11">
@@ -52,18 +67,6 @@
                 <button class="btn btn-primary " onclick="sendSmsCode();" id="getcodebtn">获取验证码</button>
                 <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入短信验证码</span></p>
             </div>
-            <div class="register-input" id="signpassDiv">
-                <label>设置密码</label>
-                <input type="password" class="form-control" placeholder="请设置密码，最少8个字符" id="signpass" onfouce="hiddenpass();" maxlength="18">
-                <!--error-tip可见或不可见方式请用visibility-->
-                <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入至少8个字符的密码</span></p>
-            </div>
-            <div class="register-input" id="confirmPassDiv">
-                <label>确认密码</label>
-                <input type="password" class="form-control" placeholder="请确认设置的密码" id="confirmPass" onfouce="hiddenpass();" maxlength="18">
-                <!--error-tip可见或不可见方式请用visibility-->
-                <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>确认密码和设置密码不一致，请重新输入</span></p>
-            </div>
             <div class="register-checkbox checkbox">
             <label>
                 <input type="checkbox" id="checkAgree">
@@ -71,7 +74,7 @@
             </label>
             </div>
             <div class="register-button">
-                <button class="btn btn-primary" onclick="checkSmsCode();">立即注册</button>
+                <button class="btn btn-primary" onclick="saveInfo();">立即注册</button>
             </div>
         </div>
     </div>

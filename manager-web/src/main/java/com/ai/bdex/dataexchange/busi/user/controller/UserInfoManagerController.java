@@ -15,6 +15,7 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.dto.*;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IBaseAdminAreaRSV;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IChnlInvoiceTaxRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.paas.util.CacheUtil;
 import com.ai.paas.utils.CollectionUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -126,25 +127,7 @@ public class UserInfoManagerController {
 			rMap.put("msg", "请先登录！");
 			return rMap;
 		}
-//		if(StringUtil.isBlank(vo.getStaffName())){
-//			rMap.put("success",false);
-//			rMap.put("msg","用户名称不能为空！");
-//			return rMap;
-//		}
 		try {
-			//校验用户名是否存在
-//			boolean nameFlag = this.iAuthStaffRSV.checkInfoByName(vo.getStaffName(), staffId);
-//			if(nameFlag){
-//				rMap.put("success", false);
-//				rMap.put("msg", "用户名已被使用！");
-//				return rMap;
-//			}
-//			nameFlag = this.iAuthStaffRSV.checkInfoByName(vo.getAliasName(), staffId);
-//			if(nameFlag){
-//				rMap.put("success", false);
-//				rMap.put("msg", "别名已被使用！");
-//				return rMap;
-//			}
 			BeanUtils.copyProperties(vo, input);
 			input.setStaffId(staffId);
 			iAuthStaffRSV.updateAuthStaffInfo(input);
@@ -208,7 +191,7 @@ public class UserInfoManagerController {
 	 */
 	@RequestMapping(value="/updatephone",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> updatephone(Model model,String phoneNo,HttpSession session){
+	public Map<String,Object> updatephone(Model model,String phoneNo,HttpSession session,String smsCode){
 		Map<String,Object> rMap = new HashMap<String,Object>();
 
 		String staffId = StaffUtil.getStaffId(session);
@@ -234,10 +217,22 @@ public class UserInfoManagerController {
 		} catch (BusinessException e) {
 			rMap.put("success", false);
 			rMap.put("msg", "获取旧手机号失败，请稍后再试");
+			return rMap;
 		}
 		//判断是否旧手机验证通过，且新手机验证通过
 		Object oldPhoneNoVerify = session.getAttribute("SMS_CHANGPHONE_VERIFY_1"+oldphoneNo);
-		Object newPhoneNoVerify = session.getAttribute("SMS_CHANGPHONE_VERIFY_2"+phoneNo);
+		if(!"true".equals(oldPhoneNoVerify)){
+			rMap.put("success", false);
+			rMap.put("msg", "旧手机验证失败，请重新修改");
+			return rMap;
+		}
+		//新手机验证
+		Object seccode = CacheUtil.getItem("SMS_CHANGPHONE_EXPIRY_2"+phoneNo);
+		if(seccode == null || seccode.toString().equals(smsCode) == false){
+			rMap.put("success", false);
+			rMap.put("msg", "手机验证错误");
+			return rMap;
+		}
 
 		try {
 			input.setSerialNumber(phoneNo);
@@ -246,9 +241,8 @@ public class UserInfoManagerController {
 			rMap.put("success", true);
 			rMap.put("msg", "修改成功！");
 
+			CacheUtil.delItem("SMS_CHANGPHONE_EXPIRY_2"+phoneNo);
 			session.removeAttribute("SMS_CHANGPHONE_VERIFY_1"+oldphoneNo);
-			session.removeAttribute("SMS_CHANGPHONE_VERIFY_2"+phoneNo);
-
 		} catch (BusinessException e) {
 			rMap.put("success", false);
 			rMap.put("msg", e.getMessage());

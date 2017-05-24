@@ -10,7 +10,7 @@ function saveCheck(status){
 //		showmsg('checkdescdiv','审核意见太长了！','');
 		return;
 	}
-	alert(checkDesc);
+
 	$.ajax({
 		url : WEB_ROOT+"/authencheck/docheck",
 		type : 'POST',

@@ -32,7 +32,13 @@ public class AuthStaffPassSVImpl implements IAuthStaffPassSV {
 		if(!"1".equals(pass.getPasswdFlag())){
 			record.setStaffPasswd(SignUtil.SHA1(pass.getStaffPasswd()));
 		}
-		return authStaffPassMapper.insertSelective(record);
+
+		AuthStaffPass authStaffPass = authStaffPassMapper.selectByPrimaryKey(pass.getStaffId());
+		if(authStaffPass != null){
+			return authStaffPassMapper.updateByPrimaryKeySelective(record);
+		}else{
+			return authStaffPassMapper.insertSelective(record);
+		}
 	}
 
 	@Override

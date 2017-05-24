@@ -1,8 +1,11 @@
 package com.ai.bdex.dataexchange.filter;
 
 import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.MenuDisPlayDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthBusiRSV;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
 import com.ai.bdex.dataexchange.util.StaffLocaleUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
@@ -11,6 +14,7 @@ import com.ai.paas.util.CacheUtil;
 import com.ai.paas.util.SystemConfUtil;
 import com.ai.paas.util.Utils;
 import com.ai.paas.utils.InetTool;
+import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.logging.LogFactory;
@@ -48,12 +52,18 @@ public class LoginAuthFilter implements Filter {
     public String[] IGNORE_SUFFIX = {};// 忽略的访问后缀
     public String loginPage = "/login/pageInit";
     public String logoutPage = "/login/doLogout";
+    public String noAuthPage = "/login/noAuth";
+    public String capthcaImage = "/captcha/CapthcaImage";
+    public String homePage = "/homePage/pageInit";
 
     public static String remember_Paas_CookieKey = "REMEMBER_BUSY_COOKIE";
     public static String remember_PaasKey_Pre = "REM_PAAS_";
 
     @DubboConsumer
     private ILoginRSV iLoginRSV;
+
+    @DubboConsumer
+    private IAuthBusiRSV iAuthBusiRSV;
 
     /**
      * 初始化
@@ -83,8 +93,17 @@ public class LoginAuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
 
+        //请求uri
         String uri =request.getRequestURI();
         LogFactory.getLog(LoginAuthFilter.class).info("receive url:"+uri);
+        //商城根路径
+        String mallDomain = SystemConfUtil.getSystemModuleInfo("01","1").genFullUrl();
+
+        //跳转首页
+        if(StringUtil.isBlank(uri) || "/".equals(uri.trim())){
+            response.sendRedirect(mallDomain+this.homePage);
+            return;
+        }
 
         // 过滤不需要权限控制的请求后缀,或者不启用filter时
         if (shouldFilter(request) || filterEnabled == false) {
@@ -94,10 +113,8 @@ public class LoginAuthFilter implements Filter {
 
         //当前登录用户
         StaffInfoDTO staffInfo = StaffUtil.getStaffVO(session);
-        String mallDomain = SystemConfUtil.getSystemModuleInfo("01","1").genFullUrl();
-
         if(staffInfo != null && staffInfo.isLoginIn()){
-
+            //设置Staffid到ThreadLocal
             StaffLocaleUtil.setCurrentStaffId(staffInfo.getStaffId());
 
             //通过记住密码登陆，且url配置成需确认登陆的，则跳转到登陆界面
@@ -106,7 +123,35 @@ public class LoginAuthFilter implements Filter {
                 return;
             }
 
-            //剩下的都允许访问
+            //剩下的看是否有菜单权限
+            /*
+            boolean hasMenuAuth = false;
+            if(this.unLoginFlag == false) {
+                String reqUrl = getRequestUrl(request);
+                String refererUrl = request.getHeader("referer");
+                List<String> staffAuthMenus = staffInfo.getMenuUrls();
+                if (staffAuthMenus != null && staffAuthMenus.size() > 0) {
+                    for (String menuUrl : staffAuthMenus) {
+                        if (reqUrl.startsWith(menuUrl) || (isAjaxRequest(request)) && refererUrl.startsWith(menuUrl)) {
+                            hasMenuAuth = true;
+                            break;
+                        }
+                    }
+                }
+
+                if(hasMenuAuth == false){
+                    if(isAjaxRequest(request)){
+                        //ajax请求的referer 需要登录，则不允许ajax访问
+                        response.getWriter().write("{errorCode:\"999999\",\"errorMsg\":\"noAuth\"}");
+                        return;
+                    }else{
+                        response.sendRedirect(mallDomain+this.noAuthPage);
+                        return;
+                    }
+                }
+            }
+            */
+
             filterChain.doFilter(request, response);
             return;
         }else{
@@ -197,10 +242,6 @@ public class LoginAuthFilter implements Filter {
     private boolean shouldFilter(HttpServletRequest request) {
         String uri = request.getRequestURI();
 
-        if(StringUtils.isBlank(uri) || "/".equals(uri)){
-            return true;
-        }
-
         //过滤后缀
         for (String suffix : IGNORE_SUFFIX) {
             if (uri!= null && uri.toLowerCase().endsWith(suffix)) {
@@ -214,6 +255,20 @@ public class LoginAuthFilter implements Filter {
         }
         //如果是登出界面
         if (uri.endsWith(this.logoutPage)) {
+            return true;
+        }
+
+        //提示没有权限
+        if (uri.endsWith(this.noAuthPage)) {
+            return true;
+        }
+        //验证码
+        if(uri.endsWith(capthcaImage)){
+            return true;
+        }
+
+        //免登陆
+        if(unLoginUrl(uri,"0") == true) {
             return true;
         }
 
@@ -282,7 +337,7 @@ public class LoginAuthFilter implements Filter {
                         loginInfo.setLoginPwd(staffPaas);
                         loginInfo.setLoginIp(ip);
                         //校验登录
-                        StaffInfoDTO staffInfoVO = LoginAuthFilter.loginVerify(request,response,loginInfo,iLoginRSV,"2");
+                        StaffInfoDTO staffInfoVO = LoginAuthFilter.loginVerify(request,response,loginInfo,iLoginRSV,iAuthBusiRSV,"2");
                         if(staffInfoVO != null && staffInfoVO.isLoginIn()){
                             ifLogin = true;
                             break;
@@ -380,7 +435,12 @@ public class LoginAuthFilter implements Filter {
      * @param loginInfo
      * @return
      */
-    public static StaffInfoDTO loginVerify(HttpServletRequest request,HttpServletResponse response,LoginInfoDTO loginInfo,ILoginRSV iLoginRSV,String loginType) throws Exception{
+    public static StaffInfoDTO loginVerify(HttpServletRequest request,
+                                           HttpServletResponse response,
+                                           LoginInfoDTO loginInfo,
+                                           ILoginRSV iLoginRSV,
+                                           IAuthBusiRSV iAuthBusiRSV,
+                                           String loginType) throws Exception{
 
         //校验登陆
         StaffInfoDTO staffInfoVO = iLoginRSV.loginVerify(loginInfo);
@@ -394,6 +454,26 @@ public class LoginAuthFilter implements Filter {
 
             //保存用户ID带cookie
             StaffUtil.addStaffCookie(request, response, staffInfoVO.getStaffId());
+
+            //设置菜单
+            try {
+                List<MenuDisPlayDTO> staffAuthMenus = iAuthBusiRSV.getStaffAuthMenus(staffInfoVO.getStaffId());
+                if(staffAuthMenus == null){
+                    staffAuthMenus = new ArrayList<MenuDisPlayDTO>();
+                }
+                //设置展示的菜单
+                StaffUtil.setStaffMenus(request.getSession(), staffAuthMenus);
+                //设置菜单url,用于权限校验
+                staffInfoVO.setMenuUrls(new ArrayList<String>());
+                setAuthUrls(staffAuthMenus,staffInfoVO);
+                //设置首页点击进去的时候打开的url
+                if(staffInfoVO.getMenuUrls() != null && staffInfoVO.getMenuUrls().size()>0){
+                    request.getSession().setAttribute("menuDisPlayFirstUrl",staffInfoVO.getMenuUrls().get(0));
+                }
+            }catch (BusinessException bex){
+                LogFactory.getLog(LoginAuthFilter.class).error("获取菜单异常:"+bex.getMessage());
+                bex.printStackTrace();
+            }
 
             //存入用户信息到session
             StaffUtil.setStaffInfo(request.getSession(), staffInfoVO);
@@ -472,6 +552,27 @@ public class LoginAuthFilter implements Filter {
         cookie.append("Max-Age="+expiry);
 
         response.addHeader("Set-Cookie",cookie.toString());
+    }
+
+    /**
+     * 递归获取菜单urls
+     * @param menus
+     * @param staffInfoVO
+     */
+    private static void setAuthUrls(List<MenuDisPlayDTO> menus, StaffInfoDTO staffInfoVO){
+        if(menus != null && menus.size()>0){
+
+            for (MenuDisPlayDTO menu:menus) {
+
+                if(StringUtil.isBlank(menu.getAbsoluteMenuUrl()) == false){
+                    staffInfoVO.getMenuUrls().add(menu.getAbsoluteMenuUrl());
+                }
+
+                if(menu.getSubMenus() != null && menu.getSubMenus().size()>0){
+                    setAuthUrls(menu.getSubMenus(),staffInfoVO);
+                }
+            }
+        }
     }
 
     @Override
