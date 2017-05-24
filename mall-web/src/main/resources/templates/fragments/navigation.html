@@ -30,7 +30,7 @@
   					if(data.success){
   						$(data.searchNavList).each(function(i,d){
   							//html +='<li><a class="navigationBar" href='+WEB_ROOT+d.navLink+' target="_blank">'+d.navName+'</a>';
-  							html +='<li><a class="navigationBar" href='+d.navLink+' target="_blank">'+d.navName+'</a>';
+  							html +='<li><a class="navigationBar" href='+MALL_ROOT+d.navLink+' target="_blank">'+d.navName+'</a>';
   						});
   					}
   				}
@@ -39,7 +39,7 @@
     	    		  $(this).parents("li").addClass('active').siblings().removeClass("active");
     	    		  var url = $(this).attr('href');
 //     	 		   	  $.cookie('gjs_navigation', url, {path : '/'});
-    	 		   	  window.location.href=WEB_ROOT+url;
+    	 		   	  window.location.href=MALL_ROOT+url;
     	 		   	  e.preventDefault();
    	    	    });
   				var url = "";

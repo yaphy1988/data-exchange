@@ -15,8 +15,8 @@
     <link rel="stylesheet" href="../../META-INF/resources/webjars/fonts/iconfont.css" th:href="@{/webjars/fonts/iconfont.css}">
     <link rel="stylesheet" href="../../META-INF/resources/webjars/css/info.css"  th:href="@{/webjars/css/info.css}">
     <script th:inline="javascript">
-        var WEB_ROOT = [[${#httpServletRequest.contextPath}]];
-
+        var WEB_ROOT = [[${#tools.mallDomain()}]];
+        var MALL_ROOT = [[${#tools.mallDomain()}]];
         var MANAGE_ROOT = [[${#tools.managerDomain()}]];
         var staffInfoDTO = [[${session.staffInfoDTO}]];
     </script>
