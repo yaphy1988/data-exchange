@@ -22,7 +22,7 @@ import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
 @Service("iPayInfoSV")
 public class PayInfoSVImpl implements IPayInfoSV {
-	@Resource
+ 	@Resource
     private PayRequestMapper payRequestMapper;
 	@Resource
     private PayResultMapper payResultMapper;
@@ -39,7 +39,8 @@ public class PayInfoSVImpl implements IPayInfoSV {
 		record.setStaffId(payRequestReqDTO.getStaffId());
  	    record.setCreateTime(DateUtil.getNowAsDate());
  	    record.setRequestTime(DateUtil.getNowAsDate());
- 	    record.setCreateStaff(payRequestReqDTO.getCreateStaff());
+		record.setStaffId(payRequestReqDTO.getCreateStaff());
+ 	   // record.setCreateStaff(payRequestReqDTO.getCreateStaff());
  	    
 		return payRequestMapper.insert(record);
 				
@@ -51,6 +52,7 @@ public class PayInfoSVImpl implements IPayInfoSV {
 		BeanUtils.copyProperties(record, payResultReqDTO);
 		Long seq =  SeqUtil.getLong("SEQ_PAY_RESULT");
 	    record.setPayResultSn(seq);
+		//record.setStaffId(payResultReqDTO.getStaffId());
 		record.setStaffId(payResultReqDTO.getStaffId());
  	    record.setCreateTime(DateUtil.getNowAsDate());
  	    record.setRequestTime(DateUtil.getNowAsDate());
@@ -64,6 +66,7 @@ public class PayInfoSVImpl implements IPayInfoSV {
 		Long seq =  SeqUtil.getLong("SEQ_PAY_INTF_REQ_LOG");
 	    record.setId(seq);
 		record.setStaffId(payIntfReqLogReqDTO.getStaffId());
+		//record.setStaffId(payIntfReqLogReqDTO.getStaffId());
  	    record.setRequestTime(DateUtil.getNowAsDate());
  	    record.setResponseTime(DateUtil.getNowAsDate());
 		return payIntfReqLogMapper.insert(record);
@@ -76,6 +79,7 @@ public class PayInfoSVImpl implements IPayInfoSV {
 		Long seq =  SeqUtil.getLong("SEQ_PAY_INTF_RESULT_LOG");
 	    record.setId(seq);
 		record.setStaffId(resultLogReqDTO.getStaffId());
+		//record.setStaffId(resultLogReqDTO.getStaffId());
  	    record.setRequestTime(DateUtil.getNowAsDate());
  	    record.setResponseTime(DateUtil.getNowAsDate());
 		return payIntfResultLogMapper.insert(record);

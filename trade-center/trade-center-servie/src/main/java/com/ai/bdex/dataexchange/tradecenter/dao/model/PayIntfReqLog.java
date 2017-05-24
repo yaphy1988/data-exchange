@@ -46,7 +46,7 @@ public class PayIntfReqLog {
      *
      * @mbg.generated Tue Apr 18 14:56:53 CST 2017
      */
-    private Long staffId;
+    private String staffId;
 
     /**
      *
@@ -179,7 +179,7 @@ public class PayIntfReqLog {
      *
      * @mbg.generated Tue Apr 18 14:56:53 CST 2017
      */
-    public Long getStaffId() {
+    public String getStaffId() {
         return staffId;
     }
 
@@ -191,7 +191,7 @@ public class PayIntfReqLog {
      *
      * @mbg.generated Tue Apr 18 14:56:53 CST 2017
      */
-    public void setStaffId(Long staffId) {
+    public void setStaffId(String staffId) {
         this.staffId = staffId;
     }
 
