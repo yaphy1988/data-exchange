@@ -1,15 +1,13 @@
 package com.ai.bdex.dataexchange.util;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Vector;
+import java.text.NumberFormat;
+import java.text.ParseException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import com.ai.paas.config.ModuleInfo;
-import com.ai.paas.config.SystemInfo;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.util.SystemConfUtil;
-import com.ai.paas.utils.SignUtil;
 
 /**
  * Created by xiongqian on 2017/5/5.
@@ -96,6 +94,33 @@ public class ThymeleafToolsUtil {
     public String formatLiToMoneyClean(int money){
         return  BigDecimal.valueOf(Long.valueOf(money)).divide(new BigDecimal(1000)).toString();
     }
+    /**  
+     * 元转换为分.  
+     * @param yuan  元
+     * @return 分  
+     */  
+    public  String fromMoneyToFenClean(String yuan) {  
+        String fen = "";  
+        Pattern pattern = Pattern.compile("^[0-9]+(.[0-9]{2})?{1}");  
+        Matcher matcher = pattern.matcher(yuan);  
+        if (matcher.matches()) {  
+            try {  
+                NumberFormat format = NumberFormat.getInstance();  
+                Number number = format.parse(yuan);  
+                double temp = number.doubleValue() * 100.0;  
+                // 默认情况下GroupingUsed属性为true 不设置为false时,输出结果为2,012  
+                format.setGroupingUsed(false);  
+                // 设置返回数的小数部分所允许的最大位数  
+                format.setMaximumFractionDigits(0);  
+                fen = format.format(temp);  
+            } catch (ParseException e) {  
+                e.printStackTrace();  
+            }  
+        }else{  
+            System.out.println("参数格式不正确!");  
+        }  
+        return fen;  
+    } 
     /**
      *
      * genImageUrl:(根据图片id和分辨率获取图片路径). <br/>
@@ -172,6 +197,8 @@ public class ThymeleafToolsUtil {
 	public static void main(String[] args){
 		ThymeleafToolsUtil thymeleafToolsUtil = new ThymeleafToolsUtil();
 		String returnmoney = thymeleafToolsUtil.formatMoney(5);
-		System.out.println("￥转换后：" + returnmoney);
+		
+		String payment = thymeleafToolsUtil.fromMoneyToFenClean("100.02");
+		System.out.println("￥转换后：" + payment);
 	}
 }

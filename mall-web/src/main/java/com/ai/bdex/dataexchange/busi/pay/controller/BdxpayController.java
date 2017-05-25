@@ -51,6 +51,7 @@ import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;
+import com.alipay.api.main;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 
@@ -241,6 +242,7 @@ public class BdxpayController {
 		         		String gmtPayment = new String(request.getParameter("gmt_payment").getBytes("ISO-8859-1"),"UTF-8");
 		         		//支付金额
 		         		String receipAmount = new String(request.getParameter("receipt_amount").getBytes("ISO-8859-1"),"UTF-8");
+		         		String payment = new ThymeleafToolsUtil().fromMoneyToFenClean(receipAmount);
 		         		//支付发起时间
 	//	         		String gmtCreate = new String(request.getParameter("gmt_create").getBytes("ISO-8859-1"),"UTF-8");
 		         		PayResultReqDTO payResultReqDTO = new PayResultReqDTO();
@@ -250,7 +252,7 @@ public class BdxpayController {
 						payResultReqDTO.setPayTransNo(trade_no);//支付宝交易号
 						payResultReqDTO.setPayStatus("00");
 						payResultReqDTO.setPayDesc(trade_status);
-						payResultReqDTO.setPayment(Long.valueOf(receipAmount));
+						payResultReqDTO.setPayment(Long.valueOf(payment));
 						payResultReqDTO.setRequestTime(DateUtil.parse(gmtCreate));
 						payResultReqDTO.setPayTime(DateUtil.parse(gmtPayment));
 						
@@ -269,7 +271,10 @@ public class BdxpayController {
     		log.error("[支付宝异步通知异常]异常信息:" + e);
     	}
 	}
-	
+	public static void main(String[] args) {
+		Long valueOf = Long.valueOf("100");
+		System.err.println(valueOf);
+	}
 	private void payInsertPayResult(PayResultReqDTO payResultReqDTO){
 		try {
 			iOrdPayRSV.insertPayResult(payResultReqDTO);
