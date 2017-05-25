@@ -6,30 +6,28 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.plexus.util.StringUtils;
-import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.stereotype.Component;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientAccesstokenDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientInfoDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientLoginLogDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientRefreshtokenDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientAccesstokenRSV;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientInfoRSV;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientLoginLogRSV;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientRefreshtokenRSV;
-import com.ai.bdex.dataexchange.annotation.Security;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.AipToken;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.AipClientAccesstokenDTO;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.AipClientInfoDTO;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.AipClientLoginLogDTO;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.AipClientRefreshtokenDTO;
+import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipClientAccesstokenRSV;
+import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipClientInfoRSV;
+import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipClientLoginLogRSV;
+import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipClientRefreshtokenRSV;
 import com.ai.bdex.dataexchange.busi.model.AccessTokenSign;
 import com.ai.bdex.dataexchange.busi.util.SignUtil;
-import com.ai.bdex.dataexchange.constants.APIConstants;
-import com.ai.bdex.dataexchange.constants.APIConstants.AipToken;
-import com.ai.bdex.dataexchange.security.ServiceCheckChain;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.paas.util.CacheUtil;
 import com.ai.paas.utils.DateUtil;
@@ -37,9 +35,9 @@ import com.ai.paas.utils.InetTool;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.fastjson.JSON;
 
-@Controller
-//@Path("oauth2")
-@RequestMapping("/oauth2")
+@Component
+@Path("oauth2")
+//@RequestMapping("/oauth2")
 public class TokenController {
 	 private final Log logger = LogFactory.getLog(getClass());
 //	 @DubboConsumer(timeout=3000)
@@ -60,11 +58,11 @@ public class TokenController {
 	  * @return
 	  * @throws Exception
 	  */
-//	@Path("accessToken")
-//	@POST
+	@Path("accessToken")
+	@POST
 //	@Produces(MediaType.APPLICATION_JSON+";"+"charset=utf-8")	
-	@RequestMapping(value="/accessToken",produces={MediaType.APPLICATION_JSON_UTF8_VALUE},method={RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody String getAccessToken(HttpServletRequest request)throws Exception{
+//	@RequestMapping(value="/accessToken",produces={MediaType.APPLICATION_JSON_UTF8_VALUE},method={RequestMethod.GET,RequestMethod.POST})
+	public  String getAccessToken(@Context HttpServletRequest request)throws Exception{
 		Map<String,Object> resultMap=new HashMap<String,Object>();
 		Map<String,String> map=new HashMap<String,String>();		
 		resultMap.put("result", map);
@@ -166,11 +164,11 @@ public class TokenController {
 		return JSON.toJSONString(resultMap);
 	}
 	
-//	@Path("refreshToken")
-//	@PUT
+	@Path("refreshToken")
+	@POST
 //	@Produces(MediaType.APPLICATION_JSON+";"+"charset=utf-8")
-	@RequestMapping(value="/refreshToken",method={RequestMethod.GET,RequestMethod.POST})
-	public @ResponseBody String refreshAccessToken(HttpServletRequest request)throws Exception{
+//	@RequestMapping(value="/refreshToken",method={RequestMethod.GET,RequestMethod.POST})
+	public  String refreshAccessToken(@Context HttpServletRequest request)throws Exception{
 		Map<String,Object> map=new HashMap<String,Object>();
 		Map<String,String> resultMap=new HashMap<String,String>();
 		map.put("result", resultMap);

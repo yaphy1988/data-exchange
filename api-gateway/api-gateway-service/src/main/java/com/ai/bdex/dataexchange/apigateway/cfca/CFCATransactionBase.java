@@ -40,10 +40,10 @@ public class CFCATransactionBase {
     private static int asyncGetResultTryCount = 3;
 
     /** 用户账号 ,保存缓存和表中*/
-    private static final String USER_ACCOUNT_ID = "**********";
+    private static final String USER_ACCOUNT_ID = "GZSJ170209";
 
     /** 用户秘钥 ,保存缓存和表中*/
-    private static final String USER_ACCOUNT_KEY = "V1dnjVpZbl38LKQX";
+    private static final String USER_ACCOUNT_KEY = "MjycqUAwdacm2LmI";
 
 
     static{
@@ -67,7 +67,7 @@ public class CFCATransactionBase {
         params.put("lastKeyGenTime", FastDateFormat.getInstance("yyyyMMddHHmmss").format(new Date()));
         params.put("validationTime", "0");
         params.put("keyType", "0");
-        Map responseBody = encryptSync("CF00000001", "apply-for-key.json", params);
+        Map responseBody = notEncryptSync("CF00000001", "apply-for-key.json", params);
         if (responseBody != null) {
             String newKey = (String) ((Map) responseBody.get("result")).get("newKey");
             key = EncryptUtils.decryptWithAES(newKey, HOME_KEY); // 替换USER_ACCOUNT_KEY
@@ -78,7 +78,7 @@ public class CFCATransactionBase {
     }
 
     
-    public void testCF203b0001() throws Exception {
+    public static void testCF203b0001() throws Exception {
         Map<String, String> params = new HashMap<>();
         params.put("personName", "张三");
         params.put("identityType", "0");
@@ -87,7 +87,7 @@ public class CFCATransactionBase {
     }
 
     
-    public void testCF209b0015() throws Exception {
+    public static void testCF209b0015() throws Exception {
         Map<String, String> params = new HashMap<>();
         params.put("personName", "张三");
         params.put("identityType", "0");
@@ -325,5 +325,10 @@ public class CFCATransactionBase {
             System.out.println(System.currentTimeMillis() - start);
         }
         return responseBody;
+    }
+    public static void main(String[] args)throws Exception{
+//    	String key=applyKey(null);
+//    	System.out.println("key:"+key);
+    	testCF203b0001();
     }
 }

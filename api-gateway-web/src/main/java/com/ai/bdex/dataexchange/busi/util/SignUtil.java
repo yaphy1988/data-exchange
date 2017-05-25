@@ -18,7 +18,7 @@ public class SignUtil {
 			bf.append(sign.getClientSecret());
 			bf.append(sign.getTimestamp());
 			bf.append(sign.getClientId());
-			bf.append(sign.getUserName());
+			bf.append(sign.getUsername());
 			bf.append(sign.getPassword());
 			bf.append(sign.getGrantType());
 			bf.append(sign.getScope());

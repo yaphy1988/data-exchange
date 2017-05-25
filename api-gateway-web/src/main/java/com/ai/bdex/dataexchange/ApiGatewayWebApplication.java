@@ -49,27 +49,27 @@ public class ApiGatewayWebApplication {
 		
 	
 	//自定义DispatcherServlet
-	@Bean
-	public ServletRegistrationBean apiDispatcherServlet(){
-	  //注解扫描上下文
-	  AnnotationConfigWebApplicationContext applicationContext
-	      = new AnnotationConfigWebApplicationContext();
-	  //base package
-	  applicationContext.scan("com.ai.bdex.dataexchange");
-	  
-	  //通过构造函数指定dispatcherServlet的上下文
-	  DispatcherServlet rest_dispatcherServlet
-	      = new DispatcherServlet(applicationContext);
-	 
-	  //用ServletRegistrationBean包装servlet
-	  ServletRegistrationBean registrationBean
-	      = new ServletRegistrationBean(rest_dispatcherServlet);
-	  registrationBean.setLoadOnStartup(1);
-	  //指定urlmapping
-	  registrationBean.addUrlMappings("/");
-	  //指定name，如果不指定默认为dispatcherServlet
-//	  registrationBean.setName("rest");
-	  return registrationBean;
-	}
+//	@Bean
+//	public ServletRegistrationBean apiDispatcherServlet(){
+//	  //注解扫描上下文
+//	  AnnotationConfigWebApplicationContext applicationContext
+//	      = new AnnotationConfigWebApplicationContext();
+//	  //base package
+//	  applicationContext.scan("com.ai.bdex.dataexchange");
+//	  
+//	  //通过构造函数指定dispatcherServlet的上下文
+//	  DispatcherServlet rest_dispatcherServlet
+//	      = new DispatcherServlet(applicationContext);
+//	 
+//	  //用ServletRegistrationBean包装servlet
+//	  ServletRegistrationBean registrationBean
+//	      = new ServletRegistrationBean(rest_dispatcherServlet);
+//	  registrationBean.setLoadOnStartup(1);
+//	  //指定urlmapping
+//	  registrationBean.addUrlMappings("/");
+//	  //指定name，如果不指定默认为dispatcherServlet
+////	  registrationBean.setName("rest");
+//	  return registrationBean;
+//	}
     
 }

@@ -4,17 +4,15 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.plexus.util.StringUtils;
 import org.springframework.stereotype.Component;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientAccesstokenDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipClientAccesstokenRSV;
 import com.ai.bdex.dataexchange.annotation.Security;
-import com.ai.bdex.dataexchange.constants.APIConstants;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.AipClientAccesstokenDTO;
+import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipClientAccesstokenRSV;
 import com.ai.bdex.dataexchange.web.RequestContext;
 import com.ai.paas.util.CacheUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
@@ -56,6 +54,8 @@ public class AccessTokenCheckHandler implements PermissionCheckHandler{
 	    					return null;
 	    				}
 	    			}
+	    		}else{
+	    			return null;
 	    		}
     		}else{
 				resultMap.put("code", APIConstants.SystemErrorCode.ERRORCODE_10015);

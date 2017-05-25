@@ -11,4 +11,21 @@
   <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.ISmsSendRSV" ref="smsSendByThreadRSV"
                  owner="zhaoyf7" timeout="3000"/>
 
+  <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipClientAccesstokenRSV" ref="aipClientAccesstokenRSV"
+                 owner="zhaoyf7" timeout="3000"/>  
+                 
+  <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipClientInfoRSV" ref="aipClientInfoRSV"
+                 owner="zhaoyf7" timeout="3000"/>    
+                                
+  <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipClientLoginLogRSV" ref="aipClientLoginLogRSV"
+                 owner="zhaoyf7" timeout="3000"/>  
+                 
+  <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipClientRefreshtokenRSV" ref="aipClientRefreshtokenRSV"
+                 owner="zhaoyf7" timeout="3000"/>   
+  <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipServiceInfoRSV" ref="aipServiceInfoRSV"
+                 owner="zhaoyf7" timeout="3000"/>    
+  <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipServiceUsedLogRSV" ref="aipServiceUsedLogRSV"
+                 owner="zhaoyf7" timeout="3000"/>    
+  <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipTransationRSV" ref="aipTransationRSV"
+                 owner="zhaoyf7" timeout="3000"/>                                            
 </beans>

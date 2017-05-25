@@ -5,7 +5,7 @@ public class AccessTokenSign {
 	private String clientId;
 	private String clientSecret;
 	private String timestamp;
-	private String userName;
+	private String username;
 	private String password;
 	private String scope;
 	
@@ -33,11 +33,12 @@ public class AccessTokenSign {
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
-	public String getUserName() {
-		return userName;
+	
+	public String getUsername() {
+		return username;
 	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUsername(String username) {
+		this.username = username;
 	}
 	public String getPassword() {
 		return password;

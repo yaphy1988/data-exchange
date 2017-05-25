@@ -16,19 +16,16 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.stereotype.Component;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceUsedLogDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceUsedLogRSV;
 import com.ai.bdex.dataexchange.annotation.Security;
 import com.ai.bdex.dataexchange.security.PermissionCheckHandler;
+import com.ai.bdex.dataexchange.web.RequestContext;
 import com.ai.paas.util.Utils;
-import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
 @Aspect
 @Component
 public class ControllerInterceptor {
 	 	private final Log logger = LogFactory.getLog(getClass());
-	 	@DubboConsumer
-	 	private IAipServiceUsedLogRSV aipServiceUsedLogRSV;
+
 	   /** 
 	     * 定义拦截规则：拦截com.ai.bdex.dataexchange.busi.*.controller包下面的所有类中，有@Path注解的方法。 
 	     */  
@@ -76,7 +73,8 @@ public class ControllerInterceptor {
 	  
 	                allParams.add(map);  
 	            }else if(arg instanceof HttpServletRequest){  
-	                HttpServletRequest request = (HttpServletRequest) arg;  	              	                
+	                HttpServletRequest request = (HttpServletRequest) arg;  
+	                RequestContext.setRequest(request);
 	                //获取query string 或 posted form data参数  
 	                Map<String, String[]> paramMap = request.getParameterMap();  
 	                if(paramMap!=null && paramMap.size()>0){  
