@@ -194,6 +194,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 			ordInfoPage = iOrdInfoSV.queryOrdInfoPage(ordInfoReqDTO);
 		} catch (Exception e) {
 			log.error("分页获取子订单信息异常:", e);
+			//修改一个
 			throw new Exception(e);
 		}
 		return ordInfoPage;
