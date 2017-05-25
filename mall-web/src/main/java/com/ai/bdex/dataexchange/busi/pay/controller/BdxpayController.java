@@ -227,24 +227,14 @@ public class BdxpayController {
 			if(verify_result){
 				if (trade_status.equals("TRADE_SUCCESS")){
 					boolean baseResponse= this.pay_successDone(out_trade_no,subOrderId,staffId);
-					if (baseResponse) {
-		            	log.error("支付反馈：success");
-		            	writer.write("success"); 
-		            } else { 
-		            	log.error("支付反馈：fail");
-		            	writer.write("fail");  
-		            } 
 					try {
-					
 						//支付发起时间
 		         		String gmtCreate = new String(request.getParameter("gmt_create").getBytes("ISO-8859-1"),"UTF-8");
 		         		//支付时间
 		         		String gmtPayment = new String(request.getParameter("gmt_payment").getBytes("ISO-8859-1"),"UTF-8");
-		         		//支付金额
+		         		//支付金额：元
 		         		String receipAmount = new String(request.getParameter("receipt_amount").getBytes("ISO-8859-1"),"UTF-8");
 		         		String payment = new ThymeleafToolsUtil().fromMoneyToFenClean(receipAmount);
-		         		//支付发起时间
-	//	         		String gmtCreate = new String(request.getParameter("gmt_create").getBytes("ISO-8859-1"),"UTF-8");
 		         		PayResultReqDTO payResultReqDTO = new PayResultReqDTO();
 						payResultReqDTO.setOrderId(out_trade_no);//商户订单号
 						payResultReqDTO.setStaffId(staffId);
@@ -256,10 +246,17 @@ public class BdxpayController {
 						payResultReqDTO.setRequestTime(DateUtil.parse(gmtCreate));
 						payResultReqDTO.setPayTime(DateUtil.parse(gmtPayment));
 						
-						this.payInsertPayResult(payResultReqDTO);
+						iOrdPayRSV.insertPayResult(payResultReqDTO);
 					} catch (Exception e) {
 						log.error("[支付通知写入T_PAY_RESUL表异常，异常信息：]："+e);
 					}
+					if (baseResponse) {
+		            	log.error("支付反馈：success");
+		            	writer.write("success"); 
+		            } else { 
+		            	log.error("支付反馈：fail");
+		            	writer.write("fail");  
+		            } 
 				}
 			}else{
 				writer.write("fail");
@@ -270,17 +267,6 @@ public class BdxpayController {
     	}catch (Exception e) {
     		log.error("[支付宝异步通知异常]异常信息:" + e);
     	}
-	}
-	public static void main(String[] args) {
-		Long valueOf = Long.valueOf("100");
-		System.err.println(valueOf);
-	}
-	private void payInsertPayResult(PayResultReqDTO payResultReqDTO){
-		try {
-			iOrdPayRSV.insertPayResult(payResultReqDTO);
-		} catch (Exception e) {
-			log.equals("[支付成功写入支付结果失败]，异常："+e.getMessage());
-		}
 	}
 	/**
 	 * 支付成功模拟修改后台数据
