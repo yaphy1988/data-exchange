@@ -528,15 +528,7 @@ public class orderManageController {
 		String packprice     = request.getParameter("packprice");
 		String ordernum     = request.getParameter("ordernum");
 		String ordermoney = request.getParameter("ordermoney");
-
-		Date activeEndTime = new Date();//失效日期
-		if(StringUtil.isBlank(inavidate)){   //没有传入的，就获取系统配置的100年 36500天
-			//activeEndTime = Constants.Order.getActiveEndTimeForEver();
-		}
-		else{
-			//有传入的，那就写获取当前输入的地址
-			activeEndTime = getNodatelength(inavidate);
-		}
+        OrdInfoReqDTO  ordInfoReqDTO =  new OrdInfoReqDTO();
 		//ordertype = 30
 		/**
 		 * 静态商品id
@@ -547,7 +539,12 @@ public class orderManageController {
 		try {
             if(Constants.Order.ORDER_TYPE_30.equals(ordertype))
 			{
-				OrdInfoReqDTO  ordInfoReqDTO =  new OrdInfoReqDTO();
+                Date activeEndTime = new Date();//失效日期
+                if(!StringUtil.isBlank(inavidate)){   //有传入的
+                    activeEndTime = getNodatelength(inavidate);
+                    ordInfoReqDTO.setActiveEndTime(activeEndTime);
+                }
+
 				ordInfoReqDTO.setStaffId(staffid); //用户
 				ordInfoReqDTO.setCreateStaff(createStaff_id);
 				ordInfoReqDTO.setSkuName(Constants.Order.ORDER_GDS_30_GDSNAME);
@@ -555,7 +552,6 @@ public class orderManageController {
 				ordInfoReqDTO.setGdsName(Constants.Order.ORDER_GDS_30_GDSNAME);
 				ordInfoReqDTO.setShopId(Constants.Shop.GZDATA_SHOP_ID);
 				ordInfoReqDTO.setOrdertype(Constants.Order.ORDER_TYPE_30);
-				ordInfoReqDTO.setActiveEndTime(activeEndTime);
 				ordInfoReqDTO.setServiceName(Constants.Order.ORDER_GDS_30_GDSNAME);
 				long lordermoney = Long.parseLong(ordermoney);//单位元
 				ordInfoReqDTO.setOrderMoney(lordermoney*100);
@@ -575,11 +571,15 @@ public class orderManageController {
 				int igdsid =   new Long(gdsid).intValue();
 				gdsInfoReqDTO.setGdsId(igdsid);
 				gdsInfoRespDTO =  iGdsInfoRSV.queryGdsInfo(gdsInfoReqDTO);
-				OrdInfoReqDTO  ordInfoReqDTO =  new OrdInfoReqDTO();
-				ordInfoReqDTO.setCreateStaff(createStaff_id);
+ 				ordInfoReqDTO.setCreateStaff(createStaff_id);
                 long lordermoney = 0L;
 				if(gdsInfoRespDTO != null)
 				{
+                     Date activeEndTime = new Date();//失效日期
+                    if(!StringUtil.isBlank(inavidate)){   //有传入的
+                        activeEndTime = getNodatelength(inavidate);
+                        ordInfoReqDTO.setActiveEndTime(activeEndTime);
+                    }
 					api_id = gdsInfoRespDTO.getApiId().toString();
 					//查固定套餐的价格--10
 					if(Constants.Order.ORDER_TYPE_10.equals(ordertype)){

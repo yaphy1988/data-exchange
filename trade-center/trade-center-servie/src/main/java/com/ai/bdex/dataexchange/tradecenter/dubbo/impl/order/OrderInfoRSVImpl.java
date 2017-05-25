@@ -40,50 +40,56 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 	@Override
     public OrdInfoReqDTO createOrderInfo(OrdInfoReqDTO ordInfoReqDTO) throws Exception
     {
-		Date orderTime = DateUtil.getNowAsDate();
-		String tmorderid =  SeqUtil.getString("SEQ_ORD_MAIN_INFO",8);
-		String strOrderid  =  createMainOrderId(tmorderid);
-		OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO ();
-		ordMainInfoReqDTO.setOrderId(strOrderid);
-		ordMainInfoReqDTO.setOrderAmount(ordInfoReqDTO.getOrderAmount());
-		ordMainInfoReqDTO.setOrderMoney(ordInfoReqDTO.getOrderMoney());
-		ordMainInfoReqDTO.setRealMoney(ordInfoReqDTO.getOrderMoney());
-		ordMainInfoReqDTO.setStaffId(ordInfoReqDTO.getStaffId());
-		ordMainInfoReqDTO.setShopId(ordInfoReqDTO.getShopId());
-		ordMainInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_0);
- 		ordMainInfoReqDTO.setOrderTime(orderTime);
-		ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_01);
-		ordMainInfoReqDTO.setOrderType(ordInfoReqDTO.getOrdertype());
-		ordMainInfoReqDTO.setSource(Constants.Order.ORDER_SOURCE_0);
- 		ordMainInfoReqDTO.setInvoiceModType(Constants.Order.ORDER_invoiceModType_1);
-		ordMainInfoReqDTO.setInvoiceStatus(Constants.Order.ORDER_INVOICE_STATUS_0);
-		ordMainInfoReqDTO.setCreateStaff(ordInfoReqDTO.getCreateStaff()); 
-		 iOrdMainInfoSV.creatOrderByweb(ordMainInfoReqDTO);
-		
-		ordInfoReqDTO.setOrderId(strOrderid);
-		String tmpsuborderid =  SeqUtil.getString("SEQ_ORD_INFO",8);
-		String subOrderid  =  createMainOrderId(tmpsuborderid);
+    	try{
+			Date orderTime = DateUtil.getNowAsDate();
+			String tmorderid =  SeqUtil.getString("SEQ_ORD_MAIN_INFO",8);
+			String strOrderid  =  createMainOrderId(tmorderid);
+			OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO ();
+			ordMainInfoReqDTO.setOrderId(strOrderid);
+			ordMainInfoReqDTO.setOrderAmount(ordInfoReqDTO.getOrderAmount());
+			ordMainInfoReqDTO.setOrderMoney(ordInfoReqDTO.getOrderMoney());
+			ordMainInfoReqDTO.setRealMoney(ordInfoReqDTO.getOrderMoney());
+			ordMainInfoReqDTO.setStaffId(ordInfoReqDTO.getStaffId());
+			ordMainInfoReqDTO.setShopId(ordInfoReqDTO.getShopId());
+			ordMainInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_0);
+			ordMainInfoReqDTO.setOrderTime(orderTime);
+			ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_01);
+			ordMainInfoReqDTO.setOrderType(ordInfoReqDTO.getOrdertype());
+			ordMainInfoReqDTO.setSource(Constants.Order.ORDER_SOURCE_0);
+			ordMainInfoReqDTO.setInvoiceModType(Constants.Order.ORDER_invoiceModType_1);
+			ordMainInfoReqDTO.setInvoiceStatus(Constants.Order.ORDER_INVOICE_STATUS_0);
+			ordMainInfoReqDTO.setCreateStaff(ordInfoReqDTO.getCreateStaff());
+			iOrdMainInfoSV.creatOrderByweb(ordMainInfoReqDTO);
 
-		ordInfoReqDTO.setSubOrder(subOrderid);
-		ordInfoReqDTO.setAgentPrice(ordInfoReqDTO.getOrderPrice());
- 		ordInfoReqDTO.setDiscountPrice(ordInfoReqDTO.getOrderPrice());
-		ordInfoReqDTO.setOrderTime(orderTime);
-		ordInfoReqDTO.setStaffId(ordInfoReqDTO.getStaffId());
-		ordInfoReqDTO.setProductType(ordInfoReqDTO.getProductType());//一级大类
-		ordInfoReqDTO.setAipServiceId(ordInfoReqDTO.getAipServiceId());
-		ordInfoReqDTO.setServiceName(ordInfoReqDTO.getServiceName());
- 		ordInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_0);
-		ordInfoReqDTO.setBuyAllCount(ordInfoReqDTO.getBuyAllCount());
-		ordInfoReqDTO.setStatus(Constants.Order.ORDER_STATUS_01);
-		iOrdInfoSV.creatsubOrderByweb(ordInfoReqDTO);
-		
-		//写日志
-		OrdLog ordLog = new OrdLog();
-		ordLog.setCreateStaff(ordMainInfoReqDTO.getCreateStaff());
-		ordLog.setOrderId(strOrderid);
-		ordLog.setNode(Constants.Order.LOG_CODE_01);
- 		ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_01);
-		int count =  iOrdMainInfoSV.saveOrderlog(ordLog);
+			ordInfoReqDTO.setOrderId(strOrderid);
+			String tmpsuborderid =  SeqUtil.getString("SEQ_ORD_INFO",8);
+			String subOrderid  =  createMainOrderId(tmpsuborderid);
+
+			ordInfoReqDTO.setSubOrder(subOrderid);
+			ordInfoReqDTO.setAgentPrice(ordInfoReqDTO.getOrderPrice());
+			ordInfoReqDTO.setDiscountPrice(ordInfoReqDTO.getOrderPrice());
+			ordInfoReqDTO.setOrderTime(orderTime);
+			ordInfoReqDTO.setStaffId(ordInfoReqDTO.getStaffId());
+			ordInfoReqDTO.setProductType(ordInfoReqDTO.getProductType());//一级大类
+			ordInfoReqDTO.setAipServiceId(ordInfoReqDTO.getAipServiceId());
+			ordInfoReqDTO.setServiceName(ordInfoReqDTO.getServiceName());
+			ordInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_0);
+			ordInfoReqDTO.setBuyAllCount(ordInfoReqDTO.getBuyAllCount());
+			ordInfoReqDTO.setStatus(Constants.Order.ORDER_STATUS_01);
+			iOrdInfoSV.creatsubOrderByweb(ordInfoReqDTO);
+
+			//写日志
+			OrdLog ordLog = new OrdLog();
+			ordLog.setCreateStaff(ordMainInfoReqDTO.getCreateStaff());
+			ordLog.setOrderId(strOrderid);
+			ordLog.setNode(Constants.Order.LOG_CODE_01);
+			ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_01);
+			iOrdMainInfoSV.saveOrderlog(ordLog);
+		}catch (Exception ee)
+		{
+			log.error("创建订单信息异常createOrderInfo:", ee);
+			throw  new Exception(ee);
+		}
 		return ordInfoReqDTO;
     }
 	/**
@@ -92,51 +98,57 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 	@Override
 	public OrdInfoReqDTO createOrderByallClass(OrdInfoReqDTO ordInfoReqDTO) throws Exception
 	{
-		Date orderTime = DateUtil.getNowAsDate();
-		OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO ();
-		String tmorderid =  SeqUtil.getString("SEQ_ORD_MAIN_INFO",8);
-		String strOrderid  =  createMainOrderId(tmorderid);
-		ordMainInfoReqDTO.setOrderId(strOrderid);
-		ordMainInfoReqDTO.setOrderAmount(ordInfoReqDTO.getOrderAmount());
-		ordMainInfoReqDTO.setOrderMoney(ordInfoReqDTO.getOrderMoney());
-		ordMainInfoReqDTO.setRealMoney(ordInfoReqDTO.getOrderMoney());
-		ordMainInfoReqDTO.setStaffId(ordInfoReqDTO.getStaffId());
-		ordMainInfoReqDTO.setShopId(ordInfoReqDTO.getShopId());
-		ordMainInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_0);
-		ordMainInfoReqDTO.setOrderTime(orderTime);
-		ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_01);
-		ordMainInfoReqDTO.setOrderType(Constants.Order.ORDER_TYPE_30);
-		ordMainInfoReqDTO.setSource(Constants.Order.ORDER_SOURCE_1);
-		ordMainInfoReqDTO.setInvoiceModType(Constants.Order.ORDER_invoiceModType_1);
-		ordMainInfoReqDTO.setInvoiceStatus(Constants.Order.ORDER_INVOICE_STATUS_0);
-		ordMainInfoReqDTO.setCreateStaff(ordInfoReqDTO.getCreateStaff());
-		iOrdMainInfoSV.creatOrderByweb(ordMainInfoReqDTO);
+		try{
+			Date orderTime = DateUtil.getNowAsDate();
+			OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO ();
+			String tmorderid =  SeqUtil.getString("SEQ_ORD_MAIN_INFO",8);
+			String strOrderid  =  createMainOrderId(tmorderid);
+			ordMainInfoReqDTO.setOrderId(strOrderid);
+			ordMainInfoReqDTO.setOrderAmount(ordInfoReqDTO.getOrderAmount());
+			ordMainInfoReqDTO.setOrderMoney(ordInfoReqDTO.getOrderMoney());
+			ordMainInfoReqDTO.setRealMoney(ordInfoReqDTO.getOrderMoney());
+			ordMainInfoReqDTO.setStaffId(ordInfoReqDTO.getStaffId());
+			ordMainInfoReqDTO.setShopId(ordInfoReqDTO.getShopId());
+			ordMainInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_0);
+			ordMainInfoReqDTO.setOrderTime(orderTime);
+			ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_01);
+			ordMainInfoReqDTO.setOrderType(Constants.Order.ORDER_TYPE_30);
+			ordMainInfoReqDTO.setSource(Constants.Order.ORDER_SOURCE_1);
+			ordMainInfoReqDTO.setInvoiceModType(Constants.Order.ORDER_invoiceModType_1);
+			ordMainInfoReqDTO.setInvoiceStatus(Constants.Order.ORDER_INVOICE_STATUS_0);
+			ordMainInfoReqDTO.setCreateStaff(ordInfoReqDTO.getCreateStaff());
+			iOrdMainInfoSV.creatOrderByweb(ordMainInfoReqDTO);
 
-		ordInfoReqDTO.setOrderId(strOrderid);
-		String tmpsuborderid =  SeqUtil.getString("SEQ_ORD_INFO",8);
-		String subOrderid  =  createMainOrderId(tmpsuborderid);
-		ordInfoReqDTO.setSubOrder(subOrderid);
+			ordInfoReqDTO.setOrderId(strOrderid);
+			String tmpsuborderid =  SeqUtil.getString("SEQ_ORD_INFO",8);
+			String subOrderid  =  createMainOrderId(tmpsuborderid);
+			ordInfoReqDTO.setSubOrder(subOrderid);
 
-		ordInfoReqDTO.setAgentPrice(ordInfoReqDTO.getOrderPrice());
-		ordInfoReqDTO.setDiscountPrice(ordInfoReqDTO.getOrderPrice());
-		ordInfoReqDTO.setOrderTime(orderTime);
-		ordInfoReqDTO.setStaffId(ordInfoReqDTO.getStaffId());
-		ordInfoReqDTO.setProductType(ordInfoReqDTO.getProductType());//一级大类
-		ordInfoReqDTO.setAipServiceId(ordInfoReqDTO.getAipServiceId());
-		ordInfoReqDTO.setServiceName(ordInfoReqDTO.getServiceName());
-		ordInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_0);
-		ordInfoReqDTO.setBuyAllCount(ordInfoReqDTO.getBuyAllCount());
-		ordInfoReqDTO.setStatus(Constants.Order.ORDER_STATUS_01);
-		iOrdInfoSV.creatsubOrderByweb(ordInfoReqDTO);
+			ordInfoReqDTO.setAgentPrice(ordInfoReqDTO.getOrderPrice());
+			ordInfoReqDTO.setDiscountPrice(ordInfoReqDTO.getOrderPrice());
+			ordInfoReqDTO.setOrderTime(orderTime);
+			ordInfoReqDTO.setStaffId(ordInfoReqDTO.getStaffId());
+			ordInfoReqDTO.setProductType(ordInfoReqDTO.getProductType());//一级大类
+			ordInfoReqDTO.setAipServiceId(ordInfoReqDTO.getAipServiceId());
+			ordInfoReqDTO.setServiceName(ordInfoReqDTO.getServiceName());
+			ordInfoReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_0);
+ 			ordInfoReqDTO.setStatus(Constants.Order.ORDER_STATUS_01);
+			iOrdInfoSV.creatsubOrderByweb(ordInfoReqDTO);
 
-		//写日志
-		OrdLog ordLog = new OrdLog();
-		ordLog.setCreateStaff(ordMainInfoReqDTO.getCreateStaff());
-		ordLog.setOrderId(strOrderid);
-		ordLog.setNode(Constants.Order.LOG_CODE_01);
-		ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_01);
-		int count =  iOrdMainInfoSV.saveOrderlog(ordLog);
+			//写日志
+			OrdLog ordLog = new OrdLog();
+			ordLog.setCreateStaff(ordMainInfoReqDTO.getCreateStaff());
+			ordLog.setOrderId(strOrderid);
+			ordLog.setNode(Constants.Order.LOG_CODE_01);
+			ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_01);
+			 iOrdMainInfoSV.saveOrderlog(ordLog);
+		}catch (Exception e)
+		{
+			log.error("创建订单信息异常:", e);
+			throw  new Exception(e);
+		}
 		return ordInfoReqDTO;
+
 	}
 
 	// 我的所有子订单
