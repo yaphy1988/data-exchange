@@ -1,26 +1,15 @@
-package com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces;
+package com.ai.bdex.dataexchange.apigateway.service.interfaces;
 
 import java.util.List;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientInfoDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientInfoReqDTO;
+import com.ai.bdex.dataexchange.apigateway.dao.model.AipClientInfo;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.AipClientInfoDTO;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.AipClientInfoReqDTO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 
-public interface IAipClientInfoRSV {
-	/**
-	 * 根据主键查询信息
-	 * @param clientId
-	 * @return
-	 * @throws Exception
-	 */
-	AipClientInfoDTO getAipClientInfoByKey(String clientId)throws Exception;
-	/**
-	 * 保存AIP客户端信息
-	 * @param info
-	 * @return
-	 * @throws Exception
-	 */
-	int insertAipClientInfo(AipClientInfoReqDTO info)throws Exception;
+public interface IAipClientInfoSV {
+	AipClientInfo getAipClientInfoByKey(String clientId)throws Exception;
+	int insertAipClientInfo(AipClientInfo info)throws Exception;
 	/**
 	 * 按页查询AIP客户端信息
 	 * @param req
@@ -50,6 +39,5 @@ public interface IAipClientInfoRSV {
 	 * @return
 	 * @throws Exception
 	 */
-	int updateAipClientInfo(AipClientInfoDTO info)throws Exception;
-	
+	int updateAipClientInfo(AipClientInfo info)throws Exception;
 }

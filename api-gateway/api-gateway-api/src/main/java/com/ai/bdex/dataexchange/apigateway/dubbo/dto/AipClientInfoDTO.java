@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.aipcenter.dubbo.dto;
+package com.ai.bdex.dataexchange.apigateway.dubbo.dto;
 
 import java.util.Date;
 
@@ -23,8 +23,6 @@ public class AipClientInfoDTO  extends BaseResponseDTO{
     * @mbg.generated Mon Apr 24 10:27:08 CST 2017
     */
    private String clientSecret;
-
-    private String userId;
 
    /**
     *
@@ -337,12 +335,4 @@ public class AipClientInfoDTO  extends BaseResponseDTO{
    public void setPassword(String password) {
        this.password = password == null ? null : password.trim();
    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }

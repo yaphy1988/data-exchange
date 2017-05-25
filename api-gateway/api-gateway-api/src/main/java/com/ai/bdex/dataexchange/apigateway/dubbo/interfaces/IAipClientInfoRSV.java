@@ -1,9 +1,9 @@
-package com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces;
+package com.ai.bdex.dataexchange.apigateway.dubbo.interfaces;
 
 import java.util.List;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientInfoDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipClientInfoReqDTO;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.AipClientInfoDTO;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.AipClientInfoReqDTO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 
 public interface IAipClientInfoRSV {
@@ -20,7 +20,7 @@ public interface IAipClientInfoRSV {
 	 * @return
 	 * @throws Exception
 	 */
-	int insertAipClientInfo(AipClientInfoReqDTO info)throws Exception;
+	int insertAipClientInfo(AipClientInfoDTO info)throws Exception;
 	/**
 	 * 按页查询AIP客户端信息
 	 * @param req

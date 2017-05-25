@@ -30,21 +30,21 @@ public class ApiGatewayServiceStart {
         Utils.setCtx(context);
 
         logger.error("ApiGatewayServiceStart 启动成功...");
-        IAipTransationRSV bean=(IAipTransationRSV)Utils.getBean("aipTransationRSV");
-        try{
-        	Map<String, String> result= bean.createTransation("44", "1.0", getMap());
-        }catch(Exception e){
-        	logger.error("", e);
-        }
+//        IAipTransationRSV bean=(IAipTransationRSV)Utils.getBean("aipTransationRSV");
+//        try{
+//        	Map<String, String> result= bean.createTransation("44", "1.0", getMap());
+//        }catch(Exception e){
+//        	logger.error("", e);
+//        }
     }
     
-    public static Map<String,Object> getMap(){
-    	Map<String,Object> data=new HashMap<String,Object>();
- 		data.put("access_token", "4BC1E87FA08A68F2FE4B963BF941DD4B");
- 		data.put("personName", "张三");
- 		data.put("identityType", "0");
- 		data.put("identityNumber", "421081199304173997");
- 		return data;
-    }
+//    public static Map<String,Object> getMap(){
+//    	Map<String,Object> data=new HashMap<String,Object>();
+// 		data.put("access_token", "4BC1E87FA08A68F2FE4B963BF941DD4B");
+// 		data.put("personName", "张三");
+// 		data.put("identityType", "0");
+// 		data.put("identityNumber", "421081199304173997");
+// 		return data;
+//    }
 
 }

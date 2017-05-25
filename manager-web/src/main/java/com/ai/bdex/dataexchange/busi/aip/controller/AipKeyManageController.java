@@ -1,20 +1,24 @@
 package com.ai.bdex.dataexchange.busi.aip.controller;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.ai.bdex.dataexchange.busi.user.entity.AuthStaffVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
+import com.ai.bdex.dataexchange.common.RandomValueStringGenerator;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.utils.SignUtil;
-import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -174,56 +178,56 @@ public class AipKeyManageController {
 		 return ajx;
 	 }
 	 
-	 @RequestMapping(value="/createAipClienter")
-	 public @ResponseBody AjaxJson createAipClienter(AipClientInfoVo vo){
-		 int cnt=0;
-		 AjaxJson ajx=new AjaxJson();		 
-		 try{
-			String clientId=vo.getClientId();		
-			if(!StringUtil.isBlank(clientId)){
-				//查询clientId是否已存在
-				AipClientInfoDTO old=aipClientInfoRSV.getAipClientInfoByKey(clientId);
-				if(null==old){
-					AipClientInfoDTO dto=new AipClientInfoDTO();
-					ObjectCopyUtil.copyObjValue(vo, dto, null, true);
-					dto.setCreateStaff("");
-					Timestamp nowTime=new Timestamp(System.currentTimeMillis());
-					dto.setCreateTime(nowTime);
-					dto.setUpdateStaff("");
-					dto.setUpdateTime(nowTime);
-					if(StringUtil.isBlank(vo.getStatus())){
-						dto.setStatus("2");//冻结
-					}
-					//生成密码
-					String password=null;
-					dto.setPassword(password);
-					//生成密钥
-					String clientSecret=null;
-					dto.setClientSecret(clientSecret);
-					
-					cnt=aipClientInfoRSV.insertAipClientInfo(dto);
-					if(cnt==1){
-						 ajx.setSuccess(true);
-						 ajx.setMsg("客户端编码:"+clientId+"新增成功");
-					}else{
-						 ajx.setSuccess(true);
-						 ajx.setMsg("客户端编码:"+clientId+"新增失败");
-					}
-				}else{
-					 ajx.setSuccess(false);
-					 ajx.setMsg(clientId+"客户端编码已存在，请修改");
-				}
-			}else{
-				 ajx.setSuccess(false);
-				 ajx.setMsg("客户端编码不能为空");
-			}
-		 }catch(Exception e){
-			 log.error("",e);
-			 ajx.setSuccess(false);
-			 ajx.setMsg(vo.getClientId()+"新增出现异常，请联系管理员");
-		 }
-		 return ajx;
-	 }
+//	 @RequestMapping(value="/createAipClienter")
+//	 public @ResponseBody AjaxJson createAipClienter(AipClientInfoVo vo){
+//		 int cnt=0;
+//		 AjaxJson ajx=new AjaxJson();
+//		 try{
+//			String clientId=vo.getClientId();
+//			if(!StringUtil.isBlank(clientId)){
+//				//查询clientId是否已存在
+//				AipClientInfoDTO old=aipClientInfoRSV.getAipClientInfoByKey(clientId);
+//				if(null==old){
+//					AipClientInfoDTO dto=new AipClientInfoDTO();
+//					ObjectCopyUtil.copyObjValue(vo, dto, null, true);
+//					dto.setCreateStaff("");
+//					Timestamp nowTime=new Timestamp(System.currentTimeMillis());
+//					dto.setCreateTime(nowTime);
+//					dto.setUpdateStaff("");
+//					dto.setUpdateTime(nowTime);
+//					if(StringUtil.isBlank(vo.getStatus())){
+//						dto.setStatus("2");//冻结
+//					}
+//					//生成密码
+//					String password=null;
+//					dto.setPassword(password);
+//					//生成密钥
+//					String clientSecret=null;
+//					dto.setClientSecret(clientSecret);
+//
+//					cnt=aipClientInfoRSV.insertAipClientInfo(dto);
+//					if(cnt==1){
+//						 ajx.setSuccess(true);
+//						 ajx.setMsg("客户端编码:"+clientId+"新增成功");
+//					}else{
+//						 ajx.setSuccess(true);
+//						 ajx.setMsg("客户端编码:"+clientId+"新增失败");
+//					}
+//				}else{
+//					 ajx.setSuccess(false);
+//					 ajx.setMsg(clientId+"客户端编码已存在，请修改");
+//				}
+//			}else{
+//				 ajx.setSuccess(false);
+//				 ajx.setMsg("客户端编码不能为空");
+//			}
+//		 }catch(Exception e){
+//			 log.error("",e);
+//			 ajx.setSuccess(false);
+//			 ajx.setMsg(vo.getClientId()+"新增出现异常，请联系管理员");
+//		 }
+//		 return ajx;
+//	 }
 	 
 	 @RequestMapping(value="/editAipClientInfo")
 	 public @ResponseBody AjaxJson editAipClientInfo(AipClientInfoVo vo){
@@ -299,7 +303,7 @@ public class AipKeyManageController {
      */
 	@RequestMapping(value = "/saveAipkey")
 	@ResponseBody
-	public AjaxJson saveAipkey(HttpServletRequest request,HttpServletResponse response,AipClientInfoReqDTO aipClientInfoReqDTO){
+	public AjaxJson saveAipkey(HttpServletRequest request, HttpServletResponse response, HttpSession session,AipClientInfoReqDTO aipClientInfoReqDTO){
 		AjaxJson ajaxJson = new AjaxJson();
 
 		if (StringUtil.isBlank(aipClientInfoReqDTO.getUserId())){
@@ -310,6 +314,34 @@ public class AipKeyManageController {
 
 		try {
 			if (StringUtil.isBlank(aipClientInfoReqDTO.getClientId())){//新增
+				RandomValueStringGenerator generator = new RandomValueStringGenerator(32, RandomValueStringGenerator.DEFAULT_CODEC);
+				String clientSecret = generator.generate();
+				aipClientInfoReqDTO.setClientSecret(clientSecret);
+
+				//生成密码
+				SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhmmss");
+				String paasword = SignUtil.SHA1(sdf.format(new Date()));
+				aipClientInfoReqDTO.setPassword(paasword);
+
+				//生成密钥
+				aipClientInfoReqDTO.setCreateStaff(StaffUtil.getStaffId(session));
+				aipClientInfoReqDTO.setCreateTime(new Date());
+
+				if (aipClientInfoReqDTO.getEffectiveTime()!=null){
+					String timeStr = new SimpleDateFormat("yyyy-MM-dd").format(aipClientInfoReqDTO.getEffectiveTime())+" 23:59:59";
+					aipClientInfoReqDTO.setEffectiveTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(timeStr));
+				}
+				aipClientInfoReqDTO.setStatus("1");
+
+				int code = aipClientInfoRSV.insertAipClientInfo(aipClientInfoReqDTO);
+				if (code == 1){
+					ajaxJson.setSuccess(true);
+				}else {
+					ajaxJson.setSuccess(false);
+					ajaxJson.setMsg("新增保存失败，请重试或联系管理员！");
+					return ajaxJson;
+				}
+
 			}else{
 
 			}
