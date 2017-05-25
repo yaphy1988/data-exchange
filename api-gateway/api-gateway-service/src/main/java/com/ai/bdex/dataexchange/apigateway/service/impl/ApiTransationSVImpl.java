@@ -1,7 +1,7 @@
 package com.ai.bdex.dataexchange.apigateway.service.impl;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -56,12 +56,19 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 		//获取usedID			
 		AipClientInfo clientInfo= aipClientInfoSV.getAipClientInfoByKey(clientId);
 		String userId=clientInfo.getUserId();//??
+		AipServiceInfo serviceInfo=getService(serviceId);
+		Long unitPrice=serviceInfo.getUnitPrice();
+		BigDecimal bg=null;
+		if(null!=unitPrice){
+			bg=new BigDecimal(unitPrice);
+		}
 		//扣除费用
 		DataConsumeDTO dto=new DataConsumeDTO();
 		dto.setRealServiceId(serviceId);
 		dto.setInvokeSeq(logId);
 		dto.setUserId(userId);
-		dto.setConsumeNum(1);
+		dto.setConsumeNum(1);		
+		dto.setConsumeMoney(bg==null?null:bg.intValue());
 		apiGatewayDataAccountSV.dealDataCharge(dto);
 		//可用时第一步，从沉淀表找数据
 		//对参数进行排序处理,获取MD5值，paramMap中不允许有key相同的数据
@@ -94,7 +101,7 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 		}
 		//如果是提供商服务，t_aip_p_service_used_log进行记录
 		if("1".equals(pserviceFlag)){
-			AipServiceInfo serviceInfo=getPService(serviceId);
+			
 			String providerId=serviceInfo==null?"":serviceInfo.getProviderId();
 			String pServiceId=serviceInfo==null?"":serviceInfo.getpServiceId();
 			String pVersion=serviceInfo==null?"":serviceInfo.getpVersion();
@@ -124,7 +131,7 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 	private String getPLogId(){    
 		return DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss")+SeqUtil.getNextValueLong(APIConstants.AipSeqName.SEQ_AIP_P_SERVICE_USED_LOG);
 	}
-	private AipServiceInfo getPService(String serviceId){
+	private AipServiceInfo getService(String serviceId){
 		AipServiceInfo info=null;
 		try{
 			info=aipServiceInfoSV.selectServiceByServiceIdWithInitversion(serviceId);
