@@ -56,10 +56,10 @@
 //   				var url = $.cookie('gjs_navigation');
   				var thisUrl = window.location.pathname;
  	  	    	$(".navigationBar").each(function(){
- 	  	    		if($(this).attr("href")==thisUrl){
+ 	  	    		if($(this).attr("href").indexOf(thisUrl)>0){
  	  	    			$(this).parents("li").addClass('active');
  	  	    			return false;
- 	  	    		}else if($(this).attr('href')==url){
+ 	  	    		}else if($(this).attr('href').indexOf(url)>0){
  	  	    			$(this).parents("li").addClass('active');
  	  	    			return false;
  	  	    		}
