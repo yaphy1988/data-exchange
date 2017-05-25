@@ -20,7 +20,7 @@ public interface IAipClientInfoRSV {
 	 * @return
 	 * @throws Exception
 	 */
-	int insertAipClientInfo(AipClientInfoDTO info)throws Exception;
+	int insertAipClientInfo(AipClientInfoReqDTO info)throws Exception;
 	/**
 	 * 按页查询AIP客户端信息
 	 * @param req

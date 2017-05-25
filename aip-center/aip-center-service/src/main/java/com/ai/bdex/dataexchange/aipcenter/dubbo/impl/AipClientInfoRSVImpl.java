@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.aipcenter.dubbo.impl;
 
 import java.util.List;
 
+import com.ai.paas.sequence.SeqUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,13 +40,15 @@ public class AipClientInfoRSVImpl implements IAipClientInfoRSV{
 	}
 
 	@Override
-	public int insertAipClientInfo(AipClientInfoDTO info) throws Exception {
+	public int insertAipClientInfo(AipClientInfoReqDTO info) throws Exception {
 		
 		try {
 			int c=0;
 			if(null!=info){
 				AipClientInfo vo=new AipClientInfo();
 				ObjectCopyUtil.copyObjValue(info, vo, null, false);
+				String clientId = SeqUtil.getString("SEQ_AIP_CLIENT_INFO");
+				vo.setClientId(clientId);
 				c=aipClientInfoSV.insertAipClientInfo(vo);
 			}
 			return c;
