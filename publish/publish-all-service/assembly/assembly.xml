@@ -8,27 +8,35 @@
     </formats>
     <files>
         <file>
-            <source>${project.parent.parent.basedir}/manager-web/target/manager-web-${project.version}.jar</source>
+            <source>${project.parent.parent.basedir}/manager-web/target/manager-web/manager-web-${project.version}.jar</source>
             <outputDirectory/>
         </file>
         <file>
-            <source>${project.parent.parent.basedir}/mall-web/target/mall-web-${project.version}.jar</source>
+            <source>${project.parent.parent.basedir}/mall-web/target/mall-web/mall-web-${project.version}.jar</source>
             <outputDirectory/>
         </file>
         <file>
-            <source>${project.parent.parent.basedir}/user-center/user-center-service/target/user-center-service-${project.version}.jar</source>
+            <source>${project.parent.parent.basedir}/report-web/target/report-web/report-web-${project.version}.jar</source>
             <outputDirectory/>
         </file>
         <file>
-            <source>${project.parent.parent.basedir}/trade-center/trade-center-servie/target/trade-center-service-${project.version}.jar</source>
+            <source>${project.parent.parent.basedir}/user-center/user-center-service/target/user-center-service/user-center-service-${project.version}.jar</source>
             <outputDirectory/>
         </file>
         <file>
-            <source>${project.parent.parent.basedir}/api-gateway/api-gateway-service/target/api-gateway-service-${project.version}.jar</source>
+            <source>${project.parent.parent.basedir}/trade-center/trade-center-servie/target/trade-center-service/trade-center-service-${project.version}.jar</source>
             <outputDirectory/>
         </file>
         <file>
-            <source>${project.parent.parent.basedir}/aip-center/aip-center-service/target/aip-center-service-${project.version}.jar</source>
+            <source>${project.parent.parent.basedir}/api-gateway/api-gateway-service/target/api-gateway-service/api-gateway-service-${project.version}.jar</source>
+            <outputDirectory/>
+        </file>
+        <file>
+            <source>${project.parent.parent.basedir}/api-gateway-web/target/api-gateway-web/api-gateway-web-${project.version}.jar</source>
+            <outputDirectory/>
+        </file>
+        <file>
+            <source>${project.parent.parent.basedir}/aip-center/aip-center-service/target/aip-center-service/aip-center-service-${project.version}.jar</source>
             <outputDirectory/>
         </file>
     </files>

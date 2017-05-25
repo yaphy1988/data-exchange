@@ -60,4 +60,4 @@ generatorConfig.xml
 
 
 ### ignore webjars temporary files
-**/META-INF/resources/webjars/**/*
+**/META-INF/resources/**/*
