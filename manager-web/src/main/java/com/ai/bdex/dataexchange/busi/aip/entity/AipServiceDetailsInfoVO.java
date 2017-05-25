@@ -56,6 +56,8 @@ public class AipServiceDetailsInfoVO extends BaseResponseDTO {
 
     private String statusName;
 
+    private String unitPrice;
+
     public String getStatusName() {
         return statusName;
     }
@@ -238,5 +240,13 @@ public class AipServiceDetailsInfoVO extends BaseResponseDTO {
 
     public void setReturnExample(String returnExample) {
         this.returnExample = returnExample;
+    }
+
+    public String getUnitPrice() {
+        return unitPrice;
+    }
+
+    public void setUnitPrice(String unitPrice) {
+        this.unitPrice = unitPrice;
     }
 }

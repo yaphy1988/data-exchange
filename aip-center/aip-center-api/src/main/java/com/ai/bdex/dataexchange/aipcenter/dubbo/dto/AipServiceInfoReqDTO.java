@@ -9,7 +9,7 @@ public class AipServiceInfoReqDTO extends BaseInfo{
 
 	private String serviceId;
 
-   private String version;
+   	private String version;
 	/**
 	 * 接口类型。 默认00，00通用服务 01个性服务
 	 */
@@ -59,6 +59,8 @@ public class AipServiceInfoReqDTO extends BaseInfo{
 	private String pVersion;
 
 	private String returnExample;
+
+	private Long unitPrice;
 	
 	public String getType() {
 		return type;
@@ -207,5 +209,13 @@ public class AipServiceInfoReqDTO extends BaseInfo{
 
 	public void setpVersion(String pVersion) {
 		this.pVersion = pVersion;
+	}
+
+	public Long getUnitPrice() {
+		return unitPrice;
+	}
+
+	public void setUnitPrice(Long unitPrice) {
+		this.unitPrice = unitPrice;
 	}
 }

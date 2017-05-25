@@ -90,6 +90,12 @@ function initParamInfo(){
     params.pServiceId = baseInfo_pServiceId;
     params.pVersion = baseInfo_pVersion;
 
+    var baseInfo_unitPrice = $("#baseInfo_unitPrice").val();
+    if (baseInfo_unitPrice == undefined || $.trim(baseInfo_unitPrice) == ""){
+        baseInfo_unitPrice = "";
+    }
+    params.unitPrice = $.trim(baseInfo_unitPrice);
+
     var baseInfo_aipUrl = $.trim($("#baseInfo_aipUrl").val());
     if (baseInfo_aipUrl == ""){
         WEB.msg.info("提示","接口地址不能为空!");

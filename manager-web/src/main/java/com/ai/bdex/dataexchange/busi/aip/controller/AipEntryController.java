@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.busi.api.controller;
+package com.ai.bdex.dataexchange.busi.aip.controller;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.*;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipProviderServiceMgrRSV;
@@ -142,6 +142,7 @@ public class AipEntryController {
             aipServiceInfoReqDTO.setCreateTime(new Date());
             aipServiceInfoReqDTO.setStatus("0");
             aipServiceInfoReqDTO.setType("01");
+            aipServiceInfoReqDTO.setUnitPrice(aipServiceInfoReqDTO.getUnitPrice()*100);
 
             String serviceId = "";
             try{

@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.busi.api.controller;
+package com.ai.bdex.dataexchange.busi.aip.controller;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoReqDTO;
