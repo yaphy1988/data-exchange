@@ -12,7 +12,7 @@ import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ImportResource;
 
-import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipTransationRSV;
+//import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipTransationRSV;
 import com.ai.paas.util.Utils;
 
 /**
