@@ -182,7 +182,7 @@ function confirmNewAipClient() {
 	params.effectiveTime = effectiveTime;
 
 	$.ajax({
-		url:WEB_ROOT + "/aipkeyManage/saveAipkey",
+		url:WEB_ROOT + "/aipKeyManage/saveAipkey",
 		data:params,
 		dataType:'json',
 		type:'post',

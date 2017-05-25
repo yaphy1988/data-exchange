@@ -303,17 +303,25 @@ public class AipKeyManageController {
      */
 	@RequestMapping(value = "/saveAipkey")
 	@ResponseBody
-	public AjaxJson saveAipkey(HttpServletRequest request, HttpServletResponse response, HttpSession session,AipClientInfoReqDTO aipClientInfoReqDTO){
+	public AjaxJson saveAipkey(HttpServletRequest request, HttpServletResponse response, HttpSession session){
 		AjaxJson ajaxJson = new AjaxJson();
 
-		if (StringUtil.isBlank(aipClientInfoReqDTO.getUserId())){
+		String userId = request.getParameter("userId");
+		String username =request.getParameter("username");
+		String effectiveTime = request.getParameter("effectiveTime");
+		String clientId = request.getParameter("clientId");
+		AipClientInfoReqDTO aipClientInfoReqDTO = new AipClientInfoReqDTO();
+
+		if (StringUtil.isBlank(userId)){
 			ajaxJson.setSuccess(false);
 			ajaxJson.setMsg("保存失败,请重试或联系管理员！");
 			return ajaxJson;
 		}
 
 		try {
-			if (StringUtil.isBlank(aipClientInfoReqDTO.getClientId())){//新增
+			if (StringUtil.isBlank(clientId)){//新增
+				aipClientInfoReqDTO.setUserId(userId);
+				aipClientInfoReqDTO.setUsername(username);
 				RandomValueStringGenerator generator = new RandomValueStringGenerator(32, RandomValueStringGenerator.DEFAULT_CODEC);
 				String clientSecret = generator.generate();
 				aipClientInfoReqDTO.setClientSecret(clientSecret);
@@ -327,8 +335,8 @@ public class AipKeyManageController {
 				aipClientInfoReqDTO.setCreateStaff(StaffUtil.getStaffId(session));
 				aipClientInfoReqDTO.setCreateTime(new Date());
 
-				if (aipClientInfoReqDTO.getEffectiveTime()!=null){
-					String timeStr = new SimpleDateFormat("yyyy-MM-dd").format(aipClientInfoReqDTO.getEffectiveTime())+" 23:59:59";
+				if (!StringUtil.isBlank(effectiveTime)){
+					String timeStr = effectiveTime+" 23:59:59";
 					aipClientInfoReqDTO.setEffectiveTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(timeStr));
 				}
 				aipClientInfoReqDTO.setStatus("1");
