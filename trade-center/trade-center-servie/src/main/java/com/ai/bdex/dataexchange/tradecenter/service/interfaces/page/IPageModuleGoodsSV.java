@@ -19,4 +19,16 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDT
 public interface IPageModuleGoodsSV {
 	public PageModuleGoods queryPageModuleGoodsById(Integer pmgId) throws Exception;
 	public PageResponseDTO<PageModuleGoodsRespDTO>  queryPageModuleGoodsList(PageModuleGoodsReqDTO moduleGoodsReqDTO) throws Exception;
+	public List<PageModuleGoodsRespDTO> queryPageModuleGoodsInfoList(PageModuleGoodsReqDTO moduleGoodsReqDTO) throws Exception;
+	public PageResponseDTO<PageModuleGoodsRespDTO> queryPageModuleGoodsPage(PageModuleGoodsReqDTO moduleGoodsReqDTO) throws Exception;
+	public int insertPageModuleGoods(PageModuleGoodsReqDTO moduleGoodsReqDTO)throws Exception;
+	public int updatePageModuleGoods(PageModuleGoodsReqDTO moduleGoodsReqDTO)throws Exception;
+	/**
+	 * 已选择商品
+	 * @param moduleGoodsReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public PageResponseDTO<PageModuleGoodsRespDTO> querSelPageModuleGoodsPage(PageModuleGoodsReqDTO moduleGoodsReqDTO) throws Exception;
+
 }

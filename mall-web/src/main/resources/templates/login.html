@@ -7,25 +7,26 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <title>广州数据中心_用户登录</title>
-    <link rel="icon" type="../../static/image/png" href="../static/images/favicon.png" th:type="@{/image/png}" th:href="@{/images/favicon.png}">
-    <link rel="stylesheet" href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}">
-    <link rel="stylesheet" href="../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
-    <link rel="stylesheet" href="../static/css/global.css" th:href="@{/css/global.css}">
+    <link rel="icon" type="../../static/image/png" href="../META-INF/resources/webjars/images/favicon.png" th:type="@{/image/png}" th:href="@{/webjars/images/favicon.png}">
+    <link rel="stylesheet" href="../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}">
+    <link rel="stylesheet" href="../META-INF/resources/webjars/fonts/iconfont.css" th:href="@{/webjars/fonts/iconfont.css}">
+    <link rel="stylesheet" href="../META-INF/resources/webjars/css/global.css" th:href="@{/webjars/css/global.css}">
     <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
-    <script src="../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
-    <script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:src="@{/webjars/jquery/3.2.0/jquery.min.js}"></script>
+    <script src="../META-INF/resources/webjars/bootstrap/3.3.7/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
     <script src="../static/js-busi/login/login.js" th:src="@{/js-busi/login/login.js}"></script>
-    <script src="../static/js/util.js" th:src="@{/js/util.js}"></script>
-<script type="text/javascript" src="../js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
-<script src="../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
-    <script type="text/javascript">
-        var WEB_ROOT = '[[${#httpServletRequest.contextPath}]]';
+    <script src="../META-INF/resources/webjars/js/util.js" th:src="@{/webjars/js/util.js}"></script>
+    <script type="text/javascript" src="../META-INF/resources/webjars/js/frameajax/ajaxfileupload.js" th:src="@{/webjars/js/frameajax/ajaxfileupload.js}"></script>
+    <script src="../META-INF/resources/webjars/js/jquery.bootstrap.message.js" th:src="@{/webjars/js/jquery.bootstrap.message.js}"></script>
+    <script th:inline="javascript">
+        var WEB_ROOT = [[${#httpServletRequest.contextPath}]];
+        var login_toPage = [[${toPage}]];
     </script>
 </head>
 <body  class="bg-gray32">
 <div class="header bg-white">
     <div class="wrap1000">
-        <div class="logo floatL"><img src="../static/images/manage_logo.png" th:src="@{/images/logo.png}" title="广州数据中心"></div>
+        <div class="logo floatL"><img src="../META-INF/resources/webjars/images/manage_logo.png" th:src="@{/webjars/images/logo.png}" title="广州数据中心"></div>
 
         <div class="register floatR">还没有广数账号？ <a th:href="@{/regist/pageInit}">立即注册</a></div>
     </div>
@@ -33,7 +34,7 @@
 <div class="main bg-col01">
     <div class="wrap1000 login-banner">
         <div class="left floatL">
-            <img src="../static/images/login-banner.jpg" th:src="@{/images/login-banner.jpg}">
+            <img src="../META-INF/resources/webjars/images/login-banner.jpg" th:src="@{/webjars/images/login-banner.jpg}">
         </div>
         <div class="right floatR">
             <h2>用户登录</h2>
@@ -61,7 +62,7 @@
             <div class="clearfix">
                 <div class="pull-left">
                     <label>
-                        <input type="checkbox" name="">
+                        <input id="rememberPaas" type="checkbox" name="rememberPaas" checked="true">
                         记住密码
                     </label>
                 </div>
@@ -115,7 +116,7 @@
             <div class="footer-item">
                 <h4>官方微信</h4>
                 <p>
-                    <img src="../static/images/wexin.jpg" th:src="@{/images/wexin.jpg}">
+                    <img src="../META-INF/resources/webjars/images/wexin.jpg" th:src="@{/webjars/images/wexin.jpg}">
                 </p>
             </div>
         </div>

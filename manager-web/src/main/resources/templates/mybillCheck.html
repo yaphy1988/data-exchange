@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>我的发票管理</title>
+	<link rel="stylesheet" href="../static/component/bootstrap/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
+	<script type="text/javascript" src="../static/js-busi/order/mybillCheck.js" th:src="@{/js-busi/order/mybillCheck.js}"></script>
+	
+</head>
+
+<body>
+<header class="clearfix m_header">
+	<a href="" class="Logo" target="_blank" >
+		<img  src="../static/images/manage_logo.png" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<div  layout:fragment="screen_content">
+	<div class="m_main">
+		<div class="m_con">
+			<div class="classify">
+                <i class="iconfont"></i>
+                <span>当前位置：</span>
+                <a href=""><span>个人中心</span></a>
+                <span class="col_999">发票管理</span>
+            </div>
+			<div id="myInvoiceCheckList">
+:
+                        <table class="table table-bordered text-center" >
+                            <thead>
+                            <tr class="active">
+                                <th>序号</th>
+                                <th>订单编码</th>
+                                <th>发票金额</th>
+                                <th>开票时间</th>
+                                <th>发票抬头</th>
+                                <th>收取方式</th>
+                                <th>发票状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody th:if=" ${pageInfo}" th:remove="all-but-first" >
+                            <tr th:each="list,iterStat : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}" th:with="orderMoney=${list.ordMainInfoRespDTO.orderMoney}">
+								<td th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
+								<td th:text="${list.orderId}"></td>
+								<td th:text="${#tools.formatMoney(orderMoney)}"></td>
+								<td
+									th:text="${#calendars.format(list.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+								<td th:text="${list.invoiceTitle}"></td>
+								<td th:text="${list.ordInvoiceTaxAddrRespDTO.contactInfo}"></td>
+								<td>
+									<span th:if="${list.status=='0'}">未申请</span>
+									<span th:if="${list.status=='1'}">待开发票</span>
+									<span th:if="${list.status=='2'}">已开发票</span>
+									<span th:if="${list.status=='9'}">拒开发票</span>
+								</td>
+								<td><a href="javaScript:void(0)" th:if="${list.status=='1'}" th:onclick="|makeInvoiceTax('${list.orderTaxId}','${list.orderId}')|">开票</a></td>
+							</tr>
+                            <tr >
+                                <td>1</td>
+                                <td> 201703270001</td>
+                                <td>599</td>
+                                <td>2017-03-23</td>
+                                <td>北京亚信</td>
+                                <td>快递-地址</td>
+                                <td>未开具</td>
+                                <td><a href="">申请开具</a></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                  
+                     <!-- 分页-->
+					<div class="pagelist" th:remove="all">
+						<nav aria-label="Page navigation">
+							<ul class="pagination">
+								<li><a href="#" aria-label="Previous"> <span
+										aria-hidden="true">上一页</span>
+								</a></li>
+								<li class="active"><a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li><a href="#" aria-label="Next"> <span
+										aria-hidden="true">下一页</span>
+								</a></li>
+								<div class="pageskip">
+									<span class="pr10">到第<input type="text"
+										class="pageskip_box">页
+									</span> <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+								</div>
+							</ul>
+						</nav>
+					</div>
+					<div class="overflow-hidden clearfix" th:if=" ${pageInfo}">
+						<!-- 分页-->
+						<div th:fragment="pager" class="pagerBar pagelist pull-right">
+							<script type="text/javascript"
+								src="../static/js-busi/common/pager.js"
+								th:src="@{/js-busi/common/pager.js}"></script>
+							<span data-toggle="pager" id="pagerId"
+								th:data-count="${pageInfo.count}"
+								th:data-size="${pageInfo.pageSize}"
+								th:data-currentindex="${pageInfo.pageNo}"></span>
+							<script th:inline="javascript">
+								var total = '[[${pageInfo.count}]]';
+								var pageNum = '[[${pageInfo.pageNo}]]';
+								var pageSize = '[[${pageInfo.pageSize}]]';
+
+								if (typeof pagerClick === "undefined") {
+									pagerClick = function(index) {
+										myInvoiceCheckList(index);
+									}
+								}
+								$('#pagerId').pager({
+									callback : pagerClick
+								});
+							</script>
+						</div>
+					</div>
+				</div>
+		</div>
+	</div>
+	<div class="m_nav">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li class="active">
+							<a href=""></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i ></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li >
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+   
+
+	
+</body>
+</html>

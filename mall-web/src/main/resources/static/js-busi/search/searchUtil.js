@@ -31,11 +31,11 @@ $(function(){
 	/*
 	 * 获取hotkey  end
 	 */
-	if($('#siteSearch').size()>0){
+	if($('#siteSearch').length>0){
         $(document).on('click.hideAutocomplete',function () {
             var event = event || window.event;
             var target = event.target || event.srcElement;
-            if($(target).parents('.autocomplete-container').size()<=0 && !$(target).hasClass('autocomplete-container')){
+            if($(target).parents('.autocomplete-container').length<=0 && !$(target).hasClass('autocomplete-container')){
                 $('.autocomplete-container .proposal-list').empty();
             }
         });

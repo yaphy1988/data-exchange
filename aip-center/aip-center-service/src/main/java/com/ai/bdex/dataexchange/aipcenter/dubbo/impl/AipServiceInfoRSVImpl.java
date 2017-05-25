@@ -123,7 +123,20 @@ public class AipServiceInfoRSVImpl implements IAipServiceInfoRSV{
 			throw e;
 		}
 	}
-	
-	
-	
+
+	@Override
+	public AipServiceInfoDTO queryAipServiceInfo(AipServiceInfoReqDTO aipServiceInfoReqDTO) throws Exception {
+		AipServiceInfoDTO aipServiceInfoDTO = new AipServiceInfoDTO();
+		try {
+			AipServiceInfo aipServiceInfo = aipServiceInfoSV.queryAipServiceInfo(aipServiceInfoReqDTO);
+			if (aipServiceInfo!=null){
+				ObjectCopyUtil.copyObjValue(aipServiceInfo,aipServiceInfoDTO,null,false);
+			}
+		}catch (Exception e){
+			log.error("查询aip服务基本信息异常：",e);
+		}
+		return aipServiceInfoDTO;
+	}
+
+
 }

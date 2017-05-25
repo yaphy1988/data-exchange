@@ -1,149 +1,155 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
 
 <body class="bgf1">
 	<div class="m_nav" th:fragment="nav_left">
 		<nav class="nav">
-			<ul>
+			<ul id="systemmenu" th:with="staffAuthMenus=${session.staffMenuInfo}">
 				<li class="navTit">
 					<i class="glyphicon glyphicon-compressed"></i>
 					个人中心
 				</li>
-				<li th:remove="all">
-					<a href="">
+				<li th:if="${staffAuthMenus}" th:each="menu,menuStat:${staffAuthMenus}" th:with="currentUrl=${#request.getRequestURL().toString()}">
+					<a href="javascript:void(0)">
 						<i class=""></i>
-						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
-					</a>
-				</li>
-				<li th:remove="all">
-					<a href="">
-						<i class=""></i>
-						一级目录
-					</a>
-				</li>
-				<li th:remove="all">
-					<a href="">
-						<i class=""></i>
-						一级目录
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class=""></i>
-						用户中心
+						<span th:text="${menu.menuTitle}">用户中心</span>
 						<span class="caret"></span>
 					</a>
-					<ol class="infoItem">
-						<li >
-							<a th:href="@{/password/modify}">密码修改</a>
+					<ul class="infoItem" th:if="${menu.subMenus}">
+						<li th:each="subMenu,subMenuStat:${menu.subMenus}"
+							th:class="${#strings.startsWith(subMenu.absoluteMenuUrl,currentUrl)}?'active':''">
+							<a th:href="${subMenu.absoluteMenuUrl}"
+							   th:text="${subMenu.menuTitle}">
+								密码修改
+							</a>
 						</li>
-						<li >
+						<li th:remove="all">
 							<a th:href="@{/infomanager/pageInit}">资料修改</a>
 						</li>
-					</ol>
+						<li th:remove="all">
+							<a th:href="@{/orderManage/myOrder}">我的订单</a>
+						</li>
+						<li th:remove="all">
+							<a th:href="@{/orderManage/myData}">我的数据</a>
+						</li>
+						<li th:remove="all">
+							<a th:href="@{/invoiceManage/mybill}">发票申请</a>
+						</li>
+					</ul>
 				</li>
-				<li >
-					<a href="">
+
+				<li th:remove="all">
+					<a href="javascript:void(0)">
 						<i class=""></i>
 						企业认证
 						<span class="caret"></span>
 					</a>
-					<ol class="infoItem">
+					<ul class="infoItem">
 						<li >
 							<a th:href="@{/authencheck/pageInit}">认证审核</a>
 						</li>
 						<li >
 							<a th:href="@{/authenapply/userinfo}">认证申请</a>
 						</li>
-					</ol>
+					</ul>
 				</li>
-				<li >
-					<a href="">
+				<li th:remove="all">
+					<a href="javascript:void(0)">
 						<i class=""></i>
 						商品管理
 						<span class="caret"></span>
 					</a>
-					<ol class="infoItem">
-						<li class="active">
+					<ul class="infoItem">
+						<li>
 							<a th:href="@{/gdsEdit/pageInit}"></i>商品录入</a>
 						</li>
 						<li >
 							<a th:href="@{/gdsManage/index}"></i>商品管理</a>
 						</li> 
-					</ol>
+					</ul>
 				</li>
-				<li>
-					<a href="">
+				<li th:remove="all">
+					<a href="javascript:void(0)">
+						<i class=""></i>
+						后台运营
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li>
+							<a th:href="@{/orderManage/orderManage}"></i>订单管理</a>
+						</li>
+						<li >
+							<a th:href="@{/invoiceManage/mybillCheck}"></i>发票管理</a>
+						</li>
+					</ul>
+				</li>
+				<li th:remove="all">
+					<a href="javascript:void(0)">
 						<i ></i>
-						首页管理
+						页面管理
 						<span class="caret"></span>
 					</a>
 					<ul class="infoItem">
 						<li >
-							<a th:href="@{/pageManage/moduleManage}">楼层管理</a>
+							<a th:href="@{/pageManage/moduleManage}">楼层维护</a>
 						</li>
 						<li >
-							<a th:href="@{/pageManage/newsInfo}">新闻管理</a>
+							<a th:href="@{/pageModuleGoods/pageInit}">首页商品维护</a>
+						</li> 
+						<li >
+							<a th:href="@{/pageManage/adManage}">广告维护</a>
 						</li>  
-					</ul>
-				</li>
-				<li th:remove="all">
-					<a href="">
-						<i class=""></i>
-						一级目录
-					</a>
-				</li>
-				<li th:remove="all">
-					<a href="">
-						<i class=""></i>
-						一级目录
-					</a>
-				</li>
-				<li th:remove="all">
-					<a href="">
-						<i class=""></i>
-						一级目录
-					</a>
-				</li>
-				<li th:remove="all">
-					<a href="">
-						<i class=""></i>
-						一级目录
-						<span class="caret"></span>
-					</a>
-					<ul class="infoItem">
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
+						<li >
+							<a th:href="@{/pageManage/newsInfo}">新闻维护</a>
 						</li>
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
-						</li>
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
+						<li >
+							<a th:href="@{/pageManage/pageClassify}">首页菜单分类</a>
 						</li>
 					</ul>
 				</li>
 				<li th:remove="all">
-					<span>
-						<i class=""></i>
-						一级目录
+					<a href="javascript:void(0)">
+						<i ></i>
+						报表统计
 						<span class="caret"></span>
-					</span>
+					</a>
 					<ul class="infoItem">
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
+						<li >
+							<a th:href="@{/report/userregister}">用户注册统计</a>
 						</li>
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
+						<li >
+							<a th:href="@{/report/orderstatistics}">订单统计</a>
 						</li>
-						<li class="">
-							<a href=""><i class="iconfont"></i>二级分类</a>
+						<li >
+							<a th:href="@{/report/APIinvocation}">API运行统计</a>
+						</li>
+						<li >
+							<a th:href="@{/report/userbilling}">用户对账单</a>
+						</li>
+						<li >
+							<a th:href="@{/report/supplierbilling}">供货商对账单</a>
+						</li>
+						<li >
+							<a th:href="@{/report/invoicestatistic}">供货商对账单</a>
+						</li>
+
+					</ul>
+				</li>
+				<li th:remove="all">
+					<a href="javascript:void(0)">
+						<i ></i>
+						系统管理
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a th:href="@{/cache/init}">刷新缓存</a>
 						</li>
 					</ul>
 				</li>
 			</ul>
 		</nav>
+		<script type="text/javascript" src="../static/js-busi/user/menu.js" th:src="@{/js-busi/user/menu.js}"></script>
 	</div>
 </body>
 </html>

@@ -40,6 +40,7 @@ import com.ai.bdex.dataexchange.busi.gds.entity.GdsLabelQuikVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsLabelVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsPropVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsSkuVO;
+import com.ai.bdex.dataexchange.busi.pic.entity.PicManageVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
@@ -57,12 +58,19 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsPropReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsPropRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicLibReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.pic.PicLibRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfo2PropRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsLabelRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.pic.IPicInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.pic.IPicLibRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.util.MongoFileUtil;
@@ -72,7 +80,6 @@ import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.alibaba.dubbo.rpc.service.GenericException;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.ai.bdex.dataexchange.util.StaffUtil;
 
 @Controller
 @RequestMapping("/gdsEdit")
@@ -103,6 +110,10 @@ public class GdsEditController {
     private IGdsSkuRSV iGdsSkuRSV;
     @DubboConsumer
     private IAipServiceInfoRSV iAipServiceInfoRSV;
+    @DubboConsumer
+    private IPicLibRSV iPicLibRSV;
+    @DubboConsumer
+    private IPicInfoRSV iPicInfoRSV;
     
     @RequestMapping("/pageInit")
     public String pageInit(Model model,GdsInfoVO gdsInfoVO) throws Exception{
@@ -186,6 +197,17 @@ public class GdsEditController {
         	model.addAttribute("catList", catList);
     	}catch(Exception e){
             logger.error("查询商品录入信息失败,原因："+e.getMessage(),e);
+        }
+    	try {
+    	    PicLibReqDTO picLibReqDTO = new PicLibReqDTO();
+    	    picLibReqDTO.setStatus("1");
+    	    List<PicLibRespDTO> picLibList = iPicLibRSV.queryPicLibList(picLibReqDTO);
+    	    if(picLibList == null){
+    	        picLibList = new ArrayList<PicLibRespDTO>();
+    	    }
+    	    model.addAttribute("picLibList", picLibList);
+        } catch (Exception e) {
+            // TODO: handle exception
         }
     	model.addAttribute("gdsInfoVO", gdsInfoVO);
         model.addAttribute("isView", isView);
@@ -450,6 +472,9 @@ public class GdsEditController {
 			vo.setCatId(Integer.parseInt(baseInfoJson.getString("catId")));
 			if(StringUtil.isNotBlank(baseInfoJson.getString("apiId"))){
 				vo.setApiId(Integer.parseInt(baseInfoJson.getString("apiId")));
+			}
+			if(StringUtil.isNotBlank(baseInfoJson.getString("providerId"))){
+				vo.setProviderId(baseInfoJson.getString("providerId"));
 			}
 			if(StringUtil.isNotBlank(baseInfoJson.getString("gdsPic"))){
 				vo.setGdsPic(baseInfoJson.getString("gdsPic"));
@@ -794,6 +819,33 @@ public class GdsEditController {
 		} catch (Exception e) {
 			logger.error("查询API接口失败！原因是：" + e.getMessage());
 		}
-		return "gds/div/gdsEditAPIList";
+		return "goods_import :: #gdsAPIList";
 	}
+	
+	/**
+	 * 
+	 * gridPicList:(根据图片库libId获取图片列表). <br/> 
+	 * 
+	 * @author gxq 
+	 * @param model
+	 * @param picManageVO
+	 * @return 
+	 * @since JDK 1.6
+	 */
+    @RequestMapping(value = "gridPicList")
+    public String gridPicList(Model model, PicManageVO picManageVO) {
+        try {
+            PageResponseDTO<PicInfoRespDTO> pageInfo = new PageResponseDTO<PicInfoRespDTO>();
+            PicInfoReqDTO picInfoReqDTO = new PicInfoReqDTO();
+            picInfoReqDTO.setPageNo(picManageVO.getPageNo());
+            picInfoReqDTO.setPageSize(6);
+            ObjectCopyUtil.copyObjValue(picManageVO, picInfoReqDTO, null, false);
+            pageInfo = iPicInfoRSV.queryPicInfoPage(picInfoReqDTO);
+            pageInfo.setPageSize(6);
+            model.addAttribute("pageInfo", pageInfo);
+        } catch (Exception e) {
+            logger.error("查询图片列表失败！原因是：" + e.getMessage());
+        }
+        return "gds/div/gdsEditPicList";
+    }
 }

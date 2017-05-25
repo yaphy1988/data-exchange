@@ -6,6 +6,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthRole2StaffMapper;
+import com.ai.bdex.dataexchange.usercenter.dao.model.*;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.*;
+import com.ai.bdex.dataexchange.util.PageResponseFactory;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,13 +21,6 @@ import org.springframework.stereotype.Service;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffMapper;
 import com.ai.bdex.dataexchange.usercenter.dao.mapper.AuthStaffSignMapper;
-import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaff;
-import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffExample;
-import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffSign;
-import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaffSignExample;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffPassDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SignInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffPassSV;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthStaffSV;
 import com.ai.bdex.dataexchange.usercenter.util.SendMailUtil;
@@ -40,6 +41,9 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 	
 	@Autowired
 	private IAuthStaffPassSV iAuthStaffPassSV;
+
+	@Autowired
+	private AuthRole2StaffMapper authRole2StaffMapper;
 	
 	@Override
 	public void sendEmalForActive(SignInfoDTO info) throws Exception {
@@ -255,6 +259,21 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 			pass.setStaffId(info.getStaffId());
 			pass.setStaffPasswd(info.getConfirmPass());
 			iAuthStaffPassSV.savePassInfo(pass);
+
+			//增加默认角色
+			AuthRole2StaffKey key = new AuthRole2StaffKey();
+			key.setStaffId(info.getStaffId());
+			key.setRoleId(Constants.Role.buyerRoleId);
+			AuthRole2Staff authRole2Staff = authRole2StaffMapper.selectByPrimaryKey(key);
+			if(authRole2Staff == null){
+				authRole2Staff = new AuthRole2Staff();
+				authRole2Staff.setStaffId(info.getStaffId());
+				authRole2Staff.setRoleId(Constants.Role.buyerRoleId);
+				authRole2Staff.setStatus("1");
+				authRole2Staff.setUpdateId("system");
+				authRole2Staff.setUpdateDate(new Date());
+				authRole2StaffMapper.insertSelective(authRole2Staff);
+			}
 		}
 		return count;
 	}
@@ -322,4 +341,33 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 		return false;
 	}
 
+	/**
+	 * 查询用户信息
+	 * @param vo
+	 * @return
+	 * @throws Exception
+	 */
+	@Override
+	public PageResponseDTO<StaffInfoDTO> getStaffInfoPage(AuthStaffDTO vo)throws Exception{
+
+		AuthStaffExample example = new AuthStaffExample();
+		AuthStaffExample.Criteria sql = example.createCriteria();
+		if(StringUtil.isBlank(vo.getStaffId()) == false){
+			sql.andStaffIdLike(vo.getStaffId());
+		}
+
+		//设置分页
+		int page = vo.getPageNo();
+		int rows = vo.getPageSize();
+		PageHelper.startPage(page, rows);
+		List<AuthStaff> list = authStaffMapper.selectByExample(example);
+
+		//转换分页
+		PageInfo pageInfo = new PageInfo(list);
+
+		//按照返回数据结构封装分页数据，本项目中分页统一返回PageResponseDTO。入参pageInfo，返回的数据传输对象DTO的class
+		PageResponseDTO<StaffInfoDTO> respDTO = PageResponseFactory.genPageResponse(pageInfo,StaffInfoDTO.class);
+
+		return respDTO;
+	}
 }

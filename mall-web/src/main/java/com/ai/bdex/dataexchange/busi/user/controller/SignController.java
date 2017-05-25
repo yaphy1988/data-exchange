@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.slf4j.Logger;
@@ -39,8 +40,6 @@ public class SignController {
 	
 	/**
 	 * 注册页面初始化
-	 * @param request
-	 * @param response
 	 * @return
 	 */
 	@RequestMapping(value="/pageInit")
@@ -50,8 +49,6 @@ public class SignController {
 	
 	/**
 	 * 发送激活邮件
-	 * @param request
-	 * @param response
 	 * @return
 	 */
 	@RequestMapping(value="/dosign")
@@ -73,8 +70,6 @@ public class SignController {
 	
 	/**
 	 * 激活操作
-	 * @param request
-	 * @param response
 	 * @return
 	 */
 	@RequestMapping(value="/doactive")
@@ -96,15 +91,10 @@ public class SignController {
 	/**
 	 * 短信验证码注册
 	 */
-	@RequestMapping(value="/savesign",method=RequestMethod.POST)
+	@RequestMapping(value="/savesign")
 	@ResponseBody
-	public Map<String,Object> savesign(Model model,UserSignVO signvo){
+	public Map<String,Object> savesign(Model model,UserSignVO signvo,HttpSession session){
 		Map<String,Object> rMap = new HashMap<String,Object>();
-		//校验短信验证码
-		SmsSeccodeReqDTO smsDto = new SmsSeccodeReqDTO();
-		smsDto.setTocken(signvo.getTocken());
-		smsDto.setPhoneNo(signvo.getPhoneNo());
-		smsDto.setInputSecurityCode(signvo.getSmsCode());
 		try {
 			//查询用户名是否重复
 			AuthStaffDTO input1 = new AuthStaffDTO();
@@ -124,11 +114,23 @@ public class SignController {
 				rMap.put("msg", "手机号已经存在");
 				return rMap;
 			}
+
+			//校验手机验证码是否正确
+			Object code = CacheUtil.getItem("SMS_CHANGPHONE_EXPIRY_2"+signvo.getSerialNumber());
+			if(code == null || !code.toString().equals(signvo.getSmsCode())){
+				rMap.put("success", false);
+				rMap.put("msg", "手机验证码错误");
+				return rMap;
+			}
+
 			SignInfoDTO info = new SignInfoDTO();
 			BeanUtils.copyProperties(signvo, info);
 			iAuthStaffRSV.saveSignInfoBysms(info);
 			rMap.put("success", true);
 			rMap.put("msg", "注册成功");
+
+			CacheUtil.delItem("SMS_CHANGPHONE_EXPIRY_2"+signvo.getSerialNumber());
+
 		} catch (BusinessException e) {
 			log.error(e.getMessage());
 			rMap.put("success", false);

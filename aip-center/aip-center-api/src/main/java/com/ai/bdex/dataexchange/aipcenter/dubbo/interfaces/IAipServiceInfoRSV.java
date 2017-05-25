@@ -62,4 +62,12 @@ public interface IAipServiceInfoRSV {
 	 */
 	PageResponseDTO<AipServiceInfoDTO> selectServiceWithPageWithInitVersionAndValidstatus(AipServiceInfoReqDTO req) throws Exception;
 
+	/**
+	 * 返回单个
+	 * @param aipServiceInfoReqDTO
+	 * @return
+	 * @throws Exception
+     */
+	AipServiceInfoDTO queryAipServiceInfo(AipServiceInfoReqDTO aipServiceInfoReqDTO) throws Exception;
+
 }

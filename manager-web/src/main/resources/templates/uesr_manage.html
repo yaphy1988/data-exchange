@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>用户管理</title>
+	<link rel="stylesheet" href="../static/component/bootstrap/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	
+</head>
+<body>
+<header class="clearfix m_header">
+	<a href="" class="Logo" target="_blank" >
+		<img  src="../static/images/manage_logo.png" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<div  layout:fragment="screen_content">
+	<div class="m_main">
+		<div class="m_con">
+			<div class="classify">
+				<i class="iconfont"></i>
+				<span>当前位置：</span>
+				<a href=""><span>广州数据交易中心</span></a>
+				<a href=""><span>XXX</span></a>
+				<span class="col_999"> 用户管理</span>
+			</div>
+			<table class="table table-bordered text-center" >
+                <thead>
+                <tr class="active">
+                    <th></th>
+                    <th>账号编码</th>
+                    <th>账号名称</th>
+                    <th>账号类型</th>
+                    <th>创建时间</th>
+                    <th>上次登录时间</th>
+                    <th>状态</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                    <td><input type="radio" name=""></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>
+                        <p class="pop-link">
+                            <a href="">账户锁定</a>
+                            <a href="">账户解锁</a>
+                            <a href="">登录解锁</a>
+                            <a href="">账户生效</a>
+                            <a href="">账户失效</a>
+                            
+                        </p>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="text-right">
+            	<a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">新增</a>
+            	<a href="" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal2">密码重置</a>
+            	<a href="" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">修改账户信息</a>
+            	<a href="" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal3">修改角色授权</a>
+            </div>
+            <div class="pagelist">
+				<nav aria-label="Page navigation">
+				  <ul class="pagination">
+				    <li >
+				      <a href="#" aria-label="Previous">
+				        <span aria-hidden="true">上一页</span>
+				      </a>
+				    </li>
+				    <li class="active"><a href="#">1</a></li>
+				    <li><a href="#">2</a></li>
+				    <li><a href="#">3</a></li>
+				    <li><a href="#">4</a></li>
+				    <li><a href="#">5</a></li>
+				    <li>
+				      <a href="#" aria-label="Next">
+				        <span aria-hidden="true">下一页</span>
+				      </a>
+				    </li>
+				    <div class="pageskip">
+				  	<span class="pr10">到第<input type="text" class="pageskip_box">页</span>
+				  	<a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+				  </div>
+				  </ul>
+				  
+				</nav>
+			</div>
+         </div>
+	</div>
+</div>
+	<div class="m_nav">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li class="active">
+							<a href=""></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i ></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li >
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+
+	<!-- 新增 / 修改账户信息-->
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document" style="width:800px;">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">新增/修改账户信息</h4>
+	      </div>
+	      <div class="modal-body">
+	        <table class="editTable">
+				<tbody>
+					<tr>
+						<td class="Hint">
+							<span class="col_red">*</span>
+							账号编码：
+						</td>
+						<td width="200">
+							<input class="form-control" name="" type="text">
+						</td>
+						<td class="Hint">
+							<span class="col_red">*</span>
+							账号名称：
+						</td>
+						<td width="200">
+							<input class="form-control" name="" type="text">
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							<span class="col_red">*</span>
+							账号类型：
+						</td>
+						<td >
+							<select  class="form-control" ><option>xx人员</option></select>
+						</td>
+						<td class="Hint">
+							<span class="col_red">*</span>
+							账号级别：
+						</td>
+						<td>
+							<select  class="form-control" ><option>xx人员</option></select>
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							
+							性别：
+						</td>
+						<td >
+							<select  class="form-control" ><option></option></select>
+						</td>
+						<td class="Hint">
+							
+							职位：
+						</td>
+						<td>
+							<input class="form-control" name="" type="text">
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							
+							出生日期：
+						</td>
+						<td >
+							<select  class="form-control" ><option>xx人员</option></select>
+						</td>
+						<td class="Hint">
+							<span class="col_red">*</span>
+							手机号码：
+						</td>
+						<td>
+							<input class="form-control" name="" type="text">
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							
+							电子邮箱：
+						</td>
+						<td >
+							<input class="form-control" name="" type="text">
+						</td>
+						<td class="Hint">
+							
+							QQ号码：
+						</td>
+						<td>
+							<input class="form-control" name="" type="text">
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							
+							微信号：
+						</td>
+						<td >
+							<input class="form-control" name="" type="text">
+						</td>
+						<td class="Hint">
+							
+						</td>
+						<td>
+							
+						</td>
+					</tr>
+					
+				</tbody>
+			</table>
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary">下一步</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 密码重置 -->
+	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">密码重置</h4>
+	      </div>
+	      <div class="modal-body">
+	        <p class="text-center p20">是否重置账号 <span class="col_orange">[okleung]</span> 的密码?</p>
+	      </div>
+	      <div class="modal-footer">
+	       
+	        <button type="button" class="btn btn-primary">确定重置</button>
+	         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- 修改角色授权 -->
+	<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">修改角色授权</h4>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="listTable clearfix">
+		        <div class="ClassItem" style="width:45%;">
+					<div class="tit" >
+						<h2>待授权角色</h2>
+					</div>
+					  
+					<div class="con" style="height:300px;" >
+						<table class="table listitem table-hover table-striped">
+							<tbody>
+							<tr >
+								<td>API分类i</td>
+							</tr>
+							<tr >
+								<td>API分类</td>
+							</tr>
+							<tr >
+								<td>API分类</td>
+							</tr>
+							<tr >
+								<td>API分类</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+				<div class="pull-left p20" style="margin-top: 150px;">
+					<p class="col_666"><b>&#8660;</b></p>
+					
+				</div>
+				<div class="ClassItem" style="width:45%;">
+					<div class="tit" >
+						<h2>已授权角色</h2>
+					</div>
+					  
+					<div class="con" style="height:300px;" >
+						<table class="table listitem table-hover">
+							<tbody>
+							<tr >
+								<td>API分类</td>
+							</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-primary">保存</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	
+
+
+
+
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+
+</body>
+</html>

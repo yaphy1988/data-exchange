@@ -47,21 +47,40 @@ public class AuthenApplyController {
 	/**
 	 * 用户提交审核页面初始化
 	 * @param request
-	 * @param response
 	 * @return
 	 * @throws BusinessException 
 	 */
 	@RequestMapping(value="/userinfo")
-	public String userinfo(Model model,HttpServletRequest request,
-			HttpSession session,String type) throws Exception{
-		ReqInvoiceTaxDTO input = new ReqInvoiceTaxDTO();
+	public String userinfo(Model model,HttpServletRequest request,HttpSession session,String type) throws Exception{
+
 		String staffId = StaffUtil.getStaffVO(session).getStaffId();
-		if(StringUtil.isBlank(staffId)){
-			String mallurl = SystemConfUtil.getSystemModuleInfo("01","1").genFullUrl();
-			String contextpath = request.getContextPath();
-			return "redirect:"+mallurl+contextpath+"/login/pageInit";
+
+		//查询用户认证信息
+		ReqInvoiceTaxDTO invoiceVo = new ReqInvoiceTaxDTO();
+		invoiceVo.setStaffId(staffId);
+		List<ChnlInvoiceTaxDTO> datas = iChnlInvoiceTaxRSV.queryInvoiceRecord(invoiceVo);
+		InvoiceTaxVO vodata = new InvoiceTaxVO();
+		if(datas != null && datas.size()>0){
+			BeanUtils.copyProperties(datas.get(0), vodata);
+			if(!StringUtil.isBlank(vodata.getVfsId1())){
+				vodata.setPicSrc(ImageUtil.getImageUrl(vodata.getVfsId1()+"_80x80!"));
+
+			}
+
+			//返回数据
+			model.addAttribute("data", vodata);
+
+			//其他为展示申请信息界面
+			if("reapply".equals(type) == false) {
+				model.addAttribute("authflag","false");
+				return "personalCenter/company_approve_details";
+			}
+		}else{
+			//返回数据
+			model.addAttribute("data", vodata);
 		}
 
+		//如果是重新申请，则跳转到申请界面
 		//查询省份列表
 		BaseAdminAreaReqDTO baseAdminAreaReqDTO = new BaseAdminAreaReqDTO();
 		baseAdminAreaReqDTO.setStatus("1");
@@ -69,48 +88,21 @@ public class AuthenApplyController {
 		List<BaseAdminAreaInfoVO> provinceList = queryBaseArea(baseAdminAreaReqDTO);
 		model.addAttribute("provinceList",provinceList);
 
-		input.setStaffId(staffId);
-		List<ChnlInvoiceTaxDTO> datas = null;
-		InvoiceTaxVO vodata = new InvoiceTaxVO();
-		input.setStatus("10");
-		datas = iChnlInvoiceTaxRSV.queryInvoiceRecord(input);
-		if(datas!=null&&datas.size()>0){
-			BeanUtils.copyProperties(datas.get(0), vodata);
-			if(!StringUtil.isBlank(vodata.getVfsId1())){
-				vodata.setPicSrc(ImageUtil.getImageUrl(vodata.getVfsId1()+"_80x80!"));
+		if(StringUtil.isBlank(vodata.getProvinceCode()) == false){
+			baseAdminAreaReqDTO.setAreaLevel(null);
+			baseAdminAreaReqDTO.setStatus("1");
+			baseAdminAreaReqDTO.setParentAreaCode(vodata.getProvinceCode());
+			List<BaseAdminAreaInfoVO> cityList = queryBaseArea(baseAdminAreaReqDTO);
+			model.addAttribute("cityList",cityList);
+
+			if(StringUtil.isBlank(vodata.getCityCode()) == false){
+				baseAdminAreaReqDTO.setStatus("1");
+				baseAdminAreaReqDTO.setParentAreaCode(vodata.getCityCode());
+				List<BaseAdminAreaInfoVO> countryList = queryBaseArea(baseAdminAreaReqDTO);
+				model.addAttribute("countryList",countryList);
 			}
-			model.addAttribute("data", vodata);
-			model.addAttribute("status","10");
-			model.addAttribute("msg", "正在认证中，请耐心等待！");
-			//有待审核的数据
-			return "personalCenter/company_approve_details";
 		}
-		input.setStatus("20");
-		datas = iChnlInvoiceTaxRSV.queryInvoiceRecord(input);
-		if(datas!=null&&datas.size()>0){
-			BeanUtils.copyProperties(datas.get(0), vodata);
-			if(!StringUtil.isBlank(vodata.getVfsId1())){
-				vodata.setPicSrc(ImageUtil.getImageUrl(vodata.getVfsId1()+"_80x80!"));
-			}
-			model.addAttribute("data", vodata);
-			model.addAttribute("status","20");
-			model.addAttribute("msg", "恭喜你，已认证成功！");
-			return "personalCenter/company_approve_details";
-		}
-		if(!"reapply".equals(type)){
-			input.setStatus("30");
-			datas = iChnlInvoiceTaxRSV.queryInvoiceRecord(input);
-			if(datas!=null&&datas.size()>0){
-				BeanUtils.copyProperties(datas.get(0), vodata);
-				if(!StringUtil.isBlank(vodata.getVfsId1())){
-					vodata.setPicSrc(ImageUtil.getImageUrl(vodata.getVfsId1()+"_80x80!"));
-				}
-				model.addAttribute("data", vodata);
-				model.addAttribute("status","30");
-				model.addAttribute("msg", "认证失败，原因为审核不通过！");
-				return "personalCenter/company_approve_details";
-			}
-		}		
+
 		return "personalCenter/company_approve";
 	}
 	
@@ -123,50 +115,42 @@ public class AuthenApplyController {
 	public Map<String,Object> saveAuthenInfo(Model model,HttpSession session,InvoiceTaxVO vo){
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {
+
+			String staffId = StaffUtil.getStaffVO(session).getStaffId();
+
+			//界面提交的认证信息
+			ChnlInvoiceTaxDTO info = new ChnlInvoiceTaxDTO();
+			BeanUtils.copyProperties(vo, info);
+			info.setStaffId(staffId);
+			info.setStatus("10");//待审核
+
 			//查询是否有审核记录，如果有，就更新，没有就新增
 			ReqInvoiceTaxDTO input = new ReqInvoiceTaxDTO();
-			String staffId = StaffUtil.getStaffVO(session).getStaffId();
-			if(StringUtil.isBlank(staffId)){
-				rMap.put("success", false);
-				rMap.put("msg", "提交审核异常，用户未登录！");
-				return rMap;
-			}
-			ChnlInvoiceTaxDTO info = new ChnlInvoiceTaxDTO();
-			BeanUtils.copyProperties(vo, info);		
-			info.setStaffId(staffId);
 			input.setStaffId(staffId);
-			List<ChnlInvoiceTaxDTO> datas = null;
-			input.setStatus("10");
-			datas = iChnlInvoiceTaxRSV.queryInvoiceRecord(input);
+			List<ChnlInvoiceTaxDTO> datas = iChnlInvoiceTaxRSV.queryInvoiceRecord(input);
 			if(datas!=null&&datas.size()>0){
-				rMap.put("success", false);
-				rMap.put("msg", "提交审核异常，您的账号已经有待审核的记录！");
-				return rMap;
+				ChnlInvoiceTaxDTO oldData = datas.get(0);
+				if("20".equals(oldData.getStatus())){
+					rMap.put("success", false);
+					rMap.put("msg", "您的账号已经审核认证成功，不能再提交认证！");
+					return rMap;
+				}else{
+					//更新
+					iChnlInvoiceTaxRSV.updateCheckInfo(info);
+				}
+			}else{
+				//新增
+				iChnlInvoiceTaxRSV.saveInvoiceTax(info);
 			}
-			input.setStatus("20");
-			datas = iChnlInvoiceTaxRSV.queryInvoiceRecord(input);
-			if(datas!=null&&datas.size()>0){
-				rMap.put("success", false);
-				rMap.put("msg", "提交审核异常，您的账号已经审核认证成功，无须重新认证！");
-				return rMap;
-			}
-			input.setStatus("30");
-			datas = iChnlInvoiceTaxRSV.queryInvoiceRecord(input);
-			if(datas!=null&&datas.size()>0){
-				info.setStatus("10");//待审核
-				iChnlInvoiceTaxRSV.updateCheckInfo(info);
-				rMap.put("success", true);
-				return rMap;
-			}	
-			info.setStatus("10");//待审核
-			iChnlInvoiceTaxRSV.saveInvoiceTax(info);
 			rMap.put("success", true);
 			rMap.put("msg", "提交成功");
+
 		} catch (BusinessException e) {
 			log.error(e.getMessage());
 			rMap.put("success", false);
 			rMap.put("msg", e.getMessage());
 		}
+
 		return rMap;
 	}
 
@@ -204,7 +188,7 @@ public class AuthenApplyController {
 //			baseAdminAreaInfoVO.setAreaName("请选择");
 //			baseAdminAreaInfoVOList.add(baseAdminAreaInfoVO);
 //		}
-		request.setAttribute("areaSelList",baseAdminAreaInfoVOList);
+		request.setAttribute(contentId+"List",baseAdminAreaInfoVOList);
 
 		String viewName = "personalCenter/company_approve :: #"+contentId;
 		return viewName;

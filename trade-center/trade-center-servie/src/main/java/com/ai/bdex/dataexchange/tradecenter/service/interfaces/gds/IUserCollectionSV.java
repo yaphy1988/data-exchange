@@ -93,5 +93,12 @@ public interface IUserCollectionSV {
      * @return
      */
     public PageResponseDTO<UserCollectionRespDTO> queryUserCollectionPage(UserCollectionReqDTO userCollectionReqDTO) throws BusinessException;
+    
+    /**
+    * 管理了表t_gds_info ，只取了，gdsName,gdsSubtitle,gdsPic,funIntroduction,status 字段而已。
+    * @param gdsInfoReqDTO
+    * @return
+    */
+   public PageResponseDTO<UserCollectionRespDTO> queryUserCollectionPageExtends(UserCollectionReqDTO userCollectionReqDTO) throws BusinessException;
 }
 

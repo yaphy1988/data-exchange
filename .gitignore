@@ -33,7 +33,9 @@ tmp/
 *.tmp
 *.bak
 *.swp
+/.settings/
 /**/.settings/
+/**/**/.settings/
 .externalToolBuilders/
 .project
 .classpath
@@ -50,6 +52,7 @@ logs/
 .dubbo/**
 *.cache
 *.dubbo.registry.file*
+*.cache.lock
 
 *.log
 
@@ -57,3 +60,8 @@ generatorConfig.xml
 
 /bin/
 *.db
+
+
+### ignore webjars temporary files
+**/META-INF/resources/**/*
+/**/**/**/**/META-INF/resources/**/*

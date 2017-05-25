@@ -16,17 +16,6 @@
     <version>0.0.1-SNAPSHOT</version>
   </parent>
 
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <java.version>1.8</java.version>
-    <!-- thymeleaf版本调整为3.0 -->
-    <thymeleaf.version>3.0.5.RELEASE</thymeleaf.version>
-    <thymeleaf-layout-dialect.version>2.2.1</thymeleaf-layout-dialect.version>
-    <thymeleaf-extras-java8time.version>3.0.0.RELEASE</thymeleaf-extras-java8time.version>
-    <assertj-core-version>3.6.2</assertj-core-version>
-  </properties>
-
   <dependencies>
     <dependency>
       <groupId>org.springframework.session</groupId>
@@ -65,6 +54,11 @@
     <!--<artifactId>dubbo-spring-boot-autoconfigure</artifactId>-->
     <!--</dependency>-->
 
+    <dependency>
+      <groupId>com.ai.bdex.data-exchange</groupId>
+      <artifactId>common-static</artifactId>
+      <version>${project.version}</version>
+    </dependency>
     <dependency>
       <groupId>com.ai.bdex.dataexchange</groupId>
       <artifactId>trade-center-api</artifactId>
@@ -111,25 +105,172 @@
     </dependency>
     <!-- solr end -->
     <dependency>
-            <groupId>commons-codec</groupId>
-            <artifactId>commons-codec</artifactId>
-            <optional>true</optional>
-        </dependency>
+      <groupId>commons-codec</groupId>
+      <artifactId>commons-codec</artifactId>
+      <optional>true</optional>
+    </dependency>
+
+    <!-- 前端框架引入，使用webjars方式管理 -->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>webjars-locator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>jquery</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>bootstrap</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars.bower</groupId>
+      <artifactId>bootstrap-table</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars.bower</groupId>
+      <artifactId>smalot-bootstrap-datetimepicker</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars.bower</groupId>
+      <artifactId>bootstrap-fileinput</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>font-awesome</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars.bower</groupId>
+      <artifactId>awesome-bootstrap-checkbox</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>jquery-cookie</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>jquery-migrate</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>html5shiv</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>respond</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>zTree</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>ckeditor</artifactId>
+    </dependency>
   </dependencies>
 
   <build>
+    <resources>
+      <resource>
+        <directory>src/main/resources</directory>
+        <excludes>
+          <exclude>META-INF/**/*</exclude>
+        </excludes>
+      </resource>
+    </resources>
     <plugins>
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <dependencies>
-          <!-- spring热部署 -->
-          <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>springloaded</artifactId>
-            <version>1.2.6.RELEASE</version>
-          </dependency>
-        </dependencies>
+      </plugin>
+      <!-- 处理js/css资源文件依赖，编译时获取common-static中的最新代码，install时获取全量webjars依赖代码 -->
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-dependency-plugin</artifactId>
+        <executions>
+          <execution>
+            <id>unpack</id>
+            <phase>compile</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>com.ai.bdex.data-exchange</groupId>
+                  <artifactId>common-static</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+          <execution>
+            <id>unpack-webjars</id>
+            <phase>install</phase>
+            <goals>
+              <goal>unpack</goal>
+            </goals>
+            <configuration>
+              <artifactItems>
+                <artifactItem>
+                  <groupId>org.webjars</groupId>
+                  <artifactId>jquery</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars</groupId>
+                  <artifactId>bootstrap</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars.bower</groupId>
+                  <artifactId>bootstrap-table</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars.bower</groupId>
+                  <artifactId>smalot-bootstrap-datetimepicker</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars.bower</groupId>
+                  <artifactId>bootstrap-fileinput</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars</groupId>
+                  <artifactId>font-awesome</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars.bower</groupId>
+                  <artifactId>awesome-bootstrap-checkbox</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars</groupId>
+                  <artifactId>jquery-cookie</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars</groupId>
+                  <artifactId>jquery-migrate</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars</groupId>
+                  <artifactId>html5shiv</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars</groupId>
+                  <artifactId>respond</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars</groupId>
+                  <artifactId>zTree</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars</groupId>
+                  <artifactId>ckeditor</artifactId>
+                </artifactItem>
+              </artifactItems>
+            </configuration>
+          </execution>
+        </executions>
+        <configuration>
+          <includes>/META-INF/resources/webjars/**/*</includes>
+          <outputDirectory>${project.basedir}/src/main/resources</outputDirectory>
+        </configuration>
       </plugin>
     </plugins>
   </build>

@@ -4,10 +4,10 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="renderer" content="webkit">
-	<link rel="icon" type="../static/image/png" href="../../static/images/favicon.png">
-	<link rel="stylesheet" href="../../static/css/bootstrap.css">
-	<link rel="stylesheet" href="../../static/css/global.css">
-	<link rel="stylesheet" href="../../static/css/index.css">
+	<link rel="icon" type="../static/image/png" href="../../META-INF/resources/webjars/images/favicon.png" th:remove="all">
+	<link rel="stylesheet" href="../../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../../META-INF/resources/webjars/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../../META-INF/resources/webjars/css/index.css" th:remove="all">
 </head>
 <body class="bgf1">
  <ul class="navbar floatL clearfix" th:fragment="navigation" id="head_navbar">
@@ -30,16 +30,16 @@
   					if(data.success){
   						$(data.searchNavList).each(function(i,d){
   							//html +='<li><a class="navigationBar" href='+WEB_ROOT+d.navLink+' target="_blank">'+d.navName+'</a>';
-  							html +='<li><a class="navigationBar" href='+d.navLink+' target="_blank">'+d.navName+'</a>';
+  							html +='<li><a class="navigationBar" href='+MALL_ROOT+d.navLink+' target="_blank">'+d.navName+'</a>';
   						});
   					}
   				}
   				$('#head_navbar').html(html);
-  				$(".navigationBar").die().live('click',function(e){
+  				$(".navigationBar").off().on('click',function(e){
     	    		  $(this).parents("li").addClass('active').siblings().removeClass("active");
     	    		  var url = $(this).attr('href');
 //     	 		   	  $.cookie('gjs_navigation', url, {path : '/'});
-    	 		   	  window.location.href=WEB_ROOT+url;
+    	 		   	  window.location.href=MALL_ROOT+url;
     	 		   	  e.preventDefault();
    	    	    });
   				var url = "";
@@ -56,10 +56,10 @@
 //   				var url = $.cookie('gjs_navigation');
   				var thisUrl = window.location.pathname;
  	  	    	$(".navigationBar").each(function(){
- 	  	    		if($(this).attr("href")==thisUrl){
+ 	  	    		if($(this).attr("href").indexOf(thisUrl)>0){
  	  	    			$(this).parents("li").addClass('active');
  	  	    			return false;
- 	  	    		}else if($(this).attr('href')==url){
+ 	  	    		}else if($(this).attr('href').indexOf(url)>0){
  	  	    			$(this).parents("li").addClass('active');
  	  	    			return false;
  	  	    		}

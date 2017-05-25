@@ -9,6 +9,8 @@ public class PageModuleGoodsVO {
 
     private Integer gdsId;
 
+    private String gdsName;
+    
     private String recommendName;
 
     private Integer orderNo;
@@ -22,8 +24,25 @@ public class PageModuleGoodsVO {
     private String updateStaffId;
 
     private String status;
+    private String vfsId;
 
-    public Integer getPmgId() {
+	public String getVfsId() {
+		return vfsId;
+	}
+
+	public void setVfsId(String vfsId) {
+		this.vfsId = vfsId;
+	}
+
+	public String getGdsName() {
+		return gdsName;
+	}
+
+	public void setGdsName(String gdsName) {
+		this.gdsName = gdsName;
+	}
+
+	public Integer getPmgId() {
         return pmgId;
     }
 

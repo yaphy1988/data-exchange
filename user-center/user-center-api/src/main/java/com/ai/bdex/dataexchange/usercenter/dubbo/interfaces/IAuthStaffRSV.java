@@ -2,9 +2,11 @@ package com.ai.bdex.dataexchange.usercenter.dubbo.interfaces;
 
 import java.util.Map;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SignInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 
 public interface IAuthStaffRSV {
 
@@ -83,4 +85,12 @@ public interface IAuthStaffRSV {
 	 * @throws BusinessException
 	 */
 	public boolean checkInfoByName(String name,String staffId)throws BusinessException;
+
+	/**
+	 * 查询用户信息
+	 * @param vo
+	 * @return
+	 * @throws BusinessException
+     */
+	public PageResponseDTO<StaffInfoDTO> getStaffInfoPage(AuthStaffDTO vo)throws BusinessException;
 }

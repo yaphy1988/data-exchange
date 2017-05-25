@@ -1,13 +1,14 @@
 package com.ai.bdex.dataexchange.aipcenter.dubbo.dto;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
 import java.util.Date;
 
 /**
  * Created by fangyunfeng on 2017/5/4.
  */
-public class RechargeDTO extends BaseInfo {
+public class RechargeDTO extends BaseResponseDTO {
 
     private String rechargeReqId;
 
@@ -29,6 +30,16 @@ public class RechargeDTO extends BaseInfo {
 
     private String serviceId;
 
+    private Integer catId;
+
+    private Integer catFirst;
+
+    private Integer gdsId;
+
+    private Integer skuId;
+
+    private String packageType;
+
     private Integer totalNum;
 
     /**
@@ -42,9 +53,40 @@ public class RechargeDTO extends BaseInfo {
 
     private Long dataAccountId;
 
+    //查询是是否要连数据账户信息一起查询
+    private boolean queryDataAccount = false;
+    
     private DataAccountDTO dataAccountDTO;
+    
+    private String serviceName;
+    private Date createTime;
+    private Date updateTime;
+    
+    public Date getCreateTime() {
+		return createTime;
+	}
 
-    public String getRechargeReqId() {
+	public void setCreateTime(Date createTime) {
+		this.createTime = createTime;
+	}
+
+	public Date getUpdateTime() {
+		return updateTime;
+	}
+
+	public void setUpdateTime(Date updateTime) {
+		this.updateTime = updateTime;
+	}
+
+	public String getServiceName() {
+		return serviceName;
+	}
+
+	public void setServiceName(String serviceName) {
+		this.serviceName = serviceName;
+	}
+
+	public String getRechargeReqId() {
         return rechargeReqId;
     }
 
@@ -100,6 +142,46 @@ public class RechargeDTO extends BaseInfo {
         this.serviceId = serviceId;
     }
 
+    public Integer getCatId() {
+        return catId;
+    }
+
+    public void setCatId(Integer catId) {
+        this.catId = catId;
+    }
+
+    public Integer getCatFirst() {
+        return catFirst;
+    }
+
+    public void setCatFirst(Integer catFirst) {
+        this.catFirst = catFirst;
+    }
+
+    public Integer getGdsId() {
+        return gdsId;
+    }
+
+    public void setGdsId(Integer gdsId) {
+        this.gdsId = gdsId;
+    }
+
+    public Integer getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
+    }
+
+    public String getPackageType() {
+        return packageType;
+    }
+
+    public void setPackageType(String packageType) {
+        this.packageType = packageType;
+    }
+
     public Integer getTotalNum() {
         return totalNum;
     }
@@ -138,6 +220,14 @@ public class RechargeDTO extends BaseInfo {
 
     public void setDataAccountId(Long dataAccountId) {
         this.dataAccountId = dataAccountId;
+    }
+
+    public boolean isQueryDataAccount() {
+        return queryDataAccount;
+    }
+
+    public void setQueryDataAccount(boolean queryDataAccount) {
+        this.queryDataAccount = queryDataAccount;
     }
 
     public DataAccountDTO getDataAccountDTO() {

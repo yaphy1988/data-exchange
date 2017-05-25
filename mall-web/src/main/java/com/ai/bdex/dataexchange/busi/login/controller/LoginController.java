@@ -1,13 +1,17 @@
 package com.ai.bdex.dataexchange.busi.login.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
+import com.ai.bdex.dataexchange.filter.LoginAuthFilter;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthBusiRSV;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.captcha.CaptchaServlet;
+import com.ai.paas.session.impl.SessionManager;
+import com.ai.paas.util.CacheUtil;
+import com.ai.paas.util.Utils;
+import com.ai.paas.utils.InetTool;
+import com.ai.paas.utils.SignUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,27 +21,37 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.LoginInfoDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
-import com.ai.bdex.dataexchange.util.StaffUtil;
-import com.ai.paas.captcha.CaptchaServlet;
-import com.ai.paas.utils.InetTool;
-import com.ai.paas.utils.SignUtil;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Controller
 @RequestMapping(value = "/login")
 public class LoginController {
 	private static final Logger log = LoggerFactory.getLogger(LoginController.class);
-	
+
 	@DubboConsumer
 	private ILoginRSV iLoginRSV;
-	
+
+	@DubboConsumer
+	private IAuthBusiRSV iAuthBusiRSV;
+
 	@RequestMapping(value="/pageInit")
-	public String pageInit(Model model){
+	public String pageInit(HttpServletRequest request, Model model) {
+
+		model.addAttribute("toPage",request.getParameter("toPage"));
+
 		return "login";
 	}
-	
+
+	@RequestMapping(value="/noAuth")
+	public String noAuth(HttpServletRequest request, Model model) {
+		return "noAuth";
+	}
+
 	/**
 	 * 登录操作
 	 * @param request
@@ -47,34 +61,34 @@ public class LoginController {
 	 */
 	@RequestMapping(value="/dologin",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> dologin(HttpServletRequest request,
-			HttpServletResponse response,HttpSession session){
+	public Map<String,Object> dologin(HttpServletRequest request,HttpServletResponse response,HttpSession session){
 		Map<String,Object> rMap = new HashMap<String,Object>();
-		LoginInfoDTO loginInfo = null;
-		String staffId = null;
-		String ip = InetTool.getClientAddr(request);
 
-		staffId = request.getParameter("staffId");
+		String ip = InetTool.getClientAddr(request);
+        //请求参数
+		String staffId = request.getParameter("staffId");
 		String password = request.getParameter("password");
 		String verifyCode = request.getParameter("verifyCode");
-		String veriCodeInSession = CaptchaServlet.getCaptchaCode(request);
-//		验证码注释
+
+		//验证码注释
 		if (!CaptchaServlet.verifyCaptcha(request, verifyCode)) {
 			rMap.put("success", false);
 			rMap.put("errorMsg", "验证码输入错误");
 			return rMap;
 		}
 
-		loginInfo = new LoginInfoDTO();
+		//登陆校验
+		LoginInfoDTO loginInfo = new LoginInfoDTO();
 		loginInfo.setLoginName(staffId);
 		loginInfo.setLoginPwd(SignUtil.SHA1(password));
-		loginInfo.setInputVerifyCode(verifyCode);
-		loginInfo.setSessionVerifyCode(veriCodeInSession);
 		loginInfo.setLoginIp(ip);
+
 		try {
-			//先校验登录，登录成功再进行其他业务逻辑判断
-            Map<String,Object> map = loginVerify_new(loginInfo,response,request,session);
-            StaffInfoDTO staffInfoVO = (StaffInfoDTO) map.get("staffInfoDTO");
+			//先校验登录,重要重要重要：所有登陆后要写session的请在LoginAuthFilter.loginVerify写
+			StaffInfoDTO staffInfoVO = LoginAuthFilter.loginVerify(request,response,loginInfo,iLoginRSV,iAuthBusiRSV,"1");
+			//记住密码
+			this.rememberPaas(request, response,loginInfo);
+
 			rMap.put("success", true);
 			rMap.put("data", staffInfoVO);
 		} catch (Exception e) {
@@ -84,57 +98,40 @@ public class LoginController {
 		}
 		return rMap;
 	}
-	
-	
-	/**
-	 * 调用登录接口校验是否能登录
-	 * @return
-	 * @throws Exception 
-	 */
-	public Map<String,Object> loginVerify_new(LoginInfoDTO loginInfo,HttpServletResponse response,HttpServletRequest request,HttpSession session) throws Exception{
-		StaffInfoDTO staffInfoVO = null;
-		staffInfoVO = iLoginRSV.loginVerify(loginInfo);
-		Map<String,Object> result = new HashMap<String,Object>();
-		try{
-			result = saveStaffInfotoSession(staffInfoVO, response,request,session);
-			iLoginRSV.updateLastLogin(staffInfoVO.getStaffId());
-		}catch (Exception e){
-			log.error(e.getMessage());
-		}
-		
-		return result;
-	}
-	
-	/**
-	 * 将staffInfoDTO存入session
-	 * @return
-	 * @throws Exception 
-	 */
-	
-	public Map<String,Object> saveStaffInfotoSession(StaffInfoDTO staffInfoDTO,HttpServletResponse response,HttpServletRequest request,HttpSession session) throws Exception{
-		Map<String, Object> map = new HashMap<String, Object>();
-		//存入用户上次登录信息Cookie，时间为一周
-		StaffUtil.addStaffCookie(request, response, staffInfoDTO.getStaffId());
-		
-		log.debug("staffInfoDTO:"+staffInfoDTO.toString());
-		//存入session
-		StaffUtil.setStaffInfo(session, staffInfoDTO);
-		map.put("staffInfoDTO", staffInfoDTO);
-		return map;
-	}
-	
+
 	/**
 	 * 注销
 	 * @return
 	 */
 	@RequestMapping(value = "/doLogout")
-	public String doLogout(HttpServletResponse response,HttpSession session) {
+	public String doLogout(HttpServletRequest request,HttpServletResponse response,HttpSession session) {
 		try {
+			//移除用户
 			StaffUtil.removeStaffInfo(session);
+			//移除服务端记住密码的信息
+			LoginAuthFilter.unRememberPaas(request,response);
 		} catch (Exception e) {
 			log.error("退出异常", e.getMessage());
 		}
 		return "redirect:/login/pageInit";
 	}
 
+	private void rememberPaas(HttpServletRequest request, HttpServletResponse response,LoginInfoDTO loginInfo){
+		//是否记住密码
+		String rememberPaas = request.getParameter("rememberPaas");
+		SessionManager sessionManager = Utils.getInstance(SessionManager.class);
+
+		if("true".equals(rememberPaas)){
+			int expiryTime = 10*24*60*60;//10天
+			//cookie值
+			String rememberPaasCookieValue = UUID.randomUUID().toString().replaceAll("-", "");
+			//保存cookie到客户端
+			LoginAuthFilter.addCookie(response, LoginAuthFilter.remember_Paas_CookieKey, rememberPaasCookieValue,expiryTime);
+			//保存在服务端的cookie值对应的用户信息
+			CacheUtil.addItem(LoginAuthFilter.remember_PaasKey_Pre+rememberPaasCookieValue,loginInfo.getLoginName()+":"+ loginInfo.getLoginPwd(),expiryTime);
+		}else{
+			//移除服务端记住密码的信息
+			LoginAuthFilter.unRememberPaas(request,response);
+		}
+	}
 }

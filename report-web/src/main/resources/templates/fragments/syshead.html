@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="syshead">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <link rel="icon" type="../../static/image/png" href="../../META-INF/resources/webjars/images/favicon.png" th:href="@{/webjars/images/favicon.ico}">
+    <link rel="stylesheet" href="../../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="../../META-INF/resources/webjars/bootstrap-table/1.11.1/dist/bootstrap-table.css" th:href="@{/webjars/bootstrap-table/1.11.1/dist/bootstrap-table.min.css}"/>
+    <link rel="stylesheet" href="../../META-INF/resources/webjars/css/global.css" th:href="@{/webjars/css/global.css}"/>
+    <link rel="stylesheet" href="../../META-INF/resources/webjars/css/index.css" th:href="@{/webjars/css/index.css}"/>
+    <link rel="stylesheet" href="../../META-INF/resources/webjars/css/info.css" th:href="@{/webjars/css/info.css}"/>
+    <script th:inline="javascript">
+        var WEB_ROOT = [[${#httpServletRequest.contextPath}]];
+        var MALL_ROOT = [[${#tools.mallDomain()}]];
+        var staffInfoDTO = [[${session.staffInfoDTO}]];
+    </script>
+    <!-- js -->
+    <script src="../../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:src="@{/webjars/jquery/3.2.0/jquery.min.js}"></script>
+    <script src="../../META-INF/resources/webjars/bootstrap/3.3.7/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <script src="../../META-INF/resources/webjars/bootstrap-table/1.11.1/dist/bootstrap-table.js" th:src="@{/webjars/bootstrap-table/1.11.1/dist/bootstrap-table.min.js}"></script>
+    <script type="text/javascript" src="../../META-INF/resources/webjars/js/util.js" th:src="@{/webjars/js/util.js}"></script>
+
+</head>
+<body class="bgf1" th:remove="all">
+</body>
+</html>

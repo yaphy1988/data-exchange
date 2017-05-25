@@ -31,7 +31,30 @@ public class UserCollectionRespDTO extends BaseResponseDTO{
     private String updateUser;
 
     private Date updateTime;
-
+    
+    private String catFirstName;
+    
+    /**
+     * 商品名称
+     */
+    private String gdsName;
+    /**
+     * 商品图片uuid
+     */
+    private String gdsPic;
+    /**
+     * 商品描述
+     */
+    private String funIntroduction;
+    /**
+     * 商品副标题
+     */
+    private String gdsSubtitle;
+    /**
+     * 商品狀態
+     */
+    private String gdsStatus;
+    
     public Integer getColId() {
         return colId;
     }
@@ -110,6 +133,58 @@ public class UserCollectionRespDTO extends BaseResponseDTO{
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public String getGdsName() {
+        return gdsName;
+    }
+
+    public void setGdsName(String gdsName) {
+        this.gdsName = gdsName;
+    }
+
+    public String getGdsPic() {
+        return gdsPic;
+    }
+
+    public void setGdsPic(String gdsPic) {
+        this.gdsPic = gdsPic;
+    }
+
+    public String getCatFirstName() {
+        return catFirstName;
+    }
+
+    public void setCatFirstName(String catFirstName) {
+        this.catFirstName = catFirstName;
+    }
+
+    public String getFunIntroduction() {
+        return funIntroduction;
+    }
+
+    public void setFunIntroduction(String funIntroduction) {
+        this.funIntroduction = funIntroduction;
+    }
+
+    public String getGdsSubtitle() {
+        return gdsSubtitle;
+    }
+
+    public void setGdsSubtitle(String gdsSubtitle) {
+        this.gdsSubtitle = gdsSubtitle;
+    }
+
+    public static long getSerialversionuid() {
+        return serialVersionUID;
+    }
+
+    public String getGdsStatus() {
+        return gdsStatus;
+    }
+
+    public void setGdsStatus(String gdsStatus) {
+        this.gdsStatus = gdsStatus;
     }
     
 }

@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>aip示例信息</title>
+	<link rel="stylesheet" href="../static/component/bootstrap/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+
+	<script type="text/javascript" src="../META-INF/resources/webjars/ckeditor/4.4.7/full/ckeditor.js" th:src="@{/webjars/ckeditor/4.4.7/full/ckeditor.js}"></script>
+
+	<script src="../static/js-busi/aip/aipEntry-exampleCode.js" th:src="@{/js-busi/aip/aipEntry-exampleCode.js}"></script>
+	
+</head>
+<body>
+<header class="clearfix m_header" th:remove="all">
+	<a href="" class="Logo" target="_blank" >
+		<img  src="../static/images/manage_logo.png" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<div  layout:fragment="screen_content">
+	<input type="hidden" id="exampleInfo_serviceId" th:value="${serviceId}">
+	<input type="hidden" id="exampleInfo_version" th:value="${version}">
+	<div class="m_main">
+		<div class="m_con" id="exampleCodeContent">
+			<div class="title">示例代码</div>
+				<!--<div class="text-right mb10">-->
+					 <!--<a href="javascript:void(0)" class="btn-primary btn mr10" >新增实例</a>-->
+					 <!--<a href="javascript:void(0)" class="btn-default btn mr10" >删除</a>-->
+				<!--</div>-->
+			<div id="exampleCodeHidden" style="display: none">
+				<div style="background: #fbfbfb;position: relative" class="p10 mb10 exampleCodeDiv" >
+					<h5 class="">示例</h5>
+					<table class="editTable">
+						<tbody>
+						<tr>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								语言：
+							</td>
+							<td width="300">
+								<input type="text" class="form-control exampleCode_program" name="">
+							</td>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								提供者：
+							</td>
+							<td>
+								<input type="text" class="form-control exampleCode_author" name="">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								标题：
+							</td>
+							<td colspan="3">
+								<input type="text" class="form-control exampleCode_title" name="">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint"><span class="col_red">*</span>示例代码：</td>
+							<td colspan="3">
+								<div class="exampleCode" id="">
+
+								</div>
+								<textarea class="form-control" rows="5" th:remove="all"></textarea>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+					<div style="position: absolute;bottom: 10px;right: 10px;">
+						<a href="javascript:void(0)" class="btn-primary btn mr10 closeBtn" onclick="hiddenCode(this)">收起</a>
+						<a href="javascript:void(0)" class="btn-primary btn mr10 openBtn" style="display: none" onclick="showCode(this)">展开</a>
+						<a href="javascript:void(0)" class="btn-default btn mr10 deleteBtn" onclick="deleteExample(this)">删除</a>
+					</div>
+				</div>
+			</div>
+				<div style="background: #fbfbfb;position: relative" class="p10 mb10 exampleCodeDiv" th:if="${#lists.size(aipServiceCodeList)} gt 0" th:each="exampleCode,exampleCodeStat : ${aipServiceCodeList}">
+					<h5 class="">示例</h5>
+					<table class="editTable">
+						<tbody>
+							<tr>
+								<td class="Hint">
+									<span class="col_red">*</span>
+									语言：
+								</td>
+								<td width="300">
+									<input type="text" class="form-control exampleCode_program" name="" th:value="${exampleCode.program}" th:disabled="${isView}=='1'">
+								</td>
+								<td class="Hint">
+									<span class="col_red">*</span>
+									提供者：
+								</td>
+								<td>
+									<input type="text" class="form-control exampleCode_author" name="" th:value="${exampleCode.author}" th:disabled="${isView}=='1'">
+								</td>
+							</tr>
+							<tr>
+								<td class="Hint">
+									<span class="col_red">*</span>
+									标题：
+								</td>
+								<td colspan="3">
+									<input type="text" class="form-control exampleCode_author" name="" th:value="${exampleCode.title}" th:disabled="${isView}=='1'">
+								</td>
+							</tr>
+							<tr style="display:none">
+								<td class="Hint"><span class="col_red">*</span>示例代码：</td>
+								<td colspan="3">
+									<div class="exampleCode" th:htmlId="${exampleCode.docId}" th:id="'exampleCode'+${exampleCodeStat.index}">
+
+									</div>
+									<textarea class="form-control" rows="5" th:remove="all"></textarea>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div style="position: absolute;bottom: 10px;right: 10px;">
+						<a href="javascript:void(0)" class="btn-primary btn mr10 closeBtn" style="display: none" onclick="hiddenCode(this)" >收起</a>
+						<a href="javascript:void(0)" class="btn-primary btn mr10 openBtn" onclick="showCode(this)">展开</a>
+						<a href="javascript:void(0)" class="btn-default btn mr10 deleteBtn" onclick="deleteExample(this)" th:disabled="${isView}=='1'">删除</a>
+					</div>
+				</div>
+				<div style="background: #fbfbfb;position: relative" class="p10 mb10 exampleCodeDiv" th:unless="${#lists.size(aipServiceCodeList)} gt 0" >
+					<h5 class="">示例</h5>
+					<table class="editTable">
+						<tbody>
+						<tr>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								语言：
+							</td>
+							<td width="300">
+								<input type="text" class="form-control exampleCode_program" name="">
+							</td>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								提供者：
+							</td>
+							<td>
+								<input type="text" class="form-control exampleCode_author" name="">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								标题：
+							</td>
+							<td colspan="3">
+								<input type="text" class="form-control exampleCode_title" name="">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint"><span class="col_red">*</span>示例代码：</td>
+							<td colspan="3">
+								<div class="exampleCode" id="exampleCode0">
+
+								</div>
+								<textarea class="form-control" rows="5" th:remove="all"></textarea>
+							</td>
+						</tr>
+						</tbody>
+					</table>
+					<div style="position: absolute;bottom: 10px;right: 10px;">
+						<a href="javascript:void(0)" class="btn-primary btn mr10 closeBtn" onclick="hiddenCode(this)">收起</a>
+						<a href="javascript:void(0)" class="btn-primary btn mr10 openBtn" style="display: none" onclick="showCode(this)">展开</a>
+						<a href="javascript:void(0)" class="btn-default btn mr10 deleteBtn" onclick="deleteExample(this)" th:disabled="${isView}=='1'">删除</a>
+					</div>
+				</div>
+
+
+				<div style="background: #fbfbfb;" class="p10 mb10 " th:remove="all">
+					<h5 class="">示例</h5>
+					<table class="editTable">
+						<tbody>
+							<tr>
+								<td class="Hint">
+									<span class="col_red">*</span>
+									语言：
+								</td>
+								<td width="300">
+									<input type="text" class="form-control" name="">
+								</td>
+								<td class="Hint">
+									<span class="col_red">*</span>
+									提供者：
+								</td>
+								<td>
+									<input type="text" class="form-control" name="">
+								</td>
+							</tr>
+							<tr>
+								<td class="Hint">
+									<span class="col_red">*</span>
+									标题：
+								</td>
+								<td colspan="3">
+									<input type="text" class="form-control" name="">
+								</td>
+							</tr>
+							<tr>
+								<td class="Hint"><span class="col_red">*</span>示例代码：</td>
+								<td colspan="3">
+									<textarea class="form-control" rows="5" ></textarea>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				<div class="text-right ">
+					 <a href="javascript:void(0)" class="btn-primary btn mr10" onclick="addExample(this)" th:disabled="${isView}=='1'">新增实例</a>
+
+				</div>
+			</div>
+			<hr>
+			<!-- 按钮 -->
+			
+			<div class="p20 text-center " style="margin-left: 220px;">
+				 <a href="javascript:void(0)" class="btn-primary btn mr10" onclick="sumbitExampleInfo(this)" isEdit="0" th:if="${isView} == '0' and ${isEdit} == '0'">保存并下一步</a>
+				 <a href="javascript:void(0)" class="btn-primary btn mr10" onclick="sumbitExampleInfo(this)" isEdit="1" th:if="${isView} == '0' and ${isEdit} == '1'">保存</a>
+				 <a href="javascript:void(0)" class="btn-default btn mr10" onclick="backToPrev()" th:if="${isView}=='0' and ${isEdit}=='0'">返回上一级</a>
+				 <a href="javascript:void(0)" class="btn-default btn mr10" onclick="backToList()" th:if="${isView}=='1' or ${isEdit}=='1'">返回</a>
+			</div>
+		</div>
+	</div>
+
+	
+	<div class="m_nav" th:remove="all">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li class="active">
+							<a href=""></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+						<li >
+							<a href=""></i>二级分类</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i ></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li >
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+<!--</div>-->
+</body>
+</html>

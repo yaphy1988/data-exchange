@@ -1,6 +1,7 @@
 package com.ai.bdex.dataexchange.solrutil;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.solr.client.solrj.SolrClient;
 
@@ -36,20 +37,42 @@ public class SearchParam {
     private boolean ifHightlight=true;
 
     /**
-     * 查询字段.and
+     * 查询字段.AND
      */
     @SuppressWarnings("rawtypes")
-    private List<SearchField> searchField;
+    private Map<String,String> searchField;
     
     /**
-     * 查询字段.or
+     * 查询字段.AND 用于比如 gdsId =1 and gdsId= 2 and gdsId = 3 多值的&&查询
      */
-    private List<SearchField> searchOrField;
+    private Map<String,List<String>> searchAndListField;
+    
+    /**
+     * 查询字段.OR.这里的数据之间的查询都是or关系了
+     */
+    @SuppressWarnings("rawtypes")
+    private Map<String,String> searchOrField;
+    /**
+     * 查询字段.OR 用于比如 gdsId in(1,2,3,4,5) 多值的||查询
+     * 
+     */
+    private Map<String,List<String>> searchOrListField;
+    
+    /**
+     * 查询字段.NOT
+     */
+    @SuppressWarnings("rawtypes")
+    private  Map<String,String> searchNotField;
+    
+    /**
+     * 查询字段.NOT 用于比如 gdsId not in(1,2,3,4,5) 排出多值的
+     */
+    private Map<String,List<String>> searchNotListField;
     /**
      * 字段排序List
      */
     private List<SortField> sortField;
-
+    
     /**
      * 当前页
      */
@@ -72,14 +95,68 @@ public class SearchParam {
         this.ifHightlight = ifHightlight;
     }
 
-    @SuppressWarnings("rawtypes")
-    public List<SearchField> getSearchField() {
+    public String getKeyWord() {
+        return keyWord;
+    }
+
+    public void setKeyWord(String keyWord) {
+        this.keyWord = keyWord;
+    }
+
+    public SolrClient getSolrClient() {
+        return solrClient;
+    }
+
+    public void setSolrClient(SolrClient solrClient) {
+        this.solrClient = solrClient;
+    }
+
+    public Map<String, String> getSearchField() {
         return searchField;
     }
 
-    @SuppressWarnings("rawtypes")
-    public void setSearchField(List<SearchField> searchField) {
+    public void setSearchField(Map<String, String> searchField) {
         this.searchField = searchField;
+    }
+
+    public Map<String, List<String>> getSearchAndListField() {
+        return searchAndListField;
+    }
+
+    public void setSearchAndListField(Map<String, List<String>> searchAndListField) {
+        this.searchAndListField = searchAndListField;
+    }
+
+    public Map<String, String> getSearchOrField() {
+        return searchOrField;
+    }
+
+    public void setSearchOrField(Map<String, String> searchOrField) {
+        this.searchOrField = searchOrField;
+    }
+
+    public Map<String, List<String>> getSearchOrListField() {
+        return searchOrListField;
+    }
+
+    public void setSearchOrListField(Map<String, List<String>> searchOrListField) {
+        this.searchOrListField = searchOrListField;
+    }
+
+    public Map<String, String> getSearchNotField() {
+        return searchNotField;
+    }
+
+    public void setSearchNotField(Map<String, String> searchNotField) {
+        this.searchNotField = searchNotField;
+    }
+
+    public Map<String, List<String>> getSearchNotListField() {
+        return searchNotListField;
+    }
+
+    public void setSearchNotListField(Map<String, List<String>> searchNotListField) {
+        this.searchNotListField = searchNotListField;
     }
 
     public List<SortField> getSortField() {
@@ -110,28 +187,5 @@ public class SearchParam {
         this.collectionName = collectionName;
     }
 
-    public SolrClient getSolrClient() {
-        return solrClient;
-    }
-
-    public void setSolrClient(SolrClient solrClient) {
-        this.solrClient = solrClient;
-    }
-
-    public String getKeyWord() {
-        return keyWord;
-    }
-
-    public void setKeyWord(String keyWord) {
-        this.keyWord = keyWord;
-    }
-
-    public List<SearchField> getSearchOrField() {
-        return searchOrField;
-    }
-
-    public void setSearchOrField(List<SearchField> searchOrField) {
-        this.searchOrField = searchOrField;
-    }
     
 }

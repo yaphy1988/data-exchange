@@ -3,7 +3,9 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order;
 import java.io.Serializable;
 import java.util.Date;
 
-public class OrdInfoRespDTO implements Serializable{
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+
+public class OrdInfoRespDTO extends BaseResponseDTO{
 	    private String subOrder; 
 	    private String orderId;
  	    private Integer orderAmount; 
@@ -14,12 +16,11 @@ public class OrdInfoRespDTO implements Serializable{
  	    private Date orderTime;
  	    private String staffId;
  	    private String shopId;
- 	    private Long brandId;
- 	    private String modelId;
+ 
  	    private String productType;
- 	    private Long gdsId;
+ 	    private Integer gdsId;
  	    private String gdsName;
- 	    private Long skuId;
+ 	    private Integer skuId;
  	    private String skuInfo;
  	    private String skuName;
  	    private Integer eachCount;
@@ -33,10 +34,54 @@ public class OrdInfoRespDTO implements Serializable{
 	    private String payFlag;
  	    private Date activeEndTime;
 	    private Date payTime;
- 	    private Long buyAllCount;
- 	    private Long usedAllCount;
-   	    private Long belanceAllCount;
+ 	    private Integer buyAllCount;
+ 	    private Integer usedAllCount;
+   	    private Integer belanceAllCount;
  	    private String status;
+ 	    private String serviceName;
+ 	    private String aipServiceId;
+ 	    private Integer catId; 
+		private Integer catFirst;
+		private Integer leftCount;//剩余可用次数--计费接口返回值
+	    private Long dataAccountId;//每个子订单对于的数据账户信息
+
+	    public Long getDataAccountId() {
+		return dataAccountId;
+	}
+	    public void setDataAccountId(Long dataAccountId) {
+		this.dataAccountId = dataAccountId;
+	}
+
+ 	    public Integer getLeftCount() {
+			return leftCount;
+		}
+		public void setLeftCount(Integer leftCount) {
+			this.leftCount = leftCount;
+		}
+		public Integer getCatId() {
+			return catId;
+		}
+		public void setCatId(Integer catId) {
+			this.catId = catId;
+		}
+		public Integer getCatFirst() {
+			return catFirst;
+		}
+		public void setCatFirst(Integer catFirst) {
+			this.catFirst = catFirst;
+		}
+		public String getServiceName() {
+			return serviceName;
+		}
+		public void setServiceName(String serviceName) {
+			this.serviceName = serviceName;
+		}
+		public String getAipServiceId() {
+			return aipServiceId;
+		}
+		public void setAipServiceId(String aipServiceId) {
+			this.aipServiceId = aipServiceId;
+		}
 		public String getSubOrder() {
 			return subOrder;
 		}
@@ -96,29 +141,17 @@ public class OrdInfoRespDTO implements Serializable{
 		}
 		public void setShopId(String shopId) {
 			this.shopId = shopId;
-		}
-		public Long getBrandId() {
-			return brandId;
-		}
-		public void setBrandId(Long brandId) {
-			this.brandId = brandId;
-		}
-		public String getModelId() {
-			return modelId;
-		}
-		public void setModelId(String modelId) {
-			this.modelId = modelId;
-		}
+		} 
 		public String getProductType() {
 			return productType;
 		}
 		public void setProductType(String productType) {
 			this.productType = productType;
 		}
-		public Long getGdsId() {
+		public Integer getGdsId() {
 			return gdsId;
 		}
-		public void setGdsId(Long gdsId) {
+		public void setGdsId(Integer gdsId) {
 			this.gdsId = gdsId;
 		}
 		public String getGdsName() {
@@ -127,10 +160,10 @@ public class OrdInfoRespDTO implements Serializable{
 		public void setGdsName(String gdsName) {
 			this.gdsName = gdsName;
 		}
-		public Long getSkuId() {
+		public Integer getSkuId() {
 			return skuId;
 		}
-		public void setSkuId(Long skuId) {
+		public void setSkuId(Integer skuId) {
 			this.skuId = skuId;
 		}
 		public String getSkuInfo() {
@@ -211,22 +244,22 @@ public class OrdInfoRespDTO implements Serializable{
 		public void setPayTime(Date payTime) {
 			this.payTime = payTime;
 		}
-		public Long getBuyAllCount() {
+		public Integer getBuyAllCount() {
 			return buyAllCount;
 		}
-		public void setBuyAllCount(Long buyAllCount) {
+		public void setBuyAllCount(Integer buyAllCount) {
 			this.buyAllCount = buyAllCount;
 		}
-		public Long getUsedAllCount() {
+		public Integer getUsedAllCount() {
 			return usedAllCount;
 		}
-		public void setUsedAllCount(Long usedAllCount) {
+		public void setUsedAllCount(Integer usedAllCount) {
 			this.usedAllCount = usedAllCount;
 		}
-		public Long getBelanceAllCount() {
+		public Integer getBelanceAllCount() {
 			return belanceAllCount;
 		}
-		public void setBelanceAllCount(Long belanceAllCount) {
+		public void setBelanceAllCount(Integer belanceAllCount) {
 			this.belanceAllCount = belanceAllCount;
 		}
 		public String getStatus() {

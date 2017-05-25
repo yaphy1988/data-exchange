@@ -1,5 +1,5 @@
 $(function(){
-	$(".custom_made").die().live('click',function(){
+	$(".custom_made").off().on('click',function(){
 		$("#myModal").show();
 	});
 });

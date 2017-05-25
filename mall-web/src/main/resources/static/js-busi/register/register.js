@@ -1,42 +1,46 @@
-
+//校验用户ID
 function checkstaffId(obj){
-	var staffId = $(obj).val();
-	var reg = /^[A-Za-z0-9]+$/;///^[a-zA-Z0-9]$/;
+	var staffId = $("#staffId").val();
+	var reg = /^[A-Za-z0-9]+$/;
 	if(!staffId){
 		showwarm('staffIdDiv','用户ID不能为空');
-		return;
+		return false;
 	}else if(!reg.test(staffId)){
 		showwarm('staffIdDiv','用户ID格式不正确！');
-		return;
+		return false;
 	}else if(staffId.length<6||staffId.length>24){
 		showwarm('staffIdDiv','用户ID为6-24位字母数字！');
-		return;
+		return false;
 	}
+	return true;
 }
 /**
  * 保存注册信息
  */
-function saveInfo(){	
-	var staffId = $("#staffId").val();
-	var reg = /^[a-zA-Z0-9]*$/;	
-	if(!staffId){
-		showwarm('staffIdDiv','用户ID不能为空');
-		return;
-	}else if(!reg.test(staffId)){
-		showwarm('staffIdDiv','用户ID格式不正确！');
-		return;
-	}else if(staffId.length<6||staffId.length>24){
-		showwarm('staffIdDiv','用户ID为6-24位字母数字！');
-		return;
+function saveInfo(){
+    //校验用户ID
+	if(checkstaffId(null) ==false){
+	    return;
 	}
+
+	var staffId = $("#staffId").val();
+
+    //校验手机号
 	var serialNumber = $("#phoneNo").val();
 	if(!serialNumber){
 		showwarm('phoneNoDiv','手机号码不能为空');
 		return;
-	}else if(!isMobile(serialNumber)){
+	}else if(!WEB.check.isMobile(serialNumber)){
 		showwarm('phoneNoDiv','手机号码格式不正确');
 		return;
 	}
+    //校验手机验证码
+	var smsCode = $("#smsCode").val();
+    if(!smsCode){
+        showwarm('smsCodeDiv','短信验证码不能为空');
+        return;
+    }
+    //校验密码
 	var signpass = $("#signpass").val();
 	if(!signpass){
 		showwarm('signpassDiv','请输入密码');
@@ -46,46 +50,38 @@ function saveInfo(){
 		return;
 	}
 	var confirmPass = $("#confirmPass").val();
-	if(!confirmPass){
-		showwarm('confirmPassDiv','请输入确认密码');
-		return;
-	}else if(confirmPass.length<8){
-		showwarm('confirmPassDiv','密码不能少于8位');
-		return;
-	}
 	if(signpass!=confirmPass){
 		showwarm('confirmPassDiv','两次输入的密码不一致');
 		return;
 	}
+	//阅读协议
 	var checkFlag = $("input[type='checkbox'][id='checkAgree']:checked");
 	if(checkFlag.length==0){
 		WEB.msg.info("提示","请先阅读协议");
 		return;
 	}
-	var url = WEB_ROOT + "/regist/savesign";
-	var param = {
-			staffId : staffId,
-			serialNumber : serialNumber,
-			signpass : signpass,
-			confirmPass : confirmPass
-		};
+
 	$.ajax({
-		url : url,
-		type : "POST",
-		dataType : "json",
-		async : false,
-		data : param,
-		success : function(data) {
-			if(data.success){
-				WEB.msg.info("提示","注册成功",function(){
-					window.location.href = WEB_ROOT+"/login/pageInit";
-				});				
-//				clearData();
-			}else{
-				WEB.msg.info("提示",data.msg);
-			}			 
-	}});
-	
+        url : WEB_ROOT+"/regist/savesign",
+        type : "POST",
+        dataType : "json",
+        async : true,
+        data : {
+            staffId : staffId,
+            serialNumber : serialNumber,
+            confirmPass : confirmPass,
+            smsCode : smsCode
+        },
+        success : function(data){
+            if(data.success){
+                WEB.msg.info("提示","注册成功",function(){
+                    window.location.href = WEB_ROOT+"/login/pageInit";
+                });
+            }else{
+                WEB.msg.info("提示",data.msg);
+            }
+        }
+    });
 }
 
 //显示提示
@@ -97,68 +93,31 @@ function showwarm(id,msg){
 function hiddenwarm(id){
 	$("#"+id).find("p").css('visibility','hidden');
 }
-/**
- * 清除数据
- */
-function clearData(){
-	$("#confirmPass").val('');
-	$("#phoneNo").val('');
-	$("#smsCode").val('');
-	$("#signpass").val('');
-	$("#confirmPass").val('');
-	!$("#checkAgree").removeAttr('checked');
-}
-function hiddenpass(){
-	$("#confirmPassDiv").find("p").css('visibility','hidden');
-}
-
-//验证手机号码
-var isMobile=function(mobile){
-	    var mobileReg =/^1[34578]\d{9}$/; 
-	    if(!(mobileReg.test(mobile)))
-	    { 
-	        return false; 
-	    } 
-	    else
-	    {return true;}  
-};
-
-//邮箱校验
-var isEmail = function(email){
-	var emailReg = /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+(.[a-zA-Z0-9_-])+/;
-	if(!(emailReg.test(email))){
-		return false;
-	}else{
-		return true;
-	}
-}
-
-function agreement(){
-	$("#checkAgree").attr('checked',true);
-}
 
 //发送短信验证码
 function sendSmsCode(){
 	var phoneNo = $("#phoneNo").val();
-	$.smsDialogPlugin.sendSmsSecurity(phoneNo,'10',null,afterSend);
-}
-
-//验证短信验证码
-function checkSmsCode(){
-	var smsCode = $("#smsCode").val();
-	var phoneNo = $("#phoneNo").val();
-	if(!smsCode){
-		showwarm('smsCodeDiv','短信验证码不能为空');
-		return;
-	}
 	if(!phoneNo){
 		showwarm('phoneNoDiv','手机号码不能为空');
 		return;
-	}else if(!isMobile(phoneNo)){
+	}else if(!WEB.check.isMobile(phoneNo)){
 		showwarm('phoneNoDiv','手机号码格式不正确');
 		return;
 	}
-	$.smsDialogPlugin.checkSmsSecurity(smsCode,phoneNo,saveInfo);
+	$.ajax({
+        url : WEB_ROOT+"/security/sendChangPhoneCode",
+        type : "POST",
+        dataType : "json",
+        async : true,
+        data : {newPhoneNo:phoneNo,busiType:'2',picVerifyCode:""},
+        success : function(obj){
+            if(obj.success){
+                afterSend();
+            }else{
+                WEB.msg.info('提示',obj.msg);
+            }
+        }
+    });
 }
 
 function afterSend(){

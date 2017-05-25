@@ -1,5 +1,3 @@
-
-
 package com.ai.bdex.dataexchange.busi.page.controller;
 
 import java.net.URLDecoder;
@@ -22,10 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.ai.bdex.dataexchange.busi.page.entity.PageModuleGoodsVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageNewsInfoVO;
-import com.ai.bdex.dataexchange.busi.page.entity.SortContentVO;
-import com.ai.bdex.dataexchange.busi.page.entity.SortInfoVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
@@ -40,7 +37,6 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
@@ -49,6 +45,7 @@ import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * 
@@ -138,11 +135,15 @@ public class HomePageController {
 			pageModuleGoodsReqDTO.setStatus(STATUS_VALID);  
 			pageModuleGoodsReqDTO.setPageSize(count);
 			PageResponseDTO<PageModuleGoodsRespDTO> moduleGoodsList = iPageDisplayRSV.queryPageModuleGoodsList(pageModuleGoodsReqDTO);
+			List<PageModuleGoodsVO> resultList = new ArrayList<PageModuleGoodsVO>();
 			if(moduleGoodsList !=null && moduleGoodsList.getCount()>0)
 			{
 				try{
-					   for(int i = 0 ; i < moduleGoodsList.getResult().size();i++) {
-							int gdsid =  moduleGoodsList.getResult().get(i).getGdsId();
+					   for(PageModuleGoodsRespDTO source: moduleGoodsList.getResult()) {
+						   PageModuleGoodsVO target = new PageModuleGoodsVO();
+						   BeanUtils.copyProperties(source, target);
+						   resultList.add(target);
+							int gdsid =  source.getGdsId();
 							//通过商品id去搜索商品信息，获取到商品的图片ID
 							GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
 							GdsInfoRespDTO gdsInfoRespDTO = new GdsInfoRespDTO();
@@ -151,7 +152,8 @@ public class HomePageController {
 							if(gdsInfoRespDTO!= null && !StringUtil.isBlank(gdsInfoRespDTO.getGdsPic()) )
 							{
 								  String vfsid= ImageUtil.getImageUrl(gdsInfoRespDTO.getGdsPic() + "_86x86!");
-								  moduleGoodsList.getResult().get(i).setVfsid(vfsid); 
+								  target.setVfsId(vfsid); 
+								  target.setGdsName(gdsInfoRespDTO.getGdsName());
 							}
 					   }
 					}
@@ -161,7 +163,7 @@ public class HomePageController {
 					}
 			}
 		
-			rMap.put("moduleGoodsList",moduleGoodsList);
+			rMap.put("moduleGoodsList",resultList);
  			rMap.put("success", true);
  		
 		} catch (Exception e) {
@@ -239,7 +241,7 @@ public class HomePageController {
 	 */
 	@RequestMapping(value = "/querySortInfo")
 	@ResponseBody
-	public Map<String, Object> querySortInfo(Model model, HttpServletRequest request) {
+	public String querySortInfo(Model model, HttpServletRequest request) {
 		String sortParentId = request.getParameter("sortParentId");
 		String sortLever = request.getParameter("sortLever");
 		Map<String, Object> rMap = new HashMap<String, Object>();
@@ -253,49 +255,14 @@ public class HomePageController {
 				sortInfoRespDTO.setSortLevel(sortLever);
 			}
 			List<SortInfoRespDTO> sortInfos = iPageDisplayRSV.querySortInfos(sortInfoRespDTO);
-			List<SortInfoVO>  sortInfoResult = new ArrayList<>();
-			if(!CollectionUtils.isEmpty(sortInfos)){
-				
-				SortInfoRespDTO sortInfoDTO = new SortInfoRespDTO();
-				for(SortInfoRespDTO infoRespDTO : sortInfos){
-					//copy菜单内容Resp to VO
-					SortInfoVO sortInfoVO = new SortInfoVO();
-					BeanUtils.copyProperties(infoRespDTO, sortInfoVO);
-					sortInfoResult.add(sortInfoVO);
-					SortContentVO sortContentVO = new SortContentVO();
-					//copy菜单内容
-					SortContentRespDTO contentRespDTO = infoRespDTO.getSortContentRespDTO();
-					BeanUtils.copyProperties(contentRespDTO, sortContentVO);
-					sortInfoVO.setSortContentVO(sortContentVO);
-					//查询二级子菜单
-					sortInfoDTO.setParentSortId(infoRespDTO.getSortId());
-					sortInfoDTO.setSortLevel("2");
-					sortInfoDTO.setStatus(STATUS_VALID);
-					List<SortInfoRespDTO> subSortInfos = iPageDisplayRSV.querySortInfos(sortInfoDTO);
-					if(!CollectionUtils.isEmpty(subSortInfos)){
-						List<SortInfoVO> subSortInfoVos = new ArrayList<>();
-						for(SortInfoRespDTO respDTO : subSortInfos){
-							//copy菜单内容Resp to VO
-							SortInfoVO sortInfoVO2 = new SortInfoVO();
-							BeanUtils.copyProperties(respDTO, sortInfoVO2);
-							//copy菜单内容
-							SortContentVO sortContentVO2 = new SortContentVO();
-							SortContentRespDTO contentRespDTO2 = respDTO.getSortContentRespDTO();
-							BeanUtils.copyProperties(contentRespDTO2, sortContentVO2);
-							sortInfoVO2.setSortContentVO(sortContentVO2);
-							subSortInfoVos.add(sortInfoVO2);
-						}
-						sortInfoVO.setSubSortInfoList(subSortInfoVos);
-					}
-				}
-			}
+			
 			rMap.put("success", true);
-			rMap.put("sortInfos", sortInfoResult);
+			rMap.put("sortInfos", sortInfos);
 		} catch (Exception e) {
 			rMap.put("success", false);
 			log.error("查询商品分类信息异常：" + e.getMessage());
 		}
-		return rMap;
+		return getJsonCallback(rMap,request);
 	}
 
 	/**
@@ -620,5 +587,18 @@ public class HomePageController {
 			log.error("查询首页导航信息信息异常：" + e.getMessage());
 		}
 		return rMap;
+	}
+	protected String getJsonCallback(Map<String, Object> map,HttpServletRequest request){
+		String callback = request.getParameter("jsonpCallback");
+
+		try{
+			if(StringUtils.isBlank(callback)){
+				return new ObjectMapper().writeValueAsString(map);
+			}else{
+				return callback+"("+new ObjectMapper().writeValueAsString(map)+")";
+			}
+		}catch (Exception e) {
+			throw new RuntimeException("JsonUtil.toJSONString发生错误", e);
+		}
 	}
 }

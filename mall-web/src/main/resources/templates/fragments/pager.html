@@ -1,16 +1,16 @@
 <!DOCTYPE html>
 <html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head >
-    <link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
-    <link rel="stylesheet" href="../../static/css/index.css" th:remove="all">
-    <link rel="stylesheet" href="../../static/component/bootstrap/js/bootstrap.min.js" th:remove="all"/>
-    <link rel="stylesheet" href="../../static/css/global.css" th:remove="all"/>
-    <script src="../../static/js/jquery-1.12.4.js" th:remove="all"></script>
+    <link rel="stylesheet" href="../../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:remove="all">
+    <link rel="stylesheet" href="../../META-INF/resources/webjars/css/index.css" th:remove="all">
+    <link rel="stylesheet" href="../../META-INF/resources/webjars/bootstrap/3.3.7/js/bootstrap.min.js" th:remove="all"/>
+    <link rel="stylesheet" href="../../META-INF/resources/webjars/css/global.css" th:remove="all"/>
+    <script src="../../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:remove="all"></script>
 </head>
 <body>
 
 
-<div th:fragment="pager" class="pagelist" style="margin-top:0px;" >
+<div th:if="${pageInfo}" th:fragment="pager" class="pagelist" style="margin-top:0px;" >
     <script type="text/javascript" src="../../static/js-busi/common/pager.js" th:src="@{/js-busi/common/pager.js}"></script>
     <span data-toggle="pager" id="pagerId" data-count="" data-size="" data-currentindex="" ></span>
 	<script th:inline="javascript">

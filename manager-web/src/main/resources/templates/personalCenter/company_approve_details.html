@@ -1,21 +1,22 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="~{fragments/syshead :: syshead}"></div>
-
-<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
-<head th:remove="all">
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
 	<meta charset="UTF-8">
-	<title>个人中心-企业认证审核详情</title>
-	<link rel="stylesheet" href="../../static/css/bootstrap.css" th:remove="all">
+	<title>个人中心-用户信息管理</title>
+	<link rel="stylesheet" href="../../static/component/bootstrap/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../../static/css/manage.css" th:remove="all">
+
 	<link rel="stylesheet" href="../../static/css/manage.css" th:href="@{/css/manage.css}">
+
+	<script type="text/javascript" src="../../static/js-busi/user/authenDetail.js" th:src="@{/js-busi/user/authenDetail.js}"></script>
 </head>
-<script type="text/javascript">
-        var WEB_ROOT = '[[${#httpServletRequest.contextPath}]]';
-    </script>
+
 <body>
-<div th:replace="~{fragments/top :: top}"></div>
+
 <header class="clearfix m_header" th:remove="all">
 	<a href="" class="Logo" target="_blank" >
 		<img  src="../../static/images/manage_logo.png" alt="广州数据" >
@@ -31,7 +32,7 @@
 					<span class="caret"></span>
 				</a>
 				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
-					<li><img src="../static/images/wexin.jpg"></li>
+					<li><img src="../../static/images/wexin.jpg"></li>
 				</ul>
 			</div>
 		</li>
@@ -51,6 +52,7 @@
 		</li>
 	</ul>
 </header>
+
 <div  layout:fragment="screen_content">
 	<div class="m_main">
 		<div class="m_con">
@@ -62,16 +64,17 @@
 				<span class="col_999"> 企业认证</span>
 			</div>
 			<hr>
-			<!-- <div class="title">实名认证</div> -->
-			<h4 class="alert alert-info btn_rec " role="alert" th:if="${status=='10'}" >
+			<div th:if="${authflag == 'false'}">
+			<h4 class="alert alert-info btn_rec " role="alert" th:if="${data.status=='10'}" >
 				<i class="glyphicon glyphicon-exclamation-sign pr10"></i><span>正在认证中，请耐心等待！</span>
 			</h4>
-			<h4 class="alert alert-success btn_rec" role="alert" th:if="${status=='20'}" >
+			<h4 class="alert alert-success btn_rec" role="alert" th:if="${data.status=='20'}" >
 				<i class="glyphicon glyphicon-ok-sign pr10"></i><span>恭喜您，已认证成功！</span>
 			</h4>
-			<h4 class="alert alert-danger btn_rec" role="alert" th:if="${status=='30'}" >
-				<i class="glyphicon glyphicon-remove-sign pr10"></i><span th:text="${msg}">认证失败，……</span>
+			<h4 class="alert alert-danger btn_rec" role="alert" th:if="${data.status=='30'}" >
+				<i class="glyphicon glyphicon-remove-sign pr10"></i><span>认证失败！请查看审核意见。</span>
 			</h4>
+			</div>
 			<div class="borTable">
 				<table class="editTable table-hover ">
 					<tr>
@@ -117,22 +120,29 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="Hint">
-							联系人姓名:
-						</td>
-						<td th:text="${data.relName}">
-							阿萨德
-						</td>
+						<td class="Hint">企业人数:</td>
+						<td th:text="${data.companyPeople}">企业人数</td>
+						<td class="Hint">主营业务:</td>
+						<td th:text="${data.companyBusi}">主营业务</td>
+					</tr>
+					<tr>
 						<td class="Hint">
 							营业执照副本:
-							
 						</td>
-						<td >
+						<td colspan="3">
 							<img src="" width="80" height="80" th:src="${data.picSrc}">
 							<a href="" class="btn  btn-sm">预览</a>
 						</td>
 					</tr>
 					<tr>
+						<td class="Hint">企业网址:</td>
+						<td th:text="${data.companyUrl}">企业人数</td>
+						<td class="Hint">邮箱:</td>
+						<td th:text="${data.companyMail}">邮箱</td>
+					</tr>
+					<tr>
+						<td class="Hint">联系人:</td>
+						<td th:text="${data.relName}">阿萨德</td>
 						<td class="Hint">
 							联系人电话:
 						</td>
@@ -147,80 +157,182 @@
 						</td>
 					</tr>
 					<tr>
+						<td class="Hint">固话:</td>
+						<td th:text="${data.companyTel}">固话</td>
+						<td class="Hint">传真:</td>
+						<td th:text="${data.companyFax}">传真</td>
+					</tr>
+					<tr>
 						<td class="Hint">
 							审核意见：
 						</td>
 						<td colspan="3">
-							
-						<textarea rows="5" cols="80" placeholder="tips" disabled th:text="${data.checkDesc}"></textarea>
+							<textarea th:if="${authflag == 'false'}" rows="5" cols="80" disabled th:text="${data.checkDesc}"></textarea>
+							<textarea th:if="${authflag == 'true'}" rows="5" cols="80" placeholder="请输入审核意见" id="checkdesc" maxlength="256"></textarea>
+							<p class="error-tip" style="color:red;display:none;" id="checkdescdiv">*<span >请输入审核意见</span></p>
 						</td>
 					</tr>
-				</table>	
-				
+				</table>
 			</div>
-			
 		</div>
 		<!-- 按钮 -->
-			<hr>
-			<div class="p20 text-center " style="margin-left: 220px;" th:if="${status=='30'}" >
-				<a th:href="@{/authenapply/userinfo?type=reapply}" class="btn-primary btn mr10 btn_rec">重新认证</a>
-			</div>
-	</div>
-	
-	<div th:replace="~{fragments/nav_left :: nav_left}"></div>
-	<div class="m_nav" th:remove="all">
-		<nav class="nav">
-			<ul>
-				<li class="navTit">
-					<i class="glyphicon glyphicon-compressed"></i>
-					个人中心
-				</li>
-				<li >
-					<a href="">
-						<i class="glyphicon glyphicon-inbox pr5"></i>
-						我的数据
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class="glyphicon glyphicon-inbox pr5"></i>
-						我的订单
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class="glyphicon glyphicon-inbox pr5"></i>
-						密码修改
-					</a>
-				</li>
-				<li class="active">
-					<a href="">
-						<i class="glyphicon glyphicon-inbox pr5"></i>
-						企业认证
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class="glyphicon glyphicon-inbox pr5"></i>
-						发票管理
-					</a>
-				</li>
-				<li >
-					<a href="">
-						<i class="glyphicon glyphicon-inbox pr5"></i>
-						我的收藏
-					</a>
-				</li>
-			</ul>
-		</nav>
-	</div>
+		<hr>
+		<div class="p20 text-center " style="margin-left: 220px;" th:if="${data.status=='30'} and ${authflag == 'false'}">
+			<a th:href="@{/authenapply/userinfo?type=reapply}" class="btn-primary btn mr10 btn_rec">重新认证</a>
+		</div>
+		<div class="p20 text-center " style="margin-left: 220px;" th:if="${data.status=='10'} and ${authflag == 'false'}">
+			<a th:href="@{/authenapply/userinfo?type=reapply}" class="btn-primary btn mr10 btn_rec">修改信息</a>
+		</div>
 
-	
-	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
-	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
-	<script type="text/javascript">
-	$("#mainTopDiv").addClass('clearfix m_header');
-	</script>
+		<input type="hidden" th:value="${data.taxId}" id="taxId">
+		<div class="p20 text-center" th:if="${authflag == 'true'}">
+			<a href="javascript:;" class="btn-primary btn mr10" onclick="saveCheck('20');">通过</a>
+			<a href="javascript:;" class="btn-default btn" onclick="saveCheck('30');">不通过</a>
+		</div>
+	</div>
+</div>
 
+<div class="m_nav" th:remove="all">
+	<nav class="nav">
+		<ul>
+			<li class="navTit">
+				<i class="glyphicon glyphicon-compressed"></i>
+				个人中心
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+				</a>
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录
+				</a>
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录
+				</a>
+			</li>
+			<li >
+				<a href="">
+					<i class=""></i>
+					用户中心
+					<span class="caret"></span>
+				</a>
+				<ol class="infoItem">
+					<li >
+						<a th:href="@{/password/modify}">密码修改</a>
+					</li>
+					<li >
+						<a th:href="@{/infomanager/pageInit}">资料修改</a>
+					</li>
+				</ol>
+			</li>
+			<li >
+				<a href="">
+					<i class=""></i>
+					企业认证
+					<span class="caret"></span>
+				</a>
+				<ol class="infoItem">
+					<li >
+						<a th:href="@{/authencheck/pageInit}">认证审核</a>
+					</li>
+					<li >
+						<a th:href="@{/authenapply/userinfo}">认证申请</a>
+					</li>
+				</ol>
+			</li>
+			<li >
+				<a href="">
+					<i class=""></i>
+					商品管理
+					<span class="caret"></span>
+				</a>
+				<ol class="infoItem">
+					<li class="active">
+						<a th:href="@{/gdsEdit/pageInit}"></i>商品录入</a>
+					</li>
+					<li >
+						<a th:href="@{/gdsManage/index}"></i>商品管理</a>
+					</li>
+				</ol>
+			</li>
+			<li>
+				<a href="">
+					<i ></i>
+					首页管理
+					<span class="caret"></span>
+				</a>
+				<ul class="infoItem">
+					<li >
+						<a th:href="@{/pageManage/moduleManage}">楼层管理</a>
+					</li>
+					<li >
+						<a th:href="@{/pageManage/newsInfo}">新闻管理</a>
+					</li>
+				</ul>
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录
+				</a>
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录
+				</a>
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录
+				</a>
+			</li>
+			<li th:remove="all">
+				<a href="">
+					<i class=""></i>
+					一级目录
+					<span class="caret"></span>
+				</a>
+				<ul class="infoItem">
+					<li class="">
+						<a href=""><i class="iconfont"></i>二级分类</a>
+					</li>
+					<li class="">
+						<a href=""><i class="iconfont"></i>二级分类</a>
+					</li>
+					<li class="">
+						<a href=""><i class="iconfont"></i>二级分类</a>
+					</li>
+				</ul>
+			</li>
+			<li th:remove="all">
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+				<ul class="infoItem">
+					<li class="">
+						<a href=""><i class="iconfont"></i>二级分类</a>
+					</li>
+					<li class="">
+						<a href=""><i class="iconfont"></i>二级分类</a>
+					</li>
+					<li class="">
+						<a href=""><i class="iconfont"></i>二级分类</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+</div>
 </body>
 </html>

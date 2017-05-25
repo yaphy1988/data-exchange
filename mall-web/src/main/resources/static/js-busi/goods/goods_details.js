@@ -22,6 +22,13 @@ $(function(){
     });
 
     queryRecGdsList();
+    
+    /**
+     * 用户浏览商品记录保存。gongxq
+     * @param obj
+     * @returns
+     */
+    userfootprint();
 })
 
 function changeGdsSku(obj) {
@@ -47,4 +54,100 @@ function queryRecGdsList() {
             $("#recGdsList").html(data);
         }
     })
+}
+
+function applyData(obj) {
+    var staff_id = "";
+    if(staffInfoDTO != null)
+    {
+        staff_id = staffInfoDTO.staffId;
+    }
+    if(staff_id == null || staff_id =="")
+    {
+        WEB.msg.info("提示",'亲，请先登录哦，若无账户，请先注册。');
+        return;
+    }
+    var params = {};
+    var gdsId = $(obj).attr("gdsId");
+    var gdsName = $(obj).attr("gdsName");
+    if (gdsName!=undefined && $.trim(gdsName)==""){
+        gdsName = "";
+    }else {
+        gdsName = encodeURI2(gdsName);
+    }
+    var skuSel =$("#skuListSel").find(".active").find("a");
+    var skuId = skuSel.attr("skuId");
+    var skuName = skuSel.attr("skuName");
+    if (skuName!=undefined && $.trim(skuName)==""){
+        skuName = "";
+    }else {
+        skuName = encodeURI2(skuName)
+    }
+    if (skuId==undefined || $.trim(skuId)==""){
+        WEB.msg.info("提示","请选择单品");
+        return;
+    }
+    params.gdsId = gdsId;
+    params.skuId = skuId;
+    $.ajax({
+        url:basePath + "/goods/applyDataValidate",
+        async:false,
+        type:'post',
+        dataType:'json',
+        data:params,
+        success:function (jsonObj) {
+            if(jsonObj!=null){
+                if (jsonObj.success){
+                    window.location.href = basePath + "/order/gdstmpsavesession?gdsid="+gdsId+"&skuid="+skuId+"&gdsname="+gdsName+"&skuname="+skuName
+                }else{
+                    if (jsonObj.errorCode == "0"){
+                        WEB.msg.info("提示","系统判断是否购买过该商品异常！")
+                    }else if (jsonObj.errorCode == "1"){
+                        WEB.msg.info("提示","您已订购套餐，是否继续订购",function () {
+                            window.location.href = basePath + "/order/gdstmpsavesession?gdsid="+gdsId+"&skuid="+skuId+"&gdsname="+gdsName+"&skuname="+skuName
+                        })
+                    }
+                }
+            }else {
+                WEB.msg.info("系统错误，请联系管理员！");
+            }
+        }
+    })
+
+}
+
+function encodeURI2(strinfo) {
+    //中文编码一次，后台解析即可
+    var strinfo1 = encodeURI(strinfo);
+    return strinfo1;
+}
+
+function addToCart(gdsId,skuId){
+    var skuSel =$("#skuListSel").find(".active").find("a");
+    if (skuSel.attr("skuId") !=undefined && $.trim(skuSel.attr("skuId"))!=""){
+            skuId = $.trim(skuSel.attr("skuId"));
+    }
+    var staff_id = "";
+    if(staffInfoDTO != null)
+    {
+        staff_id = staffInfoDTO.staffId;
+    }
+    if(staff_id == null || staff_id =="")
+    {
+        WEB.msg.info("提示",'亲，请先登录哦，若无账户，请先注册。');
+        return;
+    }
+	window.location.href=WEB_ROOT+"/order/gdshopcart?gdsId="+gdsId+"&skuId="+skuId;
+}
+
+function userfootprint(){
+	 $.ajax({
+	        url:basePath + "/goods/userfootprint",
+	        async:true,
+	        type:'post',
+	        dataType:'json',
+	        data:{gdsId:$("#gdsId_detail").val(),catFirst:($("#catFirst_detail").val())},
+	        success:function (jsonObj) {
+	        }
+	    })
 }

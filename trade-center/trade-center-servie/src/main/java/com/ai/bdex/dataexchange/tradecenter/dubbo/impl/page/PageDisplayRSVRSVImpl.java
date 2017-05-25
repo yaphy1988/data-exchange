@@ -12,21 +12,24 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHeaderNav;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageHotSearch;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModule;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAd;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleAdProp;
-import com.ai.bdex.dataexchange.tradecenter.dao.model.PageModuleGoods;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.PageNewsInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortContent;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageAdPalceRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdPropRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
@@ -34,10 +37,13 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortContentRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IDataCustomizationSV;
+import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageAdPlaceSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHeaderNavSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageHotSearchSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleAdPropSV;
@@ -47,7 +53,6 @@ import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageModuleS
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.IPageNewsInfoSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortContentSV;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
-import com.alibaba.dubbo.common.utils.StringUtils;
 
 @Service("iPageDisplayRSV")
 public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
@@ -75,7 +80,9 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
     private IPageModuleAdPropSV   iPageModuleAdpropSV;
     @Resource
     private IDataCustomizationSV iDataCustomizationSV;
-
+    @Resource
+    private IPageAdPlaceSV   iPageAdPlaceSV;
+    
     @Override
     public List<SortInfoRespDTO> querySortInfos(SortInfoRespDTO sortInfoRespDTO) throws Exception {
         List<SortInfoRespDTO> sortInfoRespLis = new ArrayList<SortInfoRespDTO>();
@@ -86,29 +93,66 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
          	 SortInfo exam = new SortInfo();
          	 BeanUtils.copyProperties( sortInfoRespDTO,exam);
           	 List<SortInfo> listSortInfo = iSortInfoSV.querySortInfoList(exam);
-          	    if(!CollectionUtils.isEmpty(listSortInfo)){
-                    for (SortInfo sortInfo : listSortInfo){
-                    	SortInfoRespDTO sortInfoResp = new SortInfoRespDTO();
-                        BeanUtils.copyProperties(sortInfo, sortInfoResp);
-                        sortInfoRespLis.add(sortInfoResp);
-                        
-                    	SortContent sortContent = new SortContent();
-                    	sortContent.setSortId(sortInfo.getSortId());
-                    	sortContent.setStatus("1");//有效的
-                        //获取sortContent信息
-                        List<SortContent> sortContenList=  iSortContentSV.querysortContenList(sortContent);
-                        if(!CollectionUtils.isEmpty(sortContenList)){
-                        	SortContentRespDTO sortContentRespDTO =new SortContentRespDTO();
-                        	BeanUtils.copyProperties(sortContenList.get(0), sortContentRespDTO);
-                        	sortInfoResp.setSortContentRespDTO(sortContentRespDTO);
-                        }
+      	    if(!CollectionUtils.isEmpty(listSortInfo)){
+                for (SortInfo sortInfo : listSortInfo){
+                	SortInfoRespDTO sortInfoResp = new SortInfoRespDTO();
+                    BeanUtils.copyProperties(sortInfo, sortInfoResp);
+                    sortInfoRespLis.add(sortInfoResp);
+                    this.setSortInfoContent(sortInfoResp);
+                    //查询二级菜单
+                    SortInfo sortInfo2 = new SortInfo();
+                    sortInfo2.setParentSortId(sortInfo.getSortId());
+                    sortInfo.setSortLevel("2");
+                    List<SortInfoRespDTO> scnSortInfoList = this.subsortInfoList(sortInfo2);
+                    if(!CollectionUtils.isEmpty(scnSortInfoList)){
+                    	sortInfoResp.setSortInfoRespDTOList(scnSortInfoList);
+                    	for(SortInfoRespDTO respDTO :scnSortInfoList){
+                    		SortInfo sortInfo3 = new SortInfo();
+                    		sortInfo3.setParentSortId(respDTO.getSortId());
+                    		sortInfo3.setSortLevel("3");
+                    		List<SortInfoRespDTO> thirSortInfoList = this.subsortInfoList(sortInfo3);
+                    		respDTO.setSortInfoRespDTOList(thirSortInfoList);
+                    	}
                     }
-                 }   
+
+                }
+             }
         }catch(Exception e){
         	log.error("获取商品分类信息异常:", e);
             throw new Exception(e);
         }
         return sortInfoRespLis;
+    }
+    //查询菜单
+    private List<SortInfoRespDTO> subsortInfoList(SortInfo sortInfo) throws Exception{
+    	List<SortInfoRespDTO> sortInfoRespList = new ArrayList<>();
+    	sortInfo.setStatus(Constants.Page.STATUS_VALID);
+        List<SortInfo> subInfoList = iSortInfoSV.querySortInfoList(sortInfo);
+        if(!CollectionUtils.isEmpty(subInfoList)){
+        	for(SortInfo source : subInfoList){
+        		SortInfoRespDTO target= new SortInfoRespDTO();
+        		BeanUtils.copyProperties(source, target);
+        		sortInfoRespList.add(target);
+        		this.setSortInfoContent(target);
+        	}
+        }
+        return sortInfoRespList;
+    }
+    //设置菜单内容
+    private void setSortInfoContent(SortInfoRespDTO sortInfo) throws Exception{
+    	SortContent sortContent = new SortContent();
+    	sortContent.setSortId(sortInfo.getSortId());
+    	sortContent.setStatus("1");//有效的
+        //获取sortContent信息
+        List<SortContent> sortContenList=  iSortContentSV.querysortContenList(sortContent);
+        if(!CollectionUtils.isEmpty(sortContenList)){
+        	SortContent content = sortContenList.get(0);
+        	SortContentRespDTO contentRespDTO = new SortContentRespDTO();
+        	if(content != null){
+        		BeanUtils.copyProperties(content, contentRespDTO);
+        	}
+        	sortInfo.setContentRespDTO(contentRespDTO);;
+        }
     }
     //查询热点信息 列表
     @Override
@@ -366,11 +410,11 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
          return   iDataCustomizationSV.saveDataCustomization(dataCustomizationRespDTO);
     }
 	@Override
-	public List<SortContentRespDTO> querysortContenList(SortContentRespDTO sortContentRespDTO) throws Exception {
+	public List<SortContentRespDTO> querysortContenList(SortContentReqDTO sortContentReqDTO) throws Exception {
 		List<SortContentRespDTO> respDTOs = new ArrayList<SortContentRespDTO>();
 		try {
 			SortContent sortContent = new SortContent();
-			BeanUtils.copyProperties(sortContentRespDTO, sortContent);
+			BeanUtils.copyProperties(sortContentReqDTO, sortContent);
 			List<SortContent> contenList = iSortContentSV.querysortContenList(sortContent);
 			if(!CollectionUtils.isEmpty(contenList)){
 				for(SortContent contentVO : contenList){
@@ -428,4 +472,55 @@ public class PageDisplayRSVRSVImpl implements IPageDisplayRSV {
 		}
 		return iPageModuleSV.updatePageModule(reqDTO);
 	}
+	@Override
+	public PageAdPalceRespDTO queryPageAdPlace(PageAdPalceReqDTO adPalceReqDTO) throws Exception {
+		return iPageAdPlaceSV.queryPageAdPlace(adPalceReqDTO);
+	}
+	@Override
+	public List<PageAdPalceRespDTO> queryPageAdPalceList(PageAdPalceReqDTO adPalceReqDTO) throws Exception {
+		return iPageAdPlaceSV.queryPageAdPalceList(adPalceReqDTO);
+	}
+	@Override
+	public long insertSortContent(SortContentReqDTO sortContentReqDTO) throws Exception {
+		return iSortContentSV.insertSortContent(sortContentReqDTO);
+	}
+	@Override
+	public long updateSortContent(SortContentReqDTO sortContentReqDTO) throws Exception {
+		return iSortContentSV.updateSortContent(sortContentReqDTO);
+	}
+	@Override
+	public long insertSortInfo(SortInfoReqDTO sortInfoReqDTO) throws Exception {
+		return iSortInfoSV.insertSortInfo(sortInfoReqDTO);
+	}
+	@Override
+	public long updateSortInfoById(SortInfoReqDTO sortInfoReqDTO) throws Exception {
+		if(sortInfoReqDTO.getSortId() == null || sortInfoReqDTO.getSortId() == 0 ){
+			throw new BusinessException("主键不能为空：sortId="+sortInfoReqDTO.getSortId());
+		}
+		return iSortInfoSV.updateSortInfoById(sortInfoReqDTO);
+	}
+	@Override
+
+	public PageResponseDTO<DataCustomizationRespDTO> queryDataCustomizationInfo(DataCustomizationReqDTO dataCustomizationReqDTO) throws Exception{
+		return iDataCustomizationSV.queryDataCustomizationInfo(dataCustomizationReqDTO);
+	}
+	@Override
+	public int updateDataCustomizationStatus(DataCustomizationReqDTO dataCustomizationReqDTO) throws Exception{
+		return iDataCustomizationSV.updateDataCustomizationStatus(dataCustomizationReqDTO);
+	}
+
+	public SortInfoRespDTO querySortInfoById(SortInfoReqDTO sortInfoReqDTO) throws Exception {
+		if(sortInfoReqDTO.getSortId() == null || sortInfoReqDTO.getSortId() == 0 ){
+			throw new BusinessException("主键不能为空：sortId="+sortInfoReqDTO.getSortId());
+		}
+		return iSortInfoSV.querySortInfoById(sortInfoReqDTO);
+	}
+	@Override
+	public SortContentRespDTO querysortContenById(SortContentReqDTO sortContentReqDTO) throws Exception {
+		if(sortContentReqDTO.getSortContentId() == null || sortContentReqDTO.getSortContentId() == 0 ){
+			throw new BusinessException("主键不能为空：sortContentId="+sortContentReqDTO.getSortContentId());
+		}
+		return iSortContentSV.querysortContenById(sortContentReqDTO);
+	}
+
 }

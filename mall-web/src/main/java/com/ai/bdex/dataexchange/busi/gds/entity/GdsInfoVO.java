@@ -1,6 +1,6 @@
 package com.ai.bdex.dataexchange.busi.gds.entity;
 
-import com.ai.bdex.dataexchange.busi.api.entity.ServiceVO;
+import com.ai.bdex.dataexchange.busi.aip.entity.ServiceVO;
 
 import java.io.Serializable;
 import java.util.Date;

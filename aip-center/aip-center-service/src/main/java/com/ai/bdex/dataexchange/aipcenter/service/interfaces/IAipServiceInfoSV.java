@@ -62,5 +62,27 @@ public interface IAipServiceInfoSV {
 	 */
 	List<AipServiceInfo> selectServiceByServiceId(String serviceId)throws Exception;
 
+	/**
+	 * 插入aip服务基本信息，需传version版本号
+	 * @param aipServiceInfoReqDTO
+	 * @return
+	 * @throws Exception
+     */
+	String insertAipService(AipServiceInfoReqDTO aipServiceInfoReqDTO) throws Exception;
+
+	/**
+	 * 更新aip服务信息，根据serviceId更新
+	 * @param aipServiceInfoReqDTO
+	 * @throws Exception
+     */
+	void updateAipServiceByServiceId(AipServiceInfoReqDTO aipServiceInfoReqDTO) throws Exception;
+
+	/**
+	 * 查询单个aip服务信息
+	 * @param aipServiceInfoReqDTO
+	 * @return
+	 * @throws Exception
+     */
+	AipServiceInfo queryAipServiceInfo(AipServiceInfoReqDTO aipServiceInfoReqDTO) throws Exception;
 
 }

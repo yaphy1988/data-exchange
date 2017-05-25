@@ -1,12 +1,24 @@
 package com.ai.bdex.dataexchange.busi.user.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.ai.bdex.dataexchange.busi.base.entity.BaseAdminAreaInfoVO;
+import com.ai.bdex.dataexchange.busi.user.entity.InvoiceTaxVO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.*;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IBaseAdminAreaRSV;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IChnlInvoiceTaxRSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.paas.util.CacheUtil;
+import com.ai.paas.utils.CollectionUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -16,7 +28,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.ai.bdex.dataexchange.busi.user.entity.AuthStaffVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.ImageUtil;
@@ -28,8 +39,16 @@ import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 @RequestMapping(value="/infomanager")
 public class UserInfoManagerController {
 
+	private static final Logger log = LoggerFactory.getLogger(UserInfoManagerController.class);
+
 	@DubboConsumer
 	private IAuthStaffRSV iAuthStaffRSV;
+
+	@DubboConsumer
+	private IChnlInvoiceTaxRSV iChnlInvoiceTaxRSV;
+
+	@DubboConsumer
+	private IBaseAdminAreaRSV iBaseAdminAreaRSV;
 	
 	@RequestMapping(value="/pageInit")
 	public String pageInit(Model model,HttpSession session,HttpServletRequest request) throws Exception{
@@ -38,15 +57,55 @@ public class UserInfoManagerController {
 		AuthStaffDTO input = new AuthStaffDTO();
 		input.setStaffId(staffId);
 		AuthStaffDTO authInfo = iAuthStaffRSV.findAuthStaffInfo(input);
+
+		InvoiceTaxVO vodata = new InvoiceTaxVO();
+		AuthStaffVO data = new AuthStaffVO();
 		if(authInfo!=null){
-			AuthStaffVO data = new AuthStaffVO();
 			BeanUtils.copyProperties(authInfo, data);
 			String vfsId = data.getHeadVfsid();
 			if(!StringUtil.isBlank(vfsId)){
 				data.setHeadSrc(ImageUtil.getImageUrl(vfsId+"_80x80!"));
 			}
-			model.addAttribute("userinfo", data);
+
+			ReqInvoiceTaxDTO invoiceVo = new ReqInvoiceTaxDTO();
+			invoiceVo.setStaffId(staffId);
+			List<ChnlInvoiceTaxDTO> datas = iChnlInvoiceTaxRSV.queryInvoiceRecord(invoiceVo);
+
+			if(datas != null && datas.size()>0) {
+				BeanUtils.copyProperties(datas.get(0), vodata);
+				if (!StringUtil.isBlank(vodata.getVfsId1())) {
+					vodata.setPicSrc(ImageUtil.getImageUrl(vodata.getVfsId1() + "_80x80!"));
+				}
+
+				//查询省份列表
+				BaseAdminAreaReqDTO baseAdminAreaReqDTO = new BaseAdminAreaReqDTO();
+				baseAdminAreaReqDTO.setStatus("1");
+				baseAdminAreaReqDTO.setAreaLevel("10");
+				List<BaseAdminAreaInfoVO> provinceList = queryBaseArea(baseAdminAreaReqDTO);
+				model.addAttribute("provinceList",provinceList);
+
+				if(StringUtil.isBlank(vodata.getProvinceCode()) == false){
+					baseAdminAreaReqDTO.setAreaLevel(null);
+					baseAdminAreaReqDTO.setStatus("1");
+					baseAdminAreaReqDTO.setParentAreaCode(vodata.getProvinceCode());
+					List<BaseAdminAreaInfoVO> cityList = queryBaseArea(baseAdminAreaReqDTO);
+					model.addAttribute("cityList",cityList);
+
+					if(StringUtil.isBlank(vodata.getCityCode()) == false){
+						baseAdminAreaReqDTO.setStatus("1");
+						baseAdminAreaReqDTO.setParentAreaCode(vodata.getCityCode());
+						List<BaseAdminAreaInfoVO> countryList = queryBaseArea(baseAdminAreaReqDTO);
+						model.addAttribute("countryList",countryList);
+					}
+				}
+			}
+		}else{
+			data.setStaffId(staffId);
 		}
+
+		//返回数据
+		model.addAttribute("vodata", vodata);
+		model.addAttribute("userinfo", data);
 		
 		return "personalCenter/userinfo";
 	}
@@ -59,7 +118,7 @@ public class UserInfoManagerController {
 	 */
 	@RequestMapping(value="/modify",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> modify(Model model,AuthStaffVO vo,HttpSession session){
+	public Map<String,Object> modify(Model model,AuthStaffVO vo,HttpSession session,InvoiceTaxVO voData){
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		AuthStaffDTO input = new AuthStaffDTO();
 		String staffId = StaffUtil.getStaffId(session);
@@ -68,28 +127,25 @@ public class UserInfoManagerController {
 			rMap.put("msg", "请先登录！");
 			return rMap;
 		}
-		if(StringUtil.isBlank(vo.getStaffName())){
-			rMap.put("success",false);
-			rMap.put("msg","用户名称不能为空！");
-			return rMap;
-		}
 		try {
-			//校验用户名是否存在
-			boolean nameFlag = this.iAuthStaffRSV.checkInfoByName(vo.getStaffName(), staffId);
-			if(nameFlag){
-				rMap.put("success", false);
-				rMap.put("msg", "用户名已被使用！");
-				return rMap;
-			}
-//			nameFlag = this.iAuthStaffRSV.checkInfoByName(vo.getAliasName(), staffId);
-//			if(nameFlag){
-//				rMap.put("success", false);
-//				rMap.put("msg", "别名已被使用！");
-//				return rMap;
-//			}
 			BeanUtils.copyProperties(vo, input);
 			input.setStaffId(staffId);
 			iAuthStaffRSV.updateAuthStaffInfo(input);
+
+			//查询是否有审核记录，如果有就更新
+			ReqInvoiceTaxDTO voInput = new ReqInvoiceTaxDTO();
+			voInput.setStaffId(staffId);
+			List<ChnlInvoiceTaxDTO> datas = iChnlInvoiceTaxRSV.queryInvoiceRecord(voInput);
+			if(datas!=null&&datas.size()>0){
+
+				ChnlInvoiceTaxDTO voInfo = new ChnlInvoiceTaxDTO();
+				BeanUtils.copyProperties(voData, voInfo);
+				voInfo.setStaffId(staffId);
+				voInfo.setStatus(null);
+
+				iChnlInvoiceTaxRSV.updateCheckInfo(voInfo);
+			}
+
 			rMap.put("success", true);
 			rMap.put("msg", "修改成功！");
 		} catch (BusinessException e) {
@@ -135,7 +191,7 @@ public class UserInfoManagerController {
 	 */
 	@RequestMapping(value="/updatephone",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> updatephone(Model model,String phoneNo,HttpSession session){
+	public Map<String,Object> updatephone(Model model,String phoneNo,HttpSession session,String smsCode){
 		Map<String,Object> rMap = new HashMap<String,Object>();
 
 		String staffId = StaffUtil.getStaffId(session);
@@ -161,10 +217,22 @@ public class UserInfoManagerController {
 		} catch (BusinessException e) {
 			rMap.put("success", false);
 			rMap.put("msg", "获取旧手机号失败，请稍后再试");
+			return rMap;
 		}
 		//判断是否旧手机验证通过，且新手机验证通过
 		Object oldPhoneNoVerify = session.getAttribute("SMS_CHANGPHONE_VERIFY_1"+oldphoneNo);
-		Object newPhoneNoVerify = session.getAttribute("SMS_CHANGPHONE_VERIFY_2"+phoneNo);
+		if(!"true".equals(oldPhoneNoVerify)){
+			rMap.put("success", false);
+			rMap.put("msg", "旧手机验证失败，请重新修改");
+			return rMap;
+		}
+		//新手机验证
+		Object seccode = CacheUtil.getItem("SMS_CHANGPHONE_EXPIRY_2"+phoneNo);
+		if(seccode == null || seccode.toString().equals(smsCode) == false){
+			rMap.put("success", false);
+			rMap.put("msg", "手机验证错误");
+			return rMap;
+		}
 
 		try {
 			input.setSerialNumber(phoneNo);
@@ -173,9 +241,8 @@ public class UserInfoManagerController {
 			rMap.put("success", true);
 			rMap.put("msg", "修改成功！");
 
+			CacheUtil.delItem("SMS_CHANGPHONE_EXPIRY_2"+phoneNo);
 			session.removeAttribute("SMS_CHANGPHONE_VERIFY_1"+oldphoneNo);
-			session.removeAttribute("SMS_CHANGPHONE_VERIFY_2"+phoneNo);
-
 		} catch (BusinessException e) {
 			rMap.put("success", false);
 			rMap.put("msg", e.getMessage());
@@ -195,5 +262,23 @@ public class UserInfoManagerController {
 		}
 
 		return false;
+	}
+
+	private List<BaseAdminAreaInfoVO> queryBaseArea(BaseAdminAreaReqDTO baseAdminAreaReqDTO){
+		List<BaseAdminAreaInfoVO> list = new ArrayList<BaseAdminAreaInfoVO>();
+		try {
+			List<BaseAdminAreaRespDTO> baseAdminAreaRespDTOList = iBaseAdminAreaRSV.queryBaseAdminAreaList(baseAdminAreaReqDTO);
+			if (!CollectionUtil.isEmpty(baseAdminAreaRespDTOList)){
+				for (BaseAdminAreaRespDTO baseAdminAreaRespDTO : baseAdminAreaRespDTOList){
+					BaseAdminAreaInfoVO baseAdminAreaInfoVO = new BaseAdminAreaInfoVO();
+					ObjectCopyUtil.copyObjValue(baseAdminAreaRespDTO,baseAdminAreaInfoVO,null,false);
+					list.add(baseAdminAreaInfoVO);
+				}
+			}
+		}catch (Exception e){
+			log.error("查询区域列表信息异常",e);
+		}
+
+		return list;
 	}
 }

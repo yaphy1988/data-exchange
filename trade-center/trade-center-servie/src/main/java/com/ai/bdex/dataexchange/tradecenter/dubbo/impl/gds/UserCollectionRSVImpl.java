@@ -129,6 +129,25 @@ public class UserCollectionRSVImpl implements IUserCollectionRSV{
             throw new BusinessException("分页查询商品收藏列表失败："+e.getMessage());
         }
     }
+    
+    /**
+     * 
+     * TODO 简单描述该方法的实现功能（这里关联了表t_gds_info，为了取gdsName,gdsSubtitle,gdsPic,funIntroduction,status 。主要目的是用gdsName 来关联查询的哦）. 
+     * @see com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IUserCollectionRSV#queryUserCollectionPageExtends(com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserCollectionReqDTO)
+     */
+    @Override
+    public PageResponseDTO<UserCollectionRespDTO> queryUserCollectionPageExtends(
+            UserCollectionReqDTO userCollectionReqDTO) throws BusinessException {
+        if(userCollectionReqDTO == null){
+            throw new BusinessException("入参userCollectionReqDTO不能为null");
+        }
+        try {
+            return iUserCollectionSV.queryUserCollectionPageExtends(userCollectionReqDTO);
+        } catch (Exception e) {
+            logger.error("分页查询商品收藏列表失败：",e);
+            throw new BusinessException("分页查询商品收藏列表失败："+e.getMessage());
+        }
+    }
 
 }
 

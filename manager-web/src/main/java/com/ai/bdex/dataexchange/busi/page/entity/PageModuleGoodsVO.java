@@ -2,7 +2,9 @@ package com.ai.bdex.dataexchange.busi.page.entity;
 
 import java.util.Date;
 
-public class PageModuleGoodsVO {
+import com.ai.bdex.dataexchange.common.dto.BaseInfo;
+
+public class PageModuleGoodsVO extends BaseInfo {
     private Integer pmgId;
 
     private Integer moduleId;
@@ -23,7 +25,37 @@ public class PageModuleGoodsVO {
 
     private String status;
 
-    public Integer getPmgId() {
+    private String gdsName;
+    
+    private String catId;
+    
+    private String gdsStatus;
+    
+    public String getGdsStatus() {
+		return gdsStatus;
+	}
+
+	public void setGdsStatus(String gdsStatus) {
+		this.gdsStatus = gdsStatus;
+	}
+
+	public String getGdsName() {
+		return gdsName;
+	}
+
+	public void setGdsName(String gdsName) {
+		this.gdsName = gdsName;
+	}
+
+	public String getCatId() {
+		return catId;
+	}
+
+	public void setCatId(String catId) {
+		this.catId = catId;
+	}
+
+	public Integer getPmgId() {
         return pmgId;
     }
 

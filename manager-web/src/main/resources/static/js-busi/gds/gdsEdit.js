@@ -22,7 +22,7 @@ $(function(){
 		$("#catText").val(catText);
 		queryGdsInfo2Prop(gdsId);
 	}
-	
+	gridPicInfoList(1);
 });
 /**
  * 弹出商品标签选择框
@@ -415,6 +415,7 @@ function createGdsInfoVO(){
 	var gdsName = $("#gdsName").val();
 	var gdsSubTitle = $("#gdsSubTitle").val();
 	var apiId = $("#apiId").val();
+	var providerId=$("#providerId").val();
 	var gdsPic = $("#gdsPic").val();
 	var ifRecommend = $("#ifRecommend").val();
 	var funIntroduction = $("#funIntroduction").val();
@@ -480,6 +481,7 @@ function createGdsInfoVO(){
 			catFirst:catFirst,
 			catId:catId,
 			apiId:apiId,
+			providerId:providerId,
 			gdsPic:gdsPic,
 			ifRecommend:ifRecommend,
 			funIntroduction:funIntroduction,
@@ -844,8 +846,10 @@ function gridAPIInfoList(index){
 	});
 }
 function selectGdsAPIInfo(obj){
-	var apiId=$(obj).parent().siblings().eq(0).text();
-	var apiName=$(obj).parent().siblings().eq(1).text();
+	var providerId=$(obj).parent().siblings().eq(0).text();
+	var apiId=$(obj).parent().siblings().eq(1).text();
+	var apiName=$(obj).parent().siblings().eq(2).text();
+	$("#providerId").val(providerId);
 	$("#apiId").val(apiId);
 	$("#apiText").val(apiName);
 	$("#myModal3").modal('hide');
@@ -855,4 +859,29 @@ function selectGdsAPIInfo(obj){
 function isInteger(str){
 	 var reg = /^(([1-9][0-9]*))$/;
 	 return reg.test(str);
+}
+
+function gridPicInfoList(index){
+	var param={
+		pageNo:index,
+		libId:$("#libId").val(),
+		picName : $.trim($("#picNameInput").val())
+	};
+	$.ajax({
+		url:WEB_ROOT+'/gdsEdit/gridPicList',
+		cache:false,
+		async:true,
+		dataType:'html',
+		data : param,
+		success:function(data){
+			$('#gdsPicList').empty();
+			$('#gdsPicList').html(data);
+		}
+	});
+}
+function selectGdsPicInfo(obj,picUuid){
+	var picUrl=$(obj).attr('picUrl');
+	$("#gdsPicUrl").attr("src",picUrl);
+	$("#gdsPic").val(picUuid);
+	$("#myModal4").modal('hide');
 }

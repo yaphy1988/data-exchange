@@ -142,14 +142,15 @@
 .borTable .editTable{
 	width: 100%;
 }
+
 .editTable.table-hover td{
 	padding: 10px 0;
 }
 
 .editTable td.Hint{
-	padding:20px;
+	padding:15px;
 
-	text-align: left;
+	text-align: right;
 	color: #999;
 }
 .editTable td.Hint.tips{

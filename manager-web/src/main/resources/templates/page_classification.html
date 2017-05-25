@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
+<head>
+	<meta charset="UTF-8">
+	<title>商品分类</title>
+	<link rel="stylesheet" href="../static/component/bootstrap/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/index.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/page_classification.css" th:href="@{/css/page_classification.css}">
+	<!--[if lt IE 9]>
+        <script src="../static/js/respond.min.js" th:remove="all"></script>
+        <script src="../static/js/html5shiv.min.js"  th:remove="all"></script>
+	<![endif]-->
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+	<script src="../static/js-busi/page/page_classification.js" th:src="@{/js-busi/page/page_classification.js}"></script>
+</head>
+<body>
+
+	<!-- 头部 -->
+	<header class="clearfix m_header" th:remove="all">
+		<a href="" class="Logo" target="_blank" >
+			<img  src="../static/images/manage_logo.png" th:src="@{/images/manage_logo.png}" alt="广州数据" >
+		</a>
+		<ul class="m_hdlist clearfix">
+			<li>
+				<a class="item" href="" target="_blank">联系我们</a>
+			</li>
+			<li >
+				<div class="dropdown">
+					<a  class="item" data-toggle="dropdown"  >
+						关注广数
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+						<li><img src="../static/images/wexin.jpg"></li>
+					</ul>
+				</div>
+			</li>
+			<li>
+				<a class="item" href="" target="_blank">常见问题</a>
+			</li>
+			<li >
+				<div class="dropdown">
+					<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+						okleung
+						<span class="caret"></span>
+					</a>
+					<ul class="dropdown-menu" aria-labelledby="dLabel">
+						<li><a  href="" >退出登录</a></li>
+					</ul>
+				</div>
+			</li>
+		</ul>
+	</header>
+	<!-- 头部 end-->
+
+	<div  layout:fragment="screen_content">
+	    <!-- 右边内容 -->
+		<div class="m_main">
+			<div class="m_con">
+	
+				<div class="classify">
+					<i class="iconfont"></i>
+					<span>当前位置：</span>
+					<a href=""><span>广州数据交易中心</span></a>
+					<a href=""><span>个人中心</span></a>
+					<span class="col_999"> 商品分类</span>
+				</div>
+	
+	            <!-- Nav tabs -->
+	            <ul class="nav nav-tabs">
+	                <li class="active"><a href="#tab01">商品分类</a></li>
+	            </ul>
+	
+			    <div class=" mt15">
+					<div class="col-md-5">
+	                     <!-- 左边树形菜单  --> 
+			             <div class="class_sidebar" th:id="head_sidebar" th:remove="body">
+				            <h3>全部商品</h3>
+				            <ul th:remove="all-but-first">
+				                <li><a href="#" ><i>›</i>金融理财金融理财金融理财金融理财金融理财</a> </li>
+				                <li class="active"><a href="#"><i>›</i>交通运输</a> </li>
+				              <!--   <li><a href="#"><i>›</i>气象环保</a> </li>
+				                <li><a href="#"><i>›</i>生活服务</a> </li>
+				                <li><a href="#"><i>›</i>生活服务</a> </li>
+				                <li><a href="#"><i>›</i>时空数据</a> </li>
+				                <li><a href="#"><i>›</i>健康医疗</a> </li>
+				                <li><a href="#"><i>›</i>更多服务</a> </li>
+				                <li><a href="#"><i>›</i>气象环保</a> </li>
+				                <li><a href="#"><i>›</i>生活服务</a> </li>
+				                <li><a href="#"><i>›</i>生活服务</a> </li>
+				                <li><a href="#"><i>›</i>时空数据</a> </li>
+				                <li><a href="#"><i>›</i>健康医疗</a> </li>
+				                <li><a href="#"><i>›</i>更多服务</a> </li> -->
+				                <div class="mt10 ml15">
+				                	<button class="btn btn-default btn-sm" data-toggle="modal"  onclick="addsortContent();"><i class="glyphicon glyphicon-plus"></i> 新增菜单</button>
+				                </div>
+				            </ul>
+				            <!-- 二级子菜单 -->
+				            <div psortid="1" class="class_sidebar_secon" style="display: block;">
+								<h4>金融理财</h4>
+								<ol class="class_link">
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
+
+								</ol>
+								<button class="btn btn-sm btn-default mt10">新增子菜单</button>
+							</div> 
+				        </div>       	
+	                    <!-- 左边树形菜单  end--> 
+			        </div>
+					<!--右边-->
+			        <div class="col-md-7" id="sortInfo-content">
+						<div class="box" id="sortInfo" th:if="${sortInfo}">
+							<table width="100%" border="0" class="editTable table-hover" id="sortcontent_table">
+								<input type="hidden" id="parentSortId" th:value="${parentSortId}">
+								<input type="hidden" id="sortId" th:value="${sortInfo.sortId}">
+								<input type="hidden" id="sortLever" th:value="${sortLever}">
+								<tbody>
+								
+									<tr>
+										<td class="Hint class-zi" th:if="${sortLever} == '1'">一级分类：</td>
+										<td class="Hint class-zi" th:if="${sortLever} == '2'">二级分类：</td>
+										<td class="Hint class-zi" th:if="${sortLever} == '3'">子类内容：</td>
+										
+									</tr>
+									<tr>
+										<td class="Hint" width="120"><span class="red">*</span>分类名称：</td>
+										<td>
+											<input class="form-control" type="text" name="sortName" th:if="${sortInfo.sortContentRespDTO}"  th:value="${sortInfo.sortContentRespDTO.contentName}">
+											<input class="form-control" type="text" name="sortName" th:if="${sortInfo.sortContentRespDTO == null}">
+										</td>
+									</tr>
+									<tr>
+										<td class="Hint">链接地址：</td>
+										<td>
+											<input class="form-control" maxlength="512" type="text" name="contentLink" th:if="${sortInfo.sortContentRespDTO}" th:value="${sortInfo.sortContentRespDTO.contentLink}">
+											<input class="form-control" maxlength="512" type="text" name="contentLink" th:if="${sortInfo.sortContentRespDTO} == null">
+										</td>
+									</tr>
+									<tr>
+										<th colspan="2" scope="row" class="table-line"></th>
+									</tr>
+									
+								</tbody>
+							</table>
+							<table width="100%" border="0" class="editTable table-hover" th:remove="all">
+								<tbody>
+								
+									<tr>
+										<td class="Hint class-zi">二级分类：
+										</td>
+										<td><a class="pull-right p10 close">✖️</a></td>
+									</tr>
+									<tr>
+										<td class="Hint" width="120"><span class="red">*</span>分类名称：</td>
+										<td>
+											<input class="form-control" type="text" id="sortName" value="">
+										</td>
+									</tr>
+									<tr>
+										<td class="Hint">链接地址：</td>
+										<td>
+											<input class="form-control" maxlength="512" type="text" id="contentLink"
+											value="">
+										</td>
+									</tr>
+									<tr>
+										<th colspan="2" scope="row" class="table-line"></th>
+									</tr>
+								</tbody>
+							</table>
+							<div class="text-center">
+								<button th:if="${sortAdd} == 'add' and ${sortLever} !='2'" th:onclick="|addSortInfo(${sortInfo.sortId},${sortLever})|" class="btn btn-default btn-sm"  data-toggle="modal" onclick=""><i class="glyphicon glyphicon-plus"></i> 添加</button>
+								<input th:if="${sortAdd} == 'add'" type="submit" value="保存" th:onclick="|saveSortInfo()|" class="btn btn-primary btn-sm">
+								<input th:if="${sortAdd} != 'add'" type="submit" value="保存" th:onclick="|editSaveSortInfo()|" class="btn btn-primary btn-sm">
+							</div>
+						</div>
+					
+		            </div>
+		            <!--右边 end-->
+			    </div>
+				
+			</div>
+		</div>
+		<!-- 右边内容 end-->
+		<!-- 隐藏区域 -->
+		
+		<table width="100%" border="0" style="display:none" class="addsort_table editTable table-hover">
+			
+			<tbody>
+			
+				<tr>
+					<td class="Hint class-zi" th:if="${sortLever} == '1'">一级分类：</td>
+					<td class="Hint class-zi" th:if="${sortLever} == '2'">二级分类：</td>
+					<td><a class="pull-right p10 close" th:onclick="|deleteAddedSort(this)|">✖️</a></td>
+				</tr>
+				<tr>
+					<td class="Hint" width="120"><span class="red">*</span>分类名称：</td>
+					<td>
+						<input class="form-control" type="text" name="sortName" value="">
+					</td>
+				</tr>
+				<tr>
+					<td class="Hint">链接地址：</td>
+					<td>
+						<input class="form-control" maxlength="512" type="text" name="contentLink" value="">
+					</td>
+				</tr>
+				<tr>
+					<th colspan="2" scope="row" class="table-line"></th>
+				</tr>
+			</tbody>
+		</table>
+		<!-- 隐藏区域 end-->
+	</div>
+	<!-- 左边菜单 -->
+	<div class="m_nav"  th:remove="all">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录一级目录一级目录一级目录一级目录一级目录一级目录一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ol class="infoItem">
+						<li class="active">
+							<a href=""><i></i>二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类二级分类</a>
+						</li>
+						<li >
+							<a href=""><i></i>二级分类</a>
+						</li>
+						<li >
+							<a href=""><i></i>二级分类</a>
+						</li>
+					</ol>
+				</li>
+				<li >
+					<a href="">
+						<i ></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+						<li >
+							<a href="">二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</a>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+				<li >
+					<span>
+						<i class=""></i>
+						一级目录
+						<span class="caret"></span>
+					</span>
+					<ul class="infoItem">
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+						<li class="">
+							<a href=""><i class="iconfont"></i>二级分类</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<!-- 左边菜单 end-->
+	<SCRIPT type="text/javascript" th:inline="javascript">
+		
+    </SCRIPT>
+
+</body>
+</html>

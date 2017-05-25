@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="~{fragments/syshead :: syshead}"></div>
+
+<link rel="stylesheet" href="../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+<head>
+	<meta charset="UTF-8">
+	<title>数据定制管理</title>
+	<link rel="stylesheet" href="../static/component/bootstrap/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
+	<script type="text/javascript" src="../../static/js-busi/page/data_manager.js" th:src="@{/js-busi/page/data_manager.js}"></script>
+</head>
+
+<body>
+<div th:replace="~{fragments/top :: top}"></div>
+<header class="clearfix m_header" th:remove="all">
+	<a href="" class="Logo" target="_blank" >
+		<img  src="../static/images/manage_logo.png" alt="广州数据" >
+	</a>
+	<ul class="m_hdlist clearfix">
+		<li>
+			<a class="item" href="" target="_blank">联系我们</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a  class="item" data-toggle="dropdown"  >
+					关注广数
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu QRcode" aria-labelledby="dLabel">
+					<li><img src="../static/images/wexin.jpg"></li>
+				</ul>
+			</div>
+		</li>
+		<li>
+			<a class="item" href="" target="_blank">常见问题</a>
+		</li>
+		<li >
+			<div class="dropdown">
+				<a class="item" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+					okleung
+					<span class="caret"></span>
+				</a>
+				<ul class="dropdown-menu" aria-labelledby="dLabel">
+					<li><a  href="" >退出登录</a></li>
+				</ul>
+			</div>
+		</li>
+	</ul>
+</header>
+<div  layout:fragment="screen_content">
+	<div class="m_main">
+		<div class="m_con">
+			<div class="classify">
+				<i class="iconfont"></i>
+				<span>当前位置：</span>
+				<a href=""><span>XXX</span></a>
+				<span class="col_999">数据定制管理</span>
+			</div>
+			<!-- <hr> -->
+			<div  class="top-table">
+				<table class="editTable">
+					<tbody><tr>
+						<td width="120px" class="Hint">
+							处理状态：
+						</td>
+						<td width="20%">
+							<div class="input-group02">
+								<input type="hidden" id="gdsStatus" value="0">
+								<select class="form-control" id="statusselect"  >
+									<option value="">全部</option>
+									<option value="1">未处理</option>
+									<option value="2">已处理</option>
+								</select>
+							</div>
+						</td>
+						<td>
+							<div class="input-group02">
+								<button class="btn btn-primary" onclick="queryCustomData(1)">查询</button>
+							</div>
+						</td>
+					</tr>
+					</tbody></table>
+			</div>
+			<div id="queryresultShow">
+			<table class="table table-bordered text-center" >
+                            <thead>
+                            <tr class="active">
+                                <th>序号</th>
+								<th>需求名称</th>
+								<th>需求描述</th>
+								<th>联系人</th>
+								<th>手机号码</th>
+								<th>联系邮箱</th>
+								<th>创建时间</th>
+								<th>操作</th>
+                            </tr>
+				</thead>
+				<tbody th:if=" ${pageInfo}"  th:remove="all-but-first" >
+				<tr  th:each="list,iterStat : ${pageInfo.result}"  class="queryresult">
+					<td th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
+					<td th:text="${list.customName}"></td>
+					<td th:text="${list.customDescrip}"></td>
+					<td th:text="${list.linkPerson}"></td>
+					<td th:text="${list.linkPhnoe}"></td>
+					<td th:text="${list.customMail}"></td>
+					<td th:with="datatime=${list.createTime}" th:text="${#dates.format(datatime, 'yyyy-MM-dd HH:mm')}"></td>
+					<td> <p class="pop-link"  th:if=" ${list.status}=='1'" >
+						<a  th:onclick="|updateCustomDatastatus('${list.dczaId}')|">处理</a>
+					</p>
+						<p class="pop-link"  th:if=" ${list.status}=='2'" >
+							<span>已处理<span/>
+						</p>
+					</td>
+				</tr>
+                            <tr th:remove="all">
+                                <td>1</td>
+                                <td> </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                <p class="pop-link">
+                                  <a href="">已处理</a>
+                                  <a href="">待处理</a>
+                                </p>
+                                </td>
+                            </tr>
+							</tbody>
+                        </table>
+ 			  <div class="overflow-hidden clearfix">
+				 <div th:fragment="pager" class="pagerBar pagelist pull-right"
+					 th:if=" ${pageInfo}">
+					<script type="text/javascript"
+							src="../static/js-busi/common/pager.js"
+							th:src="@{/js-busi/common/pager.js}"></script>
+					<span data-toggle="pager" id="pagerId"
+						  th:data-count="${pageInfo.count}"
+						  th:data-size="${pageInfo.pageSize}"
+						  th:data-currentindex="${pageInfo.pageNo}"></span>
+					<script th:inline="javascript">
+						var total ='[[${pageInfo.count}]]';
+						var pageNum = '[[${pageInfo.pageNo}]]';
+						var pageSize = '[[${pageInfo.pageSize}]]';
+
+						if (typeof pagerClick === "undefined") {
+							pagerClick = function(index) {
+								queryCustomData(index);
+							}
+						}
+						$('#pagerId').pager({
+							callback : pagerClick
+						});
+					</script>
+				    </div>
+			       </div>
+			    </div>
+		</div>
+	</div>
+
+	<div class="m_nav">
+		<nav class="nav">
+			<ul>
+				<li class="navTit">
+					<i class="glyphicon glyphicon-compressed"></i>
+					个人中心
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						我的数据
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						我的订单
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						密码修改
+					</a>
+				</li>
+				<li class="active">
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						企业认证
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						发票管理
+					</a>
+				</li>
+				<li >
+					<a href="">
+						<i class="glyphicon glyphicon-inbox pr5"></i>
+						我的收藏
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+</div>
+	
+	
+	
+	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
+	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
+	
+
+</body>
+</html>

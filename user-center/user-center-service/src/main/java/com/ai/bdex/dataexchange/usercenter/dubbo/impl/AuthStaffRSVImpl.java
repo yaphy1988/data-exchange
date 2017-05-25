@@ -2,6 +2,8 @@ package com.ai.bdex.dataexchange.usercenter.dubbo.impl;
 
 import java.util.Map;
 
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -158,4 +160,23 @@ public class AuthStaffRSVImpl implements IAuthStaffRSV{
 		}
 	}
 
+	/**
+	 * 查询用户信息
+	 * @param vo
+	 * @return
+	 * @throws BusinessException
+	 */
+	@Override
+	public PageResponseDTO<StaffInfoDTO> getStaffInfoPage(AuthStaffDTO vo)throws BusinessException{
+		try {
+			return iAuthStaffSV.getStaffInfoPage(vo);
+		} catch (Exception e) {
+			if (e instanceof BusinessException)
+				throw (BusinessException) e;
+			else {
+				log.error("查询用户信息异常：" + e.getMessage());
+				throw new BusinessException("查询用户信息异常：" + e.getMessage());
+			}
+		}
+	}
 }

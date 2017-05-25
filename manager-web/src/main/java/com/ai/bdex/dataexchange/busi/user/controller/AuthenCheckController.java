@@ -142,7 +142,10 @@ public class AuthenCheckController {
 		}else{
 			throw new Exception("查询数据异常！");
 		}
-		return "company_approve_ details";
+
+		model.addAttribute("authflag","true");
+
+		return "personalCenter/company_approve_details";
 	}
 	
 	
@@ -155,12 +158,13 @@ public class AuthenCheckController {
 	 */
 	@RequestMapping(value="/docheck",method=RequestMethod.POST)
 	@ResponseBody
-	public Map<String,Object> docheck(Model model,HttpSession session,String status,Long taxId){
+	public Map<String,Object> docheck(Model model,HttpSession session,String status,Long taxId,String checkDesc){
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		ChnlInvoiceTaxDTO info = new ChnlInvoiceTaxDTO();
 		info.setStatus(status);
 		info.setTaxId(taxId);
 		info.setUpdateStaff(StaffUtil.getStaffVO(session).getStaffId());
+		info.setCheckDesc(checkDesc);
 		try {
 			iChnlInvoiceTaxRSV.doAuditTax(info);
 			rMap.put("success", true);

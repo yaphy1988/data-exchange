@@ -22,5 +22,44 @@
     "testOnReturn": "true",
     "dbIndex": "0",
     "twemproxy": "false"
+  },
+  "/com/ai/paas/system/conf": {
+    "systemInfo": [
+      {
+        "code": "01",
+        "name": "商城WEB",
+        "version": "1.0",
+        "moduleList": [
+          {
+            "moduleId": "1",
+            "moduleName": "系统模块",
+            "moduleContext": "",
+            "moduleDomain": "localhost:8081",
+            "protocolType": "http"
+          }
+        ]
+      },
+      {
+        "code": "02",
+        "name": "管理WEB",
+        "version": "1.0",
+        "moduleList": [
+          {
+            "moduleId": "1",
+            "moduleName": "系统模块",
+            "moduleContext": "",
+            "moduleDomain": "localhost:8082",
+            "protocolType": "http"
+          },
+          {
+            "moduleId": "1",
+            "moduleName": "报表模块",
+            "moduleContext": "",
+            "moduleDomain": "localhost:8083",
+            "protocolType": "http"
+          }
+        ]
+      }
+    ]
   }
 }

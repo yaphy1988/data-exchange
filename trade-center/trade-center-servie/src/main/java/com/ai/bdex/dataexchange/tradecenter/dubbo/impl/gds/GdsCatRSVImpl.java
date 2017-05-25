@@ -105,4 +105,37 @@ public class GdsCatRSVImpl implements IGdsCatRSV {
             throws BusinessException {
         return iGdsCatSV.queryCatPageInfo(gdsCatReqDTO);
     }
+    @Override
+    public void saveGdsCatInfo(GdsCatReqDTO gdsCatReqDTO) throws BusinessException {
+        if (gdsCatReqDTO==null){
+            throw new BusinessException("保存商品分类信息入参为空");
+        }
+        try {
+            iGdsCatSV.insertGdsCat(gdsCatReqDTO);
+        } catch (Exception e) {
+            throw new BusinessException("分类保存失败："+e);
+        }
+    }
+    @Override
+    public void updateGdsCatInfo(GdsCatReqDTO gdsCatReqDTO) throws BusinessException {
+        if (gdsCatReqDTO==null){
+            throw new BusinessException("编辑商品分类信息入参为空");
+        }
+        try {
+            iGdsCatSV.updateGdsCat(gdsCatReqDTO);
+        } catch (Exception e) {
+            throw new BusinessException("分类编辑失败："+e);
+        }
+    }
+    @Override
+    public void deleteGdsCatInfo(Integer catId) throws BusinessException {
+        if (catId==null || catId.intValue()<=0){
+            throw new BusinessException("删除商品分类信息入参为空");
+        }
+        try {
+            iGdsCatSV.deleteGdsCatInfo(catId);
+        } catch (Exception e) {
+            throw new BusinessException("删除分类失败："+e);
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.util;
 
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.MenuDisPlayDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.paas.session.impl.SessionManager;
 import com.ai.paas.util.Utils;
@@ -8,6 +9,7 @@ import org.apache.log4j.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.List;
 
 public class StaffUtil {
 	private static Logger logger = Logger.getLogger(StaffUtil.class);
@@ -15,14 +17,12 @@ public class StaffUtil {
 	 * 用户登录名Cookie
 	 */
 	private final static String STAFF_ID = "StaffLoginInfo";
-	
-	/**
-	 * Cookie有效期--一周
-	 */
-	private final static int EXPIRY = 60*60*24*7;
-	
+
 	/**人员信息*/
 	public final static String STAFF_INFO = "staffInfoDTO";
+
+	/**登陆人菜单*/
+	public final static String STAFF_MENU = "staffMenuInfo";
 	
 	/**
 	 * 存入staffId到cookie中，有效时间一周
@@ -33,12 +33,6 @@ public class StaffUtil {
 		
 		SessionManager sessionManager=(SessionManager)(Utils.getBean("sessionManager"));
     	sessionManager.addCookie(request, response, STAFF_ID, staffId);
-    
-    	
-		/*Cookie cookie = new Cookie(STAFF_ID, staffId);
-		cookie.setMaxAge(EXPIRY);
-		cookie.setPath("/");
-		response.addCookie(cookie);*/
 	}
 	
 	/**
@@ -77,4 +71,15 @@ public class StaffUtil {
 		return getStaffVO(session).getStaffId();
 	}
 
+	public static void setStaffMenus(HttpSession session, List<MenuDisPlayDTO> menus){
+		session.setAttribute(STAFF_MENU,menus);
+	}
+
+	public static List<MenuDisPlayDTO> getStaffMenus(HttpSession session){
+		Object obj = session.getAttribute(STAFF_MENU);
+		if(obj != null){
+			return (List<MenuDisPlayDTO>)obj;
+		}
+		return null;
+	}
 }

@@ -10,7 +10,6 @@ import org.apache.solr.client.solrj.beans.Field;
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelRespDTO;
 import com.ai.bdex.dataexchange.util.StringUtil;
-import com.ai.paas.util.ImageUtil;
 
 public class ResultRespVO  extends BaseResponseDTO implements Serializable{
     /** 
@@ -66,6 +65,8 @@ public class ResultRespVO  extends BaseResponseDTO implements Serializable{
     private int gdsSale;
     @Field
     private List<String> gdsLabel;
+    @Field
+    private String providerId;//供应商id
     
     private List<GdsLabelRespDTO> gdsLabelParse;
     public String getId() {
@@ -120,12 +121,7 @@ public class ResultRespVO  extends BaseResponseDTO implements Serializable{
         return gdsPic;
     }
     public void setGdsPic(String gdsPic) {
-        try {
-            this.gdsPic = ImageUtil.getImageUrl(gdsPic + "_200x200");
-        } catch (Exception e) {
-            this.gdsPic = gdsPic;
-        }
-        
+        this.gdsPic = gdsPic;
     }
     public String getIfRecommend() {
         return ifRecommend;
@@ -230,6 +226,12 @@ public class ResultRespVO  extends BaseResponseDTO implements Serializable{
     }
     public void setPackPriceShow(String packPriceShow) {
         this.packPriceShow = packPriceShow;
+    }
+    public String getProviderId() {
+        return providerId;
+    }
+    public void setProviderId(String providerId) {
+        this.providerId = providerId;
     }
 
     

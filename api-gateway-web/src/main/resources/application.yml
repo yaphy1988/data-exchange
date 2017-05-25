@@ -1,10 +1,39 @@
-application:
-  configcenter:
-    zkaddress: 127.0.0.1:2181
-    runmode: D
-    login: admin:admin
-  cache:
-    confpath: /com/ai/paas/cache/conf
-
 server:
   port: 8080
+
+spring:
+  session:
+    store-type: none
+  dubbo:
+    appname: aip-gateway-web
+    registry: zookeeper://127.0.0.1:2181
+    protocol: dubbo
+    group: devGroup
+  thymeleaf:
+    enabled: true
+    cache: false
+    suffix: .html
+    encoding: UTF-8
+  data:
+   solr:
+     host: http://112.74.163.29:8983/solr
+ ##    zk-host:
+
+## woego-frame框架包配置
+application:
+  cache:
+    confpath: /com/ai/paas/cache/conf
+  session:
+    confpath: /com/ai/paas/session/conf
+  image:
+    confpath: /com/ai/paas/gmimage/conf
+  file:
+    confpath: /com/ai/paas/file/conf
+  captcha:
+    confpath: /com/ai/paas/qrcode/conf
+    qrservleturlpattern: /qrcode/*
+    captchaservleturlpattern: /captcha/CapthcaImage
+  configcenter:
+    runmode: D
+    zkaddress: 127.0.0.1:2181
+    login: admin:admin

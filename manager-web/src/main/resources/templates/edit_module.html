@@ -5,7 +5,7 @@
 <head>
 	<meta charset="UTF-8">
 	<title>编辑模块</title>
-	<link rel="stylesheet" href="../static/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../static/component/bootstrap/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
@@ -58,7 +58,7 @@
                 <ul class="nav nav-tabs" role="tablist" id="tabList">
                     <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">编辑模块</a></li>
                     <li th:remove="all"><a href="#tab02" aria-controls="home" role="tab" data-toggle="tab" >商品模块</a></li>
-                    <li th:if="${moduleRespDTO.moduleType=='02'}" ><a href="#tab03" aria-controls="home" role="tab" data-toggle="tab">广告模块</a></li>
+                    <li th:remove="all" th:if="${moduleRespDTO.moduleType=='02'}" ><a href="#tab03" aria-controls="home" role="tab" data-toggle="tab">广告模块</a></li>
                 </ul>
 
                 <!-- Tab panes -->

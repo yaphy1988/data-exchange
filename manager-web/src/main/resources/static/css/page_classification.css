@@ -1,0 +1,106 @@
+/* by liangsx 20170508 */
+.class_sidebar{
+	background: #fbfbfb;
+	border: solid 1px #eee;
+	position: relative;
+	width: 160px;
+}
+.class_sidebar h3{
+	font-size: 16px;
+	font-weight: 700;
+	line-height: 30px;
+	padding: 5px 10px;
+	background: #eee;
+}
+.class_sidebar .dele{
+	padding-right: 5px;
+}
+.class_sidebar ul{
+	padding: 20px 0;
+	min-height: 300px;
+}
+.class_sidebar ul li{
+	height: 40px;
+	line-height: 40px;
+	width: 100%;
+	padding: 0 20px;
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+.class_sidebar li.active{
+	background-color: #fff;
+	border-left: solid 3px #ec6000;
+}
+.class_sidebar li.active a{
+	color: #ec6000;
+	
+}
+.class_sidebar ul li a{
+	color: #333;
+}
+.class_sidebar ul li a:hover{
+	color: #ec6000;
+}
+.class_sidebar ul li i{
+	float: right;
+
+}
+.class_sidebar_secon{
+	position: absolute;
+	width: 280px;
+	left: 158px;
+	top: 39px;
+	z-index: 10;
+	background: #fff;
+	border: solid 1px #eee;
+	/* border-left:none; */
+	min-height: 302px;
+	/* max-height: 402px; */
+	overflow: auto;
+	padding: 20px;
+	box-shadow: 2px 2px 7px #eee;
+}
+.class_sidebar_secon h4{
+	font-size: 14px;
+	margin-bottom: 10px;
+	color: #666;
+}
+
+.class_link:after{
+	content:"."; display:block; height:0; clear:both; visibility:hidden;
+}
+.class_link li{
+	padding: 0;
+	float: left;
+	display: inline-block;
+	padding-right: 15px;
+	padding-bottom: 3px;
+}
+.class_sidebar_secon .class_link a{
+	padding: 3px 0;
+	/* padding-right: 15px; */
+	display: inline-block;
+	color: #333;
+}
+.class_sidebar_secon .class_link a span{
+	padding-left: 5px;
+	/* font-size: 14px; */
+}
+.class_sidebar_secon .class_link a:hover{
+	color: #ec6000;
+}
+.table-line {
+
+	height: 10px; 
+	border-top: #ddd 1px dashed; 
+	padding-left: 10%; 
+	margin-bottom: 10px; 
+}
+
+.class_link a.active{
+	color: #ec6000;
+	
+}
+.deleIcon2 {width:17px;height:17px;display: inline-block;margin-top:10px;background: url(../images/my_woego/dele-icon.png) 0px -15px no-repeat;margin-left: 5px;cursor: pointer;}
+.deleIcon2:hover { width:17px; height:17px; display: inline-block; background: url(../images/my_woego/dele-icon.png) 0px -33px no-repeat; }

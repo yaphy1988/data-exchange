@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{shopcart/layout}">
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>广州数据中心</title>
+    <link rel="icon" type="../../static/image/png" href="../static/images/favicon.png"  th:remove="all">
+    <link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
+    <link rel="stylesheet" href="../../static/css/index.css" th:remove="all">
+    <link rel="stylesheet" href="../../static/css/shoppint_cart.css" th:href="@{/css/shoppint_cart.css}">  <!-- 购物车/汇款 tangyk -->
+    <script src="../../static/js/jquery-1.12.4.js" th:remove="all"></script>
+    <script src="../../static/component/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
+    <script src="../../static/js/util.js" th:src="@{/js/util.js}"></script>
+    
+    <script src="../../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
+     <!--[if lt IE 9]>
+            <script src="../static/js/respond.min.js" ></script>
+            <script src="../static/js/html5shiv.min.js" ></script>
+    <![endif]-->   
+    <script src="../../static/js-busi/order.js" th:src="@{/js-busi/order/order.js}"></script>
+</head>
+<body>
+<div class="top" th:remove="all">
+    <div class="wrap1200 overflow-inherit clearfix">
+        <div class="top-left floatL">
+            <span>欢迎来到广州数据中心</span>
+            <span>2017年4月20日&nbsp;&nbsp;12：00：30</span>
+        </div>
+        <div class="top-right floatR">
+            <a href="#"><b>请登录</b></a>
+            <a href="#">免费注册</a>
+            <i>|</i>
+            <a href="#" class="follow">关注广数<i class="glyphicon glyphicon-menu-down"></i>
+                <div class="guangshu"><i></i><img src="../../static/images/wexin.jpg"></div>
+            </a>
+            <a href="#">常见问题</a>
+            <a href="#">联系我们</a>
+        </div>
+    </div>
+</div>
+
+<div class="wrap1200" layout:fragment="screen_content">
+ 
+
+<!--中间区域-->
+<div class="wrap1200 topCommon clearfix" >
+    <!--标志-->
+    <div class="logo pull-left">
+        <a href="/homePage/pageInit" target="_blank"><img src="../../static/images/logo.png" title="广州数据中心" th:src="@{/images/logo.png}"></a>
+     </div>
+    <!--步骤-->
+    <div class="shopping_cart_bg1 pull-right" >
+        <a href="#"><font color="#ec6000">1、我的购物车</font></a>
+        <a href="#"><font>2、提交订单</font></a>
+        <a href="#"><font>3、支付</font></a>
+    </div>
+</div>
+<section class="wrap1200">
+    <h1 class="cart_title">我的数据购买：</h1>
+    <ol>
+        <li>
+            <div class="cell_header mb10">
+                    <font>联系电话：4006172168 </font>
+                    <a class="serviceQQ" data-toggle="modal" data-target="#myQQModal" >
+                         <img src="../../static/images/QQtalk.png"  border="0" th:src="@{/images/QQtalk.png}">
+                    </a>
+            </div> 
+            <table  class="cart_list  text-center" width="100%" border="0">
+                        <tbody>
+                             <tr>
+                                <th colspan="3" style="text-align:left">商品</th>
+                                <th>套餐</th>
+                                <th>单价</th>
+                                <th>数量</th>
+                                <th>金额</th>
+                            </tr>
+                        </tbody> 
+                        
+                        <tbody class="tbody_line"  th:with="packPrice=${skuInfo.packPrice}">
+                            <tr >
+                                <td width="39" >
+                                    <input checked="checked"  type="checkbox"  disabled="disabled">
+                                </td>
+                                <td width="39" >
+                                    <p class="cart_img">
+                                      <span>
+                                            <a  href=""   th:href="'/goods/details/'+${skuInfo.gdsId}+'-'" ><img src="images/0771A3A26900101.jpg" th:src="${gdsvfsurl}"></a>
+                                       </span>
+                                    </p>
+                                </td>
+                                <td width="200">
+                                <p ><a href="#"  th:href="'/goods/details/'+${skuInfo.gdsId}+'-'"  class="cart_img_link" th:text="${gdsname}">商品名称</a></p>
+                                </td>
+                                <td>
+                                 <b><span   th:text="${#tools.formatMoney(packPrice)}">套餐名称</span><span>/</span><span th:text="${skuInfo.packTimes}">套餐次数</span><span>次</span></b>   
+                                </td>
+                               <td> <b><span  th:text="${#tools.formatMoney(packPrice)}" >单价</span></b>     </td>
+                                 <td>
+                                    <i class="reduce"  th:onclick="'javascript:reduce();'"></i> 
+                                    <input  value="1" maxlength="5" class="val"  type="text" id="gdscount">
+                                    <i class="add" th:onclick="'javascript:addnum();'"></i>
+                                </td>
+                                <td> 
+                                 <b><span id="allmoney"  name='总价'  th:text="${#tools.formatMoney(packPrice)}">总价 70</span></b>
+<!--                                     <b><span id="allmoney"  name='总价'  th:text="#tools.formatMoney(${skuInfo.packPrice})">总价 70</span></b>
+ -->                                </td>
+                             </tr>
+                        </tbody>
+            </table>
+        </li>   
+    </ol>
+
+    <table width="100%" border="0" class="mb50"> 
+        <tr>
+              <td align="left">支付方式：
+                  <input name="pay" type="radio" value="zhifubao" checked><span class="ml5">支付宝</span>
+                  <input name="pay" type="radio" value="outline"><span class="ml5">线下转账</span>
+              </td>
+              <td align="right">
+                  <div  class="total pull-right">
+                      <span class="finalAmount">
+                         共  <font><span id="buycount">1</span></font>  件商品
+                      </span>
+                      <span class="finalPrice"><span class="finalText">总计:</span><span id="allmoneypay" th:with="packPrice=${skuInfo.packPrice}" th:text="${#tools.formatMoney(packPrice)}">￥1835</span></span>
+                  </div>
+              </td>
+        </tr>
+        <tr>
+              <td align="left " class="pt15"><a href="index.html" class="btn btn-default">继续购物</a></td>
+              <td align="right" class="pt15"><a th:if="${bshowCreatebt}"  class="btn btn-primary ok" th:onclick="'javascript:createOrder();'"   >确认提交</a>
+                  <a th:if="${bshowCreatebt}== false"  class="btn btn-default" >请先登录才能提交订单</a>
+              </td>
+        </tr>
+  </table>
+    <script type="text/javascript">
+    $(function(){
+        //点『确认购买』，弹出支付提示模态框  tangyk
+        $('.ok').click(function(){
+            $("#prompt").modal("show"); 
+        });
+    })
+    </script>
+</section>
+
+<!-- 支付提示 弹出框 -->
+<div class="modal fade" id="prompt" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" style="display: none;top:-10px;overflow: scroll !important;" >
+  <div class="modal-dialog" role="document" style="width:400px">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">支付提示</h4>
+      </div>
+      <div class="modal-body">
+              <!-- 内容 -->
+              <div class="blackfont text-center p20"> 
+                    <p class="col_orange mb20">您的订单已生成，请您前往支付宝页面进行付款。</p>
+                    <a  th:onclick="'javascript:haveProblome();'"   class="btn btn-primary btn-m mr10" >遇见问题</a>
+                    <a  th:onclick="'javascript:createOrdSusse();'"   class="btn btn-primary btn-g" >付款成功</a>
+              </div>
+               <!-- 内容 javascript:createOrder(); end-->
+
+      </div>
+    </div>
+  </div>
+</div>
+<!-- 支付提示 弹出框 end-->
+</div>
+
+<!-- 底部 -->
+<div class="footer" th:remove="all">
+    <div class="wrap1200 ptb40">
+        <div class="left floatL">
+            <img src="../static/images/logo-footer.png">
+            <p class="">本网站所列开源项目的中文版文档全部由Bootstrap中文网成员翻译整理，并全部遵循 CC BY 3.0协议发布</p>
+        </div>
+        <div class="right floatR">
+            <div class="footer-item">
+                <h4>关于我们</h4>
+                <p>
+                    <a href="#">公司简介</a>
+                    <a href="#">新闻动人</a>
+                    <a href="#">友情链接</a>
+                    <a href="#">招聘</a>
+                </p>
+            </div>
+            <div class="footer-item">
+                <h4>服务与支持</h4>
+                <p>
+                    <a href="#">服务条款</a>
+                    <a href="#">常见问题</a>
+                    <a href="#">友情链接</a>
+                    <a href="#">招聘</a>
+                </p>
+            </div>
+            <div class="footer-item">
+                <h4>联系我们</h4>
+                <p>
+                    <a href="#">商务合作</a>
+                    <a href="#">在线咨询</a>
+                    <a href="#">友情链接</a>
+                    <a href="#">招聘</a>
+                </p>
+            </div>
+            <div class="footer-item">
+                <h4>官方微信</h4>
+                <p>
+                    <img src="../static/images/wexin.jpg">
+                </p>
+            </div>
+        </div>
+    </div>
+    <div class="copyright"> © 2016 版权所有 亚信科技(中国)有限公司 京ICP备11005544号-15 京公网安备 11010802022324号</div>
+</div>
+
+</body>
+</html>

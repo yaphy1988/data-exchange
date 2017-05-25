@@ -73,15 +73,21 @@ public class ChnlInvoiceTaxSVImpl implements IChnlInvoiceTaxSV {
 		BeanUtils.copyProperties(record, info);
 		record.setUpdateTime(DateUtil.getNowAsDate());
 		int count = chnlInvoiceTaxMapper.updateByPrimaryKeySelective(record);
+
+		//更新authStaff表的认证状态
+		AuthStaff recordStaff = new AuthStaff();
+		recordStaff.setStaffId(bean.getStaffId());
+		recordStaff.setUpdateStaff(info.getUpdateStaff());
+		recordStaff.setUpdateTime(DateUtil.getNowAsDate());
+
 		if("20".equals(info.getStatus())){
-			//更新authStaff表的认证状态
-			AuthStaff recordStaff = new AuthStaff();
-			recordStaff.setStaffId(bean.getStaffId());
 			recordStaff.setAuthenFlag("1");
-			recordStaff.setUpdateStaff(info.getUpdateStaff());
-			recordStaff.setUpdateTime(DateUtil.getNowAsDate());
-			authStaffMapper.updateByPrimaryKeySelective(recordStaff);
 		}
+		if("30".equals(info.getStatus())){
+			recordStaff.setAuthenFlag("9");
+		}
+		authStaffMapper.updateByPrimaryKeySelective(recordStaff);
+
 		return count;
 	}
 

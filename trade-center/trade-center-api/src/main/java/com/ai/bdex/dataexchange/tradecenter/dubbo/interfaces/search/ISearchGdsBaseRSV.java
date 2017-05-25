@@ -41,5 +41,16 @@ public interface ISearchGdsBaseRSV {
      * @since JDK 1.6
      */
     public PageResponseDTO<SearchGdsBaseRespDTO> querySearchGdsBasePageInfo (SearchGdsBaseReqDTO searchGdsBaseReqDTO) throws BusinessException;
+    
+    /**
+     * 
+     * callProcedure:(这里用一句话描述这个方法的作用). <br/> 
+     * 
+     * @author gxq 
+     * @return
+     * @throws BusinessException 
+     * @since JDK 1.6
+     */
+    public int callProcedure() throws BusinessException;
 }
 

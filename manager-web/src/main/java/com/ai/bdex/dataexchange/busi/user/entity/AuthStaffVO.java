@@ -1,8 +1,10 @@
 package com.ai.bdex.dataexchange.busi.user.entity;
 
+import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
+
 import java.util.Date;
 
-public class AuthStaffVO {
+public class AuthStaffVO  extends BaseResponseDTO{
 	
    private String staffId;
    private String staffName;
