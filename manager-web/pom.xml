@@ -122,6 +122,10 @@
     <!-- 前端框架引入，使用webjars方式管理 -->
     <dependency>
       <groupId>org.webjars</groupId>
+      <artifactId>webjars-locator</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars</groupId>
       <artifactId>jquery</artifactId>
     </dependency>
     <dependency>
@@ -183,14 +187,6 @@
       <plugin>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
-        <dependencies>
-          <!-- spring热部署 -->
-          <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>springloaded</artifactId>
-            <version>1.2.6.RELEASE</version>
-          </dependency>
-        </dependencies>
       </plugin>
       <!-- 处理js/css资源文件依赖，编译时获取common-static中的最新代码，install时获取全量webjars依赖代码 -->
       <plugin>

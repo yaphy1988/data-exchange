@@ -61,6 +61,7 @@
     <solr-solrj.version>5.3.0</solr-solrj.version>
     <k12-alipay-sdk.version>0.0.1-beta</k12-alipay-sdk.version>
     <!-- WebJars管理前端框架版本，统一各web子模块引用 -->
+    <webjars.locator.version>0.32</webjars.locator.version>
     <webjars.jquery.version>3.2.0</webjars.jquery.version>
     <webjars.bootstrap.version>3.3.7</webjars.bootstrap.version>
     <webjars.bootstrap-table.version>1.11.1</webjars.bootstrap-table.version>
@@ -205,6 +206,11 @@
       <!-- 前端组件版本使用webjars方式管理 -->
       <dependency>
         <groupId>org.webjars</groupId>
+        <artifactId>webjars-locator</artifactId>
+        <version>${webjars.locator.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars</groupId>
         <artifactId>jquery</artifactId>
         <version>${webjars.jquery.version}</version>
       </dependency>
@@ -297,5 +303,34 @@
     </snapshotRepository>
   </distributionManagement>
 
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-maven-plugin</artifactId>
+          <dependencies>
+            <!-- spring热部署 -->
+            <dependency>
+              <groupId>org.springframework</groupId>
+              <artifactId>springloaded</artifactId>
+              <version>1.2.6.RELEASE</version>
+            </dependency>
+          </dependencies>
+          <executions>
+            <execution>
+              <goals>
+                <goal>repackage</goal>
+              </goals>
+            </execution>
+          </executions>
+          <configuration>
+            <outputDirectory>${project.build.directory}/${project.artifactId}</outputDirectory>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+  </build>
 
 </project>

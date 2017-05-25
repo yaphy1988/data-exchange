@@ -16,6 +16,14 @@
     <destinationDir>${project.build.outputDirectory}/META-INF/resources/webjars</destinationDir>
   </properties>
 
+  <dependencies>
+    <!-- 前端框架引入，使用webjars方式管理 -->
+    <dependency>
+      <groupId>org.webjars</groupId>
+      <artifactId>webjars-locator</artifactId>
+    </dependency>
+  </dependencies>
+
   <build>
     <resources>
       <resource>

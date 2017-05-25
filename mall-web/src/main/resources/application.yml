@@ -17,6 +17,13 @@ spring:
   data:
    solr:
      host: http://112.74.163.29:8983/solr
+  resources:
+    chain:
+      strategy:
+        content:
+          enabled: true
+          paths: /**
+
 
 ## woego-frame框架包配置
 application:

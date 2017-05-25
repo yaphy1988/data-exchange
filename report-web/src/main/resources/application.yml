@@ -4,6 +4,12 @@ server:
 spring:
   session:
     store-type: none
+  resources:
+    chain:
+      strategy:
+        content:
+          enabled: true
+          paths: /**
   dubbo:
     appname: manager-web
     registry: zookeeper://127.0.0.1:2181
@@ -33,7 +39,7 @@ application:
     confpath: /com/ai/paas/cache/conf
   session:
     confpath: /com/ai/paas/session/conf
-    systemcode: "03"
+    systemcode: "02"
   system:
     confpath: /com/ai/paas/system/conf
   configcenter:
