@@ -5,11 +5,6 @@
 (function($) {
 	$.fn.pager = function(option) {
 		var $this = $(this);
-		
-		$this.data("count",total);
-		$this.data("currentindex",pageNum);
-		$this.data("size",pageSize);
-		
 		if ($this.data("size") === "")
 			$this.data("size", 10);
 		$this.pager.options = $.extend({}, $.fn.pager.defaults, $this.data(),

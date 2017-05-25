@@ -196,10 +196,7 @@
 								th:data-size="${pageInfo.pageSize}"
 								th:data-currentindex="${pageInfo.pageNo}"></span>
 							<script th:inline="javascript">
-								var total = '[[${pageInfo.count}]]';
-								var pageNum = '[[${pageInfo.pageNo}]]';
-								var pageSize = '[[${pageInfo.pageSize}]]';
-
+							
 								if (typeof pagerClick === "undefined") {
 									pagerClick = function(index) {
 										myOrderList(index);
