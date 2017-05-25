@@ -13,12 +13,12 @@
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
 	<script type="text/javascript" src="../../static/js-busi/order/orderManager.js" th:src="@{/js-busi/order/orderManager.js}"></script>
-	<script src="../../static/js/util.js" th:src="@{/js/util.js}"></script>
-	<script src="../../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
-
-	<link rel="stylesheet" href="../static/component/datetimepicker/css/bootstrap-datetimepicker.css" th:href="@{/component/datetimepicker/css/bootstrap-datetimepicker.css}">
-	<script src="../../static/component/datetimepicker/js/bootstrap-datetimepicker.js" th:src="@{/component/datetimepicker/js/bootstrap-datetimepicker.js}"></script>
-	<script src="../../static/component/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" th:src="@{/component/datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
+	<!--<script src="../META-INF/resources/webjars/js/util.js" th:src="@{/webjars/js/util.js}"></script>
+	<script type="text/javascript" src="../../META-INF/resources/webjars/js/jquery.bootstrap.message.js" th:src="@{/webjars/js/jquery.bootstrap.message.js}"></script>
+ 	-->
+	<link rel="stylesheet" href="../../META-INF/resources/webjars/smalot-bootstrap-datetimepicker/2.4.4/css/bootstrap-datetimepicker.css" th:href="@{/webjars/smalot-bootstrap-datetimepicker/2.4.4/css/bootstrap-datetimepicker.css}">
+	<script src="../META-INF/resources/webjars/smalot-bootstrap-datetimepicker/2.4.4/js/bootstrap-datetimepicker.js" th:src="@{/webjars/smalot-bootstrap-datetimepicker/2.4.4/js/bootstrap-datetimepicker.js}"></script>
+	<script src="../META-INF/resources/webjars/smalot-bootstrap-datetimepicker/2.4.4/js/locales/bootstrap-datetimepicker.zh-CN.js" th:src="@{/webjars/smalot-bootstrap-datetimepicker/2.4.4/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
 	<script type="text/javascript">
 		$(function () {
 			$('.form_datetime').datetimepicker({
