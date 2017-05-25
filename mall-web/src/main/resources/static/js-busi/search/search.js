@@ -8,7 +8,7 @@ $(function(){
 var Search = {
 		init : function(){
 			//关闭选中的条件事件绑定
-			$(".close").die().live('click',function(e){
+			$(".close").off().on('click',function(e){
 				var $this = $(this);
 				$this.parents("a").remove();
 				var catId = $this.attr('id');
@@ -23,7 +23,7 @@ var Search = {
 			});
 			
 			//分类选择事件绑定
-			$(".catSelecte").die().live('click',function(e){
+			$(".catSelecte").off().on('click',function(e){
 				var $this = $(this);
 				var html = "<a href='javascript:void(0)'><em>"+$this.attr('catPName')+":</em><span>"+$this.attr('catName')+"</span><i class='close' catPid="+$this.attr('catPid')+" id="+$this.attr('catId')+">×</i></a>";
 				$("#selectedCondition").append(html);
@@ -36,7 +36,7 @@ var Search = {
 			});
 			
 			//排序事件绑定
-			$(".sortCondition").die().live('click',function(e){
+			$(".sortCondition").off().on('click',function(e){
 				var $this = $(this);
 				var $glyphicon = $(".glyphicon",$this);
 				if($glyphicon.hasClass("glyphicon-arrow-down")){
@@ -63,7 +63,7 @@ var Search = {
 			});
 			
 			//分类更多事件绑定
-			$(".btn_more").die().live('click',function(e){
+			$(".btn_more").off().on('click',function(e){
 				var $this = $(this);
 				if($this.children('i').hasClass('glyphicon-menu-up')){
 					$this.removeClass('selected');

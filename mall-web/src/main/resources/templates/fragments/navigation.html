@@ -35,7 +35,7 @@
   					}
   				}
   				$('#head_navbar').html(html);
-  				$(".navigationBar").die().live('click',function(e){
+  				$(".navigationBar").off().on('click',function(e){
     	    		  $(this).parents("li").addClass('active').siblings().removeClass("active");
     	    		  var url = $(this).attr('href');
 //     	 		   	  $.cookie('gjs_navigation', url, {path : '/'});
