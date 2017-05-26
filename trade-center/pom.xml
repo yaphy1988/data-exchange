@@ -14,7 +14,7 @@
   <packaging>pom</packaging>
   <modules>
     <module>trade-center-api</module>
-    <module>trade-center-servie</module>
+    <module>trade-center-service</module>
   </modules>
 
 
