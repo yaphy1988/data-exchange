@@ -233,7 +233,7 @@
 }
 .register-checkbox input{
     position: relative;
-    top:2px;
+    /* top:2px; */
 }
 .register-checkbox a{
     font-weight: bold;
