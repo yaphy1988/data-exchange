@@ -43,5 +43,7 @@
  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageModuleRSV" ref="iPageModuleRSV"
   				owner="zhaoyf7" timeout="3000"/>
  <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.pay.IPayInfoRSV" ref="iPayInfoRSV"
-  				owner="zhaoyf7" timeout="3000"/>                 
+  				owner="zhaoyf7" timeout="3000"/>
+ <dubbo:service interface="com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.complaint.IOrdComplaintRSV" ref="iOrdComplaintRSV"
+  				owner="zhaoyf7" timeout="3000"/>                   
 </beans>
