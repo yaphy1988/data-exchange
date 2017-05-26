@@ -58,6 +58,7 @@ logs/
 **/init.properties
 /common-dao/src/main/resources/init.properties
 *.log
+.myumldata
 
 generatorConfig.xml
 
