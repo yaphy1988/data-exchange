@@ -40,7 +40,7 @@
         <executions><!--执行器mvnassembly:assembly-->
           <execution>
             <id>make-zip</id><!--名字任意-->
-            <phase>package</phase><!--绑定到package生命周期阶段上-->
+            <phase>package</phase>
             <goals>
               <goal>single</goal><!--只运行一次-->
             </goals>
@@ -53,6 +53,20 @@
             </configuration>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-install-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-deploy-plugin</artifactId>
+        <configuration>
+          <skip>true</skip>
+        </configuration>
       </plugin>
     </plugins>
   </build>
