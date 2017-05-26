@@ -10,7 +10,7 @@ import java.util.List;
 public class MenuDisPlayDTO extends BaseResponseDTO {
 
     private int menuId;
-    private String menuType;//菜单类型（1：目录，2：功能）
+    private String menuType;//菜单类型（1：目录，2：菜单，3：功能）
     private String menuTitle;
     private int menuOrder;
     private int menuParentId;//父ID

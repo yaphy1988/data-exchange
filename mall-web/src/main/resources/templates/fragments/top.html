@@ -30,7 +30,7 @@
             	</a>
 	            <a href="#" th:href="@{/homePage/pageNewsInfolist?moduleId=108}">常见问题</a>
 	            <a href="#" th:href="@{/homePage/contactouer}">联系我们</a>
-				<a class="item" href="#" target="_blank"
+				<a class="item" href="#"
 				   th:if="${staffInfoDTO!=null and staffInfoDTO.loginIn}"
 				   th:href="${session.menuDisPlayFirstUrl==null}? '#':${session.menuDisPlayFirstUrl}"
 				   th:text="${staffInfoDTO.staffType=='1'}?'后台管理':'个人中心'">
