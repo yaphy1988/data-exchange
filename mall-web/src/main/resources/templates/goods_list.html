@@ -1,8 +1,12 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
 <head>
 	<meta charset="UTF-8">
 	<title>商品详情</title>
+	<link rel="icon" type="image/x-icon" href="../META-INF/resources/webjars/images/favicon.png" th:remove="all">
+    <link rel="bookmark" href="../META-INF/resources/webjars/images/favicon.png" type="image/x-icon" th:remove="all">
 	<link rel="stylesheet" href="../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:remove="all">
  	<link rel="stylesheet" href="../META-INF/resources/webjars/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../META-INF/resources/webjars/css/index.css" th:remove="all">
@@ -28,34 +32,13 @@
 		        </div>
 		    </div>
 		</div>
-		<div class="header"  th:remove="all">
+		<div class="header" th:remove="all">
 		    <div class="wrap1200 clearfix">
 		        <div class="logo floatL"><img src="../static/images/logo.png" title="广州数据中心"></div>
 		        <div class="search floatR">
 		            <div class="search-input">
-						<div id="siteSearch">
-						<!-- <div class="autocomplete-container" style="height: 44px; width: 640px;">
-							<input id="searchTxt" autocomplete="off" name="query" placeholder="Search" maxlength="255" class="autocomplete-input" style="width: 500px; height: 44px; border-radius: 0;" type="text">
-							<div class="proposal-box" style="width: 500px; top: 44px;">
-							<ul class="proposal-list"><li class="proposal"><span class="search-val">衣服</span><span class="search-num">搜索约100个结果</span></li><li class="proposal"><span class="search-val">裤子</span><span class="search-num">搜索约10个结果</span></li><li class="proposal"><span class="search-val">裤子</span><span class="search-num">搜索约1000个结果</span></li><li class="proposal"><span class="search-val">裤子</span><span class="search-num">搜索约1000个结果</span></li><li class="proposal"><span class="search-val">裤子</span><span class="search-num">搜索约1000个结果</span></li><li class="proposal"><span class="search-val">裤子</span><span class="search-num">搜索约1000个结果</span></li><li class="proposal"><span class="search-val">裤子</span><span class="search-num">搜索约1000个结果</span></li><li class="proposal"><span class="search-val">裤子</span><span class="search-num">搜索约1000个结果</span></li></ul></div>
-							<div class="btn btn-primary btn_rec" style="height: 44px; line-height:30px;width:110px; font-size: 16px;">搜索</div>
-						</div> -->
-						</div>
-		                <!--<input type="text">
+		                <input type="text">
 		                <button class="btn btn-primary">搜索</button>
-		                <ul class="search_result">
-		                	<li><a href="">搜索结果</a></li>
-		                	<li><a href="">搜索结果</a></li>
-		                	<li><a href="">搜索结果</a></li>
-		                	<li><a href="">搜索结果</a></li>
-		                	<li><a href="">搜索结果</a></li>
-		                	<li><a href="">搜索结果</a></li>
-		                	<li><a href="">搜索结果</a></li>
-		                	<li><a href="">搜索结果</a></li>
-		                	<li><a href="">搜索结果</a></li>
-		                	<li><a href="">搜索结果</a></li>
-		                	
-		                </ul>-->
 		            </div>
 		            <div class="search-hot">
 		                <a href="#" class="more floatR">更多&nbsp;&gt;</a>
