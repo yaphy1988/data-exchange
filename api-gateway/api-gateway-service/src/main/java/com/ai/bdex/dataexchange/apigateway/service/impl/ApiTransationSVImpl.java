@@ -97,7 +97,7 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 			data.setVersionId(version);
 			aipApiDataSV.insertAipApiData(data);				
 		}else{
-			resultMap =storeData.getResponsestr();
+			resultMap =JSON.parseObject(storeData.getResponsestr(),apiDealTransationSV.getResultClass());
 		}
 		//如果是提供商服务，t_aip_p_service_used_log进行记录
 		if("1".equals(pserviceFlag)){

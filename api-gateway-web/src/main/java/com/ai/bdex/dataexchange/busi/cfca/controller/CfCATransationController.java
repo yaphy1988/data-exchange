@@ -34,7 +34,7 @@ public class CfCATransationController {
 	 public String getResultFromCFCA(@Context HttpServletRequest request,@PathParam("serviceId") String serviceId)throws Exception{
 		 String result=null;
 		 String version="1.0";
-		 Map<String ,String> resultMap=new HashMap<String ,String>();
+		 Map<String ,Object> resultMap=new HashMap<String ,Object>();
 		 try{
 			 if(!StringUtil.isBlank(serviceId)){
 				 //参数封装

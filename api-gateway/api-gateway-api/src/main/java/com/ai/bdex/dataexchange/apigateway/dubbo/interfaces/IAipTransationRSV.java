@@ -4,5 +4,5 @@ import java.util.Map;
 
 public interface IAipTransationRSV {
 	
-	Map<String,String> createTransation(String serviceId,String version,Map<String,Object> paramMap)throws Exception;
+	Map<String,Object> createTransation(String serviceId,String version,Map<String,Object> paramMap)throws Exception;
 }
