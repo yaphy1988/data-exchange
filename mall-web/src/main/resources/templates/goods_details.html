@@ -8,8 +8,8 @@
 	<link rel="stylesheet" href="../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:remove="all" >
 	<link rel="stylesheet" href="../META-INF/resources/webjars/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../META-INF/resources/webjars/css/index.css" th:remove="all">
-	<!--<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">-->
-	<!--<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>-->
+	<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
+	<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>
 </head>
 <body>
 
@@ -118,11 +118,7 @@
 	</div>
 
 	<div class="main" layout:fragment="screen_content">
-		<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
-		<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>
-		<style>
-			.bgf1{background:white}
-		</style>
+		
 		<div class="classify">
 			<i class="iconfont"></i>
 			<span>当前位置：</span>
@@ -425,7 +421,7 @@
 	<div class="footer" th:remove="all">
     <div class="wrap1200 ptb40">
         <div class="left floatL">
-            <img src="../static/images/logo-footer.png" >
+            <img  width="160" src="../static/images/logo-footer.png" >
             <p class="">本网站所列开源项目的中文版文档全部由Bootstrap中文网成员翻译整理，并全部遵循 CC BY 3.0协议发布</p>
         </div>
         <div class="right floatR">
