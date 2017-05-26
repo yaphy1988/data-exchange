@@ -130,7 +130,7 @@
                                     <p class="pop-link">
                                         <a th:if="${vo.status}!='1'" href="javascript:void(0)" th:onclick="|changeStatus(${vo.clientId},'1')|">生效</a>
                                         <a th:if="${vo.status}!='0'" href="javascript:void(0)" th:onclick="|changeStatus(${vo.clientId},'0')|">失效</a>
-                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#myModal3" th:onclick="|edit(${vo})|">编辑</a>
+                                        <a href="javascript:void(0)" data-toggle="modal" data-target="#editAipKeyModal" th:onclick="|edit(${vo})|">编辑</a>
                                     </p>
                                 </td>
                             </tr>
@@ -296,7 +296,7 @@
 	</div>
 
 	<!-- 编辑 -->
-	<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="editAipkeyModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -311,7 +311,7 @@
 					<td class="Hint" width="120">客户端编码:</td>
 					<td width="320">
 						<div class="input-group " >
-							<input class="form-control" placeholder="" id="" >
+							<input class="form-control" placeholder="" id="editAipkeyModal_clientId" readonly>
 						</div>
 					</td>
 				</tr>
@@ -319,7 +319,7 @@
 					<td class="Hint" width="120">客户端密钥:</td>
 					<td width="320">
 						<div class="input-group " >
-							<input class="form-control" placeholder="" id="" >
+							<input class="form-control" placeholder="" id="editAipkeyModal_clientSecret">
 						</div>
 					</td>
 				</tr>
@@ -327,7 +327,7 @@
 					<td class="Hint" width="120">用户名:</td>
 					<td width="320">
 						<div class="input-group " >
-							<input class="form-control" placeholder="" id="" >
+							<input class="form-control" placeholder="" id="editAipkeyModal_user" userId="" readonly>
 						</div>
 					</td>
 				</tr>
@@ -335,7 +335,7 @@
 					<td class="Hint" width="120">有效时间:</td>
 					<td width="320">
 						<div class="input-group " >
-							<input class="form-control" placeholder="" id="" >
+							<input class="form-control" placeholder="" id="editAipkeyModal_effectiveTime" >
 						</div>
 					</td>
 				</tr>
@@ -344,7 +344,7 @@
 					<td class="Hint" >密码:</td>
 					<td>
 						<div class="input-group ">
-							<input class="form-control" placeholder="" id="" >
+							<input class="form-control" placeholder="" id="editAipkeyModal_password" >
 						</div>
 					</td>
 				</tr>
@@ -352,7 +352,12 @@
 					<td class="Hint" width="120">状态:</td>
 					<td width="320">
 						<div class="input-group " >
-							<input class="form-control" placeholder="" id="" >
+							<select id="editAipkeyModal_status">
+								<option value="0">失效</option>
+								<option value="1">有效</option>
+								<option value="2">冻结</option>
+							</select>
+							<!--<input class="form-control" placeholder="" id="" >-->
 						</div>
 					</td>
 				</tr>
@@ -362,7 +367,7 @@
 			
 	      </div>
 	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-primary"  th:onclick="'javascript:createOrderBymaneger();'" >确定</button>
+	      	<button type="button" class="btn btn-primary"  th:onclick="'confirmEditAipClient();'" >确定</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
 	        
 	      </div>

@@ -91,7 +91,7 @@ public class AipClientInfoRSVImpl implements IAipClientInfoRSV{
 	}
 
 	@Override
-	public int updateAipClientInfo(AipClientInfoDTO info) throws Exception {		
+	public int updateAipClientInfo(AipClientInfoReqDTO info) throws Exception {
 		try {
 			if(info !=null){
 				AipClientInfo vo=new AipClientInfo();

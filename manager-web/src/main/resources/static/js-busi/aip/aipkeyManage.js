@@ -52,7 +52,19 @@ function changeStatus(clientId,status){
 }
 
 function edit(obj){
-	WEB.msg.info("提示",obj.clientId);
+	// WEB.msg.info("提示",obj.clientId+"|"+obj.username);
+	$("#editAipkeyModal_clientId").val(obj.clientId);
+	$("#editAipkeyModal_clientSecret").val(obj.clientSecret);
+	$("#editAipkeyModal_user").attr("userId",obj.userId);
+	$("#editAipkeyModal_user").val(obj.username);
+	$("#editAipkeyModal_effectiveTime").val(formatterDateTime(new Date(obj.effectiveTime)));
+	$("#editAipkeyModal_password").val(obj.password);
+	$("#editAipkeyModal_status").find("option").each(function () {
+		if ($(this).val() == obj.status){
+			$(this).attr("selected","selected");
+		}
+	})
+	$("#editAipkeyModal").modal("show");
 }
 
 function createClient(){
@@ -197,5 +209,62 @@ function confirmNewAipClient() {
 			}
 		}
 	})
+}
+
+function confirmEditAipClient() {
+	var params = {};
+	var clientId = $("#editAipkeyModal_clientId").val();
+	var clientSecret = $("#editAipkeyModal_clientSecret").val();
+	var userId = $("#editAipkeyModal_user").attr("userId");
+	var username = $("#editAipkeyModal_user").val();
+	var status = $("#editAipkeyModal_status").val();
+	var effectiveTime = $("#editAipkeyModal_effectiveTime").val();
+	var password = $("#editAipkeyModal_password").val();
+	params.clientId = clientId;
+	params.clientSecret = clientSecret;
+	params.userId = userId;
+	params.username = username;
+	params.status = status;
+	params.effectiveTime = effectiveTime;
+	params.password = password;
+	$.ajax({
+		url:WEB_ROOT + "/aipKeyManage/saveAipkey",
+		data:params,
+		dataType:'json',
+		type:'post',
+		async:false,
+		success:function (jsonObj) {
+			if (jsonObj.success){
+				WEB.msg.info("提示","保存成功！");
+				$("#editAipkeyModal").modal('hide');
+				queryClient(1);
+			}else{
+				WEB.msg.info("提示",jsonObj.msg);
+			}
+		}
+	})
+}
+
+/**
+ * 格式化去日期（含时间）
+ */
+formatterDateTime = function(date) {
+	var datetime = date.getFullYear()
+		+ "-"// "年"
+		+ ((date.getMonth() + 1) > 10 ? (date.getMonth() + 1) : "0"
+		+ (date.getMonth() + 1))
+		+ "-"// "月"
+		+ (date.getDate() < 10 ? "0" + date.getDate() : date
+			.getDate())
+		+ " "
+		+ (date.getHours() < 10 ? "0" + date.getHours() : date
+			.getHours())
+		+ ":"
+		+ (date.getMinutes() < 10 ? "0" + date.getMinutes() : date
+			.getMinutes())
+		+ ":"
+		+ (date.getSeconds() < 10 ? "0" + date.getSeconds() : date
+			.getSeconds());
+	return datetime;
 }
 

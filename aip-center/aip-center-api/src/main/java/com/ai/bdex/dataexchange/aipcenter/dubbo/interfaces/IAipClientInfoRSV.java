@@ -50,6 +50,6 @@ public interface IAipClientInfoRSV {
 	 * @return
 	 * @throws Exception
 	 */
-	int updateAipClientInfo(AipClientInfoDTO info)throws Exception;
+	int updateAipClientInfo(AipClientInfoReqDTO info)throws Exception;
 	
 }
