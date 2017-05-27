@@ -67,4 +67,12 @@ public class APIConstants {
 		public static final String SEQ_AIP_SERVICE_USED_LOG="T_AIP_SERVICE_USED_LOG";
 		public static final String SEQ_AIP_P_SERVICE_USED_LOG="T_AIP_P_SERVICE_USED_LOG";
 	}
+	public static class AipCache{
+		public static final String AIP_PARA_VALID_STATE="1";
+		public static final String AIP_PARA_INVALID_STATE="0";		
+		public static final String AIP_PARA_SIMPLE_TYPE="SIMPLE";
+		public static final String AIP_CACHE_NAME_PREFIX="AIP_CACHE_";
+		public static final String AIP_CACHE_NAME_MAP_SUFFIX=".MAP";
+		
+	}
 }

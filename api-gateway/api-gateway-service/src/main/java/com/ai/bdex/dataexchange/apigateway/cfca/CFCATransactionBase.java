@@ -14,11 +14,15 @@ import org.apache.commons.lang3.time.FastDateFormat;
 
 
 
+
+
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants;
 import com.ai.bdex.dataexchange.apigateway.util.cfca.utils.EncryptUtils;
 import com.ai.bdex.dataexchange.apigateway.util.cfca.utils.HashUtils;
 import com.ai.bdex.dataexchange.apigateway.util.cfca.utils.JsonUtils;
 import com.ai.bdex.dataexchange.apigateway.util.cfca.utils.SSLProtocolSocketFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.util.CacheUtil;
 
 public class CFCATransactionBase {
     public final static String UTF_8 = "UTF-8";
@@ -39,16 +43,18 @@ public class CFCATransactionBase {
     /** 异步轮训结果尝试次数 */
     private static int asyncGetResultTryCount = 3;
 
-    /** 用户账号 ,保存缓存和表中*/
+    /** 用户账号 */
     private static final String USER_ACCOUNT_ID = "GZSJ170209";
 
-    /** 用户秘钥 ,保存缓存和表中*/
+    /** 用户秘钥 */
     private static final String USER_ACCOUNT_KEY = "MjycqUAwdacm2LmI";
 
 
     static{
         Protocol protocol = new Protocol("https", new SSLProtocolSocketFactory(), 443);
         Protocol.registerProtocol("https", protocol);
+        //初始化urlPrefix
+        initFromCache();
     }
 
     /**
@@ -330,5 +336,18 @@ public class CFCATransactionBase {
 //    	String key=applyKey(null);
 //    	System.out.println("key:"+key);
     	testCF203b0001();
+    }
+    
+    private static void initFromCache(){
+    	String mapCacheKey=APIConstants.AipCache.AIP_CACHE_NAME_PREFIX+"CFCA";
+    	Map<String,String> map=CacheUtil.getMap(mapCacheKey);
+    	if(map==null||map.size()==0){
+    		//发出警告
+    	}else{
+	    	String urlPrefixDB=map.get("urlPrefix");
+	    	if(StringUtil.isNotBlank(urlPrefixDB)){
+	    		urlPrefix=urlPrefixDB;
+	    	}
+    	}
     }
 }

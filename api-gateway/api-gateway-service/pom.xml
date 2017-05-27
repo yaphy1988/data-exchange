@@ -26,12 +26,12 @@
       <groupId>com.ai.woego.boot</groupId>
       <artifactId>config-engine-spring-boot-autoconfigure</artifactId>
     </dependency>
-    <!--
+
     <dependency>
       <groupId>com.ai.woego.boot</groupId>
       <artifactId>cache-engine-spring-boot-autoconfigure</artifactId>
     </dependency>
-    -->
+
     <dependency>
       <groupId>com.ai.woego.boot</groupId>
       <artifactId>dubbo-spring-boot-autoconfigure</artifactId>
