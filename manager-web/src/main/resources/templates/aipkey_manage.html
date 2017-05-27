@@ -528,12 +528,12 @@
 							  <div th:if="${staffPageInfo}" class="pagelist" style="margin-top:0px;" >
 							  <!--<div th:if="${staffPageInfo}" class="pagerBar pull-right" style="margin-top:0px;" >-->
 								  <script type="text/javascript" src="../../static/js-busi/common/pager.js" th:src="@{/js-busi/common/pager.js}"></script>
-								  <span data-toggle="pager" id="staffPagerId" data-count="" data-size="" data-currentindex="" ></span>
+								  <span data-toggle="pager" id="staffPagerId" data-count="${staffPageInfo.count}" data-size="${staffPageInfo.pageSize}" data-currentindex="${staffPageInfo.pageNo}" ></span>
 
 								  <script th:inline="javascript">
-									  var total = '[[${staffPageInfo.count}]]';
-									  var pageNum = '[[${staffPageInfo.pageNo}]]';
-									  var pageSize = '[[${staffPageInfo.pageSize}]]';
+//									  var total = '[[${staffPageInfo.count}]]';
+//									  var pageNum = '[[${staffPageInfo.pageNo}]]';
+//									  var pageSize = '[[${staffPageInfo.pageSize}]]';
 
 									  if (typeof staffPagerClick === "undefined") {
 										  staffPagerClick = function (index) {
