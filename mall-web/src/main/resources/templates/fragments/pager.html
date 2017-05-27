@@ -12,17 +12,18 @@
 
 <div th:if="${pageInfo}" th:fragment="pager" class="pagelist" style="margin-top:0px;" >
     <script type="text/javascript" src="../../static/js-busi/common/pager.js" th:src="@{/js-busi/common/pager.js}"></script>
-    <span data-toggle="pager" id="pagerId" data-count="${pageInfo.count}" data-size="${pageInfo.pageSize}" data-currentindex="${pageInfo.pageNo}" ></span>
+    <span data-toggle="pager" id="pagerId" th:data-count="${pageInfo.count}" th:data-size="${pageInfo.pageSize}" th:data-currentindex="${pageInfo.pageNo}" ></span>
 	<script th:inline="javascript">
-        var total = '[[${pageInfo.count}]]';
-	    var pageNum = '[[${pageInfo.pageNo}]]';
-	    var pageSize = '[[${pageInfo.pageSize}]]';
+//        var total = '[[${pageInfo.count}]]';
+//	    var pageNum = '[[${pageInfo.pageNo}]]';
+//	    var pageSize = '[[${pageInfo.pageSize}]]';
 
-// 	    if (typeof pagerClick === "undefined") {
-// 	        pagerClick = function (index) {
-// 	        }
-// 	    }
-// 	    $('#pagerId').pager({callback: pagerClick});
+ 	    if (typeof pagerClick === "undefined") {
+ 	        pagerClick = function (index) {
+                alert(index);
+ 	        }
+ 	    }
+ 	    $('#pagerId').pager({callback: pagerClick});
 	</script>
 </div>
 </body>
