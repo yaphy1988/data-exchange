@@ -327,6 +327,7 @@
           </executions>
           <configuration>
             <outputDirectory>${project.build.directory}/${project.artifactId}</outputDirectory>
+            <attach>false</attach>
           </configuration>
         </plugin>
       </plugins>

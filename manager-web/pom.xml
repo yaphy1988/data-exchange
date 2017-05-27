@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.ai.bdex.dataexchange</groupId>
+  <groupId>com.ai.bdex.data-exchange</groupId>
   <artifactId>manager-web</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>jar</packaging>
@@ -31,7 +31,7 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>common-api</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -41,27 +41,27 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>user-center-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>trade-center-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>api-gateway-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>aip-center-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>common-web</artifactId>
       <version>${project.version}</version>
     </dependency>

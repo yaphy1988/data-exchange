@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.ai.bdex.dataexchange</groupId>
+  <groupId>com.ai.bdex.data-exchange</groupId>
   <artifactId>aip-center</artifactId>
   <packaging>pom</packaging>
   <modules>
