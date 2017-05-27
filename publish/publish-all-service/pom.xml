@@ -4,25 +4,25 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <artifactId>publish</artifactId>
-    <groupId>com.ai.bdex</groupId>
+    <groupId>com.ai.bdex.data-exchange</groupId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
+  <artifactId>publish-all-service</artifactId>
+
   <dependencies>
     <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>user-center-service</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>trade-center-service</artifactId>
       <version>${project.version}</version>
     </dependency>
   </dependencies>
-
-  <artifactId>publish-all-service</artifactId>
 
   <build>
     <plugins>

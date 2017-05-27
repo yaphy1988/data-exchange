@@ -4,16 +4,15 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <artifactId>trade-center</artifactId>
-    <groupId>com.ai.bdex.dataexchange</groupId>
+    <groupId>com.ai.bdex.data-exchange</groupId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.ai.bdex.dataexchange</groupId>
   <artifactId>trade-center-api</artifactId>
   <dependencies>
   	<dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>common-api</artifactId>
       <version>${project.version}</version>
     </dependency>
