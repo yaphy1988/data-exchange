@@ -7,6 +7,8 @@ import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
 import com.ai.bdex.dataexchange.busi.order.entity.OrdMainInfoVO;
 import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.complaint.OrdComplaintContReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.complaint.OrdComplaintContRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
@@ -23,6 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
@@ -87,6 +90,19 @@ public class OrdgdsComplaintController {
 				ordComplaintReqDTO.setPageSize(10);
 			}
 			PageResponseDTO<OrdComplaintRespDTO> pageInfo = iOrdComplaintRSV.queryOrdComplaintPageInfo(ordComplaintReqDTO);
+			if (!CollectionUtils.isEmpty(pageInfo.getResult())){
+				OrdComplaintContReqDTO ordComplaintContReqDTO = new OrdComplaintContReqDTO();
+				for (OrdComplaintRespDTO ordComplaint:pageInfo.getResult()){
+					ordComplaintContReqDTO.setComplaintId(ordComplaint.getComplaintId());
+					PageResponseDTO<OrdComplaintContRespDTO> contPageInfo = iOrdComplaintRSV.queryOrdComplaintContPageInfo(ordComplaintContReqDTO);
+					List<OrdComplaintContRespDTO>  contRespDTOList= contPageInfo.getResult();
+					if (!CollectionUtils.isEmpty(contRespDTOList)){
+						ordComplaint.setOrdComplaintContRespDTO(contRespDTOList.get(0));
+					}else{
+						ordComplaint.setOrdComplaintContRespDTO(new OrdComplaintContRespDTO());
+					}
+				}
+			}
 			model.addAttribute("pageInfo", pageInfo);
 		} catch (Exception e) {
 			logger.error("[查询我的订单投诉异常]，异常信息："+e.getMessage());
@@ -169,21 +185,39 @@ public class OrdgdsComplaintController {
 		return "goods_complaint :: #modal_content";
 	}
 	@RequestMapping(value = "/modalDataSubmit")
-	public Map<String, Object> modalDataSubmit(Model model,HttpServletRequest request){
+	@ResponseBody
+	public Map<String, Object> modalDataSubmit(HttpServletRequest request,HttpSession session){
 		String orderId = request.getParameter("orderId");
 		String complaintItem = request.getParameter("complaintItem");
 		String complaintContent = request.getParameter("complaintContent");
 		String linPerson = request.getParameter("linPerson");
 		String linkPhone = request.getParameter("linkPhone");
-		String email = request.getParameter("email");
+//		String email = request.getParameter("email");
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {
 			OrdComplaintReqDTO ordComplaintReqDTO = new OrdComplaintReqDTO();
 			ordComplaintReqDTO.setOrderId(orderId);
 			ordComplaintReqDTO.setComplaintItem(complaintItem);
-//			iOrdComplaintRSV.insertOrdComplaint();
-
+			ordComplaintReqDTO.setLinkPerson(linPerson);
+			ordComplaintReqDTO.setMobile(linkPhone);
+			ordComplaintReqDTO.setDelFlag("0");//删除标志 0未删除 1已经删除
+			//投诉状态,1待处理,2已回复,3已撤销
+			ordComplaintReqDTO.setComplaintStatus("1");
+			ordComplaintReqDTO.setStaffId(StaffUtil.getStaffId(session));
+			ordComplaintReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+			long compId = iOrdComplaintRSV.insertOrdComplaint(ordComplaintReqDTO);
+			if(compId>0){
+				OrdComplaintContReqDTO OrdComplaintContReqDTO = new OrdComplaintContReqDTO();
+				OrdComplaintContReqDTO.setComplaintId(compId);
+				OrdComplaintContReqDTO.setFromRemark(complaintContent);//投诉内容
+				OrdComplaintContReqDTO.setCreateStaff(StaffUtil.getStaffId(session));
+				OrdComplaintContReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+				iOrdComplaintRSV.insertOrdComplaintCont(OrdComplaintContReqDTO);
+			}
+			rMap.put("success",true);
 		}catch (Exception e){
+			rMap.put("success",true);
+			rMap.put("errMsg",e.getMessage());
 			logger.error("投诉信息新增/编辑失败：" + e.getMessage());
 		}
 		return rMap;

@@ -188,12 +188,9 @@
 						<!-- 分页-->
 						<div th:fragment="pager" class="pagerBar pagelist pull-right"
 							th:if=" ${pageInfo}">
-							<script type="text/javascript"
-								src="../static/js-busi/common/pager.js"
+							<script type="text/javascript" src="../static/js-busi/common/pager.js"
 								th:src="@{/js-busi/common/pager.js}"></script>
-							<span data-toggle="pager" id="pagerId"
-								th:data-count="${pageInfo.count}"
-								th:data-size="${pageInfo.pageSize}"
+							<span data-toggle="pager" id="pagerId"th:data-count="${pageInfo.count}" th:data-size="${pageInfo.pageSize}"
 								th:data-currentindex="${pageInfo.pageNo}"></span>
 							<script th:inline="javascript">
 							

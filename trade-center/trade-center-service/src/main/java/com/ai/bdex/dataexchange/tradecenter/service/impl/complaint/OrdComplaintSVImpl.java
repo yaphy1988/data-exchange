@@ -75,7 +75,11 @@ public class OrdComplaintSVImpl implements IOrdComplaintSV {
 		record.setUpdateTime(DateUtil.getNowAsDate());
 		record.setCreateStaff(ordComplaintReqDTO.getCreateStaff());
 		record.setUpdateStaff(ordComplaintReqDTO.getCreateStaff());
-		return ordComplaintMapper.insert(record);
+		record.setComplaintsTime(DateUtil.getNowAsDate());
+		long compFlg = ordComplaintMapper.insert(record);
+		if (compFlg >0)
+			return seq;
+		return 0;
 	}
 
 	@Override

@@ -31,8 +31,8 @@ public class OrdComplaintContSVImpl implements IOrdComplaintContSV {
 		int rows = complaintContReqDTO.getPageSize();
 		OrdComplaintContExample example = new OrdComplaintContExample();
 		Criteria criteria = example.createCriteria();
-		if(complaintContReqDTO.getComplaintId() != null){
-			criteria.andComplaintContIdEqualTo(complaintContReqDTO.getComplaintId());
+		if(complaintContReqDTO.getComplaintContId() != null){
+			criteria.andComplaintContIdEqualTo(complaintContReqDTO.getComplaintContId());
 		}
 		if(complaintContReqDTO.getComplaintId()!=null){
 			criteria.andComplaintIdEqualTo(complaintContReqDTO.getComplaintId());
