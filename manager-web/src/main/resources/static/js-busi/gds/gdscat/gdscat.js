@@ -2,7 +2,7 @@ var zTreeObj;
 $(function(){
 	GdsCat.initZTree();
 	//新增同级分类
-	$(".addNewSomeLevel").die().live('click',function(e){
+	$(".addNewSomeLevel").off().on('click',function(e){
 		$("#editCatId").val('');
 		$("#editInfoCatId").hide();
 		$("#netChildCat").val("");
@@ -10,7 +10,7 @@ $(function(){
 		e.preventDefault();
 	});
 	//新增下级分类
-	$(".addChildCat").die().live('click',function(e){
+	$(".addChildCat").off().on('click',function(e){
 		$("#editCatId").val('');
 		//表示进行的是新增下级分类的操作
 		$("#netChildCat").val("true");
@@ -19,7 +19,7 @@ $(function(){
 		e.preventDefault();
 	});
 	//编辑
-	$(".editThisCat").die().live('click',function(e){
+	$(".editThisCat").off().on('click',function(e){
 		$("#editInfoCatId").show();
 		$("#netChildCat").val("");
 		GdsCat.queryEditCatInfo($(this).attr('catId'));
@@ -27,7 +27,7 @@ $(function(){
 		e.preventDefault();
 	});
 	//确认
-	$("#btnConfirm").die().live('click',function(){
+	$("#btnConfirm").off().on('click',function(){
 		if(!$("#gdsCatForm").valid()){
 			return;
 		}

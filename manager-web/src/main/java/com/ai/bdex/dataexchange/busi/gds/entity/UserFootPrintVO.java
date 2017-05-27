@@ -53,6 +53,10 @@ public class UserFootPrintVO implements Serializable{
     private String status;
     
     private String gdsName;
+    
+    private int pageNo;
+    
+    private int pageSize;
 
     public Integer getFpId() {
         return fpId;
@@ -108,6 +112,22 @@ public class UserFootPrintVO implements Serializable{
 
     public void setGdsName(String gdsName) {
         this.gdsName = gdsName;
+    }
+
+    public int getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
     }
     
 }

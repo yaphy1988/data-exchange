@@ -107,6 +107,7 @@
 	                                <th>商品图片</th>
 	                                <th>商品名称</th>
 	                                <th>商品类型</th>
+	                                <th>浏览用户</th>
 	                                <th>浏览时间</th>
 	                                <th>操作</th>
 	                            </tr>
@@ -116,6 +117,7 @@
 	                                <td><img src="" width="80" height="80" th:src="${#tools.genImageUrl(footPrint.gdsPic,'200x200')}"></td>
 	                                <td th:text="${footPrint.gdsName}">全部全部全部全部全部全部全部</td>
 	                                <td th:text="${footPrint.catFirstName}">API</td>
+	                                <td th:text="${footPrint.createUser}">API</td>
 	                                <td th:text="${#dates.format(footPrint.createTime, 'yyyy-MM-dd  HH:mm:ss')}">2017-04-10 12:25:23</td>
 	                                <td>
 	                                    <p class="pop-link">
@@ -136,6 +138,7 @@
 	                                <th>商品图片</th>
 	                                <th>商品名称</th>
 	                                <th>商品类型</th>
+	                                <th>浏览用户</th>
 	                                <th>浏览时间</th>
 	                                <th>操作</th>
 	                            </tr>
@@ -145,6 +148,7 @@
 	                                <td><img src="" width="80" height="80"></td>
 	                                <td>APIAPIAPIAPIAPIAPIAPI</td>
 	                                <td>API</td>
+	                                <td>xiaom</td>
 	                                <td>2017-04-10 12:25:23</td>
 	                                <td>
 	                                    <p class="pop-link">
