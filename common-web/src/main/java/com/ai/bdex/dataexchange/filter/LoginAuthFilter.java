@@ -9,6 +9,7 @@ import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthBusiRSV;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.ILoginRSV;
 import com.ai.bdex.dataexchange.util.StaffLocaleUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
+import com.ai.paas.config.ModuleInfo;
 import com.ai.paas.session.impl.SessionManager;
 import com.ai.paas.util.CacheUtil;
 import com.ai.paas.util.SystemConfUtil;
@@ -124,7 +125,6 @@ public class LoginAuthFilter implements Filter {
             }
 
             //剩下的看是否有菜单权限
-            /*
             boolean hasMenuAuth = false;
             if(this.unLoginFlag == false) {
                 String reqUrl = getRequestUrl(request);
@@ -150,7 +150,6 @@ public class LoginAuthFilter implements Filter {
                     }
                 }
             }
-            */
 
             filterChain.doFilter(request, response);
             return;
@@ -461,8 +460,7 @@ public class LoginAuthFilter implements Filter {
                 if(staffAuthMenus == null){
                     staffAuthMenus = new ArrayList<MenuDisPlayDTO>();
                 }
-                //设置展示的菜单
-                StaffUtil.setStaffMenus(request.getSession(), staffAuthMenus);
+
                 //设置菜单url,用于权限校验
                 staffInfoVO.setMenuUrls(new ArrayList<String>());
                 setAuthUrls(staffAuthMenus,staffInfoVO);
@@ -470,6 +468,9 @@ public class LoginAuthFilter implements Filter {
                 if(staffInfoVO.getMenuUrls() != null && staffInfoVO.getMenuUrls().size()>0){
                     request.getSession().setAttribute("menuDisPlayFirstUrl",staffInfoVO.getMenuUrls().get(0));
                 }
+                //设置展示的菜单
+                StaffUtil.setStaffMenus(request.getSession(), staffAuthMenus);
+
             }catch (BusinessException bex){
                 LogFactory.getLog(LoginAuthFilter.class).error("获取菜单异常:"+bex.getMessage());
                 bex.printStackTrace();
@@ -564,10 +565,20 @@ public class LoginAuthFilter implements Filter {
 
             for (MenuDisPlayDTO menu:menus) {
 
-                if(StringUtil.isBlank(menu.getAbsoluteMenuUrl()) == false){
+                //设置菜单全路径
+                if(StringUtils.isBlank(menu.getRelativeMenuUrl()) == false) {
+                    String absoluteMenuUrl = menu.getRelativeMenuUrl();
+                    ModuleInfo moduleInfo = SystemConfUtil.getSystemModuleInfo(menu.getSysCode(), menu.getMenuModule());
+                    if (moduleInfo != null) {
+                        absoluteMenuUrl = moduleInfo.genFullUrl() + absoluteMenuUrl;
+                    }
+                    menu.setAbsoluteMenuUrl(absoluteMenuUrl);
+
+                    //加入list 用于判断权限
                     staffInfoVO.getMenuUrls().add(menu.getAbsoluteMenuUrl());
                 }
 
+                //递归处理
                 if(menu.getSubMenus() != null && menu.getSubMenus().size()>0){
                     setAuthUrls(menu.getSubMenus(),staffInfoVO);
                 }

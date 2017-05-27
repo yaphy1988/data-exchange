@@ -10,8 +10,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.ai.bdex.dataexchange.busi.base.entity.BaseAdminAreaInfoVO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.BaseAdminAreaReqDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.BaseAdminAreaRespDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.*;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IBaseAdminAreaRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.paas.utils.CollectionUtil;
@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.*;
 
 import com.ai.bdex.dataexchange.busi.user.entity.InvoiceTaxVO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ChnlInvoiceTaxDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.ReqInvoiceTaxDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IChnlInvoiceTaxRSV;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.util.SystemConfUtil;
@@ -43,6 +41,9 @@ public class AuthenApplyController {
 
 	@DubboConsumer
 	private IBaseAdminAreaRSV iBaseAdminAreaRSV;
+
+	@DubboConsumer
+	private IAuthStaffRSV iAuthStaffRSV;
 	
 	/**
 	 * 用户提交审核页面初始化
@@ -142,6 +143,13 @@ public class AuthenApplyController {
 				//新增
 				iChnlInvoiceTaxRSV.saveInvoiceTax(info);
 			}
+
+			//更新用户表认证状态为认证中
+			AuthStaffDTO staff = new AuthStaffDTO();
+			staff.setStaffId(staffId);
+			staff.setAuthenFlag("2");
+			iAuthStaffRSV.updateAuthStaffInfo(staff);
+
 			rMap.put("success", true);
 			rMap.put("msg", "提交成功");
 

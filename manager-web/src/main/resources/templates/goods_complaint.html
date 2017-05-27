@@ -10,6 +10,7 @@
 	<link rel="stylesheet" href="../META-INF/resources/webjars/css/global.css" th:remove="all">
 	<script src="../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:remove="all"></script>
 	<script src="../META-INF/resources/webjars/bootstrap/3.3.7/js/bootstrap.min.js" th:remove="all"></script>
+	<script src="../static/js-busi/complaint/goods_complaint.js" th:src="@{/js-busi/complaint/goods_complaint.js}"></script>
 </head>
 <body>
 	<header class="clearfix m_header" th:remove="all">
@@ -55,13 +56,13 @@
 	
 	                <!-- Nav tabs -->
 	                <ul class="nav nav-tabs" role="tablist">
-	                    <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">我要投诉</a></li>
-	                    <li><a href="#tab02" aria-controls="profile" role="tab" data-toggle="tab">我的投诉</a></li>
+	                    <li><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">我要投诉</a></li>
+	                    <li class="active"><a href="#tab02" aria-controls="profile" role="tab" data-toggle="tab">我的投诉</a></li>
 	                </ul>
 	
 	                <!-- Tab panes -->
-	                <div class="tab-content pt15">
-	                    <div role="tabpanel" class="tab-pane active" id="tab01">
+	                <div class="tab-content pt15" th:id="complant_content">
+	                    <div role="tabpanel" class="tab-pane" id="tab01">
 	                        <table class="editTable">
 	                            <tr>
 	                                <td class="Hint">
@@ -114,8 +115,35 @@
 	                          
 	                            </tbody>
 	                        </table>
+	                          <!-- 分页-->
+		                    <div class="pagelist">
+		                        <nav aria-label="Page navigation">
+		                            <ul class="pagination">
+		                                <li >
+		                                    <a href="#" aria-label="Previous">
+		                                        <span aria-hidden="true">上一页</span>
+		                                    </a>
+		                                </li>
+		                                <li class="active"><a href="#">1</a></li>
+		                                <li><a href="#">2</a></li>
+		                                <li><a href="#">3</a></li>
+		                                <li><a href="#">4</a></li>
+		                                <li><a href="#">5</a></li>
+		                                <li>
+		                                    <a href="#" aria-label="Next">
+		                                        <span aria-hidden="true">下一页</span>
+		                                    </a>
+		                                </li>
+		                                <div class="pageskip">
+		                                    <span class="pr10">到第<input type="text" class="pageskip_box">页</span>
+		                                    <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+		                                </div>
+		                            </ul>
+		
+		                        </nav>
+		                    </div>
 	                    </div>
-	                    <div role="tabpanel" class="tab-pane " id="tab02">
+	                    <div role="tabpanel" class="tab-pane active" id="tab02">
 	                        <table class="editTable">
 	                            <tr>
 	                                <td class="Hint">
@@ -162,60 +190,57 @@
 	                            <tr class="active">
 	                                <th>订单编码</th>
 	                                <th>投诉事项</th>
-	                                <th>供货商</th>
 	                                <th>投诉日期</th>
 	                                <th>处理时间</th>
-	                                <th>处理状态</th>
-	                                <th>投诉结果</th>
+	                                <th>投诉状态</th>
 	                                <th>操作</th>
 	                            </tr>
 	                            </thead>
-	                            <tbody >
-	                            <tr>
-	                                <td></td>
-	                                <td> </td>
-	                                <td></td>
-	                                <td></td>
-	                                <td></td>
-	                                <td></td>
-	                                <td></td>
-	                                <td>
-	                                    <p class="pop-link">
-	                                        <a href="#">撤销</a>
-	                                        <a href="#">查看</a>
-	                                    </p>
-	                                </td>
-	                            </tr>
+	                            <tbody th:if="${pageInfo}">
+		                            <tr th:each="rs,iterStat : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
+		                                <td  th:text="${rs.orderId}">2028989399</td>
+		                                <td th:text="${rs.complaintItem}">商品投诉</td>
+		                                <td th:text="${#dates.format(rs.complaintsTime, 'yyyy-MM-dd  HH:mm:ss')}">2017-02-10 18:08:34</td>
+		                                <td th:text="${#dates.format(rs.updateTime, 'yyyy-MM-dd  HH:mm:ss')}">2018-02-23 12:12:34</td>
+		                                <td th:text="${rs.complaintStatus}">已处理</td>
+		                                <td>
+		                                    <p class="pop-link">
+		                                        <a href="#">撤销</a>
+		                                        <a href="#">查看</a>
+		                                    </p>
+		                                </td>
+		                            </tr>
 	                          
 	                            </tbody>
 	                        </table>
-	                    </div>
-	                     <!-- 分页-->
-	                    <div class="pagelist">
-	                        <nav aria-label="Page navigation">
-	                            <ul class="pagination">
-	                                <li >
-	                                    <a href="#" aria-label="Previous">
-	                                        <span aria-hidden="true">上一页</span>
-	                                    </a>
-	                                </li>
-	                                <li class="active"><a href="#">1</a></li>
-	                                <li><a href="#">2</a></li>
-	                                <li><a href="#">3</a></li>
-	                                <li><a href="#">4</a></li>
-	                                <li><a href="#">5</a></li>
-	                                <li>
-	                                    <a href="#" aria-label="Next">
-	                                        <span aria-hidden="true">下一页</span>
-	                                    </a>
-	                                </li>
-	                                <div class="pageskip">
-	                                    <span class="pr10">到第<input type="text" class="pageskip_box">页</span>
-	                                    <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
-	                                </div>
-	                            </ul>
-	
-	                        </nav>
+	                    
+		                     <!-- 分页-->
+		                    <div class="pagelist">
+		                        <nav aria-label="Page navigation">
+		                            <ul class="pagination">
+		                                <li >
+		                                    <a href="#" aria-label="Previous">
+		                                        <span aria-hidden="true">上一页</span>
+		                                    </a>
+		                                </li>
+		                                <li class="active"><a href="#">1</a></li>
+		                                <li><a href="#">2</a></li>
+		                                <li><a href="#">3</a></li>
+		                                <li><a href="#">4</a></li>
+		                                <li><a href="#">5</a></li>
+		                                <li>
+		                                    <a href="#" aria-label="Next">
+		                                        <span aria-hidden="true">下一页</span>
+		                                    </a>
+		                                </li>
+		                                <div class="pageskip">
+		                                    <span class="pr10">到第<input type="text" class="pageskip_box">页</span>
+		                                    <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+		                                </div>
+		                            </ul>
+		
+		                        </nav>
+		                    </div>
 	                    </div>
 	                </div>
 	

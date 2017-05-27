@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="renderer" content="webkit">
+	<title>广州数据交易</title>
+	<!-- 引入模板中sys_head定义的公共js和css等内容 -->
+	<th:block th:include="~{fragments/syshead_s :: syshead_s}"/>
+</head>
+
+
+<!-- 错误提示noAuth、400、404、403、500、502-->
+<body class="bgf1">
+
+	<div th:replace="~{fragments/header_s :: header_s}">
+		
+	</div>
+	
+	<div layout:fragment="screen_content">
+	    <div class="m10">
+	        <p>这里是内容</p>
+	    </div>
+	</div>
+	<!-- footer -->
+	<div th:replace="~{fragments/footer_s :: footer_s}"></div>
+</body>
+</html>

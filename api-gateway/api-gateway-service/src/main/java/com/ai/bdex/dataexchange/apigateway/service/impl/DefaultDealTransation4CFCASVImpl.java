@@ -63,4 +63,11 @@ public class DefaultDealTransation4CFCASVImpl implements IApiDealTransationSV{
 		}
 		return map;
 	}
+
+
+	@Override
+	public Class<?> getResultClass() {
+		return Map.class;
+	}
+	
 }

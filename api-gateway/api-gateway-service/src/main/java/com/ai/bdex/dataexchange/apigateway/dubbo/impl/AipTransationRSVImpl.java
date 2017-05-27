@@ -39,9 +39,9 @@ public class AipTransationRSVImpl implements IAipTransationRSV{
 
 
 	@Override
-	public Map<String, String> createTransation(String serviceId,
+	public Map<String, Object> createTransation(String serviceId,
 			String version, Map<String, Object> paramMap) throws Exception {		
-		Map<String, String> resultMap=new HashMap<String, String>();
+		Map<String, Object> resultMap=new HashMap<String, Object>();
 		String result=null;
 		String logId=null;
 		Timestamp requestTime=new Timestamp(System.currentTimeMillis());
@@ -59,7 +59,7 @@ public class AipTransationRSVImpl implements IAipTransationRSV{
 			resultMap.put("error_code", SystemErrorCode.CODE_00000);
 			resultMap.put("reason", "success");
 			resultMap.put("serialNo", logId);
-			resultMap.put("result", result);
+			resultMap.put("result", invokeMap);
 			status="1";
 		}catch(Exception e ){
 			log.error("", e);

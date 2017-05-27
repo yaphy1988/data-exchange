@@ -94,11 +94,11 @@ var Search = {
 					/**
 					 * 分页组件
 					 */
-					$('#pagerId').pager({callback: function(index){
-						var param = Search.generSearchParam();
-						param.pageNo = index;
-						Search.gridGdsInfo(param);
-					}});
+					// $('#pagerId').pager({callback: function(index){
+					// 	var param = Search.generSearchParam();
+					// 	param.pageNo = index;
+					// 	Search.gridGdsInfo(param);
+					// }});
 					var gdsCollect = $(".gdsCollection");
 					if(gdsCollect.length >= 1){
 						//判断商品是否已经收藏
@@ -326,4 +326,10 @@ function testMap(){
         s += index+":"+ key+"="+value+"\n";
     });
     alert(s);
+}
+
+function pagerClick(index) {
+	var param = Search.generSearchParam();
+	param.pageNo = index;
+	Search.gridGdsInfo(param)
 }

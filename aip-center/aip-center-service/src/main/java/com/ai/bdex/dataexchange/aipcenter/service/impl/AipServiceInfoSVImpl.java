@@ -187,8 +187,8 @@ public class AipServiceInfoSVImpl implements IAipServiceInfoSV{
 	@Override
 	public AipServiceInfo selectServiceByServiceIdWithInitversion(
 			String serviceId) throws Exception {
-		this.getAipServiceInfo(serviceId, AIPConstants.AipService.SERVICE_INIT_VERSION,null);
-		return null;
+		
+		return this.getAipServiceInfo(serviceId, AIPConstants.AipService.SERVICE_INIT_VERSION,null);
 	}
 	
 	public AipServiceInfo getAipServiceInfo(String serviceId,
@@ -199,7 +199,7 @@ public class AipServiceInfoSVImpl implements IAipServiceInfoSV{
 			sql.andServiceIdEqualTo(serviceId);
 			
 			if(!StringUtil.isBlank(serviceVersion)){
-				sql.andStatusEqualTo(serviceVersion);
+				sql.andVersionEqualTo(serviceVersion);
 			}
 			if(!StringUtil.isBlank(status)){
 				sql.andStatusEqualTo(status);

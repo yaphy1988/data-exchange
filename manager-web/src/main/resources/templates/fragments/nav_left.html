@@ -9,7 +9,9 @@
 					<i class="glyphicon glyphicon-compressed"></i>
 					个人中心
 				</li>
-				<li th:if="${staffAuthMenus}" th:each="menu,menuStat:${staffAuthMenus}" th:with="currentUrl=${#request.getRequestURL().toString()}">
+				<li th:if="${staffAuthMenus} and ${menu.menuType != '3'}"
+					th:each="menu,menuStat:${staffAuthMenus}"
+					th:with="currentUrl=${#request.getRequestURL().toString()}">
 					<a href="javascript:void(0)">
 						<i class=""></i>
 						<span th:text="${menu.menuTitle}">用户中心</span>
@@ -17,6 +19,7 @@
 					</a>
 					<ul class="infoItem" th:if="${menu.subMenus}">
 						<li th:each="subMenu,subMenuStat:${menu.subMenus}"
+							th:if="${subMenu.menuType != '3'}"
 							th:class="${#strings.startsWith(subMenu.absoluteMenuUrl,currentUrl)}?'active':''">
 							<a th:href="${subMenu.absoluteMenuUrl}"
 							   th:text="${subMenu.menuTitle}">

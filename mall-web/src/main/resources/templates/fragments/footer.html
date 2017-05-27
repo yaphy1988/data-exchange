@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="renderer" content="webkit">
+	<link rel="stylesheet" href="../../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../../META-INF/resources/webjars/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../../META-INF/resources/webjars/css/index.css" th:remove="all">
+</head>
+<body> 
+	<div class="footer" th:fragment="footer">
+	    <div class="wrap1200 ptb40">
+	        <div class="left floatL">
+	             <img width="160" src="../../META-INF/resources/webjars/images/logo-footer.png"  th:src="@{/webjars/images/logo-footer.png}">
+	             <p >本网站所列开源项目的中文版文档全部由Bootstrap中文网成员翻译整理，并全部遵循 CC BY 3.0协议发布</p>
+ 	        </div>
+	        <div class="right floatR">
+	            <div class="footer-item">
+	                <h4>关于我们</h4>
+	                <p>
+ 	                    <a href="#" th:href="@{/homePage/company}">公司简介</a>
+ 	                    <a href="#" th:href="@{/homePage/pageNewsInfolist}">新闻动态</a>
+	                    <a href="#" th:href="@{/homePage/contactouer}">了解我们</a> 
+	                </p>
+	            </div>
+	            <div class="footer-item">
+	                <h4>服务与支持</h4>
+	                <p> 
+	                    <a href="#" th:href="@{/homePage/commonHelp}">帮助中心</a>
+	                    <a href="#" th:href="@{/homePage/pageNewsInfolist?moduleId=108}">常见问题</a>
+	                    <a>公司招聘</a> 
+	                </p>
+	            </div>
+	            <div class="footer-item">
+	                <h4>联系我们</h4>
+	                <p>
+	                    <a>商务合作</a>
+	                    <a>在线咨询</a>
+	                    <a>友情链接</a> 
+	                </p>
+	            </div>
+	            <div class="footer-item">
+	                <h4>官方微信</h4>
+	                <p>
+	                    <img src="../../META-INF/resources/webjars/images/wexin.jpg"  th:src="@{/webjars/images/wexin.jpg}">
+	                </p>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="copyright"> © 2017 广州数据交易服务有限公司 粤ICP备16073970号 * 粤公网安备 44010502000357号</div>
+	 
+	</div>
+</body>
+</html>

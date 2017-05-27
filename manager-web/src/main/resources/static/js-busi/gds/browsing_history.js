@@ -19,10 +19,11 @@ $(function(){
 				|| (number.test(value));
 	}, "只能输入整数");
 	//tab 切换
-	$(".nav-tabs li").live('click',function(e){
+	$(".nav-tabs li").on('click',function(e){
+		$(this).addClass('active');
+		$(this).siblings().removeClass('active');
 		var param = {
-			pageNo : 1,
-			gdsId : $.trim($("#gdsId").val())
+			pageNo : 1
 		}
 		BrowsingHistory.gridUserfootprint(param);
 		e.preventDefault();
@@ -35,7 +36,7 @@ $(function(){
  */
 function pagerClick(pageNo) {
 	var param = {
-		gdsId : $.trim($("#gdsId").val()),
+		gdsName : $.trim($("#gdsName").val()),
 		pageNo:pageNo
 	};
 	BrowsingHistory.gridUserfootprint(param);

@@ -233,7 +233,7 @@
 }
 .register-checkbox input{
     position: relative;
-    top:2px;
+    /* top:2px; */
 }
 .register-checkbox a{
     font-weight: bold;
@@ -264,4 +264,16 @@ font-size: 12px;
 }
 .eassy dt{
     font-weight: bold;
+}
+
+/* by liangsx 20170526 add */
+.codeBtn{
+    height: 48px;
+    position: relative;
+    top: -2px;
+    margin-left: 5px;
+    width: 120px;
+}
+.codeImg{
+    margin-left: 10px;
 }

@@ -6,8 +6,7 @@ $(function(){
 	//查询按钮
 	$("#searchBtn").click(function(){
 		var param = {
-			pageNo : 1,
-			gdsName : $.trim($("#gdsName").val())
+			pageNo : 1
 		}
 		MyFavorite.gridUserCollection(param);
 	});
@@ -19,10 +18,11 @@ $(function(){
 				|| (number.test(value));
 	}, "只能输入整数");
 	//tab 切换
-	$(".nav-tabs li").live('click',function(e){
+	$(".nav-tabs li").on('click',function(e){
+		$(this).addClass('active');
+		$(this).siblings().removeClass('active');
 		var param = {
-			pageNo : 1,
-			gdsId : $.trim($("#gdsId").val())
+			pageNo : 1
 		}
 		MyFavorite.gridUserCollection(param);
 		e.preventDefault();
@@ -43,6 +43,7 @@ function pagerClick(pageNo) {
 var MyFavorite = {
 	gridUserCollection : function(param){
 		param.catFirst = $(".tabSelect.active").attr('catFirst');
+		param.gdsName = $.trim($("#gdsName").val());
 		$.ajax({
 	        url:WEB_ROOT+"/usercollection/gridusercollection",
 	        async:true,

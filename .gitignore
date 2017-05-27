@@ -53,8 +53,12 @@ logs/
 *.cache
 *.dubbo.registry.file*
 *.cache.lock
-
+**/generatorConfig.xml
+/common-dao/src/main/resources/generatorConfig.xml
+**/init.properties
+/common-dao/src/main/resources/init.properties
 *.log
+.myumldata
 
 generatorConfig.xml
 
@@ -63,5 +67,5 @@ generatorConfig.xml
 
 
 ### ignore webjars temporary files
-**/META-INF/resources/**/*
-/**/**/**/**/META-INF/resources/**/*
+/**/src/main/resources/META-INF/resources/
+/woegoimage/

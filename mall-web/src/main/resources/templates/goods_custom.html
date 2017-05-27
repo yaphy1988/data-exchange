@@ -8,25 +8,13 @@
 	<link rel="stylesheet" href="../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:remove="all" >
 	<link rel="stylesheet" href="../META-INF/resources/webjars/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../META-INF/resources/webjars/css/index.css" th:remove="all">
+	<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
+	<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>
 </head>
 <body>
 
-	<div class="top" th:remove="all">
-	    <div class="wrap1200">
-	        <div class="top-left floatL">
-	            <span>欢迎来到广州数据中心</span>
-	            <span>2017年4月20日&nbsp;&nbsp;12：00：30</span>
-	        </div>
-	        <div class="top-right floatR">
-	            <a href="#"><b>请登录</b></a>
-	            <a href="#">免费注册</a>
-	            <i>|</i>
-	            <a href="#">关注广数</a>
-	            <a href="#">常见问题</a>
-	            <a href="#">联系我们</a>
-	        </div>
-	    </div>
-	</div>
+	
+	<iframe  width="100%"  frameborder=0 marginheight=0 marginwidth=0 scrolling=no height="36"  src="fragments/top.html" th:remove="all"></iframe>
 	<div class="header" th:remove="all">
 	    <div class="wrap1200 clearfix">
 	        <div class="logo floatL"><img src="../static/images/logo.png" title="广州数据中心"></div>
@@ -50,7 +38,6 @@
 	    </div>
 	    <div class="menuBg seconav">
 	    	<div class="menu clearfix">
-		        <!--左侧边栏开始-->
 		        <div class="sidebar floatL">
 		            <h3>全部商品<i class="glyphicon glyphicon-list"></i></h3>
 		            <ul class="hidden">
@@ -64,7 +51,6 @@
 		                <li><a href="#"><i>&rsaquo;</i>更多服务</a> </li>
 		            </ul>
 
-		            <!--二级导航开始-->
 		            <div class="sidebar-hidden" style="display: none">
 		                <h4>金融服务</h4>
 		                <div class="sidebar-link">
@@ -114,14 +100,11 @@
 	    	</div>
 	    </div>
 	</div>
+    
 
 	<div class="main"  layout:fragment="screen_content">
 
-		<link rel="stylesheet" href="../static/css/goods_details.css" th:href="@{/css/goods_details.css}">
-		<script th:src="@{/js-busi/goods/goods_details.js}" src="../static/js-busi/goods/goods_details.js"></script>
-		<style>
-			.bgf1{background:white}
-		</style>
+	
 		<div class="classify">
 			<i class="iconfont"></i>
 			<span>当前位置：</span>
@@ -276,49 +259,49 @@
 		</div>
 	</div>
 	<div class="footer" th:remove="all">
-    <div class="wrap1200 ptb40">
-        <div class="left floatL">
-            <img src="../static/images/logo-footer.png" >
-            <p class="">本网站所列开源项目的中文版文档全部由Bootstrap中文网成员翻译整理，并全部遵循 CC BY 3.0协议发布</p>
-        </div>
-        <div class="right floatR">
-            <div class="footer-item">
-                <h4>关于我们</h4>
-                <p>
-                    <a href="#">公司简介</a>
-                    <a href="#">新闻动人</a>
-                    <a href="#">友情链接</a>
-                    <a href="#">招聘</a>
-                </p>
-            </div>
-            <div class="footer-item">
-                <h4>服务与支持</h4>
-                <p>
-                    <a href="#">服务条款</a>
-                    <a href="#">常见问题</a>
-                    <a href="#">友情链接</a>
-                    <a href="#">招聘</a>
-                </p>
-            </div>
-            <div class="footer-item">
-                <h4>联系我们</h4>
-                <p>
-                    <a href="#">商务合作</a>
-                    <a href="#">在线咨询</a>
-                    <a href="#">友情链接</a>
-                    <a href="#">招聘</a>
-                </p>
-            </div>
-            <div class="footer-item">
-                <h4>官方微信</h4>
-                <p>
-                    <img src="../static/images/wexin.jpg">
-                </p>
-            </div>
-        </div>
-    </div>
-    <div class="copyright">© 2017 广州数据交易服务有限公司 粤ICP备16073970号 * 粤公网安备 44010502000357号</div>
-</div>
+	    <div class="wrap1200 ptb40">
+	        <div class="left floatL">
+	            <img width="160" src="../static/images/logo-footer.png" >
+	            <p class="">本网站所列开源项目的中文版文档全部由Bootstrap中文网成员翻译整理，并全部遵循 CC BY 3.0协议发布</p>
+	        </div>
+	        <div class="right floatR">
+	            <div class="footer-item">
+	                <h4>关于我们</h4>
+	                <p>
+	                    <a href="#">公司简介</a>
+	                    <a href="#">新闻动人</a>
+	                    <a href="#">友情链接</a>
+	                    <a href="#">招聘</a>
+	                </p>
+	            </div>
+	            <div class="footer-item">
+	                <h4>服务与支持</h4>
+	                <p>
+	                    <a href="#">服务条款</a>
+	                    <a href="#">常见问题</a>
+	                    <a href="#">友情链接</a>
+	                    <a href="#">招聘</a>
+	                </p>
+	            </div>
+	            <div class="footer-item">
+	                <h4>联系我们</h4>
+	                <p>
+	                    <a href="#">商务合作</a>
+	                    <a href="#">在线咨询</a>
+	                    <a href="#">友情链接</a>
+	                    <a href="#">招聘</a>
+	                </p>
+	            </div>
+	            <div class="footer-item">
+	                <h4>官方微信</h4>
+	                <p>
+	                    <img src="../static/images/wexin.jpg">
+	                </p>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="copyright">© 2017 广州数据交易服务有限公司 粤ICP备16073970号 * 粤公网安备 44010502000357号</div>
+	</div>
 	<script src="../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:remove="all"></script>
 	<script src="../META-INF/resources/webjars/bootstrap/3.3.7/js/bootstrap.min.js" th:remove="all"></script>
 </body>

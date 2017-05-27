@@ -98,6 +98,22 @@ public class DataConsumeDTO {
         this.consumeMoney = consumeMoney;
     }
 
+    /**
+     * 以分的形式返回消耗单价，consumeMoney字段是以厘为单位
+     * @return
+     */
+    public double getConsumeMoneyCent(){
+        return consumeMoney / 10.0;
+    }
+
+    /**
+     * 以分的形式设置消耗单价，consumeMoney字段是以厘为单位
+     * @param consumeMoneyCent
+     */
+    public void setConsumeMoneyCent(double consumeMoneyCent){
+        consumeMoney = (int)(consumeMoneyCent * 10);
+    }
+
     public Date getConsumeTime() {
         return consumeTime;
     }

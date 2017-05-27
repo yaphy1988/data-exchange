@@ -229,43 +229,43 @@ public class AipKeyManageController {
 //		 return ajx;
 //	 }
 	 
-	 @RequestMapping(value="/editAipClientInfo")
-	 public @ResponseBody AjaxJson editAipClientInfo(AipClientInfoVo vo){
-		 int cnt=0;
-		 AjaxJson ajx=new AjaxJson();		 
-		 try{
-			String clientId=vo.getClientId();		
-			if(!StringUtil.isBlank(clientId)){		
-				AipClientInfoDTO dto=new AipClientInfoDTO();
-				ObjectCopyUtil.copyObjValue(vo, dto, null, true);					
-				Timestamp nowTime=new Timestamp(System.currentTimeMillis());
-				dto.setClientSecret(null);
-				dto.setPassword(null);
-				dto.setCreateTime(null);
-				dto.setCreateStaff(null);
-				//如何取?
-				dto.setUpdateStaff("");
-				dto.setUpdateTime(nowTime);					
-				cnt=aipClientInfoRSV.updateAipClientInfo(dto);
-				if(cnt==1){
-					 ajx.setSuccess(true);
-					 ajx.setMsg("客户端:"+clientId+"保存编辑成功");
-				}else{
-					 ajx.setSuccess(true);
-					 ajx.setMsg("客户端:"+clientId+"保存编辑失败");
-				}
-			}else{
-				 ajx.setSuccess(false);
-				 ajx.setMsg(clientId+"客户端编码不能为空");
-			}
-			
-		 }catch(Exception e){
-			 log.error("",e);
-			 ajx.setSuccess(false);
-			 ajx.setMsg(vo.getClientId()+"保存编辑出现异常，请联系管理员");
-		 }
-		 return ajx;
-	 }
+//	 @RequestMapping(value="/editAipClientInfo")
+//	 public @ResponseBody AjaxJson editAipClientInfo(AipClientInfoVo vo){
+//		 int cnt=0;
+//		 AjaxJson ajx=new AjaxJson();
+//		 try{
+//			String clientId=vo.getClientId();
+//			if(!StringUtil.isBlank(clientId)){
+//				AipClientInfoDTO dto=new AipClientInfoDTO();
+//				ObjectCopyUtil.copyObjValue(vo, dto, null, true);
+//				Timestamp nowTime=new Timestamp(System.currentTimeMillis());
+//				dto.setClientSecret(null);
+//				dto.setPassword(null);
+//				dto.setCreateTime(null);
+//				dto.setCreateStaff(null);
+//				//如何取?
+//				dto.setUpdateStaff("");
+//				dto.setUpdateTime(nowTime);
+//				cnt=aipClientInfoRSV.updateAipClientInfo(dto);
+//				if(cnt==1){
+//					 ajx.setSuccess(true);
+//					 ajx.setMsg("客户端:"+clientId+"保存编辑成功");
+//				}else{
+//					 ajx.setSuccess(true);
+//					 ajx.setMsg("客户端:"+clientId+"保存编辑失败");
+//				}
+//			}else{
+//				 ajx.setSuccess(false);
+//				 ajx.setMsg(clientId+"客户端编码不能为空");
+//			}
+//
+//		 }catch(Exception e){
+//			 log.error("",e);
+//			 ajx.setSuccess(false);
+//			 ajx.setMsg(vo.getClientId()+"保存编辑出现异常，请联系管理员");
+//		 }
+//		 return ajx;
+//	 }
 
 	@RequestMapping(value = "/queryStaffInfoPage")
 	public String queryStaffInfoPage(HttpServletRequest request, HttpServletResponse response, AuthStaffDTO authStaffDTO){
@@ -303,20 +303,31 @@ public class AipKeyManageController {
      */
 	@RequestMapping(value = "/saveAipkey")
 	@ResponseBody
-	public AjaxJson saveAipkey(HttpServletRequest request, HttpServletResponse response, HttpSession session,AipClientInfoReqDTO aipClientInfoReqDTO){
+	public AjaxJson saveAipkey(HttpServletRequest request, HttpServletResponse response, HttpSession session){
 		AjaxJson ajaxJson = new AjaxJson();
 
-		if (StringUtil.isBlank(aipClientInfoReqDTO.getUserId())){
+		String userId = request.getParameter("userId");
+		String username =request.getParameter("username");
+		String effectiveTime = request.getParameter("effectiveTime");
+		String clientId = request.getParameter("clientId");
+		String clientSecret = request.getParameter("clientSecret");
+		String status = request.getParameter("status");
+		String password = request.getParameter("password");
+		AipClientInfoReqDTO aipClientInfoReqDTO = new AipClientInfoReqDTO();
+
+		if (StringUtil.isBlank(userId)){
 			ajaxJson.setSuccess(false);
 			ajaxJson.setMsg("保存失败,请重试或联系管理员！");
 			return ajaxJson;
 		}
 
 		try {
-			if (StringUtil.isBlank(aipClientInfoReqDTO.getClientId())){//新增
+			if (StringUtil.isBlank(clientId)){//新增
+				aipClientInfoReqDTO.setUserId(userId);
+				aipClientInfoReqDTO.setUsername(username);
 				RandomValueStringGenerator generator = new RandomValueStringGenerator(32, RandomValueStringGenerator.DEFAULT_CODEC);
-				String clientSecret = generator.generate();
-				aipClientInfoReqDTO.setClientSecret(clientSecret);
+				String newClientSecret = generator.generate();
+				aipClientInfoReqDTO.setClientSecret(newClientSecret);
 
 				//生成密码
 				SimpleDateFormat sdf=new SimpleDateFormat("yyyyMMddhhmmss");
@@ -327,8 +338,8 @@ public class AipKeyManageController {
 				aipClientInfoReqDTO.setCreateStaff(StaffUtil.getStaffId(session));
 				aipClientInfoReqDTO.setCreateTime(new Date());
 
-				if (aipClientInfoReqDTO.getEffectiveTime()!=null){
-					String timeStr = new SimpleDateFormat("yyyy-MM-dd").format(aipClientInfoReqDTO.getEffectiveTime())+" 23:59:59";
+				if (!StringUtil.isBlank(effectiveTime)){
+					String timeStr = effectiveTime+" 23:59:59";
 					aipClientInfoReqDTO.setEffectiveTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(timeStr));
 				}
 				aipClientInfoReqDTO.setStatus("1");
@@ -343,7 +354,38 @@ public class AipKeyManageController {
 				}
 
 			}else{
+				AipClientInfoDTO aipClientInfoDTO = aipClientInfoRSV.getAipClientInfoByKey(clientId);
+				if (aipClientInfoDTO == null){
+					ajaxJson.setSuccess(false);
+					ajaxJson.setMsg("编辑保存失败，请重试或联系管理员");
+					log.error("编辑保存失败，查询不到aipkey信息！");
+				}
 
+				aipClientInfoReqDTO.setClientId(clientId);
+				aipClientInfoReqDTO.setClientSecret(clientSecret);
+				aipClientInfoReqDTO.setUserId(userId);
+				aipClientInfoReqDTO.setUsername(username);
+				aipClientInfoReqDTO.setStatus(status);
+				if (effectiveTime.length()==10){
+					String timeStr = effectiveTime+" 23:59:59";
+					aipClientInfoReqDTO.setEffectiveTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(timeStr));
+				}else{
+					aipClientInfoReqDTO.setEffectiveTime(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").parse(effectiveTime));
+				}
+				aipClientInfoReqDTO.setUpdateTime(new Date());
+				aipClientInfoReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+				aipClientInfoReqDTO.setPassword(password);
+				aipClientInfoReqDTO.setCreateTime(aipClientInfoDTO.getCreateTime());
+				aipClientInfoReqDTO.setCreateStaff(aipClientInfoDTO.getCreateStaff());
+
+				int code = aipClientInfoRSV.updateAipClientInfo(aipClientInfoReqDTO);
+				if (code == 1){
+					ajaxJson.setSuccess(true);
+				}else {
+					ajaxJson.setSuccess(false);
+					ajaxJson.setMsg("编辑保存失败，请重试或联系管理员！");
+					return ajaxJson;
+				}
 			}
 		}catch (Exception e){
 			if (StringUtil.isBlank(aipClientInfoReqDTO.getClientId())){

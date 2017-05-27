@@ -7,17 +7,16 @@
     <meta name="description" content="">
     <meta name="keywords" content="">
     <title>广州数据中心_用户注册</title>
-    <link rel="icon" type="image/png" href="../../META-INF/resources/webjars/images/favicon.png" th:href="@{/webjars/images/favicon.png}">
-    <link rel="stylesheet" href="../../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}"/>
-    <link rel="stylesheet" href="../../META-INF/resources/webjars/fonts/iconfont.css" th:href="@{/webjars/fonts/iconfont.css}">
-    <link rel="stylesheet" href="../../META-INF/resources/webjars/css/global.css" th:href="@{/webjars/css/global.css}"/>
-
+    <link rel="icon" type="image/png" href="../META-INF/resources/webjars/images/favicon.png" th:href="@{/webjars/images/favicon.png}">
+    <link rel="stylesheet" href="../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}"/>
+    <link rel="stylesheet" href="../META-INF/resources/webjars/fonts/iconfont.css" th:href="@{/webjars/fonts/iconfont.css}">
+    <link rel="stylesheet" href="../META-INF/resources/webjars/css/global.css" th:href="@{/webjars/css/global.css}"/>
     <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
 
-    <script src="../../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:src="@{/webjars/jquery/3.2.0/jquery.min.js}"></script>
-    <script src="../../META-INF/resources/webjars/bootstrap/3.3.7/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
-    <script src="../../META-INF/resources/webjars/js/jquery.bootstrap.message.js" th:src="@{/webjars/js/jquery.bootstrap.message.js}"></script>
-    <script src="../../META-INF/resources/webjars/js/util.js" th:src="@{/webjars/js/util.js}"></script>
+    <script src="../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:src="@{/webjars/jquery/3.2.0/jquery.min.js}"></script>
+    <script src="../META-INF/resources/webjars/bootstrap/3.3.7/js/bootstrap.min.js" th:src="@{/webjars/bootstrap/3.3.7/js/bootstrap.min.js}"></script>
+    <script src="../META-INF/resources/webjars/js/jquery.bootstrap.message.js" th:src="@{/webjars/js/jquery.bootstrap.message.js}"></script>
+    <script src="../META-INF/resources/webjars/js/util.js" th:src="@{/webjars/js/util.js}"></script>
 
     <script src="../static/js-busi/register/register.js" th:src="@{/js-busi/register/register.js}"></script>
 
@@ -29,7 +28,7 @@
 <div class="header bg-white">
     <div class="wrap1000">
         <div class="logo floatL"><a th:href="@{/homePage/pageInit}"><img src="../static/images/manage_logo.png" th:src="@{/images/logo.png}" title="广州数据中心"></a></div>
-        <div class="register floatR">已有账号， <a th:href="@{/login/pageInit}">登录</a></div>
+        <div class="register floatR">已有账号， <a th:href="@{/login/pageInit}">立即登录</a></div>
     </div>
 </div>
 <div class="main">
@@ -64,13 +63,16 @@
                 <label>短信验证码</label>
                 <input type="text" class="form-control" placeholder="短信验证码" style="width:50%;display:-webkit-inline-box;" id="smsCode" maxlength="6">
                 <!--error-tip可见或不可见方式请用visibility-->
-                <button class="btn btn-primary " onclick="sendSmsCode();" id="getcodebtn">获取验证码</button>
+                <button class="btn btn-primary codeBtn" onclick="sendSmsCode();" id="getcodebtn">获取验证码</button>
                 <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入短信验证码</span></p>
             </div>
             <div class="register-checkbox checkbox">
             <label>
                 <input type="checkbox" id="checkAgree">
                 我已阅读并接受<a href="#" data-toggle="modal" data-target="#myModal"> 《广州数据平台交易协议》</a>
+            </label>
+            <label>
+              <input type="checkbox"> Check me out
             </label>
             </div>
             <div class="register-button">
