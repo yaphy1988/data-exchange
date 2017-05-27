@@ -308,13 +308,6 @@
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
-          <artifactId>maven-install-plugin</artifactId>
-          <configuration>
-            <file>${project.build.directory}/${project.artifactId}-${project.version}.${project.packaging}</file>
-          </configuration>
-        </plugin>
-        <plugin>
           <groupId>org.springframework.boot</groupId>
           <artifactId>spring-boot-maven-plugin</artifactId>
           <dependencies>
@@ -334,6 +327,7 @@
           </executions>
           <configuration>
             <outputDirectory>${project.build.directory}/${project.artifactId}</outputDirectory>
+            <attach>false</attach>
           </configuration>
         </plugin>
       </plugins>
