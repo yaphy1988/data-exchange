@@ -9,7 +9,7 @@
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.ai.bdex.dataexchange</groupId>
+  <groupId>com.ai.bdex.data-exchange</groupId>
   <artifactId>report-web</artifactId>
 
   <dependencies>
@@ -22,12 +22,12 @@
       <artifactId>spring-boot-starter-web</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>user-center-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>common-api</artifactId>
       <version>${project.version}</version>
     </dependency>
@@ -37,7 +37,7 @@
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>common-web</artifactId>
       <version>${project.version}</version>
     </dependency>

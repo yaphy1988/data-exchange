@@ -9,6 +9,7 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
+    <groupId>com.ai.bdex.data-exchange</groupId>
     <artifactId>publish</artifactId>
     <packaging>pom</packaging>
     <modules>

@@ -4,22 +4,21 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <parent>
     <artifactId>api-gateway</artifactId>
-    <groupId>com.ai.bdex.dataexchange</groupId>
+    <groupId>com.ai.bdex.data-exchange</groupId>
     <version>1.0-SNAPSHOT</version>
   </parent>
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.ai.bdex.dataexchange</groupId>
   <artifactId>api-gateway-service</artifactId>
 
   <dependencies>
     <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>common-api</artifactId>
       <version>${project.version}</version>
     </dependency>
     <dependency>
-      <groupId>com.ai.bdex.dataexchange</groupId>
+      <groupId>com.ai.bdex.data-exchange</groupId>
       <artifactId>api-gateway-api</artifactId>
       <version>${project.version}</version>
     </dependency>
