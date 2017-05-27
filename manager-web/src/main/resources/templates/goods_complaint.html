@@ -56,13 +56,13 @@
 	
 	                <!-- Nav tabs -->
 	                <ul class="nav nav-tabs" role="tablist">
-	                    <li><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">我要投诉</a></li>
-	                    <li class="active"><a href="#tab02" aria-controls="profile" role="tab" data-toggle="tab">我的投诉</a></li>
+	                    <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">我要投诉</a></li>
+	                    <li><a href="#tab02" aria-controls="profile" role="tab" data-toggle="tab">我的投诉</a></li>
 	                </ul>
 	
 	                <!-- Tab panes -->
 	                <div class="tab-content pt15" th:id="complant_content">
-	                    <div role="tabpanel" class="tab-pane" id="tab01">
+	                    <div role="tabpanel" class="tab-pane active" id="tab01">
 	                        <table class="editTable">
 	                            <tr>
 	                                <td class="Hint">
@@ -100,15 +100,21 @@
 	                                <th>操作</th>
 	                            </tr>
 	                            </thead>
-	                            <tbody >
-	                            <tr>
-	                                <td>2017090192019</td>
-	                                <td> 2017 04-12 14：22</td>
-	                                <td>已支付</td>
-	                                <td>查询身份证真伪</td>
+	                            <tbody th:if="${pageInfo}">
+	                            <tr th:unless="${#lists.isEmpty(pageInfo.result)}" th:each="list,iterStat : ${pageInfo.result}">
+	                                <td th:text="${list.orderId}">2017090192019</td>
+	                                <td th:data="${#calendars.format(list.ordInfoRespDTO.orderTime,'yyyy-MM-dd HH:mm:ss')}"> 2017 04-12 14：22</td>
+	                                <td>
+										<p th:if="${list.ordInfoRespDTO.status=='01'}">待支付</p>
+										<p th:if="${list.ordInfoRespDTO.status=='02'}">已支付</p>
+										<p th:if="${list.ordInfoRespDTO.status=='03'}">已失效</p>
+										<p th:if="${list.ordInfoRespDTO.status=='04'}">已完成</p>
+										<p th:if="${list.ordInfoRespDTO.status=='99'}">已取消</p>
+									</td>
+	                                <td th:text="${list.ordInfoRespDTO.gdsName}">查询身份证真伪</td>
 	                                <td>
 	                                    <p class="pop-link">
-	                                        <a href="#">我要投诉</a>
+	                                        <a href="javascript:;" th:onclick="|iwantComplaint('${list.orderId}')|">我要投诉</a>
 	                                    </p>
 	                                </td>
 	                            </tr>
@@ -116,7 +122,7 @@
 	                            </tbody>
 	                        </table>
 	                          <!-- 分页-->
-		                    <div class="pagelist">
+		                    <div class="pagelist" th:remove="all">
 		                        <nav aria-label="Page navigation">
 		                            <ul class="pagination">
 		                                <li >
@@ -142,8 +148,30 @@
 		
 		                        </nav>
 		                    </div>
+							<!-- 分页-->
+							<div th:fragment="pager" class="pagerBar pagelist pull-right"
+								 th:if=" ${pageInfo}">
+								<script type="text/javascript"
+										src="../static/js-busi/common/pager.js"
+										th:src="@{/js-busi/common/pager.js}"></script>
+								<span data-toggle="pager" id="pagerId"
+									  th:data-count="${pageInfo.count}"
+									  th:data-size="${pageInfo.pageSize}"
+									  th:data-currentindex="${pageInfo.pageNo}"></span>
+								<script th:inline="javascript">
+
+                                    if (typeof pagerClick === "undefined") {
+                                        pagerClick = function(index) {
+                                            myOrderList(index);
+                                        }
+                                    }
+                                    $('#pagerId').pager({
+                                        callback : pagerClick
+                                    });
+								</script>
+							</div>
 	                    </div>
-	                    <div role="tabpanel" class="tab-pane active" id="tab02">
+	                    <div role="tabpanel" class="tab-pane" id="tab02">
 	                        <table class="editTable">
 	                            <tr>
 	                                <td class="Hint">
@@ -173,7 +201,11 @@
 	                                   投诉事项:
 	                                </td>
 	                               <td>
-	                                    <input type="text" class="form-control" placeholder="" >
+	                                    <section th:id="complaint_item">
+											<option value="0">快速发货</option>
+											<option value="1">售后保障</option>
+											<option value="9">其它</option>
+										</section>
 	                                </td>
 	                               <td></td>
 	                               <td></td>
@@ -251,33 +283,42 @@
 		<!-- 我要投诉弹窗 -->
 		<div  class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	        <div class="modal-dialog" role="document">
-	            <div class="modal-content">
+	            <div class="modal-content"  id="modal_content">
+					<input type="hidden" th:value="${orderId}" th:id="my_orderId">
 	                <div class="modal-header">
 	                     <h4 class="modal-title" id="myModalLabel">我要投诉</h4>
 	                </div>
 	                <div class="modal-body">
 	                    <div class="date-box">
 	                        <div class="date-input"  id="needTielDiv">
-	                            <label>数据名称</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写数据名称"  id="needTiel">
-	                              </div>
+	                            <label>数据名称</label><input type="text" class="form-control" maxlength="128" disabled placeholder="请填写数据名称"  id="needTiel" th:value="${gdsName}">
+						  	</div>
+							<div class="date-input">
+								<section th:id="complaint_item">
+									<option value="0">快速发货</option>
+									<option value="1">售后保障</option>
+									<option value="9">其它</option>
+								</section>
+							</div>
 	                        <div class="date-input"  id="needcontentDiv">
-	                            <label>投诉内容</label><textarea class="form-control" rows="5" maxlength="624"  placeholder="请填写投诉内容"  id="needcontent"></textarea>
+	                            <label>投诉内容</label><textarea class="form-control" rows="5" maxlength="624"  placeholder="请填写投诉内容"  th:id="complaintContent"></textarea>
+								<p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请填写投诉内容</span></p>
 	                        </div>
 	                        <div class="date-input"  id="lnkposenDiv">
-	                            <label>联系人</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系人"  id="lnkposen">
+	                            <label>联系人</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系人"  th:id="lnkposen">
 		                        <div class="date-input"  id="lnkphoneDiv">
-		                            <label>手机号码</label><input type="text" class="form-control" maxlength="11"  placeholder="请填写手机号码"  id="lnkphone">
+		                            <label>手机号码</label><input type="text" class="form-control" maxlength="11"  placeholder="请填写手机号码"  th:id="lnkphone">
 		                            <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
 		                          </div>
 		                        <div class="date-input"  id="lnkemailDiv">
-		                            <label>联系邮箱</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系邮箱"  id="lnkemail">
+		                            <label>联系邮箱</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系邮箱"  th:id="lnkemail">
 		                             <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的邮箱</span></p>
 		                        </div>
 		                    </div>
 		                </div>
 		                <div class="modal-footer">
 		                    <button type="button" class="btn btn-primary wt120"  id="commitData">提交</button>
-		                     <button type="button" class="btn btn-primary wt120"  id="hidetData">取消</button>
+		                     <button type="button" class="btn btn-primary wt120"  id="hidetData" th:onclick="|modalDatahiden()|">取消</button>
 		                </div>
 	            	</div>
 	        	</div>
