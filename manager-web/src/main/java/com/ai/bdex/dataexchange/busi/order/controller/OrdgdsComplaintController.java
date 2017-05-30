@@ -19,6 +19,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderMainInfoRSV;
 import com.ai.bdex.dataexchange.util.StaffUtil;
+import com.ai.paas.utils.DateUtil;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -79,6 +80,10 @@ public class OrdgdsComplaintController {
 	public String complaintPageInfo(HttpServletRequest request,Model model){
 		String pageNo = request.getParameter("pageNo");
 		String pageSize = request.getParameter("pageSize");
+		String startTime = request.getParameter("startTime");
+		String endTime = request.getParameter("endTime");
+		String compStatus = request.getParameter("compStatus");
+		String compItem = request.getParameter("compItem");
 		OrdComplaintReqDTO ordComplaintReqDTO = new OrdComplaintReqDTO();
 		try {
 			if(!StringUtil.isBlank(pageNo)){
@@ -88,6 +93,18 @@ public class OrdgdsComplaintController {
 				ordComplaintReqDTO.setPageSize(Integer.valueOf(pageSize));
 			}else{
 				ordComplaintReqDTO.setPageSize(10);
+			}
+			if (!StringUtil.isBlank(startTime)){
+				ordComplaintReqDTO.setBeginTime(DateUtil.parse(startTime));
+			}
+			if (!StringUtil.isBlank(endTime)){
+				ordComplaintReqDTO.setEndTime(DateUtil.parse(endTime));
+			}
+			if (!StringUtil.isBlank(compStatus)){
+				ordComplaintReqDTO.setComplaintStatus(compStatus);
+			}
+			if (!StringUtil.isBlank(compItem)){
+				ordComplaintReqDTO.setComplaintItem(compItem);
 			}
 			PageResponseDTO<OrdComplaintRespDTO> pageInfo = iOrdComplaintRSV.queryOrdComplaintPageInfo(ordComplaintReqDTO);
 			if (!CollectionUtils.isEmpty(pageInfo.getResult())){
@@ -104,6 +121,10 @@ public class OrdgdsComplaintController {
 				}
 			}
 			model.addAttribute("pageInfo", pageInfo);
+            model.addAttribute("startTime", startTime);
+            model.addAttribute("endTime", endTime);
+            model.addAttribute("compStatus", compStatus);
+            model.addAttribute("compItem", compItem);
 		} catch (Exception e) {
 			logger.error("[查询我的订单投诉异常]，异常信息："+e.getMessage());
 		}
@@ -119,6 +140,9 @@ public class OrdgdsComplaintController {
 	 */
 	@RequestMapping(value = "/myOrderList")
 	public String myOrderList(Model model, OrdMainInfoVO ordMainInfoVO, HttpServletRequest request ) {
+		String startTime = request.getParameter("startTime");
+		String endTime = request.getParameter("endTime");
+		String ordStatus = request.getParameter("ordStatus");
 		try {
 			PageResponseDTO<OrdMainInfoRespDTO> pageInfo = new PageResponseDTO<OrdMainInfoRespDTO>();
 			OrdMainInfoReqDTO ordMainReqDTO = new OrdMainInfoReqDTO();
@@ -129,6 +153,15 @@ public class OrdgdsComplaintController {
 			if(StringUtil.isBlank(staff_id)){
 				staff_id = TMPUSERID;
 			}
+			if (!StringUtil.isBlank(startTime)){
+                ordMainReqDTO.setStartTime(DateUtil.parse(startTime));
+            }
+            if (!StringUtil.isBlank(endTime)){
+                ordMainReqDTO.setEndTime(DateUtil.parse(endTime));
+            }
+            if (!StringUtil.isBlank(ordStatus)){
+                ordMainReqDTO.setOrderStatus(ordStatus);
+            }
 			ordMainReqDTO.setStaffId(staff_id);
 			//不是30的数据要查询出来
 			List<String> listOrderType = new ArrayList<String>();
@@ -155,6 +188,9 @@ public class OrdgdsComplaintController {
 				}
 			}
 			model.addAttribute("pageInfo", pageInfo);
+            model.addAttribute("startTime", startTime);
+            model.addAttribute("endTime", endTime);
+            model.addAttribute("ordStatus", ordStatus);
 		} catch (Exception e) {
 			logger.error("查询我的订单列表失败！原因是：" + e.getMessage());
 		}

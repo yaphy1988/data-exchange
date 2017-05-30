@@ -13,6 +13,34 @@ $(function(){
 
 
 });
+/**
+ * 初始化时间控件
+ * @param startTime
+ * @param endTime
+ */
+function dateTimepickerinit(startTime,endTime) {
+    $("#"+startTime+"").datetimepicker({
+        format: 'yyyy-mm-dd 00:00:00',
+        minView:'month',
+        language: 'zh-CN',
+        clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
+        autoclose:true
+        // startDate:new Date()
+    }).on("click",function(){
+        $("#"+startTime+"").datetimepicker("setEndDate",$("#"+endTime+"").val());
+    });
+    $("#"+endTime+"").datetimepicker({
+        format: 'yyyy-mm-dd 23:59:59',
+        minView:'month',
+        language: 'zh-CN',
+        clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
+        autoclose:true
+        // startDate:new Date()
+    }).on("click",function(){
+        $("#"+endTime+"").datetimepicker("setStartDate",$("#"+startTime+"").val());
+    });
+}
+
 function pagerClick(index){
     queryComplaintList(index);
 }
@@ -109,7 +137,11 @@ function iwantComplaint(orderId){
 
 function queryComplaintList(index){
 	var url = MANAGE_ROOT+'/ordgdsComplaint/queryComplaint';
-	var params={pageNo:index};
+	var startTime = $('#comp_startTime').val();
+    var endTime = $('#comp_endTime').val();
+    var compStatus = $.trim($('#comp_status').val());
+    var compItem = $.trim($('#comp_item').val());
+	var params={pageNo:index,startTime:startTime,endTime:endTime,compStatus:compStatus,compItem:compItem};
     $.gridLoading({ message:"正在加载中.." });
 	$.appAjax({
 		url:url,
@@ -120,16 +152,20 @@ function queryComplaintList(index){
 		success:function(data){
             $.gridUnLoading();
 			$('#complant_content').html(data);
-			$('#complant_content div').removeClass('active');
+			// $('#complant_content div').removeClass('active');
 			$('#tab02').attr('class','tab-pane active');
-            $('.nav.nav-tabs>li').removeClass('active');
-            $('.nav.nav-tabs>li').eq(0).attr('class','active');
+            // $('.nav.nav-tabs>li').removeClass('active');
+            // $('.nav.nav-tabs>li').eq(0).attr('class','active');
+            dateTimepickerinit('comp_startTime','comp_endTime');
 		}
 	});
 }
 
 function myOrderList(index){
-    var param={pageNo:index};
+    var startTime = $('#ord_startTime').val();
+    var endTime = $('#ord_endTime').val();
+    var ordStatus = $.trim($('#ord_status').val());
+    var param={pageNo:index,startTime:startTime,endTime:endTime,ordStatus:ordStatus};
     $.gridLoading({ message:"正在加载中.." });
     $.appAjax({
         url:MANAGE_ROOT+'/ordgdsComplaint/myOrderList',
@@ -140,10 +176,11 @@ function myOrderList(index){
         success:function(data){
             $.gridUnLoading();
             $('#complant_content').html(data);
-            $('#complant_content div').removeClass('active');
+            // $('#complant_content div').removeClass('active');
             $('#tab01').attr('class','tab-pane active');
-            $('.nav.nav-tabs>li').removeClass('active');
-            $('.nav.nav-tabs>li').eq(1).attr('class','active');
+            // $('.nav.nav-tabs>li').removeClass('active');
+            // $('.nav.nav-tabs>li').eq(1).attr('class','active');
+            dateTimepickerinit('ord_startTime','ord_endTime');
         }
     });
 }

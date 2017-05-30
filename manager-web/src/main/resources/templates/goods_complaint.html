@@ -70,23 +70,30 @@
 	                                    开始时间:
 	                                </td>
 	                                <td>
-	                                    <input type="text" class="form-control" placeholder="" >
+	                                    <input type="text" class="form-control" placeholder="" id="ord_startTime" th:value="${startTime}">
 	                                </td>
 	                                <td class="Hint">
 	                                    截止时间:
 	                                </td>
 	                                <td>
-	                                    <input type="text" class="form-control" placeholder="" >
+	                                    <input type="text" class="form-control" placeholder="" id="ord_endTime" th:value="${endTime}">
 	                                </td>
 	                                <td class="Hint">
-	                                   关键字:
+	                                   订单状态:
 	                                </td>
 	                                <td>
-	                                    <input type="text" class="form-control" placeholder="" >
+										<select  class="form-control" id="ord_status">
+											<option value="">全部</option>
+											<option value="01" th:selected="${ordStatus} == '01'">待支付</option>
+											<option value="02" th:selected="${ordStatus} == '02'">已支付</option>
+											<option value="03" th:selected="${ordStatus} == '03'">已失效</option>
+											<option value="04" th:selected="${ordStatus} == '04'">已完成</option>
+											<option value="99" th:selected="${ordStatus} == '99'">已取消</option>
+										</select>
 	                                </td>
 	                                 <td class="Hint"></td>
 	                                <td>
-	                                    <button class="btn btn-primary" >查询</button>
+	                                    <button class="btn btn-primary" th:onclick="|myOrderList(1)|">查询</button>
 	                                </td>
 	                            </tr>
 	                          
@@ -155,19 +162,19 @@
 								<script type="text/javascript"
 										src="../static/js-busi/common/pager.js"
 										th:src="@{/js-busi/common/pager.js}"></script>
-								<span data-toggle="pager" id="pagerId"
+								<span data-toggle="pager" id="odr_pagerId"
 									  th:data-count="${pageInfo.count}"
 									  th:data-size="${pageInfo.pageSize}"
 									  th:data-currentindex="${pageInfo.pageNo}"></span>
 								<script th:inline="javascript">
 
-                                    if (typeof pagerClick === "undefined") {
-                                        pagerClick = function(index) {
+                                    if (typeof ordpagerClick === "undefined") {
+                                        ordpagerClick = function(index) {
                                             myOrderList(index);
                                         }
                                     }
-                                    $('#pagerId').pager({
-                                        callback : pagerClick
+                                    $('#odr_pagerId').pager({
+                                        callback : ordpagerClick
                                     });
 								</script>
 							</div>
@@ -179,22 +186,23 @@
 	                                    开始时间:
 	                                </td>
 	                                <td>
-	                                    <input type="text" class="form-control" placeholder="" >
+	                                    <input type="text" class="form-control" placeholder="" id="comp_startTime" th:value="${startTime}">
 	                                </td>
 	                                <td class="Hint">
 	                                    截止时间:
 	                                </td>
 	                                <td>
-	                                    <input type="text" class="form-control" placeholder="" >
+	                                    <input type="text" class="form-control" placeholder="" id="comp_endTime" th:value="${endTime}">
 	                                </td>
 	                               <td class="Hint">
 	                                   处理状态:
 	                                </td>
 	                                <td>
-										<select th:id="complaint_status" class="form-control">
-											<option value="1">待处理</option>
-											<option value="2">已回复</option>
-											<option value="3">已撤销</option>
+										<select  class="form-control" id="comp_status">
+											<option value="">全部</option>
+											<option value="1" th:selected="${compStatus} == '1'">待处理</option>
+											<option value="2" th:selected="${compStatus} == '2'">已回复</option>
+											<option value="3" th:selected="${compStatus} == '3'">已撤销</option>
 										</select>
 	                                </td>
 	
@@ -206,10 +214,11 @@
 	                                   投诉事项:
 	                                </td>
 	                               <td>
-									   <select th:id="complaint_item" class="form-control">
-										   <option value="0">快速发货</option>
-										   <option value="1">售后保障</option>
-										   <option value="9">其它</option>
+									   <select class="form-control" id="comp_item">
+										   <option value="">全部</option>
+										   <option value="0" th:selected="${compItem} == '0'">快速发货</option>
+										   <option value="1" th:selected="${compItem} == '1'">售后保障</option>
+										   <option value="9" th:selected="${compItem} == '9'">其它</option>
 									   </select>
 	                                </td>
 	                               <td></td>
@@ -218,7 +227,7 @@
 	                               <td></td>
 	                               <td class="Hint"></td>
 	                                <td>
-	                                    <button class="btn btn-primary" >查询</button>
+	                                    <button class="btn btn-primary" th:onclick="|queryComplaintList(1)|">查询</button>
 	                                </td>
 	                          </tr>
 	                        </table>

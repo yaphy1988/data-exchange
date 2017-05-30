@@ -48,10 +48,10 @@ public class OrdComplaintSVImpl implements IOrdComplaintSV {
 			criteria.andComplaintItemEqualTo(complaintReqDTO.getComplaintItem());
 		}
 		if(complaintReqDTO.getBeginTime() != null){//开始时间
-			criteria.andCreateTimeGreaterThanOrEqualTo(complaintReqDTO.getBeginTime());
+			criteria.andComplaintsTimeGreaterThanOrEqualTo(complaintReqDTO.getBeginTime());
 		}
 		if(complaintReqDTO.getEndTime() != null){//结束时间
-			criteria.andCreateTimeLessThanOrEqualTo(complaintReqDTO.getEndTime());
+			criteria.andComplaintsTimeLessThanOrEqualTo(complaintReqDTO.getEndTime());
 		}
 		example.setOrderByClause( "UPDATE_TIME desc,CREATE_TIME desc");
 		PageHelper.startPage(page, rows);

@@ -133,6 +133,18 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 		if (!CollectionUtil.isEmpty(ordMainInfoReqDTO.getordertypeList())) {
 			criteria.andOrderTypeIn(ordMainInfoReqDTO.getordertypeList());
 		}
+		if (ordMainInfoReqDTO.getStartTime() != null){
+			criteria.andOrderTimeGreaterThanOrEqualTo(ordMainInfoReqDTO.getStartTime());
+		}
+		if (ordMainInfoReqDTO.getEndTime() != null){
+			criteria.andOrderTimeLessThanOrEqualTo(ordMainInfoReqDTO.getEndTime());
+		}
+		if (!StringUtil.isBlank(ordMainInfoReqDTO.getPayFlag())){
+			criteria.andPayFlagEqualTo(ordMainInfoReqDTO.getPayFlag());
+		}
+		if (!StringUtil.isBlank(ordMainInfoReqDTO.getOrderStatus())){
+			criteria.andOrderStatusEqualTo(ordMainInfoReqDTO.getOrderStatus());
+		}
 		example.setOrderByClause("ORDER_TIME desc");
 		PageHelper.startPage(pageNo, pageSize);
 		List<OrdMainInfo> ordMainInfoList = ordMainInfoMapper.selectByExample(example);

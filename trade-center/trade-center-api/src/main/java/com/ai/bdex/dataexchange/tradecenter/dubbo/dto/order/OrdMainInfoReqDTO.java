@@ -37,6 +37,33 @@ public class OrdMainInfoReqDTO  extends BaseInfo{
 	public List<String> getordertypeList() {
 		return ordertypeList;
 	}
+	private Date startTime;
+	private Date endTime;
+
+	public Date getStartTime() {
+		return startTime;
+	}
+
+	public void setStartTime(Date startTime) {
+		this.startTime = startTime;
+	}
+
+	public Date getEndTime() {
+		return endTime;
+	}
+
+	public void setEndTime(Date endTime) {
+		this.endTime = endTime;
+	}
+
+	public List<String> getOrdertypeList() {
+		return ordertypeList;
+	}
+
+	public void setOrdertypeList(List<String> ordertypeList) {
+		this.ordertypeList = ordertypeList;
+	}
+
 	public void setordertypeList(List<String> ordertypeList) {
 		this.ordertypeList = ordertypeList;
 	}
