@@ -4,10 +4,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -31,6 +34,7 @@ public class CfCATransationController {
 	 @Path("/query/{serviceId}")
 	 @POST
 	 @Security(authorCheckType=ServiceCheckChain.class)
+	 @Produces({MediaType.APPLICATION_FORM_URLENCODED+";charset=utf-8"})
 	 public String getResultFromCFCA(@Context HttpServletRequest request,@PathParam("serviceId") String serviceId)throws Exception{
 		 String result=null;
 		 String version="1.0";
