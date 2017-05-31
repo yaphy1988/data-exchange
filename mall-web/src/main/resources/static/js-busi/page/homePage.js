@@ -31,7 +31,7 @@ function encodeURI2(strinfo) {
 	var strinfo1 = encodeURI(strinfo);
 	return strinfo1;
 }
-
+//提交编译
 /**查询楼层信息，异步加载楼层内容*/
 function queryPageModue(){
 	var url = basePath+'/homePage/queryPageModue';
