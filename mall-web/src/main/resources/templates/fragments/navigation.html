@@ -37,10 +37,6 @@
   				$('#head_navbar').html(html);
   				$(".navigationBar").off().on('click',function(e){
     	    		  $(this).parents("li").addClass('active').siblings().removeClass("active");
-    	    		  var url = $(this).attr('href');
-//     	 		   	  $.cookie('gjs_navigation', url, {path : '/'});
-    	 		   	  window.location.href=MALL_ROOT+url;
-    	 		   	  e.preventDefault();
    	    	    });
   				var url = "";
   				if($("#catFirst").val()=="1"){
