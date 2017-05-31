@@ -1,11 +1,5 @@
 package com.ai.bdex.dataexchange.tradecenter.service.impl.complaint;
 
-import java.util.List;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.OrdComplaintContMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdComplaintCont;
@@ -14,11 +8,17 @@ import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdComplaintContExample.Cr
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.complaint.OrdComplaintContReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.complaint.OrdComplaintContRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.complaint.IOrdComplaintContSV;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 @Service("iOrdComplaintContSV")
 public class OrdComplaintContSVImpl implements IOrdComplaintContSV {
 	@Autowired
@@ -84,5 +84,21 @@ public class OrdComplaintContSVImpl implements IOrdComplaintContSV {
 		record.setUpdateStaff(complaintContReqDTO.getCreateStaff());
 		return ordComplaintContMapper.insert(record);
 	}
+	@Override
+	public long updateOrdComplaintCont(OrdComplaintContReqDTO ordComplaintContReqDTO) throws Exception {
+		OrdComplaintContExample example = new OrdComplaintContExample();
+		Criteria criteria = example.createCriteria();
 
+		if(ordComplaintContReqDTO.getComplaintId()!=null){
+			criteria.andComplaintIdEqualTo(ordComplaintContReqDTO.getComplaintId());
+		}
+		if(ordComplaintContReqDTO.getComplaintContId()!=null){
+			criteria.andComplaintContIdEqualTo(ordComplaintContReqDTO.getComplaintContId());
+		}
+		OrdComplaintCont record = new OrdComplaintCont();
+		ordComplaintContReqDTO.setUpdateTime(DateUtil.getNowAsDate());
+		ObjectCopyUtil.copyObjValue(ordComplaintContReqDTO,record,null,false);
+
+		return ordComplaintContMapper.updateByExampleSelective(record, example);
+	}
 }

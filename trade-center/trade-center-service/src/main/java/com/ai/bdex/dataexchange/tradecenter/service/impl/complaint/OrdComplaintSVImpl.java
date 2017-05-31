@@ -94,9 +94,7 @@ public class OrdComplaintSVImpl implements IOrdComplaintSV {
 		}
 		OrdComplaint record = new OrdComplaint();
 		ordComplaintReqDTO.setUpdateTime(DateUtil.getNowAsDate());
-		ordComplaintReqDTO.setUpdateStaff(ordComplaintReqDTO.getUpdateStaff());
 		ObjectCopyUtil.copyObjValue(ordComplaintReqDTO,record,null,false);
-
 		return ordComplaintMapper.updateByExampleSelective(record, example);
 	}
 

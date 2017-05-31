@@ -18,6 +18,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderMainInfoRSV;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.utils.DateUtil;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
@@ -65,10 +66,22 @@ public class OrdgdsComplaintController {
 	private final static Integer PAGE_SIZE = 10;//页数
 	private final static String TMPUSERID = "tmpuser";// 临时用户
 
-
+	/**
+	 * 买家我的投诉入口
+	 * @return
+	 */
 	@RequestMapping(value="/pageInit")
 	public ModelAndView pageInit(){
 		ModelAndView modelAndView = new ModelAndView("goods_complaint");
+		return modelAndView;
+	}
+	/**
+	 * 管理员投诉列表入口
+	 * @return
+	 */
+	@RequestMapping(value="/manager")
+	public ModelAndView manager(){
+		ModelAndView modelAndView = new ModelAndView("complaint_manager");
 		return modelAndView;
 	}
 	/**
@@ -86,6 +99,12 @@ public class OrdgdsComplaintController {
 		String compItem = request.getParameter("compItem");
 		OrdComplaintReqDTO ordComplaintReqDTO = new OrdComplaintReqDTO();
 		String staffId = StaffUtil.getStaffId(session);
+		StaffInfoDTO staffInfoDTO = StaffUtil.getStaffVO(session);
+		String viewModel = "goods_complaint :: #tab02";
+//		if (StaffUtil.isAdmin(StaffUtil.getStaffVO(session).getStaffType())){
+			viewModel = "complaint_manager :: #tab02";
+			staffId ="";
+//		}
 		try {
 			if(!StringUtil.isBlank(pageNo)){
 				ordComplaintReqDTO.setPageNo(Integer.valueOf(pageNo));
@@ -117,7 +136,7 @@ public class OrdgdsComplaintController {
 		} catch (Exception e) {
 			logger.error("[查询我的订单投诉异常]，异常信息："+e.getMessage());
 		}
-		return "goods_complaint :: #tab02";
+		return viewModel;
 	}
 
 	/**
@@ -193,11 +212,45 @@ public class OrdgdsComplaintController {
 	public String iwantComplaint(HttpServletRequest request,Model model,HttpSession session){
 		String compId = request.getParameter("compId");
 		String orderId = request.getParameter("orderId");
-		String gdsName="";
 		String staffId = StaffUtil.getStaffId(session);
+		staffId="";
+		String viewModel = "goods_complaint :: #modal_content";
+//		if (StaffUtil.isAdmin(StaffUtil.getStaffVO(session).getStaffType())){
+		viewModel = "complaint_manager :: #modal_content";
+//		}
+		OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
+		ordInfoReqDTO.setOrderId(orderId);
+		this.queryOrdInfoById(ordInfoReqDTO,model);
+		OrdComplaintRespDTO complaintRespDTO= new OrdComplaintRespDTO();
+		if(!StringUtil.isBlank(compId)){
+				OrdComplaintReqDTO ordComplaintReqDTO = new OrdComplaintReqDTO();
+				ordComplaintReqDTO.setStaffId(staffId);
+				ordComplaintReqDTO.setComplaintId(Long.parseLong(compId));
+				complaintRespDTO =this.queryComplaintInfoByExm(ordComplaintReqDTO,model);
+		}
+		model.addAttribute("ordCompDTO",complaintRespDTO);
+		model.addAttribute("compId",compId);
+		return viewModel;
+	}
+	private OrdComplaintRespDTO queryComplaintInfoByExm(OrdComplaintReqDTO ordComplaintReqDTO,Model model){
+		OrdComplaintRespDTO complaintRespDTO= new OrdComplaintRespDTO();
 		try{
-			OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
-			ordInfoReqDTO.setOrderId(orderId);
+
+			PageResponseDTO<OrdComplaintRespDTO> pageInfo = this.queryOrdComplaintPageInfo(ordComplaintReqDTO);
+			List<OrdComplaintRespDTO> result = pageInfo.getResult();
+			if (!CollectionUtils.isEmpty(result)){
+				complaintRespDTO = result.get(0);
+			}else{
+				complaintRespDTO.setOrdComplaintContRespDTO(new OrdComplaintContRespDTO());
+			}
+		}catch (Exception e){
+			logger.error("根据id查询我的投诉信息失败：" + e.getMessage());
+		}
+		return complaintRespDTO;
+	}
+	private void queryOrdInfoById(OrdInfoReqDTO ordInfoReqDTO,Model model){
+		String gdsName="";
+		try{
 			List<OrdInfoRespDTO> ordInfoList = iOrderInfoRSV.queryOrderInfoList(ordInfoReqDTO);
 			OrdInfoRespDTO ordInfo = ordInfoList.get(0);
 			if (ordInfo != null){
@@ -209,30 +262,10 @@ public class OrdgdsComplaintController {
 				gdsName = gdsInfoRespDTO.getGdsName();
 			}
 			model.addAttribute("gdsName",gdsName);
-			model.addAttribute("orderId",orderId);
+			model.addAttribute("orderId",ordInfoReqDTO.getOrderId());
 		}catch (Exception e){
 			logger.error("根据订单id查询订单信息失败：" + e.getMessage());
 		}
-		OrdComplaintRespDTO complaintRespDTO= new OrdComplaintRespDTO();
-		if(!StringUtil.isBlank(compId)){
-			try{
-				OrdComplaintReqDTO ordComplaintReqDTO = new OrdComplaintReqDTO();
-				ordComplaintReqDTO.setStaffId(staffId);
-				ordComplaintReqDTO.setComplaintId(Long.parseLong(compId));
-				PageResponseDTO<OrdComplaintRespDTO> pageInfo = this.queryOrdComplaintPageInfo(ordComplaintReqDTO);
-				List<OrdComplaintRespDTO> result = pageInfo.getResult();
-				if (!CollectionUtils.isEmpty(result)){
-					complaintRespDTO = result.get(0);
-				}else{
-					complaintRespDTO.setOrdComplaintContRespDTO(new OrdComplaintContRespDTO());
-				}
-			}catch (Exception e){
-				logger.error("根据id查询我的投诉信息失败：" + e.getMessage());
-			}
-		}
-		model.addAttribute("ordCompDTO",complaintRespDTO);
-		model.addAttribute("compId",compId);
-		return "goods_complaint :: #modal_content";
 	}
 	private PageResponseDTO<OrdComplaintRespDTO> queryOrdComplaintPageInfo(OrdComplaintReqDTO ordComplaintReqDTO) throws  Exception{
 		PageResponseDTO<OrdComplaintRespDTO> pageInfo = iOrdComplaintRSV.queryOrdComplaintPageInfo(ordComplaintReqDTO);
@@ -295,13 +328,26 @@ public class OrdgdsComplaintController {
 	public Map<String,Object> updateComplaint(HttpServletRequest request,HttpSession session){
 		String comStatus = request.getParameter("comStatus");
 		String compId = request.getParameter("compId");
+		String compContId = request.getParameter("compContId");
+		String compRepeat = request.getParameter("compRepeat");
 		Map<String,Object> rMap = new HashMap<String,Object>();
 		try {
 			OrdComplaintReqDTO ordComplaintReqDTO = new OrdComplaintReqDTO();
-			ordComplaintReqDTO.setComplaintId(Long.parseLong(compId));
-			ordComplaintReqDTO.setComplaintStatus(comStatus);
+			if(!StringUtil.isBlank(compId)){
+				ordComplaintReqDTO.setComplaintId(Long.parseLong(compId));
+			}
+			if(!StringUtil.isBlank(comStatus)){
+				ordComplaintReqDTO.setComplaintStatus(comStatus);
+			}
 			ordComplaintReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
-			iOrdComplaintRSV.updateOrdComplaint(ordComplaintReqDTO);
+			long compflag = iOrdComplaintRSV.updateOrdComplaint(ordComplaintReqDTO);
+			if (!StringUtil.isBlank(compContId) && compflag > 0){
+				OrdComplaintContReqDTO ordComplaintContReqDTO = new OrdComplaintContReqDTO();
+				ordComplaintContReqDTO.setComplaintContId(Long.parseLong(compContId));
+				ordComplaintContReqDTO.setRepeatCont(compRepeat);
+				ordComplaintContReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+				long contflag =updateComplaintRepeat(ordComplaintContReqDTO);
+			}
 			rMap.put("success",true);
 		}catch (Exception e){
 			rMap.put("success",false);
@@ -309,5 +355,35 @@ public class OrdgdsComplaintController {
 			logger.error("更新失败：" + e.getMessage());
 		}
 		return rMap;
+	}
+	public long updateComplaintRepeat(OrdComplaintContReqDTO ordComplaintContReqDTO){
+		long contflag =0;
+		try {
+			 contflag = iOrdComplaintRSV.updateOrdComplaintCont(ordComplaintContReqDTO);
+		}catch (Exception e){
+			logger.error("更新失败：" + e.getMessage());
+		}
+		return contflag;
+	}
+	@RequestMapping(value = "/initComplaintRepeat")
+	public String initComplaintRepeat(HttpServletRequest request,Model model,HttpSession session){
+		String compId = request.getParameter("complaintId");
+		String orderId = request.getParameter("orderId");
+		String compContId = request.getParameter("complaintContId");
+		String compItem = request.getParameter("complaintItem");
+		model.addAttribute("compId",compId);
+		model.addAttribute("compContId",compContId);
+		model.addAttribute("compItem",compItem);
+		OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
+		ordInfoReqDTO.setOrderId(orderId);
+		this.queryOrdInfoById(ordInfoReqDTO,model);
+		OrdComplaintRespDTO complaintRespDTO= new OrdComplaintRespDTO();
+		if(!StringUtil.isBlank(compId)){
+			OrdComplaintReqDTO ordComplaintReqDTO = new OrdComplaintReqDTO();
+			ordComplaintReqDTO.setComplaintId(Long.parseLong(compId));
+			complaintRespDTO =this.queryComplaintInfoByExm(ordComplaintReqDTO,model);
+		}
+		model.addAttribute("ordCompDTO",complaintRespDTO);
+		return "complaint_manager :: #repeat_content";
 	}
 }

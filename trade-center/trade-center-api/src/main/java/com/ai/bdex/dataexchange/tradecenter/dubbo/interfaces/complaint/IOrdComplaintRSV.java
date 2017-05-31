@@ -18,4 +18,5 @@ public interface IOrdComplaintRSV {
 	
 	public long updateOrdComplaint(OrdComplaintReqDTO ordComplaintReqDTO) throws Exception;
 
+	public long updateOrdComplaintCont(OrdComplaintContReqDTO ordComplaintContReqDTO) throws Exception;
 }

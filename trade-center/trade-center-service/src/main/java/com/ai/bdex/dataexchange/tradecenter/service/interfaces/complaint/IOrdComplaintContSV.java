@@ -11,4 +11,6 @@ public interface IOrdComplaintContSV {
 	OrdComplaintContRespDTO queryOrdComplaintContByExm(OrdComplaintContReqDTO complaintContReqDTO) throws Exception;
 	
 	public long insertOrdComplaintCont(OrdComplaintContReqDTO complaintContReqDTO) throws Exception;
+	public long updateOrdComplaintCont(OrdComplaintContReqDTO complaintContReqDTO) throws Exception;
 }
+
