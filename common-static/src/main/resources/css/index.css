@@ -577,10 +577,10 @@ i.icon-auto{
     margin-bottom: 5px;
     width: 30px;
     height: 30px;
+    overflow: hidden;
     text-decoration: none;
     text-align: center;
     color: #fff;
-    
     line-height: 30px;
     transition: all .3s;
     -moz-transition: all .3s; /* Firefox 4 */
@@ -589,12 +589,12 @@ i.icon-auto{
 }
 .stickyBox li a .txt{
     display: none;
-
+    
 }
 .stickyBox li a:hover{
      background-color: #ec6000;
      height: 70px; 
-
+      overflow: hidden;
 }
 .stickyBox li a:hover .txt{
      display: block;
