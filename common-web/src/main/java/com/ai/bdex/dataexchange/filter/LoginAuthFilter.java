@@ -106,7 +106,7 @@ public class LoginAuthFilter implements Filter {
             return;
         }
 
-        // 过滤不需要权限控制的请求后缀,或者不启用filter时
+        // 过滤不需要权限控制的请求后缀,或者配置免登陆的url
         if (shouldFilter(request) || filterEnabled == false) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
@@ -139,7 +139,8 @@ public class LoginAuthFilter implements Filter {
                     }
                 }
 
-                if(hasMenuAuth == false){
+                //没有菜单权限，且不是免登陆配置的url，则返回没有权限
+                if(hasMenuAuth == false && unLoginUrl(uri,"1") == false){
                     if(isAjaxRequest(request)){
                         //ajax请求的referer 需要登录，则不允许ajax访问
                         response.getWriter().write("{errorCode:\"999999\",\"errorMsg\":\"noAuth\"}");
@@ -150,86 +151,67 @@ public class LoginAuthFilter implements Filter {
                     }
                 }
             }
-
-            filterChain.doFilter(request, response);
-            return;
         }else{
-            //未登陆
             //校验是否记住密码且当前请求无需确认登陆
-            if(isRememberPaas(request,response) == true && unLoginUrl(uri,"2") == false){
-                //如果记住密码，则自动登陆并允许访问
-                filterChain.doFilter(request, response);
-                return;
+            boolean isRememberPaas = isRememberPaas(request,response);
+            boolean needLogin = false;
+            boolean noAuth = false;
+
+            String authUrl = "";
+            // AJAX请求，校验的是它的referer URL
+            if (isAjaxRequest(request)) {
+                //获取referer URL
+                String refererUrl = request.getHeader("referer");
+                String requestUrl = request.getRequestURL().toString();
+                String host = requestUrl.replace(uri,"");
+                String refererUri = refererUrl.replace(host,"");
+
+                authUrl = refererUri;
+            }else{
+                authUrl = uri;
             }
 
-            //校验是否开启免登陆
-            if(this.unLoginFlag == true){
-                //如果开启免登陆，则只校验需要登录的URL（在t_base_login_url中配置）
-
-                // AJAX请求，校验的是它的referer URL
-                if (isAjaxRequest(request)) {
-                    //获取referer URL
-                    String refererUrl = request.getHeader("referer");
-                    String requestUrl = request.getRequestURL().toString();
-                    String host = requestUrl.replace(uri,"");
-                    String refererUri = refererUrl.replace(host,"");
-
-                    //如果配置了需要登陆
-                    if(unLoginUrl(refererUri,"1")){
-                        //ajax请求的referer 需要登录，则不允许ajax访问
-                        response.getWriter().write("{errorCode:\"999999\",\"errorMsg\":\"unlogin\"}");
-                        return;
-                    }else{
-                        filterChain.doFilter(request, response);
-                        return;
+            //已记住密码登陆
+            if(isRememberPaas == true){
+                if(unLoginUrl(authUrl,"2")) {
+                    //需要强制登陆
+                    needLogin = true;
+                }else {
+                    //如果是管理界面，则需要看是否配置了登陆可访问，如果没有配置则提示无权限
+                    if (this.unLoginFlag == false && unLoginUrl(authUrl, "1") == false) {
+                        noAuth = true;
                     }
-                }
-
-                //非AJAX请求则校验请求URI
-                //判断是否需要登录
-                if(unLoginUrl(uri,"1")){
-                    //需要登录
-                    response.sendRedirect(mallDomain+this.loginPage+"?toPage="+ LoginAuthFilter.getRequestUrl(request));
-                    return;
-                }else{
-                    //不需要登陆
-                    filterChain.doFilter(request, response);
-                    return;
                 }
             }else{
-                //如果没有开启免登陆，则只校验不需要登录的URL（在t_base_login_url中配置）
-
-                // AJAX请求，校验的是它的referer URL
-                if (isAjaxRequest(request)) {
-                    //获取referer URL
-                    String refererUrl = request.getHeader("referer");
-                    String requestUrl = request.getRequestURL().toString();
-                    String host = requestUrl.replace(uri,"");
-                    String refererUri = refererUrl.replace(host,"");
-
-                    //如果配置了免登陆
-                    if(unLoginUrl(refererUri,"0")){
-                        filterChain.doFilter(request, response);
-                        return;
-                    }else{
-                        //ajax请求的referer没有配置登录，则不允许ajax访问
-                        response.getWriter().write("{errorCode:\"999999\",\"errorMsg\":\"unlogin\"}");
-                        return;
-                    }
+                if(unLoginUrl(authUrl, "1") == true){
+                    needLogin = true;
                 }
+            }
 
-                //判断是否需要登录
-                if(unLoginUrl(uri,"0")){
-                    //不需要登陆
-                    filterChain.doFilter(request, response);
+            //没有权限
+            if(noAuth){
+                if(isAjaxRequest(request)){
+                    response.getWriter().write("{errorCode:\"999999\",\"errorMsg\":\"noAuth\"}");
                     return;
                 }else{
-                    //需要登录
+                    response.sendRedirect(mallDomain+this.noAuthPage);
+                    return;
+                }
+            }
+            //需要登录
+            if(needLogin){
+                if(isAjaxRequest(request)){
+                    response.getWriter().write("{errorCode:\"999999\",\"errorMsg\":\"needLogin\"}");
+                    return;
+                }else{
                     response.sendRedirect(mallDomain+this.loginPage+"?toPage="+ LoginAuthFilter.getRequestUrl(request));
                     return;
                 }
             }
         }
+
+        filterChain.doFilter(request, response);
+        return;
     }
 
     /**
