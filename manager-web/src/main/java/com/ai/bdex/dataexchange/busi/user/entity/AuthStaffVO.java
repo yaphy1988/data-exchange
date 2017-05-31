@@ -9,6 +9,7 @@ public class AuthStaffVO  extends BaseResponseDTO{
    private String staffId;
    private String staffName;
    private String staffType;
+    private String staffTypeName;
    private String aliasName;
    private String contactInfo;
    private String officeId;
@@ -33,6 +34,7 @@ public class AuthStaffVO  extends BaseResponseDTO{
    private Date lastLogin;
    private String headVfsid;
    private String staffFlag;
+    private String staffFlagName;
    private String headSrc;
    
    public String getHeadSrc() {
@@ -682,4 +684,20 @@ public String getStaffId() {
    public void setStaffFlag(String staffFlag) {
        this.staffFlag = staffFlag == null ? null : staffFlag.trim();
    }
+
+    public String getStaffTypeName() {
+        return staffTypeName;
+    }
+
+    public void setStaffTypeName(String staffTypeName) {
+        this.staffTypeName = staffTypeName;
+    }
+
+    public String getStaffFlagName() {
+        return staffFlagName;
+    }
+
+    public void setStaffFlagName(String staffFlagName) {
+        this.staffFlagName = staffFlagName;
+    }
 }

@@ -370,4 +370,27 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 
 		return respDTO;
 	}
+
+	@Override
+	public PageResponseDTO<AuthStaffRespDTO> queryAuthStaffPage(AuthStaffDTO vo) throws Exception {
+		AuthStaffExample example = new AuthStaffExample();
+		AuthStaffExample.Criteria sql = example.createCriteria();
+		if(StringUtil.isBlank(vo.getStaffId()) == false){
+			sql.andStaffIdLike(vo.getStaffId());
+		}
+
+		//设置分页
+		int page = vo.getPageNo();
+		int rows = vo.getPageSize();
+		PageHelper.startPage(page, rows);
+		List<AuthStaff> list = authStaffMapper.selectByExample(example);
+
+		//转换分页
+		PageInfo pageInfo = new PageInfo(list);
+
+		//按照返回数据结构封装分页数据，本项目中分页统一返回PageResponseDTO。入参pageInfo，返回的数据传输对象DTO的class
+		PageResponseDTO<AuthStaffRespDTO> respDTO = PageResponseFactory.genPageResponse(pageInfo,AuthStaffRespDTO.class);
+
+		return respDTO;
+	}
 }
