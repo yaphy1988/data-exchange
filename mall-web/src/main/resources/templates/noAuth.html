@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh" xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-      layout:decorate="~{fragments/layout_simple}">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -11,13 +9,13 @@
     <title>广州数据中心_没有权限</title>
     <link rel="icon" type="image/x-icon" href="../META-INF/resources/webjars/images/favicon.png" th:href="@{/webjars/images/favicon.png}">
     <link rel="bookmark" href="../META-INF/resources/webjars/images/favicon.png" type="image/x-icon" th:href="@{/webjars/images/favicon.png}">
-    <link rel="stylesheet" href="../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css"  th:href="@{/css/bootstrap.css}">
-    <link rel="stylesheet" href="../META-INF/resources/webjars/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
-    <link rel="stylesheet" href="../META-INF/resources/webjars/css/global.css" th:href="@{/css/global.css}">
+    <link rel="stylesheet" href="../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:href="@{/webjars/bootstrap/3.3.7/css/bootstrap.css}">
+    <link rel="stylesheet" href="../META-INF/resources/webjars/fonts/iconfont.css" th:href="@{/webjars/fonts/iconfont.css}">
+    <link rel="stylesheet" href="../META-INF/resources/webjars/css/global.css" th:href="@{/webjars/css/global.css}">
     <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
 </head>
 <body  class="bgf1">
-<div class="header bg-white" th:remove="all">
+<div class="header bg-white">
     <div class="wrap1000">
         <div class="logo floatL"><a th:href="@{/homePage/pageInit}"><img src="../static/images/manage_logo.png" th:src="@{/images/logo.png}" title="广州数据中心"></a></div>
         <div class="register floatR col_orange">错误提示</div>
@@ -29,7 +27,7 @@
         <p class="mt20">I'm sorry, you do not have Access Permissions</p>
     </div>
 </div>
-<div class="footer bg-white" style="position: absolute;bottom: 0;left: 0; width: 100%;" th:remove="all">
+<div class="footer bg-white" style="position: absolute;bottom: 0;left: 0; width: 100%;">
     <div class="wrap1000 ptb30">
         <div class="right floatR">
             <dl>
