@@ -11,7 +11,6 @@ import com.ai.bdex.dataexchange.tradecenter.dao.mapper.OrdComplaintMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdComplaint;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdComplaintExample;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdComplaintExample.Criteria;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.complaint.OrdComplaintContRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.complaint.OrdComplaintReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.complaint.OrdComplaintRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.complaint.IOrdComplaintSV;
@@ -53,6 +52,9 @@ public class OrdComplaintSVImpl implements IOrdComplaintSV {
 		if(complaintReqDTO.getEndTime() != null){//结束时间
 			criteria.andComplaintsTimeLessThanOrEqualTo(complaintReqDTO.getEndTime());
 		}
+		if(!StringUtil.isBlank(complaintReqDTO.getStaffId())){
+			criteria.andStaffIdEqualTo(complaintReqDTO.getStaffId());
+		}
 		example.setOrderByClause( "UPDATE_TIME desc,CREATE_TIME desc");
 		PageHelper.startPage(page, rows);
 		List<OrdComplaint> pageList = ordComplaintMapper.selectByExample(example);
@@ -86,12 +88,15 @@ public class OrdComplaintSVImpl implements IOrdComplaintSV {
 	public long updateOrdComplaint(OrdComplaintReqDTO ordComplaintReqDTO) throws Exception {
 		OrdComplaintExample example = new OrdComplaintExample();
 		Criteria criteria = example.createCriteria();
-		if(!StringUtil.isBlank(ordComplaintReqDTO.getComplaintStatus())){
-			criteria.andComplaintStatusEqualTo(ordComplaintReqDTO.getComplaintStatus());
+
+		if(ordComplaintReqDTO.getComplaintId()!=null){
+			criteria.andComplaintIdEqualTo(ordComplaintReqDTO.getComplaintId());
 		}
 		OrdComplaint record = new OrdComplaint();
 		ordComplaintReqDTO.setUpdateTime(DateUtil.getNowAsDate());
+		ordComplaintReqDTO.setUpdateStaff(ordComplaintReqDTO.getUpdateStaff());
 		ObjectCopyUtil.copyObjValue(ordComplaintReqDTO,record,null,false);
+
 		return ordComplaintMapper.updateByExampleSelective(record, example);
 	}
 

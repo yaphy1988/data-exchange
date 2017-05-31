@@ -13,6 +13,27 @@ $(function(){
 
 
 });
+
+function updateComplaint(compId,comStatus) {
+    $.gridLoading({message:'正在更新...'})
+    var url = MANAGE_ROOT+'/ordgdsComplaint/updateComplaint';
+    $.appAjax({
+        url:url,
+        cache:false,
+        data:{compId:compId,comStatus:comStatus},
+        async:true,
+        dataType:'json',
+        success:function (data) {
+            $.gridUnLoading();
+            if (data.success){
+                WEB.msg.info('提示','更新成功！');
+                queryComplaintList(1);
+            }else{
+                WEB.msg.info('提示','更新失败！');
+            }
+        }
+    });
+}
 /**
  * 初始化时间控件
  * @param startTime
@@ -120,10 +141,10 @@ function modalDatahiden() {
     $('#myModal').modal('hide');
 }
 //我要投诉
-function iwantComplaint(orderId){
+function iwantComplaint(orderId,compId){
     $.appAjax({
         url:MANAGE_ROOT+'/ordgdsComplaint/iwantComplaint',
-        data:{orderId:orderId},
+        data:{orderId:orderId,compId:compId},
         dataType:'html',
         cache:false,
         async:true,

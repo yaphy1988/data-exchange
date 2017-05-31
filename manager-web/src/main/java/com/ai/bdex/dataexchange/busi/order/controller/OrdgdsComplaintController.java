@@ -77,7 +77,7 @@ public class OrdgdsComplaintController {
 	 * @return
 	 */
 	@RequestMapping(value="/queryComplaint")
-	public String complaintPageInfo(HttpServletRequest request,Model model){
+	public String complaintPageInfo(HttpServletRequest request,Model model,HttpSession session){
 		String pageNo = request.getParameter("pageNo");
 		String pageSize = request.getParameter("pageSize");
 		String startTime = request.getParameter("startTime");
@@ -85,6 +85,7 @@ public class OrdgdsComplaintController {
 		String compStatus = request.getParameter("compStatus");
 		String compItem = request.getParameter("compItem");
 		OrdComplaintReqDTO ordComplaintReqDTO = new OrdComplaintReqDTO();
+		String staffId = StaffUtil.getStaffId(session);
 		try {
 			if(!StringUtil.isBlank(pageNo)){
 				ordComplaintReqDTO.setPageNo(Integer.valueOf(pageNo));
@@ -106,20 +107,8 @@ public class OrdgdsComplaintController {
 			if (!StringUtil.isBlank(compItem)){
 				ordComplaintReqDTO.setComplaintItem(compItem);
 			}
-			PageResponseDTO<OrdComplaintRespDTO> pageInfo = iOrdComplaintRSV.queryOrdComplaintPageInfo(ordComplaintReqDTO);
-			if (!CollectionUtils.isEmpty(pageInfo.getResult())){
-				OrdComplaintContReqDTO ordComplaintContReqDTO = new OrdComplaintContReqDTO();
-				for (OrdComplaintRespDTO ordComplaint:pageInfo.getResult()){
-					ordComplaintContReqDTO.setComplaintId(ordComplaint.getComplaintId());
-					PageResponseDTO<OrdComplaintContRespDTO> contPageInfo = iOrdComplaintRSV.queryOrdComplaintContPageInfo(ordComplaintContReqDTO);
-					List<OrdComplaintContRespDTO>  contRespDTOList= contPageInfo.getResult();
-					if (!CollectionUtils.isEmpty(contRespDTOList)){
-						ordComplaint.setOrdComplaintContRespDTO(contRespDTOList.get(0));
-					}else{
-						ordComplaint.setOrdComplaintContRespDTO(new OrdComplaintContRespDTO());
-					}
-				}
-			}
+			ordComplaintReqDTO.setStaffId(staffId);
+			PageResponseDTO<OrdComplaintRespDTO> pageInfo = this.queryOrdComplaintPageInfo(ordComplaintReqDTO);
 			model.addAttribute("pageInfo", pageInfo);
             model.addAttribute("startTime", startTime);
             model.addAttribute("endTime", endTime);
@@ -168,25 +157,7 @@ public class OrdgdsComplaintController {
 			listOrderType.add(Constants.Order.ORDER_TYPE_10);
 			listOrderType.add(Constants.Order.ORDER_TYPE_20);
 			ordMainReqDTO.setordertypeList(listOrderType)  ;
-			pageInfo = iOrderMainInfoRSV.queryOrdMainInfoPage(ordMainReqDTO);
-			if(!CollectionUtils.isEmpty(pageInfo.getResult())){
-				for(OrdMainInfoRespDTO ordMainRespDTO :pageInfo.getResult()){
-					OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
-					ordInfoReqDTO.setOrderId(ordMainRespDTO.getOrderId());
-					List<OrdInfoRespDTO> ordInfoList = iOrderInfoRSV.queryOrderInfoList(ordInfoReqDTO);
-					OrdInfoRespDTO ordInfoRespDTO = new OrdInfoRespDTO();
-					if(CollectionUtils.isNotEmpty(ordInfoList)){
-						//一个订单只有一个子订单
-						ordInfoRespDTO=ordInfoList.get(0);
-						//从计费接口去可用次数
-						DataAccountDTO dataAccountDTO= iAipCenterDataAccountRSV.queryDataAccountBySubOrder(ordInfoRespDTO.getSubOrder());
-						if(dataAccountDTO!=null&&dataAccountDTO.getLeftNum()!=null){
-							ordInfoRespDTO.setLeftCount(dataAccountDTO.getLeftNum());
-						}
-					}
-					ordMainRespDTO.setOrdInfoRespDTO(ordInfoRespDTO);
-				}
-			}
+			pageInfo = this.queryOrdMainInfoPage(ordMainReqDTO);
 			model.addAttribute("pageInfo", pageInfo);
             model.addAttribute("startTime", startTime);
             model.addAttribute("endTime", endTime);
@@ -196,10 +167,34 @@ public class OrdgdsComplaintController {
 		}
 		return "goods_complaint :: #tab01";
 	}
+	private PageResponseDTO<OrdMainInfoRespDTO> queryOrdMainInfoPage(OrdMainInfoReqDTO ordMainReqDTO) throws  Exception{
+		PageResponseDTO<OrdMainInfoRespDTO> pageInfo = iOrderMainInfoRSV.queryOrdMainInfoPage(ordMainReqDTO);
+		if(!CollectionUtils.isEmpty(pageInfo.getResult())){
+			for(OrdMainInfoRespDTO ordMainRespDTO :pageInfo.getResult()){
+				OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
+				ordInfoReqDTO.setOrderId(ordMainRespDTO.getOrderId());
+				List<OrdInfoRespDTO> ordInfoList = iOrderInfoRSV.queryOrderInfoList(ordInfoReqDTO);
+				OrdInfoRespDTO ordInfoRespDTO = new OrdInfoRespDTO();
+				if(CollectionUtils.isNotEmpty(ordInfoList)){
+					//一个订单只有一个子订单
+					ordInfoRespDTO=ordInfoList.get(0);
+					//从计费接口去可用次数
+					DataAccountDTO dataAccountDTO= iAipCenterDataAccountRSV.queryDataAccountBySubOrder(ordInfoRespDTO.getSubOrder());
+					if(dataAccountDTO!=null&&dataAccountDTO.getLeftNum()!=null){
+						ordInfoRespDTO.setLeftCount(dataAccountDTO.getLeftNum());
+					}
+				}
+				ordMainRespDTO.setOrdInfoRespDTO(ordInfoRespDTO);
+			}
+		}
+		return  pageInfo;
+	}
 	@RequestMapping(value = "/iwantComplaint")
-	public String iwantComplaint(HttpServletRequest request,Model model){
+	public String iwantComplaint(HttpServletRequest request,Model model,HttpSession session){
+		String compId = request.getParameter("compId");
 		String orderId = request.getParameter("orderId");
 		String gdsName="";
+		String staffId = StaffUtil.getStaffId(session);
 		try{
 			OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
 			ordInfoReqDTO.setOrderId(orderId);
@@ -218,7 +213,43 @@ public class OrdgdsComplaintController {
 		}catch (Exception e){
 			logger.error("根据订单id查询订单信息失败：" + e.getMessage());
 		}
+		OrdComplaintRespDTO complaintRespDTO= new OrdComplaintRespDTO();
+		if(!StringUtil.isBlank(compId)){
+			try{
+				OrdComplaintReqDTO ordComplaintReqDTO = new OrdComplaintReqDTO();
+				ordComplaintReqDTO.setStaffId(staffId);
+				ordComplaintReqDTO.setComplaintId(Long.parseLong(compId));
+				PageResponseDTO<OrdComplaintRespDTO> pageInfo = this.queryOrdComplaintPageInfo(ordComplaintReqDTO);
+				List<OrdComplaintRespDTO> result = pageInfo.getResult();
+				if (!CollectionUtils.isEmpty(result)){
+					complaintRespDTO = result.get(0);
+				}else{
+					complaintRespDTO.setOrdComplaintContRespDTO(new OrdComplaintContRespDTO());
+				}
+			}catch (Exception e){
+				logger.error("根据id查询我的投诉信息失败：" + e.getMessage());
+			}
+		}
+		model.addAttribute("ordCompDTO",complaintRespDTO);
+		model.addAttribute("compId",compId);
 		return "goods_complaint :: #modal_content";
+	}
+	private PageResponseDTO<OrdComplaintRespDTO> queryOrdComplaintPageInfo(OrdComplaintReqDTO ordComplaintReqDTO) throws  Exception{
+		PageResponseDTO<OrdComplaintRespDTO> pageInfo = iOrdComplaintRSV.queryOrdComplaintPageInfo(ordComplaintReqDTO);
+		if (!CollectionUtils.isEmpty(pageInfo.getResult())){
+			OrdComplaintContReqDTO ordComplaintContReqDTO = new OrdComplaintContReqDTO();
+			for (OrdComplaintRespDTO ordComplaint:pageInfo.getResult()){
+				ordComplaintContReqDTO.setComplaintId(ordComplaint.getComplaintId());
+				PageResponseDTO<OrdComplaintContRespDTO> contPageInfo = iOrdComplaintRSV.queryOrdComplaintContPageInfo(ordComplaintContReqDTO);
+				List<OrdComplaintContRespDTO>  contRespDTOList= contPageInfo.getResult();
+				if (!CollectionUtils.isEmpty(contRespDTOList)){
+					ordComplaint.setOrdComplaintContRespDTO(contRespDTOList.get(0));
+				}else{
+					ordComplaint.setOrdComplaintContRespDTO(new OrdComplaintContRespDTO());
+				}
+			}
+		}
+		return pageInfo;
 	}
 	@RequestMapping(value = "/modalDataSubmit")
 	@ResponseBody
@@ -252,9 +283,30 @@ public class OrdgdsComplaintController {
 			}
 			rMap.put("success",true);
 		}catch (Exception e){
-			rMap.put("success",true);
+			rMap.put("success",false);
 			rMap.put("errMsg",e.getMessage());
 			logger.error("投诉信息新增/编辑失败：" + e.getMessage());
+		}
+		return rMap;
+	}
+
+	@RequestMapping(value="/updateComplaint")
+	@ResponseBody
+	public Map<String,Object> updateComplaint(HttpServletRequest request,HttpSession session){
+		String comStatus = request.getParameter("comStatus");
+		String compId = request.getParameter("compId");
+		Map<String,Object> rMap = new HashMap<String,Object>();
+		try {
+			OrdComplaintReqDTO ordComplaintReqDTO = new OrdComplaintReqDTO();
+			ordComplaintReqDTO.setComplaintId(Long.parseLong(compId));
+			ordComplaintReqDTO.setComplaintStatus(comStatus);
+			ordComplaintReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+			iOrdComplaintRSV.updateOrdComplaint(ordComplaintReqDTO);
+			rMap.put("success",true);
+		}catch (Exception e){
+			rMap.put("success",false);
+			rMap.put("errMsg",e.getMessage());
+			logger.error("更新失败：" + e.getMessage());
 		}
 		return rMap;
 	}

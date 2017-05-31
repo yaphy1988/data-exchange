@@ -19,7 +19,7 @@ import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-@Service("iordComplaintContSV")
+@Service("iOrdComplaintContSV")
 public class OrdComplaintContSVImpl implements IOrdComplaintContSV {
 	@Autowired
 	private OrdComplaintContMapper ordComplaintContMapper;
@@ -55,8 +55,8 @@ public class OrdComplaintContSVImpl implements IOrdComplaintContSV {
 		OrdComplaintContRespDTO complaintRespDTO = new OrdComplaintContRespDTO();
 		OrdComplaintContExample example = new OrdComplaintContExample();
 		Criteria criteria = example.createCriteria();
-		if(complaintContReqDTO.getComplaintId() != null){
-			criteria.andComplaintContIdEqualTo(complaintContReqDTO.getComplaintId());
+		if(complaintContReqDTO.getComplaintContId() != null){
+			criteria.andComplaintContIdEqualTo(complaintContReqDTO.getComplaintContId());
 		}
 		if(complaintContReqDTO.getComplaintId()!=null){
 			criteria.andComplaintIdEqualTo(complaintContReqDTO.getComplaintId());
