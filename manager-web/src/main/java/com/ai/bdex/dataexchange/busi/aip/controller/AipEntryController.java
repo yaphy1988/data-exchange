@@ -142,7 +142,7 @@ public class AipEntryController {
             aipServiceInfoReqDTO.setCreateTime(new Date());
             aipServiceInfoReqDTO.setStatus("0");
             aipServiceInfoReqDTO.setType("01");
-            aipServiceInfoReqDTO.setUnitPrice(aipServiceInfoReqDTO.getUnitPrice()*1000);
+            aipServiceInfoReqDTO.setUnitPrice(aipServiceInfoReqDTO.getUnitPrice());
 
             String serviceId = "";
             try{

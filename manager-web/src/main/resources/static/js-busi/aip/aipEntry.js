@@ -101,7 +101,7 @@ function initParamInfo(){
         WEB.msg.info("提示","单价输入有误，请输入三位小数以内的正数！");
         return null;
     }
-    params.unitPrice = $.trim(baseInfo_unitPrice);
+    params.unitPrice = (Number($.trim(baseInfo_unitPrice))*1000).toFixed(0);
 
     var baseInfo_aipUrl = $.trim($("#baseInfo_aipUrl").val());
     if (baseInfo_aipUrl == ""){
