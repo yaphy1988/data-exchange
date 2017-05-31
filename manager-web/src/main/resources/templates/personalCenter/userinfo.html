@@ -10,7 +10,8 @@
 	<link rel="stylesheet" href="../../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../../static/css/manage.css" th:remove="all">
 
-	<script type="text/javascript" src="../../static/js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>
+	<!--<script type="text/javascript" src="../../static/js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>-->
+	<script type="text/javascript" src="../META-INF/resources/webjars/js/frameajax/ajaxfileupload.js" th:src="@{/webjars/js/frameajax/ajaxfileupload.js}"></script>
 	<script src="../../static/js-busi/common/uploadimg.js" th:src="@{/js-busi/common/uploadimg.js}"></script>
 	<script th:inline="javascript">
 		var g_authenFlag = [[${userinfo.authenFlag}]]
