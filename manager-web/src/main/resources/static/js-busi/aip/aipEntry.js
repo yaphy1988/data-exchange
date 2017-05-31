@@ -19,6 +19,7 @@ function createEditor(id) {
         filebrowserImageUploadUrl :basePath+ "/ck/upload?type=Image",
         filebrowserUploadUrl :basePath+"/ck/upload?type=File",
         filebrowserFlashUploadUrl :basePath+"/ck/upload?type=Flash"
+        // customConfig:basePath+"/webjars/ckeditor/4.4.7/full/config.js"
     };
     if(id=="outParaExampleCkeditor"){
         outParaExampleCkeditor=CKEDITOR.replace(id, config);
@@ -92,7 +93,13 @@ function initParamInfo(){
 
     var baseInfo_unitPrice = $("#baseInfo_unitPrice").val();
     if (baseInfo_unitPrice == undefined || $.trim(baseInfo_unitPrice) == ""){
-        baseInfo_unitPrice = "";
+        WEB.msg.info("提示","单价不能为空！");
+        return null;
+    }
+    var reg = /^([1-9][\d]*|0)(\.[\d]{1,3})?$/;
+    if (!reg.test(baseInfo_unitPrice)){
+        WEB.msg.info("提示","单价输入有误，请输入三位小数以内的正数！");
+        return null;
     }
     params.unitPrice = $.trim(baseInfo_unitPrice);
 

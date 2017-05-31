@@ -117,10 +117,11 @@ function submitErrCodeInfo(obj){
         async:false,
         success:function (data) {
             if (data.success){
-                WEB.msg.info("提示","保存成功");
-                if ($(obj).attr("isEdit") == "0"){
-                    window.location.href = WEB_ROOT + "/aipEntry/exampleInfoInit?"+data.msg;
-                }
+                WEB.msg.info("提示","保存成功",function () {
+                    if ($(obj).attr("isEdit") == "0"){
+                        window.location.href = WEB_ROOT + "/aipEntry/exampleInfoInit?"+data.msg;
+                    }
+                });
             }else{
                 WEB.msg.info("提示",data.msg);
             }
