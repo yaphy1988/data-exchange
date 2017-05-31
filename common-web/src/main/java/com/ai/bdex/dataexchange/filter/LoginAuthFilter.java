@@ -188,7 +188,7 @@ public class LoginAuthFilter implements Filter {
                 }
 
                 if(this.unLoginFlag == false && unLoginUrl(authUrl, "0") == false){
-                    noAuth = true;
+                    needLogin = true;
                 }
             }
 
