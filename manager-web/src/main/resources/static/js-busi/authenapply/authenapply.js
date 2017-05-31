@@ -103,7 +103,7 @@ function saveapply(){
     }
 	//邮箱
 	var companyMail = $("#companyMail").val();
-    if(WEB.check.isEmail(companyMail) == false){
+    if(companyMail && WEB.check.isEmail(companyMail) == false){
         showwarm('companyMail','邮箱格式错误！');
         return;
     }
