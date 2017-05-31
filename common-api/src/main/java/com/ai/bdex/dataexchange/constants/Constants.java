@@ -155,5 +155,8 @@ public class Constants {
     public static class Role{
 
         public static int buyerRoleId = 2;//买家角色ID
+
+        public static String buyersStaffType = "0";//买家用户类型
+        public static String adminStaffType = "1";//管理员用户类型
     }
 }

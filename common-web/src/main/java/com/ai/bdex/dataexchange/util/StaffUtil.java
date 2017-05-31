@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.util;
 
+import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.MenuDisPlayDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import com.ai.paas.session.impl.SessionManager;
@@ -81,5 +82,23 @@ public class StaffUtil {
 			return (List<MenuDisPlayDTO>)obj;
 		}
 		return null;
+	}
+
+	/**
+	 * 是否是管理员
+	 * @param staffType
+	 * @return
+     */
+	public static boolean isAdmin(String staffType){
+		return (Constants.Role.adminStaffType.equals(staffType));
+	}
+
+	/**
+	 * 是否是买家
+	 * @param staffType
+	 * @return
+     */
+	public static boolean isBuyers(String staffType){
+		return (Constants.Role.buyersStaffType.equals(staffType));
 	}
 }
