@@ -334,9 +334,24 @@
 				<tr >
 					<td class="Hint" width="120">有效时间:</td>
 					<td width="320">
-						<div class="input-group " >
-							<input class="form-control" placeholder="" id="editAipkeyModal_effectiveTime" >
+						<!--<div class="input-group " >-->
+							<!--<input class="form-control" placeholder="" id="editAipkeyModal_effectiveTime" >-->
+						<!--</div>-->
+						<div class="input-group date form_datetime col-md-2" >
+							<input class="form-control  changetype skuclass"   id="editAipkeyModal_effectiveTime" type="text" readonly/>
+							<span class="input-group-addon"> <span class="glyphicon glyphicon-th"></span>  </span>
 						</div>
+						<script type="text/javascript">
+							$(".form_datetime").datetimepicker({
+								language: 'zh-CN',
+								format: "yyyy-mm-dd",
+//								showMeridian: true,
+								autoclose: true,
+								todayBtn: true,
+								minView:2
+//								locale: moment.locale('zh-cn')
+							});
+						</script>
 					</td>
 				</tr>
 
@@ -405,7 +420,7 @@
 					<td class="Hint" width="120">有效期:</td>
 					<td  width="320">
 						<div class="input-group date form_datetime col-md-2" >
-							<input class="form-control  changetype skuclass"   id="addAipkeyModal_effectiveTime" type="text"/>
+							<input class="form-control  changetype skuclass"   id="addAipkeyModal_effectiveTime" type="text" readonly/>
 							<span class="input-group-addon"> <span class="glyphicon glyphicon-th"></span>  </span>
 						</div>
 						<script type="text/javascript">

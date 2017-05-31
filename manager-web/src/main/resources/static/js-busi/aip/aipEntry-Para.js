@@ -125,6 +125,8 @@ function submitParaInfo(obj){
                 WEB.msg.info("提示","保存成功",function () {
                     if ($(obj).attr("isEdit") == "0"){
                         window.location.href = WEB_ROOT + "/aipEntry/errorCodeInfoInit?"+data.msg;
+                    }else{
+                        window.location.href = WEB_ROOT + "/aipManager/pageInit"
                     }
                 });
                 

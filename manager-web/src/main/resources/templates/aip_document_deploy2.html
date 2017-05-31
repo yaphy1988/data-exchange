@@ -5,9 +5,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>aip错误代码信息</title>
-	<link rel="stylesheet" href="../static/component/bootstrap/css/bootstrap.css" th:remove="all">
-	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../META-INF/resources/webjars/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../META-INF/resources/webjars/css/global.css" th:remove="all">
 
 	<script src="../static/js-busi/aip/aipEntry-errorCode.js" th:src="@{/js-busi/aip/aipEntry-errorCode.js}"></script>
 	
@@ -133,38 +133,19 @@
 				</tr>
 
 				<tr>
-					<td class="Hint"><span class="col_red">*</span>错误代码格式说明:</td>
+					<td class="Hint"><span class="col_red">*</span>错误代码格式说明（示例：200201）:</td>
 					<td colspan="3">
 						<table class="table table-bordered text-center mt20" >
-							<thead>
-							<tr class="active">
-								<th colspan="2">错误代码</th>
-								<th colspan="2">接口类型</th>
-								<th colspan="2">接口编码</th>
-								<th colspan="2">具体错误代码</th>
-							</tr>
-							<tr class="active">
-								<th width="80">代码</th>
-								<th>说明</th>
-								<th width="80">代码</th>
-								<th>说明</th>
-								<th width="80">代码</th>
-								<th>说明</th>
-								<th width="80">代码</th>
-								<th>说明</th>
-							</tr>
-							</thead>
 							<tbody>
-							<tr >
-								<td>20004005</td>
-								<td><textarea class="form-control" rows="3">服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常</textarea></td>
-								<td>20004005</td>
-								<td><textarea class="form-control" rows="3">服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常</textarea></td>
-								<td>20004005</td>
-								<td><textarea class="form-control" rows="3">服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常</textarea></td>
-								<td>20004005</td>
-								<td><textarea class="form-control" rows="3">服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常服务接口00004接口参数XX为空的异常</textarea></td>
-
+							<tr>
+								<td>2</td>
+								<td>002</td>
+								<td>01</td>
+							</tr>
+							<tr>
+								<td>服务级错误（1为系统级错误）</td>
+								<td>服务模块代码（即数据ID）</td>
+								<td>具体错误代码</td>
 							</tr>
 							</tbody>
 						</table>

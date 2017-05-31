@@ -173,9 +173,9 @@ function sumbitExampleInfo(obj) {
         success:function (data) {
             if (data.success){
                 WEB.msg.info("提示","保存成功",function () {
-                    if ($(obj).attr("isEdit") == "0"){
+                    // if ($(obj).attr("isEdit") == "0"){
                         window.location.href = WEB_ROOT + "/aipManager/pageInit";
-                    }
+                    // }
                 });
 
             }else {

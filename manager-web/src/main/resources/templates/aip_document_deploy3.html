@@ -5,9 +5,9 @@
 <head>
 	<meta charset="UTF-8">
 	<title>aip示例信息</title>
-	<link rel="stylesheet" href="../static/component/bootstrap/css/bootstrap.css" th:remove="all">
-	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
-	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
+	<link rel="stylesheet" href="../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:remove="all">
+	<link rel="stylesheet" href="../META-INF/resources/webjars/fonts/iconfont.css" th:remove="all">
+	<link rel="stylesheet" href="../META-INF/resources/webjars/css/global.css" th:remove="all">
 
 	<script>
 		window.CKEDITOR_BASEPATH = WEB_ROOT + "/webjars/ckeditor/full/"
@@ -66,7 +66,7 @@
 			<div id="exampleCodeHidden" style="display: none">
 				<div style="background: #fbfbfb;position: relative" class="p10 mb10 exampleCodeDiv" >
 					<h5 class="">示例</h5>
-					<table class="editTable">
+					<table class="editTable" width="80%">
 						<tbody>
 						<tr>
 							<td class="Hint">
@@ -96,7 +96,7 @@
 						<tr>
 							<td class="Hint"><span class="col_red">*</span>示例代码：</td>
 							<td colspan="3">
-								<div class="exampleCode" id="">
+								<div class="exampleCode" style="width:80%" id="">
 
 								</div>
 								<textarea class="form-control" rows="5" th:remove="all"></textarea>
@@ -113,7 +113,7 @@
 			</div>
 				<div style="background: #fbfbfb;position: relative" class="p10 mb10 exampleCodeDiv" th:if="${#lists.size(aipServiceCodeList)} gt 0" th:each="exampleCode,exampleCodeStat : ${aipServiceCodeList}">
 					<h5 class="">示例</h5>
-					<table class="editTable">
+					<table class="editTable" width="80%">
 						<tbody>
 							<tr>
 								<td class="Hint">
@@ -143,7 +143,7 @@
 							<tr style="display:none">
 								<td class="Hint"><span class="col_red">*</span>示例代码：</td>
 								<td colspan="3">
-									<div class="exampleCode" th:htmlId="${exampleCode.docId}" th:id="'exampleCode'+${exampleCodeStat.index}">
+									<div class="exampleCode"  style="width:80%" th:htmlId="${exampleCode.docId}" th:id="'exampleCode'+${exampleCodeStat.index}">
 
 									</div>
 									<textarea class="form-control" rows="5" th:remove="all"></textarea>
@@ -159,7 +159,7 @@
 				</div>
 				<div style="background: #fbfbfb;position: relative" class="p10 mb10 exampleCodeDiv" th:unless="${#lists.size(aipServiceCodeList)} gt 0" >
 					<h5 class="">示例</h5>
-					<table class="editTable">
+					<table class="editTable" width="80%">
 						<tbody>
 						<tr>
 							<td class="Hint">
