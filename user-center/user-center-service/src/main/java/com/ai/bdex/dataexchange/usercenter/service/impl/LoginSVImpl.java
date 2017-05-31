@@ -48,11 +48,11 @@ public class LoginSVImpl implements ILoginSV {
 
         // 登陆成功，返回VO对象
         StaffInfoDTO staffInfo = new StaffInfoDTO();
-        BeanUtils.copyProperties(staffPassBean, staffInfo);
+        BeanUtils.copyProperties(staffBean, staffInfo);
         staffInfo.setIsFirst(staffPassBean.getIsFirst());
-        loginName = staffBean.getStaffId();
 
         staffInfo.setLoginIn(true);
+
         log.error("xujq_sv_time**" + (System.currentTimeMillis() - begin));
         return staffInfo;
     }
