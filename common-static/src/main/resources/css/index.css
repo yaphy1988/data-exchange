@@ -559,3 +559,50 @@ i.icon-auto{
     width: 100px;
     height: 100px;
 }
+
+
+/* 固定元素 by liangsx add 20170531 */
+.wrap{
+    position: relative;
+}
+
+.stickyBox{
+    position: absolute;
+    right: 20px;
+    top: 30px;
+}
+.stickyBox li a{
+    display: block;
+    background-color: #233890;
+    margin-bottom: 5px;
+    width: 30px;
+    height: 30px;
+    text-decoration: none;
+    text-align: center;
+    color: #fff;
+    
+    line-height: 30px;
+    transition: all .3s;
+    -moz-transition: all .3s; /* Firefox 4 */
+    -webkit-transition: all .3s; /* Safari 和 Chrome */
+    -o-transition: all .3s; /* Opera */
+}
+.stickyBox li a .txt{
+    display: none;
+
+}
+.stickyBox li a:hover{
+     background-color: #ec6000;
+     height: 70px; 
+
+}
+.stickyBox li a:hover .txt{
+     display: block;
+     line-height: 16px;
+     font-size: 12px;
+    
+}
+.stickyBox li a i.iconfont{
+    display: block;
+}
+
