@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,6 +19,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Controller
 @RequestMapping(value="/fileupload")
 public class FileUploadController {
+
+	private Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@RequestMapping(value = "/imgupload")
 	@ResponseBody
@@ -66,6 +70,7 @@ public class FileUploadController {
 	        }
 	        
 		}catch(Exception e){
+			logger.error("上传异常：",e);
 			result.put("status", "0");
 			result.put("msg", "上传异常："+e.getMessage());
 			return this.toJsonString(result);
