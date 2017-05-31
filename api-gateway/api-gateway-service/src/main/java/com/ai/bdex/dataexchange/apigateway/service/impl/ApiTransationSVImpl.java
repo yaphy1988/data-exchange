@@ -100,7 +100,7 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 			resultMap =JSON.parseObject(storeData.getResponsestr(),apiDealTransationSV.getResultClass());
 		}
 		//如果是提供商服务，t_aip_p_service_used_log进行记录
-		if("1".equals(pserviceFlag)){
+		if("1".equals(pserviceFlag)&&null==storeData){
 			
 			String providerId=serviceInfo==null?"":serviceInfo.getProviderId();
 			String pServiceId=serviceInfo==null?"":serviceInfo.getpServiceId();
