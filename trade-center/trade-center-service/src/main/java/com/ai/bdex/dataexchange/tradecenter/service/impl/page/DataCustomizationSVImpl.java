@@ -74,6 +74,9 @@ public class DataCustomizationSVImpl implements IDataCustomizationSV {
  		if( dataCustomizationReqDTO.getDczaId() != null){
 			criteria.andDczaIdEqualTo(dataCustomizationReqDTO.getDczaId());
 		}
+		if( dataCustomizationReqDTO.getCreateStaffId() != null){
+			criteria.andCreateStaffIdEqualTo(dataCustomizationReqDTO.getCreateStaffId());
+		}
 		example.setOrderByClause("CREATE_TIME desc ");
 		PageHelper.startPage(pageNo, pageSize);
 		List<DataCustomization> dataCustomizationList = dataCustomizationMapper.selectByExample(example);

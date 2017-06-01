@@ -776,6 +776,48 @@ public class PageManageController {
 		return "dataCustom_manage :: #queryresultShow";
 	}
 	/**
+	 * 渠道商---定制数据管理界面
+	 * @param request
+	 * @return
+	 * auther:landeng
+	 */
+	@RequestMapping(value = "/mymanageDataPageInit")
+	public ModelAndView mymanageDataPageInit(HttpServletRequest request,Model model) {
+		//先将记录数显示出来
+		ModelAndView modelAndView = new ModelAndView("my_dataCustom_manage");
+		return modelAndView;
+	}
+	/**
+	 * 渠道商-定制数据管理查询
+	 * @param request
+	 * @return
+	 * auther:landeng
+	 */
+	@RequestMapping(value = "/queryMymanageData")
+	public String queryMymanageData(HttpServletRequest request,Model model) {
+		DataCustomizationReqDTO dataCustomizationReqDTO = new DataCustomizationReqDTO();
+		String status = request.getParameter("status");
+		int pageno   =  Integer.parseInt( request.getParameter("pageno"));
+		int pagesize = Integer.parseInt(request.getParameter("pagesize"));
+		if(!StringUtil.isBlank(status))
+		{
+			dataCustomizationReqDTO.setStatus(status);
+		}
+		PageResponseDTO<DataCustomizationRespDTO> pageData = new PageResponseDTO<DataCustomizationRespDTO>();
+		HttpSession hpptsesion = request.getSession();
+		String staff_id = StaffUtil.getStaffId(hpptsesion);
+		dataCustomizationReqDTO.setCreateStaffId(staff_id);
+		try{
+			dataCustomizationReqDTO.setPageNo(pageno);
+			dataCustomizationReqDTO.setPageSize(pagesize);
+			pageData = iPageDisplayRSV.queryDataCustomizationInfo(dataCustomizationReqDTO);
+			model.addAttribute("pageInfo", pageData);
+		} catch (Exception e) {
+			log.error("查询用户提交的定制数据信息出错：" + e.getMessage());
+		}
+		return "my_dataCustom_manage :: #queryresultShow";
+	}
+	/**
 	 * 定制数据管理--将数据设置为已处理
 	 * @param request
 	 * @return
