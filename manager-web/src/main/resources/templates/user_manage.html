@@ -76,9 +76,9 @@
 								<th>操作</th>
 							</tr>
 							</thead>
-							<tbody>
-							<tr th:if="${pageInfo} and ${pageInfo.result} and ${#lists.size(pageInfo.result) gt 0}" th:each="authStaff,authStaffStat:${pageInfo.result}">
-								<td><input type="radio" name=""></td>
+							<tbody th:if="${pageInfo} and ${pageInfo.result}">
+							<tr  th:each="authStaff,authStaffStat:${pageInfo.result}">
+								<td><input type="radio" name="staffId" th:staffId="${authStaff.staffId}"></td>
 								<td th:text="${authStaff.staffId}"></td>
 								<td th:text="${authStaff.staffName}"></td>
 								<td th:text="${authStaff.staffTypeName}"></td>
@@ -87,21 +87,20 @@
 								<td th:text="${authStaff.staffFlagName}"></td>
 								<td>
 									<p class="pop-link">
-										<a href="">账户锁定</a>
-										<a href="">账户解锁</a>
-										<a href="">登录解锁</a>
-										<a href="">账户生效</a>
-										<a href="">账户失效</a>
-
+										<a th:unless="${authStaff.staffFlag} == '2'" href="javascript:void(0)" th:staffId="${authStaff.staffId}" th:staffFlag="${authStaff.staffFlag}" targetStaffFlag="2" onclick="doStaffFlag(this)">账户锁定</a>
+										<a th:if="${authStaff.staffFlag} == '2'" href="javascript:void(0)" th:staffId="${authStaff.staffId}" th:staffFlag="${authStaff.staffFlag}" targetStaffFlag="1" onclick="doStaffFlag(this)">账户解锁</a>
+										<!--<a href="javascript:void(0)">登录解锁</a>-->
+										<a th:if="${authStaff.staffFlag} == '0'" href="javascript:void(0)" th:staffId="${authStaff.staffId}" th:staffFlag="${authStaff.staffFlag}" targetStaffFlag="1" onclick="doStaffFlag(this)">账户生效</a>
+										<a th:if="${authStaff.staffFlag} == '1'" href="javascript:void(0)" th:staffId="${authStaff.staffId}" th:staffFlag="${authStaff.staffFlag}" targetStaffFlag="0" onclick="doStaffFlag(this)">账户失效</a>
 									</p>
 								</td>
 							</tr>
 							</tbody>
 						</table>
 						<div class="text-right">
-							<a href="" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#myModal">新增</a>
+							<a href="" class="btn btn-primary btn-sm" data-toggle="modal" onclick="staffInfoInit('0')">新增</a>
 							<a href="" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal2">密码重置</a>
-							<a href="" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal">修改账户信息</a>
+							<a href="" class="btn btn-default btn-sm" data-toggle="modal" onclick="staffInfoInit('1')">修改账户信息</a>
 							<a href="" class="btn btn-default btn-sm" data-toggle="modal" data-target="#myModal3">修改角色授权</a>
 						</div>
 						<div class="pagelist" th:remove="all" th:replace="fragments/pager :: pager">
@@ -135,6 +134,222 @@
 			</div>
 		</div>
 	</div>
+
+	<div class="modal fade" id="staffInfoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document" style="width:800px;">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="staffInfoModal_title">新增/修改账户信息</h4>
+				</div>
+				<div class="modal-body" id="staffInfoModalDiv">
+					<table class="editTable" id="staffInfoModalTable">
+						<tbody>
+						<tr>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								账号编码：
+							</td>
+							<td width="200">
+								<input class="form-control" name="" type="text" id="staffInfoModal_staffId" th:value="${staffInfoInit} ? ${staffInfo.staffId}">
+							</td>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								账号名称：
+							</td>
+							<td width="200">
+								<input class="form-control" name="" type="text" id="staffInfoModal_staffName" th:value="${staffInfoInit} ? ${staffInfo.staffName}">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								账号类型：
+							</td>
+							<td >
+								<select  class="form-control" id="staffInfoModal_staffType">
+									<option value="0" th:selected="${staffInfoInit} ? ${sraffInfoInit.staffType}=='0' ">买家</option>
+									<option value="1" th:selected="${staffInfoInit} ? ${sraffInfoInit.staffType}=='1' " >管理员</option>
+								</select>
+							</td>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								别名：
+							</td>
+							<td>
+								<input class="form-control" name="" type="text" id="staffInfoModal_aliasName" th:value="${staffInfoInit} ? ${staffInfo.aliasName}">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								性别：
+							</td>
+							<td >
+								<select  class="form-control" id="staffInfoModal_gender">
+									<option value="0" th:selected="${staffInfoInit} ? ${sraffInfoInit.gender}=='0' ">女</option>
+									<option value="1" th:selected="${staffInfoInit} ? ${sraffInfoInit.gender}=='1' ">男</option>
+									<option value="2" th:selected="${staffInfoInit} ? ${sraffInfoInit.gender}=='2' ">保密</option>
+								</select>
+							</td>
+							<td class="Hint">
+								职位：
+							</td>
+							<td>
+								<input class="form-control" name="" type="text" id="staffInfoModal_job" th:value="${staffInfoInit} ? ${staffInfoInit.job}">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								出生日期：
+							</td>
+							<td >
+								<div class="input-group date form_datetime col-md-2" >
+									<input class="form-control  changetype skuclass"  th:value="${staffInfoInit} ? ${#dates.format(staffInfoInit.birthday,'yyyy-MM-dd HH:mm:ss')}"  id="staffInfoModal_birthday" type="text" readonly/>
+									<span class="input-group-addon"> <span class="glyphicon glyphicon-th"></span>  </span>
+								</div>
+								<script type="text/javascript">
+									$(".form_datetime").datetimepicker({
+										language: 'zh-CN',
+										format: "yyyy-mm-dd",
+//								showMeridian: true,
+										autoclose: true,
+										todayBtn: true,
+										minView:2
+//								locale: moment.locale('zh-cn')
+									});
+								</script>
+
+							</td>
+							<td class="Hint">
+								<span class="col_red">*</span>
+								手机号码：
+							</td>
+							<td>
+								<input class="form-control" name="" type="text" id="staffInfoModal_serialNumber" th:value="${staffInfoInit} ? ${staffInfoInit.serialNumber}">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								电子邮箱：
+							</td>
+							<td >
+								<input class="form-control" name="" type="text" id="staffInfoModal_email" th:value="${staffInfoInit} ? ${staffInfoInit.email}">
+							</td>
+							<td class="Hint">
+								QQ号码：
+							</td>
+							<td>
+								<input class="form-control" name="" type="text" id="staffInfoModal_qq" th:value="${staffInfoInit} ? ${staffInfoInit.qq}">
+							</td>
+						</tr>
+						<tr>
+							<td class="Hint">
+								微信号：
+							</td>
+							<td >
+								<input class="form-control" name="" type="text" id="staffInfoModal_weChat" th:value="${staffInfoInit} ? ${staffInfoInit.weChat}">
+							</td>
+							<td class="Hint">
+								详细地址：
+							</td>
+							<td>
+								<input class="form-control" name="" type="text" id="staffInfoModal_contactInfo" th:value="${staffInfoInit} ? ${staffInfoInit.contactInfo}">
+							</td>
+						</tr>
+
+						</tbody>
+					</table>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">下一步</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 密码重置 -->
+	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">密码重置</h4>
+				</div>
+				<div class="modal-body">
+					<p class="text-center p20">是否重置账号 <span class="col_orange">[okleung]</span> 的密码?</p>
+				</div>
+				<div class="modal-footer">
+
+					<button type="button" class="btn btn-primary">确定重置</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- 修改角色授权 -->
+	<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					<h4 class="modal-title" id="myModalLabel">修改角色授权</h4>
+				</div>
+				<div class="modal-body">
+					<div class="listTable clearfix">
+						<div class="ClassItem" style="width:45%;">
+							<div class="tit" >
+								<h2>待授权角色</h2>
+							</div>
+
+							<div class="con" style="height:300px;" >
+								<table class="table listitem table-hover table-striped">
+									<tbody>
+									<tr >
+										<td>API分类i</td>
+									</tr>
+									<tr >
+										<td>API分类</td>
+									</tr>
+									<tr >
+										<td>API分类</td>
+									</tr>
+									<tr >
+										<td>API分类</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						<div class="pull-left p20" style="margin-top: 150px;">
+							<p class="col_666"><b>&#8660;</b></p>
+
+						</div>
+						<div class="ClassItem" style="width:45%;">
+							<div class="tit" >
+								<h2>已授权角色</h2>
+							</div>
+
+							<div class="con" style="height:300px;" >
+								<table class="table listitem table-hover">
+									<tbody>
+									<tr >
+										<td>API分类</td>
+									</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+					</div>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-primary">保存</button>
+					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+				</div>
+			</div>
+		</div>
+	</div>
+
 </div>
 	<div class="m_nav" th:remove="all">
 		<nav class="nav">
@@ -256,204 +471,6 @@
 	</div>
 
 	<!-- 新增 / 修改账户信息-->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document" style="width:800px;">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">新增/修改账户信息</h4>
-	      </div>
-	      <div class="modal-body">
-	        <table class="editTable">
-				<tbody>
-					<tr>
-						<td class="Hint">
-							<span class="col_red">*</span>
-							账号编码：
-						</td>
-						<td width="200">
-							<input class="form-control" name="" type="text">
-						</td>
-						<td class="Hint">
-							<span class="col_red">*</span>
-							账号名称：
-						</td>
-						<td width="200">
-							<input class="form-control" name="" type="text">
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							<span class="col_red">*</span>
-							账号类型：
-						</td>
-						<td >
-							<select  class="form-control" ><option>xx人员</option></select>
-						</td>
-						<td class="Hint">
-							<span class="col_red">*</span>
-							账号级别：
-						</td>
-						<td>
-							<select  class="form-control" ><option>xx人员</option></select>
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							
-							性别：
-						</td>
-						<td >
-							<select  class="form-control" ><option></option></select>
-						</td>
-						<td class="Hint">
-							
-							职位：
-						</td>
-						<td>
-							<input class="form-control" name="" type="text">
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							
-							出生日期：
-						</td>
-						<td >
-							<select  class="form-control" ><option>xx人员</option></select>
-						</td>
-						<td class="Hint">
-							<span class="col_red">*</span>
-							手机号码：
-						</td>
-						<td>
-							<input class="form-control" name="" type="text">
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							
-							电子邮箱：
-						</td>
-						<td >
-							<input class="form-control" name="" type="text">
-						</td>
-						<td class="Hint">
-							
-							QQ号码：
-						</td>
-						<td>
-							<input class="form-control" name="" type="text">
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							
-							微信号：
-						</td>
-						<td >
-							<input class="form-control" name="" type="text">
-						</td>
-						<td class="Hint">
-							
-						</td>
-						<td>
-							
-						</td>
-					</tr>
-					
-				</tbody>
-			</table>
-	      </div>
-	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-primary">下一步</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	<!-- 密码重置 -->
-	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">密码重置</h4>
-	      </div>
-	      <div class="modal-body">
-	        <p class="text-center p20">是否重置账号 <span class="col_orange">[okleung]</span> 的密码?</p>
-	      </div>
-	      <div class="modal-footer">
-	       
-	        <button type="button" class="btn btn-primary">确定重置</button>
-	         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	<!-- 修改角色授权 -->
-	<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">修改角色授权</h4>
-	      </div>
-	      <div class="modal-body">
-	      	<div class="listTable clearfix">
-		        <div class="ClassItem" style="width:45%;">
-					<div class="tit" >
-						<h2>待授权角色</h2>
-					</div>
-					  
-					<div class="con" style="height:300px;" >
-						<table class="table listitem table-hover table-striped">
-							<tbody>
-							<tr >
-								<td>API分类i</td>
-							</tr>
-							<tr >
-								<td>API分类</td>
-							</tr>
-							<tr >
-								<td>API分类</td>
-							</tr>
-							<tr >
-								<td>API分类</td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="pull-left p20" style="margin-top: 150px;">
-					<p class="col_666"><b>&#8660;</b></p>
-					
-				</div>
-				<div class="ClassItem" style="width:45%;">
-					<div class="tit" >
-						<h2>已授权角色</h2>
-					</div>
-					  
-					<div class="con" style="height:300px;" >
-						<table class="table listitem table-hover">
-							<tbody>
-							<tr >
-								<td>API分类</td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-
-			</div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary">保存</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
 
 
 

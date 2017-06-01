@@ -393,4 +393,13 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 
 		return respDTO;
 	}
+
+	@Override
+	public AuthStaff selectByPrimaryKey(String staffId) throws Exception {
+		if (StringUtil.isBlank(staffId)){
+			throw new BusinessException("根据staffId查询用户信息异常，入参为空！");
+		}
+		AuthStaff authStaff = authStaffMapper.selectByPrimaryKey(staffId);
+		return authStaff;
+	}
 }

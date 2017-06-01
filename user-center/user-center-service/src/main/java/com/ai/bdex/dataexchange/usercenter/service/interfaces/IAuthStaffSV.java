@@ -4,6 +4,7 @@ import java.util.Map;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaff;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.*;
 
 public interface IAuthStaffSV {
@@ -99,4 +100,12 @@ public interface IAuthStaffSV {
 	 * @throws Exception
      */
 	public PageResponseDTO<AuthStaffRespDTO> queryAuthStaffPage(AuthStaffDTO vo) throws Exception;
+
+	/**
+	 * 根据staffId查询用户信息
+	 * @param staffId
+	 * @return
+	 * @throws Exception
+     */
+	public AuthStaff selectByPrimaryKey(String staffId)throws Exception;
 }

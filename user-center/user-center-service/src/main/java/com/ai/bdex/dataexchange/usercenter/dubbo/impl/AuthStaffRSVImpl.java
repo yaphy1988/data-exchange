@@ -3,8 +3,11 @@ package com.ai.bdex.dataexchange.usercenter.dubbo.impl;
 import java.util.Map;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.usercenter.dao.model.AuthStaff;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffRespDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StringUtil;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -193,5 +196,23 @@ public class AuthStaffRSVImpl implements IAuthStaffRSV{
 				throw new BusinessException("分页查询用户信息异常：" + e.getMessage());
 			}
 		}
+	}
+
+	@Override
+	public AuthStaffRespDTO selectByPrimaryKey(String staffId) throws Exception {
+		if (StringUtil.isBlank(staffId)){
+			throw new BusinessException("根据staffId查询用户信息异常，入参为空");
+		}
+
+		AuthStaffRespDTO authStaffRespDTO = new AuthStaffRespDTO();
+		try {
+			AuthStaff authStaff = iAuthStaffSV.selectByPrimaryKey(staffId);
+			if (authStaff != null){
+				ObjectCopyUtil.copyObjValue(authStaff,authStaffRespDTO,null,false);
+			}
+		}catch (Exception e){
+			log.error("根据staffId查询用户信息异常：",e);
+		}
+		return authStaffRespDTO;
 	}
 }

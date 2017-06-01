@@ -102,4 +102,12 @@ public interface IAuthStaffRSV {
 	 * @throws BusinessException
 	 */
 	public PageResponseDTO<AuthStaffRespDTO> queryAuthStaffPage(AuthStaffDTO vo)throws BusinessException;
+
+	/**
+	 * 根据staffId查询用户信息
+	 * @param staffId
+	 * @return
+	 * @throws Exception
+	 */
+	public AuthStaffRespDTO selectByPrimaryKey(String staffId)throws Exception;
 }
