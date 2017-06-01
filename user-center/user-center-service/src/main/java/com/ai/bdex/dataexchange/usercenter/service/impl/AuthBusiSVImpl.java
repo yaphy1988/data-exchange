@@ -146,6 +146,17 @@ public class AuthBusiSVImpl implements IAuthBusiSV {
                 this.genDisPlayMenus(menu,menuMap);
             }
 
+            //排序
+            Collections.sort(pMenus, new Comparator<MenuDisPlayDTO>() {
+                @Override
+                public int compare(MenuDisPlayDTO dto1, MenuDisPlayDTO dto2) {
+                    if(dto1.getMenuOrder() < dto2.getMenuOrder()){
+                        return -1;
+                    }
+                    return 1;
+                }
+            });
+
             return pMenus;
         }
 
@@ -191,8 +202,8 @@ public class AuthBusiSVImpl implements IAuthBusiSV {
                 Collections.sort(subMenus, new Comparator<MenuDisPlayDTO>() {
                     @Override
                     public int compare(MenuDisPlayDTO dto1, MenuDisPlayDTO dto2) {
-                        if(dto1.getMenuOrder() > dto2.getMenuOrder()){
-                            return 0;
+                        if(dto1.getMenuOrder() < dto2.getMenuOrder()){
+                            return -1;
                         }
                         return 1;
                     }
