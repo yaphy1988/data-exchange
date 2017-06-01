@@ -122,6 +122,7 @@
 	                                <th>投诉事项</th>
 									<th>投诉内容</th>
 	                                <th>投诉日期</th>
+									<th>回复内容</th>
 	                                <th>处理时间</th>
 	                                <th>投诉状态</th>
 	                                <th>操作</th>
@@ -135,6 +136,7 @@
 										<td th:if="${rs.complaintItem} == '9'">其它</td>
 										<td th:text="${rs.ordComplaintContRespDTO.fromRemark}">商品投诉</td>
 		                                <td th:text="${#dates.format(rs.complaintsTime, 'yyyy-MM-dd  HH:mm:ss')}">2017-02-10 18:08:34</td>
+										<td th:text="${rs.ordComplaintContRespDTO.repeatCont}">无视</td>
 		                                <td th:if="${rs.complaintStatus} == '2'" th:text="${#dates.format(rs.updateTime, 'yyyy-MM-dd  HH:mm:ss')}">2018-02-23 12:12:34</td>
 										<td th:if="${rs.complaintStatus} != '2'"></td>
 		                                <td th:if="${rs.complaintStatus} == '1'">待处理</td>
@@ -142,7 +144,7 @@
 										<td th:if="${rs.complaintStatus} == '3'">已撤销</td>
 		                                <td>
 		                                    <p class="pop-link">
-		                                        <a href="javascript:;" th:if="${rs.complaintStatus} == '1'" th:onclick="|initComplaintRepeat('${rs.complaintId}','${rs.orderId}','${rs.ordComplaintContRespDTO.complaintContId}','${rs.complaintItem}')|">回复</a>
+		                                        <a href="javascript:;" th:if="${rs.complaintStatus} == '1' or ${rs.complaintStatus} == '2'" th:onclick="|initComplaintRepeat('${rs.complaintId}','${rs.orderId}','${rs.ordComplaintContRespDTO.complaintContId}','${rs.complaintItem}')|">回复</a>
 		                                        <a href="javascript:;" th:onclick="|iwantComplaint('${rs.orderId}','${rs.complaintId}')|">查看</a>
 		                                    </p>
 		                                </td>
@@ -185,7 +187,7 @@
 			</div>
 		</div>
 	
-		<!-- 我要投诉弹窗 -->
+		<!-- 查看投诉详情 -->
 		<div  class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	        <div class="modal-dialog" role="document">
 	            <div class="modal-content"  id="modal_content">
@@ -207,26 +209,24 @@
 									<option value="9">其它</option>
 								</select>
 							</div>
-	                        <div class="mt10"  id="needcontentDiv">
+	                        <div class="mt10">
 	                            <label>投诉内容</label>
-									<textarea th:if="${ordCompDTO.ordComplaintContRespDTO}" class="form-control" rows="5" maxlength="624"  placeholder="请填写投诉内容"  th:id="complaintContent"
+									<textarea disabled th:if="${ordCompDTO}" class="form-control" rows="5" maxlength="624"  placeholder="请填写投诉内容"  th:id="complaintContent"
 															 th:text="${ordCompDTO.ordComplaintContRespDTO.fromRemark}"></textarea>
-								<p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请填写投诉内容</span></p>
 	                        </div>
 	                        <div class="mt10"  id="lnkposenDiv">
 	                            <label>联系人</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系人"  th:id="lnkposen"
 														 th:value="${ordCompDTO.linkPerson}">
-								<p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请填写联系人</span></p>
-		                        <div class="mt10"  id="lnkphoneDiv">
+		                        <div class="mt10">
 		                            <label>手机号码</label><input type="text" class="form-control" maxlength="11"  placeholder="请填写手机号码"  th:id="lnkphone"
 															  th:value="${ordCompDTO.mobile}">
-		                            <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
 		                          </div>
-		                        <!--<div class="mt10"  id="lnkemailDiv">
-		                            <label>联系邮箱</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系邮箱"  th:id="lnkemail">
-		                             <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的邮箱</span></p>
-		                        </div>-->
 		                    </div>
+							<div class="mt10">
+								<label>回复内容</label>
+								<textarea th:if="${ordCompDTO}" class="form-control" rows="5" maxlength="624"  placeholder="请填写投诉内容"  th:id="complaintContent"
+										  th:text="${ordCompDTO.ordComplaintContRespDTO.repeatCont}"></textarea>
+							</div>
 		                </div>
 		                <div class="modal-footer">
 		                    <button th:if="${compId} == ''" type="button" class="btn btn-primary wt120"  th:onclick="|modalDataSubmit()|">提交</button>
@@ -237,7 +237,7 @@
 	    	</div>
 		</div>
 
-		<!-- 投诉投诉弹窗 -->
+		<!-- 回复投诉弹窗 -->
 		<div  class="modal" id="modal_repeat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 			<div class="modal-dialog" role="document">
 				<div class="modal-content"  id="repeat_content">
@@ -261,12 +261,13 @@
 							</div>
 							<div class="mt10">
 								<label>投诉内容</label>
-								<textarea th:if="${ordCompDTO}" class="form-control" rows="5" maxlength="624"
+								<textarea disabled th:if="${ordCompDTO}" class="form-control" rows="5" maxlength="624"
 										  placeholder="请填写投诉内容" th:text="${ordCompDTO.ordComplaintContRespDTO.fromRemark}"></textarea>
 							</div>
 							<div class="mt10">
 								<label>回复内容</label>
-								<textarea  class="form-control" rows="5" maxlength="624"  placeholder="请填写回复内容" id="repeat_Cont"></textarea>
+								<textarea th:if="${ordCompDTO}" class="form-control" rows="5" maxlength="624"  placeholder="请填写回复内容" id="repeat_Cont"
+										   th:text="${ordCompDTO.ordComplaintContRespDTO.repeatCont}"></textarea>
 							</div>
 						</div>
 						<div class="modal-footer">

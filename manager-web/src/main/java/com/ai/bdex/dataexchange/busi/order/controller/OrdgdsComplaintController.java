@@ -99,12 +99,11 @@ public class OrdgdsComplaintController {
 		String compItem = request.getParameter("compItem");
 		OrdComplaintReqDTO ordComplaintReqDTO = new OrdComplaintReqDTO();
 		String staffId = StaffUtil.getStaffId(session);
-		StaffInfoDTO staffInfoDTO = StaffUtil.getStaffVO(session);
 		String viewModel = "goods_complaint :: #tab02";
-//		if (StaffUtil.isAdmin(StaffUtil.getStaffVO(session).getStaffType())){
+		if (StaffUtil.isAdmin(StaffUtil.getStaffVO(session).getStaffType())){
 			viewModel = "complaint_manager :: #tab02";
 			staffId ="";
-//		}
+		}
 		try {
 			if(!StringUtil.isBlank(pageNo)){
 				ordComplaintReqDTO.setPageNo(Integer.valueOf(pageNo));
@@ -213,11 +212,11 @@ public class OrdgdsComplaintController {
 		String compId = request.getParameter("compId");
 		String orderId = request.getParameter("orderId");
 		String staffId = StaffUtil.getStaffId(session);
-		staffId="";
 		String viewModel = "goods_complaint :: #modal_content";
-//		if (StaffUtil.isAdmin(StaffUtil.getStaffVO(session).getStaffType())){
-		viewModel = "complaint_manager :: #modal_content";
-//		}
+		if (StaffUtil.isAdmin(StaffUtil.getStaffVO(session).getStaffType())){
+			viewModel = "complaint_manager :: #modal_content";
+			staffId="";
+		}
 		OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO();
 		ordInfoReqDTO.setOrderId(orderId);
 		this.queryOrdInfoById(ordInfoReqDTO,model);

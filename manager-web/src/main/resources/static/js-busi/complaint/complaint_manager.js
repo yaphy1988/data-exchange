@@ -28,6 +28,7 @@ function updateComplaintRepeat() {
     var callBack = function (data) {
         $.gridUnLoading();
         if (data.success){
+            $('#modal_repeat').modal('hide');
             WEB.msg.info('提示','更新成功！');
             queryComplaintList(1);
         }else{

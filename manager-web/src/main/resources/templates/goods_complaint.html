@@ -239,6 +239,7 @@
 	                                <th>投诉事项</th>
 									<th>投诉内容</th>
 	                                <th>投诉日期</th>
+									<th>回复内容</th>
 	                                <th>处理时间</th>
 	                                <th>投诉状态</th>
 	                                <th>操作</th>
@@ -252,6 +253,7 @@
 										<td th:if="${rs.complaintItem} == '9'">其它</td>
 										<td th:text="${rs.ordComplaintContRespDTO.fromRemark}">商品投诉</td>
 		                                <td th:text="${#dates.format(rs.complaintsTime, 'yyyy-MM-dd  HH:mm:ss')}">2017-02-10 18:08:34</td>
+										<td th:text="${rs.ordComplaintContRespDTO.repeatCont}">无视</td>
 		                                <td th:if="${rs.complaintStatus} == '2'" th:text="${#dates.format(rs.updateTime, 'yyyy-MM-dd  HH:mm:ss')}">2018-02-23 12:12:34</td>
 										<td th:if="${rs.complaintStatus} != '2'"></td>
 		                                <td th:if="${rs.complaintStatus} == '1'">待处理</td>
@@ -328,6 +330,7 @@
 	                            <label>投诉内容</label>
 									<textarea th:if="${ordCompDTO.ordComplaintContRespDTO}" class="form-control" rows="5" maxlength="624"  placeholder="请填写投诉内容"  th:id="complaintContent"
 															 th:text="${ordCompDTO.ordComplaintContRespDTO.fromRemark}"></textarea>
+									<textarea th:if="${ordCompDTO.ordComplaintContRespDTO} == null" class="form-control" rows="5" maxlength="624"  placeholder="请填写投诉内容"  th:id="complaintContent"></textarea>
 								<p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请填写投诉内容</span></p>
 	                        </div>
 	                        <div class="mt10"  id="lnkposenDiv">
