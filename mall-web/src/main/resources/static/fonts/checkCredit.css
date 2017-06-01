@@ -1,0 +1,218 @@
+@charset "UTF-8";
+/* CSS*/
+.bgf1{
+    background-color: #f1f1f1;
+}
+.bg-white{
+    background: #fff;
+}
+.bg-col01{background: #0e0b11;
+}
+.bg-gray32{
+    background: #343232;
+}
+.wrap1000{
+    width: 1000px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.header{
+    padding:16px 0;
+}
+.logo img{max-height: 56px;}
+.login-banner{
+    height: 470px;
+}
+.login-banner .left {
+    width: 340px;
+    height: 360px;
+    margin-top: 55px;
+    padding: 30px;
+    padding-top: 15px;
+    background: #fff;
+}
+.login-banner .right{
+    width: 340px;
+    height: 560px;
+    margin-top: 55px;
+    padding: 30px;
+    padding-top: 15px;
+    background: #fff;
+}
+.login-banner h2{
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    color: #2b4099;
+    line-height: 30px;
+    padding-bottom: 4px;
+}
+.login-input{
+    margin-bottom: 15px;
+    overflow: hidden;
+    position: relative;
+}
+.login-input input{
+    width: 100%;
+    padding-left: 42px;
+    padding-right: 6px;
+    height: 40px;
+    line-height: 24px;
+    border-radius: 0;
+    border:1px solid #dedede ;
+}
+.login-input input:focus{
+    border-color: #f2c5a6;
+    -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(242, 197, 166, .6);
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(242, 197, 166, .6);
+}
+.login-input label i{
+    color: #bbb;
+}
+.login-input input:focus+label i{
+    color: #ff9a54;
+}
+.login-input label{
+    position: absolute;
+    left: 0;
+    top:0;
+    width: 42px;
+    line-height: 42px;
+    text-align: center;
+    z-index: 9;
+}
+.login-input .code{
+    position: absolute;
+    right: 1px;
+    top: 1px;
+    height: 38px;
+    line-height: 38px;
+    width: 100px;
+    text-align: center;
+    color: #999;
+    background: #f7f7f7;
+    cursor: pointer;
+
+}
+.login-input button{
+    width: 100%;
+    height: 36px;
+    margin-top: 10px;
+    margin-bottom: 3px;
+    border-radius: 0;
+}
+.login-code input{
+    padding-right: 100px;
+}
+
+.error-tip{
+    height: 20px;
+    line-height: 20px;
+    font-size: 12px;
+    padding: 0px 8px;
+    margin-bottom: 4px;
+    background: #f9e4d6;
+    color: #ec6000;
+}
+.error-tip i{
+    font-size: 12px;
+    margin-right: 4px;
+}
+
+.register{
+    line-height: 52px;
+}
+.register a{
+    color: #666;
+    font-weight: bold;
+}
+.register a:hover{
+    color: #ec6000;
+}
+
+
+
+
+.copyright{
+    background: #343232;
+    font-size: 12px;
+    line-height: 46px;
+    color: #666;
+    text-align: center;
+}
+
+
+/*add-register*/
+.register-box{
+    width: 600px;
+    margin: 50px auto;
+    padding:38px 38px;
+    background: #fff;
+}
+.register-box h2{
+    font-size: 18px;
+    font-weight: 600;
+    padding: 0px 30px 26px;
+    border-bottom: 1px solid #f1f1f1;
+}
+.register-list{
+    padding:26px 30px 0px;
+}
+.register-input{
+    position: relative;
+}
+.register-input input{
+    border: 1px solid #dedede;
+    height: 48px;
+    width: 100%;
+    padding-left: 90px;
+    padding-right: 6px;
+    outline: none;
+    border-radius: 0;
+}
+.register-input label{
+    width:84px;
+    left: 16px;
+    top:14px;
+    position: absolute;
+
+}
+.register-input .error-tip{
+    background: none;
+    margin-top: 4px;
+}
+.register-checkbox input{
+    position: relative;
+    top:2px;
+}
+.register-checkbox a{
+    font-weight: bold;
+    outline: none;
+}
+.register-button button{
+    border-radius: 0;
+    width: 100%;
+    height: 54px;
+    font-size: 18px;
+    margin: 40px 0 16px;
+}
+.modal-title{
+    font-weight: bold;
+    font-size: 15px;
+}
+.eassy{padding: 0px 10px;
+font-size: 12px;
+
+}
+.eassy p,.eassy dd{
+    text-indent: 2em;
+    color: #666;
+}
+.eassy p,.eassy dl{
+    margin-bottom: 15px;
+    color: #666;
+}
+.eassy dt{
+    font-weight: bold;
+}

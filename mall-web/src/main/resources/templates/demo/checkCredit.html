@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="description" content="">
+    <meta name="keywords" content="">
+    <title>录入信息</title>
+    <link rel="stylesheet" href="../../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}">
+    <link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+    <link rel="stylesheet" href="../../static/css/global.css" th:href="@{/css/global.css}">
+    <link rel="stylesheet" href="../../static/fonts/checkCredit.css" th:href="@{/fonts/checkCredit.css}">
+    <script src="../../static/js/jquery-1.12.4.js" th:src="@{/js/jquery-1.12.4.js}"></script>
+    <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="../../static/js-busi/demo/checkCredit.js" th:src="@{/js-busi/demo/checkCredit.js}"></script>
+    <script src="../../static/js/util.js" th:src="@{/js/util.js}"></script>
+<script src="../../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
+    <script type="text/javascript">
+        var WEB_ROOT = '[[${#httpServletRequest.contextPath}]]';
+    </script>
+</head>
+<body  class="bg-gray32">
+<
+<div class="main bg-col01">
+    <div class="wrap1000 login-banner">
+
+        <div class="right floatL">
+            <h2>录入信息</h2>
+
+            <!--error-tip可见或不可见方式请用visibility-->
+            <p class="error-tip" style="visibility: hidden;" id="msgvalid"><i class="icon iconfont icon-cuowu"></i><span>账号与密码输入不匹配</span></p>
+
+            <div class="login-input">
+                <input type="text" class="form-control" placeholder="请输入姓名" id="CheckName" onfocus="hiddenmsg();">
+                <label><i class="icon iconfont icon-iconuser"></i></label>
+            </div>
+
+            <div class="login-input">
+                <input type="text" class="form-control" placeholder="请输入身份证号" id="CheckPSN" onfocus="hiddenmsg();">
+                <label><i class="icon iconfont icon-mm"></i></label>
+            </div>
+
+            <div class="login-input">
+                <input type="text" class="form-control" placeholder="请输入手机号码" id="CheckPhone" onfocus="hiddenmsg();">
+                <label><i class="icon iconfont icon-iconuser"></i></label>
+            </div>
+
+            <div class="login-input">
+                <button class="btn btn-primary" id="bLoginSubmit">提交录入</button>
+            </div>
+            <h2>展示信息</h2>
+
+            <div class="login-input">
+                <input type="text" class="form-control" placeholder="" id="CheckResult" readonly="readonly">
+                <label><i class="icon iconfont icon-iconuser"></i></label>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</div>
+</body>
+</html>
