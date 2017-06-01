@@ -790,7 +790,7 @@ public class PageManageController {
 	/**
 	 * 渠道商-定制数据管理查询
 	 * @param request
-	 * @return
+	 * @return  空
 	 * auther:landeng
 	 */
 	@RequestMapping(value = "/queryMymanageData")
