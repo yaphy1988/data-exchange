@@ -37,8 +37,12 @@ function saveInvoiceTax(){
 	var contactInfo=$("#contactInfo").val();//地址
 	var bankName=$("#bankName").val();//开户行
 	var acctInfo=$("#acctInfo").val();//银行账户
+	if(taxId==""){
+		WEB.msg.info("提示","请先进行企业认证！");
+		return;	
+	}
 	if(taxAddr==""){
-		WEB.msg.info("提示","请输入邮寄地址");
+		WEB.msg.info("提示","请输入邮寄地址！");
 		return;
 	}
 	if(taxAddr.length>64){

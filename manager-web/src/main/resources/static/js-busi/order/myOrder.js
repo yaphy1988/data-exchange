@@ -33,7 +33,7 @@ function cancelOrder(obj,orderId){
 			orderId:orderId,
 			orderStatus:status,
 			};
-	var url="/orderManage/cancelOrder";
+	var url=basePath+"/orderManage/cancelOrder";
 	WEB.msg.confirm("提示","您确定要取消该订单吗？",function(){
 		$.ajax({
 			url:url,
