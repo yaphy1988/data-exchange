@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
-<div th:replace="~{fragments/syshead :: syshead}"></div>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+	  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	  layout:decorate="~{fragments/layout}">
 
-<link rel="stylesheet" href="../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
 <head>
 	<meta charset="UTF-8">
 	<title>数据定制管理</title>
@@ -56,7 +56,7 @@
 			<div class="classify">
 				<i class="iconfont"></i>
 				<span>当前位置：</span>
-				<a href=""><span>XXX</span></a>
+				<a><span>后台运营</span></a>
 				<span class="col_999">数据定制管理</span>
 			</div>
 			<!-- <hr> -->
