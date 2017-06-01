@@ -100,6 +100,7 @@ function haveProblome(){
 function createOrdSusse(){
 
 	window.location.href=MANAGE_ROOT+"/orderManage/myOrder";
+	//提交一个空个
 }
 
 /*//模拟支付成功*/

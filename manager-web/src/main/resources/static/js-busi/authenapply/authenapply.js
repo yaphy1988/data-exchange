@@ -40,13 +40,17 @@ function saveapply(){
 
 	//企业人数
 	var companyPeople = $("#companyPeople").val();
-    if(isNaN(companyPeople)){
+
+    //如果不是数字
+    if(companyPeople != "" && isNaN(companyPeople)){
         companyPeople = "";
         $("#companyPeople").val(companyPeople);
         showwarm('companyPeople','企业人数只能是数字！');
         return;
     }
-    companyPeople = parseInt(companyPeople);
+    if(companyPeople!=""){
+        companyPeople = parseInt(companyPeople);
+    }
 
     if(WEB.fucCheckLength(companyPeople)>6){
         showwarm('companyPeople','企业人数太长！');

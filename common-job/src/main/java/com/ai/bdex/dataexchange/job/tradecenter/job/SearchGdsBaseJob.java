@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.tradecenter.job;
+package com.ai.bdex.dataexchange.job.tradecenter.job;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.ai.bdex.dataexchange.tradecenter.service.SearchGdsBaseService;
+import com.ai.bdex.dataexchange.job.tradecenter.service.SearchGdsBaseService;
 import com.ai.paas.util.Utils;
 /**
  * 
@@ -26,7 +26,7 @@ import com.ai.paas.util.Utils;
 @EnableScheduling // 此注解必加  
 public class SearchGdsBaseJob {
     private static Logger logger = LoggerFactory.getLogger(SearchGdsBaseJob.class);
-    //每天凌晨3点执行
+    //每天凌晨1点执行
     @Scheduled(cron = "0 0 1 * * ? ")
     public void callProcedureJob(){
         Utils.getCtx().getBean(SearchGdsBaseService.class).callProcedure();

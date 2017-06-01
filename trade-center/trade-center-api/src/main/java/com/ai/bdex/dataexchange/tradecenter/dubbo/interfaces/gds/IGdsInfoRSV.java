@@ -3,6 +3,7 @@ package com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds;
 import java.util.List;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2CatReqDTO;
@@ -98,4 +99,6 @@ public interface IGdsInfoRSV {
 	 * @throws Exception
      */
 	public int updateGdsInfoManager(GdsInfoReqDTO gdsInfoReqDTO) throws Exception;
+	
+	public long count(GdsInfoReqDTO gdsInfoReqDTO) throws BusinessException;
 }

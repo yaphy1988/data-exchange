@@ -2,18 +2,16 @@ package com.ai.bdex.dataexchange.usercenter.dubbo.impl;
 
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.exception.BusinessException;
-import com.ai.bdex.dataexchange.usercenter.dao.model.AuthRole;
 import com.ai.bdex.dataexchange.usercenter.dao.model.AuthRole2Menu;
 import com.ai.bdex.dataexchange.usercenter.dao.model.BaseLoginUrl;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.BaseLoginUrlDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.MenuDisPlayDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthBusiRSV;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IAuthBusiSV;
 import com.ai.bdex.dataexchange.usercenter.service.interfaces.IBaseLoginUrlSV;
-import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.paas.util.CacheUtil;
 import com.ai.paas.utils.StringUtil;
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +26,7 @@ import java.util.Map;
 @Service("iAuthBusiRSV")
 public class AuthBusiRSVImpl implements IAuthBusiRSV {
 
-    private static final Logger log = Logger.getLogger(AuthBusiRSVImpl.class);
+    private static Logger log = LoggerFactory.getLogger(AuthBusiRSVImpl.class);
 
     @Autowired
     private IBaseLoginUrlSV iBaseLoginUrlSV;
