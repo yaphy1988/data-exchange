@@ -744,8 +744,6 @@ public class PageManageController {
 	@RequestMapping(value = "/manageDataPageInit")
 	public ModelAndView manageDataPageInit(HttpServletRequest request,Model model) {
 		//先将记录数显示出来
-	/*	PageResponseDTO<DataCustomizationRespDTO> pageData = new PageResponseDTO<DataCustomizationRespDTO>();
-		model.addAttribute("pageInfo", pageData);*/
 		ModelAndView modelAndView = new ModelAndView("dataCustom_manage");
 		return modelAndView;
 	}
@@ -797,7 +795,7 @@ public class PageManageController {
 			PageResponseDTO<DataCustomizationRespDTO> pageData = new PageResponseDTO<DataCustomizationRespDTO>();
 			pageData = iPageDisplayRSV.queryDataCustomizationInfo(dataCustomizationReqDTO);
 			dataCustomizationRespDTO = (DataCustomizationRespDTO)pageData.getResult().get(0);
-			BeanUtils.copyProperties(dataCustomizationReqDTO, dataCustomizationRespDTO);
+			BeanUtils.copyProperties(dataCustomizationRespDTO, dataCustomizationReqDTO );
 			dataCustomizationReqDTO.setStatus(status);
 			HttpSession hpptsesion = request.getSession();
 			String staff_id = StaffUtil.getStaffId(hpptsesion);
