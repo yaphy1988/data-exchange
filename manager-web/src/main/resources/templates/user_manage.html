@@ -145,13 +145,14 @@
 				<div class="modal-body" id="staffInfoModalDiv">
 					<table class="editTable" id="staffInfoModalTable">
 						<tbody>
+						<input type="hidden" th:if="${isEdit}" th:value="${isEdit}" id="isEdit"/>
 						<tr>
 							<td class="Hint">
 								<span class="col_red">*</span>
 								账号编码：
 							</td>
 							<td width="200">
-								<input class="form-control" name="" type="text" id="staffInfoModal_staffId" th:value="${staffInfoInit} ? ${staffInfo.staffId}">
+								<input class="form-control" placeholder="请填写用户ID，支持字母和数字" name="" type="text" id="staffInfoModal_staffId" th:value="${staffInfoInit} ? ${staffInfo.staffId}" th:readonly="${staffInfoInit} ? ${isEdit}=='1':false" >
 							</td>
 							<td class="Hint">
 								<span class="col_red">*</span>
@@ -261,7 +262,7 @@
 					</table>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary">下一步</button>
+					<button type="button" class="btn btn-primary" onclick="submitStaffInfo()">保存</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 				</div>
 			</div>

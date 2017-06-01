@@ -246,6 +246,16 @@ public class AuthStaffDTO extends BaseInfo {
    
    private String staffFlag;
 
+   private String birthdayStr;
+
+   public String getBirthdayStr() {
+      return birthdayStr;
+   }
+
+   public void setBirthdayStr(String birthdayStr) {
+      this.birthdayStr = birthdayStr;
+   }
+
    public String getStaffFlag() {
 	return staffFlag;
 }
