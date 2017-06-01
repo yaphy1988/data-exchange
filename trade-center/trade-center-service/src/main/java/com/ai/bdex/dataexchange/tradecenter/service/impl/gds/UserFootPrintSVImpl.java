@@ -186,6 +186,9 @@ public class UserFootPrintSVImpl implements IUserFootPrintSV{
         if(userFootPrintReqDTO.getSeeNum()!=null && userFootPrintReqDTO.getSeeNum().intValue()>0){
             criteria.andSeeNumEqualTo(userFootPrintReqDTO.getSeeNum());
         }
+        if (StringUtil.isNotBlank(userFootPrintReqDTO.getCreateUser())){
+            criteria.andCreateUserEqualTo(userFootPrintReqDTO.getCreateUser());
+        }
     }
 
     @Override

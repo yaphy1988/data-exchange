@@ -2,6 +2,8 @@ package com.ai.bdex.dataexchange.busi.gds.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -19,6 +21,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserCollectionRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IUserCollectionRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
 @RequestMapping(value="/usercollection")
@@ -51,12 +54,13 @@ public class UserCollectionController {
      * @since JDK 1.6
      */
     @RequestMapping(value="/gridusercollection")
-    public String gridUserCollection(Model model,UserCollectionVO userCollectionVO){
+    public String gridUserCollection(Model model,UserCollectionVO userCollectionVO,HttpSession session){
         try {
             UserCollectionReqDTO userCollectionReqDTO = new UserCollectionReqDTO();
             ObjectCopyUtil.copyObjValue(userCollectionVO, userCollectionReqDTO, null, false);
             userCollectionReqDTO.setPageSize(10);
             userCollectionReqDTO.setStatus("1");
+            userCollectionReqDTO.setCreateUser(StaffUtil.getStaffId(session));
             PageResponseDTO<UserCollectionRespDTO> pageInfo = iUserCollectionRSV.queryUserCollectionPageExtends(userCollectionReqDTO);
             if(pageInfo != null&& pageInfo.getResult() != null && pageInfo.getResult().size() >=1){
                 List<UserCollectionRespDTO> list = pageInfo.getResult();

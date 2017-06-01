@@ -2,6 +2,8 @@ package com.ai.bdex.dataexchange.busi.gds.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserFootPrintRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IUserFootPrintRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 
 @RequestMapping(value="/userfootprint")
@@ -50,12 +53,13 @@ public class UserFootPrintController {
      * @since JDK 1.6
      */
     @RequestMapping(value="/griduserfootprint")
-    public String gridUserFootPrint(Model model,UserFootPrintVO userFootPrintVO){
+    public String gridUserFootPrint(Model model,UserFootPrintVO userFootPrintVO,HttpSession session){
         try {
             UserFootPrintReqDTO userFootPrintReqDTO = new UserFootPrintReqDTO();
             ObjectCopyUtil.copyObjValue(userFootPrintVO, userFootPrintReqDTO, null, false);
             userFootPrintReqDTO.setPageSize(10);
             userFootPrintReqDTO.setStatus("1");
+            userFootPrintReqDTO.setCreateUser(StaffUtil.getStaffId(session));
             PageResponseDTO<UserFootPrintRespDTO> pageInfo = iUserFootPrintRSV.queryUserFootPrintPageExtends(userFootPrintReqDTO);
             if(pageInfo != null&& pageInfo.getResult() != null && pageInfo.getResult().size() >=1){
                 List<UserFootPrintRespDTO> list = pageInfo.getResult();
