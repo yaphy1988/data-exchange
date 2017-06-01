@@ -18,6 +18,7 @@ import com.ai.paas.utils.InetTool;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
@@ -40,6 +41,8 @@ import java.util.*;
 @WebFilter(urlPatterns = "/*")
 @Order(2)
 public class LoginAuthFilter implements Filter {
+
+    private static final Log log = LogFactory.getLog(LoginAuthFilter.class);
 
     @Value("${application.filter.enabled:true}")
     private boolean filterEnabled;
@@ -96,7 +99,7 @@ public class LoginAuthFilter implements Filter {
 
         //请求uri
         String uri =request.getRequestURI();
-        LogFactory.getLog(LoginAuthFilter.class).info("receive url:"+uri);
+        log.info("receive url:"+uri);
         //商城根路径
         String mallDomain = SystemConfUtil.getSystemModuleInfo("01","1").genFullUrl();
 
@@ -273,7 +276,7 @@ public class LoginAuthFilter implements Filter {
 
         //保存url的key
         String key = Constants.Cache.UN_LOGIN_URL_PRE + systemCode + "_" + uri.trim();
-
+        log.info("Check unLogin Url="+uri +",key="+key);
         String redisloginAccess = CacheUtil.getMapItem(Constants.Cache.UN_LOGIN_URL_MAP,key);
 
         if(unloginAccess.equals(redisloginAccess)){
