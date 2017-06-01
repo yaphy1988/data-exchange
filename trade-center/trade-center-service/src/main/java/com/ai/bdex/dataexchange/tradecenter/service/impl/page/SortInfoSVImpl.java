@@ -1,12 +1,5 @@
 package com.ai.bdex.dataexchange.tradecenter.service.impl.page;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.beans.BeanUtils;
-import org.springframework.stereotype.Service;
-
 import com.ai.bdex.dataexchange.tradecenter.dao.mapper.SortInfoMapper;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.SortInfoExample;
@@ -15,7 +8,13 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.service.interfaces.page.ISortInfoSV;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
+import com.ai.paas.utils.ObjectCopyUtil;
 import com.alibaba.dubbo.common.utils.StringUtils;
+import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.List;
 @Service("iSortInfoSV")
 public class SortInfoSVImpl  implements ISortInfoSV{
 	 @Resource
@@ -80,18 +79,14 @@ public class SortInfoSVImpl  implements ISortInfoSV{
 	}
 	@Override
 	public long updateSortInfoById(SortInfoReqDTO sortInfoReqDTO) throws Exception {
-		SortInfo record = sortInfoMapper.selectByPrimaryKey(sortInfoReqDTO.getSortId());
-		if(!StringUtils.isBlank(sortInfoReqDTO.getSortName())){
-			record.setSortName(sortInfoReqDTO.getSortName());
+		if (sortInfoReqDTO ==null){
+			throw new Exception("更新首页商品分类信息入参为空");
 		}
-		if(!StringUtils.isBlank(sortInfoReqDTO.getOrderNo())){
-			record.setOrderNo(sortInfoReqDTO.getOrderNo());
-		}
-		if(!StringUtils.isBlank(sortInfoReqDTO.getStatus())){
-			record.setStatus(sortInfoReqDTO.getStatus());
-		}
+		SortInfo record = new SortInfo();
+
 		record.setUpdateStaffId(sortInfoReqDTO.getUpdateStaffId());
 		record.setUpdateTime(DateUtil.getNowAsDate());
+		ObjectCopyUtil.copyObjValue(sortInfoReqDTO,record,null,false);
 		return sortInfoMapper.updateByPrimaryKey(record);
 	} 
  }

@@ -59,5 +59,11 @@ public class OrdComplaintRSVImpl implements IOrdComplaintRSV {
 		}
 		return iordComplaintSV.updateOrdComplaint(ordComplaintReqDTO);
 	}
-
+	@Override
+	public long updateOrdComplaintCont(OrdComplaintContReqDTO ordComplaintContReqDTO) throws Exception{
+		if(ordComplaintContReqDTO == null){
+			throw new BusinessException("更新ordComplaintContReqDTO对象不能为空！");
+		}
+		return iordComplaintContSV.updateOrdComplaintCont(ordComplaintContReqDTO);
+	}
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffRespDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SignInfoDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 
@@ -91,6 +92,14 @@ public interface IAuthStaffRSV {
 	 * @param vo
 	 * @return
 	 * @throws BusinessException
-     */
+	 */
 	public PageResponseDTO<StaffInfoDTO> getStaffInfoPage(AuthStaffDTO vo)throws BusinessException;
+
+	/**
+	 * 分页查询用户信息
+	 * @param vo
+	 * @return
+	 * @throws BusinessException
+	 */
+	public PageResponseDTO<AuthStaffRespDTO> queryAuthStaffPage(AuthStaffDTO vo)throws BusinessException;
 }

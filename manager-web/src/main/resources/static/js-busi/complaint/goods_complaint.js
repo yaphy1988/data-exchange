@@ -2,8 +2,6 @@ $(function(){
     queryComplaintList(1);
 
     $('.nav.nav-tabs>li').on('click',function(u){
-        // $('.nav.nav-tabs>li').removeClass('active');
-        // $(this).attr('class','active');
 		if ($(this).children().attr('href')=='#tab01'){
             myOrderList(1);
 		}else{
@@ -15,56 +13,21 @@ $(function(){
 });
 
 function updateComplaint(compId,comStatus) {
-    $.gridLoading({message:'正在更新...'})
-    var url = MANAGE_ROOT+'/ordgdsComplaint/updateComplaint';
-    $.appAjax({
-        url:url,
-        cache:false,
-        data:{compId:compId,comStatus:comStatus},
-        async:true,
-        dataType:'json',
-        success:function (data) {
-            $.gridUnLoading();
-            if (data.success){
-                WEB.msg.info('提示','更新成功！');
-                queryComplaintList(1);
-            }else{
-                WEB.msg.info('提示','更新失败！');
-            }
+    var params ={
+        compId:compId,comStatus:comStatus
+    };
+    var callBack = function (data) {
+        $.gridUnLoading();
+        if (data.success){
+            WEB.msg.info('提示','更新成功！');
+            queryComplaintList(1);
+        }else{
+            WEB.msg.info('提示','更新失败！');
         }
-    });
-}
-/**
- * 初始化时间控件
- * @param startTime
- * @param endTime
- */
-function dateTimepickerinit(startTime,endTime) {
-    $("#"+startTime+"").datetimepicker({
-        format: 'yyyy-mm-dd 00:00:00',
-        minView:'month',
-        language: 'zh-CN',
-        clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
-        autoclose:true
-        // startDate:new Date()
-    }).on("click",function(){
-        $("#"+startTime+"").datetimepicker("setEndDate",$("#"+endTime+"").val());
-    });
-    $("#"+endTime+"").datetimepicker({
-        format: 'yyyy-mm-dd 23:59:59',
-        minView:'month',
-        language: 'zh-CN',
-        clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
-        autoclose:true
-        // startDate:new Date()
-    }).on("click",function(){
-        $("#"+endTime+"").datetimepicker("setStartDate",$("#"+startTime+"").val());
-    });
+    }
+    updateComplaintCommon(params,callBack);
 }
 
-function pagerClick(index){
-    queryComplaintList(index);
-}
 //数据校验
 function checkModalData(params){
 
@@ -137,50 +100,6 @@ function modalDataSubmit(){
 
 }
 
-function modalDatahiden() {
-    $('#myModal').modal('hide');
-}
-//我要投诉
-function iwantComplaint(orderId,compId){
-    $.appAjax({
-        url:MANAGE_ROOT+'/ordgdsComplaint/iwantComplaint',
-        data:{orderId:orderId,compId:compId},
-        dataType:'html',
-        cache:false,
-        async:true,
-        success:function (data) {
-			$('#myModal>div').html(data);
-            $('#myModal').modal('show');
-        }
-    })
-
-}
-
-function queryComplaintList(index){
-	var url = MANAGE_ROOT+'/ordgdsComplaint/queryComplaint';
-	var startTime = $('#comp_startTime').val();
-    var endTime = $('#comp_endTime').val();
-    var compStatus = $.trim($('#comp_status').val());
-    var compItem = $.trim($('#comp_item').val());
-	var params={pageNo:index,startTime:startTime,endTime:endTime,compStatus:compStatus,compItem:compItem};
-    $.gridLoading({ message:"正在加载中.." });
-	$.appAjax({
-		url:url,
-		data:params,
-		dataType:'html',
-		cache:false,
-		async:true,
-		success:function(data){
-            $.gridUnLoading();
-			$('#complant_content').html(data);
-			// $('#complant_content div').removeClass('active');
-			$('#tab02').attr('class','tab-pane active');
-            // $('.nav.nav-tabs>li').removeClass('active');
-            // $('.nav.nav-tabs>li').eq(0).attr('class','active');
-            dateTimepickerinit('comp_startTime','comp_endTime');
-		}
-	});
-}
 
 function myOrderList(index){
     var startTime = $('#ord_startTime').val();
@@ -197,10 +116,7 @@ function myOrderList(index){
         success:function(data){
             $.gridUnLoading();
             $('#complant_content').html(data);
-            // $('#complant_content div').removeClass('active');
             $('#tab01').attr('class','tab-pane active');
-            // $('.nav.nav-tabs>li').removeClass('active');
-            // $('.nav.nav-tabs>li').eq(1).attr('class','active');
             dateTimepickerinit('ord_startTime','ord_endTime');
         }
     });

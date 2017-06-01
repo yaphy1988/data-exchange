@@ -11,7 +11,7 @@
 	<script src="../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:remove="all"></script>
 	<script src="../META-INF/resources/webjars/bootstrap/3.3.7/js/bootstrap.min.js" th:remove="all"></script>
 	<script src="../static/js-busi/complaint/complaint_common.js" th:src="@{/js-busi/complaint/complaint_common.js}"></script>
-	<script src="../static/js-busi/complaint/goods_complaint.js" th:src="@{/js-busi/complaint/goods_complaint.js}"></script>
+	<script src="../static/js-busi/complaint/complaint_manager.js" th:src="@{/js-busi/complaint/complaint_manager.js}"></script>
 </head>
 <body>
 	<header class="clearfix m_header" th:remove="all">
@@ -57,129 +57,12 @@
 	
 	                <!-- Nav tabs -->
 	                <ul class="nav nav-tabs" role="tablist">
-						<li class="active"><a href="#tab02" aria-controls="profile" role="tab" data-toggle="tab">我的投诉</a></li>
-	                    <li ><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">我要投诉</a></li>
-
+						<li class="active"><a href="#tab02" aria-controls="profile" role="tab" data-toggle="tab">投诉列表</a></li>
 	                </ul>
 	
 	                <!-- Tab panes -->
 	                <div class="tab-content pt15" th:id="complant_content">
-	                    <div role="tabpanel" class="tab-pane" id="tab01">
-	                        <table class="editTable">
-	                            <tr>
-	                                <td class="Hint">
-	                                    开始时间:
-	                                </td>
-	                                <td>
-	                                    <input type="text" class="form-control" placeholder="" id="ord_startTime" th:value="${startTime}">
-	                                </td>
-	                                <td class="Hint">
-	                                    截止时间:
-	                                </td>
-	                                <td>
-	                                    <input type="text" class="form-control" placeholder="" id="ord_endTime" th:value="${endTime}">
-	                                </td>
-	                                <td class="Hint">
-	                                   订单状态:
-	                                </td>
-	                                <td>
-										<select  class="form-control" id="ord_status">
-											<option value="">全部</option>
-											<option value="01" th:selected="${ordStatus} == '01'">待支付</option>
-											<option value="02" th:selected="${ordStatus} == '02'">已支付</option>
-											<option value="03" th:selected="${ordStatus} == '03'">已失效</option>
-											<option value="04" th:selected="${ordStatus} == '04'">已完成</option>
-											<option value="99" th:selected="${ordStatus} == '99'">已取消</option>
-										</select>
-	                                </td>
-	                                 <td class="Hint"></td>
-	                                <td>
-	                                    <button class="btn btn-primary" th:onclick="|myOrderList(1)|">查询</button>
-	                                </td>
-	                            </tr>
-	                          
-	                        </table>
-	                        <table class="table table-bordered text-center" >
-	                            <thead>
-	                            <tr class="active">
-	                                <th>订单编码</th>
-	                                <th>下单时间</th>
-	                                <th>订单状态</th>
-	                                <th>接口名称</th>
-	                                <th>操作</th>
-	                            </tr>
-	                            </thead>
-	                            <tbody th:if="${pageInfo}">
-	                            <tr th:unless="${#lists.isEmpty(pageInfo.result)}" th:each="list,iterStat : ${pageInfo.result}">
-	                                <td th:text="${list.orderId}">2017090192019</td>
-	                                <td th:data="${#calendars.format(list.ordInfoRespDTO.orderTime,'yyyy-MM-dd HH:mm:ss')}"> 2017 04-12 14：22</td>
-	                                <td>
-										<p th:if="${list.ordInfoRespDTO.status=='01'}">待支付</p>
-										<p th:if="${list.ordInfoRespDTO.status=='02'}">已支付</p>
-										<p th:if="${list.ordInfoRespDTO.status=='03'}">已失效</p>
-										<p th:if="${list.ordInfoRespDTO.status=='04'}">已完成</p>
-										<p th:if="${list.ordInfoRespDTO.status=='99'}">已取消</p>
-									</td>
-	                                <td th:text="${list.ordInfoRespDTO.gdsName}">查询身份证真伪</td>
-	                                <td>
-	                                    <p class="pop-link">
-	                                        <a href="javascript:;" th:onclick="|iwantComplaint('${list.orderId}','')|">我要投诉</a>
-	                                    </p>
-	                                </td>
-	                            </tr>
-	                          
-	                            </tbody>
-	                        </table>
-	                          <!-- 分页-->
-		                    <div class="pagelist" th:remove="all">
-		                        <nav aria-label="Page navigation">
-		                            <ul class="pagination">
-		                                <li >
-		                                    <a href="#" aria-label="Previous">
-		                                        <span aria-hidden="true">上一页</span>
-		                                    </a>
-		                                </li>
-		                                <li class="active"><a href="#">1</a></li>
-		                                <li><a href="#">2</a></li>
-		                                <li><a href="#">3</a></li>
-		                                <li><a href="#">4</a></li>
-		                                <li><a href="#">5</a></li>
-		                                <li>
-		                                    <a href="#" aria-label="Next">
-		                                        <span aria-hidden="true">下一页</span>
-		                                    </a>
-		                                </li>
-		                                <div class="pageskip">
-		                                    <span class="pr10">到第<input type="text" class="pageskip_box">页</span>
-		                                    <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
-		                                </div>
-		                            </ul>
-		
-		                        </nav>
-		                    </div>
-							<!-- 分页-->
-							<div th:fragment="pager" class="pagerBar pagelist pull-right"
-								 th:if=" ${pageInfo}">
-								<script type="text/javascript"
-										src="../static/js-busi/common/pager.js"
-										th:src="@{/js-busi/common/pager.js}"></script>
-								<span data-toggle="pager" id="odr_pagerId"
-									  th:data-count="${pageInfo.count}"
-									  th:data-size="${pageInfo.pageSize}"
-									  th:data-currentindex="${pageInfo.pageNo}"></span>
-								<script th:inline="javascript">
 
-                                    if (typeof ordpagerClick === "undefined") {
-                                        ordpagerClick = function(index) {
-                                            myOrderList(index);
-                                        }
-                                    }
-                                    $('#odr_pagerId').pager({
-                                        callback : ordpagerClick
-                                    });
-								</script>
-							</div>
-	                    </div>
 	                    <div role="tabpanel" class="tab-pane active" id="tab02">
 	                        <table class="editTable">
 	                            <tr>
@@ -261,7 +144,7 @@
 										<td th:if="${rs.complaintStatus} == '3'">已撤销</td>
 		                                <td>
 		                                    <p class="pop-link">
-		                                        <a href="javascript:;" th:if="${rs.complaintStatus} == '1'" th:onclick="|updateComplaint('${rs.complaintId}','3')|">撤销</a>
+		                                        <a href="javascript:;" th:if="${rs.complaintStatus} == '1' or ${rs.complaintStatus} == '2'" th:onclick="|initComplaintRepeat('${rs.complaintId}','${rs.orderId}','${rs.ordComplaintContRespDTO.complaintContId}','${rs.complaintItem}')|">回复</a>
 		                                        <a href="javascript:;" th:onclick="|iwantComplaint('${rs.orderId}','${rs.complaintId}')|">查看</a>
 		                                    </p>
 		                                </td>
@@ -304,7 +187,7 @@
 			</div>
 		</div>
 	
-		<!-- 我要投诉弹窗 -->
+		<!-- 查看投诉详情 -->
 		<div  class="modal" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 	        <div class="modal-dialog" role="document">
 	            <div class="modal-content"  id="modal_content">
@@ -320,33 +203,30 @@
 						  	</div>
 							<div class="mt10">
 								<label>投诉事项</label>
-								<select th:id="complaint_item" class="form-control">
+								<select th:id="complaint_item" class="form-control" disabled>
 									<option value="0">快速发货</option>
 									<option value="1">售后保障</option>
 									<option value="9">其它</option>
 								</select>
 							</div>
-	                        <div class="mt10"  id="needcontentDiv">
+	                        <div class="mt10">
 	                            <label>投诉内容</label>
-									<textarea th:if="${ordCompDTO.ordComplaintContRespDTO}" class="form-control" rows="5" maxlength="624"  placeholder="请填写投诉内容"  th:id="complaintContent"
+									<textarea disabled th:if="${ordCompDTO}" class="form-control" rows="5" maxlength="624"  placeholder="请填写投诉内容"  th:id="complaintContent"
 															 th:text="${ordCompDTO.ordComplaintContRespDTO.fromRemark}"></textarea>
-									<textarea th:if="${ordCompDTO.ordComplaintContRespDTO} == null" class="form-control" rows="5" maxlength="624"  placeholder="请填写投诉内容"  th:id="complaintContent"></textarea>
-								<p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请填写投诉内容</span></p>
 	                        </div>
 	                        <div class="mt10"  id="lnkposenDiv">
 	                            <label>联系人</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系人"  th:id="lnkposen"
 														 th:value="${ordCompDTO.linkPerson}">
-								<p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请填写联系人</span></p>
-		                        <div class="mt10"  id="lnkphoneDiv">
+		                        <div class="mt10">
 		                            <label>手机号码</label><input type="text" class="form-control" maxlength="11"  placeholder="请填写手机号码"  th:id="lnkphone"
 															  th:value="${ordCompDTO.mobile}">
-		                            <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的手机号</span></p>
 		                          </div>
-		                        <!--<div class="mt10"  id="lnkemailDiv">
-		                            <label>联系邮箱</label><input type="text" class="form-control" maxlength="128"  placeholder="请填写联系邮箱"  th:id="lnkemail">
-		                             <p class="error-tip" style="visibility: hidden;"><i class="icon iconfont icon-cuowu"></i><span>请输入正确的邮箱</span></p>
-		                        </div>-->
 		                    </div>
+							<div class="mt10">
+								<label>回复内容</label>
+								<textarea th:if="${ordCompDTO}" class="form-control" rows="5" maxlength="624"  placeholder="请填写投诉内容"  th:id="complaintContent"
+										  th:text="${ordCompDTO.ordComplaintContRespDTO.repeatCont}"></textarea>
+							</div>
 		                </div>
 		                <div class="modal-footer">
 		                    <button th:if="${compId} == ''" type="button" class="btn btn-primary wt120"  th:onclick="|modalDataSubmit()|">提交</button>
@@ -356,6 +236,49 @@
 	        	</div>
 	    	</div>
 		</div>
+
+		<!-- 回复投诉弹窗 -->
+		<div  class="modal" id="modal_repeat" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content"  id="repeat_content">
+					<input type="hidden" th:value="${compId}" th:id="repeat_compId">
+					<input type="hidden" th:value="${compContId}" th:id="repeat_compContId">
+					<div class="modal-header">
+						<h4 class="modal-title">投诉回复</h4>
+					</div>
+					<div class="modal-body">
+						<div class="m10">
+							<div class="mt10">
+								<label>数据名称</label><input type="text" class="form-control" maxlength="128" disabled placeholder="请填写数据名称"   th:value="${gdsName}">
+							</div>
+							<div class="mt10">
+								<label>投诉事项</label>
+								<select class="form-control" disabled>
+									<option value="0" th:selected="${compItem} == '0'">快速发货</option>
+									<option value="1" th:selected="${compItem} == '1'">售后保障</option>
+									<option value="9" th:selected="${compItem} == '9'">其它</option>
+								</select>
+							</div>
+							<div class="mt10">
+								<label>投诉内容</label>
+								<textarea disabled th:if="${ordCompDTO}" class="form-control" rows="5" maxlength="624"
+										  placeholder="请填写投诉内容" th:text="${ordCompDTO.ordComplaintContRespDTO.fromRemark}"></textarea>
+							</div>
+							<div class="mt10">
+								<label>回复内容</label>
+								<textarea th:if="${ordCompDTO}" class="form-control" rows="5" maxlength="624"  placeholder="请填写回复内容" id="repeat_Cont"
+										   th:text="${ordCompDTO.ordComplaintContRespDTO.repeatCont}"></textarea>
+							</div>
+						</div>
+						<div class="modal-footer">
+							<button type="button" class="btn btn-primary wt120"  th:onclick="|updateComplaintRepeat()|">提交</button>
+							<button type="button" class="btn btn-primary wt120"   th:onclick="|hideRepeatModal()|">取消</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
 	</div>
 	
 	<div class="m_nav" th:remove="all">

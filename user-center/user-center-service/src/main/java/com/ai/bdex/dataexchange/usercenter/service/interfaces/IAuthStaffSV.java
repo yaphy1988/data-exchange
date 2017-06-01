@@ -4,10 +4,7 @@ import java.util.Map;
 
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SignInfoDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.SmsSeccodeReqDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.*;
 
 public interface IAuthStaffSV {
 	
@@ -94,4 +91,12 @@ public interface IAuthStaffSV {
 	 * @throws Exception
      */
 	public PageResponseDTO<StaffInfoDTO> getStaffInfoPage(AuthStaffDTO vo)throws Exception;
+
+	/**
+	 * 分页查询用户列表
+	 * @param vo
+	 * @return
+	 * @throws Exception
+     */
+	public PageResponseDTO<AuthStaffRespDTO> queryAuthStaffPage(AuthStaffDTO vo) throws Exception;
 }
