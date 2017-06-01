@@ -18,8 +18,9 @@ import com.ai.paas.utils.InetTool;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.annotation.Order;
 
@@ -42,7 +43,7 @@ import java.util.*;
 @Order(2)
 public class LoginAuthFilter implements Filter {
 
-    private static final Log log = LogFactory.getLog(LoginAuthFilter.class);
+    private static Logger log = LoggerFactory.getLogger(LoginAuthFilter.class);
 
     @Value("${application.filter.enabled:true}")
     private boolean filterEnabled;
@@ -98,7 +99,7 @@ public class LoginAuthFilter implements Filter {
         HttpSession session = request.getSession();
 
         //请求uri
-        String uri =request.getRequestURI();
+        String uri =request.getServletPath();
         log.info("receive url:"+uri);
         //商城根路径
         String mallDomain = SystemConfUtil.getSystemModuleInfo("01","1").genFullUrl();
@@ -110,7 +111,7 @@ public class LoginAuthFilter implements Filter {
         }
 
         // 过滤不需要权限控制的请求后缀,或者配置免登陆的url
-        if (shouldFilter(request) || filterEnabled == false) {
+        if (shouldFilter(request,uri) || filterEnabled == false) {
             filterChain.doFilter(servletRequest, servletResponse);
             return;
         }
@@ -228,9 +229,7 @@ public class LoginAuthFilter implements Filter {
      * @param request
      * @return
      */
-    private boolean shouldFilter(HttpServletRequest request) {
-        String uri = request.getRequestURI();
-
+    private boolean shouldFilter(HttpServletRequest request,String uri) {
         //过滤后缀
         for (String suffix : IGNORE_SUFFIX) {
             if (uri!= null && uri.toLowerCase().endsWith(suffix)) {
@@ -277,7 +276,7 @@ public class LoginAuthFilter implements Filter {
 
         //保存url的key
         String key = Constants.Cache.UN_LOGIN_URL_PRE + systemCode + "_" + uri.trim();
-        log.info("Check unLogin Url="+uri +",key="+key);
+
         String redisloginAccess = CacheUtil.getMapItem(Constants.Cache.UN_LOGIN_URL_MAP,key);
 
         if(unloginAccess.equals(redisloginAccess)){
