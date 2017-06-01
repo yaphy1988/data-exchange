@@ -4,9 +4,12 @@ import com.ai.bdex.dataexchange.busi.user.entity.AuthStaffVO;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffPassDTO;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffRespDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffPassRSV;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
@@ -18,6 +21,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +38,9 @@ public class AuthStaffManagerController {
 
     @DubboConsumer
     private IAuthStaffRSV iAuthStaffRSV;
+
+    @DubboConsumer
+    private IAuthStaffPassRSV iAuthStaffPassRSV;
 
     @RequestMapping(value = "/pageInit")
     public String pageInit(HttpServletRequest request, HttpServletResponse response){
@@ -124,6 +132,7 @@ public class AuthStaffManagerController {
     public String initStaffInfo(HttpServletRequest request,HttpServletResponse response){
 
         String staffId = request.getParameter("staffId");
+        String isEdit = request.getParameter("isEdit");
         if (!StringUtil.isBlank(staffId)){
             try {
                 AuthStaffRespDTO authStaffRespDTO = iAuthStaffRSV.selectByPrimaryKey(staffId);
@@ -131,10 +140,86 @@ public class AuthStaffManagerController {
             }catch (Exception e){
                 log.error("根据staffId查询用户信息异常：",e);
             }
-
         }
+        request.setAttribute("isEdit",isEdit);
 
         return "user_manage :: #staffInfoModalTable";
+    }
+
+
+    @RequestMapping(value = "/saveStaffInfo")
+    @ResponseBody
+    public AjaxJson saveStaffInfo(HttpServletRequest request, HttpServletResponse response, HttpSession session, AuthStaffDTO authStaffDTO){
+        AjaxJson ajaxJson = new AjaxJson();
+
+        if (authStaffDTO == null){
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("保存失败，系统错误，请重试或联系管理员！");
+            return ajaxJson;
+        }
+        String isEdit = request.getParameter("isEdit");
+
+        try {
+            if (!"1".equals(isEdit)){//新增
+                //查询用户名是否重复
+                AuthStaffDTO input1 = new AuthStaffDTO();
+                input1.setStaffId(authStaffDTO.getStaffId());
+                AuthStaffDTO phoneResult1 = iAuthStaffRSV.findAuthStaffInfo(input1);
+                if(phoneResult1!=null){
+                    ajaxJson.setSuccess(false);
+                    ajaxJson.setMsg("保存失败，用户ID已经存在!");
+                    return ajaxJson;
+                }
+                //查询手机号是否重复
+                AuthStaffDTO input = new AuthStaffDTO();
+                input.setSerialNumber(authStaffDTO.getSerialNumber());
+                AuthStaffDTO phoneResult = iAuthStaffRSV.findAuthStaffInfo(input);
+                if(phoneResult!=null){
+                    ajaxJson.setSuccess(false);
+                    ajaxJson.setMsg("保存失败，手机号已经存在!");
+                    return ajaxJson;
+                }
+
+                if (!StringUtil.isBlank(authStaffDTO.getBirthdayStr())){
+                    authStaffDTO.setBirthday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(authStaffDTO.getBirthdayStr()));
+                }
+                authStaffDTO.setCreateStaff(StaffUtil.getStaffId(session));
+                authStaffDTO.setCreateTime(new Date());
+                authStaffDTO.setCreateFrom("1");//管理员新增
+                authStaffDTO.setStaffFlag("1");//默认有效
+                authStaffDTO.setLockStatus("1");//默认正常
+                authStaffDTO.setAuthenFlag("1");//默认认证通过
+                authStaffDTO.setStartDate(new Date());
+                authStaffDTO.setEndDate(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse("2099-12-31 23:59:59"));
+                iAuthStaffRSV.insertInfoToAuthStaff(authStaffDTO);
+
+                try {
+                    AuthStaffPassDTO authStaffPassDTO = new AuthStaffPassDTO();
+                    authStaffPassDTO.setStaffId(authStaffDTO.getStaffId());
+                    authStaffPassDTO.setStaffPasswd("123456");
+                    authStaffPassDTO.setIsFirst("1");
+                    authStaffPassDTO.setCreateStaff(StaffUtil.getStaffId(session));
+                    authStaffPassDTO.setCreateTime(new Date());
+                    authStaffPassDTO.setInvalidTime(new SimpleDateFormat("yyyy-MM-dd").parse("2099-12-31"));
+                    iAuthStaffPassRSV.savePassInfo(authStaffPassDTO);
+                }catch (Exception e){
+                    log.error("自动设置账户密码异常：",e);
+                    ajaxJson.setMsg("保存失败，请重试或联系管理员");
+                    ajaxJson.setSuccess(false);
+                    return ajaxJson;
+                }
+
+            }else{//编辑
+
+            }
+
+        }catch (Exception e){
+            log.error("保存用户信息异常：",e);
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("保存失败，请重试或联系管理员！");
+        }
+
+        return ajaxJson;
     }
 
 
