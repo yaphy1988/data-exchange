@@ -1,7 +1,5 @@
 package com.ai.bdex.dataexchange.job.tradecenter.job;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -26,11 +24,10 @@ import com.ai.paas.util.Utils;
 @Component // 此注解必加
 @EnableScheduling // 此注解必加
 public class SolrDeltaImportJob {
-    private static Logger logger = LoggerFactory.getLogger(SolrDeltaImportJob.class);
     //每天凌晨3点执行
-    @Scheduled(cron = "0 0/5 * * * ? ")
+    @Scheduled(cron = "0 0 3 * * ? ")
     public void doJob(){
-        Utils.getCtx().getBean(SolrDeltaImportService.class).delta();
+        Utils.getCtx().getBean(SolrDeltaImportService.class).deltaClear();
     }
 }
 

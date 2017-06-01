@@ -10,3 +10,6 @@ spring:
     url: jdbc:mysql://112.74.163.29:3306/bdex?useUnicode=true&characterEncoding=utf8
     username: bdex
     password: bdex1234
+  data:
+   solr:
+     host: http://112.74.163.29:8983/solr

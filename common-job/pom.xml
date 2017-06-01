@@ -51,6 +51,10 @@
       <artifactId>config-engine</artifactId>
       <version>${woego-frame.version}</version>
     </dependency>
+    <dependency>
+    	<groupId>org.apache.solr</groupId>
+    	<artifactId>solr-solrj</artifactId>
+	</dependency>
   </dependencies>
 
   <build>

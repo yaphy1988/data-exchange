@@ -26,8 +26,8 @@ import com.ai.paas.util.Utils;
 @EnableScheduling // 此注解必加  
 public class SearchGdsBaseJob {
     private static Logger logger = LoggerFactory.getLogger(SearchGdsBaseJob.class);
-    //每天凌晨3点执行
-    @Scheduled(cron = "0 0/5 * * * ? ")
+    //每天凌晨1点执行
+    @Scheduled(cron = "0 0 1 * * ? ")
     public void callProcedureJob(){
         Utils.getCtx().getBean(SearchGdsBaseService.class).callProcedure();
     }
