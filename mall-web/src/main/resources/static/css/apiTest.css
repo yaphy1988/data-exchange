@@ -1,0 +1,9 @@
+@charset "UTF-8";
+
+.apiTest label{
+	display: inline-block;
+	font-weight: bold;
+}
+.apiTest pre{
+	padding: 10px;
+}
