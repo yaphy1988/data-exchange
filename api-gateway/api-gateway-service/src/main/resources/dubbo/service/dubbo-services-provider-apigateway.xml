@@ -11,6 +11,9 @@
   <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.ISmsSendRSV" ref="smsSendByThreadRSV"
                  owner="zhaoyf7" timeout="3000"/>
 
+  <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.ICheckCreditRSV" ref="iCheckCreditRSV"
+                 owner="zhaoyf7" timeout="3000"/>
+
   <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipClientAccesstokenRSV" ref="aipClientAccesstokenRSV"
                  owner="zhaoyf7" timeout="3000"/>  
                  
