@@ -1,4 +1,4 @@
-package com.ai.bdex.dataexchange.tradecenter.service;
+package com.ai.bdex.dataexchange.job.tradecenter.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
