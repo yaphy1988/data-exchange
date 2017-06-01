@@ -122,10 +122,14 @@ function submitStaffInfo() {
  * @param params
  */
 function initParams(params) {
-    //校验用户ID
-    if(checkstaffId() ==false){
-        return null;
+    var isEdit = $("#isEdit").val();
+    if (isEdit != "1"){
+        //校验用户ID
+        if(checkstaffId() ==false){
+            return null;
+        }
     }
+
 
     var staffId = $.trim($("#staffInfoModal_staffId").val());
 
