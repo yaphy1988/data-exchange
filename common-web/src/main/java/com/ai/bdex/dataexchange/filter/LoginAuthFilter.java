@@ -188,7 +188,8 @@ public class LoginAuthFilter implements Filter {
                 }
 
                 if(this.unLoginFlag == false && unLoginUrl(authUrl, "0") == false){
-                    needLogin = true;
+                    //  重新编译                 
+				   needLogin = true;
                 }
             }
 

@@ -15,8 +15,17 @@ var basePath =  WEB_ROOT;
 function deleteGoods()
 {
      //跳转到首页
-	 self.location=basePath+"homePage/pageInit"; 
+	 self.location=basePath+"/homePage/pageInit";
 }
+function gotoHome() {
+	self.location=basePath+"/homePage/pageInit";
+}
+function gotogdsPageUrl(gdsid) {
+	window.location.href=basePath+"/goods/details/"+gdsid+"-";
+
+ }
+//tiaodao shouye
+// href="/homePage/pageInit"
 function reduce()
 {
     //减少数量
@@ -59,13 +68,14 @@ function reduce()
 
  	    var url = basePath+'/order/creatOrder';
 		var params={};
-		var tempwindow=window.open('_blank');
+
 		var callBack =function(data){ 
 			if(data.success){
 				  var paytype = $('input:radio:checked').val();
 				   if(paytype ==  "zhifubao")
 				    {
 				    	//支付宝
+						var tempwindow=window.open('_blank');
 						var orderid = data.orderid;
 						var suborderid = data.suborderid;
 						var url = basePath+'/bdxalipay/alipayRequestPage?orderId='+orderid+"&subOrderid="+suborderid;
@@ -73,7 +83,7 @@ function reduce()
 				    }
 				    else
 				    {
-				       window.location.href=basePath+"/order/offline_remittance";  
+ 				       window.location.href=basePath+"/order/offline_remittance";
  				    }
 			} 
 			else{

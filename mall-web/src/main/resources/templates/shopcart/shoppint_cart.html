@@ -15,10 +15,8 @@
     <link rel="stylesheet" href="../../static/css/shoppint_cart.css" th:href="@{/css/shoppint_cart.css}">  <!-- 购物车/汇款 tangyk -->
     <script src="../../static/js/jquery-1.12.4.js" th:remove="all"></script>
     <script src="../../static/component/bootstrap/js/bootstrap.min.js" th:remove="all"></script>
-    <script src="../../static/js/util.js" th:src="@{/js/util.js}"></script>
-    
-    <script src="../../static/js/jquery.bootstrap.message.js" th:src="@{/js/jquery.bootstrap.message.js}"></script>
-     <!--[if lt IE 9]>
+
+      <!--[if lt IE 9]>
             <script src="../static/js/respond.min.js" ></script>
             <script src="../static/js/html5shiv.min.js" ></script>
     <![endif]-->   
@@ -51,7 +49,7 @@
 <div class="wrap1200 topCommon clearfix" >
     <!--标志-->
     <div class="logo pull-left">
-        <a href="/homePage/pageInit" target="_blank"><img src="../../static/images/logo.png" title="广州数据中心" th:src="@{/images/logo.png}"></a>
+        <a  th:onclick="'javascript:gotoHome();'" target="_blank"><img src="../../static/images/logo.png" title="广州数据中心" th:src="@{/images/logo.png}"></a>
      </div>
     <!--步骤-->
     <div class="shopping_cart_bg1 pull-right" >
@@ -89,12 +87,12 @@
                                 <td width="39" >
                                     <p class="cart_img">
                                       <span>
-                                            <a  href=""   th:href="'/goods/details/'+${skuInfo.gdsId}+'-'" ><img src="images/0771A3A26900101.jpg" th:src="${gdsvfsurl}"></a>
+                                <a  th:onclick="'javascript:gotogdsPageUrl('+${skuInfo.gdsId}+');'" ><img src="images/0771A3A26900101.jpg" th:src="${gdsvfsurl}"></a>
                                        </span>
                                     </p>
                                 </td>
                                 <td width="200">
-                                <p ><a href="#"  th:href="'/goods/details/'+${skuInfo.gdsId}+'-'"  class="cart_img_link" th:text="${gdsname}">商品名称</a></p>
+                                <p ><a href="#" javas    th:onclick="'javascript:gotogdsPageUrl('+${skuInfo.gdsId}+');'"   class="cart_img_link" th:text="${gdsname}">商品名称</a></p>
                                 </td>
                                 <td>
                                  <b><span   th:text="${#tools.formatMoney(packPrice)}">套餐名称</span><span>/</span><span th:text="${skuInfo.packTimes}">套餐次数</span><span>次</span></b>   
@@ -107,8 +105,7 @@
                                 </td>
                                 <td> 
                                  <b><span id="allmoney"  name='总价'  th:text="${#tools.formatMoney(packPrice)}">总价 70</span></b>
-<!--                                     <b><span id="allmoney"  name='总价'  th:text="#tools.formatMoney(${skuInfo.packPrice})">总价 70</span></b>
- -->                                </td>
+                          </td>
                              </tr>
                         </tbody>
             </table>
@@ -131,7 +128,7 @@
               </td>
         </tr>
         <tr>
-              <td align="left " class="pt15"><a href="index.html" class="btn btn-default">继续购物</a></td>
+              <td align="left " class="pt15"><a   th:onclick="'javascript:gotoHome();'" class="btn btn-default">继续购物</a></td>
               <td align="right" class="pt15"><a th:if="${bshowCreatebt}"  class="btn btn-primary ok" th:onclick="'javascript:createOrder();'"   >确认提交</a>
                   <a th:if="${bshowCreatebt}== false"  class="btn btn-default" >请先登录才能提交订单</a>
               </td>
