@@ -2,7 +2,7 @@
  * Created by yx on 2017/5/31.
  */
 $(function () {
-    
+    queryAuthStaffPage(1);
 })
 
 function queryAuthStaffPage(pageNo){

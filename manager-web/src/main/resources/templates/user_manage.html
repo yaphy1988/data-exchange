@@ -8,6 +8,8 @@
 	<link rel="stylesheet" href="../META-INF/resources/webjars/bootstrap/3.3.7/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../META-INF/resources/webjars/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../META-INF/resources/webjars/css/global.css" th:remove="all">
+
+	<script type="text/javascript" src="../static/js-busi/user/staffManager.js" th:src="@{/js-busi/user/staffManager.js}"></script>
 	
 </head>
 <body>
@@ -75,7 +77,7 @@
 							</tr>
 							</thead>
 							<tbody>
-							<tr th:if="${pageInfo} and ${#lists.size(pageInfo.result) gt 0}" th:each="authStaff,authStaffStat:${pageInfo.result}">
+							<tr th:if="${pageInfo} and ${pageInfo.result} and ${#lists.size(pageInfo.result) gt 0}" th:each="authStaff,authStaffStat:${pageInfo.result}">
 								<td><input type="radio" name=""></td>
 								<td th:text="${authStaff.staffId}"></td>
 								<td th:text="${authStaff.staffName}"></td>
