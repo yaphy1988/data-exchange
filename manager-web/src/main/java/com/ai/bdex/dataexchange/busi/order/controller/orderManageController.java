@@ -173,11 +173,14 @@ public class orderManageController {
 			pageInfo = iAipCenterDataAccountRSV.queryRechargePageByOption(rechargeReqDTO);
 			if(CollectionUtils.isNotEmpty(pageInfo.getResult())){
 				for(RechargeDTO rechargeDTO : pageInfo.getResult()){
-					if(StringUtil.isNotBlank(rechargeDTO.getServiceId())){
-						List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(String.valueOf(rechargeDTO.getServiceId()));
-	        			if(CollectionUtils.isNotEmpty(apiServiceList)){
-	        				rechargeDTO.setServiceName(apiServiceList.get(0).getServiceName());
-	        			}	
+					OrdInfoReqDTO OrdInfoReqDTO = new OrdInfoReqDTO();
+					OrdInfoReqDTO.setOrderId(rechargeDTO.getOrderId());
+					OrdInfoReqDTO.setSubOrder(rechargeDTO.getSubOrder());
+					List<OrdInfoRespDTO> ordInfoList = iOrderInfoRSV.queryOrderInfoList(OrdInfoReqDTO);
+					OrdInfoRespDTO ordInfo = ordInfoList.get(0);
+					if(ordInfo!=null){
+						rechargeDTO.setServiceId(ordInfo.getAipServiceId());
+						rechargeDTO.setServiceName(ordInfo.getServiceName());
 					}
 				}
 			}
