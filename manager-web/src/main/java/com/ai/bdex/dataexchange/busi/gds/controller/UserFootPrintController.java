@@ -59,7 +59,10 @@ public class UserFootPrintController {
             ObjectCopyUtil.copyObjValue(userFootPrintVO, userFootPrintReqDTO, null, false);
             userFootPrintReqDTO.setPageSize(10);
             userFootPrintReqDTO.setStatus("1");
-            userFootPrintReqDTO.setCreateUser(StaffUtil.getStaffId(session));
+            if(!"1".equals(StaffUtil.getStaffVO(session).getStaffType())){
+                //非管理员
+                userFootPrintReqDTO.setCreateUser(StaffUtil.getStaffId(session));
+            }
             PageResponseDTO<UserFootPrintRespDTO> pageInfo = iUserFootPrintRSV.queryUserFootPrintPageExtends(userFootPrintReqDTO);
             if(pageInfo != null&& pageInfo.getResult() != null && pageInfo.getResult().size() >=1){
                 List<UserFootPrintRespDTO> list = pageInfo.getResult();

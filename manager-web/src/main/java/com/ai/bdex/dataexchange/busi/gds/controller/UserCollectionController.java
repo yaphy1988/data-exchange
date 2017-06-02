@@ -60,7 +60,10 @@ public class UserCollectionController {
             ObjectCopyUtil.copyObjValue(userCollectionVO, userCollectionReqDTO, null, false);
             userCollectionReqDTO.setPageSize(10);
             userCollectionReqDTO.setStatus("1");
-            userCollectionReqDTO.setCreateUser(StaffUtil.getStaffId(session));
+            if(!"1".equals(StaffUtil.getStaffVO(session).getStaffType())){
+                //非管理员
+                userCollectionReqDTO.setCreateUser(StaffUtil.getStaffId(session));
+            }
             PageResponseDTO<UserCollectionRespDTO> pageInfo = iUserCollectionRSV.queryUserCollectionPageExtends(userCollectionReqDTO);
             if(pageInfo != null&& pageInfo.getResult() != null && pageInfo.getResult().size() >=1){
                 List<UserCollectionRespDTO> list = pageInfo.getResult();
