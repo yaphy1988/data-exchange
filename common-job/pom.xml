@@ -19,24 +19,8 @@
   <dependencies>
     <dependency>
       <groupId>com.ai.bdex.data-exchange</groupId>
-      <artifactId>trade-center-api</artifactId>
+      <artifactId>common-api</artifactId>
       <version>${project.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>spring-boot-starter-dubbo</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.101tec</groupId>
-      <artifactId>zkclient</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
-    </dependency>
-    <dependency>
-      <groupId>com.alibaba</groupId>
-      <artifactId>fastjson</artifactId>
     </dependency>
     <dependency>
       <groupId>org.quartz-scheduler</groupId>
@@ -47,9 +31,8 @@
       <artifactId>spring-context-support</artifactId>
     </dependency>
     <dependency>
-      <groupId>com.ai.paas</groupId>
-      <artifactId>config-engine</artifactId>
-      <version>${woego-frame.version}</version>
+      <groupId>commons-lang</groupId>
+      <artifactId>commons-lang</artifactId>
     </dependency>
     <dependency>
     	<groupId>org.apache.solr</groupId>

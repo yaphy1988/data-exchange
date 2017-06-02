@@ -175,6 +175,11 @@
         </exclusions>
       </dependency>
       <dependency>
+        <groupId>org.quartz-scheduler</groupId>
+        <artifactId>quartz-jobs</artifactId>
+        <version>${quartz.version}</version>
+      </dependency>
+      <dependency>
         <groupId>javax.mail</groupId>
         <artifactId>com.springsource.javax.mail</artifactId>
         <version>${javax.mail.version}</version>
@@ -295,6 +300,14 @@
 
     </dependencies>
   </dependencyManagement>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-test</artifactId>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
   <distributionManagement>
     <repository>
