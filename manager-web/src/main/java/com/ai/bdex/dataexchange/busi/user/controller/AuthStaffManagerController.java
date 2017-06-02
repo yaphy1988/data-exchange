@@ -136,7 +136,7 @@ public class AuthStaffManagerController {
         if (!StringUtil.isBlank(staffId)){
             try {
                 AuthStaffRespDTO authStaffRespDTO = iAuthStaffRSV.selectByPrimaryKey(staffId);
-                request.setAttribute("authStaffInit",authStaffRespDTO);
+                request.setAttribute("staffInfoInit",authStaffRespDTO);
             }catch (Exception e){
                 log.error("根据staffId查询用户信息异常：",e);
             }
@@ -181,7 +181,7 @@ public class AuthStaffManagerController {
                 }
 
                 if (!StringUtil.isBlank(authStaffDTO.getBirthdayStr())){
-                    authStaffDTO.setBirthday(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(authStaffDTO.getBirthdayStr()));
+                    authStaffDTO.setBirthday(new SimpleDateFormat("yyyy-MM-dd").parse(authStaffDTO.getBirthdayStr()));
                 }
                 authStaffDTO.setCreateStaff(StaffUtil.getStaffId(session));
                 authStaffDTO.setCreateTime(new Date());
@@ -208,9 +208,16 @@ public class AuthStaffManagerController {
                     ajaxJson.setSuccess(false);
                     return ajaxJson;
                 }
+                ajaxJson.setSuccess(true);
+                ajaxJson.setMsg("新增用户成功！");
 
             }else{//编辑
-
+                authStaffDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+                if (!StringUtil.isBlank(authStaffDTO.getBirthdayStr())){
+                    authStaffDTO.setBirthday(new SimpleDateFormat("yyyy-MM-dd").parse(authStaffDTO.getBirthdayStr()));
+                }
+                iAuthStaffRSV.updateAuthStaffInfo(authStaffDTO);
+                ajaxJson.setMsg("编辑用户信息保存成功！");
             }
 
         }catch (Exception e){
@@ -218,6 +225,37 @@ public class AuthStaffManagerController {
             ajaxJson.setSuccess(false);
             ajaxJson.setMsg("保存失败，请重试或联系管理员！");
         }
+
+        return ajaxJson;
+    }
+
+    @RequestMapping(value = "/resetStaffPass")
+    @ResponseBody
+    public AjaxJson resetStaffPass(HttpServletRequest request,HttpServletResponse response,HttpSession session){
+        AjaxJson ajaxJson = new AjaxJson();
+        String staffId = request.getParameter("staffId");
+        if (StringUtil.isBlank(staffId)){
+            log.error("重置密码异常，入参staffId为空！");
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("重置密码失败！");
+            return ajaxJson;
+        }
+
+        try {
+            AuthStaffPassDTO authStaffPassDTO = new AuthStaffPassDTO();
+            authStaffPassDTO.setPasswdFlag("0");
+            authStaffPassDTO.setStaffPasswd("123456");
+            authStaffPassDTO.setStaffId(staffId);
+            authStaffPassDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+            iAuthStaffPassRSV.updatePasswd(authStaffPassDTO);
+            ajaxJson.setSuccess(true);
+            ajaxJson.setMsg("重置密码成功！");
+        }catch (Exception e){
+            log.error("重置密码异常：",e);
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("重置密码失败！");
+        }
+
 
         return ajaxJson;
     }

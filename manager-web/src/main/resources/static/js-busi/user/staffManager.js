@@ -72,6 +72,10 @@ function staffInfoInit(isEdit) {
     var params = {};
     if (isEdit == "1"){
         var staffId = $("input[name='staffId']:checked").attr("staffId");
+        if(staffId == undefined || $.trim(staffId) == ""){
+            WEB.msg.info("提示","请先选择需要编辑的用户！");
+            return;
+        }
         params.staffId = staffId;
     }
     params.isEdit = isEdit;
@@ -199,4 +203,39 @@ function checkstaffId(){
         return false;
     }
     return true;
+}
+
+function resetPass() {
+    var staffId = $("input[name='staffId']:checked").attr("staffId");
+    if(staffId == undefined || $.trim(staffId) == ""){
+        WEB.msg.info("提示","请先选择需要编辑的用户！");
+        return;
+    }
+    $("#staffPassModal_staffId").html(staffId);
+    $("#staffPassModal").modal("show");
+}
+
+function confirmResetPass() {
+    var staffId = $("input[name='staffId']:checked").attr("staffId");
+    if(staffId == undefined || $.trim(staffId) == ""){
+        WEB.msg.info("提示","请先选择需要编辑的用户！");
+        return;
+    }
+    var params = {};
+    params.staffId = staffId;
+    $.ajax({
+        url:WEB_ROOT + "/authStaff/resetStaffPass",
+        data:params,
+        dataType:'json',
+        type:'json',
+        async:true,
+        success:function (jsonObj) {
+            if (jsonObj.success){
+                $("#staffPassModal").modal("hide");
+                WEB.msg.info("提示","重置密码成功！");
+            }else{
+                WEB.msg.info("提示","重置密码失败！");
+            }
+        }
+    })
 }
