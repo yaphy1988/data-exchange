@@ -122,7 +122,7 @@
 	                                <td>
 	                                    <p class="pop-link">
 	                                        <a href="javascript:void(0)" th:if="${footPrint.catFirst}=='1'" target="_blank" th:href="${#tools.mallDomain()}+'/goods/details/'+${footPrint.gdsId}+'-'">购买</a>
-	                                        <a href="javascript:void(0)" th:onclick="|MyFavorite.deleteUserFootPrint(${footPrint.fpId})|">删除</a>
+	                                        <a href="javascript:void(0)" th:onclick="|BrowsingHistory.deleteUserFootPrint(${footPrint.fpId})|">删除</a>
 	                                    </p>
 	                                </td>
 	                            </tr>

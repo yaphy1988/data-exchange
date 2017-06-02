@@ -237,6 +237,9 @@ public class UserFootPrintSVImpl implements IUserFootPrintSV{
         if(StringUtil.isNotBlank(userFootPrintReqDTO.getGdsName())){
             criteria.andGdsNameLike("%"+userFootPrintReqDTO.getGdsName()+"%");
         }
+        if (StringUtil.isNotBlank(userFootPrintReqDTO.getCreateUser())){
+            criteria.andCreateUserEqualTo(userFootPrintReqDTO.getCreateUser());
+        }
     }
 
     @Override

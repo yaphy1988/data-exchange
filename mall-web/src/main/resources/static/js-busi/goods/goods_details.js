@@ -29,6 +29,32 @@ $(function(){
      * @returns
      */
     userfootprint();
+    $(".gd_etails .collect").on('click',function(){
+    	var param = {
+				gdsId : $("#gdsId_detail").val(),
+				catFirstId : $("#catFirst_detail").val()
+		};
+    	var skuSel =$("#skuListSel").find(".active").find("a");
+	    if (skuSel.attr("skuId") !=undefined && $.trim(skuSel.attr("skuId"))!=""){
+	    	param.skuId = $.trim(skuSel.attr("skuId"));
+	    }
+		$.ajax({
+			url:WEB_ROOT+'/search/gdscollection',
+			cache:false,
+			async:true,
+			dataType:'json',
+			data : param,
+			success:function(data){
+				if(data.success ){
+					if(data.obj=="add"){
+						WEB.msg.info("提示",'收藏成功');
+					}else if(data.obj=="cancel"){
+						WEB.msg.info("提示",'取消成功');
+					}
+				}
+			}
+		});
+    })
 })
 
 function changeGdsSku(obj) {

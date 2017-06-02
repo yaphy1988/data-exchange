@@ -238,7 +238,9 @@ public class UserCollectionSVImpl implements IUserCollectionSV{
         if(StringUtil.isNotBlank(userCollectionReqDTO.getGdsName())){
             criteria.andGdsNameLike("%"+userCollectionReqDTO.getGdsName()+"%");
         }
-        
+        if(StringUtil.isNotBlank(userCollectionReqDTO.getCreateUser())){
+            criteria.andCreateUserEqualTo(userCollectionReqDTO.getCreateUser());
+        }
     }
     
 }

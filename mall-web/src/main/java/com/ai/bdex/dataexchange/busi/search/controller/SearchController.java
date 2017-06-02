@@ -308,6 +308,7 @@ public class SearchController{
             UserCollectionReqDTO userCollectionReqDTO = new UserCollectionReqDTO();
             ObjectCopyUtil.copyObjValue(searhVO, userCollectionReqDTO, null, false);
             userCollectionReqDTO.setStaffId(StaffUtil.getStaffId(session));
+            userCollectionReqDTO.setCatFirst(searhVO.getCatFirst());
             List<UserCollectionRespDTO> list = iUserCollectionRSV.queryUserCollectionList(userCollectionReqDTO);
             if(list != null && list.size() >= 1){
                 //表示已经收藏过该商品，这次点击是作为取消收藏
