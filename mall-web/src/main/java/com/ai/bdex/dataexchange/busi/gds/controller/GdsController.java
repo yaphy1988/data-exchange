@@ -60,6 +60,7 @@ import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.util.CacheUtil;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
@@ -76,7 +77,7 @@ public class GdsController {
     private final static Integer AIP_CAT_ID = 1;//aip的catId
     private final static Integer CUSTOM_CAT_ID = 2;//定制需求catId
     private final static Integer SOLUTION_CAT_ID = 3;//解决方案catId
-
+    private final static String CATE_ITIME = "FOOT_";
     @DubboConsumer(timeout = 30000)
     private IGdsInfoRSV iGdsInfoRSV;
     @DubboConsumer(timeout = 30000)
@@ -431,6 +432,14 @@ public class GdsController {
                 } catch (Exception e) {
                     log.error("获取ip错误", e);
                 }
+            }
+            //先判断缓存是否还有存在。
+            Object footObj = CacheUtil.getItem(CATE_ITIME+staffId+"_"+gdsInfoVO.getGdsId());
+            if(footObj==null){
+                //1小时
+                CacheUtil.addItem(CATE_ITIME+staffId+"_"+gdsInfoVO.getGdsId(), staffId+"_"+gdsInfoVO.getGdsId(), 60*60);
+            }else{
+                return ajaxJson;
             }
             UserFootPrintReqDTO userFootPrintReqDTO = new UserFootPrintReqDTO();
             userFootPrintReqDTO.setGdsId(gdsInfoVO.getGdsId());

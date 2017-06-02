@@ -22,7 +22,10 @@ $(function(){
     });
 
     queryRecGdsList();
-    
+    /**
+     * 统计收藏数量。gongxq
+     */
+    countcollect();
     /**
      * 用户浏览商品记录保存。gongxq
      * @param obj
@@ -51,12 +54,29 @@ $(function(){
 					}else if(data.obj=="cancel"){
 						WEB.msg.info("提示",'取消成功');
 					}
+					$("#detail_count_collect").text(data.attributes.count);
 				}
 			}
 		});
     })
 })
-
+function countcollect(){
+	var param = {
+		gdsId : $("#gdsId_detail").val()
+	};
+	$.ajax({
+		url:WEB_ROOT+'/search/countcollect',
+		cache:false,
+		async:true,
+		dataType:'json',
+		data : param,
+		success:function(data){
+			if(data.success){
+				$("#detail_count_collect").text(data.obj);
+			}
+		}
+	});
+}
 function changeGdsSku(obj) {
     $(obj).parent().parent().find("li").removeClass("active");
     $(obj).parent().addClass("active");

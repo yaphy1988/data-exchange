@@ -320,6 +320,18 @@ public class SearchController{
                 iUserCollectionRSV.insertUserCollection(userCollectionReqDTO);
                 ajaxJson.setObj("add");
             }
+            try {
+                //统计收藏次数
+                UserCollectionReqDTO userCollectionReq = new UserCollectionReqDTO();
+                userCollectionReq.setGdsId(searhVO.getGdsId());
+                long count = iUserCollectionRSV.count(userCollectionReq);
+                Map<String,Object> attributes = new HashMap<String,Object>();
+                attributes.put("count", count);
+                ajaxJson.setAttributes(attributes);
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+           
             ajaxJson.setSuccess(true);
            
         } catch (BusinessException e) {
@@ -357,6 +369,36 @@ public class SearchController{
         }
         return ajaxJson;
     }
+    
+    /**
+     * 
+     * countcollect:(統計该商品收藏量). <br/> 
+     * 
+     * @author gxq 
+     * @param searhVO
+     * @param session
+     * @return 
+     * @since JDK 1.6
+     */
+    @RequestMapping(value="/countcollect")
+    @ResponseBody
+    public AjaxJson countCollect(SearchVO searhVO,HttpSession session){
+        AjaxJson ajaxJson = new AjaxJson();
+        try {
+            
+            UserCollectionReqDTO userCollectionReqDTO = new UserCollectionReqDTO();
+            userCollectionReqDTO.setGdsId(searhVO.getGdsId());
+            long count = iUserCollectionRSV.count(userCollectionReqDTO);
+            ajaxJson.setSuccess(true);
+            ajaxJson.setObj(count);
+        } catch (BusinessException e) {
+            logger.error("统计失败", e);
+            ajaxJson.setSuccess(false);
+            ajaxJson.setObj(0);
+        }
+        return ajaxJson;
+    }
+    
     
     @DubboConsumer
     private IDeltaIndexServiceRSV iDeltaIndexServiceRSV;
