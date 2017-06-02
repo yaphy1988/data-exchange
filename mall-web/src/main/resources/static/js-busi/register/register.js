@@ -124,10 +124,10 @@ function afterSend(){
 	//发送后，80秒效果
     $("#getcodebtn").attr("disabled",true);
     var se = 80;
-    $("#getcodebtn").html("重新获取验证码("+se+"秒)");
+    $("#getcodebtn").html("("+se+"秒)");
     var timer = window.setInterval(function(){
       se --;
-      $("#getcodebtn").html("重新获取验证码("+se+"秒)");
+      $("#getcodebtn").html("("+se+"秒)");
       if(se==0){
         $("#getcodebtn").html("重新获取验证码");
         $("#getcodebtn").attr("disabled",false);
