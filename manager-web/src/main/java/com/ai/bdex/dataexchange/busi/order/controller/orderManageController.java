@@ -73,7 +73,9 @@ public class orderManageController {
     private final static String CUSTOM_CAT_ID = "2";//定制需求catId
     private final static String SOLUTION_CAT_ID = "3";//解决方案catId
     private final static Integer PAGE_SIZE = 10;//页数
-    private final static String ORDER_TYPE_COMMON = "10";//普通订单
+	private final static Integer CartFirs_2 = 2;//跨类套餐的类型
+
+	private final static String ORDER_TYPE_COMMON = "10";//普通订单
 	private final static String TMPUSERID = "tmpuser";// 临时用户
 	private static final Logger log = LoggerFactory.getLogger(orderManageController.class);
 	private final static String STATUS_VALID = "1";// 有效
@@ -389,8 +391,7 @@ public class orderManageController {
                 rechargeDTO.setRechargeUserId(ordMainInfoRespDTO.getStaffId());
  				if(Constants.Order.ORDER_TYPE_30.equals(ordMainInfoRespDTO.getOrderType()))
 				{
-					/*int itotalcount = new Long(ordInfoRespDTO.getBuyAllCount()).intValue();
-					rechargeDTO.setTotalNum(itotalcount);*/
+					rechargeDTO.setCatFirst(CartFirs_2);
 				}
 				else if(Constants.Order.ORDER_TYPE_10.equals(ordMainInfoRespDTO.getOrderType()) || Constants.Order.ORDER_TYPE_20.equals(ordMainInfoRespDTO.getOrderType()) ){
 					if(Constants.Order.ORDER_TYPE_10.equals(ordMainInfoRespDTO.getOrderType()) ){
