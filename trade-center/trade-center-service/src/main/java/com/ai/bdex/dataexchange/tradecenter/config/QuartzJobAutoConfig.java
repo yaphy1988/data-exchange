@@ -24,14 +24,14 @@ public class QuartzJobAutoConfig {
     @Bean
     public Object jobDetailGenerates() {
         QuartzTaskInfo searchGdsBaseJobInfo = new QuartzTaskInfo();
-        searchGdsBaseJobInfo.setCronExpression("0 0/1 * * * ? ");
+        searchGdsBaseJobInfo.setCronExpression("0 0 0/1 * * ? ");
         searchGdsBaseJobInfo.setJobName(SearchGdsBaseJob.class.getName());
         searchGdsBaseJobInfo.setJobGroup("solrJobGroup");
         initJobs(searchGdsBaseJobInfo);
 
 
         QuartzTaskInfo solrDeltaImportJobInfo = new QuartzTaskInfo();
-        solrDeltaImportJobInfo.setCronExpression("0 0/1 * * * ? ");
+        solrDeltaImportJobInfo.setCronExpression("0 0 3 * * ? ");
         solrDeltaImportJobInfo.setJobName(SolrDeltaImportJob.class.getName());
         solrDeltaImportJobInfo.setJobGroup("solrJobGroup");
         initJobs(solrDeltaImportJobInfo);
