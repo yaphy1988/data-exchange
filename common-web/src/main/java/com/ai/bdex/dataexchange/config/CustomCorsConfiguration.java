@@ -59,7 +59,7 @@ public class CustomCorsConfiguration {
                     origins = new String[]{"*"};
                 }
 
-                registry.addMapping("/reportdata/**")
+                registry.addMapping("/**")
                         .allowedOrigins(origins)
                         .allowedHeaders("Cache-Control", "Pragma", "Accept", "Origin", "Authorization", "Content-Type", "X-Requested-With")
                         .allowedMethods("GET","POST","OPTIONS","PUT")

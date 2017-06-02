@@ -31,10 +31,10 @@ public class UserStatisticController {
         Date now = new Date();
         queryInfo.setStartTime(now);
 
-        PageInfo<AuthStaffSign> staffSignPages = userStatisticSV.queryAuthStaffSignPageInfo(queryInfo);
+//        PageInfo<AuthStaffSign> staffSignPages = userStatisticSV.queryAuthStaffSignPageInfo(queryInfo);
 
         model.addAttribute("hello","报表");
-        model.addAttribute(staffSignPages);
+//        model.addAttribute(staffSignPages);
         logger.info("报表数据请求已经到达report-web，返回页面模板：report/user_register");
         return "report/user_register";
     }

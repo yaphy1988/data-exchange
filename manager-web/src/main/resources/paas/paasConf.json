@@ -98,7 +98,7 @@
             "protocolType": "http"
           },
           {
-            "moduleId": "1",
+            "moduleId": "2",
             "moduleName": "报表模块",
             "moduleContext": "",
             "moduleDomain": "localhost:8083",
