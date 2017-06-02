@@ -2,7 +2,7 @@
 	<ul >
 		<li th:each="list : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
 			<div class="glist_items">
-				<div class="collect active">
+				<div class="collect active" th:remove="all">
 					<span class="bg"></span>
 					<i class="iconfont icon-xingxing"></i>
 				</div>
