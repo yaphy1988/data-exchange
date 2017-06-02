@@ -15,7 +15,7 @@ import org.springframework.context.annotation.Configuration;
  * Created by yaphy on 2017/6/2.
  */
 @Configuration
-public class QuartJobAutoConfig {
+public class QuartzJobAutoConfig {
     private Logger logger = LoggerFactory.getLogger(this.getClass());
 
     @Autowired
