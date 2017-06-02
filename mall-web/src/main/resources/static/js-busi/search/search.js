@@ -8,7 +8,7 @@ $(function(){
 var Search = {
 		init : function(){
 			//关闭选中的条件事件绑定
-			$(".close").off().on('click',function(e){
+			$(document).off().on("click",'.close',function(e){
 				var $this = $(this);
 				$this.parents("a").remove();
 				var catId = $this.attr('id');
