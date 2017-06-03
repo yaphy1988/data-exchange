@@ -7,7 +7,6 @@
     <title>Title</title>
 
     <script type="text/javascript" src="../../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:remove="all"></script>
-    <script type="text/javascript" src="../../static/js-busi/report/render-ordertable.js" th:src="@{http://localhost:8083/js-busi/report/render-ordertable.js}"></script>
 </head>
 <body>
 <div layout:fragment="screen_content">
@@ -25,7 +24,6 @@
         </div>
     </form>
     <table id="table"
-           data-toggle="table"
            data-toolbar="#toolbar"
            data-show-refresh="true"
            data-show-toggle="true"
@@ -34,20 +32,14 @@
            data-detail-view="true"
            data-detail-formatter="detailFormatter"
            data-minimum-count-columns="2"
-
            data-show-pagination-switch="true"
            data-pagination="true"
-           data-pagination-h-align="right"
-           data-maintain-selected="true"
-           data-page-number="1"
            data-id-field="orderId"
-           data-page-list="[10, 25, 50, 100]"
+           data-page-list="[10, 25, 50, 100, ALL]"
            data-show-footer="false"
            data-side-pagination="server"
-           data-content-type="application/json"
-           data-query-params="queryParams"
-           data-data-type="json"
            data-url="http://localhost:8083/reportdata/getjsonData"
+           data-query-params="queryParams"
            data-response-handler="responseHandler">
         <thead>
         <tr>
@@ -65,10 +57,12 @@
         </tr>
         </thead>
     </table>
+    <script type="text/javascript" src="../../static/js-busi/report/user-register.js" th:src="${#tools.reportDomain()}+'/js-busi/report/user-register.js'"></script>
 
 </div>
 <script th:inline="javascript">
 
 </script>
+
 </body>
 </html>

@@ -7,68 +7,6 @@ var $table = $('#table'),
 function initTable() {
     $table.bootstrapTable({
         height: getHeight(),
-        columns: [
-            [
-                {
-                    field: 'state',
-                    checkbox: true,
-                    rowspan: 2,
-                    align: 'center',
-                    valign: 'middle'
-                }, {
-                    title: 'Item ID',
-                    field: 'id',
-                    rowspan: 2,
-                    align: 'center',
-                    valign: 'middle',
-                    sortable: true,
-                    footerFormatter: totalTextFormatter
-                }, {
-                    title: 'Item Detail',
-                    colspan: 3,
-                    align: 'center'
-                }
-            ],
-            [
-                {
-                    field: 'name',
-                    title: 'Item Name',
-                    sortable: true,
-                    editable: true,
-                    footerFormatter: totalNameFormatter,
-                    align: 'center'
-                }, {
-                    field: 'price',
-                    title: 'Item Price',
-                    sortable: true,
-                    align: 'center',
-                    editable: {
-                        type: 'text',
-                        title: 'Item Price',
-                        validate: function (value) {
-                            value = $.trim(value);
-                            if (!value) {
-                                return 'This field is required';
-                            }
-                            if (!/^\$/.test(value)) {
-                                return 'This field needs to start width $.'
-                            }
-                            var data = $table.bootstrapTable('getData'),
-                                index = $(this).parents('tr').data('index');
-                            console.log(data[index]);
-                            return '';
-                        }
-                    },
-                    footerFormatter: totalPriceFormatter
-                }, {
-                    field: 'operate',
-                    title: 'Item Operate',
-                    align: 'center',
-                    events: operateEvents,
-                    formatter: operateFormatter
-                }
-            ]
-        ]
     });
     // sometimes footer render error.
     setTimeout(function () {
@@ -95,7 +33,7 @@ function initTable() {
     $remove.click(function () {
         var ids = getIdSelections();
         $table.bootstrapTable('remove', {
-            field: 'id',
+            field: 'orderId',
             values: ids
         });
         $remove.prop('disabled', true);
@@ -108,14 +46,46 @@ function initTable() {
 }
 function getIdSelections() {
     return $.map($table.bootstrapTable('getSelections'), function (row) {
-        return row.id
+        return row.orderId
     });
 }
-function responseHandler(res) {
-    $.each(res.rows, function (i, row) {
-        row.state = $.inArray(row.id, selections) !== -1;
+/*function responseHandler(res) {
+    var rows = res.list;
+    $.each(rows, function (i, row) {
+        row.state = $.inArray(row.orderId, selections) !== -1;
     });
     return res;
+}*/
+function responseHandler(res) {
+    if (res) {
+        var rows = res.list;
+        $.each(rows, function (i, row) {
+            row.state = $.inArray(row.orderId, selections) !== -1;
+        });
+        return {
+            "rows" : res.list,
+            "total" : res.total
+        };
+    } else {
+        return {
+            "rows" : [],
+            "total" : 0
+        };
+    }
+}
+function doQuery(params){
+    $('#table').bootstrapTable('refresh');    //刷新表格
+}
+function queryParams(params) {
+    var param = {
+        startDate : $("#startDate").val(),
+        endDate : $("#endDate").val(),
+        limit : this.limit, // 页面大小
+        offset : this.offset, // 页码
+        pageindex : this.pageNumber,
+        pageSize : this.pageSize
+    }
+    return param;
 }
 function detailFormatter(index, row) {
     var html = [];
@@ -163,10 +133,10 @@ function getHeight() {
 }
 $(function () {
     var scripts = [
-            location.search.substring(1) || 'assets/bootstrap-table/src/bootstrap-table.js',
-            'assets/bootstrap-table/src/extensions/export/bootstrap-table-export.js',
+            location.search.substring(1) || REPORT_ROOT+'/webjars/bootstrap-table/1.11.1/dist/bootstrap-table.min.js',
+            REPORT_ROOT+'/js-busi/report/bootstrap-table-export.js',
             'http://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js',
-            'assets/bootstrap-table/src/extensions/editable/bootstrap-table-editable.js',
+            REPORT_ROOT+'/js-busi/report/bootstrap-table-editable.js',
             'http://rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js'
         ],
         eachSeries = function (arr, iterator, callback) {
