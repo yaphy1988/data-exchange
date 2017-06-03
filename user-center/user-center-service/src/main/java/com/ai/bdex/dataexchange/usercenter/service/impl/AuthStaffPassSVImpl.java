@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.usercenter.service.impl;
 
 import java.util.List;
 
+import com.ai.bdex.dataexchange.util.StringUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,8 +66,12 @@ public class AuthStaffPassSVImpl implements IAuthStaffPassSV {
 		if(!"1".equals(pass.getPasswdFlag())){
 			record.setStaffPasswd(SignUtil.SHA1(pass.getStaffPasswd()));
 		}
-		record.setUpdateStaff(pass.getStaffId());
-		record.setUpdateTime(DateUtil.getNowAsTimestamp());		
+		if (StringUtil.isBlank(pass.getUpdateStaff())){
+			record.setUpdateStaff(pass.getStaffId());
+		}else{
+			record.setUpdateStaff(pass.getUpdateStaff());
+		}
+		record.setUpdateTime(DateUtil.getNowAsTimestamp());
 		return authStaffPassMapper.updateByPrimaryKeySelective(record);
 	}
 

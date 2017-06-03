@@ -305,7 +305,7 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 	public int updateAuthStaffInfo(AuthStaffDTO input) throws Exception {
 		AuthStaff record = new AuthStaff();
 		BeanUtils.copyProperties(input, record);
-		record.setUpdateStaff(input.getStaffId());
+//		record.setUpdateStaff(input.getStaffId());
 		record.setUpdateTime(DateUtil.getNowAsTimestamp());		
 		return authStaffMapper.updateByPrimaryKeySelective(record);
 	}

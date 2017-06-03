@@ -92,6 +92,9 @@ function staffInfoInit(isEdit) {
     })
 }
 
+/**
+ * 保存用户信息
+ */
 function submitStaffInfo() {
     var params = {};
 
@@ -205,6 +208,9 @@ function checkstaffId(){
     return true;
 }
 
+/**
+ * 弹出重置密码确认框
+ */
 function resetPass() {
     var staffId = $("input[name='staffId']:checked").attr("staffId");
     if(staffId == undefined || $.trim(staffId) == ""){
@@ -215,6 +221,9 @@ function resetPass() {
     $("#staffPassModal").modal("show");
 }
 
+/**
+ * 确认重置密码
+ */
 function confirmResetPass() {
     var staffId = $("input[name='staffId']:checked").attr("staffId");
     if(staffId == undefined || $.trim(staffId) == ""){
@@ -236,6 +245,31 @@ function confirmResetPass() {
             }else{
                 WEB.msg.info("提示","重置密码失败！");
             }
+        }
+    })
+}
+
+/**
+ * 授权按钮点击弹出框
+ */
+function giveAuthorityInit() {
+    var staffId = $("input[name='staffId']:checked").attr("staffId");
+    if(staffId == undefined || $.trim(staffId) == ""){
+        WEB.msg.info("提示","请先选择需要授权的用户！");
+        return;
+    }
+
+    var params = {};
+    params.staffId = staffId;
+
+    $.ajax({
+        url:WEB_ROOT + "/auth/giveAuthorityInit",
+        data:params,
+        type:'post',
+        dataType:'html',
+        async:true,
+        success:function(data){
+            
         }
     })
 }
