@@ -27,12 +27,16 @@ public class UserStatisticController {
 
     @RequestMapping("/userregister")
     public String queryUserRegister(Model model) throws Exception{
-
+        //查询条件
         UserStatisticQueryInfo queryInfo = new UserStatisticQueryInfo();
+        queryInfo.setPageSize(20);
+        queryInfo.setPageNo(1);
         Date now = new Date();
         queryInfo.setStartTime(now);
-
-        Page<AuthStaffSign> staffSignPages = reportSV.getRePortData("AuthStaffSign_staffSignReport",queryInfo);
+        //报表ID
+        String reportId = "AuthStaffSign_staffSignReport";
+        //查询报表数据
+        Page<AuthStaffSign> staffSignPages = reportSV.getRePortData(reportId,queryInfo);
 
         model.addAttribute("hello","报表");
         logger.info("报表数据请求已经到达report-web，返回页面模板：report/user_register");
