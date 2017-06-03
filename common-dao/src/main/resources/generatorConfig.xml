@@ -30,7 +30,7 @@
     </javaClientGenerator>
     
     <!--需要生成的表请按以下配置（tableName 是实际的表名  domainObjectName 映射成的java对象名） -->
-    <table tableName="t_ord_complaint_cont" domainObjectName="OrdComplaintCont"></table>
+    <table tableName="t_aip_service_spring" domainObjectName="AipServiceSpring"></table>
 
   </context>
 </generatorConfiguration>

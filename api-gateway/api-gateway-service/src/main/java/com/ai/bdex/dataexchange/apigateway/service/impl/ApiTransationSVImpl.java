@@ -75,52 +75,59 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 		AipServiceSpring springConf=getServiceSpring(serviceId,version);
 		String beanName=springConf.getBeanName();
 		String pserviceFlag=springConf.getPserviceFlag();
+		String storeFlag=springConf.getStoreFlag();
 		
 		IApiDealTransationSV apiDealTransationSV=(IApiDealTransationSV)Utils.getBean(beanName);
 		
 		Map<String, Object> finalParamMap=apiDealTransationSV.getFinalParamMap(paramMap);
 		
 		String paramMd5=ApiServiceUtil.getParamMapMd5(finalParamMap);
-		AipApiData storeData= aipApiDataSV.getAipApiDataByKey(serviceId, version, paramMd5);
-		if(null==storeData){
-			//沉淀表没有时,调用具体服务
-			resultMap=apiDealTransationSV.deal(serviceId, version, finalParamMap);
-			result=JSON.toJSONString(resultMap);
-			//沉淀正确结果
-			AipApiData data=new AipApiData();
-			data.setCreateTime(new Timestamp(System.currentTimeMillis()));
-			data.setRequestMd5(paramMd5);
-			data.setRequeststr(JSON.toJSONString(paramMap));
-			data.setResponsestr(result);
-			data.setServiceId(serviceId);
-			data.setStatus("1");
-			data.setVersionId(version);
-			aipApiDataSV.insertAipApiData(data);				
+		//如果是有沉淀数据的接口
+		if("1".equals(storeFlag)){				
+			AipApiData storeData= aipApiDataSV.getAipApiDataByKey(serviceId, version, paramMd5);
+			if(null==storeData){
+				//沉淀表没有时,调用具体服务
+				resultMap=apiDealTransationSV.deal(serviceId, version, finalParamMap);
+				result=JSON.toJSONString(resultMap);
+				//沉淀正确结果
+				AipApiData data=new AipApiData();
+				data.setCreateTime(new Timestamp(System.currentTimeMillis()));
+				data.setRequestMd5(paramMd5);
+				data.setRequeststr(JSON.toJSONString(paramMap));
+				data.setResponsestr(result);
+				data.setServiceId(serviceId);
+				data.setStatus("1");
+				data.setVersionId(version);
+				aipApiDataSV.insertAipApiData(data);	
+				//如果是提供商服务，t_aip_p_service_used_log进行记录
+				if("1".equals(pserviceFlag)){
+					
+					String providerId=serviceInfo==null?"":serviceInfo.getProviderId();
+					String pServiceId=serviceInfo==null?"":serviceInfo.getpServiceId();
+					String pVersion=serviceInfo==null?"":serviceInfo.getpVersion();
+					
+					String accessToken=(String)paramMap.get(APIConstants.AIP_PARAM_ACCESSTOKEN);
+					AipPServiceUsedLog pLog=new AipPServiceUsedLog();
+					pLog.setAccessToken(accessToken);
+					pLog.setClientId(clientId);
+					pLog.setCreateTime(requestTime );
+					pLog.setProviderId(providerId);
+					pLog.setRequestMsg(JSON.toJSONString(finalParamMap));
+					pLog.setResponseMsg(JSON.toJSONString(resultMap));
+					pLog.setResponseTime(new Timestamp(System.currentTimeMillis()));
+					pLog.setServiceId(pServiceId);
+					pLog.setStatus("1");
+					pLog.setUpdateTime(new Timestamp(System.currentTimeMillis()));
+					pLog.setUsedId(getPLogId());
+					pLog.setVersion(pVersion);
+					aipPServiceUsedLogSV.insertLog(pLog);
+				}
+			}else{
+				resultMap =JSON.parseObject(storeData.getResponsestr(),apiDealTransationSV.getResultClass());
+			}
 		}else{
-			resultMap =JSON.parseObject(storeData.getResponsestr(),apiDealTransationSV.getResultClass());
-		}
-		//如果是提供商服务，t_aip_p_service_used_log进行记录
-		if("1".equals(pserviceFlag)&&null==storeData){
-			
-			String providerId=serviceInfo==null?"":serviceInfo.getProviderId();
-			String pServiceId=serviceInfo==null?"":serviceInfo.getpServiceId();
-			String pVersion=serviceInfo==null?"":serviceInfo.getpVersion();
-			
-			String accessToken=(String)paramMap.get(APIConstants.AIP_PARAM_ACCESSTOKEN);
-			AipPServiceUsedLog pLog=new AipPServiceUsedLog();
-			pLog.setAccessToken(accessToken);
-			pLog.setClientId(clientId);
-			pLog.setCreateTime(requestTime );
-			pLog.setProviderId(providerId);
-			pLog.setRequestMsg(JSON.toJSONString(finalParamMap));
-			pLog.setResponseMsg(JSON.toJSONString(resultMap));
-			pLog.setResponseTime(new Timestamp(System.currentTimeMillis()));
-			pLog.setServiceId(pServiceId);
-			pLog.setStatus("1");
-			pLog.setUpdateTime(new Timestamp(System.currentTimeMillis()));
-			pLog.setUsedId(getPLogId());
-			pLog.setVersion(pVersion);
-			aipPServiceUsedLogSV.insertLog(pLog);
+			//每次都要重新调用
+			resultMap=apiDealTransationSV.deal(serviceId, version, finalParamMap);
 		}
 		return resultMap;
 	}
