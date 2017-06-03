@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdInfo;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
@@ -144,6 +145,47 @@ public class OrderMainInfoRSVImpl  implements IOrderMainInfoRSV {
 			throw new Exception(e);
 		}
 		return respOrderDetailDTO;
+	}
+ 	public int updateOrderAndSubOrderInfoByAip(OrdInfoReqDTO ordInfoReqDTO) throws Exception{
+		try{
+ 			//将数据设置为无效的
+			OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
+			ordMainInfoReqDTO.setOrderId(ordInfoReqDTO.getOrderId());
+			//ordMainInfoReqDTO.setUpdateStaff(Constants.Order.ORDER_UPDATE_USER_SYS);
+			ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_04);
+			OrdInfoReqDTO ordInfo = new OrdInfoReqDTO();
+			//ordInfo.setUpdateStaff(Constants.Order.ORDER_UPDATE_USER_SYS);
+			ordInfo.setOrderId(ordInfoReqDTO.getOrderId());
+			ordInfo.setSubOrder(ordInfoReqDTO.getSubOrder());
+			ordInfo.setStatus(Constants.Order.ORDER_STATUS_04);
+			 updateOrderAndSubOrdStatuss(ordMainInfoReqDTO,ordInfo);
+		}
+		catch (Exception e){
+			throw new Exception("updateOrderAndSubOrderInfoByAip：订单完成状态失败："+e.getStackTrace());
+		}
+		return  1;
+	}
+	@Override
+	public int updateOrderAndSubOrderInfoByJob(OrdInfoReqDTO ordInfoReqDTO) throws Exception{
+		// 搜索比当前日期小的，并且状态不是04的订单
+		try{
+			PageResponseDTO<OrdInfoRespDTO> pageResponseDTO = iOrdInfoSV.queryOutStatusOrdMainInfoPage(ordInfoReqDTO);
+			//循环处理数据
+			if(pageResponseDTO != null) {
+				for (OrdInfoRespDTO resordInfoRespDTO : pageResponseDTO.getResult()) {
+					//将数据设置为无效的
+					OrdInfoReqDTO ordInfoReqDTO2 = new OrdInfoReqDTO();
+					ordInfoReqDTO2.setOrderId(resordInfoRespDTO.getOrderId());
+					ordInfoReqDTO2.setSubOrder(resordInfoRespDTO.getSubOrder());
+					updateOrderAndSubOrderInfoByAip(ordInfoReqDTO2);
+				}
+			}
+		}
+		catch (Exception e)
+		{
+			throw new Exception("updateOrderAndSubOrderInfoByJob：定时任务处理 订单完成状态失败："+e.getStackTrace());
+		}
+		return  1;
 	}
 
 }

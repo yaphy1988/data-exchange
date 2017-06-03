@@ -62,4 +62,5 @@ public interface IOrdMainInfoSV {
 	 * @throws Exception
      */
 	public  OrdMainInfoRespDTO  queryOrdMainInfoOne(OrdMainInfoReqDTO ordMainInfoReqDTO) 	throws Exception ;
+
 }

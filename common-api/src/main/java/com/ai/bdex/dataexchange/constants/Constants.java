@@ -104,6 +104,7 @@ public class Constants {
             Date activeEndTime =  calendar.getTime();   //这个时间就是日期往后推一天的结果
             return activeEndTime;
         }
+        public final static String ORDER_UPDATE_USER_SYS   =  "SYSTEMJOB" ;//
     }
 
     public static class Bill {

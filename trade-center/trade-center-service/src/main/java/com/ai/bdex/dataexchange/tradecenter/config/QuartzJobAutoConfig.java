@@ -5,6 +5,9 @@ import com.ai.bdex.dataexchange.job.model.QuartzTaskInfo;
 import com.ai.bdex.dataexchange.job.service.QuartzScheduleService;
 import com.ai.bdex.dataexchange.tradecenter.job.SearchGdsBaseJob;
 import com.ai.bdex.dataexchange.tradecenter.job.SolrDeltaImportJob;
+import com.ai.bdex.dataexchange.tradecenter.job.OrderStatusUpdateBaseJob;
+
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,6 +38,13 @@ public class QuartzJobAutoConfig {
         solrDeltaImportJobInfo.setJobName(SolrDeltaImportJob.class.getName());
         solrDeltaImportJobInfo.setJobGroup("solrJobGroup");
         initJobs(solrDeltaImportJobInfo);
+
+        //订单设置为完成的定时任务
+        QuartzTaskInfo orderStatusUpdateBaseJob = new QuartzTaskInfo();
+        orderStatusUpdateBaseJob.setCronExpression("0 0 3 * * ? ");
+        orderStatusUpdateBaseJob.setJobName(OrderStatusUpdateBaseJob.class.getName());
+        orderStatusUpdateBaseJob.setJobGroup("orderJobGroup");
+        initJobs(orderStatusUpdateBaseJob);
 
         return new Object();
     }

@@ -57,4 +57,22 @@ public interface IOrderMainInfoRSV {
 	 */
 	public OrdMainInfoRespDTO queryOrderDetail(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception ;
 
+	/***
+	 * 定时任务处理  -将过期的数据进行失效处理
+	 * 只需要 ordInfoReqDTO.setActiveEndTime = 当前系统时间
+	 * @param ordInfoReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateOrderAndSubOrderInfoByJob(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
+
+	/***
+	 * 接口调用API时，当订单调用量量已经达到最大值、或余额已为0 时，调用改接口。
+	 * 只需传入主订单和子订单ID
+	 * @param ordInfoReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public int updateOrderAndSubOrderInfoByAip(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
+
 }

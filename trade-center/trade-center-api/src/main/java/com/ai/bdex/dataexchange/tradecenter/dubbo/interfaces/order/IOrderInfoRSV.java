@@ -42,4 +42,5 @@ public interface IOrderInfoRSV {
 	 */
 	public List<OrdInfoRespDTO> queryOrderInfoList(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
 
+
 }

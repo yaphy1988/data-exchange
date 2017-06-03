@@ -490,13 +490,13 @@ public class orderManageController {
              }
 				try {
 					//需要去调用接口处理，将信息失效掉。
-
 					DataAccountDTO dataAccountDTO = new DataAccountDTO();
 					dataAccountDTO.setDataAcctId(ldataAccountId);
 					dataAccountDTO.setCurrentUserId(staff_id);
-					 iAipCenterDataAccountRSV.dealDisableDataAccount(dataAccountDTO);
                     //更新人：staff_id
-                    iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
+					iAipCenterDataAccountRSV.dealDisableDataAccount(dataAccountDTO);
+					iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
+
 					rMap.put("success", true);
 				} catch (Exception e) {
 					System.out.print("更新AipCenter失败：" + e.getMessage());

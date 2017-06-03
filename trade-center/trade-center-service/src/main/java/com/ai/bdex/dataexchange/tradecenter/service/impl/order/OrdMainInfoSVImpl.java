@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.ai.bdex.dataexchange.constants.Constants;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -169,7 +170,6 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
 				respDTOList.add(ordMainInfoRespDTO);
 			}
 		}
-
 		return respDTOList;
 	}
 	private void initCriteria(OrdMainInfoExample.Criteria criteria, OrdMainInfoReqDTO ordMainInfoReqDTO) {
@@ -243,4 +243,6 @@ public class OrdMainInfoSVImpl  implements IOrdMainInfoSV {
  		BeanUtils.copyProperties(resorderMaininfo, ordMainInfo);
 		return resorderMaininfo;
 	}
+
+
 }

@@ -136,7 +136,12 @@
 								</td>
 								<td th:if="${list.orderStatus}=='03'">
 									<p class="pop-link">
-										已失效
+										订单已失效
+									</p>
+								</td>
+								<td th:if="${list.orderStatus}=='04'">
+									<p class="pop-link">
+										已完成
 									</p>
 								</td>
 								<td th:if="${list.orderStatus}=='99'">

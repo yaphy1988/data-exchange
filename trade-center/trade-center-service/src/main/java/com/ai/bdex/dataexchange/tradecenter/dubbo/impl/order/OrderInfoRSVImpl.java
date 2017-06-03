@@ -10,7 +10,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfo;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfoExample;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
+import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.utils.CollectionUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -33,7 +40,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 	private IOrdMainInfoSV iOrdMainInfoSV;
 	@Resource
 	private IOrdInfoSV iOrdInfoSV;
- 
+
 	/**
 	 * 创建订单  -- 事物还需要处理 新的获取订单ID
 	 */
@@ -163,7 +170,6 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		}
 		return ordInfoList;
 	}
-
 	// 商品投诉
 	@Override
 	public List<OrdInfoRespDTO> queryOrderByStaffGds(OrdInfoRespDTO ordInfo) throws Exception {
@@ -186,7 +192,6 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		mainOrdId =  nowDate + mainOrdSeqId;
 		return mainOrdId;
 	}
-
 	@Override
 	public PageResponseDTO<OrdInfoRespDTO> queryOrdInfoPage(OrdInfoReqDTO ordInfoReqDTO) throws Exception {
 		PageResponseDTO<OrdInfoRespDTO> ordInfoPage = new PageResponseDTO<>();
@@ -208,4 +213,7 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		}
 		return ordInfoList;
 	}
+
+
+
 }

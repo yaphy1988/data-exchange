@@ -6,6 +6,7 @@ import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdInfo;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
 
 public interface IOrdInfoSV {
 	  
@@ -51,4 +52,9 @@ public interface IOrdInfoSV {
 	 * @throws Exception
 	 */
 	public int updateOrderStatus(OrdInfoReqDTO ordInfoReqDTO) throws Exception ;
+	/**
+	 *  获取已经失效的数据：
+	 */
+	public PageResponseDTO<OrdInfoRespDTO> queryOutStatusOrdMainInfoPage(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
+
 }

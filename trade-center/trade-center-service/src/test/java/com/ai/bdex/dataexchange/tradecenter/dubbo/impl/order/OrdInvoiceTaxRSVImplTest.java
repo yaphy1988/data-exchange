@@ -37,6 +37,7 @@ public class OrdInvoiceTaxRSVImplTest {
 
         thrown.expect(Exception.class);
         iOrdInvoiceTaxRSV.insertOrdInvoice(ordInvoiceTaxReqDTO);
+        System.out.print("------OrdInvoiceTaxRSVImplTest------------");
     }
 
 }

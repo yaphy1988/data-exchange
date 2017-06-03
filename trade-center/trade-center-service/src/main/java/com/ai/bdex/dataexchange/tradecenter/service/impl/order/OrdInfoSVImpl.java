@@ -3,9 +3,11 @@ package com.ai.bdex.dataexchange.tradecenter.service.impl.order;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfo;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdMainInfoExample;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdMainInfoRespDTO;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,5 +169,37 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 		ObjectCopyUtil.copyObjValue(ordInfoReqDTO,record,null,false);
 		int code=ordInfoMapper.updateByExampleSelective(record, example);
 		return code;
+	}
+	/***
+	 * 查询到期的数据，并且是已支付的数据
+	 * @param ordInfoReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+		public PageResponseDTO<OrdInfoRespDTO> queryOutStatusOrdMainInfoPage(OrdInfoReqDTO ordInfoReqDTO) throws Exception {
+
+		Integer pageNo = ordInfoReqDTO.getPageNo();
+		Integer pageSize = ordInfoReqDTO.getPageSize();
+		OrdInfoExample example = new OrdInfoExample();
+		OrdInfoExample.Criteria criteria = example.createCriteria();
+		//是已支付状态的（1）
+		criteria.andPayFlagEqualTo(Constants.Order.ORDER_PAY_FLAG_1);
+		//并且 查询已支付的（正在生效中的 02），
+		criteria.andStatusEqualTo(Constants.Order.ORDER_STATUS_02);
+		//失效日期小于等于当前日期
+		criteria.andActiveEndTimeLessThanOrEqualTo(ordInfoReqDTO.getActiveEndTime());
+		//永久有效期的数据不用查询出来
+		criteria.andActiveEndTimeIsNotNull();
+
+		initCriteria(criteria, ordInfoReqDTO);
+		example.setOrderByClause("ORDER_TIME asc");
+
+		PageHelper.startPage(pageNo, pageSize);
+		List<OrdInfo> ordInfoList = ordInfoMapper.selectByExample(example);
+		// 使用PageInfo对结果进行包装
+		PageInfo pageInfo = new PageInfo(ordInfoList);
+		PageResponseDTO<OrdInfoRespDTO> pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo,
+				OrdInfoRespDTO.class);
+		return pageResponseDTO;
 	}
 }
