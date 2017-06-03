@@ -83,7 +83,7 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 		
 		String paramMd5=ApiServiceUtil.getParamMapMd5(finalParamMap);
 		//如果是有沉淀数据的接口
-		if("1".equals(storeFlag)){				
+		if(!"0".equals(storeFlag)){				
 			AipApiData storeData= aipApiDataSV.getAipApiDataByKey(serviceId, version, paramMd5);
 			if(null==storeData){
 				//沉淀表没有时,调用具体服务
