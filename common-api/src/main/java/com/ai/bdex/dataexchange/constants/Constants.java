@@ -34,7 +34,7 @@ public class Constants {
         04 订单已完成（订单调用量量已经达到最大值、或余额已为0，或有效期已经达到，三者中一种情况达到均为订单完成）、
         99 已失效（取消订单）*/
         public static String ORDER_STATUS_01 = "01";// 订单提交
-        public static String ORDER_STATUS_02 = "02";// 订单已支付
+        public static String ORDER_STATUS_02 = "02";// 订单已支付---正在生效中
         public static String ORDER_STATUS_03 = "03";// API接口下线，订单失效（管理员手工失效）
         public static String ORDER_STATUS_04 = "04";// 订单已完成
         public static String ORDER_STATUS_99 = "99";//取消订单

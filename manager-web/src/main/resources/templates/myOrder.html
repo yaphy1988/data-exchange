@@ -99,15 +99,10 @@
 								<td th:text="${list.ordInfoRespDTO.buyAllCount}"></td>
 								<td th:text="${list.ordInfoRespDTO.leftCount}"></td>
 								<td th:text="${#tools.formatMoney(orderMoney)}" ></td>
-								<td
-									th:text="${#calendars.format(list.ordInfoRespDTO.activeEndTime,'yyyy-MM-dd HH:mm:ss')}"></td>
+								<td th:text="${#calendars.format(list.ordInfoRespDTO.activeEndTime,'yyyy-MM-dd HH:mm:ss')}"></td>
 								<td>
-									<p th:if="${list.ordInfoRespDTO.status=='01'}">待支付</p>
-									<p th:if="${list.ordInfoRespDTO.status=='02'}">已支付</p>
-									<p th:if="${list.ordInfoRespDTO.status=='03'}">已失效</p>
-									<p th:if="${list.ordInfoRespDTO.status=='04'}">已完成</p>
-									<p th:if="${list.ordInfoRespDTO.status=='99'}">已取消</p>
-								</td>
+									<p  th:with="orderstatus=${list.ordInfoRespDTO.status}" th:text="${#tools.formatOrderStatus (orderstatus)}" >未支付</p>
+									</td>
 								<td >
 									<p class="pop-link" th:if="${list.ordInfoRespDTO.status=='01'}">
 										<a href="javaScript:void(0)"
@@ -130,7 +125,7 @@
 								<td>20</td>
 								<td>90.00</td>
 								<td>2017-03-27 18:01:02</td>
-								<td>已支付</td>
+								<td>正在生效中</td>
 								<td></td>
 							</tr>
 							<tr>

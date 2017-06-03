@@ -85,9 +85,9 @@
 	                                <td>
 										<select  class="form-control" id="ord_status">
 											<option value="">全部</option>
-											<option value="01" th:selected="${ordStatus} == '01'">待支付</option>
-											<option value="02" th:selected="${ordStatus} == '02'">已支付</option>
-											<option value="03" th:selected="${ordStatus} == '03'">已失效</option>
+											<option value="01" th:selected="${ordStatus} == '01'">申请订购中</option>
+											<option value="02" th:selected="${ordStatus} == '02'">正在生效中</option>
+											<option value="03" th:selected="${ordStatus} == '03'">订单失效</option>
 											<option value="04" th:selected="${ordStatus} == '04'">已完成</option>
 											<option value="99" th:selected="${ordStatus} == '99'">已取消</option>
 										</select>
@@ -115,7 +115,7 @@
 	                                <td th:data="${#calendars.format(list.ordInfoRespDTO.orderTime,'yyyy-MM-dd HH:mm:ss')}"> 2017 04-12 14：22</td>
 	                                <td>
 										<p th:if="${list.ordInfoRespDTO.status=='01'}">待支付</p>
-										<p th:if="${list.ordInfoRespDTO.status=='02'}">已支付</p>
+										<p th:if="${list.ordInfoRespDTO.status=='02'}">正在生效中</p>
 										<p th:if="${list.ordInfoRespDTO.status=='03'}">已失效</p>
 										<p th:if="${list.ordInfoRespDTO.status=='04'}">已完成</p>
 										<p th:if="${list.ordInfoRespDTO.status=='99'}">已取消</p>

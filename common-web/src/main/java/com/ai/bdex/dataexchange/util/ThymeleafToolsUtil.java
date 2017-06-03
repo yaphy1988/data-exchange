@@ -148,16 +148,16 @@ public class ThymeleafToolsUtil {
         switch(status)
         {
             case "01":
-                showStatus = "订单提交";
+                showStatus = "申请订购中";
                 break;
             case "02":
-                showStatus = "订单已支付";
+                showStatus = "正在生效中";
                 break;
             case "03":
-                showStatus = "订单已完成";
+                showStatus = "订单失效";
                 break;
             case "04":
-                showStatus = "订单提交";
+                showStatus = "订单已完成";
                 break;
             case "99":
                 showStatus = "订单已取消";
