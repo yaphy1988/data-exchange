@@ -1,12 +1,17 @@
 /**
  * Created by yaphy on 2017/5/24.
  */
-var $table = $('#table'),
-    $remove = $('#remove'),
+var $table ,
+    $remove ,
     selections = [];
 function initTable() {
+        $table = $('#table'),
+        $remove = $('#remove'),
     $table.bootstrapTable({
-        height: getHeight()
+        height: getHeight(),
+        queryParams : queryParams,
+        pageList: [10, 25, 50, 100,200],
+        responseHandler: responseHandler
     });
     // sometimes footer render error.
     setTimeout(function () {
@@ -49,44 +54,7 @@ function getIdSelections() {
         return row.id
     });
 }
-/*function responseHandler(res) {
-    var rows = res.list;
-    $.each(rows, function (i, row) {
-        row.state = $.inArray(row.orderId, selections) !== -1;
-    });
-    return res;
-}*/
-function responseHandler(res) {
-    if (res) {
-        var rows = res.list;
-        $.each(rows, function (i, row) {
-            row.state = $.inArray(row.orderId, selections) !== -1;
-        });
-        return {
-            "rows" : res.list,
-            "total" : res.total
-        };
-    } else {
-        return {
-            "rows" : [],
-            "total" : 0
-        };
-    }
-}
-function doQuery(params){
-    $('#table').bootstrapTable('refresh');    //刷新表格
-}
-function queryParams(params) {
-    var param = {
-        startDate : $("#startDate").val(),
-        endDate : $("#endDate").val(),
-        limit : this.limit, // 页面大小
-        offset : this.offset, // 页码
-        pageindex : this.pageNumber,
-        pageSize : this.pageSize
-    }
-    return param;
-}
+
 function detailFormatter(index, row) {
     var html = [];
     $.each(row, function (key, value) {
@@ -131,13 +99,12 @@ function totalPriceFormatter(data) {
 function getHeight() {
     return $(window).height() - $('h1').outerHeight(true);
 }
-$(function () {
+function renderTable() {
     var scripts = [
-            location.search.substring(1) || REPORT_ROOT+'/webjars/bootstrap-table/1.11.1/dist/bootstrap-table.min.js',
-            REPORT_ROOT+'/js-busi/report/bootstrap-table-export.js',
-            'http://rawgit.com/hhurz/tableExport.jquery.plugin/master/tableExport.js',
-            REPORT_ROOT+'/js-busi/report/bootstrap-table-editable.js',
-            'http://rawgit.com/vitalets/x-editable/master/dist/bootstrap3-editable/js/bootstrap-editable.js'
+            location.search.substring(1) || '/js-busi/report/bootstrap-table-export.js',
+            '/js-busi/report/tableExport.js',
+            '/js-busi/report/bootstrap-table-editable.js',
+            '/js-busi/report/bootstrap-editable.js'
         ],
         eachSeries = function (arr, iterator, callback) {
             callback = callback || function () {
@@ -167,8 +134,8 @@ $(function () {
             iterate();
         };
     eachSeries(scripts, getScript, initTable);
-    dateTimepickerinit("startTime","endTime");
-});
+
+}
 function getScript(url, callback) {
     var head = document.getElementsByTagName('head')[0];
     var script = document.createElement('script');
@@ -190,30 +157,3 @@ function getScript(url, callback) {
     return undefined;
 }
 
-/**
- * 初始化时间控件
- * @param startTime
- * @param endTime
- */
-function dateTimepickerinit(startTime,endTime) {
-    $("#"+startTime+"").datetimepicker({
-        format: 'yyyy-mm-dd 00:00:00',
-        minView:'month',
-        language: 'zh-CN',
-        clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
-        autoclose:true
-        // startDate:new Date()
-    }).on("click",function(){
-        $("#"+startTime+"").datetimepicker("setEndDate",$("#"+endTime+"").val());
-    });
-    $("#"+endTime+"").datetimepicker({
-        format: 'yyyy-mm-dd 23:59:59',
-        minView:'month',
-        language: 'zh-CN',
-        clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
-        autoclose:true
-        // startDate:new Date()
-    }).on("click",function(){
-        $("#"+endTime+"").datetimepicker("setStartDate",$("#"+startTime+"").val());
-    });
-}

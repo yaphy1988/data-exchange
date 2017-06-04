@@ -4,6 +4,8 @@ import com.ai.bdex.dataexchange.report.dao.model.OrdMainInfo;
 import com.ai.bdex.dataexchange.report.entity.OrdMainStatisticQueryInfo;
 import com.ai.bdex.dataexchange.report.entity.OrdStatisticRespInfo;
 import com.ai.bdex.dataexchange.report.service.interfaces.IOrderStatisticSV;
+import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.utils.DateUtil;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
@@ -30,28 +32,32 @@ public class OrderStatisticController {
     @RequestMapping(value = "/orderstatistics")
     public String queryUserRegister(Model model) throws Exception{
         model.addAttribute("hello","报表");
-        List<OrdMainInfo> result = new ArrayList<>();
-        OrdMainInfo ordMainInfo = new OrdMainInfo();
-        ordMainInfo.setOrderId("201834343");
-        ordMainInfo.setOrderAmount(23478);
-        result.add(ordMainInfo);
-        result.add(ordMainInfo);
-        model.addAttribute(result);
         logger.info("报表数据请求已经到达report-web，返回页面模板：report/order_register");
-        return "report/order_register";
+        return "report/order_register :: #table_content";
     }
-    @RequestMapping(value = "/getjsonData")
+    @RequestMapping(value = "/getOrderjsonData")
     @ResponseBody
-    public Object getjsonData(Model model, HttpServletRequest request) throws Exception{
+    public Object getOrderjsonData(Model model, HttpServletRequest request) throws Exception{
        List<OrdMainInfo> result = new ArrayList<>();
        PageInfo<OrdStatisticRespInfo> pageInfo = new PageInfo<OrdStatisticRespInfo>();
-
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
         String pageNo = request.getParameter("pageindex");
         String pageSize = request.getParameter("pageSize");
        try {
            OrdMainStatisticQueryInfo ordMainStatisticQueryInfo = new OrdMainStatisticQueryInfo();
-           ordMainStatisticQueryInfo.setPageSize(Integer.valueOf(pageSize));
-           ordMainStatisticQueryInfo.setPageNo(Integer.valueOf(pageNo));
+           if (!StringUtil.isBlank(pageNo)){
+               ordMainStatisticQueryInfo.setPageNo(Integer.valueOf(pageNo));
+           }
+           if (!StringUtil.isBlank(pageSize)){
+               ordMainStatisticQueryInfo.setPageSize(Integer.valueOf(pageSize));
+           }
+           if (!StringUtil.isBlank(startDate)){
+               ordMainStatisticQueryInfo.setStartTime(DateUtil.parse(startDate));
+           }
+           if (!StringUtil.isBlank(endDate)){
+               ordMainStatisticQueryInfo.setStartTime(DateUtil.parse(endDate));
+           }
            PageInfo<OrdMainInfo> ordInfo = orderStatisticSV.queryOrdMainInfoPage(ordMainStatisticQueryInfo);
            List<OrdMainInfo> ordList = ordInfo.getList();
            List<OrdStatisticRespInfo> rsList = new ArrayList<>();
@@ -59,6 +65,8 @@ public class OrderStatisticController {
                for(OrdMainInfo  source : ordList){
                    OrdStatisticRespInfo target = new OrdStatisticRespInfo();
                    BeanUtils.copyProperties(source,target);
+                   target.setId(source.getOrderId());
+                   target.setOrderTime(DateUtil.formatTime(source.getOrderTime()));
                    rsList.add(target);
                }
            }

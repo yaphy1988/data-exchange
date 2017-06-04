@@ -1,9 +1,7 @@
 package com.ai.bdex.dataexchange.report.controller;
 
-import com.ai.bdex.dataexchange.report.dao.model.AuthStaffSign;
-import com.ai.bdex.dataexchange.report.entity.UserStatisticQueryInfo;
-import com.ai.bdex.dataexchange.report.service.interfaces.IReportSV;
-import com.github.pagehelper.Page;
+import java.util.Date;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,7 +9,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.util.Date;
+import com.ai.bdex.dataexchange.report.dao.model.AuthStaffSign;
+import com.ai.bdex.dataexchange.report.entity.UserStatisticQueryInfo;
+import com.ai.bdex.dataexchange.report.service.interfaces.IReportSv;
+import com.github.pagehelper.Page;
 
 
 /**
@@ -23,7 +24,7 @@ public class UserStatisticController {
     private Logger logger = LoggerFactory.getLogger(UserStatisticController.class);
 
     @Autowired
-    private IReportSV reportSV;
+    private IReportSv reportSV;
 
     @RequestMapping("/userregister")
     public String queryUserRegister(Model model) throws Exception{

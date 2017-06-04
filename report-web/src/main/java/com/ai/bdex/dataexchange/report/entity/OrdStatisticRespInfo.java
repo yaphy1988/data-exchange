@@ -9,24 +9,48 @@ import java.util.List;
  * Created by liangwy on 2017/5/24.
  */
 public class OrdStatisticRespInfo extends BaseInfo {
+    private String id;//orderId
     private String orderId;
     private String staffId;
-    private Date orderTime;
+    private String orderTime;
     private String gdsName;
     private String skuName;
     private Integer orderAmount;
-    private Long orderMoney;
+    private String orderMoney;
     private String orderStatus;
     private String invoiceStatus;//开票标识
     private String payTradeno;//交易流水号
-    private Long realMoney;
 
-    public Long getRealMoney() {
-        return realMoney;
+    public String getOrderId() {
+        return orderId;
     }
 
-    public void setRealMoney(Long realMoney) {
-        this.realMoney = realMoney;
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getOrderMoney() {
+        return orderMoney;
+    }
+
+    public void setOrderMoney(String orderMoney) {
+        this.orderMoney = orderMoney;
+    }
+
+    public String getOrderTime() {
+        return orderTime;
+    }
+
+    public void setOrderTime(String orderTime) {
+        this.orderTime = orderTime;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getPayTradeno() {
@@ -53,13 +77,6 @@ public class OrdStatisticRespInfo extends BaseInfo {
         this.orderStatus = orderStatus;
     }
 
-    public Long getOrderMoney() {
-        return orderMoney;
-    }
-
-    public void setOrderMoney(Long orderMoney) {
-        this.orderMoney = orderMoney;
-    }
 
     public Integer getOrderAmount() {
         return orderAmount;
@@ -85,14 +102,6 @@ public class OrdStatisticRespInfo extends BaseInfo {
         this.gdsName = gdsName;
     }
 
-    public Date getOrderTime() {
-        return orderTime;
-    }
-
-    public void setOrderTime(Date orderTime) {
-        this.orderTime = orderTime;
-    }
-
     public String getStaffId() {
         return staffId;
     }
@@ -101,11 +110,4 @@ public class OrdStatisticRespInfo extends BaseInfo {
         this.staffId = staffId;
     }
 
-    public String getOrderId() {
-        return orderId;
-    }
-
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
-    }
 }

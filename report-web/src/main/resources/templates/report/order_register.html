@@ -9,15 +9,15 @@
     <script type="text/javascript" src="../../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:remove="all"></script>
 </head>
 <body>
-<div layout:fragment="screen_content">
+<div layout:fragment="screen_content" id="table_content">
     <ol class="breadcrumb">
         <li><strong><span style="color: #27a0d7">订单统计</span></strong></li>
     </ol>
     <form class="form-inline" role="form" style="float: left;" method="post" id="queryForm">
         <div class="form-group">
             <label >订购时间:</label>
-            <input placeholder="开始时间" class="form-control layer-date" id="startDate" name="startDate">
-            <input placeholder="结束时间" class="form-control layer-date" id="endDate" name="endDate">
+            <input placeholder="开始时间" class="form-control layer-date" id="startTime" name="startTime">-
+            <input placeholder="结束时间" class="form-control layer-date" id="endTime" name="endTime">
         </div>
         <div class="form-group">
             <button type="button" id="queryBtn" th:onclick="|doQuery();|" class="btn btn-primary">查询</button>
@@ -34,16 +34,13 @@
            data-minimum-count-columns="2"
            data-show-pagination-switch="true"
            data-pagination="true"
-           data-id-field="orderId"
-           data-page-list="[10, 25, 50, 100, ALL]"
+           data-id-field="id"
            data-show-footer="false"
-           data-side-pagination="server"
-           data-url="http://localhost:8083/reportdata/getjsonData"
-           data-query-params="queryParams"
-           data-response-handler="responseHandler">
+           th:data-url="${#tools.reportDomain()}+'/reportdata/getOrderjsonData'"
+           data-side-pagination="server">
         <thead>
         <tr>
-            <th data-field="orderId">订单编号</th>
+            <th data-field="id">订单编号</th>
             <th data-field="staffId" data-switchable="false">用户名</th>
             <th data-field="orderTime">订购时间</th>
             <th data-field="gdsName">数据名称</th>
@@ -57,12 +54,76 @@
         </tr>
         </thead>
     </table>
-    <script type="text/javascript" src="../../static/js-busi/report/user-register.js" th:src="${#tools.reportDomain()}+'/js-busi/report/user-register.js'"></script>
+    <script th:inline="javascript">
+        $(function () {
+            dateTimepickerinit($('#startTime'),$('#endTime'));
+        });
+        //请求服务器数据入参方法，参数可自定义
+        function queryParams(params) {
+            var param = {
+                startDate : $("#startTime").val(),
+                endDate : $("#endDate").val(),
+//                limit : this.limit, // 页面大小
+//                offset : this.offset, // 页码
+                pageindex : this.pageNumber,
+                pageSize : this.pageSize
+            }
+            return param;
+        }
+        //加载服务器数据之前的处理程序，可以用来格式化数据。
+        //参数：res为从服务器请求到的数据。服务器返回PageInfo<T>的json格式，必须包含total
+        function responseHandler(res) {
+            if (res) {
+                var rows = res.list;
+                $.each(rows, function (i, row) {
+                    row.state = $.inArray(row.id, selections) !== -1;
+                });
+                return {
+                    "rows" : res.list,
+                    "total" : res.total
+                };
+            } else {
+                return {
+                    "rows" : [],
+                    "total" : 0
+                };
+            }
+        }
+        //自定义查询触发事件
+        function doQuery(params){
+            $('#table').bootstrapTable('refresh');    //刷新表格
+        }
+
+        /**
+         * 初始化时间控件
+         * @param startTime
+         * @param endTime
+         */
+        function dateTimepickerinit(startTime,endTime) {
+            startTime.datetimepicker({
+                format: 'yyyy-mm-dd 00:00:00',
+                minView:'month',
+                language: 'zh-CN',
+                clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
+                autoclose:true
+                // startDate:new Date()
+            }).on("click",function(){
+                startTime.datetimepicker("setEndDate",endTime.val());
+            });
+            endTime.datetimepicker({
+                format: 'yyyy-mm-dd 23:59:59',
+                minView:'month',
+                language: 'zh-CN',
+                clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
+                autoclose:true
+                // startDate:new Date()
+            }).on("click",function(){
+                endTime.datetimepicker("setStartDate",startTime.val());
+            });
+        }
+    </script>
 
 </div>
-<script th:inline="javascript">
-
-</script>
 
 </body>
 </html>
