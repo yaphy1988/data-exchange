@@ -116,4 +116,20 @@
       update_staff = #{dataAccount.updateStaff,jdbcType=VARCHAR}
     where data_acct_id = #{dataAccount.dataAcctId,jdbcType=BIGINT}
   </update>
+  <select id="queryStatisticByExample" parameterType="com.ai.bdex.dataexchange.aipcenter.dao.model.DataAccountExample" resultMap="BaseResultMap">
+    select distinct user_id,
+                service_id,
+                sum(total_num) as total_num,
+                sum(left_num) as left_num,
+                sum(total_consume_num) as total_consume_num,
+                sum(total_money) as total_money,
+                sum(left_money) as left_money,
+                sum(total_consume_money) as total_consume_money
+    from t_data_account
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    group by user_id, service_id
+    order by user_id,service_id
+  </select>
 </mapper>

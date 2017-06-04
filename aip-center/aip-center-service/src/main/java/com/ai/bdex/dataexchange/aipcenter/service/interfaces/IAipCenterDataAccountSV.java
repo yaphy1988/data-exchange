@@ -1,8 +1,10 @@
 package com.ai.bdex.dataexchange.aipcenter.service.interfaces;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountRespDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 
 import java.util.List;
@@ -66,4 +68,12 @@ public interface IAipCenterDataAccountSV {
      * @throws BusinessException
      */
     public DataAccountDTO queryDataAccountById(long dataAcctId) throws BusinessException;
+
+    /**
+     * 用户数据分页查询
+     * @param dataAccountReqDTO
+     * @return
+     * @throws BusinessException
+     */
+    public PageResponseDTO<DataAccountRespDTO> queryDataAccountStatisticPageByOption(DataAccountDTO dataAccountReqDTO) throws BusinessException;
 }

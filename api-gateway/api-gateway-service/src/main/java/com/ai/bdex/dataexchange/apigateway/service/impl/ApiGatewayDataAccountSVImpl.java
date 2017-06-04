@@ -93,13 +93,20 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
 
 
         if(Constants.Bill.CHARGE_RESULE_OK.equals(respDTO.getResult())){
+            respDTO.setDataAccountId(dataAccountSelected.getDataAcctId());
+            respDTO.setOrderId(dataAccountSelected.getOrderId());
+            respDTO.setSubOrder(dataAccountSelected.getSubOrder());
+            respDTO.setPackageType(dataAccountSelected.getPackageType());
+
             //保存扣减历史
             if(Constants.Bill.DATA_ACCT_TYPE_NUM.equals(dataAccountSelected.getDataAcctType())){
                 dataAccountSelected.setLeftNum(dataAccountSelected.getLeftNum() - consumeDTO.getConsumeNum());
                 dataAccountSelected.setTotalConsumeNum(dataAccountSelected.getTotalConsumeNum() - consumeDTO.getConsumeNum());
+                respDTO.setLeftNum(dataAccountSelected.getLeftNum());
             }else{
                 dataAccountSelected.setLeftMoney(dataAccountSelected.getLeftMoney() - consumeDTO.getConsumeMoney());
                 dataAccountSelected.setTotalConsumeMoney(dataAccountSelected.getTotalConsumeMoney() - consumeDTO.getConsumeMoney());
+                respDTO.setLeftMoney(dataAccountSelected.getLeftMoney());
             }
             DataAccountHis dataAccountHis = new DataAccountHis();
             ObjectCopyUtil.copyObjValue(dataAccountSelected,dataAccountHis,null,false);

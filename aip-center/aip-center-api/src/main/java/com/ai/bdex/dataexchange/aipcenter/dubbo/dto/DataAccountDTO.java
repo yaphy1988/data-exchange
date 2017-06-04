@@ -2,6 +2,8 @@ package com.ai.bdex.dataexchange.aipcenter.dubbo.dto;
 
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
+import java.util.Date;
+
 /**
  * Created by fangyunfeng on 2017/5/5.
  */
@@ -61,6 +63,52 @@ public class DataAccountDTO extends BaseInfo{
      * 累计消费金额，单位厘
      */
     private Integer totalConsumeMoney;
+
+    /**
+     * 订单编号
+     */
+    private String orderId;
+
+    /**
+     * 子订单编码
+     */
+    private String subOrder;
+
+    /**
+     * 商品编码
+     */
+    private Integer gdsId;
+
+    /**
+     * 单品编码
+     */
+    private Integer skuId;
+
+    /**
+     * 商品分类编码
+     */
+    private Integer catId;
+
+    /**
+     * 商品一级分类编码
+     */
+    private Integer catFirst;
+
+    /**
+     * 创建开始时间
+     */
+    private Date createStart;
+
+    /**
+     * 创建截止时间
+     */
+    private Date createEnd;
+
+    /**
+     * 创建人
+     * @return
+     */
+    private String createStaff;
 
     public Long getDataAcctId() {
         return dataAcctId;
@@ -134,6 +182,54 @@ public class DataAccountDTO extends BaseInfo{
         this.totalMoney = totalMoney;
     }
 
+    public String getOrderId() {
+        return orderId;
+    }
+
+    public void setOrderId(String orderId) {
+        this.orderId = orderId;
+    }
+
+    public String getSubOrder() {
+        return subOrder;
+    }
+
+    public void setSubOrder(String subOrder) {
+        this.subOrder = subOrder;
+    }
+
+    public Integer getGdsId() {
+        return gdsId;
+    }
+
+    public void setGdsId(Integer gdsId) {
+        this.gdsId = gdsId;
+    }
+
+    public Integer getSkuId() {
+        return skuId;
+    }
+
+    public void setSkuId(Integer skuId) {
+        this.skuId = skuId;
+    }
+
+    public Integer getCatId() {
+        return catId;
+    }
+
+    public void setCatId(Integer catId) {
+        this.catId = catId;
+    }
+
+    public Integer getCatFirst() {
+        return catFirst;
+    }
+
+    public void setCatFirst(Integer catFirst) {
+        this.catFirst = catFirst;
+    }
+
     public Integer getLeftMoney() {
         return leftMoney;
     }
@@ -148,6 +244,30 @@ public class DataAccountDTO extends BaseInfo{
 
     public void setTotalConsumeMoney(Integer totalConsumeMoney) {
         this.totalConsumeMoney = totalConsumeMoney;
+    }
+
+    public Date getCreateStart() {
+        return createStart;
+    }
+
+    public void setCreateStart(Date createStart) {
+        this.createStart = createStart;
+    }
+
+    public Date getCreateEnd() {
+        return createEnd;
+    }
+
+    public void setCreateEnd(Date createEnd) {
+        this.createEnd = createEnd;
+    }
+
+    public String getCreateStaff() {
+        return createStaff;
+    }
+
+    public void setCreateStaff(String createStaff) {
+        this.createStaff = createStaff;
     }
 
     public double getTotalMoneyCent(){

@@ -1,9 +1,11 @@
 package com.ai.bdex.dataexchange.aipcenter;
 
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountRespDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.paas.util.Utils;
@@ -51,5 +53,15 @@ public class DataAccountRSVTest {
         DataAccountDTO dataAccountDTO = new DataAccountDTO();
         dataAccountDTO.setDataAcctId(10022l);
         aipCenterDataAccountRSV.dealEnableDataAccount(dataAccountDTO);
+    }
+
+    @Test
+    public void testQueryStatisticPageByOption() throws BusinessException {
+        DataAccountDTO dataAccountDTO = new DataAccountDTO();
+        dataAccountDTO.setUserId("fangyf007");
+        dataAccountDTO.setPageSize(5);
+        PageResponseDTO<DataAccountRespDTO> queryResult = aipCenterDataAccountRSV.queryDataAccountStatisticPageByOption(dataAccountDTO);
+
+        System.out.println(queryResult.getResult());
     }
 }

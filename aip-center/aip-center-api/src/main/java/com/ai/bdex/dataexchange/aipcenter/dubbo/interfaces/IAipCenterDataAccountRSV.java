@@ -37,14 +37,14 @@ public interface IAipCenterDataAccountRSV {
 
     /**
      * 数据账户失效操作
-     * @param dataAccountId
+     * @param dataAccountDTO
      * @throws BusinessException
      */
     public void dealDisableDataAccount(DataAccountDTO dataAccountDTO) throws BusinessException;
 
     /**
      * 数据账户生效操作
-     * @param dataAccountId
+     * @param dataAccountDTO
      * @throws BusinessException
      */
     public void dealEnableDataAccount(DataAccountDTO dataAccountDTO) throws BusinessException;
@@ -77,4 +77,12 @@ public interface IAipCenterDataAccountRSV {
      * @throws BusinessException
      */
     public PageResponseDTO<RechargeDTO> queryRechargePageByOption(RechargeReqDTO rechargeReqDTO) throws BusinessException;
+
+    /**
+     * 查询用户的数据信息
+     * @param dataAccountReqDTO
+     * @return
+     * @throws BusinessException
+     */
+    public PageResponseDTO<DataAccountRespDTO> queryDataAccountStatisticPageByOption(DataAccountDTO dataAccountReqDTO) throws BusinessException;
 }

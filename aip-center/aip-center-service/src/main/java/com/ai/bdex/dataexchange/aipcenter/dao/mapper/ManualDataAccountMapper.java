@@ -1,7 +1,10 @@
 package com.ai.bdex.dataexchange.aipcenter.dao.mapper;
 
 import com.ai.bdex.dataexchange.aipcenter.dao.model.DataAccount;
+import com.ai.bdex.dataexchange.aipcenter.dao.model.DataAccountExample;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * Created by fangyunfeng on 2017/5/5.
@@ -16,4 +19,11 @@ public interface ManualDataAccountMapper {
      * @return
      */
     int updateTotalMoney(@Param("dataAccount") DataAccount record,@Param("increaseMoney") Integer increaseMoney);
+
+    /**
+     * 统计用户不同接口的剩余可用次数，剩余可用金额
+     * @param example
+     * @return
+     */
+    List<DataAccount> queryStatisticByExample(DataAccountExample example);
 }

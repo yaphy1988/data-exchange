@@ -2,22 +2,26 @@ package com.ai.bdex.dataexchange.aipcenter.service.impl;
 
 import com.ai.bdex.dataexchange.aipcenter.dao.mapper.DataAccountHisMapper;
 import com.ai.bdex.dataexchange.aipcenter.dao.mapper.DataAccountMapper;
-import com.ai.bdex.dataexchange.aipcenter.dao.model.DataAccount;
-import com.ai.bdex.dataexchange.aipcenter.dao.model.DataAccountExample;
-import com.ai.bdex.dataexchange.aipcenter.dao.model.DataAccountHis;
+import com.ai.bdex.dataexchange.aipcenter.dao.mapper.ManualDataAccountMapper;
+import com.ai.bdex.dataexchange.aipcenter.dao.model.*;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountRespDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipCenterDataAccountSV;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IRechargeSV;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.util.ModelDTOConvertUtil;
+import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.ObjectCopyUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +42,9 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
 
     @Autowired
     private DataAccountMapper dataAccountMapper;
+
+    @Autowired
+    private ManualDataAccountMapper manualDataAccountMapper;
 
     @Autowired
     private DataAccountHisMapper dataAccountHisMapper;
@@ -91,6 +98,12 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         dataAccount.setPeriodType(rechargeDTO.getPeriodType());
         dataAccount.setCreateStaff(rechargeDTO.getCurrentUserId());
         dataAccount.setPackageType(rechargeDTO.getPackageType());
+        dataAccount.setOrderId(rechargeDTO.getOrderId());
+        dataAccount.setSubOrder(rechargeDTO.getSubOrder());
+        dataAccount.setGdsId(rechargeDTO.getGdsId());
+        dataAccount.setSkuId(rechargeDTO.getSkuId());
+        dataAccount.setCatId(rechargeDTO.getCatId());
+        dataAccount.setCatFirst(rechargeDTO.getCatFirst());
 
         dataAccount.setCreateTime(new Date());
 
@@ -198,6 +211,22 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
             criteria.andDataAcctTypeEqualTo(dataAccountDTO.getDataAcctType());
         }
 
+        if(!StringUtil.isBlank(dataAccountDTO.getPackageType())){
+            criteria.andPackageTypeEqualTo(dataAccountDTO.getPackageType());
+        }
+
+        if(dataAccountDTO.getCreateStart() != null){
+            criteria.andCreateTimeGreaterThanOrEqualTo(dataAccountDTO.getCreateStart());
+        }
+
+        if(dataAccountDTO.getCreateEnd() != null){
+            criteria.andCreateTimeLessThanOrEqualTo(dataAccountDTO.getCreateEnd());
+        }
+
+        if(!StringUtil.isBlank(dataAccountDTO.getCreateStaff())){
+            criteria.andCreateStaffEqualTo(dataAccountDTO.getCreateStaff());
+        }
+
         List<DataAccount> dataAccountList = dataAccountMapper.selectByExample(dataAccountExample);
 
         return ModelDTOConvertUtil.convertModelList2DTOList(dataAccountList,DataAccountDTO.class,null,false);
@@ -208,6 +237,43 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
     public DataAccountDTO queryDataAccountById(long dataAcctId) throws BusinessException {
         DataAccount resultDataAccount = dataAccountMapper.selectByPrimaryKey(dataAcctId);
         return ModelDTOConvertUtil.createCopyObject(resultDataAccount,DataAccountDTO.class,null,false);
+    }
+
+    @Override
+    public PageResponseDTO<DataAccountRespDTO> queryDataAccountStatisticPageByOption(DataAccountDTO dataAccountReqDTO) throws BusinessException {
+
+        DataAccountExample dataAccountExample = new DataAccountExample();
+        DataAccountExample.Criteria criteria = dataAccountExample.createCriteria();
+        if(!StringUtil.isBlank(dataAccountReqDTO.getUserId())){
+            criteria.andUserIdEqualTo(dataAccountReqDTO.getUserId());
+        }
+
+        if(!StringUtil.isBlank(dataAccountReqDTO.getPackageType())){
+            criteria.andPackageTypeEqualTo(dataAccountReqDTO.getPackageType());
+        }
+
+        if(dataAccountReqDTO.getCreateStart() != null){
+            criteria.andCreateTimeGreaterThanOrEqualTo(dataAccountReqDTO.getCreateStart());
+        }
+
+        if(dataAccountReqDTO.getCreateEnd() != null){
+            criteria.andCreateTimeLessThanOrEqualTo(dataAccountReqDTO.getCreateEnd());
+        }
+
+        if(!StringUtil.isBlank(dataAccountReqDTO.getCreateStaff())){
+            criteria.andCreateStaffEqualTo(dataAccountReqDTO.getCreateStaff());
+        }
+
+        PageHelper.startPage(dataAccountReqDTO.getPageNo(),dataAccountReqDTO.getPageSize());
+
+        List<DataAccount> resultList = manualDataAccountMapper.queryStatisticByExample(dataAccountExample);
+
+        if(CollectionUtil.isEmpty(resultList)){
+            return null;
+        }else{
+            PageResponseDTO<DataAccountRespDTO> respPageDTO = PageResponseFactory.genPageResponse(new PageInfo(resultList),DataAccountRespDTO.class);
+            return respPageDTO;
+        }
     }
 
     private DataAccount getDefaultNewDataAccount(){

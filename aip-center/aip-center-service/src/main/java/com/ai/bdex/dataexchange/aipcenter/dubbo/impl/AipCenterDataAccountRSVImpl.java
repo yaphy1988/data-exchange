@@ -62,4 +62,8 @@ public class AipCenterDataAccountRSVImpl implements IAipCenterDataAccountRSV {
     public PageResponseDTO<RechargeDTO> queryRechargePageByOption(RechargeReqDTO rechargeReqDTO) throws BusinessException {
         return rechargeSV.queryRechargeRecordPageByOption(rechargeReqDTO);
     }
+
+    public PageResponseDTO<DataAccountRespDTO> queryDataAccountStatisticPageByOption(DataAccountDTO dataAccountReqDTO) throws BusinessException {
+        return dataAccountSV.queryDataAccountStatisticPageByOption(dataAccountReqDTO);
+    }
 }
