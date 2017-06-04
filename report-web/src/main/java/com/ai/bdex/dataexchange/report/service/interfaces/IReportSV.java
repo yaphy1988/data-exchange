@@ -6,6 +6,6 @@ import com.github.pagehelper.Page;
 /**
  * Created by xiongqian on 2017/6/3.
  */
-public interface IReportSv {
+public interface IReportSV {
     public <T> Page<T> getRePortData(String reportId, BaseInfo param);
 }
