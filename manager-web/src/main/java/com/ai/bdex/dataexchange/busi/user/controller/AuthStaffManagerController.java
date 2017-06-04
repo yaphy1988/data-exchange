@@ -1,11 +1,12 @@
 package com.ai.bdex.dataexchange.busi.user.controller;
 
+import com.ai.bdex.dataexchange.busi.user.entity.AuthRoleVO;
 import com.ai.bdex.dataexchange.busi.user.entity.AuthStaffVO;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffPassDTO;
-import com.ai.bdex.dataexchange.usercenter.dubbo.dto.AuthStaffRespDTO;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.*;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthRole2StaffRSV;
+import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthRoleRSV;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffPassRSV;
 import com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthStaffRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -41,6 +43,12 @@ public class AuthStaffManagerController {
 
     @DubboConsumer
     private IAuthStaffPassRSV iAuthStaffPassRSV;
+
+    @DubboConsumer
+    private IAuthRoleRSV iAuthRoleRSV;
+
+    @DubboConsumer
+    private IAuthRole2StaffRSV iAuthRole2StaffRSV;
 
     @RequestMapping(value = "/pageInit")
     public String pageInit(HttpServletRequest request, HttpServletResponse response){
@@ -256,6 +264,111 @@ public class AuthStaffManagerController {
             ajaxJson.setMsg("重置密码失败！");
         }
 
+
+        return ajaxJson;
+    }
+
+    @RequestMapping(value = "/giveAuthorityInit")
+    public String giveAuthorityInit(HttpServletRequest request,HttpServletResponse response){
+        String staffId = request.getParameter("staffId");
+
+        List<AuthRoleVO> authRoleVOList = new ArrayList<AuthRoleVO>();
+        List<AuthRoleVO> haveSelRoleList = new ArrayList<AuthRoleVO>();
+        List<AuthRoleVO> notSelRoleList = new ArrayList<AuthRoleVO>();
+        try{
+            AuthRoleReqDTO authRoleReqDTO = new AuthRoleReqDTO();
+            authRoleReqDTO.setStatus("1");
+            List<AuthRoleRespDTO> authRoleRespDTOList = iAuthRoleRSV.queryAuthRoleList(authRoleReqDTO);
+            if (!CollectionUtil.isEmpty(authRoleRespDTOList)){
+                for (AuthRoleRespDTO authRoleRespDTO : authRoleRespDTOList){
+                    AuthRoleVO authRoleVO = new AuthRoleVO();
+                    ObjectCopyUtil.copyObjValue(authRoleRespDTO,authRoleVO,null,false);
+                    authRoleVOList.add(authRoleVO);
+                }
+            }
+
+            AuthRoleReqDTO role2StaffReq = new AuthRoleReqDTO();
+            role2StaffReq.setStaffId(staffId);
+            List<AuthRoleRespDTO> haveSelRoleRespList = iAuthRoleRSV.queryAuthRoleListByRole2Staff(role2StaffReq);
+            if (!CollectionUtil.isEmpty(haveSelRoleRespList)){
+                for (AuthRoleRespDTO authRoleRespDTO : haveSelRoleRespList){
+                    AuthRoleVO authRoleVO = new AuthRoleVO();
+                    ObjectCopyUtil.copyObjValue(authRoleRespDTO,authRoleVO,null,false);
+                    haveSelRoleList.add(authRoleVO);
+                }
+            }
+        }catch (Exception e){
+            log.error("初始化授权弹出框异常：",e);
+        }
+
+        if (!CollectionUtil.isEmpty(authRoleVOList) && !CollectionUtil.isEmpty(haveSelRoleList)){
+            for (AuthRoleVO authRoleVO : authRoleVOList){
+                boolean ifSelFlag = false;
+                for (AuthRoleVO haveSelRoleVO : haveSelRoleList){
+                    if (authRoleVO.getRoleId().intValue() == haveSelRoleVO.getRoleId().intValue()){
+                        ifSelFlag = true;
+                        break;
+                    }
+                }
+                if (!ifSelFlag){
+                    notSelRoleList.add(authRoleVO);
+                }
+            }
+        }else if (!CollectionUtil.isEmpty(authRoleVOList) && CollectionUtil.isEmpty(haveSelRoleList)){
+            notSelRoleList = authRoleVOList;
+        }
+
+        request.setAttribute("authRoleVOList",notSelRoleList);
+        request.setAttribute("haveSelRoleList",haveSelRoleList);
+        return "user_manage :: #authStaff2RoleModalContent";
+    }
+
+    @RequestMapping(value = "/confirmStaff2Role")
+    @ResponseBody
+    public AjaxJson confirmStaff2Role(HttpServletRequest request,HttpServletResponse response,HttpSession session){
+        AjaxJson ajaxJson = new AjaxJson();
+
+        String staffId = request.getParameter("staffId");
+        String roleIdStr = request.getParameter("roleIdStr");
+
+        List<String> roleIdList = new ArrayList<String>();
+        if (!StringUtil.isBlank(roleIdStr)){
+            roleIdList = Arrays.asList(roleIdStr.split(","));
+        }
+
+        try{
+            AuthRole2StaffReqDTO authRole2StaffReqDTO = new AuthRole2StaffReqDTO();
+            authRole2StaffReqDTO.setStaffId(staffId);
+            authRole2StaffReqDTO.setStatus("0");
+            iAuthRole2StaffRSV.updateRole2Staff(authRole2StaffReqDTO);
+
+            for (String roleId : roleIdList){
+                AuthRole2StaffRespDTO authRole2StaffRespDTO = iAuthRole2StaffRSV.queryAuthRole2StaffByKey(staffId,Integer.parseInt(roleId));
+                if (authRole2StaffRespDTO!=null){
+                    AuthRole2StaffReqDTO updateReqDTO = new AuthRole2StaffReqDTO();
+                    updateReqDTO.setStaffId(staffId);
+                    updateReqDTO.setRoleId(Integer.parseInt(roleId));
+                    updateReqDTO.setStatus("1");
+                    updateReqDTO.setUpdateId(StaffUtil.getStaffId(session));
+                    updateReqDTO.setUpdateDate(new Date());
+                    iAuthRole2StaffRSV.updateRole2Staff(updateReqDTO);
+                }else {
+                    AuthRole2StaffReqDTO insertReqDTO = new AuthRole2StaffReqDTO();
+                    insertReqDTO.setStaffId(staffId);
+                    insertReqDTO.setRoleId(Integer.parseInt(roleId));
+                    insertReqDTO.setStatus("1");
+                    insertReqDTO.setUpdateId(StaffUtil.getStaffId(session));
+                    insertReqDTO.setUpdateDate(new Date());
+                    iAuthRole2StaffRSV.insertRole2Staff(insertReqDTO);
+                }
+            }
+            ajaxJson.setSuccess(true);
+            ajaxJson.setMsg("保存成功！");
+        }catch (Exception e){
+            log.error("用户授权异常：",e);
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("用户授权失败！");
+        }
 
         return ajaxJson;
     }

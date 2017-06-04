@@ -288,25 +288,25 @@
 		</div>
 	</div>
 	<!-- 修改角色授权 -->
-	<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	<div class="modal fade" id="authStaff2RoleModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 					<h4 class="modal-title" id="myModalLabel">修改角色授权</h4>
 				</div>
-				<div class="modal-body">
-					<div class="listTable clearfix">
+				<div class="modal-body" id="authStaff2RoleModalDiv">
+					<div class="listTable clearfix" id="authStaff2RoleModalContent">
 						<div class="ClassItem" style="width:45%;">
 							<div class="tit" >
 								<h2>待授权角色</h2>
 							</div>
 
 							<div class="con" style="height:300px;" >
-								<table class="table listitem table-hover table-striped">
-									<tbody>
-									<tr >
-										<td>API分类i</td>
+								<table class="table listitem table-hover" th:if="${authRoleVOList}">
+									<tbody id="notSelRoleTable" th:remove="all-but-first">
+									<tr th:each="authRole,authRoleStat : ${authRoleVOList}" onclick="notSelRoleClick(this)">
+										<td th:roleId="${authRole.roleId}" th:text="${authRole.roleName}">API分类i</td>
 									</tr>
 									<tr >
 										<td>API分类</td>
@@ -322,7 +322,9 @@
 							</div>
 						</div>
 						<div class="pull-left p20" style="margin-top: 150px;">
-							<p class="col_666"><b>&#8660;</b></p>
+							<!--<p class="col_666"><b>&#8660;</b></p>-->
+							<p class="col_666" style="font-size: 18px"><a href="javascript:void(0)" style="color: black" onclick="toSelRole()"><b>&#8658;</b></a> </p>
+							<p class="col_666" style="font-size: 18px"><a href="javascript:void(0)" style="color: black" onclick="toCancelSelRole()"><b>&#8656;</b></a> </p>
 
 						</div>
 						<div class="ClassItem" style="width:45%;">
@@ -331,10 +333,10 @@
 							</div>
 
 							<div class="con" style="height:300px;" >
-								<table class="table listitem table-hover">
-									<tbody>
-									<tr >
-										<td>API分类</td>
+								<table class="table listitem table-hover" th:if="${haveSelRoleList}">
+									<tbody id="haveSelRoleTable">
+									<tr onclick="haveSelRoleClick(this)" th:each="selRole,selRoleStat : ${haveSelRoleList}">
+										<td th:roleId="${selRole.roleId}" th:text="${selRole.roleName}">API分类</td>
 									</tr>
 									</tbody>
 								</table>
@@ -344,7 +346,7 @@
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button type="button" class="btn btn-primary">保存</button>
+					<button type="button" class="btn btn-primary" onclick="confirmStaff2Role()">保存</button>
 					<button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 				</div>
 			</div>

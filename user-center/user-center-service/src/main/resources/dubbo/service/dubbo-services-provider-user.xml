@@ -30,4 +30,6 @@
 
     <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthRoleRSV" ref="iAuthRoleRSV"
                    owner="zhaoyf7" timeout="3000"/>
+    <dubbo:service interface="com.ai.bdex.dataexchange.usercenter.dubbo.interfaces.IAuthRole2StaffRSV" ref="iAuthRole2StaffRSV"
+                   owner="zhaoyf7" timeout="3000"/>
 </beans>

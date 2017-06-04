@@ -49,7 +49,20 @@ public class AuthRoleRSVImpl implements IAuthRoleRSV {
     @Override
     public List<AuthRoleRespDTO> queryAuthRoleListByRole2Staff(AuthRoleReqDTO authRoleReqDTO) throws Exception {
 
+        List<AuthRoleRespDTO> authRoleRespDTOList = new ArrayList<AuthRoleRespDTO>();
+        try {
+            List<AuthRole> list = iAuthRoleSV.queryAuthRoleListByRole2Staff(authRoleReqDTO);
+            if (!CollectionUtil.isEmpty(list)){
+                for (AuthRole authRole : list){
+                    AuthRoleRespDTO authRoleRespDTO = new AuthRoleRespDTO();
+                    ObjectCopyUtil.copyObjValue(authRole,authRoleRespDTO,null,false);
+                    authRoleRespDTOList.add(authRoleRespDTO);
+                }
+            }
+        }catch (Exception e){
+            log.error("查询用户已配置角色列表异常：",e);
+        }
 
-        return null;
+        return authRoleRespDTOList;
     }
 }

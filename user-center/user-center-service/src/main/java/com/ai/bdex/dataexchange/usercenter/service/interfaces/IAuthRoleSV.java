@@ -12,5 +12,11 @@ public interface IAuthRoleSV {
 
     public List<AuthRole> queryRoleList(AuthRoleReqDTO authRoleReqDTO) throws Exception;
 
+    /**
+     * 查询用户已配置角色列表
+     * @param authRoleReqDTO
+     * @return
+     * @throws Exception
+     */
     public List<AuthRole> queryAuthRoleListByRole2Staff(AuthRoleReqDTO authRoleReqDTO) throws Exception;
 }

@@ -71,10 +71,10 @@ public class AuthRoleSVImpl implements IAuthRoleSV {
         if (authRoleReqDTO.getRoleId()!=null){
             criteria.andRoleIdEqualTo(authRoleReqDTO.getRoleId());
         }
-        if (StringUtil.isBlank(authRoleReqDTO.getRoleName())){
+        if (!StringUtil.isBlank(authRoleReqDTO.getRoleName())){
             criteria.andRoleNameLike("%"+authRoleReqDTO.getRoleName()+"%");
         }
-        if (StringUtil.isBlank(authRoleReqDTO.getStatus())){
+        if (!StringUtil.isBlank(authRoleReqDTO.getStatus())){
             criteria.andStatusEqualTo(authRoleReqDTO.getStatus());
         }
     }

@@ -236,7 +236,7 @@ function confirmResetPass() {
         url:WEB_ROOT + "/authStaff/resetStaffPass",
         data:params,
         dataType:'json',
-        type:'json',
+        type:'post',
         async:true,
         success:function (jsonObj) {
             if (jsonObj.success){
@@ -263,13 +263,93 @@ function giveAuthorityInit() {
     params.staffId = staffId;
 
     $.ajax({
-        url:WEB_ROOT + "/auth/giveAuthorityInit",
+        url:WEB_ROOT + "/authStaff/giveAuthorityInit",
         data:params,
         type:'post',
         dataType:'html',
         async:true,
         success:function(data){
-            
+            $("#authStaff2RoleModalDiv").html(data);
+
+        }
+    })
+    $("#authStaff2RoleModal").modal("show");
+}
+
+/**
+ * 未选择角色点击事件
+ * @param obj
+ */
+function notSelRoleClick(obj) {
+    $("#notSelRoleTable").find(".roleSelected").css("background-color","");
+    $("#notSelRoleTable").find(".roleSelected").removeClass("roleSelected");
+    $(obj).css("background-color","#f9f9f9");
+    $(obj).addClass("roleSelected");
+    // $(".notSelRoleTr").css("color","");
+}
+
+/**
+ * 已选择角色点击事件
+ * @param obj
+ */
+function haveSelRoleClick(obj) {
+    $("#haveSelRoleTable").find(".roleSelected").css("background-color","");
+    $("#haveSelRoleTable").find(".roleSelected").remove("roleSelected")
+    $(obj).css("background-color","#f9f9f9");
+    $(obj).addClass("roleSelected");
+    // $(".haveSelRoleTr").css("color","");
+}
+
+function toSelRole() {
+    var roleId = $("#notSelRoleTable").find(".roleSelected").find("td").attr("roleId");
+    var roleName = $("#notSelRoleTable").find(".roleSelected").find("td").html();
+    var html = '<tr onclick="haveSelRoleClick(this)"><td roleId="' + roleId + '">' + roleName + '</td></tr>';
+    $("#notSelRoleTable").find(".roleSelected").remove()
+    $("#haveSelRoleTable").append(html);
+}
+
+function toCancelSelRole() {
+    var roleId = $("#haveSelRoleTable").find(".roleSelected").find("td").attr("roleId");
+    var roleName = $("#haveSelRoleTable").find(".roleSelected").find("td").html();
+    var html = '<tr onclick="notSelRoleClick(this)"><td roleId="' + roleId + '">' + roleName + '</td></tr>';
+    $("#haveSelRoleTable").find(".roleSelected").remove()
+    $("#notSelRoleTable").append(html);
+}
+
+function confirmStaff2Role() {
+    var params = {};
+    var staffId = $("input[name='staffId']:checked").attr("staffId");
+    if(staffId == undefined || $.trim(staffId) == ""){
+        WEB.msg.info("提示","请先选择需要授权的用户！");
+        return;
+    }
+
+    var roleIdStr = "";
+    $("#haveSelRoleTable tr td").each(function () {
+        var roleId = $(this).attr("roleId");
+        roleIdStr = roleIdStr + roleId + ",";
+    })
+    if ($.trim(roleIdStr) != ""){
+        roleIdStr = roleIdStr.substring(0,roleIdStr.length-1);
+    }
+    params.roleIdStr = roleIdStr;
+    params.staffId = staffId;
+
+    $.ajax({
+        url:WEB_ROOT + "/authStaff/confirmStaff2Role",
+        data:params,
+        dataType:'json',
+        type:'post',
+        async:true,
+        success:function (jsonObj) {
+            if (jsonObj.success){
+                WEB.msg.info("提示","保存成功！",function () {
+                    $("#authStaff2RoleModal").modal("hide");
+                })
+            }else{
+                WEB.msg.info("提示","保存失败，请重试或联系管理员！");
+            }
         }
     })
 }
+
