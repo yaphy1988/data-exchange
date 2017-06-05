@@ -2,7 +2,9 @@ package com.ai.bdex.dataexchange.apigateway.dubbo.interfaces;
 
 import java.util.Map;
 
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.ApiTransationRespDTO;
+
 public interface IAipTransationRSV {
 	
-	Map<String,Object> createTransation(String serviceId,String version,Map<String,Object> paramMap)throws Exception;
+	ApiTransationRespDTO createTransation(String serviceId,String version,Map<String,Object> paramMap)throws Exception;
 }

@@ -18,6 +18,8 @@ import com.ai.bdex.dataexchange.apigateway.dao.model.AipServiceSpring;
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipServiceUsedLog;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.ApiTransationCode;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.SystemErrorCode;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.ApiTransationRespDTO;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.DataConsumeDTO;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.DataConsumeRespDTO;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IAipApiDataSV;
@@ -56,14 +58,33 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 	private IAipServiceUsedLogSV aipServiceUsedLogSV;
 
 	@Override
-	public Object invoke(String clientId,String logId,String serviceId, String version,
+	public ApiTransationRespDTO invoke(String clientId,String logId,String serviceId, String version,
 			Map<String, Object> paramMap) throws Exception {
 
-		Map<String,Object> resultMap=null;
+		ApiTransationRespDTO resultMap=null;
 		String result=null;
 		String dataFlag=null;
 		AipServiceUsedLog logVo=new AipServiceUsedLog();
 		logVo.setUsedId(logId);
+		
+		AipServiceSpring springConf=getServiceSpring(serviceId,version);
+		String beanName=springConf.getBeanName();
+		String pserviceFlag=springConf.getPserviceFlag();
+		String storeFlag=springConf.getStoreFlag();
+		
+		IApiDealTransationSV apiDealTransationSV=(IApiDealTransationSV)Utils.getBean(beanName);
+		
+		Map<String, Object> finalParamMap=apiDealTransationSV.getFinalParamMap(paramMap);
+		//扣费前校验参数或其他
+		Map<String,Object> others=new HashMap<>();
+		others.put("serviceId", serviceId);
+		others.put("version", version);
+		others.put("clientId", clientId);
+		others.put("logId", logId);
+		ApiTransationRespDTO checkParamsDto=apiDealTransationSV.checkParams(others,finalParamMap);
+		if(null!=checkParamsDto){
+			return checkParamsDto;
+		}
 		//获取usedID			
 		AipClientInfo clientInfo= aipClientInfoSV.getAipClientInfoByKey(clientId);
 		String userId=clientInfo.getUserId();//??
@@ -82,23 +103,14 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 		dto.setConsumeMoney(bg==null?null:bg.intValue());
 		DataConsumeRespDTO resp=apiGatewayDataAccountSV.dealDataCharge(dto);
 		if(Constants.Bill.CHARGE_RESULE_NA.equals(resp.getResult())){
-			Map<String,String> chargeResultMap=new HashMap<String,String>();
-			chargeResultMap.put("resp_code",ApiTransationCode.CODE_0001);
-			chargeResultMap.put("resp_desc","没有找到可以扣费的记录或余额不足");
-			chargeResultMap.put("result", null);
-			return chargeResultMap;
+			resultMap=new ApiTransationRespDTO();
+			resultMap.setRespCode(ApiTransationCode.CODE_20001);
+			resultMap.setRespDesc("没有找到可以扣费的记录或余额不足");
+			resultMap.setResult(null);		
+			return resultMap;
 		}
 		//可用时第一步，从沉淀表找数据
-		//对参数进行排序处理,获取MD5值，paramMap中不允许有key相同的数据
-		AipServiceSpring springConf=getServiceSpring(serviceId,version);
-		String beanName=springConf.getBeanName();
-		String pserviceFlag=springConf.getPserviceFlag();
-		String storeFlag=springConf.getStoreFlag();
-		
-		IApiDealTransationSV apiDealTransationSV=(IApiDealTransationSV)Utils.getBean(beanName);
-		
-		Map<String, Object> finalParamMap=apiDealTransationSV.getFinalParamMap(paramMap);
-		
+		//对参数进行排序处理,获取MD5值，paramMap中不允许有key相同的数据		
 		String paramMd5=ApiServiceUtil.getParamMapMd5(finalParamMap);
 		//如果是提供商服务，t_aip_p_service_used_log进行记录,通过pLog是否为null分辨是否调用外部接口
 		AipPServiceUsedLog pLog=null;
@@ -125,8 +137,8 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 			if(null==storeData){
 				//沉淀表没有时,调用具体服务
 				resultMap=apiDealTransationSV.deal(pLog,serviceId, version, finalParamMap);
-				returnCode=(String)resultMap.get("resp_code");
-				if(!ApiTransationCode.CODE_0009.equals(returnCode)){
+				returnCode=(String)resultMap.getRespCode();
+				if(SystemErrorCode.CODE_00000.equals(returnCode)){
 					result=JSON.toJSONString(resultMap);
 					//沉淀正确结果
 					AipApiData data=new AipApiData();
@@ -143,16 +155,16 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 				}
 				dataFlag="0";
 			}else{								
-				resultMap =JSON.parseObject(storeData.getResponsestr(),Map.class);
-				Object resultStr=resultMap.get("result");
-				resultMap.put("result", resultStr==null?null:JSON.parseObject(JSON.toJSONString(resultStr), apiDealTransationSV.getResultClass()));
+				resultMap =JSON.parseObject(storeData.getResponsestr(),ApiTransationRespDTO.class);
+				Object resultStr=resultMap.getResult();
+				resultMap.setResult(resultStr==null?null:JSON.parseObject(JSON.toJSONString(resultStr), apiDealTransationSV.getResultClass()));
 				dataFlag="1";
 			}
 		}else{
 			//每次都要重新调用
 			resultMap=apiDealTransationSV.deal(pLog,serviceId, version, finalParamMap);
-			returnCode=(String)resultMap.get("resp_code");
-			if(ApiTransationCode.CODE_0009.equals(returnCode)){
+			returnCode=resultMap.getRespCode();
+			if(!SystemErrorCode.CODE_00000.equals(returnCode)){
 				throw new Exception("第三方调用异常");
 			}
 			dataFlag="0";

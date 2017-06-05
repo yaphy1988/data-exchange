@@ -15,6 +15,8 @@ import com.ai.bdex.dataexchange.apigateway.cfca.service.interfaces.ICFCATransact
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipPServiceUsedLog;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.ApiTransationCode;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.SystemErrorCode;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.ApiTransationRespDTO;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IAipPServiceUsedLogSV;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IApiDealTransationSV;
 import com.alibaba.fastjson.JSON;
@@ -29,9 +31,9 @@ public class DefaultDealTransation4CFCASVImpl implements IApiDealTransationSV{
 	
 	@SuppressWarnings({ "rawtypes" })
 	@Override
-	public Map<String,Object> deal(AipPServiceUsedLog logBean,String serviceId, String version,
+	public ApiTransationRespDTO deal(AipPServiceUsedLog logBean,String serviceId, String version,
 			Map<String, Object> paramMap){
-		Map<String,Object> returnMap=new HashMap<String,Object>();
+		ApiTransationRespDTO dto=new ApiTransationRespDTO();
 		Map resultMap=null;
 		logBean.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		logBean.setRequestMsg(JSON.toJSONString(getParamMap(paramMap)));
@@ -39,21 +41,26 @@ public class DefaultDealTransation4CFCASVImpl implements IApiDealTransationSV{
 		//调用fcfa基础服务
 		try{
 			resultMap=cFCATransactionSV.getResult(serviceId, version, getParamMap(paramMap));
+			
 			Object result=resultMap==null?null:resultMap.get("result");
-			
-			returnMap.put("resp_code",ApiTransationCode.CODE_0000);
-			returnMap.put("resp_desc","success");
-			returnMap.put("result", result);
-			
+			dto.setResult(result);
+			if(null!=resultMap){
+				dto.setRespCode(SystemErrorCode.CODE_00000);
+				dto.setRespDesc("success");				
+			}else{
+				dto.setRespCode(ApiTransationCode.CODE_20002);
+				dto.setRespDesc("no data");
+			}
+						
 			logBean.setResponseMsg(resultMap==null?null:JSON.toJSONString(resultMap));
 			logBean.setResponseTime(new Timestamp(System.currentTimeMillis()));
 			logBean.setStatus("1");
 		}catch(Exception e){
 			log.error(serviceId+":"+version+",调用外部系统异常", e);
 			
-			returnMap.put("resp_code",ApiTransationCode.CODE_0009);
-			returnMap.put("resp_desc","unknow reason");
-			returnMap.put("result", null);
+			dto.setRespCode(ApiTransationCode.CODE_20009);
+			dto.setRespDesc("unkown reason");
+			dto.setResult(null);
 			
 			logBean.setResponseMsg(e.getMessage());
 			logBean.setResponseTime(new Timestamp(System.currentTimeMillis()));
@@ -69,7 +76,7 @@ public class DefaultDealTransation4CFCASVImpl implements IApiDealTransationSV{
 				log.error(serviceId+":"+version+",保存日志异常", e);
 			}
 		}
-		return returnMap;
+		return dto;
 	}
 
 
@@ -108,6 +115,12 @@ public class DefaultDealTransation4CFCASVImpl implements IApiDealTransationSV{
 	@Override
 	public Class<?> getResultClass() {
 		return Map.class;
+	}
+
+
+	@Override
+	public ApiTransationRespDTO checkParams(Map<String,Object> others,Map<String, Object> paramMap) {
+		return null;
 	}
 	
 }

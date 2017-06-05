@@ -1,10 +1,8 @@
 package com.ai.bdex.dataexchange.busi.cfca.controller;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
@@ -17,6 +15,7 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
 import com.ai.bdex.dataexchange.annotation.Security;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.ApiTransationRespDTO;
 import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipTransationRSV;
 import com.ai.bdex.dataexchange.security.ServiceCheckChain;
 import com.ai.bdex.dataexchange.util.StringUtil;
@@ -38,7 +37,7 @@ public class CfCATransationController {
 	 public String getResultFromCFCA(@Context HttpServletRequest request,@PathParam("serviceId") String serviceId)throws Exception{
 		 String result=null;
 		 String version="1.0";
-		 Map<String ,Object> resultMap=new HashMap<String ,Object>();
+		 ApiTransationRespDTO resultMap=null;
 		 try{
 			 if(!StringUtil.isBlank(serviceId)){
 				 //参数封装

@@ -1,7 +1,6 @@
 package com.ai.bdex.dataexchange.apigateway.dubbo.impl;
 
 import java.sql.Timestamp;
-import java.util.HashMap;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -13,7 +12,7 @@ import com.ai.bdex.dataexchange.apigateway.dao.model.AipClientAccesstoken;
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipServiceUsedLog;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.ApiTransationCode;
-import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.SystemErrorCode;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.ApiTransationRespDTO;
 import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipTransationRSV;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IAipApiDataSV;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IAipClientAccesstokenSV;
@@ -40,20 +39,16 @@ public class AipTransationRSVImpl implements IAipTransationRSV{
 
 
 	@Override
-	public Map<String, Object> createTransation(String serviceId,
-			String version, Map<String, Object> paramMap) throws Exception {		
-		Map<String, Object> resultMap=new HashMap<String, Object>();
-		Map<String, String> headerMap=new HashMap<String, String>();
-		Map<String, Object>  bodyMap=new HashMap<String, Object>();	
-		Map<String, Object>  errorMap=new HashMap<String, Object>();	
+	public ApiTransationRespDTO createTransation(String serviceId,
+			String version, Map<String, Object> paramMap) throws Exception {	
+		
+		ApiTransationRespDTO invokeMap=null;
 		String logId=null;
 		Timestamp requestTime=new Timestamp(System.currentTimeMillis());
 		
 		String clientId=null;
 		String accessToken=null;
-		headerMap.put("resp_code", SystemErrorCode.CODE_00000);
-		headerMap.put("resp_desc", "success");
-		resultMap.put("header", headerMap);
+
 		AipServiceUsedLog logVo=new AipServiceUsedLog();
 		try{
 			accessToken=(String)paramMap.get(APIConstants.AIP_PARAM_ACCESSTOKEN);
@@ -76,27 +71,21 @@ public class AipTransationRSVImpl implements IAipTransationRSV{
 			vo.setVersion(version);
 			aipServiceUsedLogSV.insertAipServiceUsedLog(vo);
 			
-			Object invokeMap=apiTransationSV.invoke(clientId,logId,serviceId, version, paramMap);
+			invokeMap=apiTransationSV.invoke(clientId,logId,serviceId, version, paramMap);
+			if(null!=invokeMap){
+				invokeMap.setSerialNo(logId);
+			}
 			
-			bodyMap.put("serialNo", logId);
-			bodyMap.put("body_result", invokeMap);
-			
-			
-			resultMap.put("body", bodyMap);
-			
-			logVo.setResponseMsg(JSON.toJSONString(resultMap));
+			logVo.setResponseMsg(JSON.toJSONString(invokeMap));
 			logVo.setStatus("1");
 			
 		}catch(Exception e ){
 			log.error("", e);	
-			bodyMap.put("serialNo", logId);
-			
-			errorMap.put("resp_code", ApiTransationCode.CODE_0009);
-			errorMap.put("resp_desc", "原因未明");
-			errorMap.put("result", null);
-			
-			bodyMap.put("body_result", errorMap);			
-			resultMap.put("body", bodyMap);	
+			invokeMap=new ApiTransationRespDTO();
+			invokeMap.setSerialNo(logId);
+			invokeMap.setRespCode(ApiTransationCode.CODE_20009);
+			invokeMap.setRespDesc("unknow reason");
+			invokeMap.setResult(null);
 			
 			logVo.setResponseMsg(e.getMessage());
 			logVo.setStatus("2");
@@ -107,7 +96,7 @@ public class AipTransationRSVImpl implements IAipTransationRSV{
 		logVo.setUpdateTime(new Timestamp(System.currentTimeMillis()));		
 		aipServiceUsedLogSV.updateByPrimaryKeySelective(logVo);
 		
-		return resultMap;
+		return invokeMap;
 	}
 	
 	private String getLogId(){		
