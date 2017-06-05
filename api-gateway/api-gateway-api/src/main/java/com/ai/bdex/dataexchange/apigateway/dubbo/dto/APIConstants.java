@@ -57,6 +57,12 @@ public class APIConstants {
     	public static final String ERRORCODE_10020 =	"10020";//	接口维护
     	public static final String ERRORCODE_10021 =	"10021";//	接口停用	    
     }
+    public static class ApiTransationCode{
+    	public static final String CODE_0000 = "0000";//成功 
+    	public static final String CODE_0001 =	"0001";//没有找到可以扣费的记录或余额不足
+    	public static final String CODE_0002 = "0002";//
+    	public static final String CODE_0009 = "0009";//未知异常
+    }
 	public static class AipService{
 		public static final String SERVICE_INIT_VERSION="1.0";//服务初始版本号
 		public static final String SERVICE_VALID_STATUS="1";//服务有效标识

@@ -46,6 +46,16 @@ public class AipServiceUsedLogSVImpl implements IAipServiceUsedLogSV{
 			throw e;
 		}
 	}
-	
+	@Override
+	public int updateByPrimaryKeySelective(AipServiceUsedLog vo)
+			throws Exception {		
+		try{
+			int c=aipServiceUsedLogMapper.updateByPrimaryKeySelective(vo);
+			return c;
+		}catch(Exception e){
+			log.error("update AipServiceUsedLog error:"+vo.getUsedId(),e);
+			throw e;
+		}
+	}	
 	
 }
