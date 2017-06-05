@@ -1,5 +1,7 @@
 package com.ai.bdex.dataexchange.aipcenter.service.impl;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,7 +9,20 @@ import org.springframework.stereotype.Service;
 
 import com.ai.bdex.dataexchange.aipcenter.dao.mapper.AipProviderInfoMapper;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipProviderInfo;
+import com.ai.bdex.dataexchange.aipcenter.dao.model.AipProviderInfoExample;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderInfoReqDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderInfoRespDTO;
 import com.ai.bdex.dataexchange.aipcenter.service.interfaces.IAipProviderInfoSV;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.exception.BusinessException;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
+import com.ai.bdex.dataexchange.util.PageResponseFactory;
+import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.utils.CollectionUtil;
+import com.ai.paas.utils.StringUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
 @Service("aipProviderInfoSV")
 public class AipProviderInfoSVImpl implements IAipProviderInfoSV{
@@ -25,6 +40,111 @@ public class AipProviderInfoSVImpl implements IAipProviderInfoSV{
 			throw e;
 		}		
 	}
-	
-	
+
+	@Override
+	public PageResponseDTO<AipProviderInfoRespDTO> pageAipProviderInfo(AipProviderInfoReqDTO aipProviderInfoReqDTO)
+			throws Exception {
+		PageResponseDTO<AipProviderInfoRespDTO> pageResponseDTO = null;
+
+		int pageNo = aipProviderInfoReqDTO.getPageNo();
+		int pageSize = aipProviderInfoReqDTO.getPageSize();
+
+		AipProviderInfoExample example = new AipProviderInfoExample();
+		AipProviderInfoExample.Criteria criteria = example.createCriteria();
+		initCriteria(criteria, aipProviderInfoReqDTO);
+		PageHelper.startPage(pageNo, pageSize);
+		List<AipProviderInfo> list = aipProviderInfoMapper.selectByExample(example);
+		PageInfo pageInfo = new PageInfo(list);
+		pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo, AipProviderInfoRespDTO.class);
+
+		return pageResponseDTO;
+	}
+	@Override
+	public String insertAipProviderInfo(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception {
+		if (aipProviderInfoReqDTO==null){
+			throw new BusinessException("插入aip服务商信息入参为空！");
+		}
+		String aipProviderId = SeqUtil.getString("SEQ_AIP_PROVIDER_INFO");
+		if (StringUtil.isBlank(aipProviderId)){
+			throw new BusinessException("获取到的序列aipProviderId为空！");
+		}
+		AipProviderInfo aipProviderInfo = new AipProviderInfo();
+		ObjectCopyUtil.copyObjValue(aipProviderInfoReqDTO,aipProviderInfo,null,false);
+		aipProviderInfo.setProviderId(aipProviderId);
+		aipProviderInfoMapper.insert(aipProviderInfo);
+
+		return aipProviderId;
+	}
+
+	@Override
+	public void updateAipProviderInfo(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception {
+		if (aipProviderInfoReqDTO==null){
+			throw new BusinessException("更新aip服务商信息入参为空！");
+		}
+		AipProviderInfoExample example = new AipProviderInfoExample();
+		AipProviderInfoExample.Criteria criteria = example.createCriteria();
+		if (!StringUtil.isBlank(aipProviderInfoReqDTO.getProviderId())) {
+			criteria.andProviderIdEqualTo(aipProviderInfoReqDTO.getProviderId());
+		}
+		AipProviderInfo aipProviderInfo = new AipProviderInfo();
+		ObjectCopyUtil.copyObjValue(aipProviderInfoReqDTO,aipProviderInfo,null,false);
+		aipProviderInfoMapper.updateByExampleSelective(aipProviderInfo,example);
+	}
+
+	private void initCriteria(AipProviderInfoExample.Criteria criteria, AipProviderInfoReqDTO aipProviderInfoReqDTO) {
+		if (!StringUtil.isBlank(aipProviderInfoReqDTO.getProviderId())) {
+			criteria.andProviderIdEqualTo(aipProviderInfoReqDTO.getProviderId());
+		}
+
+		if (!StringUtil.isBlank(aipProviderInfoReqDTO.getStatus())) {
+			criteria.andStatusEqualTo(aipProviderInfoReqDTO.getStatus());
+		}
+		if (!StringUtil.isBlank(aipProviderInfoReqDTO.getProviderName())) {
+			criteria.andProviderNameLike("%" + aipProviderInfoReqDTO.getProviderName() + "%");
+		}
+		if (aipProviderInfoReqDTO.getProviderSort() != null) {
+			criteria.andProviderSortEqualTo(aipProviderInfoReqDTO.getProviderSort());
+		}
+	}
+	 /**
+     * 排序调整
+     */
+    public void sortAipProviderInfoByOrder(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception {
+    	//当前排序
+    	AipProviderInfo currentAipProviderInfo = getAipProviderInfo(aipProviderInfoReqDTO.getProviderId());
+        int newOrder = aipProviderInfoReqDTO.getProviderSort();
+
+        AipProviderInfo replaceAipProviderInfo = getAipProviderInfoByOrder(currentAipProviderInfo, newOrder);
+        if(null == replaceAipProviderInfo ){
+            // 该位置没有服务商,直接替换.
+        	currentAipProviderInfo.setProviderSort(newOrder);
+        	aipProviderInfoMapper.updateByPrimaryKeySelective(currentAipProviderInfo);
+        }else{
+            //  已有服务商,调整顺序,顺序对换
+            int currentOrder =currentAipProviderInfo.getProviderSort();
+            replaceAipProviderInfo.setProviderSort(currentOrder);
+        	currentAipProviderInfo.setProviderSort(newOrder);
+        	aipProviderInfoMapper.updateByPrimaryKeySelective(replaceAipProviderInfo);
+        	aipProviderInfoMapper.updateByPrimaryKeySelective(currentAipProviderInfo);
+        }
+
+    }
+    private AipProviderInfo getAipProviderInfoByOrder(AipProviderInfo currentProviderInfo , int newOrder) throws Exception{
+    	AipProviderInfoExample example = new AipProviderInfoExample();
+		AipProviderInfoExample.Criteria criteria = example.createCriteria();
+//		if (!StringUtil.isBlank(currentProviderInfo.getProviderId())) {
+//			criteria.andProviderIdEqualTo(currentProviderInfo.getProviderId());
+//		}
+		if (newOrder!= 0) {
+			criteria.andProviderSortEqualTo(newOrder);
+		}
+		criteria.andStatusEqualTo(Constants.Page.STATUS_VALID);
+		List<AipProviderInfo> list = aipProviderInfoMapper.selectByExample(example);
+
+        if(CollectionUtil.isEmpty(list)){
+            return null;
+        }
+        return list.get(0);
+    }
+
 }

@@ -2,6 +2,7 @@ package com.ai.bdex.dataexchange.aipcenter.dubbo.impl;
 
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipProviderInfo;
 import com.ai.bdex.dataexchange.aipcenter.dao.model.AipProviderServiceInfo;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderInfoReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderInfoRespDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderServiceInfoReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderServiceInfoRespDTO;
@@ -76,5 +77,54 @@ public class AipProviderServiceMgrRSVImpl implements IAipProviderServiceMgrRSV {
             log.error("查询供应商服务信息异常：",e);
         }
         return aipProviderServiceInfoRespDTO;
+    }
+    @Override
+	public PageResponseDTO<AipProviderInfoRespDTO> pageAipProviderInfo(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception {
+
+        PageResponseDTO<AipProviderInfoRespDTO> pageResponseDTO = null;
+        try {
+            pageResponseDTO = iAipProviderInfoSV.pageAipProviderInfo(aipProviderInfoReqDTO);
+        }catch (Exception e){
+            log.error("查询服务商信息分页列表异常：",e);
+        }
+
+        return pageResponseDTO;
+    }
+	public void updateAipProviderInfo(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception{
+	    if (StringUtil.isBlank(aipProviderInfoReqDTO.getProviderId())){
+            throw new BusinessException("更新服务商信息异常，入参为空");
+        }
+	    try {
+             iAipProviderInfoSV.updateAipProviderInfo(aipProviderInfoReqDTO);
+        }catch (Exception e){
+            log.error("更新服务商信息异常异常：",e);
+        }
+	}
+	public String insertAipProviderInfo(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception{
+	    if (aipProviderInfoReqDTO==null){
+            throw new BusinessException("插入服务商信息异常，入参为空");
+        }
+	    String providerId="";
+	    try {
+	    	providerId=iAipProviderInfoSV.insertAipProviderInfo(aipProviderInfoReqDTO);
+        }catch (Exception e){
+            log.error("更新服务商信息异常异常：",e);
+        }
+	    return providerId;
+	}
+	/**
+	 * 调整AIP服务供应商排序
+	 * @param aipProviderInfoReqDTO
+	 * @throws Exception
+	 */
+    public void sortAipProviderInfoByOrder(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception{
+    	 if (aipProviderInfoReqDTO.getProviderId()==null||aipProviderInfoReqDTO.getProviderSort()==null){
+             throw new BusinessException("调整AIP服务供应商排序信息异常，providerId或providerSort为空");
+         }
+ 	    try {
+ 	    	iAipProviderInfoSV.sortAipProviderInfoByOrder(aipProviderInfoReqDTO);
+         }catch (Exception e){
+             log.error("更新服务商信息异常异常：",e);
+         }
     }
 }
