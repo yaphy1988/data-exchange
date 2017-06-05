@@ -16,11 +16,11 @@ import org.springframework.context.annotation.ImportResource;
 @ImportResource({"classpath:/dubbo/service/*.xml","classpath:/spring/spring-aop-transaction.xml"})
 @SpringBootApplication
 @MapperScan("com.ai.bdex.dataexchange.aipcenter.dao.mapper")
-public class ApiCenterServiceStart {
-    private static Logger logger = LoggerFactory.getLogger(ApiCenterServiceStart.class);
+public class AipCenterServiceStart {
+    private static Logger logger = LoggerFactory.getLogger(AipCenterServiceStart.class);
 
     public static void main(String[] args) throws InterruptedException {
-        ApplicationContext context = SpringApplication.run(ApiCenterServiceStart.class, args);
+        ApplicationContext context = SpringApplication.run(AipCenterServiceStart.class, args);
         Utils.setCtx(context);
 
         logger.error("ApiCenterServiceStart 启动成功...");

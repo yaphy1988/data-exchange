@@ -24,7 +24,7 @@ public class OrderStatusUpdateBaseJob implements Job {
         IOrderMainInfoRSV oderBaseService = Utils.getInstance(IOrderMainInfoRSV.class);
         try {
             //处理已完成的订单
-            logger.info("SearchGdsBaseJob fired at " + new Date());
+            logger.info("OrderStatusUpdateBaseJob fired at " + new Date());
             OrdInfoReqDTO ordInfoReqDTO = new OrdInfoReqDTO ();
             Date orderActiveEndTime   = DateUtil.getNowAsDate();
             ordInfoReqDTO.setActiveEndTime(orderActiveEndTime);
@@ -32,7 +32,7 @@ public class OrderStatusUpdateBaseJob implements Job {
             ordInfoReqDTO.setPageSize(100);
             oderBaseService.updateOrderAndSubOrderInfoByJob(ordInfoReqDTO);
         } catch (Exception e) {
-            logger.error("执行 SearchGdsBaseJob 失败： ",e);
+            logger.error("执行 OrderStatusUpdateBaseJob 失败： ",e);
         }
     }
 }

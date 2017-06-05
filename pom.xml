@@ -67,6 +67,7 @@
     <webjars.jquery.version>3.2.0</webjars.jquery.version>
     <webjars.bootstrap.version>3.3.7</webjars.bootstrap.version>
     <webjars.bootstrap-table.version>1.11.1</webjars.bootstrap-table.version>
+    <webjars.tableExport-plugin.version>1.9.0</webjars.tableExport-plugin.version>
     <webjars.smalot-datetimepicker.version>2.4.4</webjars.smalot-datetimepicker.version>
     <webjars.kartik-v-bootstrap-fileinput.version>4.3.9</webjars.kartik-v-bootstrap-fileinput.version>
     <webjars.fontawesome.version>4.7.0</webjars.fontawesome.version>
@@ -241,6 +242,11 @@
         <groupId>org.webjars.bower</groupId>
         <artifactId>bootstrap-table</artifactId>
         <version>${webjars.bootstrap-table.version}</version>
+      </dependency>
+      <dependency>
+        <groupId>org.webjars.bower</groupId>
+        <artifactId>tableExport.jquery.plugin</artifactId>
+        <version>${webjars.tableExport-plugin.version}</version>
       </dependency>
       <dependency>
         <groupId>org.webjars.bower</groupId>

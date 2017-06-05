@@ -106,6 +106,10 @@
     </dependency>
     <dependency>
       <groupId>org.webjars.bower</groupId>
+      <artifactId>tableExport.jquery.plugin</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.webjars.bower</groupId>
       <artifactId>smalot-bootstrap-datetimepicker</artifactId>
     </dependency>
     <dependency>
@@ -187,6 +191,10 @@
                 <artifactItem>
                   <groupId>org.webjars.bower</groupId>
                   <artifactId>bootstrap-table</artifactId>
+                </artifactItem>
+                <artifactItem>
+                  <groupId>org.webjars.bower</groupId>
+                  <artifactId>tableExport.jquery.plugin</artifactId>
                 </artifactItem>
                 <artifactItem>
                   <groupId>org.webjars.bower</groupId>
