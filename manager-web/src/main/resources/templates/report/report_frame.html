@@ -29,8 +29,13 @@
                 withCredentials: true
             },
             success: function(data){
+                $('#loading-info').hide();
                 $('#report_content').html(data).show();
                 renderTable();
+            },
+            error:function(){
+                $('#loading-info').hide();
+                $('#error-info').show();
             }
         });
     </script>
@@ -47,7 +52,8 @@
             </div>
 
             <div id="report_content">
-                <h1>这里是报表的主工作区，通过js异步查询报表数据然后显示在这里！</h1>
+                <h2 id="loading-info">正在为您拼命加载报表数据！！！</h2>
+                <h2 id="error-info" th:style="'display: none'">这里是报表的主工作区，查询报表失败了！<br/> 请稍后重试...</h2>
             </div>
 
         </div>
