@@ -643,7 +643,7 @@ function createGdsInfo2PropList(){
  * @param {}
  *            path
  */
-function uploadImage(object) {
+function uploadImages(object) {
     var filepath = $(object).val();
     if(filepath==""){
     	return false;
@@ -702,6 +702,20 @@ function ajaxFileUpload(url, secureuri, fileElementId, type, dataType,params, ca
 					alert(e);
 				}
 			});
+}
+function onImageFileChange(obj){
+	
+	uploadImage($(obj),function(data){
+		//上传成功
+		var fileId = data.fileId;
+		var fileName = data.fileName;
+		var fileType = data.fileType;
+		var iamgeSize = "_80x80!";//可不设置
+//		var imageUrl = WEB_SHOW_IMG_PATH + fileId +iamgeSize+"."+ fileType;
+		var imageUrl = data.imageUrl;
+		$("#gdsPic").val(fileId);
+		$("#gdsPicUrl").attr("src",imageUrl)
+	});
 }
 function addCkedit(layout){
 	var modular=$("#addProp");

@@ -17,6 +17,7 @@
 
 	<!--<script type="text/javascript" src="../../static/js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>-->
 	<script type="text/javascript" src="../META-INF/resources/webjars/js/frameajax/ajaxfileupload.js" th:src="@{/webjars/js/frameajax/ajaxfileupload.js}"></script>
+	<script src="../../static/js-busi/common/uploadimg.js" th:src="@{/js-busi/common/uploadimg.js}"></script>
 	<script type="text/javascript" src="../../static/js-busi/gds/gdsEdit.js" th:src="@{/js-busi/gds/gdsEdit.js}"></script>
 </head>
 <body>
@@ -226,7 +227,7 @@
 						<div class="form-inline">
                              <div class="form-group">
                              <input  type="hidden" class="form-control" placeholder="" id="gdsPic" th:value="${gdsInfoVO.gdsPic}">
-                             <input type="file" class="float_File form-control"  name="picUpLoad" id="picUpLoad" th:onchange="'uploadImage(this)'">
+                             <input type="file" class="float_File form-control"  name="picUpLoad" id="picUpLoad" th:onchange="'onImageFileChange(this)'">
                              </div>
                              <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal4">从图片库选择图片</button>
                         </div>
