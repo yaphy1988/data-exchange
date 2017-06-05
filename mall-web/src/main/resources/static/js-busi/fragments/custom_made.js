@@ -9,12 +9,12 @@ $(function(){
 /** 保存数据定制信息 */
 function saveMadeData() {
 	
-/*	var staff_id = $("#staff_id").val();
+ var staff_id = $("#staff_id").val();
 	if(staff_id == "")
 	{
 	    WEB.msg.info("提示",'请先登录');
 	    return;
-	}*/
+	}
 	var needTiel    =  encodeURI2($("#needTiel").val());
 	var needcontent =  encodeURI2($("#needcontent").val());
 	var lnkposen    =  encodeURI2($("#lnkposen").val());
@@ -63,7 +63,16 @@ function saveMadeData() {
 			    WEB.msg.info("提示",'保存成功');
 			    $("#myModal").hide(); 
 				$("#commitData").attr("disabled", false);
-
+  		   }
+  		   else{
+				if(data.erroinfo == "NOLOGIN")
+				{
+					WEB.msg.info("提示",'亲，请先登录，再来提交申请');
+				}
+				else (data.erroinfo == "NOAUTHFLAG")
+			   {
+				   WEB.msg.info("提示",'亲，请先实名认证，再来提交申请');
+			   }
   		   }
 	}});
 }

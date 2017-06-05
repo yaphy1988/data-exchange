@@ -176,10 +176,17 @@ public class OrderInfoRSVImpl  implements IOrderInfoRSV {
 		return null;
 	}
 
-	// 我的数据：为我的订单中已经支付成功的数据: 根据API key做唯一值
+	// 我的数据：为我的订单中最早申请且支付成功的数据
 	@Override
-	public List<OrdInfoRespDTO> queryAllDataByStaff(OrdInfoRespDTO ordInfo) throws Exception {
-		return null;
+	public List<OrdInfoRespDTO> queryMyDataFirstBuy(OrdInfoReqDTO ordInfo) throws Exception {
+		List<OrdInfoRespDTO> ordInfoList = new ArrayList<>();
+		try {
+			ordInfoList = iOrdInfoSV.queryMyDataFirstBuy(ordInfo);
+		} catch (Exception e) {
+			log.error("分页获取子订单信息异常:", e);
+			throw new Exception(e);
+		}
+		return ordInfoList;
 	}
 	/**
 	 * 对主订单编号的封装

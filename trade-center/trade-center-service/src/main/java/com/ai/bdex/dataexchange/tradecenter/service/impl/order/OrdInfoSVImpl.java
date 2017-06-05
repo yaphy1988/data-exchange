@@ -66,10 +66,23 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 	   public List<OrdInfo> queryOrderByStaffGds(OrdInfo ordInfo) throws Exception{
 		   return null;
 	   }
-	   //我的数据：为我的订单中已经支付成功的数据: 根据API key做唯一值
-	   public List<OrdInfo> queryAllDataByStaff(OrdInfo ordInfo) throws Exception{
-		   return null;
-		   //distict SKU_ID status = 1 的数据，统计总次数
+	   //我的数据：为我的订单中最早生成，切支付成功的数据
+	   public List<OrdInfoRespDTO> queryMyDataFirstBuy(OrdInfoReqDTO ordInfo) throws Exception{
+		   OrdInfoExample example = new OrdInfoExample();
+		   OrdInfoExample.Criteria criteria = example.createCriteria();
+		   initCriteria(criteria, ordInfo);
+		   example.setOrderByClause("ORDER_TIME asc");
+		   List<OrdInfo> ordInfoList = ordInfoMapper.selectByExample(example);
+		   List<OrdInfoRespDTO> respDTOList = new ArrayList<OrdInfoRespDTO>();
+		   if(!CollectionUtil.isEmpty(ordInfoList)){
+			   for(OrdInfo ordInfotmp :ordInfoList){
+				   OrdInfoRespDTO respDTO = new OrdInfoRespDTO();
+				   ObjectCopyUtil.copyObjValue(ordInfotmp,respDTO,null,false);
+				   respDTOList.add(respDTO);
+				   break;
+			   }
+		   }
+		   return respDTOList;
 	   }
 	public List<OrdInfoRespDTO> queryOrderInfoList(OrdInfoReqDTO ordInfoReqDTO) throws Exception{
 		OrdInfoExample example = new OrdInfoExample();
@@ -203,3 +216,4 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 		return pageResponseDTO;
 	}
 }
+//

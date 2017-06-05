@@ -88,18 +88,24 @@ public class OrderController {
 	public ModelAndView saveTosession(Model model, HttpServletRequest request) {
 		//取用户ID
 		boolean bshowCreatebt = true;//是否顯示確認訂單
+		boolean bauthFlage = true;
 		HttpSession hpptsesion = request.getSession(); 
 		String staff_id = StaffUtil.getStaffId(hpptsesion);
- 	   if(StringUtil.isBlank(staff_id))
+		StaffInfoDTO staffInfoDTO  = StaffUtil.getStaffVO(hpptsesion);
+		//未认证
+ 	   if(StringUtil.isBlank(staff_id) )
 		{
-			//没有登录的，不顯示確認訂單按鈕。
+			//没有登录的，或者没有认证的，不顯示確認訂單按鈕。
 			bshowCreatebt = false;
 			staff_id = SESSION_UNION_SHOPCART;
 		}
+		if( !"1".equals(staffInfoDTO.getAuthenFlag()))
+		{
+			bshowCreatebt = false;
+			bauthFlage = false;
+		}
 
-
-		StaffInfoDTO staffInfoDTO = StaffUtil.getStaffVO(hpptsesion);
-		//将商品的名称，gdsID，套餐id，skuID，带过来，存储到session中。价
+ 		//将商品的名称，gdsID，套餐id，skuID，带过来，存储到session中。价
 	    //图片ID格必须从商品服务从新回去
 		//商品名称和ID
 		int gdsid = Integer.parseInt(request.getParameter("gdsId"));
@@ -210,6 +216,9 @@ public class OrderController {
 	    request.setAttribute("gdsvfsurl",gdsvfsurl); 
 	    request.setAttribute("authenflag",staffInfoDTO.getAuthenFlag());
 		request.setAttribute("bshowCreatebt",bshowCreatebt);
+		request.setAttribute("bauthFlage",bauthFlage);
+
+
 		//返回预购界面
 		ModelAndView modelAndView = new ModelAndView("shopcart/shoppint_cart");
 		return modelAndView; 

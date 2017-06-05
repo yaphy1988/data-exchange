@@ -21,7 +21,7 @@ public interface IOrdInfoSV {
 	public List<OrdInfo> queryOrderByStaffGds(OrdInfo ordInfo) throws Exception;
 
 	// 我的数据：为我的订单中已经支付成功的数据: 根据API key做唯一值
-	public List<OrdInfo> queryAllDataByStaff(OrdInfo ordInfo) throws Exception;
+	public List<OrdInfoRespDTO> queryMyDataFirstBuy(OrdInfoReqDTO OrdInfoReqDTO) throws Exception;
 
 	/**
 	 * 分页查询订单

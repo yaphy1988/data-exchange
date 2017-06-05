@@ -8,7 +8,7 @@ import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
+import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.*;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsInfoVO;
  import com.ai.bdex.dataexchange.busi.page.entity.PageModuleGoodsVO;
 import com.ai.bdex.dataexchange.constants.Constants;
@@ -35,9 +35,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipServiceInfoDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.DataAccountDTO;
-import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.RechargeReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipCenterDataAccountRSV;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipServiceInfoRSV;
@@ -117,7 +114,8 @@ public class orderManageController {
 	@RequestMapping(value = "/myAPIDataList")
 	public String myAPIDataList(Model model, OrdInfoVO ordInfoVO,HttpSession session) {
 		try {
-			PageResponseDTO<RechargeDTO> pageInfo = new PageResponseDTO<RechargeDTO>();
+			PageResponseDTO<DataAccountRespDTO> pageInfo = new PageResponseDTO<DataAccountRespDTO>();
+			//PageResponseDTO<RechargeDTO> pageInfo = new PageResponseDTO<RechargeDTO>();
 			RechargeReqDTO rechargeReqDTO = new RechargeReqDTO();
 			rechargeReqDTO.setPageNo(ordInfoVO.getPageNo());
 			if(ordInfoVO.getPageSize()!=null||ordInfoVO.getPageSize()!=0){
@@ -128,16 +126,31 @@ public class orderManageController {
 			rechargeReqDTO.setRechargeUserId(StaffUtil.getStaffId(session));
 			//查询API分类
 			rechargeReqDTO.setCatFirst(Integer.parseInt(AIP_CAT_ID));
-			 //查询是是否要连数据账户信息一起查询
+			//查询是是否要连数据账户信息一起查询
 			rechargeReqDTO.setQueryDataAccount(true);
-			pageInfo = iAipCenterDataAccountRSV.queryRechargePageByOption(rechargeReqDTO);
-			if(CollectionUtils.isNotEmpty(pageInfo.getResult())){
-				for(RechargeDTO rechargeDTO : pageInfo.getResult()){
-					if(StringUtil.isNotBlank(rechargeDTO.getServiceId())){
-						List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(String.valueOf(rechargeDTO.getServiceId()));
-						if (CollectionUtils.isNotEmpty(apiServiceList)) {
-							rechargeDTO.setServiceName(apiServiceList.get(0).getServiceName());
-						}
+			//pageInfo = iAipCenterDataAccountRSV.queryRechargePageByOption(rechargeReqDTO);
+			DataAccountDTO dataAccountReqDTO = new DataAccountDTO ();
+ 			String staff_id = StaffUtil.getStaffId(session);
+			if(StringUtil.isBlank(staff_id)){
+				staff_id = TMPUSERID;
+			}
+			dataAccountReqDTO.setUserId(staff_id);
+			pageInfo = iAipCenterDataAccountRSV.queryDataAccountStatisticPageByOption(dataAccountReqDTO);
+ 			if(CollectionUtils.isNotEmpty(pageInfo.getResult())){
+				for(int i = 0 ; i < pageInfo.getResult().size();i++){
+				  String serviceid = pageInfo.getResult().get(i).getServiceId();
+					List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(serviceid);
+					if (CollectionUtils.isNotEmpty(apiServiceList)) {
+						pageInfo.getResult().get(i).setServicename(apiServiceList.get(0).getServiceName());
+					}
+                     //取最早申请的支付成功的数据
+					OrdInfoReqDTO ordInfo = new OrdInfoReqDTO ();
+					ordInfo.setAipServiceId(serviceid);
+					ordInfo.setCreateStaff(staff_id);
+					ordInfo.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
+					List<OrdInfoRespDTO>  listOrder =  iOrderInfoRSV.queryMyDataFirstBuy(ordInfo);
+					if (CollectionUtils.isNotEmpty(listOrder)) {
+						pageInfo.getResult().get(i).setfirstBuyTime(listOrder.get(0).getCreateTime());
 					}
 				}
 			}

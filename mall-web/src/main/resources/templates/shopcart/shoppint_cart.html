@@ -130,7 +130,7 @@
         <tr>
               <td align="left " class="pt15"><a   th:onclick="'javascript:gotoHome();'" class="btn btn-default">继续购物</a></td>
               <td align="right" class="pt15"><a th:if="${bshowCreatebt}"  class="btn btn-primary ok" th:onclick="'javascript:createOrder();'"   >确认提交</a>
-                  <a th:if="${bshowCreatebt}== false"  class="btn btn-default" >请先登录才能提交订单</a>
+                  <a th:if="${bauthFlage}== false"  ><a th:onclick="'javascript:gotoAuthen();'">先实名认证</a>才能提交订单，</a>
               </td>
         </tr>
   </table>

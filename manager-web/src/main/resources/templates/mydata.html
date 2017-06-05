@@ -86,13 +86,11 @@
 								<tbody th:if=" ${pageInfo}" th:remove="all-but-first">
 									<tr th:each="list,iterStat : ${pageInfo.result}"
 										th:unless="${#lists.isEmpty(pageInfo.result)}">
-										<td
-											th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
-										<td th:text="${list.serviceName}"></td>
+										<td th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
+ 										<td th:text="${list.servicename}"></td>
 										<td th:text="${list.serviceId}"></td>
-										<td
-											th:text="${#calendars.format(list.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
-										<td th:text="${list.dataAccountDTO.leftNum}"></td>
+                                          <td th:text="${#calendars.format(list.firstbuytime,'yyyy-MM-dd HH:mm:ss')}"></td>
+										<td th:text="${list.leftNum}">剩余可用次数</td>
 										<td><a href="javaScript:void(0)"  target="_blank"  th:onclick="|buyGoodsAgain('${list.gdsId}','${list.skuId}')|">再次购买</a></td>
 										<td><a href="javaScript:void(0)"  target="_blank"  th:onclick="|jumpToInterface('${list.gdsId}','${list.skuId}')|">接口</a></td>
 									</tr>

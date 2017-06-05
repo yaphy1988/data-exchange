@@ -19,7 +19,7 @@ public interface IOrderInfoRSV {
 	public List<OrdInfoRespDTO> queryOrderByStaffGds(OrdInfoRespDTO ordInfo) throws Exception;
 
 	// 我的数据：为我的订单中已经支付成功的数据: 根据API key做唯一值
-	public List<OrdInfoRespDTO> queryAllDataByStaff(OrdInfoRespDTO ordInfo) throws Exception;
+	public List<OrdInfoRespDTO> queryMyDataFirstBuy(OrdInfoReqDTO ordInfo) throws Exception;
 
 	// 固定和自定义订单生成
 	public OrdInfoReqDTO createOrderInfo(OrdInfoReqDTO ordInfoReqDTO) throws Exception;

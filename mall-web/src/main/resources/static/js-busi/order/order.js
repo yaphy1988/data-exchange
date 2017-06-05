@@ -22,7 +22,10 @@ function gotoHome() {
 }
 function gotogdsPageUrl(gdsid) {
 	window.location.href=basePath+"/goods/details/"+gdsid+"-";
-
+ }
+ //实名认证
+ function gotoAuthen() {
+	 window.location.href = MANAGE_ROOT+"/authenapply/userinfo";
  }
 //tiaodao shouye
 // href="/homePage/pageInit"

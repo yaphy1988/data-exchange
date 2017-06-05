@@ -2,6 +2,8 @@ package com.ai.bdex.dataexchange.aipcenter.dubbo.dto;
 
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
 
+import java.util.Date;
+
 /**
  * Created by fangyunfeng on 2017/5/5.
  */
@@ -91,6 +93,29 @@ public class DataAccountRespDTO extends BaseResponseDTO {
      * 商品一级分类编码
      */
     private Integer catFirst;
+    /**
+     * 服务名称
+     */
+    private String serviceName;
+    /**
+     * 最早申请的时间
+     */
+     private Date firstbuytime;
+
+    public Date getfirstBuyTime() {
+        return firstbuytime;
+    }
+    public void setfirstBuyTime(Date firstbuytime) {
+        this.firstbuytime = firstbuytime;
+    }
+
+    public String getServicename() {
+        return serviceName;
+    }
+
+    public void setServicename(String serviceName) {
+        this.serviceName = serviceName;
+    }
 
     public Long getDataAcctId() {
         return dataAcctId;

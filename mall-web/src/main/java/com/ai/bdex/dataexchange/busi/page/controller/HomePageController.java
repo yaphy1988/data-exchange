@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 
+import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -313,7 +315,8 @@ public class HomePageController {
 	@ResponseBody
 	private  Map<String, Object> saveMadeData(Model model,  HttpServletRequest request,  HttpServletResponse response) {
 		Map<String, Object> rMap = new HashMap<String, Object>();
-		try { 
+		try {
+
 			String needTieltmp = request.getParameter("needTiel");
 			String needTiel = uRLDecoderStr(needTieltmp);
 			String needcontent = uRLDecoderStr(request.getParameter("needcontent"));
@@ -322,6 +325,7 @@ public class HomePageController {
 			String lnkemail = request.getParameter("lnkemail");
 			HttpSession hpptsesion = request.getSession(); 
 			String staff_id = StaffUtil.getStaffId(hpptsesion);
+			StaffInfoDTO staffInfoDTO  = StaffUtil.getStaffVO(hpptsesion);
 			DataCustomizationRespDTO dataCustomizationRespDTO = new DataCustomizationRespDTO();
 			dataCustomizationRespDTO.setCustomName(needTiel);
 			dataCustomizationRespDTO.setCustomDescrip(needcontent);
@@ -332,6 +336,21 @@ public class HomePageController {
 			{
 				dataCustomizationRespDTO.setCreateStaffId(staff_id); 
 			}
+			else
+			{
+				log.error("请先登录" );
+				rMap.put("erroinfo", "NOLOGIN");
+				rMap.put("success", false);
+				return rMap;
+			}
+			//未认证
+			if(!"1".equals(staffInfoDTO.getAuthenFlag()))
+			{
+				rMap.put("erroinfo", "NOAUTHFLAG");
+				rMap.put("success", false);
+				return rMap;
+			}
+
 			dataCustomizationRespDTO.setStatus(CUSTOMDATA_STATUS_VALID);
 			int count = iPageDisplayRSV.saveDataCustomizationRsv(dataCustomizationRespDTO);
 			model.addAttribute("savecount", count);
