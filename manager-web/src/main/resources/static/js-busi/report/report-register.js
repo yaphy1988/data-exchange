@@ -11,7 +11,14 @@ function initTable() {
         height: getHeight(),
         queryParams : queryParams,
         pageList: [10, 25, 50, 100,200],
-        responseHandler: responseHandler
+        ajaxOptions:{
+            crossDomain: true,
+           xhrFields: {
+                withCredentials: true
+            }
+        },
+        responseHandler: responseHandler,
+
     });
     // sometimes footer render error.
     setTimeout(function () {
