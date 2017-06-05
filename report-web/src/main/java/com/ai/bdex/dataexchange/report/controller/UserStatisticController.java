@@ -42,6 +42,6 @@ public class UserStatisticController {
 
         model.addAttribute("hello","报表");
         logger.info("报表数据请求已经到达report-web，返回页面模板：report/user_register");
-        return "report/user_register";
+        return "report/user_register :: #table_content";
     }
 }

@@ -98,6 +98,13 @@ public class LoginAuthFilter implements Filter {
         HttpServletResponse response = (HttpServletResponse) servletResponse;
         HttpSession session = request.getSession();
 
+        //CORS预检请求
+        String reqMethod = request.getMethod();
+        if("OPTIONS".equalsIgnoreCase(reqMethod) && request.getHeader("Origin") != null){
+            filterChain.doFilter(servletRequest, servletResponse);
+            return;
+        }
+
         //请求uri
         String uri =request.getServletPath();
         log.info("receive url:"+uri);
@@ -136,7 +143,7 @@ public class LoginAuthFilter implements Filter {
                 List<String> staffAuthMenus = staffInfo.getMenuUrls();
                 if (staffAuthMenus != null && staffAuthMenus.size() > 0) {
                     for (String menuUrl : staffAuthMenus) {
-                        if (reqUrl.startsWith(menuUrl) || (isAjaxRequest(request) && refererUrl.startsWith(menuUrl))) {
+                        if (reqUrl.startsWith(menuUrl) || (refererUrl.startsWith(menuUrl))) {
                             hasMenuAuth = true;
                             break;
                         }
