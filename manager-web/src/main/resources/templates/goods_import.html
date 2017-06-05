@@ -227,7 +227,7 @@
 						<div class="form-inline">
                              <div class="form-group">
                              <input  type="hidden" class="form-control" placeholder="" id="gdsPic" th:value="${gdsInfoVO.gdsPic}">
-                             <input type="file" class="float_File form-control"  name="picUpLoad" id="picUpLoad" th:onchange="'onImageFileChange(this)'">
+                             <input type="file" class="float_File form-control"  name="picUpLoad" id="picUpLoad" imgsize="_100x100!" th:onchange="'onImageFileChange(this)'">
                              </div>
                              <button class="btn btn-default" type="button" data-toggle="modal" data-target="#myModal4">从图片库选择图片</button>
                         </div>

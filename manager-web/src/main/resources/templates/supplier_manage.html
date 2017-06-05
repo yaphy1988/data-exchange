@@ -8,7 +8,9 @@
 	<link rel="stylesheet" href="../static/component/bootstrap/css/bootstrap.css" th:remove="all">
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
-	
+	<script type="text/javascript" src="../META-INF/resources/webjars/js/frameajax/ajaxfileupload.js" th:src="@{/webjars/js/frameajax/ajaxfileupload.js}"></script>
+	<script src="../../static/js-busi/common/uploadimg.js" th:src="@{/js-busi/common/uploadimg.js}"></script>
+	<script src="../static/js-busi/aip/aipProviderManage.js" th:src="@{/js-busi/aip/aipProviderManage.js}"></script>
 </head>
 <body>
 <header class="clearfix m_header">
@@ -48,97 +50,186 @@
 </header>
 <div  layout:fragment="screen_content">
 	<div class="m_main">
-		<div class="m_con">
-			<div class="classify">
-				<i class="iconfont"></i>
-				<span>当前位置：</span>
-				<a href=""><span>广州数据交易中心</span></a>
-				<a href=""><span>XXX</span></a>
-				<span class="col_999"> 供应商管理</span>
-			</div>
-			<div class="top-table">
-				<table class="editTable">
-					<tr>
-						<td class="Hint">供应商名称：</td>
-						<td><input type="text" class="form-control" name=""></td>
-						<td class="Hint">状态：</td>
-						<td></td>
-						<td>
-							<select class="form-control">
-								<option>1</option>
-							</select>
-						</td>
-						<td>
-							<button class="btn btn-primary ">查询</button>
-						</td>
-					</tr>
-				</table>
-			</div>
-			<table class="table table-bordered text-center" >
-                <thead>
-                <tr class="active">
-                    <th><input type="checkbox" name=""></th>
-                    <th>供应商编码</th>
-                    <th>供应商名称</th>
-                    <th width="300">供应商描述</th>
-                    <th>logo</th>
-                    <th>排序</th>
-                    <th>状态</th>
-                    <th>操作</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><input type="checkbox" name=""></td>
-                    <td></td>
-                    <td></td>
-                    <td>阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是 </td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
-                    <td>
-                        <p class="pop-link">
-                            <a href="">删除</a>
-                            <a href="">编辑</a>
-                        </p>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <div class="text-right">
-            	<a href="" class="btn btn-primary btn-sm" >新增</a>
-            	<a href="" class="btn btn-default btn-sm" >删除</a>
-            	
-            </div>
-            <div class="pagelist">
-				<nav aria-label="Page navigation">
-				  <ul class="pagination">
-				    <li >
-				      <a href="#" aria-label="Previous">
-				        <span aria-hidden="true">上一页</span>
-				      </a>
-				    </li>
-				    <li class="active"><a href="#">1</a></li>
-				    <li><a href="#">2</a></li>
-				    <li><a href="#">3</a></li>
-				    <li><a href="#">4</a></li>
-				    <li><a href="#">5</a></li>
-				    <li>
-				      <a href="#" aria-label="Next">
-				        <span aria-hidden="true">下一页</span>
-				      </a>
-				    </li>
-				    <div class="pageskip">
-				  	<span class="pr10">到第<input type="text" class="pageskip_box">页</span>
-				  	<a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
-				  </div>
-				  </ul>
-				  
-				</nav>
+			<div class="m_con">
+				<div class="classify">
+					<i class="iconfont"></i> <span>当前位置：</span> <a href=""><span>广州数据交易中心</span></a>
+					<a href=""><span>个人中心</span></a> <span class="col_999">
+						供应商管理</span>
+				</div>
+				<div class="top-table">
+					<table class="editTable">
+						<tr>
+							<td class="Hint">供应商名称：</td>
+							<td><input type="text" class="form-control"
+								id="providerName"></td>
+							<td class="Hint">状态：</td>
+							<td></td>
+							<td><select class="form-control" id="status">
+									<option value="">全部</option>
+									<option value="0">失效</option>
+									<option value="1">有效</option>
+									<option value="2">冻结</option>
+							</select></td>
+							<td>
+								<button class="btn btn-primary " th:onclick="'queryAipProviderInfoList(1)'">查询</button>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="aipProviderInfoList">
+					<table class="table table-bordered text-center">
+						<thead>
+							<tr class="active">
+								<th><input type="checkbox" name=""></th>
+								<th>供应商编码</th>
+								<th>供应商名称</th>
+								<th width="300">供应商描述</th>
+								<th>logo</th>
+								<th>排序</th>
+								<th>状态</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody th:remove="all-but-first" th:if="${pageInfo}">
+							<tr th:unless="${#lists.isEmpty(pageInfo.result)}"
+								th:each="list,listStat : ${pageInfo.result}">
+								<td><input type="checkbox" name=""></td>
+								<td th:text="${list.providerId}"></td>
+								<td th:text="${list.providerName}"></td>
+								<td th:text="${list.providerDesc}">阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是
+								</td>
+								<td><img alt="" src="" th:src="${list.providerLogo}"></td>
+								<td th:text="${list.providerSort}"></td>
+								<td><span th:if="${list.status}=='0'">失效</span> <span
+									th:if="${list.status}=='1'">有效</span> <span
+									th:if="${list.status}=='2'">冻结</span></td>
+								<td>
+									<p class="pop-link">
+										<a href="">删除</a> <a href="">编辑</a>
+									</p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+					<div class="text-right">
+						<button class="btn btn-primary btn-sm" type="button"
+							data-toggle="modal" data-target="#myModalAip">请选择</button>
+						<a href="" class="btn btn-default btn-sm">删除</a>
+					</div>
+					<!-- 分页-->
+					<div th:if="${pageInfo}" th:fragment="pager"
+						class="pagerBar pagelist pull-right" style="margin-top: 0px;">
+						<script type="text/javascript"
+							src="../static/js-busi/common/pager.js"
+							th:src="@{/js-busi/common/pager.js}"></script>
+						<span data-toggle="pager" id="pagerId"
+							th:data-count="${pageInfo.count}"
+							th:data-size="${pageInfo.pageSize}"
+							th:data-currentindex="${pageInfo.pageNo}"></span>
+						<script th:inline="javascript">
+							var total = '[[${pageInfo.count}]]';
+							var pageNum = '[[${pageInfo.pageNo}]]';
+							var pageSize = '[[${pageInfo.pageSize}]]';
+
+							if (typeof pagerClick === "undefined") {
+								pagerClick = function(index) {
+									queryAipProviderInfoList(index);
+								}
+							}
+							$('#pagerId').pager({
+								callback : pagerClick
+							});
+						</script>
+					</div>
+				</div>
+				<div class="pagelist" th:replace="fragments/pager :: pager"
+					th:remove="all">
+					<nav aria-label="Page navigation">
+						<ul class="pagination">
+							<li><a href="#" aria-label="Previous"> <span
+									aria-hidden="true">上一页</span>
+							</a></li>
+							<li class="active"><a href="#">1</a></li>
+							<li><a href="#">2</a></li>
+							<li><a href="#">3</a></li>
+							<li><a href="#">4</a></li>
+							<li><a href="#">5</a></li>
+							<li><a href="#" aria-label="Next"> <span
+									aria-hidden="true">下一页</span>
+							</a></li>
+							<div class="pageskip">
+								<span class="pr10">到第<input type="text"
+									class="pageskip_box">页
+								</span> <a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
+							</div>
+						</ul>
+					</nav>
+				</div>
 			</div>
          </div>
+	<!--  </div>-->
+	<!-- 新增 / 修改账户信息-->
+	<div class="m_modal modal fade" id="myModalAip" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+	  <div class="modal-dialog" role="document" style="width:600px;">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+	        <h4 class="modal-title" id="myModalLabel">新增/修改供应商信息</h4>
+	      </div>
+	      <div class="modal-body">
+	            <table class="editTable">
+				<tbody>
+					<tr>
+						<td class="Hint">
+							<span class="col_red">*</span>
+							服务供应商名称：
+						</td>
+						<td>
+							<input class="form-control" name="" type="text" id="providerNameInput">
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							描述：
+						</td>
+						<td>
+							<textarea  rows="5" cols="80" id="providerDesc"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td class="Hint">
+							商标：
+						</td>
+					<td>
+						<span>
+							<img src=""  id="providerLogoUrl">
+						</span>
+					</td>
+					<td></td>
+				</tr>
+				<tr >
+					<td class="Hint"></td>
+					<td>
+						<div class="form-inline">
+                             <div class="form-group">
+                             <input  type="hidden" class="form-control" placeholder="" id="providerLogo" >
+                             <input type="file" class="float_File form-control" imgsize="_80x80!" name="picUpLoad" id="picUpLoad" th:onchange="'onImageFileChange(this)'">
+                             </div>
+                        </div>
+					</td>
+				</tr>
+				</tbody>
+			</table>
+	       
+	      </div>
+	      <div class="modal-footer">
+	      	<button type="button" class="btn btn-primary">保存</button>
+	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+	      </div>
+	    </div>
+	  </div>
 	</div>
-</div>
+</div> 
 	<div class="m_nav">
 		<nav class="nav">
 			<ul>
@@ -257,210 +348,6 @@
 			</ul>
 		</nav>
 	</div>
-
-	<!-- 新增 / 修改账户信息-->
-	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document" style="width:800px;">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">新增/修改账户信息</h4>
-	      </div>
-	      <div class="modal-body">
-	        <table class="editTable">
-				<tbody>
-					<tr>
-						<td class="Hint">
-							<span class="col_red">*</span>
-							账号编码：
-						</td>
-						<td width="200">
-							<input class="form-control" name="" type="text">
-						</td>
-						<td class="Hint">
-							<span class="col_red">*</span>
-							账号名称：
-						</td>
-						<td width="200">
-							<input class="form-control" name="" type="text">
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							<span class="col_red">*</span>
-							账号类型：
-						</td>
-						<td >
-							<select  class="form-control" ><option>xx人员</option></select>
-						</td>
-						<td class="Hint">
-							<span class="col_red">*</span>
-							账号级别：
-						</td>
-						<td>
-							<select  class="form-control" ><option>xx人员</option></select>
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							
-							性别：
-						</td>
-						<td >
-							<select  class="form-control" ><option></option></select>
-						</td>
-						<td class="Hint">
-							
-							职位：
-						</td>
-						<td>
-							<input class="form-control" name="" type="text">
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							
-							出生日期：
-						</td>
-						<td >
-							<select  class="form-control" ><option>xx人员</option></select>
-						</td>
-						<td class="Hint">
-							<span class="col_red">*</span>
-							手机号码：
-						</td>
-						<td>
-							<input class="form-control" name="" type="text">
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							
-							电子邮箱：
-						</td>
-						<td >
-							<input class="form-control" name="" type="text">
-						</td>
-						<td class="Hint">
-							
-							QQ号码：
-						</td>
-						<td>
-							<input class="form-control" name="" type="text">
-						</td>
-					</tr>
-					<tr>
-						<td class="Hint">
-							
-							微信号：
-						</td>
-						<td >
-							<input class="form-control" name="" type="text">
-						</td>
-						<td class="Hint">
-							
-						</td>
-						<td>
-							
-						</td>
-					</tr>
-					
-				</tbody>
-			</table>
-	      </div>
-	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-primary">下一步</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	<!-- 密码重置 -->
-	<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">密码重置</h4>
-	      </div>
-	      <div class="modal-body">
-	        <p class="text-center p20">是否重置账号 <span class="col_orange">[okleung]</span> 的密码?</p>
-	      </div>
-	      <div class="modal-footer">
-	       
-	        <button type="button" class="btn btn-primary">确定重置</button>
-	         <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	<!-- 修改角色授权 -->
-	<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	  <div class="modal-dialog" role="document">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-	        <h4 class="modal-title" id="myModalLabel">修改角色授权</h4>
-	      </div>
-	      <div class="modal-body">
-	      	<div class="listTable clearfix">
-		        <div class="ClassItem" style="width:45%;">
-					<div class="tit" >
-						<h2>待授权角色</h2>
-					</div>
-					  
-					<div class="con" style="height:300px;" >
-						<table class="table listitem table-hover table-striped">
-							<tbody>
-							<tr >
-								<td>API分类i</td>
-							</tr>
-							<tr >
-								<td>API分类</td>
-							</tr>
-							<tr >
-								<td>API分类</td>
-							</tr>
-							<tr >
-								<td>API分类</td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-				<div class="pull-left p20" style="margin-top: 150px;">
-					<p class="col_666"><b>&#8660;</b></p>
-					
-				</div>
-				<div class="ClassItem" style="width:45%;">
-					<div class="tit" >
-						<h2>已授权角色</h2>
-					</div>
-					  
-					<div class="con" style="height:300px;" >
-						<table class="table listitem table-hover">
-							<tbody>
-							<tr >
-								<td>API分类</td>
-							</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-
-			</div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-primary">保存</button>
-	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	
-
-
-
 
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>

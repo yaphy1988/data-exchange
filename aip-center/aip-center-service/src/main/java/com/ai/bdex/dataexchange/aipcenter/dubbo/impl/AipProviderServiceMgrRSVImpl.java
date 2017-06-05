@@ -81,7 +81,7 @@ public class AipProviderServiceMgrRSVImpl implements IAipProviderServiceMgrRSV {
     @Override
 	public PageResponseDTO<AipProviderInfoRespDTO> pageAipProviderInfo(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception {
 
-        PageResponseDTO<AipProviderInfoRespDTO> pageResponseDTO = null;
+        PageResponseDTO<AipProviderInfoRespDTO> pageResponseDTO = new PageResponseDTO<AipProviderInfoRespDTO>();
         try {
             pageResponseDTO = iAipProviderInfoSV.pageAipProviderInfo(aipProviderInfoReqDTO);
         }catch (Exception e){

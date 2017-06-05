@@ -4,9 +4,12 @@ import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderInfoReqDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.dto.AipProviderInfoRespDTO;
 import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipProviderServiceMgrRSV;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
-
+import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.boot.dubbo.annotation.DubboConsumer;
+import com.alibaba.dubbo.common.utils.CollectionUtils;
+import com.alibaba.dubbo.common.utils.StringUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -26,6 +29,7 @@ public class AipProviderManageController {
 
     @DubboConsumer
     private IAipProviderServiceMgrRSV iAipProviderServiceMgrRSV;
+    private static final Integer PAGE_SIZE=10;
 
 
     /**
@@ -52,18 +56,26 @@ public class AipProviderManageController {
           String status = request.getParameter("status");
           String pageNo = request.getParameter("pageNo");
           AipProviderInfoReqDTO aipProviderInfoReqDTO = new AipProviderInfoReqDTO();
-          if (StringUtil.isBlank(providerName)){
+          if(!StringUtil.isBlank(providerName)){
           	aipProviderInfoReqDTO.setProviderName(providerName);
           }
-          if (StringUtil.isBlank(status)){
+          if(!StringUtil.isBlank(status)){
           	aipProviderInfoReqDTO.setStatus(status);
           }
-          if(StringUtil.isBlank(pageNo)){
+          if(!StringUtil.isBlank(pageNo)){
           	aipProviderInfoReqDTO.setPageNo(Integer.parseInt(pageNo));
           }
+          aipProviderInfoReqDTO.setPageSize(PAGE_SIZE);
           PageResponseDTO<AipProviderInfoRespDTO>  pageInfo = new PageResponseDTO<AipProviderInfoRespDTO>();
           try {
           	pageInfo = iAipProviderServiceMgrRSV.pageAipProviderInfo(aipProviderInfoReqDTO);
+          	if(CollectionUtils.isNotEmpty(pageInfo.getResult())){
+          		for(AipProviderInfoRespDTO respDTO : pageInfo.getResult()){
+          			if(StringUtils.isNotEmpty(respDTO.getProviderLogo())){
+          				respDTO.setProviderLogo(ImageUtil.getImageUrl(respDTO.getProviderLogo() + "_100x100"));
+          			}
+          		}
+          	}
           } catch (Exception e) {
               log.error("查询aip供应商信息异常：",e);
           }
