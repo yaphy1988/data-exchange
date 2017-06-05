@@ -52,6 +52,9 @@ function queryData(index){
 				total = pageInfo.count;
 			    pageNum = pageInfo.pageNo;
 			    pageSize = pageInfo.pageSize;
+			    $("#pagerId").data({"count":total,
+					"size":pageSize,
+					"currentindex":pageNum});
 				$('#pagerId').pager({callback: function(index){
 					queryData(index);
 				}});
