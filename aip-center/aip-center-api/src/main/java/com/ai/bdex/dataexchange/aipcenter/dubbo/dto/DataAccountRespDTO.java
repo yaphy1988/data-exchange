@@ -97,25 +97,30 @@ public class DataAccountRespDTO extends BaseResponseDTO {
      * 服务名称
      */
     private String serviceName;
-    /**
-     * 最早申请的时间
-     */
-     private Date firstbuytime;
 
-    public Date getfirstBuyTime() {
-        return firstbuytime;
-    }
-    public void setfirstBuyTime(Date firstbuytime) {
-        this.firstbuytime = firstbuytime;
-    }
-
-    public String getServicename() {
+    public String getServiceName() {
         return serviceName;
     }
 
-    public void setServicename(String serviceName) {
+    public void setServiceName(String serviceName) {
         this.serviceName = serviceName;
     }
+
+    /**
+     * 最早申请的时间
+     */
+    private Date firstBuyTime;
+    public Date getFirstBuyTime() {
+        return firstBuyTime;
+    }
+
+    public void setFirstBuyTime(Date firstBuyTime) {
+        this.firstBuyTime = firstBuyTime;
+    }
+
+
+
+
 
     public Long getDataAcctId() {
         return dataAcctId;

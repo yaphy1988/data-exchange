@@ -141,7 +141,7 @@ public class orderManageController {
 				  String serviceid = pageInfo.getResult().get(i).getServiceId();
 					List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(serviceid);
 					if (CollectionUtils.isNotEmpty(apiServiceList)) {
-						pageInfo.getResult().get(i).setServicename(apiServiceList.get(0).getServiceName());
+						pageInfo.getResult().get(i).setServiceName(apiServiceList.get(0).getServiceName());
 					}
                      //取最早申请的支付成功的数据
 					OrdInfoReqDTO ordInfo = new OrdInfoReqDTO ();
@@ -150,7 +150,7 @@ public class orderManageController {
 					ordInfo.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
 					List<OrdInfoRespDTO>  listOrder =  iOrderInfoRSV.queryMyDataFirstBuy(ordInfo);
 					if (CollectionUtils.isNotEmpty(listOrder)) {
-						pageInfo.getResult().get(i).setfirstBuyTime(listOrder.get(0).getCreateTime());
+						pageInfo.getResult().get(i).setFirstBuyTime(listOrder.get(0).getCreateTime());
 					}
 				}
 			}
