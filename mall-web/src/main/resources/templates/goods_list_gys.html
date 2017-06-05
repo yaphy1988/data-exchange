@@ -141,7 +141,7 @@
 				<ul th:remove="all-but-first" th:if="${pageInfo}">
 					<li th:unless="${#lists.isEmpty(pageInfo.result)}" th:each="list,listStat : ${pageInfo.result}">
 						<div class="glist_items">
-							<div class="collect active">
+							<div class="collect" th:title="点击收藏" th:gdsId="${list.id}" th:onclick="'javascript:gdsCollection(this,\''+${list.id}+'\',\''+${list.skuId}+'\',\''+${list.catFirst}+'\')'">
 								<span class="bg"></span>
 								<i class="iconfont icon-xingxing"></i>
 							</div>
@@ -150,7 +150,7 @@
 									<img src="" style="width:80px;height:80px" th:src="${#tools.genImageUrl(list.gdsPic,'80x80')}">
 								</a>
 							</div>
-							<div class="tit"><a href="" target="_blank" th:href="@{'/goods/details/'+${list.id}+'-'+${list.skuId}}" th:utext="${list.gdsName}">我是商品名称最长配置十四字我|是多余的文字</a></div>
+							<div class="tit"><a href="" target="_blank" th:href="@{'/goods/details/'+${list.id}+'-'+${list.skuId}}"  th:utext="${list.gdsName}">我是商品名称最长配置十四字我|是多余的文字</a></div>
 							<div class="info">
 								<div class="pirce">
 									<small>￥</small>
@@ -162,7 +162,7 @@
 										首次申请赠送50次
 									</a>
 								</div>
-								<a href="" class="btn btn-primary btn_rec">
+								<a href="" th:href="@{'/goods/details/'+${list.id}+'-'+${list.skuId}}" th:attr="title=${list.gdsSubtitleSrc}" target="_blank" class="btn btn-primary btn_rec">
 									申请数据
 								</a> 
 							</div>
@@ -324,7 +324,7 @@
 					</li>
 				</ul>
 			</div>
-			<div class="pagelist" th:if="${pageInfo}" th:replace="fragments/pager :: pager">
+			<div class="pagelist" th:remove="all" th:replace="fragments/pager :: pager">
 				<nav aria-label="Page navigation">
 				  <ul class="pagination">
 				    <li >
