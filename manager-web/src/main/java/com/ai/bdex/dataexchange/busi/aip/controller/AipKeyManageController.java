@@ -292,7 +292,7 @@ public class AipKeyManageController {
 
 		request.setAttribute("staffPageInfo",staffPageInfo);
 
-		return "aipkey_Manage :: #staffInfoModal_staffList";
+		return "aipkey_manage :: #staffInfoModal_staffList";
 	}
 
 	/**
