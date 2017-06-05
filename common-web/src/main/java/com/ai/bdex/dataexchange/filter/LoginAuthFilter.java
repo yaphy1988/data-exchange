@@ -143,7 +143,7 @@ public class LoginAuthFilter implements Filter {
                 List<String> staffAuthMenus = staffInfo.getMenuUrls();
                 if (staffAuthMenus != null && staffAuthMenus.size() > 0) {
                     for (String menuUrl : staffAuthMenus) {
-                        if (reqUrl.startsWith(menuUrl) || (refererUrl.startsWith(menuUrl))) {
+                        if (reqUrl.startsWith(menuUrl) || (isAjaxRequest(request) && refererUrl.startsWith(menuUrl))) {
                             hasMenuAuth = true;
                             break;
                         }
