@@ -164,3 +164,26 @@ function getScript(url, callback) {
     return undefined;
 }
 
+//加载服务器数据之前的处理程序，可以用来格式化数据。
+//参数：res为从服务器请求到的数据。服务器返回PageInfo<T>的json格式，必须包含total
+function responseHandler(res) {
+    if (res) {
+        var rows = res.list;
+        $.each(rows, function (i, row) {
+            row.state = $.inArray(row.id, selections) !== -1;
+        });
+        return {
+            "rows" : res.list,
+            "total" : res.total
+        };
+    } else {
+        return {
+            "rows" : [],
+            "total" : 0
+        };
+    }
+}
+//自定义查询触发事件
+function doQuery(params){
+    $('#table').bootstrapTable('refresh');    //刷新表格
+}

@@ -58,42 +58,17 @@
         $(function () {
             dateTimepickerinit($('#startTime'),$('#endTime'));
         });
-        //请求服务器数据入参方法，参数可自定义
+
+        // 要求重写次方法，请求服务器数据入参方法,参数可自定义
         function queryParams(params) {
             var param = {
                 startDate : $("#startTime").val(),
                 endDate : $("#endDate").val(),
-//                limit : this.limit, // 页面大小
-//                offset : this.offset, // 页码
                 pageindex : this.pageNumber,
                 pageSize : this.pageSize
             }
             return param;
         }
-        //加载服务器数据之前的处理程序，可以用来格式化数据。
-        //参数：res为从服务器请求到的数据。服务器返回PageInfo<T>的json格式，必须包含total
-        function responseHandler(res) {
-            if (res) {
-                var rows = res.list;
-                $.each(rows, function (i, row) {
-                    row.state = $.inArray(row.id, selections) !== -1;
-                });
-                return {
-                    "rows" : res.list,
-                    "total" : res.total
-                };
-            } else {
-                return {
-                    "rows" : [],
-                    "total" : 0
-                };
-            }
-        }
-        //自定义查询触发事件
-        function doQuery(params){
-            $('#table').bootstrapTable('refresh');    //刷新表格
-        }
-
         /**
          * 初始化时间控件
          * @param startTime

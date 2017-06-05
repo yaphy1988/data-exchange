@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,10 +36,20 @@ public class OrderStatisticController {
         logger.info("报表数据请求已经到达report-web，返回页面模板：report/order_register");
         return "report/order_register :: #table_content";
     }
+
+    /**
+     * 服务器返回PageInfo<T>的json格式，必须包含total
+     * 数据填充在report-register.js中responseHandler(res)方法实现
+     * @param model
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
     @RequestMapping(value = "/getOrderjsonData")
     @ResponseBody
-    public Object getOrderjsonData(Model model, HttpServletRequest request) throws Exception{
-       List<OrdMainInfo> result = new ArrayList<>();
+    public Object getOrderjsonData(Model model, HttpServletRequest request, HttpServletResponse response) throws Exception{
+        List<OrdMainInfo> result = new ArrayList<>();
        PageInfo<OrdStatisticRespInfo> pageInfo = new PageInfo<OrdStatisticRespInfo>();
         String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
@@ -75,18 +86,6 @@ public class OrderStatisticController {
         }catch (Exception e){
             logger.error("订单统计查询异常："+e.getMessage());
         }
-
-       /*PageInfo<OrdMainInfo> pageInfo =new PageInfo<OrdMainInfo> ();
-        List<OrdMainInfo> result = new ArrayList<>();
-        OrdMainInfo ordMainInfo = new OrdMainInfo();
-        ordMainInfo.setOrderId("201834343");
-        ordMainInfo.setOrderAmount(23478);
-        for(int i=0;i<=30;i++){
-            result.add(ordMainInfo);
-        pageInfo.setTotal(result.size());
-        pageInfo.setList(result);
-        }*/
-
         return pageInfo;
     }
 
