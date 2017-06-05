@@ -247,6 +247,12 @@
         <groupId>org.webjars.bower</groupId>
         <artifactId>tableExport.jquery.plugin</artifactId>
         <version>${webjars.tableExport-plugin.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.webjars.bower</groupId>
@@ -257,6 +263,12 @@
         <groupId>org.webjars.bower</groupId>
         <artifactId>bootstrap-fileinput</artifactId>
         <version>${webjars.kartik-v-bootstrap-fileinput.version}</version>
+        <exclusions>
+          <exclusion>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>*</artifactId>
+          </exclusion>
+        </exclusions>
       </dependency>
       <dependency>
         <groupId>org.webjars</groupId>

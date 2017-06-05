@@ -2,11 +2,12 @@
 <html lang="zh" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
       xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-	<meta charset="UTF-8">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<meta name="renderer" content="webkit">
+	<meta charset="UTF-8" th:remove="all">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" th:remove="all">
+	<meta name="renderer" content="webkit" th:remove="all">
 	<title>广州数据中心</title>
 	<!-- 引入模板中sys_head定义的公共js和css等内容 -->
+	<th:block th:include="~{fragments/commonhead :: syshead}"/>
 	<th:block th:include="~{fragments/syshead :: syshead}"/>
 </head>
 <body>
