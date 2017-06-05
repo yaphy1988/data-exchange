@@ -6,6 +6,7 @@ import java.text.ParseException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.ai.paas.config.ModuleInfo;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.util.SystemConfUtil;
 
@@ -19,7 +20,11 @@ public class ThymeleafToolsUtil {
      * @return http://domain/mall-web
      */
     public String mallDomain(){
-        return SystemConfUtil.getSystemModuleInfo("01","1").genFullUrl();
+        ModuleInfo moduleInfo = SystemConfUtil.getSystemModuleInfo("01","1");
+        if(moduleInfo != null){
+            return moduleInfo.genFullUrl();
+        }
+        return "";
     }
 
     /**
@@ -28,7 +33,11 @@ public class ThymeleafToolsUtil {
      * @return http://domain/manager-web
      */
     public String managerDomain(){
-        return SystemConfUtil.getSystemModuleInfo("02","1").genFullUrl();
+        ModuleInfo moduleInfo = SystemConfUtil.getSystemModuleInfo("02","1");
+        if(moduleInfo != null){
+            return moduleInfo.genFullUrl();
+        }
+        return "";
     }
 
     /**
@@ -37,7 +46,11 @@ public class ThymeleafToolsUtil {
      * @return http://domain/report-web
      */
     public String reportDomain() {
-        return SystemConfUtil.getSystemModuleInfo("02","2").genFullUrl();
+        ModuleInfo moduleInfo = SystemConfUtil.getSystemModuleInfo("02","2");
+        if(moduleInfo != null){
+            return moduleInfo.genFullUrl();
+        }
+        return "";
     }
 
     /**
