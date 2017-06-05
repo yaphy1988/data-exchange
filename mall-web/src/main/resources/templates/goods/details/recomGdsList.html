@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en"  xmlns:th="http://www.thymeleaf.org">
 
-<a href="" class="item" th:each="recGdsInfo,recGdsInfoStat : ${recGdsList}" th:href="'/goods/details/'+${recGdsInfo.gdsId}+'-'">
+<a href="" class="item" th:each="recGdsInfo,recGdsInfoStat : ${recGdsList}" th:href="@{'/goods/details/'+${recGdsInfo.gdsId}+'-'}">
     <span class="img"><img src="../static/images/img.jpg" th:src="${recGdsInfo.gdsPic}"></span>
     <dl>
         <dt class="dt" th:text="${recGdsInfo.gdsName}">身份实名认证身份实名认证身份实名认证身份实名认证</dt>
