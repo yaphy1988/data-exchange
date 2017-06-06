@@ -1,7 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ai.bdex.dataexchange.report.dao.mapper.AuthStaffSignMapper">
-  <select id="AuthStaffSign_staffSignReport" resultType="com.ai.bdex.dataexchange.report.dao.model.AuthStaffSign" parameterType="com.ai.bdex.dataexchange.report.dao.model.AuthStaffSign">
-    select staff_id staffId from t_auth_staff_sign
+
+  <select id="authStaffSign_TotalReport" resultType="com.ai.bdex.dataexchange.report.entity.UserStatisticQueryInfo" parameterType="com.ai.bdex.dataexchange.report.entity.UserStatisticQueryInfo">
+    select *, (allUserTotal-companyUserTotal) userTotal,(allUserCnt-companyUserCnt) userCnt
+    from(
+      select count(1) allUserTotal,
+      (select count(1) from t_auth_staff t where t.AUTHEN_FLAG = '1') companyUserTotal,
+      (select count(1) from t_auth_staff t where 1=1 <include refid="authStaffSign_queryCondition"/> ) allUserCnt,
+      (select count(1) from t_auth_staff t where 1=1 <include refid="authStaffSign_queryCondition"/> and t.AUTHEN_FLAG = '1') companyUserCnt
+      from  t_auth_staff t
+    ) temp
   </select>
+
+  <select id="authStaffSign_DetailReport" resultType="com.ai.bdex.dataexchange.report.entity.UserStatisticQueryInfo" parameterType="com.ai.bdex.dataexchange.report.entity.UserStatisticQueryInfo">
+    SELECT
+    t.STAFF_ID staffId,
+    t.STAFF_NAME staffName,
+    t.STAFF_TYPE staffType,
+    c.INVOICE_TITLE companyName,
+    t.SERIAL_NUMBER phoneNumber,
+    c.CONTACT_INFO companyAddr,
+    c.company_mail companyMail,
+    c.TAXPAYER_NO taxpayerNo,
+    c.TAX_NO taxNo,
+    c.Organ_CODE organCode
+    FROM
+    t_auth_staff t,
+    t_chnl_invoice_tax c
+    WHERE t.STAFF_ID = c.staff_id
+    <include refid="authStaffSign_queryCondition"/>
+  </select>
+
+  <sql id="authStaffSign_queryCondition">
+    <if test="startTime != null "><![CDATA[and t.CREATE_TIME >= #{startTime}]]></if>
+    <if test="endTime != null "><![CDATA[and t.CREATE_TIME >= #{endTime}]]></if>
+  </sql>
 </mapper>

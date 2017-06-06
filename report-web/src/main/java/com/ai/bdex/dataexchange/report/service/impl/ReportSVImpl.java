@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.report.service.impl;
 
+import com.ai.bdex.dataexchange.report.service.interfaces.IRowForMat;
 import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -25,6 +26,17 @@ public class ReportSVImpl implements IReportSV {
 
         Page<T> page = (Page<T>)this.sqlSessionTemplate.selectList(reportId, param);
 
+        return page;
+    }
+
+    @Override
+    public <T> Page<T> getRePortData(String reportId, BaseInfo param,IRowForMat format){
+        Page<T> page = this.getRePortData(reportId,param);
+        if(format != null && page != null && page.getResult().size()>0){
+            for (T vo :page.getResult()) {
+                format.forMat(vo);
+            }
+        }
         return page;
     }
 }

@@ -7,5 +7,8 @@ import com.github.pagehelper.Page;
  * Created by xiongqian on 2017/6/3.
  */
 public interface IReportSV {
+
     public <T> Page<T> getRePortData(String reportId, BaseInfo param);
+
+    public <T> Page<T> getRePortData(String reportId, BaseInfo param,IRowForMat format);
 }

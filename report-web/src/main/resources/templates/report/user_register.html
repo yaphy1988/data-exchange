@@ -5,16 +5,47 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
     <script type="text/javascript" src="../../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:remove="all"></script>
-
 </head>
 <body>
 <div layout:fragment="screen_content" id="table_content">
-    <h1>这里是报表模块查询出来的报表数据...</h1>
-    <!--<table id="table"
+    <ol class="breadcrumb">
+        <li><strong><span style="color: #27a0d7">用户注册统计</span></strong></li>
+    </ol>
+    <form class="form-inline" role="form" style="float: left;padding-bottom:20px;" method="post" id="queryForm">
+        <div class="form-group">
+            <label >注册时间:</label>
+            <input placeholder="开始时间" class="form-control layer-date" id="startTime" name="startTime">-
+            <input placeholder="结束时间" class="form-control layer-date" id="endTime" name="endTime">
+        </div>
+        <div class="form-group">
+            <button type="button" id="queryBtn" th:onclick="|doQuery();|" class="btn btn-primary">查询</button>
+        </div>
+    </form>
+    <table class="table table-bordered" style="width:800px">
+        <thead>
+        <tr class="active">
+            <th>新增用户总数</th>
+            <th>新增普通用户</th>
+            <th>新增企业用户</th>
+            <th>共计用户总数</th>
+            <th>共计普通用户</th>
+            <th>共计企业用户</th>
+        </tr>
+        </thead>
+        <tbody>
+          <tr>
+              <td th:text="${totalVo.allUserCnt}"></td>
+              <td th:text="${totalVo.userCnt}"></td>
+              <td th:text="${totalVo.companyUserCnt}"></td>
+              <td th:text="${totalVo.allUserTotal}"></td>
+              <td th:text="${totalVo.userTotal}"></td>
+              <td th:text="${totalVo.companyUserTotal}"></td>
+          </tr>
+        </tbody>
+    </table>
+    <table id="table"
            data-toolbar="#toolbar"
-           data-search="true"
            data-show-refresh="true"
            data-show-toggle="true"
            data-show-columns="true"
@@ -25,13 +56,96 @@
            data-show-pagination-switch="true"
            data-pagination="true"
            data-id-field="id"
-           data-page-list="[10, 25, 50, 100]"
            data-show-footer="false"
-           data-side-pagination="server"
-           data-url="/reportdata/userregister"
-           data-response-handler="responseHandler">
-    </table>-->
-</div>
+           th:data-url="${#tools.reportDomain()}+'/reportdata/getUserjsonData'"
+           data-side-pagination="server">
+        <thead>
+        <tr>
+            <th data-field="staffId">用户ID</th>
+            <th data-field="staffName" data-switchable="false">用户名</th>
+            <th data-field="staffType">用户类型</th>
+            <th data-field="companyName">企业名称</th>
+            <th data-field="phoneNumber" data-visible="false">联系电话</th>
+            <th data-field="companyAddr" data-switchable="false">地址</th>
+            <th data-field="companyMail" data-visible="false">邮箱</th>
+            <th data-field="taxpayerNo" data-visible="false">营业执照编号</th>
+            <th data-field="taxNo" data-switchable="false">税务登记号</th>
+            <th data-field="organCode" data-visible="false">组织机构代码</th>
+        </tr>
+        </thead>
+    </table>
+    <script>
+        $(function () {
+            dateTimepickerinit($('#startTime'),$('#endTime'));
+        });
 
+        $(function () {
+            dateTimepickerinit($('#startTime'),$('#endTime'));
+        });
+        //请求服务器数据入参方法，参数可自定义
+        function queryParams(params) {
+            var param = {
+                startDate : $("#startTime").val(),
+                endDate : $("#endDate").val(),
+//                limit : this.limit, // 页面大小
+//                offset : this.offset, // 页码
+                pageindex : this.pageNumber,
+                pageSize : this.pageSize
+            }
+            return param;
+        }
+        //加载服务器数据之前的处理程序，可以用来格式化数据。
+        //参数：res为从服务器请求到的数据。服务器返回PageInfo<T>的json格式，必须包含total
+        function responseHandler(res) {
+            if (res) {
+                var rows = res.list;
+                $.each(rows, function (i, row) {
+                    row.state = $.inArray(row.id, selections) !== -1;
+                });
+                return {
+                    "rows" : res.list,
+                    "total" : res.total
+                };
+            } else {
+                return {
+                    "rows" : [],
+                    "total" : 0
+                };
+            }
+        }
+        //自定义查询触发事件
+        function doQuery(params){
+            $('#table').bootstrapTable('refresh');    //刷新表格
+        }
+
+        /**
+         * 初始化时间控件
+         * @param startTime
+         * @param endTime
+         */
+        function dateTimepickerinit(startTime,endTime) {
+            startTime.datetimepicker({
+                format: 'yyyy-mm-dd 00:00:00',
+                minView:'month',
+                language: 'zh-CN',
+                clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
+                autoclose:true
+                // startDate:new Date()
+            }).on("click",function(){
+                startTime.datetimepicker("setEndDate",endTime.val());
+            });
+            endTime.datetimepicker({
+                format: 'yyyy-mm-dd 23:59:59',
+                minView:'month',
+                language: 'zh-CN',
+                clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
+                autoclose:true
+                // startDate:new Date()
+            }).on("click",function(){
+                endTime.datetimepicker("setStartDate",startTime.val());
+            });
+        }
+    </script>
+</div>
 </body>
 </html>
