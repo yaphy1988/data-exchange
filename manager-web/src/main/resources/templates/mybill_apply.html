@@ -9,8 +9,8 @@
 	<link rel="stylesheet" href="../static/fonts/iconfont.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/global.css" th:remove="all">
 	<link rel="stylesheet" href="../static/css/manage.css" th:href="@{/css/manage.css}">
-
 	<link rel="stylesheet" href="../../static/fonts/iconfont.css" th:href="@{/fonts/iconfont.css}">
+	<script src="../META-INF/resources/webjars/js/util.js" th:src="@{/webjars/js/util.js}"></script>
 	<script type="text/javascript" src="../../static/js-busi/order/mybill.js" th:src="@{/js-busi/order/mybill.js}"></script>
 </head>
 
@@ -64,6 +64,19 @@
 			
 			<div class="title">发票开具申请</div>
 			<table class="editTable ">
+				<tr>
+					<td class="Hint " width="200">
+						发票类型:
+					</td>
+					<td>
+					<select class="form-control" id="invocetypeop">
+						<option value="">请选择</option>
+						<option value="01">增值税普通发票</option>
+						<option value="02">增值税专用发票</option>
+					</select>
+
+					</td>
+				</tr>
 					<tr>
 						<td class="Hint " width="200">
 							邮寄地址:
@@ -81,7 +94,7 @@
 							<span class="col_red"></span>电话:
 						</td>
 						<td >
-							<input class="form-control"  type="text" maxlength="128"  id="taxAddrPhone">
+							<input class="form-control" maxlength="11"  type="text"  id="taxAddrPhone">
 						</td>
 						
 					</tr>
@@ -122,7 +135,7 @@
 							账户:
 						</td>
 						<td >
-							<input class="form-control"  type="text" maxlength="128" id="acctInfo" th:value="${invoiceTaxDTO.acctInfo}" >
+							<input class="form-control"  onkeyup="value=value.replace(/[^\d{1,}\.\d{1,}|\d{1,}]/g,'')" type="text" maxlength="20" id="acctInfo" th:value="${invoiceTaxDTO.acctInfo}" >
 						</td>
 					</tr>
 					<tr th:remove="all">

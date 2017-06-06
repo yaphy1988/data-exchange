@@ -65,10 +65,11 @@
                             <tr class="active">
                                 <th>序号</th>
                                 <th>订单编码</th>
+								<th>发票类型</th>
                                 <th>发票金额</th>
                                 <th>开票时间</th>
                                 <th>发票抬头</th>
-                                <th>收取方式</th>
+                                <th>收取地址</th>
                                 <th>发票状态</th>
                                 <th>操作</th>
                             </tr>
@@ -77,7 +78,12 @@
                             <tr th:each="list,iterStat : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}" th:with="orderMoney=${list.ordMainInfoRespDTO.orderMoney}">
 								<td th:text="${pageInfo.pageNo -1}*${pageInfo.pageSize}+${iterStat.count}"></td>
 								<td th:text="${list.orderId}"></td>
-								<td th:text="${#tools.formatMoney(orderMoney)}"></td>
+								<td>
+									<span th:if="${list.invoiceType=='01'}">增值税普通发票</span>
+									<span th:if="${list.invoiceType=='02'}">增值税专用发票</span>
+ 									<span th:if="${list.status==''}">--</span>
+								</td>
+								<td th:if="orderMoney" th:text="${#tools.formatMoney(orderMoney)}"></td>
 								<td
 									th:text="${#calendars.format(list.createTime,'yyyy-MM-dd HH:mm:ss')}"></td>
 								<td th:text="${list.invoiceTitle}"></td>
@@ -143,7 +149,7 @@
 
 								if (typeof pagerClick === "undefined") {
 									pagerClick = function(index) {
-										myInvoiceCheckList(index);
+										mangerInvoiceCheckList(index);
 									}
 								}
 								$('#pagerId').pager({

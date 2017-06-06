@@ -35,6 +35,7 @@ public class OrdInvoiceTaxRSVImpl  implements IOrdInvoiceTaxRSV {
 		}
 		Long orderTaxId;
 		try {
+
 			orderTaxId= iOrdInvoiceTaxSV.insertOrdInvoiceTax(ordInvoiceTaxReqDTO);
 			OrdInvoiceTaxAddrReqDTO ordInvoiceTaxAddrReqDTO = new OrdInvoiceTaxAddrReqDTO();
 			//保存发票开具申请收货地址
@@ -44,6 +45,7 @@ public class OrdInvoiceTaxRSVImpl  implements IOrdInvoiceTaxRSV {
 				ordInvoiceTaxAddrReqDTO.setOrderId(ordInvoiceTaxReqDTO.getOrderId());
 				ordInvoiceTaxAddrReqDTO.setContactInfo(ordInvoiceTaxReqDTO.getTaxAddr());
 				ordInvoiceTaxAddrReqDTO.setPhone(ordInvoiceTaxReqDTO.getTaxAddrPhone());
+
 				iOrdInvoiceTaxAddrSV.insertOrdInvoiceAddrTax(ordInvoiceTaxAddrReqDTO);
 			}
 		} catch (Exception e) {

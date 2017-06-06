@@ -29,10 +29,30 @@ public class OrdInvoiceTaxReqDTO  extends BaseInfo{
    private String updateStaff; 
    private Date updateTime; 
    private String invoiceDesc;
-   
-   private String taxAddr;//邮寄地址
-   private String taxAddrPhone;//邮寄电话
-   
+	private String invoiceType;//发票类型
+
+	public long getApplyMoney() {
+		return applyMoney;
+	}
+
+	public void setApplyMoney(long applyMoney) {
+		this.applyMoney = applyMoney;
+	}
+
+	private long applyMoney;//申请金额
+
+
+	private String taxAddr;//邮寄地址
+
+    private String taxAddrPhone;//邮寄电话
+
+	public String getInvoiceType() {
+		return invoiceType;
+	}
+
+	public void setInvoiceType(String invoiceType) {
+		this.invoiceType = invoiceType;
+	}
 	public String getTaxAddr() {
 		return taxAddr;
 	}

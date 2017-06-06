@@ -28,8 +28,17 @@ public class OrdInvoiceTaxRespDTO extends BaseResponseDTO {
 	private String updateStaff;
 	private Date updateTime;
 	private String invoiceDesc;
+	private String invoiceType;//发票类型
 	private OrdMainInfoRespDTO ordMainInfoRespDTO;//订单主表信息
 	private OrdInvoiceTaxAddrRespDTO ordInvoiceTaxAddrRespDTO;//发票开具收货地址
+
+	public String getInvoiceType() {
+		return invoiceType;
+	}
+
+	public void setInvoiceType(String invoiceType) {
+		this.invoiceType = invoiceType;
+	}
 
 	public OrdInvoiceTaxAddrRespDTO getOrdInvoiceTaxAddrRespDTO() {
 		return ordInvoiceTaxAddrRespDTO;

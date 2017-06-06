@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <script type="text/javascript" src="../../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:remove="all"></script>
+</head>
+<body>
+<div layout:fragment="screen_content" id="table_content">
+    <ol class="breadcrumb">
+        <li><strong><span style="color: #27a0d7">订单统计</span></strong></li>
+    </ol>
+    <form class="form-inline" role="form" style="float: left;" method="post" id="queryForm">
+        <div class="form-group">
+            <label >订购时间:</label>
+            <input placeholder="开始时间" class="form-control layer-date" id="startTime" name="startTime">-
+            <input placeholder="结束时间" class="form-control layer-date" id="endTime" name="endTime">
+        </div>
+        <div class="form-group">
+            <button type="button" id="queryBtn" th:onclick="|doQuery();|" class="btn btn-primary">查询</button>
+        </div>
+
+    </form>
+    <div id="toolbar" style="margin-left: 10px;">
+        <select class="form-control">
+            <option value="">Export Basic</option>
+            <option value="all">Export All</option>
+            <option value="selected">Export Selected</option>
+        </select>
+    </div>
+    <table id="table"
+           data-toolbar="#toolbar"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+           data-show-export="true"
+           data-detail-view="true"
+           data-detail-formatter="detailFormatter"
+           data-minimum-count-columns="2"
+           data-pagination="true"
+           data-id-field="id"
+           data-show-footer="false"
+           th:data-url="${#tools.reportDomain()}+'/reportdata/getOrderjsonData'"
+           data-side-pagination="server">
+        <thead>
+        <tr>
+            <th data-field="id">订单编号</th>
+            <th data-field="staffId" data-switchable="false">用户名</th>
+            <th data-field="orderTime">订购时间</th>
+            <th data-field="gdsName">数据名称</th>
+            <th data-field="skuName" data-visible="false">套餐类别</th>
+            <th data-field="orderAmount" data-switchable="false">订购数量</th>
+            <th data-field="orderMoney" data-visible="false">金额</th>
+
+            <th data-field="payFlag" data-visible="false">订单状态*</th>
+            <th data-field="invoiceStatus" data-switchable="false">开票标志*</th>
+            <th data-field="paytradeId" data-visible="false">支付流水号</th>
+        </tr>
+        </thead>
+    </table>
+    <script th:inline="javascript">
+        $(function () {
+            dateTimepickerinit($('#startTime'),$('#endTime'));
+            $('#toolbar').parent().attr('style','margin-top:0px;');
+        });
+
+        // 要求重写次方法，请求服务器数据入参方法,参数可自定义
+        function queryParams(params) {
+            var param = {
+                startDate : $("#startTime").val(),
+                endDate : $("#endDate").val(),
+                pageindex : this.pageNumber,
+                pageSize : this.pageSize
+            }
+            return param;
+        }
+        /**
+         *
+         * SELECT
+         t.ORDER_ID "订单ID",t.STAFF_ID '用户ID',t.CREATE_TIME  "创建时间", 1 "ordermoney", "增值票",t.STATUS,"dizhi",t.INVOICE_TITLE "taitou",
+         TAXPAYER_NO "纳税人识别号",
+         CONTACT_INFO "注册地址",
+         PHONE "注册电话",
+         BANK_NAME "开户行",
+         ACCT_INFO "银行账号"
+         from t_ord_invoice_tax t ;
+
+         * 初始化时间控件
+         * @param startTime
+         * @param endTime
+         */
+        function dateTimepickerinit(startTime,endTime) {
+            startTime.datetimepicker({
+                format: 'yyyy-mm-dd 00:00:00',
+                minView:'month',
+                language: 'zh-CN',
+                clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
+                autoclose:true
+                // startDate:new Date()
+            }).on("click",function(){
+                startTime.datetimepicker("setEndDate",endTime.val());
+            });
+            endTime.datetimepicker({
+                format: 'yyyy-mm-dd 23:59:59',
+                minView:'month',
+                language: 'zh-CN',
+                clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
+                autoclose:true
+                // startDate:new Date()
+            }).on("click",function(){
+                endTime.datetimepicker("setStartDate",startTime.val());
+            });
+        }
+    </script>
+
+</div>
+
+</body>
+</html>

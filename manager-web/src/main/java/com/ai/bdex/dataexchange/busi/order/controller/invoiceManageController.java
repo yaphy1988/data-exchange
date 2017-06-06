@@ -112,6 +112,8 @@ public class invoiceManageController {
 			//查询我的子订单
 			OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
 			ordMainInfoReqDTO.setOrderId(ordInvoiceTaxVO.getOrderId());
+			//获取金额
+
 			List<OrdMainInfoRespDTO> ordInfoList = iOrderMainInfoRSV.queryOrdMainInfoList(ordMainInfoReqDTO);
 			OrdInvoiceTaxReqDTO taxReqDTO = new OrdInvoiceTaxReqDTO();
 			ObjectCopyUtil.copyObjValue(ordInvoiceTaxVO, taxReqDTO, null, false);
@@ -120,6 +122,7 @@ public class invoiceManageController {
 			if(CollectionUtils.isNotEmpty(ordInfoList)){
 				taxReqDTO.setShopId(ordInfoList.get(0).getShopId());
 				taxReqDTO.setStaffId(ordInfoList.get(0).getStaffId());
+				taxReqDTO.setApplyMoney(ordInfoList.get(0).getOrderMoney());
 			}
 			taxReqDTO.setStatus(Constants.Order.ORDER_INVOICE_STATUS_1);
 			Long ordTaxId=iOrdInvoiceTaxRSV.insertOrdInvoice(taxReqDTO);
@@ -149,7 +152,7 @@ public class invoiceManageController {
         return "mybillCheck";
     }
 	/**
-   	 * 查询发票管理审核列表
+   	 * 查询用户可以申请开票的订单
    	 * 
    	 * @param model
    	 * @param
@@ -163,7 +166,7 @@ public class invoiceManageController {
    			ordMainReqDTO.setStaffId(StaffUtil.getStaffId(session));
    			ordMainReqDTO.setPageNo(ordMainInfoVO.getPageNo());
    			ordMainReqDTO.setPageSize(PAGE_SIZE);
-   			ordMainInfoVO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);//已支付
+			ordMainReqDTO.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);//已支付
    			//查询发票类型为1普通发票、2增值税发票
    			List<String> invoiceModTypeList = new ArrayList<String>();
    			invoiceModTypeList.add(Constants.Order.ORDER_invoiceModType_1);
@@ -199,14 +202,14 @@ public class invoiceManageController {
    		return "mybill :: #myOrderBillList";
    	}
    	/**
-   	 * 查询发票管理
+   	 * 管理员 发票管理
    	 * 
    	 * @param model
-   	 * @param searchVO
+   	 * @param
    	 * @return
    	 */
-   	@RequestMapping(value = "/myInvoiceCheckList")
-   	public String myInvoiceCheckList(Model model,HttpSession session, OrdMainInfoVO ordMainInfoVO) {
+   	@RequestMapping(value = "/mangerInvoiceCheckList")
+   	public String mangerInvoiceCheckList(Model model,HttpSession session, OrdMainInfoVO ordMainInfoVO) {
    		try {
    			PageResponseDTO<OrdInvoiceTaxRespDTO> pageInfo = new PageResponseDTO<OrdInvoiceTaxRespDTO>();
    			OrdInvoiceTaxReqDTO ordInvoiceTaxReqDTO = new OrdInvoiceTaxReqDTO();

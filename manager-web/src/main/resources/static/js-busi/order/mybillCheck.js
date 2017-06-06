@@ -1,16 +1,13 @@
 var basePath = WEB_ROOT;
+//管理员查询发票
 $(function(){
-	myInvoiceCheckList(1);
-	
-});
+	mangerInvoiceCheckList(1);
+	});
 
-
-
-
-function myInvoiceCheckList(index){
+function mangerInvoiceCheckList(index){
 	var param={pageNo:index};
 	$.ajax({
-		url:basePath+'/invoiceManage/myInvoiceCheckList',
+		url:basePath+'/invoiceManage/mangerInvoiceCheckList',
 		cache:false,
 		async:true,
 		dataType:'html',

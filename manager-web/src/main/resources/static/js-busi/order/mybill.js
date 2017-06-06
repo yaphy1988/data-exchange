@@ -8,7 +8,7 @@ function applyInvoice(orderId){
 }
 
 
-
+//查询自己可以申请开票的订单
 function myOrderInvoiceList(index){
 	var param={pageNo:index};
 	$.ajax({
@@ -27,6 +27,7 @@ function myOrderInvoiceList(index){
  * 发票开具申请保存
  */
 function saveInvoiceTax(){
+	var invocetype = $("#invocetypeop").val();
 	var taxId=$("#taxId").val();
 	var phone=$("#phone").val();
 	var orderId=$("#orderId").val();
@@ -37,6 +38,11 @@ function saveInvoiceTax(){
 	var contactInfo=$("#contactInfo").val();//地址
 	var bankName=$("#bankName").val();//开户行
 	var acctInfo=$("#acctInfo").val();//银行账户
+
+	if(invocetype==""){
+		WEB.msg.info("提示","请选择发票类型！");
+		return;
+	}
 	if(taxId==""){
 		WEB.msg.info("提示","请先进行企业认证！");
 		return;	
@@ -75,7 +81,8 @@ function saveInvoiceTax(){
 			taxpayerNo:taxpayerNo,
 			contactInfo:contactInfo,
 			bankName:bankName,
-			acctInfo:acctInfo
+			acctInfo:acctInfo,
+		    invoiceType:invocetype
 			};
 	var url=basePath+"/invoiceManage/saveInvoiceTax";
 		$.ajax({

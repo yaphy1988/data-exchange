@@ -49,6 +49,7 @@ public class OrdInvoiceTaxSVImpl  implements IOrdInvoiceTaxSV {
 		invoiceTax.setOrderTaxId(orderTaxId);
 		invoiceTax.setCreateTime(DateUtil.getNowAsDate());
 		invoiceTax.setUpdateTime(DateUtil.getNowAsDate());
+		invoiceTax.setSendAddr(ordInvoiceTaxReqDTO.getTaxAddr());
 		ObjectCopyUtil.copyObjValue(ordInvoiceTaxReqDTO, invoiceTax, null, false);
 		int code = ordInvoiceTaxMapper.insert(invoiceTax);
 		return orderTaxId;

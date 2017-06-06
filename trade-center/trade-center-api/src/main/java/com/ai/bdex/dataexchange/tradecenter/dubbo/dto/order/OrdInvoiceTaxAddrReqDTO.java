@@ -24,6 +24,7 @@ public class OrdInvoiceTaxAddrReqDTO  extends BaseInfo{
    private String updateStaff; 
    private Date updateTime; 
    private String invoiceDesc;
+
 	public Long getOrderTaxId() {
 		return orderTaxId;
 	}

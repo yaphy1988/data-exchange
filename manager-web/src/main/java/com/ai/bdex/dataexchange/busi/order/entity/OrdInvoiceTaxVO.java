@@ -31,6 +31,19 @@ public class OrdInvoiceTaxVO  extends BaseInfo{
    private String invoiceDesc;
    private String taxAddr;//邮寄地址
    private String taxAddrPhone;//邮寄电话
+
+	private String invoiceType;//发票类型
+
+	public String getInvoiceType() {
+		return invoiceType;
+	}
+
+	public void setInvoiceType(String invoiceType) {
+		this.invoiceType = invoiceType;
+	}
+
+
+
    
 	public String getTaxAddr() {
 		return taxAddr;
