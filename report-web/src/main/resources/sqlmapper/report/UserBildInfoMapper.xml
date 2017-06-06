@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai.bdex.dataexchange.report.dao.mapper.UserBildInfoMapper">
+  <select id="UserBinging_InfoReport" resultType="com.ai.bdex.dataexchange.report.dao.model.UserBildInfo" parameterType="com.ai.bdex.dataexchange.report.dao.model.UserBildInfo">
+  select 
+  t.client_id clientId,
+  t.user_id userId,
+  m.service_id serviceId,
+  COUNT(m.SERVICE_ID) totalCount,
+  y.successCount 
+  from t_aip_service_used_log m LEFT JOIN t_aip_client_info t on 
+  t.CLIENT_ID=m.CLIENT_ID LEFT JOIN 
+  (SELECT x.CLIENT_ID,x.service_id,COUNT(x.SERVICE_ID) as successCount from t_aip_service_used_log x 
+  WHERE x.`STATUS`='1' GROUP BY x.CLIENT_ID,x.service_id) y on 
+  y.service_id=m.SERVICE_ID AND y.CLIENT_ID=m.CLIENT_ID 
+  where 1=1 
+  <if test="startTime != null">
+  <![CDATA[and m.CREATE_TIME >= #{startTime}]]>
+  </if>
+  <if test="endTime != null">
+  <![CDATA[and m.CREATE_TIME >= #{endTime}]]>
+  </if>
+  <if test="userId != null">
+  <![CDATA[and t.USER_ID = #{userId}]]>
+  </if>
+  GROUP BY t.client_id,t.user_id,m.service_id order by t.USER_ID,totalCount
+  </select>
+  
+  <select id="UserBinging_DetailReport" resultType="com.ai.bdex.dataexchange.report.dao.model.UserBildInfo" parameterType="com.ai.bdex.dataexchange.report.dao.model.UserBildInfo">
+  select 
+  t.client_id clientId, 
+  t.user_id userId,
+  m.USED_ID usedId,
+  m.service_id serviceId, 
+  m.CREATE_TIME createTime,
+  s.unit_price unitPrice from t_aip_service_used_log m 
+  LEFT JOIN t_aip_client_info t on t.CLIENT_ID=m.client_id
+  LEFT JOIN t_aip_service_info s on s.SERVICE_ID=m.SERVICE_ID  
+  where 1=1
+  <if test="userId != null">
+  <![CDATA[and t.USER_ID = #{userId}]]>
+  </if>
+  <if test="serviceId != null">
+  <![CDATA[and t.SERVICE_ID = #{serviceId}]]>
+  </if>
+  </select>
+</mapper>
