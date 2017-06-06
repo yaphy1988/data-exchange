@@ -101,11 +101,11 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
             //保存扣减历史
             if(Constants.Bill.DATA_ACCT_TYPE_NUM.equals(dataAccountSelected.getDataAcctType())){
                 dataAccountSelected.setLeftNum(dataAccountSelected.getLeftNum() - consumeDTO.getConsumeNum());
-                dataAccountSelected.setTotalConsumeNum(dataAccountSelected.getTotalConsumeNum() - consumeDTO.getConsumeNum());
+                dataAccountSelected.setTotalConsumeNum(dataAccountSelected.getTotalConsumeNum() + consumeDTO.getConsumeNum());
                 respDTO.setLeftNum(dataAccountSelected.getLeftNum());
             }else{
                 dataAccountSelected.setLeftMoney(dataAccountSelected.getLeftMoney() - consumeDTO.getConsumeMoney());
-                dataAccountSelected.setTotalConsumeMoney(dataAccountSelected.getTotalConsumeMoney() - consumeDTO.getConsumeMoney());
+                dataAccountSelected.setTotalConsumeMoney(dataAccountSelected.getTotalConsumeMoney() + consumeDTO.getConsumeMoney());
                 respDTO.setLeftMoney(dataAccountSelected.getLeftMoney());
             }
             DataAccountHis dataAccountHis = new DataAccountHis();
