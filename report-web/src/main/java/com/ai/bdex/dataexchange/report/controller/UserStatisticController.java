@@ -40,6 +40,11 @@ public class UserStatisticController {
 
     @RequestMapping("/userregister")
     public String queryUserRegister(Model model,HttpServletRequest request) throws Exception{
+        return "report/user_register :: #table_content";
+    }
+
+    @RequestMapping(value = "/getUserTotalData")
+    public String getUserTotalData(Model model,HttpServletRequest request) throws Exception{
         //查询条件
         UserStatisticQueryInfo queryInfo = this.getQueryParams(request);
         //报表ID
@@ -48,12 +53,13 @@ public class UserStatisticController {
         PageInfo<UserStatisticQueryInfo> page = reportSV.getRePortData(reportId, queryInfo);
 
         model.addAttribute("totalVo",page.getList().get(0));
-        return "report/user_register :: #table_content";
+
+        return "report/user_register :: #userTotalData";
     }
 
-    @RequestMapping(value = "/getUserjsonData")
+    @RequestMapping(value = "/getUserDetailData")
     @ResponseBody
-    public Object getUserjsonData(HttpServletRequest request) throws Exception{
+    public Object getUserDetailData(HttpServletRequest request) throws Exception{
         //查询条件
         UserStatisticQueryInfo queryInfo = this.getQueryParams(request);
         //报表ID

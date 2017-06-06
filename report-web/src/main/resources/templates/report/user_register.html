@@ -25,60 +25,49 @@
     <table class="table table-bordered" style="width:800px">
         <thead>
         <tr class="active">
-            <th>新增用户总数</th>
-            <th>新增普通用户</th>
-            <th>新增企业用户</th>
-            <th>共计用户总数</th>
-            <th>共计普通用户</th>
-            <th>共计企业用户</th>
+            <td align="center"><b>新增用户总数</b></td>
+            <td align="center"><b>新增普通用户</b></td>
+            <td align="center"><b>新增企业用户</b></td>
+            <td align="center"><b>共计用户总数</b></td>
+            <td align="center"><b>共计普通用户</b></td>
+            <td align="center"><b>共计企业用户</b></td>
         </tr>
         </thead>
-        <tbody>
-          <tr>
-              <td th:text="${totalVo.allUserCnt}"></td>
-              <td th:text="${totalVo.userCnt}"></td>
-              <td th:text="${totalVo.companyUserCnt}"></td>
-              <td th:text="${totalVo.allUserTotal}"></td>
-              <td th:text="${totalVo.userTotal}"></td>
-              <td th:text="${totalVo.companyUserTotal}"></td>
-          </tr>
+        <tbody id="userTotalData">
+            <tr  th:if="${totalVo}">
+              <td align="center" th:text="${totalVo.allUserCnt}"></td>
+              <td align="center" th:text="${totalVo.userCnt}"></td>
+              <td align="center" th:text="${totalVo.companyUserCnt}"></td>
+              <td align="center" th:text="${totalVo.allUserTotal}"></td>
+              <td align="center" th:text="${totalVo.userTotal}"></td>
+              <td align="center" th:text="${totalVo.companyUserTotal}"></td>
+            </tr>
         </tbody>
     </table>
     <table id="table"
-           data-toolbar="#toolbar"
            data-show-refresh="true"
            data-show-toggle="true"
            data-show-columns="true"
            data-show-export="true"
-           data-detail-view="true"
-           data-detail-formatter="detailFormatter"
-           data-minimum-count-columns="2"
-           data-show-pagination-switch="true"
            data-pagination="true"
-           data-id-field="id"
-           data-show-footer="false"
-           th:data-url="${#tools.reportDomain()}+'/reportdata/getUserjsonData'"
-           data-side-pagination="server">
+           data-side-pagination="server"
+           th:data-url="${#tools.reportDomain()}+'/reportdata/getUserDetailData'">
         <thead>
         <tr>
             <th data-field="staffId">用户ID</th>
-            <th data-field="staffName" data-switchable="false">用户名</th>
+            <th data-field="staffName">用户名</th>
             <th data-field="staffType">用户类型</th>
             <th data-field="companyName">企业名称</th>
-            <th data-field="phoneNumber" data-visible="false">联系电话</th>
-            <th data-field="companyAddr" data-switchable="false">地址</th>
-            <th data-field="companyMail" data-visible="false">邮箱</th>
-            <th data-field="taxpayerNo" data-visible="false">营业执照编号</th>
-            <th data-field="taxNo" data-switchable="false">税务登记号</th>
-            <th data-field="organCode" data-visible="false">组织机构代码</th>
+            <th data-field="phoneNumber">联系电话</th>
+            <th data-field="companyAddr">地址</th>
+            <th data-field="companyMail">邮箱</th>
+            <th data-field="taxpayerNo">营业执照编号</th>
+            <th data-field="taxNo">税务登记号</th>
+            <th data-field="organCode">组织机构代码</th>
         </tr>
         </thead>
     </table>
     <script>
-        $(function () {
-            dateTimepickerinit($('#startTime'),$('#endTime'));
-        });
-
         $(function () {
             dateTimepickerinit($('#startTime'),$('#endTime'));
         });
@@ -87,8 +76,6 @@
             var param = {
                 startDate : $("#startTime").val(),
                 endDate : $("#endDate").val(),
-//                limit : this.limit, // 页面大小
-//                offset : this.offset, // 页码
                 pageindex : this.pageNumber,
                 pageSize : this.pageSize
             }
@@ -115,7 +102,21 @@
         }
         //自定义查询触发事件
         function doQuery(params){
-            $('#table').bootstrapTable('refresh');    //刷新表格
+            $('#table').bootstrapTable('refresh');//刷新表格
+            $.ajax({
+                url: REPORT_ROOT+"/reportdata/getUserTotalData",
+                type: "POST",
+                dataType: "html",
+                cache: false,
+                async: true,
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(data){
+                   $("#userTotalData").html($(data).html());
+                }
+            });
         }
 
         /**
