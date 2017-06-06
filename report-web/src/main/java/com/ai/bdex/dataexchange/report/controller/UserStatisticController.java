@@ -3,8 +3,10 @@ package com.ai.bdex.dataexchange.report.controller;
 import java.util.Date;
 
 import com.ai.bdex.dataexchange.report.service.interfaces.IReportSV;
+import com.ai.bdex.dataexchange.report.service.interfaces.IRowForMat;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.utils.DateUtil;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,9 +45,9 @@ public class UserStatisticController {
         //报表ID
         String reportId = "authStaffSign_TotalReport";
         //查询报表数据
-        Page<UserStatisticQueryInfo> page = reportSV.getRePortData(reportId,queryInfo);
+        PageInfo<UserStatisticQueryInfo> page = reportSV.getRePortData(reportId, queryInfo);
 
-        model.addAttribute("totalVo",page.get(0));
+        model.addAttribute("totalVo",page.getList().get(0));
         return "report/user_register :: #table_content";
     }
 
@@ -57,13 +59,23 @@ public class UserStatisticController {
         //报表ID
         String reportId = "authStaffSign_DetailReport";
         //查询报表数据
-        Page<AuthStaffSign> page = reportSV.getRePortData(reportId,queryInfo);
+        PageInfo<UserStatisticQueryInfo> page = reportSV.getRePortData(reportId,queryInfo, new IRowForMat<UserStatisticQueryInfo>() {
+            @Override
+            public void forMat(UserStatisticQueryInfo vo) {
+                String staffType = vo.getStaffType();
+                if("1".equals(staffType)){
+                    vo.setStaffType("管理员");
+                }else{
+                    vo.setStaffType("普通用户");
+                }
+            }
+        });
         return page;
     }
 
     private UserStatisticQueryInfo getQueryParams(HttpServletRequest request){
         UserStatisticQueryInfo vo = new UserStatisticQueryInfo();
-        vo.setPageNo(0);
+        vo.setPageNo(1);
         vo.setPageSize(20);
 
         String startDate = request.getParameter("startDate");
