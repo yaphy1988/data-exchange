@@ -34,6 +34,33 @@
            data-show-columns="true"
            data-show-export="true"
            data-detail-view="true"
+           data-query-params="queryParams"
+           data-detail-formatter="detailFormatter"
+           data-minimum-count-columns="2"
+           data-show-pagination-switch="true"
+           data-pagination="true"
+           data-id-field="id"
+           data-show-footer="false"
+           th:data-url="${#tools.reportDomain()}+'/reportdata/userbildingquery'"
+           data-side-pagination="server">
+        <thead>
+        <tr>
+            <th data-field="userId">用户ID</th>
+            <th data-field="serviceId" data-switchable="false">API接口ID</th>
+            <th data-field="totalCount">请求次数</th>
+            <th data-field="successCount">成功次数</th>
+        </tr>
+        </thead>
+    </table>
+    
+    <table id="table2"
+           data-toolbar="#toolbar"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+           data-show-export="true"
+           data-detail-view="true"
+           data-query-params="queryParams"
            data-detail-formatter="detailFormatter"
            data-minimum-count-columns="2"
            data-show-pagination-switch="true"
@@ -95,81 +122,8 @@
                 endTime.datetimepicker("setStartDate",startTime.val());
             });
         }
-        function detailFormatter(index, row) {
-        	$.ajax({
-                url:[[${#tools.reportDomain()}]] + "/reportdata/userbildingdetailquery",
-                data:{},
-                dataType:'html',
-                type:'post',
-                async:true,
-                crossDomain: true,
-                xhrFields: {
-                    withCredentials: true
-                },
-                success:function (data) {
-                    $("#detailListDiv").html(data);
-                }
-            })
-            var html = [];
-            $.each(row, function (key, value) {
-                html.push('<p><b>' + key + ':</b> ' + value + '</p>');
-            });
-            return html.join('');
-        }
     </script>
-	<!-- Tab panes -->
-	<div class="tab-content pt15" id="detailListDiv" style="visibility: hidden;">
-		<div role="tabpanel" class="tab-pane active" id="staffList">
-    <table id="table_detail">
-        <thead>
-        <tr>
-            <th >用户ID</th>
-            <th >请求流水号</th>
-            <th >API接口ID</th>
-            <th >请求时间</th>
-            <th >计费金额</th>
-        </tr>
-        </thead>
-        <tbody th:if="${pageInfo} and ${pageInfo.list}">
-          <tr th:each="detailVO,detailStat:${pageInfo.list}">
-              <td th:text="${detailVO.userId}"></td>
-              <td th:text="${detailVO.usedId}"></td>
-              <td th:text="${detailVO.serviceId}"></td>
-              <td th:text="${#dates.format(detailVO.createTime, 'yyyy-MM-dd  HH:mm:ss')}"></td>
-              <td th:text="${#tools.formatLiToMoneyClean(detailVO.unitPrice)}"></td>
-          </tr>
-        </tbody>
-    </table>
-    <div class="pagelist" th:remove="all" >
-		<nav aria-label="Page navigation">
-		  <ul class="pagination">
-			<li >
-			  <a href="#" aria-label="Previous">
-				<span aria-hidden="true">上一页</span>
-			  </a>
-			</li>
-			<li class="active"><a href="#">1</a></li>
-			<li><a href="#">2</a></li>
-			<li><a href="#">3</a></li>
-			<li><a href="#">4</a></li>
-			<li><a href="#">5</a></li>
-			<li>
-			  <a href="#" aria-label="Next">
-				<span aria-hidden="true">下一页</span>
-			  </a>
-			</li>
-			<div class="pageskip">
-			<span class="pr10">到第<input type="text" class="pageskip_box">页</span>
-			<a href="" class="btn btn-default  btn_rec btn-sm">确定</a>
-		  </div>
-		  </ul>
-
-		</nav>
-	</div>
-	</div>
-	</div>
 
 </div>
-
 </body>
 </html>

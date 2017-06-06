@@ -100,7 +100,7 @@ public class UserBildingController {
     	UserBildingQueryInfo queryInfo = new UserBildingQueryInfo();
     	String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
-    	String pageNo = request.getParameter("pageindex");
+    	String pageNo = request.getParameter("pageNo");
         String pageSize = request.getParameter("pageSize");
         String userId = request.getParameter("userId");
         String serviceId = request.getParameter("serviceId");

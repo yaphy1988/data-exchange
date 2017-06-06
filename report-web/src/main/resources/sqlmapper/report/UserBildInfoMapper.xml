@@ -37,11 +37,14 @@
   LEFT JOIN t_aip_client_info t on t.CLIENT_ID=m.client_id
   LEFT JOIN t_aip_service_info s on s.SERVICE_ID=m.SERVICE_ID  
   where 1=1
+  <if test="startTime != null">
+  <![CDATA[and m.CREATE_TIME >= #{startTime}]]>
+  </if>
+  <if test="endTime != null">
+  <![CDATA[and m.CREATE_TIME >= #{endTime}]]>
+  </if>
   <if test="userId != null">
   <![CDATA[and t.USER_ID = #{userId}]]>
-  </if>
-  <if test="serviceId != null">
-  <![CDATA[and t.SERVICE_ID = #{serviceId}]]>
   </if>
   </select>
 </mapper>
