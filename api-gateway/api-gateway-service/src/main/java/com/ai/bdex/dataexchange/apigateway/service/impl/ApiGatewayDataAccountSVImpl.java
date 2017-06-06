@@ -66,7 +66,7 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
         for(DataAccount dataAccount : dataAccountList){
             if(Constants.Bill.PACKAGE_TYPE_FIX.equals(dataAccount.getPackageType())){
                 //10 固定套餐基于次数进行扣减
-                if(dataAccount.getLeftNum()>consumeDTO.getConsumeNum()){
+                if(dataAccount.getLeftNum() >= consumeDTO.getConsumeNum()){
                     dataAccount.setUpdateTime(new Timestamp(System.currentTimeMillis()));
                     if(manualDataAccountMapper.updateByConsumeNum(dataAccount,consumeDTO.getConsumeNum()) > 0){
                         dataAccountSelected = dataAccount;
@@ -76,7 +76,7 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
                 }
             }else if(Constants.Bill.PACKAGE_TYPE_CUSTOM.equals(dataAccount.getPackageType())){
                 //20 自定义套餐基于次数进行扣减
-                if(dataAccount.getLeftNum()>consumeDTO.getConsumeNum()){
+                if(dataAccount.getLeftNum() >= consumeDTO.getConsumeNum()){
                     dataAccount.setUpdateTime(new Timestamp(System.currentTimeMillis()));
                     if(manualDataAccountMapper.updateByConsumeNum(dataAccount,consumeDTO.getConsumeNum()) > 0){
                         dataAccountSelected = dataAccount;
@@ -86,10 +86,12 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
                 }
             }else if(Constants.Bill.PACKAGE_TYPE_MIX.equals(dataAccount.getPackageType())){
                 //30 跨类套餐基于金额进行扣减
-                if(manualDataAccountMapper.updateByConsumeMoney(dataAccount,consumeDTO.getConsumeMoney()) > 0){
-                    dataAccountSelected = dataAccount;
-                    respDTO.setResult(Constants.Bill.CHARGE_RESULE_OK);
-                    break;
+                if(dataAccount.getLeftMoney() >= consumeDTO.getConsumeMoney()){
+                    if(manualDataAccountMapper.updateByConsumeMoney(dataAccount,consumeDTO.getConsumeMoney()) > 0){
+                        dataAccountSelected = dataAccount;
+                        respDTO.setResult(Constants.Bill.CHARGE_RESULE_OK);
+                        break;
+                    }
                 }
             }
         }
