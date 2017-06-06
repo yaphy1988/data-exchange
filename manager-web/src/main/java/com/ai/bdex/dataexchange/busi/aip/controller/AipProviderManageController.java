@@ -6,7 +6,10 @@ import com.ai.bdex.dataexchange.aipcenter.dubbo.interfaces.IAipProviderServiceMg
 import com.ai.bdex.dataexchange.busi.aip.entity.AipProviderInfoVO;
 import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.exception.BusinessException;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
+import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
 import com.ai.paas.util.ImageUtil;
 import com.ai.paas.utils.StringUtil;
@@ -94,6 +97,37 @@ public class AipProviderManageController {
         return "supplier_manage :: #aipProviderInfoList";
     }
     /**
+     * 获取供应商信息
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+	@RequestMapping(value = "/getAipProviderInfo")
+	@ResponseBody
+    public Map<String, Object> getAipProviderInfo(HttpServletRequest request, HttpServletResponse response) throws Exception{
+		Map<String, Object> rMap = new HashMap<String, Object>();
+        String providerId = request.getParameter("providerId");
+        if (StringUtil.isBlank(providerId)){
+            throw new BusinessException("没有供应商信息");
+        }
+
+        try {
+            AipProviderInfoRespDTO aipProviderInfoRespDTO = iAipProviderServiceMgrRSV.queryAipProviderInfoByProviderId(providerId);
+            if (aipProviderInfoRespDTO!=null){
+            	if(StringUtils.isNotEmpty(aipProviderInfoRespDTO.getProviderLogo())){
+            		aipProviderInfoRespDTO.setProviderLogoUrl(ImageUtil.getImageUrl(aipProviderInfoRespDTO.getProviderLogo() + "_100x100"));
+      			}
+            }
+            rMap.put("providerInfo", aipProviderInfoRespDTO);
+			rMap.put("success",true);
+        } catch (Exception e) {
+			rMap.put("success",false);
+            log.error("查询aip供应商信息异常：",e);
+        }
+        return rMap;
+    }
+    /**
 	 * 保存Aip供应商信息
 	 * @param model
 	 * @param request
@@ -111,15 +145,12 @@ public class AipProviderManageController {
 			if (!StringUtil.isBlank(aipProviderInfoVO.getProviderName())) {
 				aipProviderInfoReqDTO.setProviderName(aipProviderInfoVO.getProviderName());
 			}
-			if(!StringUtil.isBlank(aipProviderInfoVO.getProviderDesc())){
-				aipProviderInfoReqDTO.setProviderDesc(aipProviderInfoVO.getProviderDesc());
-			}
-			if(!StringUtil.isBlank(aipProviderInfoVO.getProviderLogo())){
-				aipProviderInfoReqDTO.setProviderDesc(aipProviderInfoVO.getProviderLogo());
-			}
-			aipProviderInfoReqDTO.setCreateStaff(StaffUtil.getStaffId(session));
+			aipProviderInfoReqDTO.setProviderDesc(aipProviderInfoVO.getProviderDesc());
+			aipProviderInfoReqDTO.setProviderLogo(aipProviderInfoVO.getProviderLogo());
 			aipProviderInfoReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
-			if(!StringUtil.isBlank(aipProviderInfoReqDTO.getProviderId())){//新增
+			aipProviderInfoReqDTO.setStatus(Constants.Page.STATUS_VALID);
+			if(StringUtil.isBlank(aipProviderInfoReqDTO.getProviderId())){//新增
+				aipProviderInfoReqDTO.setCreateStaff(StaffUtil.getStaffId(session));
 				iAipProviderServiceMgrRSV.insertAipProviderInfo(aipProviderInfoReqDTO);
 			}else{//编辑
 				iAipProviderServiceMgrRSV.updateAipProviderInfo(aipProviderInfoReqDTO);
@@ -128,6 +159,35 @@ public class AipProviderManageController {
 		} catch (Exception e) {
 			rMap.put("success",false);
 			log.error("保存Aip供应商信息出错：" + e.getMessage());
+		}
+		return rMap;
+	}
+
+	/**
+	 * 失效/生效Aip供应商信息
+	 * 
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/updateAipProviderInfoStatus")
+	@ResponseBody
+	public Map<String, Object> updateAipProviderInfoStatus(Model model, HttpServletRequest request,HttpSession session) {
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		try {
+			AipProviderInfoReqDTO aipProviderInfoReqDTO = new AipProviderInfoReqDTO();
+			String providerId = request.getParameter("providerId");
+			String status = request.getParameter("status");
+			if (!StringUtil.isBlank(providerId)) {
+				aipProviderInfoReqDTO.setProviderId(providerId);
+			}
+			aipProviderInfoReqDTO.setStatus(status);
+			aipProviderInfoReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+			iAipProviderServiceMgrRSV.updateAipProviderInfo(aipProviderInfoReqDTO);
+			rMap.put("success", true);
+		} catch (Exception e) {
+			rMap.put("success", false);
+			log.error("失效/生效Aip供应商信息出错：" + e.getMessage());
 		}
 		return rMap;
 	}

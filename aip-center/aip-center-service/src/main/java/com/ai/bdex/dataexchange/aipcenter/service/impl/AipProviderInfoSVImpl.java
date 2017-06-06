@@ -21,6 +21,7 @@ import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
+import com.ai.paas.utils.DateUtil;
 import com.ai.paas.utils.StringUtil;
 import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.github.pagehelper.PageHelper;
@@ -89,14 +90,16 @@ public class AipProviderInfoSVImpl implements IAipProviderInfoSV{
 		int providerSort=0;
 		if(CollectionUtils.isNotEmpty(aipProviderList)){
 			providerSort=aipProviderList.get(0).getProviderSort();
+			providerSort=providerSort+1;
 			aipProviderInfoReqDTO.setProviderSort(providerSort);
 		}
 		String aipProviderId = SeqUtil.getString("SEQ_AIP_PROVIDER_INFO");
 		if (StringUtil.isBlank(aipProviderId)){
 			throw new BusinessException("获取到的序列aipProviderId为空！");
 		}
-		
 		AipProviderInfo aipProviderInfo = new AipProviderInfo();
+		aipProviderInfoReqDTO.setCreateTime(DateUtil.getNowAsDate());
+		aipProviderInfoReqDTO.setUpdateTime(DateUtil.getNowAsDate());
 		ObjectCopyUtil.copyObjValue(aipProviderInfoReqDTO,aipProviderInfo,null,false);
 		aipProviderInfo.setProviderId(aipProviderId);
 		aipProviderInfoMapper.insert(aipProviderInfo);
@@ -114,6 +117,7 @@ public class AipProviderInfoSVImpl implements IAipProviderInfoSV{
 		if (!StringUtil.isBlank(aipProviderInfoReqDTO.getProviderId())) {
 			criteria.andProviderIdEqualTo(aipProviderInfoReqDTO.getProviderId());
 		}
+		aipProviderInfoReqDTO.setUpdateTime(DateUtil.getNowAsDate());
 		AipProviderInfo aipProviderInfo = new AipProviderInfo();
 		ObjectCopyUtil.copyObjValue(aipProviderInfoReqDTO,aipProviderInfo,null,false);
 		aipProviderInfoMapper.updateByExampleSelective(aipProviderInfo,example);
