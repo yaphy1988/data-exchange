@@ -138,8 +138,11 @@ public class orderManageController {
 			pageInfo = iAipCenterDataAccountRSV.queryDataAccountStatisticPageByOption(dataAccountReqDTO);
  			if(CollectionUtils.isNotEmpty(pageInfo.getResult())){
 				for(int i = 0 ; i < pageInfo.getResult().size();i++){
-				  String serviceid = pageInfo.getResult().get(i).getServiceId();
-					List<AipServiceInfoDTO> apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(serviceid);
+					String serviceid = pageInfo.getResult().get(i).getServiceId();
+					List<AipServiceInfoDTO> apiServiceList=null;
+					if(StringUtil.isNotBlank(serviceid)){
+						apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(serviceid);
+					}
 					if (CollectionUtils.isNotEmpty(apiServiceList)) {
 						pageInfo.getResult().get(i).setServiceName(apiServiceList.get(0).getServiceName());
 					}
