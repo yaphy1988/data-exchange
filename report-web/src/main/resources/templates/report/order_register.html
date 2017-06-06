@@ -22,7 +22,15 @@
         <div class="form-group">
             <button type="button" id="queryBtn" th:onclick="|doQuery();|" class="btn btn-primary">查询</button>
         </div>
+
     </form>
+    <div id="toolbar" style="margin-left: 10px;">
+        <select class="form-control">
+            <option value="">Export Basic</option>
+            <option value="all">Export All</option>
+            <option value="selected">Export Selected</option>
+        </select>
+    </div>
     <table id="table"
            data-toolbar="#toolbar"
            data-show-refresh="true"
@@ -32,7 +40,6 @@
            data-detail-view="true"
            data-detail-formatter="detailFormatter"
            data-minimum-count-columns="2"
-           data-show-pagination-switch="true"
            data-pagination="true"
            data-id-field="id"
            data-show-footer="false"
@@ -57,6 +64,7 @@
     <script th:inline="javascript">
         $(function () {
             dateTimepickerinit($('#startTime'),$('#endTime'));
+            $('#toolbar').parent().attr('style','margin-top:0px;');
         });
 
         // 要求重写次方法，请求服务器数据入参方法,参数可自定义

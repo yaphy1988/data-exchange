@@ -17,8 +17,16 @@ function initTable() {
                 withCredentials: true
             }
         },
+        clickToSelect:true,
+        showExport: true,                     //是否显示导出
+        exportDataType: "basic",              //basic', 'all', 'selected'.
         responseHandler: responseHandler,
 
+    });
+    $('#toolbar').find('select').change(function () {
+        $table.bootstrapTable('refreshOptions', {
+            exportDataType: $(this).val()
+        });
     });
     // sometimes footer render error.
     setTimeout(function () {
@@ -105,63 +113,6 @@ function totalPriceFormatter(data) {
 }
 function getHeight() {
     return $(window).height() - $('h1').outerHeight(true);
-}
-function renderTable() {
-    var scripts = [
-            location.search.substring(1) || '/js-busi/report/bootstrap-table-export.js',
-            '/js-busi/report/tableExport.js',
-            '/js-busi/report/bootstrap-table-editable.js',
-            '/js-busi/report/bootstrap-editable.js'
-        ],
-        eachSeries = function (arr, iterator, callback) {
-            callback = callback || function () {
-                };
-            if (!arr.length) {
-                return callback();
-            }
-            var completed = 0;
-            var iterate = function () {
-                iterator(arr[completed], function (err) {
-                    if (err) {
-                        callback(err);
-                        callback = function () {
-                        };
-                    }
-                    else {
-                        completed += 1;
-                        if (completed >= arr.length) {
-                            callback(null);
-                        }
-                        else {
-                            iterate();
-                        }
-                    }
-                });
-            };
-            iterate();
-        };
-    eachSeries(scripts, getScript, initTable);
-
-}
-function getScript(url, callback) {
-    var head = document.getElementsByTagName('head')[0];
-    var script = document.createElement('script');
-    script.src = url;
-    var done = false;
-    // Attach handlers for all browsers
-    script.onload = script.onreadystatechange = function () {
-        if (!done && (!this.readyState ||
-            this.readyState == 'loaded' || this.readyState == 'complete')) {
-            done = true;
-            if (callback)
-                callback();
-            // Handle memory leak in IE
-            script.onload = script.onreadystatechange = null;
-        }
-    };
-    head.appendChild(script);
-    // We handle everything using the script element injection
-    return undefined;
 }
 
 //加载服务器数据之前的处理程序，可以用来格式化数据。
