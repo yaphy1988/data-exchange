@@ -120,6 +120,13 @@ public class orderManageController {
 			if(StringUtil.isBlank(staff_id)){
 				staff_id = TMPUSERID;
 			}
+			dataAccountReqDTO.setPageNo(ordInfoVO.getPageNo());
+			if(ordInfoVO.getPageSize()!=null||ordInfoVO.getPageSize()!=0){
+				dataAccountReqDTO.setPageSize(ordInfoVO.getPageSize());
+			}else{
+				dataAccountReqDTO.setPageSize(PAGE_SIZE);
+			}
+
 			dataAccountReqDTO.setUserId(staff_id);
             List<String> packageTypeList = new ArrayList<>();
             packageTypeList.add(Constants.Order.ORDER_TYPE_10);
@@ -132,6 +139,39 @@ public class orderManageController {
 					List<AipServiceInfoDTO> apiServiceList=null;
 					if(StringUtil.isNotBlank(serviceid)){
 						apiServiceList = iAipServiceInfoRSV.selectServiceByServiceId(serviceid);
+					}
+					GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO ();
+					gdsInfoReqDTO.setApiId(Integer.parseInt(serviceid));
+  					List<GdsInfoRespDTO> listGds = iGdsInfoRSV.queryGdsInfoList(gdsInfoReqDTO);
+					GdsSkuReqDTO gdsSkuReqDTO = new GdsSkuReqDTO();
+					if(!CollectionUtil.isEmpty(listGds))
+					{
+						boolean havget = false;
+						for(GdsInfoRespDTO gdsInfoRespDTO:listGds){
+							 gdsSkuReqDTO.setGdsId(gdsInfoRespDTO.getGdsId());
+							 gdsSkuReqDTO.setStatus("1");
+							 List<GdsSkuRespDTO>  listSku =  iGdsSkuRSV.queryGdsSkuList(gdsSkuReqDTO);
+							 if(!CollectionUtil.isEmpty(listSku)){
+								 havget = true;
+								 pageInfo.getResult().get(i).setGdsId(gdsInfoRespDTO.getGdsId());
+								 pageInfo.getResult().get(i).setSkuId(listSku.get(0).getSkuId());
+								 break;
+							 }
+						 }
+						if(!havget)
+						{
+							//还没找到数据，则可以找无效的数据了
+							for(GdsInfoRespDTO gdsInfoRespDTO:listGds){
+								gdsSkuReqDTO.setGdsId(gdsInfoRespDTO.getGdsId());
+								List<GdsSkuRespDTO>  listSku =  iGdsSkuRSV.queryGdsSkuList(gdsSkuReqDTO);
+								if(!CollectionUtil.isEmpty(listSku)){
+									havget = true;
+									pageInfo.getResult().get(i).setGdsId(gdsInfoRespDTO.getGdsId());
+									pageInfo.getResult().get(i).setSkuId(listSku.get(0).getSkuId());
+									break;
+								}
+							}
+						}
 					}
 					if (CollectionUtils.isNotEmpty(apiServiceList)) {
 						pageInfo.getResult().get(i).setServiceName(apiServiceList.get(0).getServiceName());
