@@ -125,19 +125,29 @@ public class LoginAuthFilter implements Filter {
 
         //当前登录用户
         StaffInfoDTO staffInfo = StaffUtil.getStaffVO(session);
+        boolean isRememberPaas = false;
+        if(staffInfo == null || staffInfo.isLoginIn() == false){
+            //未登陆，则判断是否记住了密码
+            isRememberPaas = isRememberPaas(request,response);
+            if(isRememberPaas == true){
+                //记住密码，并登陆成功
+                //通过记住密码登陆，且url配置成需确认登陆的，则跳转到登陆界面
+                if("2".equals(staffInfo.getLoginType()) && unLoginUrl(uri,"2")) {
+                    response.sendRedirect(mallDomain+this.loginPage+"?toPage="+ LoginAuthFilter.getRequestUrl(request));
+                    return;
+                }
+                staffInfo = StaffUtil.getStaffVO(session);
+            }
+        }
+
         if(staffInfo != null && staffInfo.isLoginIn()){
+            //已登陆
             //设置Staffid到ThreadLocal
             StaffLocaleUtil.setCurrentStaffId(staffInfo.getStaffId());
 
-            //通过记住密码登陆，且url配置成需确认登陆的，则跳转到登陆界面
-            if("2".equals(staffInfo.getLoginType()) && unLoginUrl(uri,"2")) {
-                response.sendRedirect(mallDomain+this.loginPage+"?toPage="+ LoginAuthFilter.getRequestUrl(request));
-                return;
-            }
-
-            //剩下的看是否有菜单权限
             boolean hasMenuAuth = false;
             if(this.unLoginFlag == false) {
+                //未开启免登陆的，需要看是否有菜单权限
                 String reqUrl = getRequestUrl(request);
                 String refererUrl = request.getHeader("referer");
                 List<String> staffAuthMenus = staffInfo.getMenuUrls();
@@ -164,9 +174,7 @@ public class LoginAuthFilter implements Filter {
             }
         }else{
             //校验是否记住密码且当前请求无需确认登陆
-            boolean isRememberPaas = isRememberPaas(request,response);
             boolean needLogin = false;
-            boolean noAuth = false;
 
             String authUrl = "";
             // AJAX请求，校验的是它的referer URL
@@ -182,38 +190,18 @@ public class LoginAuthFilter implements Filter {
                 authUrl = uri;
             }
 
-            //已记住密码登陆
-            if(isRememberPaas == true){
-                if(unLoginUrl(authUrl,"2")) {
-                    //需要强制登陆
-                    needLogin = true;
-                }else {
-                    //如果是管理界面，则需要看是否配置了登陆可访问，如果没有配置则提示无权限
-                    if (this.unLoginFlag == false && unLoginUrl(authUrl, "1") == false) {
-                        noAuth = true;
-                    }
-                }
-            }else{
+            if(this.unLoginFlag){
+                //如果开启了免登陆，则只需判断要登录的url
                 if(unLoginUrl(authUrl, "1") == true){
                     needLogin = true;
                 }
-
-                if(this.unLoginFlag == false && unLoginUrl(authUrl, "0") == false){
-                    //  重新编译                 
-				   needLogin = true;
+            }else{
+                //没有开启免登陆，则判断不需要登陆的url
+                if(unLoginUrl(authUrl, "0") == false){
+                    needLogin = true;
                 }
             }
 
-            //没有权限
-            if(noAuth){
-                if(isAjaxRequest(request)){
-                    response.getWriter().write("{errorCode:\"999999\",\"errorMsg\":\"noAuth\"}");
-                    return;
-                }else{
-                    response.sendRedirect(mallDomain+this.noAuthPage);
-                    return;
-                }
-            }
             //需要登录
             if(needLogin){
                 if(isAjaxRequest(request)){
