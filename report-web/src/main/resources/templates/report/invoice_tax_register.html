@@ -5,69 +5,54 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-
     <script type="text/javascript" src="../../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:remove="all"></script>
 </head>
 <body>
 <div layout:fragment="screen_content" id="table_content">
     <ol class="breadcrumb">
-        <li><strong><span style="color: #27a0d7">订单统计</span></strong></li>
+        <li><strong><span style="color: #27a0d7">需要开具发票的统计情况</span></strong></li>
     </ol>
-    <form class="form-inline" role="form" style="float: left;" method="post" id="queryForm">
+    <form class="form-inline" role="form" style="float: left;padding-bottom:20px;" method="post" id="queryForm">
         <div class="form-group">
-            <label >订购时间:</label>
+            <label >开票时间:</label>
             <input placeholder="开始时间" class="form-control layer-date" id="startTime" name="startTime">-
             <input placeholder="结束时间" class="form-control layer-date" id="endTime" name="endTime">
         </div>
         <div class="form-group">
             <button type="button" id="queryBtn" th:onclick="|doQuery();|" class="btn btn-primary">查询</button>
         </div>
-
     </form>
-    <div id="toolbar" style="margin-left: 10px;">
-        <select class="form-control">
-            <option value="">Export Basic</option>
-            <option value="all">Export All</option>
-            <option value="selected">Export Selected</option>
-        </select>
-    </div>
     <table id="table"
-           data-toolbar="#toolbar"
            data-show-refresh="true"
            data-show-toggle="true"
            data-show-columns="true"
            data-show-export="true"
-           data-detail-view="true"
-           data-detail-formatter="detailFormatter"
-           data-minimum-count-columns="2"
            data-pagination="true"
-           data-id-field="id"
-           data-show-footer="false"
-           th:data-url="${#tools.reportDomain()}+'/reportdata/getOrderjsonData'"
-           data-side-pagination="server">
+           data-side-pagination="server"
+           th:data-url="${#tools.reportDomain()}+'/reportdata/getInvocieDetailData'">
         <thead>
         <tr>
-            <th data-field="id">订单编号</th>
-            <th data-field="staffId" data-switchable="false">用户名</th>
-            <th data-field="orderTime">订购时间</th>
-            <th data-field="gdsName">数据名称</th>
-            <th data-field="skuName" data-visible="false">套餐类别</th>
-            <th data-field="orderAmount" data-switchable="false">订购数量</th>
-            <th data-field="orderMoney" data-visible="false">金额</th>
-
-            <th data-field="payFlag" data-visible="false">订单状态*</th>
-            <th data-field="invoiceStatus" data-switchable="false">开票标志*</th>
-            <th data-field="paytradeId" data-visible="false">支付流水号</th>
+            <th data-field="orderid">订单编号</th>
+            <th data-field="staffId" data-switchable="false">用户ID</th>
+            <th data-field="orderTime">开票时间</th>
+            <th data-field="ordermoney">发票金额</th>
+            <th data-field="skuName" data-visible="false">发票类型</th>
+            <th data-field="orderAmount" data-switchable="false">是否已开出</th>
+            <th data-field="orderMoney" data-visible="false">邮寄地址</th>
+            <th data-field="payFlag" data-visible="false">抬头</th>
+            <th data-field="invoiceStatus" data-switchable="false">社会统一信用代码</th>
+            <th data-field="paytradeId" data-visible="false">注册地址</th>
+            <th data-field="paytradeId" data-visible="false">注册电话</th>
+            <th data-field="paytradeId" data-visible="false">开户行</th>
+            <th data-field="paytradeId" data-visible="false">账号</th>
         </tr>
         </thead>
     </table>
-    <script th:inline="javascript">
+    <script>
         $(function () {
             dateTimepickerinit($('#startTime'),$('#endTime'));
-            $('#toolbar').parent().attr('style','margin-top:0px;');
         });
-
-        // 要求重写次方法，请求服务器数据入参方法,参数可自定义
+        //请求服务器数据入参方法，参数可自定义
         function queryParams(params) {
             var param = {
                 startDate : $("#startTime").val(),
@@ -77,17 +62,45 @@
             }
             return param;
         }
-        /**
-         *
-         * SELECT
-         t.ORDER_ID "订单ID",t.STAFF_ID '用户ID',t.CREATE_TIME  "创建时间", 1 "ordermoney", "增值票",t.STATUS,"dizhi",t.INVOICE_TITLE "taitou",
-         TAXPAYER_NO "纳税人识别号",
-         CONTACT_INFO "注册地址",
-         PHONE "注册电话",
-         BANK_NAME "开户行",
-         ACCT_INFO "银行账号"
-         from t_ord_invoice_tax t ;
+        //加载服务器数据之前的处理程序，可以用来格式化数据。
+        //参数：res为从服务器请求到的数据。服务器返回PageInfo<T>的json格式，必须包含total
+        function responseHandler(res) {
+            if (res) {
+                var rows = res.list;
+                $.each(rows, function (i, row) {
+                    row.state = $.inArray(row.id, selections) !== -1;
+                });
+                return {
+                    "rows" : res.list,
+                    "total" : res.total
+                };
+            } else {
+                return {
+                    "rows" : [],
+                    "total" : 0
+                };
+            }
+        }
+        //自定义查询触发事件
+        function doQuery(params){
+            $('#table').bootstrapTable('refresh');//刷新表格
+            $.ajax({
+                url: REPORT_ROOT+"/reportdata/getUserTotalData",
+                type: "POST",
+                dataType: "html",
+                cache: false,
+                async: true,
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(data){
+                    $("#userTotalData").html($(data).html());
+                }
+            });
+        }
 
+        /**
          * 初始化时间控件
          * @param startTime
          * @param endTime
@@ -115,8 +128,6 @@
             });
         }
     </script>
-
 </div>
-
 </body>
 </html>
