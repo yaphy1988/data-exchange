@@ -115,26 +115,16 @@ public class orderManageController {
 	public String myAPIDataList(Model model, OrdInfoVO ordInfoVO,HttpSession session) {
 		try {
 			PageResponseDTO<DataAccountRespDTO> pageInfo = new PageResponseDTO<DataAccountRespDTO>();
-			//PageResponseDTO<RechargeDTO> pageInfo = new PageResponseDTO<RechargeDTO>();
-			RechargeReqDTO rechargeReqDTO = new RechargeReqDTO();
-			rechargeReqDTO.setPageNo(ordInfoVO.getPageNo());
-			if(ordInfoVO.getPageSize()!=null||ordInfoVO.getPageSize()!=0){
-				rechargeReqDTO.setPageSize(ordInfoVO.getPageSize());
-			}else{
-				rechargeReqDTO.setPageSize(PAGE_SIZE);
-			}
-			rechargeReqDTO.setRechargeUserId(StaffUtil.getStaffId(session));
-			//查询API分类
-			rechargeReqDTO.setCatFirst(Integer.parseInt(AIP_CAT_ID));
-			//查询是是否要连数据账户信息一起查询
-			rechargeReqDTO.setQueryDataAccount(true);
-			//pageInfo = iAipCenterDataAccountRSV.queryRechargePageByOption(rechargeReqDTO);
 			DataAccountDTO dataAccountReqDTO = new DataAccountDTO ();
  			String staff_id = StaffUtil.getStaffId(session);
 			if(StringUtil.isBlank(staff_id)){
 				staff_id = TMPUSERID;
 			}
 			dataAccountReqDTO.setUserId(staff_id);
+            List<String> packageTypeList = new ArrayList<>();
+            packageTypeList.add(Constants.Order.ORDER_TYPE_10);
+            packageTypeList.add(Constants.Order.ORDER_TYPE_20);
+            dataAccountReqDTO.setPackageTypeList(packageTypeList);
 			pageInfo = iAipCenterDataAccountRSV.queryDataAccountStatisticPageByOption(dataAccountReqDTO);
  			if(CollectionUtils.isNotEmpty(pageInfo.getResult())){
 				for(int i = 0 ; i < pageInfo.getResult().size();i++){

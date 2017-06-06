@@ -252,6 +252,9 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         if(!StringUtil.isBlank(dataAccountReqDTO.getPackageType())){
             criteria.andPackageTypeEqualTo(dataAccountReqDTO.getPackageType());
         }
+        if(!CollectionUtil.isEmpty(dataAccountReqDTO.getPackageTypeList())){
+            criteria.andPackageTypeIn(dataAccountReqDTO.getPackageTypeList());
+        }
 
         if(dataAccountReqDTO.getCreateStart() != null){
             criteria.andCreateTimeGreaterThanOrEqualTo(dataAccountReqDTO.getCreateStart());

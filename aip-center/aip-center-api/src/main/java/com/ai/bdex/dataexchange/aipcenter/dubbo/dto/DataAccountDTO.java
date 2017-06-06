@@ -3,6 +3,7 @@ package com.ai.bdex.dataexchange.aipcenter.dubbo.dto;
 import com.ai.bdex.dataexchange.common.dto.BaseInfo;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by fangyunfeng on 2017/5/5.
@@ -20,7 +21,7 @@ public class DataAccountDTO extends BaseInfo{
     private String dataAcctType;
 
     /**
-     * 套餐类型：01-固定套餐，02-自定义套餐，03-跨类套餐
+     * 套餐类型：10-固定套餐，20-自定义套餐，30-跨类套餐
      */
     private String packageType;
 
@@ -109,6 +110,20 @@ public class DataAccountDTO extends BaseInfo{
      * @return
      */
     private String createStaff;
+
+
+    public List<String> getPackageTypeList() {
+        return packageTypeList;
+    }
+
+    public void setPackageTypeList(List<String> packageTypeList) {
+        this.packageTypeList = packageTypeList;
+    }
+
+    /**
+     * 套餐类型 10 固定，20 自定义，30 跨类
+     */
+    private List<String> packageTypeList;
 
     public Long getDataAcctId() {
         return dataAcctId;
