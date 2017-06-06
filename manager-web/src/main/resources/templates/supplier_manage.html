@@ -98,7 +98,7 @@
 								<td th:text="${list.providerName}"></td>
 								<td th:text="${list.providerDesc}">阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是
 								</td>
-								<td><img alt="" src="" th:src="${list.providerLogo}"></td>
+								<td><img alt="" src="" th:src="${list.providerLogoUrl}"></td>
 								<td th:text="${list.providerSort}"></td>
 								<td><span th:if="${list.status}=='0'">失效</span> <span
 									th:if="${list.status}=='1'">有效</span> <span
@@ -113,7 +113,7 @@
 					</table>
 					<div class="text-right">
 						<button class="btn btn-primary btn-sm" type="button"
-							data-toggle="modal" data-target="#myModalAip">请选择</button>
+							data-toggle="modal" data-target="#myModalAip">新增</button>
 						<a href="" class="btn btn-default btn-sm">删除</a>
 					</div>
 					<!-- 分页-->
@@ -186,6 +186,7 @@
 						</td>
 						<td>
 							<input class="form-control" name="" type="text" id="providerNameInput">
+							<input id="providerId" type="hidden">
 						</td>
 					</tr>
 					<tr>
@@ -223,7 +224,7 @@
 	       
 	      </div>
 	      <div class="modal-footer">
-	      	<button type="button" class="btn btn-primary">保存</button>
+	      	<button type="button" class="btn btn-primary" th:onclick="'saveAipProviderInfo()'">保存</button>
 	        <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
 	      </div>
 	    </div>

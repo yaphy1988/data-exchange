@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.aipcenter.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -21,6 +22,7 @@ import com.ai.bdex.dataexchange.util.PageResponseFactory;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.CollectionUtil;
 import com.ai.paas.utils.StringUtil;
+import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
@@ -59,15 +61,41 @@ public class AipProviderInfoSVImpl implements IAipProviderInfoSV{
 
 		return pageResponseDTO;
 	}
+	public List<AipProviderInfoRespDTO> queryAipProviderInfoList(AipProviderInfoReqDTO aipProviderInfoReqDTO)throws Exception {
+		AipProviderInfoExample example = new AipProviderInfoExample();
+		AipProviderInfoExample.Criteria criteria = example.createCriteria();
+		initCriteria(criteria, aipProviderInfoReqDTO);
+		example.setOrderByClause("provider_sort DESC");
+		List<AipProviderInfo> list = aipProviderInfoMapper.selectByExample(example);
+		List<AipProviderInfoRespDTO> resultList = new ArrayList<>();
+		if(!CollectionUtil.isEmpty(list)){
+			for(AipProviderInfo info : list){
+				AipProviderInfoRespDTO respDTO = new AipProviderInfoRespDTO();
+				ObjectCopyUtil.copyObjValue(info,respDTO,null,false);
+				resultList.add(respDTO);
+			}
+		}
+		return resultList;
+	}
+
 	@Override
 	public String insertAipProviderInfo(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception {
 		if (aipProviderInfoReqDTO==null){
 			throw new BusinessException("插入aip服务商信息入参为空！");
 		}
+		AipProviderInfoReqDTO aipProvider= new AipProviderInfoReqDTO();
+		aipProvider.setStatus(Constants.Page.STATUS_VALID);
+		List<AipProviderInfoRespDTO> aipProviderList = this.queryAipProviderInfoList(aipProvider);
+		int providerSort=0;
+		if(CollectionUtils.isNotEmpty(aipProviderList)){
+			providerSort=aipProviderList.get(0).getProviderSort();
+			aipProviderInfoReqDTO.setProviderSort(providerSort);
+		}
 		String aipProviderId = SeqUtil.getString("SEQ_AIP_PROVIDER_INFO");
 		if (StringUtil.isBlank(aipProviderId)){
 			throw new BusinessException("获取到的序列aipProviderId为空！");
 		}
+		
 		AipProviderInfo aipProviderInfo = new AipProviderInfo();
 		ObjectCopyUtil.copyObjValue(aipProviderInfoReqDTO,aipProviderInfo,null,false);
 		aipProviderInfo.setProviderId(aipProviderId);

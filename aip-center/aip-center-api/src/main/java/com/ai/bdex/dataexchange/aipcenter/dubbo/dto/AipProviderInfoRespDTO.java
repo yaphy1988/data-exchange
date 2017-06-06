@@ -28,7 +28,17 @@ public class AipProviderInfoRespDTO extends BaseResponseDTO{
 
     private Integer providerSort;
 
-    public String getProviderId() {
+    private String providerLogoUrl;
+    
+    public String getProviderLogoUrl() {
+		return providerLogoUrl;
+	}
+
+	public void setProviderLogoUrl(String providerLogoUrl) {
+		this.providerLogoUrl = providerLogoUrl;
+	}
+
+	public String getProviderId() {
         return providerId;
     }
 

@@ -23,6 +23,40 @@ function queryAipProviderInfoList(pageNo) {
         }
     })
 }
+function saveAipProviderInfo(){
+	var providerId=$("#providerId").val();
+	var providerName=$("#providerNameInput").val();
+	var providerDesc=$("#providerDesc").val();
+	var providerLogo=$("#providerLogo").val();
+	if(providerName.length>128){
+		WEB.msg.error("提示","服务供应商名称不能超过128个字符");
+		return;
+	}
+	if(providerDesc.length>1024){
+		WEB.msg.error("提示","描述不能超过1024个字符");
+		return;
+	}
+	var params={
+			providerId:providerId,
+			providerName:providerName,
+			providerDesc:providerDesc,
+			providerLogo:providerLogo
+	}
+	 $.ajax({
+	        url:WEB_ROOT+"/aipProviderManage/saveAipProviderInfo",
+	        type:'post',
+	        dataType:'json',
+	        data:params,
+	        async:true,
+	        success:function (data) {
+	        	WEB.msg.info("提示","保存Aip供应商信息成功！",function(){
+		        	$("#myModalAip").modal("hide");
+		        	queryAipProviderInfoList(1);
+	        	});
+	        }
+	    })
+
+}
 function onImageFileChange(obj){
 	
 	uploadImage($(obj),function(data){
