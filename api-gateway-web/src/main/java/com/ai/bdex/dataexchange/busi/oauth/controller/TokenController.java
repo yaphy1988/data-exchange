@@ -74,6 +74,8 @@ public class TokenController {
 		try {
 			String grantType=request.getParameter(APIConstants.AIP_PARAM_GRANT_TYPE);
 			if("access_token".equals(grantType)){
+				String userName=request.getParameter(APIConstants.AIP_PARAM_USERNAME);
+				String password=request.getParameter(APIConstants.AIP_PARAM_PASSWORD);
 				clientId=request.getParameter(APIConstants.AIP_PARAM_CLIENT_ID);
 				String sign=request.getParameter(APIConstants.AIP_PARAM_SIGN);
 				String timestamp=request.getParameter(APIConstants.AIP_PARAM_TIMESTAMP);
@@ -86,6 +88,7 @@ public class TokenController {
 						as.setGrantType(grantType);
 						as.setScope(scope);
 						as.setTimestamp(timestamp);
+						as.setPassword(password);
 						String newSign=SignUtil.getAccessTokenSign(as);
 						if(sign.equals(newSign)){
 							Timestamp nowTime=new Timestamp(System.currentTimeMillis());

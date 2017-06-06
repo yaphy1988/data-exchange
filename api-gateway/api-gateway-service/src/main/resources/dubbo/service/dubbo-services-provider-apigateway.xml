@@ -27,7 +27,7 @@
                  owner="zhaoyf7" timeout="3000"/>   
   <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipServiceInfoRSV" ref="aipServiceInfoRSV"
                  owner="zhaoyf7" timeout="3000"/>    
-  <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipServiceUsedLogRSV" ref="aipServiceUsedLogRSV"
+  <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipServiceUsedLogRSV" ref="gatewayAipServiceUsedLogRSV"
                  owner="zhaoyf7" timeout="3000"/>    
   <dubbo:service interface="com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipTransationRSV" ref="aipTransationRSV"
                  owner="zhaoyf7" timeout="3000"/>                                            

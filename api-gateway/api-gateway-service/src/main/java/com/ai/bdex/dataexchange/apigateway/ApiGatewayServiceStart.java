@@ -11,6 +11,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.ai.paas.util.Utils;
 
@@ -21,6 +22,7 @@ import com.ai.paas.util.Utils;
 @ImportResource({"classpath:/dubbo/service/*.xml","classpath:/spring/spring-aop-transaction.xml"})
 @SpringBootApplication(exclude = MongoAutoConfiguration.class)
 @MapperScan("com.ai.bdex.dataexchange.apigateway.dao.mapper")
+@EnableTransactionManagement
 public class ApiGatewayServiceStart {
     private static Logger logger = LoggerFactory.getLogger(ApiGatewayServiceStart.class);
 

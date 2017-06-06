@@ -1,5 +1,6 @@
 package com.ai.bdex.dataexchange.busi.cfca.controller;
 
+import java.sql.Timestamp;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,7 +16,12 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Component;
 
 import com.ai.bdex.dataexchange.annotation.Security;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.ApiTransationCode;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.SystemErrorCode;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.AipServiceUsedLogDTO;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.ApiTransationRespDTO;
+import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipServiceUsedLogRSV;
 import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipTransationRSV;
 import com.ai.bdex.dataexchange.security.ServiceCheckChain;
 import com.ai.bdex.dataexchange.util.StringUtil;
@@ -29,6 +35,8 @@ public class CfCATransationController {
 	 private final Log logger = LogFactory.getLog(getClass());
 	 @DubboConsumer(timeout=30000)
 	 private IAipTransationRSV aipTransationRSV;
+	 @DubboConsumer(timeout=10000)
+	 private IAipServiceUsedLogRSV gatewayAipServiceUsedLogRSV;
 	 
 	 @Path("/query/{serviceId}")
 	 @POST
@@ -38,20 +46,54 @@ public class CfCATransationController {
 		 String result=null;
 		 String version="1.0";
 		 ApiTransationRespDTO resultMap=null;
+		 AipServiceUsedLogDTO logVo=new AipServiceUsedLogDTO();
+		 String logId=null;
 		 try{
 			 if(!StringUtil.isBlank(serviceId)){
 				 //参数封装
 				 Map<String,Object> paramMap=ApiWebHttpUtil.getParamString(request);
+				 //保存日志。T_AIP_SERVICE_USED_LOG进行记录
+				AipServiceUsedLogDTO vo=new AipServiceUsedLogDTO();		
+				vo.setAccessToken((String)paramMap.get(APIConstants.AIP_PARAM_ACCESSTOKEN));					
+				vo.setCreateTime(new Timestamp(System.currentTimeMillis()));
+				vo.setRequestMsg(JSON.toJSONString(paramMap));
+				vo.setServiceId(serviceId);
+				vo.setStatus("0");
+				vo.setUpdateTime(new Timestamp(System.currentTimeMillis()));					
+				vo.setVersion(version);
+				logId=gatewayAipServiceUsedLogRSV.insertAipServiceUsedLogWithoutClientId(vo);
+					
 				 //调用服务
-				 resultMap= aipTransationRSV.createTransation(serviceId, version, paramMap);
+				 resultMap= aipTransationRSV.createTransation(logId,serviceId, version, paramMap);
+				 if(null!=resultMap){
+					resultMap.setSerialNo(logId);
+					if(SystemErrorCode.CODE_00000.equals(resultMap.getRespCode())){
+						logVo.setStatus("1");
+					}else{
+						logVo.setStatus("2");
+					}
+					logVo.setResponseMsg(JSON.toJSONString(resultMap));
+				 }
 			 }
+
 		 }catch(Exception e){
-			 logger.error("", e);
+			 logger.error("getResultFromCFCA error", e);
+			 resultMap=new ApiTransationRespDTO();
+			 resultMap.setSerialNo(logId);
+			 resultMap.setRespCode(ApiTransationCode.CODE_20009);
+			 resultMap.setRespDesc("unknow reason");
+			 resultMap.setResult(null);
+				
+			 logVo.setResponseMsg(e.getMessage());
+			 logVo.setStatus("2");
 		 }
+		logVo.setUsedId(logId);
+		logVo.setResponseTime(new Timestamp(System.currentTimeMillis()));
+		logVo.setUpdateTime(new Timestamp(System.currentTimeMillis()));		
+		gatewayAipServiceUsedLogRSV.updateByPrimaryKeySelective(logVo);
 		 if(null!=resultMap){
 			 result=JSON.toJSONString(resultMap);
 		 }
 		 return result;
 	 }
-
 }

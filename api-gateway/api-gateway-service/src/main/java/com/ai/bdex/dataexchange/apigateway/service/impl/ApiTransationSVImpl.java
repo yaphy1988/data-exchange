@@ -9,6 +9,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipApiData;
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipClientInfo;
@@ -33,9 +35,7 @@ import com.ai.bdex.dataexchange.apigateway.service.interfaces.IApiGatewayDataAcc
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IApiTransationSV;
 import com.ai.bdex.dataexchange.apigateway.util.ApiServiceUtil;
 import com.ai.bdex.dataexchange.constants.Constants;
-import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.util.Utils;
-import com.ai.paas.utils.DateUtil;
 import com.alibaba.fastjson.JSON;
 
 @Service("apiTransationSV")
@@ -58,9 +58,9 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 	private IAipServiceUsedLogSV aipServiceUsedLogSV;
 
 	@Override
-	public ApiTransationRespDTO invoke(String clientId,String logId,String serviceId, String version,
+	public ApiTransationRespDTO createTransation(String clientId,String logId,String serviceId, String version,
 			Map<String, Object> paramMap) throws Exception {
-
+		boolean throwException=false;
 		ApiTransationRespDTO resultMap=null;
 		String result=null;
 		String dataFlag=null;
@@ -85,7 +85,7 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 		if(null!=checkParamsDto){
 			return checkParamsDto;
 		}
-		//获取usedID			
+		//获取userID			
 		AipClientInfo clientInfo= aipClientInfoSV.getAipClientInfoByKey(clientId);
 		String userId=clientInfo.getUserId();//??
 		AipServiceInfo serviceInfo=getService(serviceId);
@@ -126,8 +126,8 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 			pLog.setClientId(clientId);
 			pLog.setProviderId(providerId);
 			pLog.setServiceId(pServiceId);
-			pLog.setUsedId(logId);
 			pLog.setVersion(pVersion);
+			pLog.setFromUsedId(logId);
 		}
 		//如果是有沉淀数据的接口
 		String returnCode=null;
@@ -151,7 +151,8 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 					data.setVersionId(version);
 					aipApiDataSV.insertAipApiData(data);	
 				}else{
-					throw new Exception("第三方调用异常");
+					throwException=true;
+//					throw new Exception("第三方调用异常");
 				}
 				dataFlag="0";
 			}else{								
@@ -165,7 +166,8 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 			resultMap=apiDealTransationSV.deal(pLog,serviceId, version, finalParamMap);
 			returnCode=resultMap.getRespCode();
 			if(!SystemErrorCode.CODE_00000.equals(returnCode)){
-				throw new Exception("第三方调用异常");
+//				throw new Exception("第三方调用异常");
+				throwException=true;
 			}
 			dataFlag="0";
 		}
@@ -173,16 +175,15 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 		//记录是否调用本地存储
 		logVo.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 		logVo.setDataFlag(dataFlag);
-		aipServiceUsedLogSV.updateByPrimaryKeySelective(logVo);
-		
+		updateAipServiceUsedLog(logVo);
+		if(throwException){
+			throw new Exception("第三方调用异常");
+		}
 		return resultMap;
 	}
 	
 	private AipServiceSpring getServiceSpring(String serviceId,String version){
 		return aipServiceSpringSV.getAipServiceSpringByKey(serviceId, version);		
-	}
-	private String getPLogId(){    
-		return DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss")+SeqUtil.getNextValueLong(APIConstants.AipSeqName.SEQ_AIP_P_SERVICE_USED_LOG);
 	}
 	private AipServiceInfo getService(String serviceId){
 		AipServiceInfo info=null;
@@ -192,5 +193,14 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 			log.error("query failed",e);
 		}
 		return info;
+	}
+	
+	@Transactional(propagation=Propagation.NOT_SUPPORTED)
+	public void updateAipServiceUsedLog(AipServiceUsedLog logbean){
+		try{
+			aipServiceUsedLogSV.updateByPrimaryKeySelective(logbean);
+		}catch(Exception e){
+			log.error("updateAipServiceUsedLog error",e);
+		}
 	}
 }

@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ai.bdex.dataexchange.apigateway.cfca.service.interfaces.ICFCATransactionSV;
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipPServiceUsedLog;
@@ -19,6 +21,9 @@ import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.SystemErrorCod
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.ApiTransationRespDTO;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IAipPServiceUsedLogSV;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IApiDealTransationSV;
+import com.ai.paas.sequence.SeqUtil;
+import com.ai.paas.utils.DateUtil;
+import com.ai.paas.utils.StringUtil;
 import com.alibaba.fastjson.JSON;
 
 @Service("defaultDealTransation4CFCASV")
@@ -31,6 +36,7 @@ public class DefaultDealTransation4CFCASVImpl implements IApiDealTransationSV{
 	
 	@SuppressWarnings({ "rawtypes" })
 	@Override
+	@Transactional(propagation=Propagation.NOT_SUPPORTED)
 	public ApiTransationRespDTO deal(AipPServiceUsedLog logBean,String serviceId, String version,
 			Map<String, Object> paramMap){
 		ApiTransationRespDTO dto=new ApiTransationRespDTO();
@@ -70,6 +76,9 @@ public class DefaultDealTransation4CFCASVImpl implements IApiDealTransationSV{
 		if(null!=logBean){
 			//调用了外部接口需要日志记录
 			try{	
+				if(StringUtil.isBlank(logBean.getUsedId())){
+					logBean.setUsedId(getPLogId());
+				}
 				logBean.setUpdateTime(new Timestamp(System.currentTimeMillis()));
 				aipPServiceUsedLogSV.insertLog(logBean);
 			}catch(Exception e){
@@ -122,5 +131,7 @@ public class DefaultDealTransation4CFCASVImpl implements IApiDealTransationSV{
 	public ApiTransationRespDTO checkParams(Map<String,Object> others,Map<String, Object> paramMap) {
 		return null;
 	}
-	
+	private String getPLogId(){    
+		return DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss")+SeqUtil.getNextValueLong(APIConstants.AipSeqName.SEQ_AIP_P_SERVICE_USED_LOG);
+	}	
 }
