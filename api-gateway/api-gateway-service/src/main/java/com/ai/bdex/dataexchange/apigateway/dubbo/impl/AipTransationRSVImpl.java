@@ -12,6 +12,7 @@ import com.ai.bdex.dataexchange.apigateway.dao.model.AipClientAccesstoken;
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipServiceUsedLog;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.ApiTransationCode;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.SystemErrorCode;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.ApiTransationRespDTO;
 import com.ai.bdex.dataexchange.apigateway.dubbo.interfaces.IAipTransationRSV;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IAipApiDataSV;
@@ -77,7 +78,11 @@ public class AipTransationRSVImpl implements IAipTransationRSV{
 			}
 			
 			logVo.setResponseMsg(JSON.toJSONString(invokeMap));
-			logVo.setStatus("1");
+			if(SystemErrorCode.CODE_00000.equals(invokeMap.getRespCode())){
+				logVo.setStatus("1");
+			}else{
+				logVo.setStatus("2");
+			}
 			
 		}catch(Exception e ){
 			log.error("", e);	
