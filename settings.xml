@@ -150,11 +150,17 @@ under the License.
    | server for that repository.
    |-->
   <mirrors>
-	 <mirror>
-        <id>nexus-bdex</id>
-        <mirrorOf>*</mirrorOf>
-        <name>nexus-bdex</name>
-        <url>http://112.74.163.29:8081/nexus/content/groups/public/</url>
+	  <mirror>
+      <id>nexus-aliyun</id>
+      <mirrorOf>*,!bdexrepo</mirrorOf>
+      <name>nexus-aliyun</name>
+      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+    </mirror>
+    <mirror>
+      <id>bdexrepo</id>
+      <mirrorOf>bdexrepo</mirrorOf>
+      <name>bdexrepo</name>
+      <url>http://112.74.163.29:8081/nexus/content/groups/public/</url>
     </mirror>
   </mirrors>
 
@@ -182,34 +188,45 @@ under the License.
   <profiles>
    
   <profile>
-    <id>nexus-bdex</id>
+    <id>nexus-aliyun</id>
     <repositories>
-        <repository>
-            <id>bdex</id>
-            <name>local private nexus</name>
-            <url>http://112.74.163.29:8081/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-                <checksumPolicy>warn</checksumPolicy>
-            </snapshots>
-        </repository>
+      <repository>
+        <id>aliyun</id>
+        <name>local private nexus</name>
+        <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        <releases>
+          <enabled>true</enabled>
+        </releases>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+      </repository>
+      <repository>
+        <id>bdexrepo</id>
+        <name>local private nexus</name>
+        <url>http://112.74.163.29:8081/nexus/content/groups/public/</url>
+        <releases>
+          <enabled>true</enabled>
+        </releases>
+        <snapshots>
+          <enabled>true</enabled>
+          <updatePolicy>always</updatePolicy>
+          <checksumPolicy>warn</checksumPolicy>
+        </snapshots>
+      </repository>
     </repositories>
     <pluginRepositories>
-        <pluginRepository>
-            <id>bdex</id>
-            <name>local private nexus</name>
-            <url>http://112.74.163.29:8081/nexus/content/groups/public/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </pluginRepository>
+      <pluginRepository>
+        <id>aliyun</id>
+        <name>local private nexus</name>
+        <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+        <releases>
+          <enabled>true</enabled>
+        </releases>
+        <snapshots>
+          <enabled>false</enabled>
+        </snapshots>
+      </pluginRepository>
     </pluginRepositories>
   </profile>
     
@@ -219,7 +236,7 @@ under the License.
    | List of profiles that are active for all builds.
    |  -->
   <activeProfiles>
-    <activeProfile>nexus-bdex</activeProfile>
+    <activeProfile>nexus-aliyun</activeProfile>
   </activeProfiles>
 
 </settings>
