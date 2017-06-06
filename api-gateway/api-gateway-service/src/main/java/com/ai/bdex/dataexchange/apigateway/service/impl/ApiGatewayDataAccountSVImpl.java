@@ -23,6 +23,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -66,6 +67,7 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
             if(Constants.Bill.PACKAGE_TYPE_FIX.equals(dataAccount.getPackageType())){
                 //10 固定套餐基于次数进行扣减
                 if(dataAccount.getLeftNum()>consumeDTO.getConsumeNum()){
+                    dataAccount.setUpdateTime(new Timestamp(System.currentTimeMillis()));
                     if(manualDataAccountMapper.updateByConsumeNum(dataAccount,consumeDTO.getConsumeNum()) > 0){
                         dataAccountSelected = dataAccount;
                         respDTO.setResult(Constants.Bill.CHARGE_RESULE_OK);
@@ -75,6 +77,7 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
             }else if(Constants.Bill.PACKAGE_TYPE_CUSTOM.equals(dataAccount.getPackageType())){
                 //20 自定义套餐基于次数进行扣减
                 if(dataAccount.getLeftNum()>consumeDTO.getConsumeNum()){
+                    dataAccount.setUpdateTime(new Timestamp(System.currentTimeMillis()));
                     if(manualDataAccountMapper.updateByConsumeNum(dataAccount,consumeDTO.getConsumeNum()) > 0){
                         dataAccountSelected = dataAccount;
                         respDTO.setResult(Constants.Bill.CHARGE_RESULE_OK);
@@ -128,7 +131,7 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
                 billDetail.setConsumeMoney(consumeDTO.getConsumeMoney());
             }
             billDetail.setInvokeSeq(consumeDTO.getInvokeSeq());
-            billDetail.setConsumeTime(new Date());
+            billDetail.setConsumeTime(new Timestamp(System.currentTimeMillis()));
             if(billDetailMapper.insertSelective(billDetail)>0){
                 respDTO.setBillId(billDetail.getBillId());
             }else{
@@ -165,7 +168,7 @@ public class ApiGatewayDataAccountSVImpl implements IApiGatewayDataAccountSV {
 
     private List<DataAccount> queryAvailableDataAccountList(DataConsumeDTO consumeDTO){
 
-        Date now = new Date();
+        Date now = new Timestamp(System.currentTimeMillis());
         DataAccountExample dataAccountExample = new DataAccountExample();
 
         //获取固定套餐，有指定有效期的数据

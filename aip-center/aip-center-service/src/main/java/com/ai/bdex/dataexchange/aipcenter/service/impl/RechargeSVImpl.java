@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -141,7 +142,7 @@ public class RechargeSVImpl implements IRechargeSV {
         ObjectCopyUtil.copyObjValue(rechargeDTO,rechargeRecord,null,false);
         rechargeRecord.setRechargeStatus(Constants.Bill.RECHARGE_STATUS_GOING);
         rechargeRecord.setCreateStaff(rechargeDTO.getCurrentUserId());
-        rechargeRecord.setCreateTime(new Date());
+        rechargeRecord.setCreateTime(new Timestamp(System.currentTimeMillis()));
         rechargeRecordMapper.insertSelective(rechargeRecord);
 
         //创建数据账户
@@ -153,7 +154,7 @@ public class RechargeSVImpl implements IRechargeSV {
         updateRechargeRecord.setDataAccountId(newDataAcctId);
         updateRechargeRecord.setRechargeStatus(Constants.Bill.RECHARGE_STATUS_SUCCESS);
         updateRechargeRecord.setUpdateStaff(rechargeDTO.getCurrentUserId());
-        updateRechargeRecord.setUpdateTime(new Date());
+        updateRechargeRecord.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         rechargeRecordMapper.updateByPrimaryKeySelective(updateRechargeRecord);
 
     }

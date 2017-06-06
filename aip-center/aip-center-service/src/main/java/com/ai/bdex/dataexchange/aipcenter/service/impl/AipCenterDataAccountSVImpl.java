@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -105,7 +106,7 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         dataAccount.setCatId(rechargeDTO.getCatId());
         dataAccount.setCatFirst(rechargeDTO.getCatFirst());
 
-        dataAccount.setCreateTime(new Date());
+        dataAccount.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
         if(Constants.Bill.PACKAGE_TYPE_FIX.equals(dataAccount.getPackageType())){
             //固定套餐是基于次数的
@@ -150,7 +151,7 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         DataAccount dataAccount = new DataAccount();
         dataAccount.setDataAcctId(dataAccountDTO.getDataAcctId());
         dataAccount.setDataAcctStatus(Constants.Bill.DATA_ACCT_STATUS_INVALID);
-        dataAccount.setUpdateTime(new Date());
+        dataAccount.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         dataAccount.setUpdateStaff(dataAccountDTO.getCurrentUserId());
 
         DataAccountExample dataAccountExample = new DataAccountExample();
@@ -173,7 +174,7 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         DataAccount dataAccount = new DataAccount();
         dataAccount.setDataAcctId(dataAccountDTO.getDataAcctId());
         dataAccount.setDataAcctStatus(Constants.Bill.DATA_ACCT_STATUS_OK);
-        dataAccount.setUpdateTime(new Date());
+        dataAccount.setUpdateTime(new Timestamp(System.currentTimeMillis()));
         dataAccount.setUpdateStaff(dataAccountDTO.getCurrentUserId());
 
         DataAccountExample dataAccountExample = new DataAccountExample();
@@ -286,7 +287,7 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         dataAccount.setLeftNum(0);
         dataAccount.setTotalConsumeNum(0);
         dataAccount.setDataAcctStatus(Constants.Bill.DATA_ACCT_STATUS_OK);
-        dataAccount.setCreateTime(new Date());
+        dataAccount.setCreateTime(new Timestamp(System.currentTimeMillis()));
 
         return dataAccount;
     }
@@ -302,7 +303,7 @@ public class AipCenterDataAccountSVImpl implements IAipCenterDataAccountSV {
         ObjectCopyUtil.copyObjValue(dataAccount,dataAccountHis,null,false);
         dataAccountHis.setHisId(SeqUtil.getLong("SEQ_DATA_ACCOUNT_HIS"));
         dataAccountHis.setRemark(remark);
-        dataAccountHis.setCreateTime(new Date());
+        dataAccountHis.setCreateTime(new Timestamp(System.currentTimeMillis()));
         if(dataAccount.getUpdateStaff() == null){
             dataAccountHis.setCreateStaff(dataAccount.getCreateStaff());
         }else{

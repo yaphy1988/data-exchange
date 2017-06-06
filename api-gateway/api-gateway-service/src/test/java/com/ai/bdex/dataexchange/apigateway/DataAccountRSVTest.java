@@ -23,11 +23,11 @@ public class DataAccountRSVTest {
     @Test
     public void dataChargeTest() throws BusinessException {
         DataConsumeDTO consumeDTO = new DataConsumeDTO();
-        consumeDTO.setUserId("fangyf007");
-        consumeDTO.setRealServiceId("12");
-        consumeDTO.setInvokeSeq("201705120000002");
+        consumeDTO.setUserId("lush11");
+        consumeDTO.setRealServiceId("1012");
+        consumeDTO.setInvokeSeq("201706060000002");
         consumeDTO.setConsumeNum(1);
-        consumeDTO.setConsumeMoney(100);
+        consumeDTO.setConsumeMoney(1);
         DataConsumeRespDTO result = apiGatewayDataAccountSV.dealDataCharge(consumeDTO);
         System.out.println("result="+result.getResult());
     }
