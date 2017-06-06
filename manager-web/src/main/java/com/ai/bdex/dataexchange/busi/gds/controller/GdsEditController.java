@@ -476,18 +476,10 @@ public class GdsEditController {
 			if(StringUtil.isNotBlank(baseInfoJson.getString("providerId"))){
 				vo.setProviderId(baseInfoJson.getString("providerId"));
 			}
-			if(StringUtil.isNotBlank(baseInfoJson.getString("gdsPic"))){
-				vo.setGdsPic(baseInfoJson.getString("gdsPic"));
-			}
-			if(StringUtil.isNotBlank(baseInfoJson.getString("ifRecommend"))){
-				vo.setIfRecommend(baseInfoJson.getString("ifRecommend"));
-			}
-			if(StringUtil.isNotBlank(baseInfoJson.getString("funIntroduction"))){
-				vo.setFunIntroduction(baseInfoJson.getString("funIntroduction"));
-			}
-			if(StringUtil.isNotBlank(baseInfoJson.getString("commpanyName"))){
-				vo.setCommpanyName(baseInfoJson.getString("commpanyName"));
-			}
+			vo.setGdsPic(baseInfoJson.getString("gdsPic"));
+			vo.setIfRecommend(baseInfoJson.getString("ifRecommend"));
+			vo.setFunIntroduction(baseInfoJson.getString("funIntroduction"));
+			vo.setCommpanyName(baseInfoJson.getString("commpanyName"));
 		} catch (Exception e) {
 			logger.error(e.getMessage());
 			 throw e;

@@ -90,7 +90,7 @@ public class GdsInfoSVImpl implements IGdsInfoSV{
         }
         GdsInfo gdsInfo = new GdsInfo();
         ObjectCopyUtil.copyObjValue(gdsInfoReqDTO,gdsInfo,null,false);
-        int code = gdsInfoMapper.updateByPrimaryKey(gdsInfo);
+        int code = gdsInfoMapper.updateByPrimaryKeySelective(gdsInfo);
         return gdsInfoReqDTO.getGdsId();
     }
 
