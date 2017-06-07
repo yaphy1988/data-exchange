@@ -2,7 +2,7 @@
 	<ul >
 		<li th:each="list : ${pageInfo.result}" th:unless="${#lists.isEmpty(pageInfo.result)}">
 			<div class="glist_items">
-				<div class="collect" th:title="点击收藏" th:gdsId="${list.id}" th:onclick="'javascript:Search.gdsCollection(this,\''+${list.id}+'\',\''+${list.skuId}+'\',\''+${list.catFirst}+'\')'">
+				<div class="collect" th:title="点击收藏" th:gdsId="${list.id}" th:onclick="'javascript:Search.gdsCollectionApiCustom(this,\''+${list.id}+'\',\''+${list.skuId}+'\',\''+${list.catFirst}+'\')'">
 					<span class="bg"></span>
 					<i class="iconfont icon-xingxing"></i>
 				</div>

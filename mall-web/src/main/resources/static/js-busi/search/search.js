@@ -105,7 +105,7 @@ var Search = {
 						Search.whethercollect();
 					}
 					if($(".collect").length>=1 && $("#catFirst").val() !="3"){
-						Search.whethercollect();
+						Search.whethercollectApiCustom();
 					}
 				}
 			});
@@ -213,7 +213,7 @@ var Search = {
 			var url = WEB_ROOT+"/order/gdshopcart?gdsId="+gdsId+"&skuId="+skuId;
 			window.open(url);
 		},
-		whethercollect : function(){
+		whethercollectApiCustom : function(){
 			var arr = new Array();
 			$(".collect").each(function(){
 				arr.push($(this).attr('gdsId'));
@@ -241,7 +241,7 @@ var Search = {
 				}
 			});
 		},
-		gdsCollection : function(obj,gdsId,skuId,catFirstId){
+		gdsCollectionApiCustom : function(obj,gdsId,skuId,catFirstId){
 			var param = {
 					gdsId : gdsId,
 					catFirst : catFirstId
