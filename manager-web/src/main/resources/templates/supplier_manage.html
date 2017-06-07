@@ -100,7 +100,7 @@
 								</td>
 								<td><img alt="" src="" th:src="${list.providerLogoUrl}"></td>
 								<td>
-									<input type="text" class="border_No" th:value="${list.providerSort}"   th:onblur="|modidyipProviderInfoSort(${list.providerId},'${list.providerSort}')|" th:id="|providerId_${list.providerId}|">
+									<input type="text" class="border_No wt50 text-center" th:value="${list.providerSort}"   th:onblur="|modidyipProviderInfoSort(${list.providerId},'${list.providerSort}')|" th:id="|providerId_${list.providerId}|">
 								</td>
 								<td>
 									<span th:if="${list.status}=='0'">失效</span> 
@@ -118,7 +118,7 @@
 					</table>
 					<div class="text-right">
 						<button class="btn btn-primary btn-sm" type="button" th:onclick="'addAipModal()'">新增</button>
-						<a href="javaScript:void(0)" class="btn btn-default btn-sm" th:onclick="'batchDelAipProviderInfo()'">删除</a>
+						<a href="javaScript:void(0)" class="btn btn-default btn-sm" th:onclick="'batchDelAipProviderInfo()'">批量失效</a>
 					</div>
 					<!-- 分页-->
 					<div th:if="${pageInfo}" th:fragment="pager"
@@ -184,25 +184,25 @@
 	            <table class="editTable">
 				<tbody>
 					<tr>
-						<td class="Hint">
+						<td class="Hint wt150">
 							<span class="col_red">*</span>
 							服务供应商名称：
 						</td>
 						<td>
-							<input class="form-control" name="" type="text" id="providerNameInput">
+							<input class="form-control wt400" name="" type="text" id="providerNameInput">
 							<input id="providerId" type="hidden">
 						</td>
 					</tr>
 					<tr>
-						<td class="Hint">
+						<td class="Hint wt150">
 							描述：
 						</td>
 						<td>
-							<textarea  rows="5" cols="80" id="providerDesc"></textarea>
+							<textarea  rows="5" cols="63" id="providerDesc"></textarea>
 						</td>
 					</tr>
 					<tr>
-						<td class="Hint">
+						<td class="Hint wt150">
 							商标：
 						</td>
 					<td>
