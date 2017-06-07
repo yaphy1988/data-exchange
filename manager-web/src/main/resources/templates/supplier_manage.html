@@ -80,7 +80,7 @@
 					<table class="table table-bordered text-center">
 						<thead>
 							<tr class="active">
-								<th><input type="checkbox"  name="selectAipAll" th:onclick="'clickSelAipAll(this)'"></th>
+								<th><input type="checkbox" value="" name="selectAipAll" th:onclick="'clickSelAipAll(this)'"></th>
 								<th>供应商编码</th>
 								<th>供应商名称</th>
 								<th width="300">供应商描述</th>
@@ -93,13 +93,15 @@
 						<tbody th:remove="all-but-first" th:if="${pageInfo}">
 							<tr th:unless="${#lists.isEmpty(pageInfo.result)}"
 								th:each="list,listStat : ${pageInfo.result}">
-								<td><input type="checkbox" name="delAipList" th:onclick="'clickDelAipList(this)'" th:if="${list.status}=='1'"></td>
+								<td><input type="checkbox" value="" name="delAipList" th:onclick="'clickDelAipList(this)'" th:if="${list.status}=='1'"></td>
 								<td th:text="${list.providerId}"></td>
 								<td th:text="${list.providerName}"></td>
 								<td th:text="${list.providerDesc}">阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是阿克苏达克林顿啊来得及阿拉丁卡见识到了卡机得啦设计的拉时间段库拉索大理石开打了卡就打了搭上了扩的是
 								</td>
 								<td><img alt="" src="" th:src="${list.providerLogoUrl}"></td>
-								<td th:text="${list.providerSort}"></td>
+								<td>
+									<input type="text" class="border_No" th:value="${list.providerSort}"   th:onblur="|modidyipProviderInfoSort(${list.providerId},'${list.providerSort}')|" th:id="|providerId_${list.providerId}|">
+								</td>
 								<td>
 									<span th:if="${list.status}=='0'">失效</span> 
 									<span th:if="${list.status}=='1'">有效</span> 
@@ -116,7 +118,7 @@
 					</table>
 					<div class="text-right">
 						<button class="btn btn-primary btn-sm" type="button" th:onclick="'addAipModal()'">新增</button>
-						<a href="" class="btn btn-default btn-sm">删除</a>
+						<a href="javaScript:void(0)" class="btn btn-default btn-sm" th:onclick="'batchDelAipProviderInfo()'">删除</a>
 					</div>
 					<!-- 分页-->
 					<div th:if="${pageInfo}" th:fragment="pager"

@@ -141,21 +141,24 @@ public class AipProviderInfoSVImpl implements IAipProviderInfoSV{
 	 /**
      * 排序调整
      */
-    public void sortAipProviderInfoByOrder(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception {
+    public void modidyAipProviderInfoSort(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception {
     	//当前排序
     	AipProviderInfo currentAipProviderInfo = getAipProviderInfo(aipProviderInfoReqDTO.getProviderId());
         int newOrder = aipProviderInfoReqDTO.getProviderSort();
-
+        
         AipProviderInfo replaceAipProviderInfo = getAipProviderInfoByOrder(currentAipProviderInfo, newOrder);
         if(null == replaceAipProviderInfo ){
             // 该位置没有服务商,直接替换.
         	currentAipProviderInfo.setProviderSort(newOrder);
+            currentAipProviderInfo.setUpdateTime(DateUtil.getNowAsDate());
         	aipProviderInfoMapper.updateByPrimaryKeySelective(currentAipProviderInfo);
         }else{
             //  已有服务商,调整顺序,顺序对换
             int currentOrder =currentAipProviderInfo.getProviderSort();
             replaceAipProviderInfo.setProviderSort(currentOrder);
         	currentAipProviderInfo.setProviderSort(newOrder);
+            replaceAipProviderInfo.setUpdateTime(DateUtil.getNowAsDate());
+            currentAipProviderInfo.setUpdateTime(DateUtil.getNowAsDate());
         	aipProviderInfoMapper.updateByPrimaryKeySelective(replaceAipProviderInfo);
         	aipProviderInfoMapper.updateByPrimaryKeySelective(currentAipProviderInfo);
         }

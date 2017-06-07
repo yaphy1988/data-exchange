@@ -129,7 +129,45 @@ function updateAipProviderInfo(providerId, status) {
 			}
 		}
 	});
-
+}
+/**
+ * 批量删除
+ */
+function batchDelAipProviderInfo(){
+	 WEB.msg.confirm('温馨提示：',"确定要批量删除？",function(){
+		 var providerIds="";
+			$("input[name='delAipList']").each(function(){
+				if($(this).is(":checked")){
+					providerIds+=$(this).parents("tr").children("td").eq(1).text()+",";
+				}
+			 });
+			if(providerIds.length>0){
+				providerIds=providerIds.substring(0, providerIds.length-1);
+			}else{
+				WEB.msg.info('提示','请选择供应商！');
+		        return false;  
+			}
+			var status="0";//
+		    var params = {
+		    		providerIds:providerIds,
+		    		status:status
+		    };
+		    var url = WEB_ROOT+ '/aipProviderManage/batchDelAipProviderInfo';
+		    $.appAjax({
+		        url: url,
+		        async: true,
+		        data: params,
+		        success: function (data) {
+		            if(data.success){
+		                WEB.msg.info("提示",'删除成功',function(){
+							queryAipProviderInfoList(1);
+		                });
+		            }else{
+		                WEB.msg.error("错误信息",data.info);
+		            }
+		        }
+		    });
+	 });
 }
 function onImageFileChange(obj) {
 
@@ -148,11 +186,10 @@ function onImageFileChange(obj) {
 function clickSelAipAll(obj) {
 	if ($(obj).is(":checked")) {
 		$("input[name=delAipList]").each(function() {
-			$(this).attr("checked",true);
+			$(this).prop("checked",true);
 		});
 	} else {
 		$("input[name=delAipList]").each(function() {
-			$(this).removeAttr("checked");
 			$(this).prop("checked", false);
 
 		});
@@ -164,7 +201,7 @@ function clickDelAipList(obj){
 	} else if ($(obj).is(":checked")) {
 		var allFlag = true;
 		 $("input[name=delAipList]").each(function() {
-			if (!$(this).attr("checked")) {
+			if (!$(this).is(":checked")) {
 				allFlag = false;
 			}
 		});
@@ -174,4 +211,37 @@ function clickDelAipList(obj){
 			$("input[name=selectAipAll]").prop("checked", false);
 		}
 	}
+}
+function modidyipProviderInfoSort(providerId,baseSort){
+	var newSort = $("#providerId_"+providerId).val();//供应商顺序
+	if(newSort == baseSort){
+		return;
+	}
+	var reg = new RegExp("^[0-9]*$");  
+	if(newSort==""){
+		WEB.msg.error("提示","请输入供应商排序");
+		$("#providerId_"+providerId).val(baseSort);
+	    return;
+	}
+	if(!reg.test(newSort)){  //只能输入数字
+		WEB.msg.error("提示","请输入有效数字");
+		$("#providerId_"+providerId).val(baseSort);
+	    return;
+	}  
+	$.gridLoading({message:"修改供应商排序"});
+	$.appAjax({
+		url : WEB_ROOT + "/aipProviderManage/modidyAipProviderInfoSort",
+		async : true,
+		data : {providerId:providerId,providerSort:newSort},
+		cache: false,
+		success : function(data){
+			if(data.success){
+				queryAipProviderInfoList(1);
+			}else{
+				$("#providerId_"+providerId).val(baseSort);
+				WEB.msg.error("提示",data.info);
+			}
+			$.gridUnLoading({message:"修改供应商排序"});
+		}
+	});
 }

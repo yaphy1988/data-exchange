@@ -34,6 +34,6 @@ public interface IAipProviderInfoSV {
 	 * @param aipProviderInfoReqDTO
 	 * @throws Exception
 	 */
-    public void sortAipProviderInfoByOrder(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception;
+    public void modidyAipProviderInfoSort(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception;
 	
 }

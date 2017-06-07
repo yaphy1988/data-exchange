@@ -191,4 +191,65 @@ public class AipProviderManageController {
 		}
 		return rMap;
 	}
+	/**
+	 * 批量删除Aip供应商信息
+	 * 
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/batchDelAipProviderInfo")
+	@ResponseBody
+	public Map<String, Object> batchDelAipProviderInfo(Model model, HttpServletRequest request,HttpSession session) {
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		try {
+			String providerIds = request.getParameter("providerIds");
+			String status = request.getParameter("status");
+			for(String providerId:providerIds.split(",")){
+				AipProviderInfoReqDTO aipProviderInfoReqDTO = new AipProviderInfoReqDTO();
+				if(StringUtils.isNotEmpty(providerId)){
+					aipProviderInfoReqDTO.setProviderId(providerId);
+					aipProviderInfoReqDTO.setStatus(status);
+					aipProviderInfoReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+					iAipProviderServiceMgrRSV.updateAipProviderInfo(aipProviderInfoReqDTO);
+				}
+			}
+			rMap.put("success", true);
+		} catch (Exception e) {
+			rMap.put("success", false);
+			log.error("批量删除Aip供应商信息出错：" + e.getMessage());
+		}
+		return rMap;
+	}
+	/**
+	 * 失效/生效Aip供应商信息
+	 * 
+	 * @param model
+	 * @param request
+	 * @return
+	 */
+	@RequestMapping(value = "/modidyAipProviderInfoSort")
+	@ResponseBody
+	public Map<String, Object> modidyAipProviderInfoSort(Model model, HttpServletRequest request,HttpSession session) {
+		Map<String, Object> rMap = new HashMap<String, Object>();
+		try {
+			AipProviderInfoReqDTO aipProviderInfoReqDTO = new AipProviderInfoReqDTO();
+			String providerId = request.getParameter("providerId");
+			String providerSort = request.getParameter("providerSort");
+			if (!StringUtil.isBlank(providerId)) {
+				aipProviderInfoReqDTO.setProviderId(providerId);
+			}
+			if(!StringUtil.isBlank(providerSort)){
+				aipProviderInfoReqDTO.setProviderSort(Integer.parseInt(providerSort));
+			}
+			aipProviderInfoReqDTO.setUpdateStaff(StaffUtil.getStaffId(session));
+			iAipProviderServiceMgrRSV.modidyAipProviderInfoSort(aipProviderInfoReqDTO);
+			rMap.put("success", true);
+		} catch (Exception e) {
+			rMap.put("success", false);
+			rMap.put("info", e.getMessage());
+			log.error("失效/生效Aip供应商信息出错：" + e.getMessage());
+		}
+		return rMap;
+	}
 }

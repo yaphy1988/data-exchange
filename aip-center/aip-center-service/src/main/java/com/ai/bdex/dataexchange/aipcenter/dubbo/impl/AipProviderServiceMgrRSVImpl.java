@@ -117,12 +117,12 @@ public class AipProviderServiceMgrRSVImpl implements IAipProviderServiceMgrRSV {
 	 * @param aipProviderInfoReqDTO
 	 * @throws Exception
 	 */
-    public void sortAipProviderInfoByOrder(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception{
+    public void modidyAipProviderInfoSort(AipProviderInfoReqDTO aipProviderInfoReqDTO) throws Exception{
     	 if (aipProviderInfoReqDTO.getProviderId()==null||aipProviderInfoReqDTO.getProviderSort()==null){
              throw new BusinessException("调整AIP服务供应商排序信息异常，providerId或providerSort为空");
          }
  	    try {
- 	    	iAipProviderInfoSV.sortAipProviderInfoByOrder(aipProviderInfoReqDTO);
+ 	    	iAipProviderInfoSV.modidyAipProviderInfoSort(aipProviderInfoReqDTO);
          }catch (Exception e){
              log.error("更新服务商信息异常异常：",e);
          }
