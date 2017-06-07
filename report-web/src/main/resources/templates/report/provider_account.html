@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>供货商对账单</title>
+
+    <script type="text/javascript" src="../../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:remove="all"></script>
+
+
+</head>
+<body>
+<div layout:fragment="screen_content" id="table_content">
+    <ol class="breadcrumb">
+        <li><strong><span style="color: #27a0d7">供货商对账单统计</span></strong></li>
+    </ol>
+    <form class="form-inline" role="form" style="float: left;" method="post" id="queryForm">
+        <div class="form-group">
+            <label >订购时间:</label>
+            <input placeholder="开始时间" class="form-control layer-date" id="startTime" name="startTime">-
+            <input placeholder="结束时间" class="form-control layer-date" id="endTime" name="endTime">
+        </div>
+        <div class="form-group">
+            <button type="button" id="queryBtn" th:onclick="|doQuery();|" class="btn btn-primary">查询</button>
+        </div>
+
+    </form>
+    <div id="toolbar" style="margin-left: 10px;">
+        <select class="form-control">
+            <option value="">Export Basic</option>
+            <option value="all">Export All</option>
+            <option value="selected">Export Selected</option>
+        </select>
+    </div>
+    <table id="table"
+           data-toolbar="#toolbar"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+           data-show-export="true"
+           data-detail-view="true"
+           data-detail-formatter="detailFormatter"
+           data-minimum-count-columns="2"
+           data-pagination="true"
+           data-id-field="id"
+           data-show-footer="false"
+           th:data-url="${#tools.reportDomain()}+'/reportdata/queryBillSummary'"
+           data-side-pagination="server">
+    <!--<table id="table" data-toggle="table" data-striped="true" data-row-style="rowStyle" data-click-to-select="true">-->
+        <thead>
+        <tr>
+            <th data-field="providerName">供应商名称</th>
+            <th data-field="serviceId">aip接口ID</th>
+            <th data-field="callCount">需结算调用次数</th>
+        </tr>
+        </thead>
+    </table>
+    <div class="pagination-div">
+        <ul class="pagination" id="pageUl">
+        </ul>
+    </div>
+
+    <script th:inline="javascript">
+        $(function () {
+            dateTimepickerinit($('#startTime'),$('#endTime'));
+            $('#toolbar').parent().attr('style','margin-top:0px;');
+        });
+
+        // 要求重写次方法，请求服务器数据入参方法,参数可自定义
+        function queryParams(params) {
+            var param = {
+                startDate : $("#startTime").val(),
+                endDate : $("#endTime").val(),
+                pageindex : this.pageNumber,
+                pageSize : this.pageSize
+            }
+            return param;
+        }
+        /**
+         * 初始化时间控件
+         * @param startTime
+         * @param endTime
+         */
+        function dateTimepickerinit(startTime,endTime) {
+            startTime.datetimepicker({
+                format: 'yyyy-mm-dd 00:00:00',
+                minView:'month',
+                language: 'zh-CN',
+                clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
+                autoclose:true
+                // startDate:new Date()
+            }).on("click",function(){
+                startTime.datetimepicker("setEndDate",endTime.val());
+            });
+            endTime.datetimepicker({
+                format: 'yyyy-mm-dd 23:59:59',
+                minView:'month',
+                language: 'zh-CN',
+                clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
+                autoclose:true
+                // startDate:new Date()
+            }).on("click",function(){
+                endTime.datetimepicker("setStartDate",startTime.val());
+            });
+        }
+    </script>
+</div>
+
+</body>
+</html>

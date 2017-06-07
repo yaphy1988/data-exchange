@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai.bdex.dataexchange.report.dao.mapper.ProviderAccountMapper">
+
+  <select id="providerAccount_billSummary" resultType="com.ai.bdex.dataexchange.report.entity.ProviderAccountStatisticQueryInfo" parameterType="com.ai.bdex.dataexchange.report.entity.ProviderAccountStatisticQueryInfo">
+    SELECT
+    t.SERVICE_ID AS serviceId,
+    t.SERVICE_NAME AS serviceName,
+    t.PROVIDER_ID AS providerId,
+    k.PROVIDER_NAME AS providerName,
+    CASE
+    WHEN n.count IS NULL THEN
+    0
+    ELSE
+    n.count
+    END AS callCount
+    FROM
+    t_aip_service_info t
+    LEFT JOIN (
+    SELECT
+    m.SERVICE_ID,
+    COUNT(1) AS count
+    FROM
+    t_aip_service_used_log m WHERE 1=1
+    <if test="startTime != null ">
+      <![CDATA[and m.CREATE_TIME >= #{startTime}]]>
+    </if>
+    <if test="endTime != null ">
+      <![CDATA[and m.CREATE_TIME >= #{endTime}]]>
+    </if>
+    ) n ON n.SERVICE_ID = t.SERVICE_ID
+    LEFT JOIN t_aip_provider_info k ON k.PROVIDER_ID = t.PROVIDER_ID
+    WHERE 1=1
+    <if test="providerId != null ">
+      and t.PROVIDER_ID = ${providerId}
+    </if>
+  </select>
+
+
+</mapper>
