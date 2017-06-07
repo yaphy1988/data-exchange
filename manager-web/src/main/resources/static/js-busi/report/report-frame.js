@@ -1,8 +1,10 @@
 /**
  * Created by yaphy on 2017/5/24.
  */
+var selections = [];
 function initTable(tableId) {
     var $table = $('#'+tableId+'');
+
     $table.bootstrapTable({
         height: getHeight(),
         // queryParams : queryParams,
@@ -61,6 +63,11 @@ function responseHandler(res) {
             "total" : 0
         };
     }
+}
+function getIdSelections() {
+    return $.map($table.bootstrapTable('getSelections'), function (row) {
+        return row.id
+    });
 }
 //自定义查询触发事件
 function doQuery(params){
