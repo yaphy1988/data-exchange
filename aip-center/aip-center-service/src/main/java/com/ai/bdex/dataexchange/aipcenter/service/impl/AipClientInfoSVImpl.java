@@ -34,7 +34,7 @@ public class AipClientInfoSVImpl implements IAipClientInfoSV{
 			AipClientInfoExample ex=new AipClientInfoExample();
 			AipClientInfoExample.Criteria sql=ex.createCriteria();
 			sql.andClientIdEqualTo(clientId);
-			sql.andStatusEqualTo("1");
+//			sql.andStatusEqualTo("1");
 			List<AipClientInfo> list=aipClientInfoMapper.selectByExample(ex);
 			if(!CollectionUtil.isEmpty(list)){
 				return list.get(0);

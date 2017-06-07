@@ -359,6 +359,7 @@ public class AipKeyManageController {
 					ajaxJson.setSuccess(false);
 					ajaxJson.setMsg("编辑保存失败，请重试或联系管理员");
 					log.error("编辑保存失败，查询不到aipkey信息！");
+					return ajaxJson;
 				}
 
 				aipClientInfoReqDTO.setClientId(clientId);
