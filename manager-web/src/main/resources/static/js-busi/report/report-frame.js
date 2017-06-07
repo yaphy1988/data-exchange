@@ -15,7 +15,7 @@ function initTable(tableId) {
                 withCredentials: true
             }
         },
-        exportDataType: "basic",              //basic', 'all', 'selected'.
+        exportDataType: "all",//basic', 'all', 'selected'.该属性目前设置无效
         responseHandler: responseHandler,
 
     });
@@ -25,9 +25,9 @@ function initTable(tableId) {
         });
     });
     // sometimes footer render error.
-    setTimeout(function () {
-        $table.bootstrapTable('resetView');
-    }, 200);
+    // setTimeout(function () {
+    //     $table.bootstrapTable('resetView');
+    // }, 200);
     $table.on('all.bs.table', function (e, name, args) {
         console.log(name, args);
     });
@@ -66,7 +66,7 @@ function responseHandler(res) {
 }
 function getIdSelections() {
     return $.map($table.bootstrapTable('getSelections'), function (row) {
-        return row.id
+        return row.id;
     });
 }
 //自定义查询触发事件

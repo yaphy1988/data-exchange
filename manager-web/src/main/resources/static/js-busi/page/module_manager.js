@@ -7,9 +7,11 @@ function queryModuleList(pageNo){
 	var moduleName=$.trim($('#moduleName').val());
 	var url=basePath+'/pageManage/queryModuleList'
 	var params={pageNo:pageNo,moduleName:moduleName};
+    $.gridLoading({ message:"正在加载中.." });
 	var callBack = function(data){
 		var html='';
 		if(data.success){
+            $.gridUnLoading();
 			$('#moduleName').val(data.moduleName);
 			var moduleList = data.moduleList;
 			$(moduleList).each(function(i,d){
