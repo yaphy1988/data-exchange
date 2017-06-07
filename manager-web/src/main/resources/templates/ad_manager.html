@@ -131,7 +131,7 @@
 										</div>
 									</td>
 									<td th:text="${pageAd.adTitle}"></td>
-									<!-- <td th:text="${pageAd.adOrder}">1</td> -->
+									 <td th:text="${pageAd.adOrder}">1</td> 
 									<td>
 										<p class="pop-link">
 											<a th:onclick="'updatePageModuleAd('+@{${pageAd.adId}}+','+@{${pageAd.moduleId}}+',0)'" th:if="${pageAd.status=='1'}">失效</a><i th:if="${pageAd.status=='1'}">|</i> 
@@ -181,10 +181,13 @@
 	                            </tr>
                             </tbody>
                         </table>
+                        <div class="text-right">
+						<button class="btn btn-primary btn-sm" type="button" th:onclick="'addModuleAd()'">新增</button>
+					</div>
                         <!-- 分页-->
 						<div class="pagelist clearfix">
 						<!-- 分页-->
-						 <div th:if="${pageInfo}" th:fragment="pager" class="pagerBar pagelist"style="margin-top: 0px;">
+						 <div th:if="${pageInfo}" th:fragment="pager" class="pagerBar pagelist pull-right"style="margin-top: 0px;">
 							<script type="text/javascript" src="../static/js-busi/common/pager.js"th:src="@{/js-busi/common/pager.js}"></script>
 							<span data-toggle="pager" id="pagerId"th:data-count="${pageInfo.count}" th:data-size="${pageInfo.pageSize}"
 								th:data-currentindex="${pageInfo.pageNo}"></span>

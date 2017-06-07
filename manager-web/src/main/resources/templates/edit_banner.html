@@ -11,6 +11,7 @@
 	<link rel="stylesheet" href="../static/css/manage.css" th:remove="all">
 	<!--<script type="text/javascript" src="../static/js/frameajax/ajaxfileupload.js" th:src="@{/js/frameajax/ajaxfileupload.js}"></script>-->
 	<script type="text/javascript" src="../META-INF/resources/webjars/js/frameajax/ajaxfileupload.js" th:src="@{/webjars/js/frameajax/ajaxfileupload.js}"></script>
+	<script src="../../static/js-busi/common/uploadimg.js" th:src="@{/js-busi/common/uploadimg.js}"></script>
 	<script type="text/javascript" src="../static/js-busi/page/edit_manager.js" th:src="@{/js-busi/page/edit_manager.js}"></script>
 </head>
 <body>
@@ -87,7 +88,7 @@
                     <td>
                            <input type="hidden" class="form-control wt200 ClassItem" placeholder="" id="vfsId" th:value="${adRespDTO.vfsId}">
                            <input type="text" class="form-control wt200 ClassItem" placeholder="" disabled id="bmpName" th:value="${adRespDTO.bmpName}">
-                           <input class="float_File"  type="file"  width="" height="" id="picUpLoad" name="picUpLoad"th:onchange="'uploadImage(this)'">
+                           <input class="float_File"  type="file"  width="" height=""  imgsize="" id="picUpLoad" name="picUpLoad"th:onchange="'onImageFileChange(this)'">
                         
                     </td>
                 </tr>
