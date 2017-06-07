@@ -718,14 +718,12 @@ public class PageManageController {
 				sortContentReqDTO.setStatus(status);
 			}
 			sortInfoReqDTO.setUpdateStaffId(StaffUtil.getStaffId(session));
-			sortInfoReqDTO.setUpdateTime(DateUtil.getNowAsDate());
 			sortContentReqDTO.setUpdateStaffId(StaffUtil.getStaffId(session));
 			sortContentReqDTO.setUpdateTime(DateUtil.getNowAsDate());
 			if(!StringUtils.isBlank(sortId)){
 				long sortInfoById = iPageDisplayRSV.updateSortInfoById(sortInfoReqDTO);
 				if(sortInfoById >0){
 					long updateId = iPageDisplayRSV.updateSortContent(sortContentReqDTO);
-					System.out.println(updateId);
 				}
 			}
 			rMap.put("success", true);

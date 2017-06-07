@@ -188,7 +188,7 @@ function queryPartner109(moduleId){
 		var	html ='<div class="active item parter-sub">';
 		if(data.success){
 			$(data.moduleAdList).each(function(i,d){
- 				html +='<a href="'+setLinkUrk(d.linkPage)+'"  target="_blank"><img src="'+d.vfsId+'" "> </a>';
+ 				html +='<a href="'+setLinkUrk(d.linkPage)+'"  target="_blank"><img style="display:inline-block" src="'+d.vfsId+'" "> </a>';
  				if(parseInt(i+1)%5 == 0){
 					if(parseInt(i+1)== data.moduleAdList.length){
 						html +='</div>'; 

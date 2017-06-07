@@ -60,7 +60,7 @@ public class SortInfoSVImpl  implements ISortInfoSV{
 				//空值，就只查有效的数据
 				criteria.andStatusEqualTo("1");
 			} 
-			example.setOrderByClause(" ORDER_NO ASC,UPDATE_TIME DESC ");
+			example.setOrderByClause(" ORDER_NO DESC");
 			//    List<PageInfo> selectByExample(PageInfoExample example);
 			 return sortInfoMapper.selectByExample(example);	
 		  }
@@ -85,8 +85,9 @@ public class SortInfoSVImpl  implements ISortInfoSV{
 		SortInfo record = new SortInfo();
 
 		record.setUpdateStaffId(sortInfoReqDTO.getUpdateStaffId());
-		record.setUpdateTime(DateUtil.getNowAsDate());
 		ObjectCopyUtil.copyObjValue(sortInfoReqDTO,record,null,false);
-		return sortInfoMapper.updateByPrimaryKey(record);
+		record.setUpdateTime(DateUtil.getNowAsDate());
+		return sortInfoMapper.updateByPrimaryKeySelective(record);
+
 	} 
  }

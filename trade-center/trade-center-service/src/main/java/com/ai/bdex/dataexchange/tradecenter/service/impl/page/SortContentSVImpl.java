@@ -71,17 +71,11 @@ public class SortContentSVImpl  implements ISortContentSV {
 		SortContent record = new SortContent();
 		SortContentExample example = new SortContentExample();
 		Criteria createCriteria = example.createCriteria();
-		if(!StringUtils.isBlank(sortContentReqDTO.getContentName())){
+		if(sortContentReqDTO.getSortId() != null){
 			createCriteria.andSortIdEqualTo(sortContentReqDTO.getSortId());
 		}
-		if(!StringUtils.isBlank(sortContentReqDTO.getStatus())){
-			createCriteria.andStatusEqualTo(sortContentReqDTO.getStatus());
-		}
-		if(!StringUtils.isBlank(sortContentReqDTO.getUpdateStaffId())){
-			createCriteria.andUpdateStaffIdEqualTo(sortContentReqDTO.getUpdateStaffId());
-		}
-		record.setUpdateTime(DateUtil.getNowAsDate());
 		ObjectCopyUtil.copyObjValue(sortContentReqDTO,record, null, false);
+		record.setUpdateTime(DateUtil.getNowAsDate());
 		return sortContentMapper.updateByExampleSelective(record, example);
 	}
 
