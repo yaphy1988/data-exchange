@@ -14,7 +14,7 @@
 					th:with="currentUrl=${#request.getRequestURL().toString()}">
 					<a href="javascript:void(0)">
 						<i class=""></i>
-						<span th:text="${menu.menuTitle}">用户中心</span>
+						<span th:text="${menu.menuTitle}" th:menuId="${menu.menuId}">用户中心</span>
 						<span class="caret"></span>
 					</a>
 					<ul class="infoItem" th:if="${menu.subMenus}">
@@ -22,9 +22,20 @@
 							th:if="${subMenu.menuType != '3'}"
 							th:class="${#strings.startsWith(subMenu.absoluteMenuUrl,currentUrl)}?'active':''">
 							<a th:href="${subMenu.absoluteMenuUrl}"
+							   th:menuId="${subMenu.menuId}"
 							   th:text="${subMenu.menuTitle}">
 								密码修改
 							</a>
+							<script th:if="${#strings.startsWith(subMenu.absoluteMenuUrl,currentUrl)}" th:inline="javascript">
+							    $(document).ready(function (){
+							        var currentId = [[${subMenu.menuId}]];
+							        var parentHeight = $("#systemmenu").parent().height();
+							        var scrollTop = $("a[menuId='"+currentId+"']").offset().top - $("#systemmenu").offset().top;
+							        if((scrollTop-parentHeight/2)> 0){
+							            $("#systemmenu").parent().scrollTop((scrollTop-parentHeight)+parentHeight/2);
+							        }
+								});
+							</script>
 						</li>
 						<li th:remove="all">
 							<a th:href="@{/infomanager/pageInit}">资料修改</a>
@@ -152,6 +163,9 @@
 				</li>
 			</ul>
 		</nav>
+		<script>
+
+		</script>
 		<script type="text/javascript" src="../static/js-busi/user/menu.js" th:src="@{/js-busi/user/menu.js}"></script>
 	</div>
 </body>

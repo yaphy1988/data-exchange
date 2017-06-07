@@ -180,6 +180,8 @@ public class AuthBusiSVImpl implements IAuthBusiSV {
 
             if(StringUtils.isBlank(menu.getMenuUrl()) == false) {
                 dto.setRelativeMenuUrl(menu.getMenuUrl());
+            }else{
+                dto.setRelativeMenuUrl("null");
             }
 
             disMenus.add(dto);
