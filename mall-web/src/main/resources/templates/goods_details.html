@@ -170,7 +170,7 @@
 									<span class="col_orange" th:text="${curGdsSku.packPriceStr}" id="gds_priceDisplay">299.00</span>
 									<small th:text="'/'+${curGdsSku.packTimes}+'次'" id="gds_timesDisplay">/20000次</small>
 								</h2>
-								<p class="label label-success" ><i class="iconfont" th:text="'有效期'+${curGdsSku.packDay}+'天'" id="gds_dayDisplay">有效期120天</i></p>
+								<p class="label label-success" ><i class="iconfont" th:text="${curGdsSku.packDay} ? '有效期'+${curGdsSku.packDay} +'天':'有效期0天' " id="gds_dayDisplay">有效期120天</i></p>
 								<!-- <p class="label label-info"><i class="iconfont"></i>有效期120天</p>
 								<p class="label label-warning"><i class="iconfont"></i>有效期120天</p> -->
 							</div>

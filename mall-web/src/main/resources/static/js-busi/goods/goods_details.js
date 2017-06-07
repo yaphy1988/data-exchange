@@ -86,8 +86,12 @@ function changeGdsSku(obj) {
     var packDay = $(obj).attr("packDay");
     $("#gds_priceDisplay").html(packPriceStr);
     $("#gds_timesDisplay").html("/"+packTimes+"次");
-    $("#gds_dayDisplay").html("有效期"+packDay+"天");
-   
+    if (packDay != undefined && $.trim(packDay) != ""){
+        $("#gds_dayDisplay").html("有效期"+packDay+"天");
+    }else{
+        $("#gds_dayDisplay").html("有效期0天");
+    }
+
 }
 
 function queryRecGdsList() {
