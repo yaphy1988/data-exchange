@@ -95,15 +95,15 @@ public class UserBildingController {
      * @throws Exception
      */
     @RequestMapping("/userbildingdetailquery")
-    public String queryUserBilddatil(HttpServletRequest request,HttpServletResponse response) throws Exception{
+    @ResponseBody
+    public Object queryUserBilddatil(HttpServletRequest request,HttpServletResponse response) throws Exception{
         //查询条件
     	UserBildingQueryInfo queryInfo = new UserBildingQueryInfo();
     	String startDate = request.getParameter("startDate");
         String endDate = request.getParameter("endDate");
-    	String pageNo = request.getParameter("pageNo");
+    	String pageNo = request.getParameter("pageindex");
         String pageSize = request.getParameter("pageSize");
         String userId = request.getParameter("userId");
-        String serviceId = request.getParameter("serviceId");
         //查询报表数据
         PageInfo<UserBildInfo> pageInfo = new PageInfo<UserBildInfo>();
 		try {
@@ -122,9 +122,6 @@ public class UserBildingController {
 	        if (!StringUtil.isBlank(userId)){
 	        	queryInfo.setUserId(userId);
 	        }
-	        if (!StringUtil.isBlank(serviceId)){
-	        	queryInfo.setServiceId(serviceId);
-	        }	
 			//报表ID
 			String reportId = "UserBinging_DetailReport";
 			pageInfo = reportSV.getRePortData(reportId,queryInfo,new IRowForMat<UserBildInfo>() {
@@ -134,13 +131,13 @@ public class UserBildingController {
 	                int unitPrice = vo.getUnitPrice();
 	                String priceText = tool.formatLiToMoneyClean(unitPrice);
 	                vo.setPriceText(priceText);
+	                vo.setCreateTimeText(DateUtil.formatTime(vo.getCreateTime()));
+	                
 	            }
 	        });
 		} catch (Exception e) {
 			logger.error("用户对账单查询异常："+e.getMessage());
 		}
-		request.setAttribute("pageInfo", pageInfo);
-		logger.info("报表数据请求已经到达report-web，返回页面模板：report/user_billing");
-        return "report/user_billing :: #staffList";
+		return pageInfo;
     }
 }

@@ -25,6 +25,16 @@ public class UserBildInfo {
     private int unitPrice;
     
     private String priceText;
+    
+    private String createTimeText;
+
+	public String getCreateTimeText() {
+		return createTimeText;
+	}
+
+	public void setCreateTimeText(String createTimeText) {
+		this.createTimeText = createTimeText;
+	}
 
 	public String getPriceText() {
 		return priceText;

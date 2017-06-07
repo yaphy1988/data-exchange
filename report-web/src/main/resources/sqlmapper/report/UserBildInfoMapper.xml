@@ -11,14 +11,21 @@
   from t_aip_service_used_log m LEFT JOIN t_aip_client_info t on 
   t.CLIENT_ID=m.CLIENT_ID LEFT JOIN 
   (SELECT x.CLIENT_ID,x.service_id,COUNT(x.SERVICE_ID) as successCount from t_aip_service_used_log x 
-  WHERE x.`STATUS`='1' GROUP BY x.CLIENT_ID,x.service_id) y on 
+  WHERE x.`STATUS`='1' 
+  <if test="startTime != null">
+  <![CDATA[and x.CREATE_TIME >= #{startTime}]]>
+  </if>
+  <if test="endTime != null">
+  <![CDATA[and x.CREATE_TIME <= #{endTime}]]>
+  </if>
+  GROUP BY x.CLIENT_ID,x.service_id) y on 
   y.service_id=m.SERVICE_ID AND y.CLIENT_ID=m.CLIENT_ID 
   where 1=1 
   <if test="startTime != null">
   <![CDATA[and m.CREATE_TIME >= #{startTime}]]>
   </if>
   <if test="endTime != null">
-  <![CDATA[and m.CREATE_TIME >= #{endTime}]]>
+  <![CDATA[and m.CREATE_TIME <= #{endTime}]]>
   </if>
   <if test="userId != null">
   <![CDATA[and t.USER_ID = #{userId}]]>
@@ -41,10 +48,11 @@
   <![CDATA[and m.CREATE_TIME >= #{startTime}]]>
   </if>
   <if test="endTime != null">
-  <![CDATA[and m.CREATE_TIME >= #{endTime}]]>
+  <![CDATA[and m.CREATE_TIME <= #{endTime}]]>
   </if>
   <if test="userId != null">
   <![CDATA[and t.USER_ID = #{userId}]]>
   </if>
+  order by createTime desc
   </select>
 </mapper>

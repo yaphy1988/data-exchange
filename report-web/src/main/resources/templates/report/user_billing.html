@@ -53,6 +53,23 @@
         </thead>
     </table>
     
+    <ol class="breadcrumb">
+        <li><strong><span style="color: #27a0d7">明细对账单</span></strong></li>
+    </ol>
+    <form class="form-inline" role="form" style="float: left;" method="post" id="queryForm_detail">
+        <div class="form-group">
+            <label >用户ID:</label>
+            <input type="text" class="form-control layer-date" id="userId_detail" name="userId_detail">
+        </div>
+        <div class="form-group">
+            <label >统计时间:</label>
+            <input placeholder="开始时间" class="form-control layer-date" id="startTime_detail" name="startTime_detail">-
+            <input placeholder="结束时间" class="form-control layer-date" id="endTime_detail" name="endTime_detail">
+        </div>
+        <div class="form-group">
+            <button type="button" id="queryBtn_detail" th:onclick="|doQuery_detail();|" class="btn btn-primary">查询</button>
+        </div>
+    </form>
     <table id="table2"
            data-toolbar="#toolbar"
            data-show-refresh="true"
@@ -60,21 +77,22 @@
            data-show-columns="true"
            data-show-export="true"
            data-detail-view="true"
-           data-query-params="queryParams"
+           data-query-params="queryParams_detail"
            data-detail-formatter="detailFormatter"
            data-minimum-count-columns="2"
            data-show-pagination-switch="true"
            data-pagination="true"
            data-id-field="id"
            data-show-footer="false"
-           th:data-url="${#tools.reportDomain()}+'/reportdata/userbildingquery'"
+           th:data-url="${#tools.reportDomain()}+'/reportdata/userbildingdetailquery'"
            data-side-pagination="server">
         <thead>
         <tr>
             <th data-field="userId">用户ID</th>
-            <th data-field="serviceId" data-switchable="false">API接口ID</th>
-            <th data-field="totalCount">请求次数</th>
-            <th data-field="successCount">成功次数</th>
+            <th data-field="usedId" >请求流水号</th>
+            <th data-field="serviceId">AIP接口ID</th>
+            <th data-field="createTimeText">请求时间</th>
+            <th data-field="priceText">计费金额</th>
         </tr>
         </thead>
     </table>
@@ -82,6 +100,7 @@
     <script th:inline="javascript">
         $(function () {
             dateTimepickerinit($('#startTime'),$('#endTime'));
+            dateTimepickerinit($('#startTime_detail'),$('#endTime_detail'));
         });
 
         // 要求重写次方法，请求服务器数据入参方法,参数可自定义
@@ -121,6 +140,20 @@
             }).on("click",function(){
                 endTime.datetimepicker("setStartDate",startTime.val());
             });
+        }
+        
+        function queryParams_detail(params_detail) {
+            var param = {
+                startDate : $("#startTime_detail").val(),
+                endDate : $("#endTime_detail").val(),
+                userId : $("#userId_detail").val(),
+                pageindex : this.pageNumber,
+                pageSize : this.pageSize
+            }
+            return param;
+        }
+        function doQuery_detail(params){
+            $('#table2').bootstrapTable('refresh');    //刷新表格
         }
     </script>
 
