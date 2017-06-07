@@ -51,6 +51,21 @@ public class ProviderAccountController {
         return pageInfo;
     }
 
+    @RequestMapping(value = "/queryBillDetail")
+    @ResponseBody
+    public Object queryBillDetail(HttpServletRequest request, HttpServletResponse response){
+        PageInfo<ProviderAccountStatisticQueryInfo> pageInfo = new PageInfo<ProviderAccountStatisticQueryInfo>();
+
+        ProviderAccountStatisticQueryInfo queryInfo = new ProviderAccountStatisticQueryInfo();
+        queryInfo = getQueryParams(request);
+
+        String reportId = "providerAccount_billDetail";
+
+        pageInfo = reportSV.getRePortData(reportId, queryInfo);
+
+        return pageInfo;
+    }
+
     private ProviderAccountStatisticQueryInfo getQueryParams(HttpServletRequest request){
         ProviderAccountStatisticQueryInfo vo = new ProviderAccountStatisticQueryInfo();
         vo.setPageNo(1);

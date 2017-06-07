@@ -26,13 +26,13 @@
         </div>
 
     </form>
-    <div id="toolbar" style="margin-left: 10px;">
-        <select class="form-control">
-            <option value="">Export Basic</option>
-            <option value="all">Export All</option>
-            <option value="selected">Export Selected</option>
-        </select>
-    </div>
+    <!--<div id="toolbar" style="margin-left: 10px;">-->
+        <!--<select class="form-control">-->
+            <!--<option value="">Export Basic</option>-->
+            <!--<option value="all">Export All</option>-->
+            <!--<option value="selected">Export Selected</option>-->
+        <!--</select>-->
+    <!--</div>-->
     <table id="table"
            data-toolbar="#toolbar"
            data-show-refresh="true"
@@ -56,10 +56,31 @@
         </tr>
         </thead>
     </table>
-    <div class="pagination-div">
-        <ul class="pagination" id="pageUl">
-        </ul>
-    </div>
+
+    <table id="table2"
+           data-toolbar="#toolbar"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+           data-show-export="true"
+           data-detail-view="true"
+           data-detail-formatter="detailFormatter"
+           data-minimum-count-columns="2"
+           data-pagination="true"
+           data-id-field="id"
+           data-show-footer="false"
+           th:data-url="${#tools.reportDomain()}+'/reportdata/queryBillDetail'"
+           data-side-pagination="server">
+        <!--<table id="table" data-toggle="table" data-striped="true" data-row-style="rowStyle" data-click-to-select="true">-->
+        <thead>
+        <tr>
+            <th data-field="providerName">供应商名称</th>
+            <th data-field="serviceId">aip接口ID</th>
+            <th data-field="flowNo">流水号</th>
+            <th data-field="requestTime">请求时间</th>
+        </tr>
+        </thead>
+    </table>
 
     <script th:inline="javascript">
         $(function () {

@@ -39,5 +39,39 @@
     </if>
   </select>
 
+  <select id="providerAccount_billDetail" resultType="com.ai.bdex.dataexchange.report.entity.ProviderAccountStatisticQueryInfo" parameterType="com.ai.bdex.dataexchange.report.entity.ProviderAccountStatisticQueryInfo">
+    SELECT
+      t.SERVICE_ID as serviceId,
+      t.SERVICE_NAME as serviceName,
+      n.PROVIDER_ID as providerId,
+      n.PROVIDER_NAME as providerName,
+      k.USED_ID as flowNo,
+      k.CREATE_TIME as requestTime
+    FROM
+      t_aip_service_info t,
+      t_aip_service_used_log m,
+      t_aip_provider_info n,
+      t_aip_p_service_used_log k
+    WHERE
+      m.data_flag = '0'
+      AND m.SERVICE_ID = t.SERVICE_ID
+      AND t.PROVIDER_ID = n.PROVIDER_ID
+      AND m.USED_ID = k.from_used_id
+      AND k.`STATUS` = '1'
+      AND m.`STATUS` = '1'
+    <if test="version != null ">
+      and t.VERSION = ${version}
+    </if>
+    <if test="startTime != null ">
+      <![CDATA[and m.CREATE_TIME >= #{startTime}]]>
+    </if>
+    <if test="endTime != null ">
+      <![CDATA[and m.CREATE_TIME >= #{endTime}]]>
+    </if>
+    <if test="providerId != null ">
+      and t.PROVIDER_ID = ${providerId}
+    </if>
+  </select>
+
 
 </mapper>
