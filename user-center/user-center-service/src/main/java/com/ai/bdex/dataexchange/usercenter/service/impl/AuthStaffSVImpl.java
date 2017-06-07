@@ -355,6 +355,9 @@ public class AuthStaffSVImpl implements IAuthStaffSV{
 		if(StringUtil.isBlank(vo.getStaffId()) == false){
 			sql.andStaffIdLike(vo.getStaffId());
 		}
+		if(!StringUtil.isBlank(vo.getStaffName())){
+			sql.andStaffNameLike("%"+vo.getStaffName()+"%");
+		}
 
 		//设置分页
 		int page = vo.getPageNo();

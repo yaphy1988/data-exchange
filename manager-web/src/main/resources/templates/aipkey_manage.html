@@ -473,13 +473,13 @@
 									 用户编码：
 								  </td>
 								  <td>
-									  <input class="form-control" placeholder="商品名称" type="text" id="staffInfoModal_staffIdQuery">
+									  <input class="form-control" placeholder="用户编码" type="text" id="staffInfoModal_staffIdQuery">
 								  </td>
 									<td class="Hint" width="100">
 									 用户名称：
 								  </td>
 								  <td>
-									  <input class="form-control" placeholder="商品名称" type="text" id="staffInfoModal_staffNameQuery">
+									  <input class="form-control" placeholder="用户名称" type="text" id="staffInfoModal_staffNameQuery">
 								  </td>
 
 								  <td>
@@ -543,7 +543,7 @@
 							  <div th:if="${staffPageInfo}" class="pagelist" style="margin-top:0px;" >
 							  <!--<div th:if="${staffPageInfo}" class="pagerBar pull-right" style="margin-top:0px;" >-->
 								  <script type="text/javascript" src="../../static/js-busi/common/pager.js" th:src="@{/js-busi/common/pager.js}"></script>
-								  <span data-toggle="pager" id="staffPagerId" data-count="${staffPageInfo.count}" data-size="${staffPageInfo.pageSize}" data-currentindex="${staffPageInfo.pageNo}" ></span>
+								  <span data-toggle="pager" id="staffPagerId" th:data-count="${staffPageInfo.count}" th:data-size="${staffPageInfo.pageSize}" th:data-currentindex="${staffPageInfo.pageNo}" ></span>
 
 								  <script th:inline="javascript">
 //									  var total = '[[${staffPageInfo.count}]]';
