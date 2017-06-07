@@ -46,7 +46,11 @@ function doStaffFlag(obj) {
                 if (targetStaffFlag == "0"){
                     msg = "失效成功！";
                 }else if (targetStaffFlag == "1"){
-                    msg = "生效成功！";
+                    if (staffFlag == "2"){
+                        msg = "解锁成功！";
+                    }else if (staffFlag == "0"){
+                        msg = "生效成功！";
+                    }
                 }else if (targetStaffFlag == "2"){
                     msg = "加锁成功！";
                 }
@@ -58,7 +62,11 @@ function doStaffFlag(obj) {
                 if (targetStaffFlag == "0"){
                     msg = "失效失败！";
                 }else if (targetStaffFlag == "1"){
-                    msg = "生效失败！";
+                    if (staffFlag == "2"){
+                        msg = "解锁失败！";
+                    }else if (staffFlag == "0"){
+                        msg = "生效失败！";
+                    }
                 }else if (targetStaffFlag == "2"){
                     msg = "加锁失败！";
                 }
@@ -241,7 +249,7 @@ function confirmResetPass() {
         success:function (jsonObj) {
             if (jsonObj.success){
                 $("#staffPassModal").modal("hide");
-                WEB.msg.info("提示","重置密码成功！");
+                WEB.msg.info("提示","重置密码成功，新密码为12345678，请尽快登录修改！");
             }else{
                 WEB.msg.info("提示","重置密码失败！");
             }
@@ -303,17 +311,22 @@ function haveSelRoleClick(obj) {
 function toSelRole() {
     var roleId = $("#notSelRoleTable").find(".roleSelected").find("td").attr("roleId");
     var roleName = $("#notSelRoleTable").find(".roleSelected").find("td").html();
-    var html = '<tr onclick="haveSelRoleClick(this)"><td roleId="' + roleId + '">' + roleName + '</td></tr>';
-    $("#notSelRoleTable").find(".roleSelected").remove()
-    $("#haveSelRoleTable").append(html);
+    if (roleId!=undefined && $.trim(roleId)!=""){
+        var html = '<tr onclick="haveSelRoleClick(this)"><td roleId="' + roleId + '">' + roleName + '</td></tr>';
+        $("#notSelRoleTable").find(".roleSelected").remove()
+        $("#haveSelRoleTable").append(html);
+    }
+
 }
 
 function toCancelSelRole() {
     var roleId = $("#haveSelRoleTable").find(".roleSelected").find("td").attr("roleId");
     var roleName = $("#haveSelRoleTable").find(".roleSelected").find("td").html();
-    var html = '<tr onclick="notSelRoleClick(this)"><td roleId="' + roleId + '">' + roleName + '</td></tr>';
-    $("#haveSelRoleTable").find(".roleSelected").remove()
-    $("#notSelRoleTable").append(html);
+    if (roleId!=undefined && $.trim(roleId) != ""){
+        var html = '<tr onclick="notSelRoleClick(this)"><td roleId="' + roleId + '">' + roleName + '</td></tr>';
+        $("#haveSelRoleTable").find(".roleSelected").remove()
+        $("#notSelRoleTable").append(html);
+    }
 }
 
 function confirmStaff2Role() {

@@ -106,7 +106,7 @@ public class AuthStaffManagerController {
     public AjaxJson doStaffFlag(HttpServletRequest request,HttpServletResponse response){
         AjaxJson ajaxJson = new AjaxJson();
         String targetStaffFlag = request.getParameter("targetStaffFlag");
-        String staffFlag = request.getParameter("targetStaffFlag");
+        String staffFlag = request.getParameter("staffFlag");
         String staffId = request.getParameter("staffId");
 
         if (StringUtil.isBlank(staffId)){
@@ -252,7 +252,7 @@ public class AuthStaffManagerController {
         try {
             AuthStaffPassDTO authStaffPassDTO = new AuthStaffPassDTO();
             authStaffPassDTO.setPasswdFlag("0");
-            authStaffPassDTO.setStaffPasswd("123456");
+            authStaffPassDTO.setStaffPasswd("12345678");
             authStaffPassDTO.setStaffId(staffId);
             authStaffPassDTO.setUpdateStaff(StaffUtil.getStaffId(session));
             iAuthStaffPassRSV.updatePasswd(authStaffPassDTO);

@@ -21,7 +21,10 @@
     m.SERVICE_ID,
     COUNT(1) AS count
     FROM
-    t_aip_service_used_log m WHERE 1=1
+    t_aip_service_used_log m WHERE m.status = '1' and m.DATA_FLAG = '0'
+    <if test="version != null ">
+      and t.VERSION = ${version}
+    </if>
     <if test="startTime != null ">
       <![CDATA[and m.CREATE_TIME >= #{startTime}]]>
     </if>
