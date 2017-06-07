@@ -1,3 +1,4 @@
+/*
 package com.ai.bdex.dataexchange.report.entity;
 
 import com.ai.bdex.dataexchange.common.dto.BaseResponseDTO;
@@ -28,6 +29,7 @@ public class OrdInvoiceTaxRespDTO extends BaseResponseDTO {
 	private Date updateTime;
 	private String invoiceDesc;
 	private String invoiceType;//发票类型
+
 
 	public String getInvoiceType() {
 		return invoiceType;
@@ -214,3 +216,4 @@ public class OrdInvoiceTaxRespDTO extends BaseResponseDTO {
 	}
 
 }
+*/

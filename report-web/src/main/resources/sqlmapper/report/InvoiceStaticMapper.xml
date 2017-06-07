@@ -1,34 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.ai.bdex.dataexchange.report.dao.mapper.AuthStaffSignMapper">
+<mapper namespace="com.ai.bdex.dataexchange.report.dao.mapper.OrdInvoiceTaxMapper">
 
-  <select id="authStaffSign_TotalReport" resultType="com.ai.bdex.dataexchange.report.entity.UserStatisticQueryInfo" parameterType="com.ai.bdex.dataexchange.report.entity.OrdInvoiceTaxReqDTO">
-    select *, (allUserTotal-companyUserTotal) userTotal,(allUserCnt-companyUserCnt) userCnt
-    from(
-      select count(1) allUserTotal,
-      (select count(1) from t_auth_staff t where t.AUTHEN_FLAG = '1') companyUserTotal,
-      (select count(1) from t_auth_staff t where 1=1 <include refid="invoice_DetailReport"/> ) allUserCnt,
-      (select count(1) from t_auth_staff t where 1=1 <include refid="invoice_DetailReport"/> and t.AUTHEN_FLAG = '1') companyUserCnt
-      from  t_auth_staff t
-    ) temp
-  </select>
-
-  <select id="invoice_DetailReport" resultType="com.ai.bdex.dataexchange.report.entity.OrdInvoiceTaxReqDTO" parameterType="com.ai.bdex.dataexchange.report.entity.OrdInvoiceTaxReqDTO">
+  <select id="invoice_DetailReport_query" resultType="com.ai.bdex.dataexchange.report.entity.OrdInvoiceTaxReqDTO" parameterType="com.ai.bdex.dataexchange.report.entity.OrdInvoiceTaxReqDTO">
     SELECT
+    t.ORDER_ID   orderId ,
     t.STAFF_ID staffId,
-    t.STAFF_NAME staffName,
-    t.STAFF_TYPE staffType,
-    c.INVOICE_TITLE companyName,
-    t.SERIAL_NUMBER phoneNumber,
-    c.CONTACT_INFO companyAddr,
-    c.company_mail companyMail,
-    c.TAXPAYER_NO taxpayerNo,
-    c.TAX_NO taxNo,
-    c.Organ_CODE organCode
+    t.CREATE_TIME createTime,
+    t.APPLY_MONEY applyMoney,
+    case  t.INVOICE_TYPE when '01' then '增值税普通发票' else '增值税专用发' end invoiceType,
+    case  t.STATUS when '1' then '待开发票' else '已开发票' end STATUS,
+    t.SEND_ADDR sendAddr,
+    t.INVOICE_TITLE invoiceTitle,
+    TAXPAYER_NO taxpayerNo,
+    t.CONTACT_INFO contactInfo,
+    t.PHONE ,
+    t.BANK_NAME bankName,
+    t.TAXPAYER_NO acctInfo
     FROM
-    t_auth_staff t,
-    t_chnl_invoice_tax c
-    WHERE t.STAFF_ID = c.staff_id
+    t_ord_invoice_tax t
+    WHERE
+    t.STATUS IN (1, 2)
     <include refid="invoice_DetailReport"/>
   </select>
 

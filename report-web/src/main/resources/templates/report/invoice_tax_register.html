@@ -32,19 +32,19 @@
            th:data-url="${#tools.reportDomain()}+'/reportdata/getInvocieDetailData'">
         <thead>
         <tr>
-            <th data-field="orderid">订单编号</th>
+            <th data-field="orderId">订单编号</th>
             <th data-field="staffId" data-switchable="false">用户ID</th>
-            <th data-field="orderTime">开票时间</th>
-            <th data-field="ordermoney">发票金额</th>
-            <th data-field="skuName" data-visible="false">发票类型</th>
-            <th data-field="orderAmount" data-switchable="false">是否已开出</th>
-            <th data-field="orderMoney" data-visible="false">邮寄地址</th>
-            <th data-field="payFlag" data-visible="false">抬头</th>
-            <th data-field="invoiceStatus" data-switchable="false">社会统一信用代码</th>
-            <th data-field="paytradeId" data-visible="false">注册地址</th>
-            <th data-field="paytradeId" data-visible="false">注册电话</th>
-            <th data-field="paytradeId" data-visible="false">开户行</th>
-            <th data-field="paytradeId" data-visible="false">账号</th>
+            <th data-field="applyTime">开票时间</th>
+            <th data-field="applyMoneyShow">发票金额</th>
+            <th data-field="invoiceType">发票类型</th>
+            <th data-field="status" >是否已开出</th>
+            <th data-field="sendAddr" >邮寄地址</th>
+            <th data-field="invoiceTitle" >抬头</th>
+            <th data-field="taxpayerNo" >社会统一信用代码</th>
+            <th data-field="contactInfo">注册地址</th>
+            <th data-field="phone" >注册电话</th>
+            <th data-field="bankName" >开户行</th>
+            <th data-field="acctInfo" >账号</th>
         </tr>
         </thead>
     </table>

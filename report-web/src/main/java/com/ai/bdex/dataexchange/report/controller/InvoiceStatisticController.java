@@ -1,30 +1,24 @@
 package com.ai.bdex.dataexchange.report.controller;
 
-import java.util.Date;
-
+import com.ai.bdex.dataexchange.report.entity.OrdInvoiceTaxReqDTO;
 import com.ai.bdex.dataexchange.report.service.interfaces.IReportSV;
-import com.ai.bdex.dataexchange.report.service.interfaces.IRowForMat;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.utils.DateUtil;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jmx.export.annotation.ManagedAttribute;
-import org.springframework.jmx.export.assembler.InterfaceBasedMBeanInfoAssembler;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-
- import com.ai.bdex.dataexchange.report.entity.OrdInvoiceTaxReqDTO;
-import com.ai.bdex.dataexchange.report.service.interfaces.IReportSV;
-import com.github.pagehelper.Page;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import com.ai.bdex.dataexchange.util.StringUtil;
+import com.ai.paas.utils.DateUtil;
+import com.alibaba.dubbo.common.utils.CollectionUtils;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import java.util.ArrayList;
+import java.util.List;
+import org.springframework.beans.BeanUtils;
 
 /**
  * Created by yaphy on 2017/5/20.
@@ -37,7 +31,7 @@ public class InvoiceStatisticController {
     @Autowired
     private IReportSV reportSV;
 
-    @RequestMapping("/userregister")
+    @RequestMapping("/invoicestatistic")
     public String queryUserRegister(Model model,HttpServletRequest request) throws Exception{
         return "report/invoice_tax_register :: #table_content";
     }
@@ -47,9 +41,24 @@ public class InvoiceStatisticController {
         //查询条件
         OrdInvoiceTaxReqDTO queryInfo = this.getQueryParams(request);
         //报表ID
-        String reportId = "invoice_DetailReport";
+        String reportId = "invoice_DetailReport_query";
         //查询报表数据
         PageInfo<OrdInvoiceTaxReqDTO> page = reportSV.getRePortData(reportId,queryInfo );
+        List<OrdInvoiceTaxReqDTO> ordList = page.getList();
+        long totalcount = page.getTotal();
+        List<OrdInvoiceTaxReqDTO> rsList = new ArrayList<>();
+        if (!CollectionUtils.isEmpty(ordList)){
+            for(OrdInvoiceTaxReqDTO  source : ordList){
+                OrdInvoiceTaxReqDTO target = new OrdInvoiceTaxReqDTO();
+                BeanUtils.copyProperties(source,target);
+                target.setApplyTime(DateUtil.formatTime(source.getCreateTime()));
+                target.setApplyMoneyShow("￥"+source.getApplyMoney()/100);
+                rsList.add(target);
+            }
+        }
+        page.setList(rsList);
+        page.setTotal(totalcount);
+
         return page;
     }
     private OrdInvoiceTaxReqDTO getQueryParams(HttpServletRequest request){

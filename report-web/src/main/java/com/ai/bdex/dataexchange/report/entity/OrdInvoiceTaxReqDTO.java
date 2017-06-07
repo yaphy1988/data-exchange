@@ -23,14 +23,48 @@ public class OrdInvoiceTaxReqDTO  extends BaseInfo{
    private String status; 
    private String provinceCode; 
    private String createStaff; 
-   private Date createTime; 
-   private String updateStaff; 
+   private Date createTime;
+
+	public String getApplyTime() {
+		return applyTime;
+	}
+
+	public void setApplyTime(String applyTime) {
+		this.applyTime = applyTime;
+	}
+
+	private String applyTime;
+	private String updateStaff;
    private Date updateTime; 
    private String invoiceDesc;
 	private String invoiceType;//发票类型
+	private long applyMoney;//申请金额--分
+
+	public String getApplyMoneyShow() {
+		return applyMoneyShow;
+	}
+
+	public void setApplyMoneyShow(String applyMoneyShow) {
+		this.applyMoneyShow = applyMoneyShow;
+	}
+
+	private String applyMoneyShow;//申请金额--显示元
+
+	private String sendAddr;//邮寄地址
 
 	//查询条件
 	private Date startTime;
+	private Date endTime;
+
+	public String getSendAddr() {
+		return sendAddr;
+	}
+
+	public void setSendAddr(String sendAddr) {
+		this.sendAddr = sendAddr;
+	}
+
+
 
 	public Date getStartTime() {
 		return startTime;
@@ -48,7 +82,7 @@ public class OrdInvoiceTaxReqDTO  extends BaseInfo{
 		this.endTime = endTime;
 	}
 
-	private Date endTime;
+
 
 	public long getApplyMoney() {
 		return applyMoney;
@@ -58,12 +92,7 @@ public class OrdInvoiceTaxReqDTO  extends BaseInfo{
 		this.applyMoney = applyMoney;
 	}
 
-	private long applyMoney;//申请金额
 
-
-	private String taxAddr;//邮寄地址
-
-    private String taxAddrPhone;//邮寄电话
 
 	public String getInvoiceType() {
 		return invoiceType;
@@ -72,21 +101,9 @@ public class OrdInvoiceTaxReqDTO  extends BaseInfo{
 	public void setInvoiceType(String invoiceType) {
 		this.invoiceType = invoiceType;
 	}
-	public String getTaxAddr() {
-		return taxAddr;
-	}
 
-	public void setTaxAddr(String taxAddr) {
-		this.taxAddr = taxAddr;
-	}
 
-	public String getTaxAddrPhone() {
-		return taxAddrPhone;
-	}
 
-	public void setTaxAddrPhone(String taxAddrPhone) {
-		this.taxAddrPhone = taxAddrPhone;
-	}
 
 	public Long getOrderTaxId() {
 		return orderTaxId;
