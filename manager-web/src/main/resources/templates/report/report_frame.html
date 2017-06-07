@@ -31,7 +31,10 @@
             success: function(data){
                 $('#loading-info').hide();
                 $('#report_content').html(data).show();
-                initTable();
+                $('#report_content').find('table').each(function () {
+                    initTable($(this).attr('id'));
+                });
+
             },
             error:function(){
                 $('#loading-info').hide();

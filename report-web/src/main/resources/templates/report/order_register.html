@@ -37,27 +37,23 @@
            data-show-toggle="true"
            data-show-columns="true"
            data-show-export="true"
-           data-detail-view="true"
-           data-detail-formatter="detailFormatter"
-           data-minimum-count-columns="2"
            data-pagination="true"
+           data-query-params="queryParams"
+           data-side-pagination="server"
            data-id-field="id"
-           data-show-footer="false"
-           th:data-url="${#tools.reportDomain()}+'/reportdata/getOrderjsonData'"
-           data-side-pagination="server">
+           th:data-url="${#tools.reportDomain()}+'/reportdata/getOrderjsonData'">
         <thead>
         <tr>
             <th data-field="id">订单编号</th>
-            <th data-field="staffId" data-switchable="false">用户名</th>
+            <th data-field="staffId">用户名</th>
             <th data-field="orderTime">订购时间</th>
             <th data-field="gdsName">数据名称</th>
-            <th data-field="skuName" data-visible="false">套餐类别</th>
-            <th data-field="orderAmount" data-switchable="false">订购数量</th>
-            <th data-field="orderMoney" data-visible="false">金额</th>
-
-            <th data-field="payFlag" data-visible="false">订单状态*</th>
-            <th data-field="invoiceStatus" data-switchable="false">开票标志*</th>
-            <th data-field="paytradeId" data-visible="false">支付流水号</th>
+            <th data-field="skuName">套餐类别</th>
+            <th data-field="orderAmount">订购数量</th>
+            <th data-field="orderMoney">金额</th>
+            <th data-field="payFlag">订单状态*</th>
+            <th data-field="invoiceStatus">开票标志*</th>
+            <th data-field="paytradeId">支付流水号</th>
         </tr>
         </thead>
     </table>
