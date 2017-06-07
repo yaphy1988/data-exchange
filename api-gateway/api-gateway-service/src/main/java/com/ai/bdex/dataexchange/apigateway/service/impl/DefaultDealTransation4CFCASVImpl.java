@@ -49,6 +49,7 @@ public class DefaultDealTransation4CFCASVImpl implements IApiDealTransationSV{
 			resultMap=cFCATransactionSV.getResult(serviceId, version, getParamMap(paramMap));
 			
 			Object result=resultMap==null?null:resultMap.get("result");
+
 			dto.setResult(result);
 			if(null!=resultMap){
 				dto.setRespCode(SystemErrorCode.CODE_00000);

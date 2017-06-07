@@ -7,4 +7,5 @@ public interface IAipServiceUsedLogSV {
 	String insertAipServiceUsedLog(AipServiceUsedLog vo)throws Exception;
 	int updateAipServiceUsedLogByPK(AipServiceUsedLog vo)throws Exception;
 	int updateByPrimaryKeySelective(AipServiceUsedLog vo)throws Exception;
+	int updateByPrimaryKeySelectiveUnRollback(AipServiceUsedLog vo)throws Exception;
 }

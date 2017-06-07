@@ -194,11 +194,10 @@ public class ApiTransationSVImpl implements IApiTransationSV{
 		}
 		return info;
 	}
-	
-	@Transactional(propagation=Propagation.NOT_SUPPORTED)
+		
 	public void updateAipServiceUsedLog(AipServiceUsedLog logbean){
 		try{
-			aipServiceUsedLogSV.updateByPrimaryKeySelective(logbean);
+			aipServiceUsedLogSV.updateByPrimaryKeySelectiveUnRollback(logbean);
 		}catch(Exception e){
 			log.error("updateAipServiceUsedLog error",e);
 		}

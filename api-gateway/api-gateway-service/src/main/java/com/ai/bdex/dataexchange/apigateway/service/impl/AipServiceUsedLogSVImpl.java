@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.ai.bdex.dataexchange.apigateway.dao.mapper.AipServiceUsedLogMapper;
 import com.ai.bdex.dataexchange.apigateway.dao.model.AipServiceUsedLog;
@@ -56,6 +58,12 @@ public class AipServiceUsedLogSVImpl implements IAipServiceUsedLogSV{
 			log.error("update AipServiceUsedLog error:"+vo.getUsedId(),e);
 			throw e;
 		}
+	}
+	@Override
+	@Transactional(propagation=Propagation.NOT_SUPPORTED)
+	public int updateByPrimaryKeySelectiveUnRollback(AipServiceUsedLog vo)
+			throws Exception {
+		return updateByPrimaryKeySelective(vo);
 	}	
 	
 }

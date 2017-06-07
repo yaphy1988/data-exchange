@@ -31,6 +31,6 @@
   </tx:advice>
   <!-- aop proxy transaction config -->
   <aop:config proxy-target-class="true">
-    <aop:advisor pointcut="execution( * com.ai.bdex.dataexchange.*.dubbo.impl.*.*.*(..))" advice-ref="txAdvice"/>
+    <aop:advisor pointcut="execution( * com.ai.bdex.dataexchange.*.dubbo.impl.*.*(..))" advice-ref="txAdvice"/>
   </aop:config>
 </beans>

@@ -23,6 +23,10 @@ spring:
     username: bdex
     password: bdex1234
 
+logging:
+  level:
+    root: debug
+
 mybatis:
   mapper-locations: classpath:/sqlmapper/**/*.xml
   type-aliases-package: com.ai.bdex.dataexchange.*.dao.model
