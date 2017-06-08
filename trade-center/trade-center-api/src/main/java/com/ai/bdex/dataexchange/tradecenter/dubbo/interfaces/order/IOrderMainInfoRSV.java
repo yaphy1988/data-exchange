@@ -85,6 +85,14 @@ public interface IOrderMainInfoRSV {
      * @throws Exception
      */
     public int setOrderAndSubOrdToPayByManager(OrdMainInfoReqDTO ordMainInfoReqDTO,OrdInfoReqDTO ordInfo) throws Exception;
+	/***
+	 * 设置订单为失效
+	 * @param ordMainInfoReqDTO
+	 * @param ordInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public int setOrderTOofflineByManager(OrdMainInfoReqDTO ordMainInfoReqDTO,OrdInfoReqDTO ordInfo) throws Exception;
 
 
 }

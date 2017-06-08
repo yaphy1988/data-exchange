@@ -160,6 +160,24 @@ public class OrderMainInfoRSVImpl  implements IOrderMainInfoRSV {
         iOrdMainInfoSV.saveOrderlog(ordLog);
         return docount;
     }
+	/***
+	 * 管理员后台设置订单支付
+	 * @param ordMainInfoReqDTO
+	 * @return
+	 * @throws Exception
+	 */
+	public int setOrderTOofflineByManager(OrdMainInfoReqDTO ordMainInfoReqDTO,OrdInfoReqDTO ordInfo) throws Exception {
+		int docount =  updateOrderAndSubOrdStatuss(ordMainInfoReqDTO,  ordInfo);
+		//写支付日志
+		OrdLog ordLog = new OrdLog();
+		ordLog.setCreateStaff(ordMainInfoReqDTO.getCreateStaff());
+		ordLog.setOrderId(ordMainInfoReqDTO.getOrderId());
+		ordLog.setNode(Constants.Order.LOG_CODE_03);
+		ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_03);
+		iOrdMainInfoSV.saveOrderlog(ordLog);
+		return docount;
+	}
+
 
 	public OrdMainInfoRespDTO queryOrderDetail(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception {
 		 OrdMainInfoRespDTO  respOrderDetailDTO = new OrdMainInfoRespDTO();

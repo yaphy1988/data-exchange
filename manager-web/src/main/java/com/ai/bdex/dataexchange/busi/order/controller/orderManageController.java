@@ -552,7 +552,7 @@ public class orderManageController {
                     //更新人：staff_id
 					iAipCenterDataAccountRSV.dealDisableDataAccount(dataAccountDTO);
 					ordInfo.setPackageStatus(Constants.Order.ORDER_PACKAGE_STATUS_03);
-					iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
+					iOrderMainInfoRSV.setOrderTOofflineByManager(ordMainInfoReqDTO, ordInfo);
 
 					rMap.put("success", true);
 				} catch (Exception e) {
