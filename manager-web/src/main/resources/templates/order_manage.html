@@ -13,9 +13,7 @@
 	<script src="../static/js/jquery-1.12.4.js" th:remove="all"></script>
 	<script src="../static/js/bootstrap.min.js" th:remove="all"></script>
 	<script type="text/javascript" src="../../static/js-busi/order/orderManager.js" th:src="@{/js-busi/order/orderManager.js}"></script>
-	<!--<script src="../META-INF/resources/webjars/js/util.js" th:src="@{/webjars/js/util.js}"></script>
-	<script type="text/javascript" src="../../META-INF/resources/webjars/js/jquery.bootstrap.message.js" th:src="@{/webjars/js/jquery.bootstrap.message.js}"></script>
- 	-->
+
 	<link rel="stylesheet" href="../../META-INF/resources/webjars/smalot-bootstrap-datetimepicker/2.4.4/css/bootstrap-datetimepicker.css" th:href="@{/webjars/smalot-bootstrap-datetimepicker/2.4.4/css/bootstrap-datetimepicker.css}">
 	<script src="../META-INF/resources/webjars/smalot-bootstrap-datetimepicker/2.4.4/js/bootstrap-datetimepicker.js" th:src="@{/webjars/smalot-bootstrap-datetimepicker/2.4.4/js/bootstrap-datetimepicker.js}"></script>
 	<script src="../META-INF/resources/webjars/smalot-bootstrap-datetimepicker/2.4.4/js/locales/bootstrap-datetimepicker.zh-CN.js" th:src="@{/webjars/smalot-bootstrap-datetimepicker/2.4.4/js/locales/bootstrap-datetimepicker.zh-CN.js}"></script>
@@ -136,7 +134,7 @@
 								</td>
 								<td th:if="${list.orderStatus}=='03'">
 									<p class="pop-link">
-										订单已失效
+										--
 									</p>
 								</td>
 								<td th:if="${list.orderStatus}=='04'">
@@ -341,7 +339,7 @@
 							<td>
 								<div class="input-group date form_datetime col-md-2" >
 									<input class="form-control  changetype skuclass"   id="innavateDate" type="text"/>
-									<span class="input-group-addon"> <span class="glyphicon glyphicon-th"></span>  </span>
+									<span class="input-group-addon"> <span class="glyphicon glyphicon-th" id="dataselect"></span>  </span>
 								</div>
  							</td>
 						</tr>

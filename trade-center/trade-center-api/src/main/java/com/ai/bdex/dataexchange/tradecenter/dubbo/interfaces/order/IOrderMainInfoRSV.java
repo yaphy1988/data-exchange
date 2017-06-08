@@ -66,13 +66,6 @@ public interface IOrderMainInfoRSV {
 	 */
 	public int updateOrderAndSubOrderInfoByJob(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
 
-	/***
-	 * 接口调用API时，当订单调用量量已经达到最大值、或余额已为0 时，调用改接口。
-	 * 只需传入主订单和子订单ID
-	 * @param ordInfoReqDTO
-	 * @return
-	 * @throws Exception
-	 */
-	public int updateOrderAndSubOrderInfoByAip(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
+
 
 }

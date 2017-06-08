@@ -56,6 +56,17 @@ public class OrdInfoReqDTO extends BaseInfo{
 	private String ordertype;
 	private String source;//来源
 
+
+
+	private String packageStatus;//套餐状态 01 未生效(默认)，02 在用，03 有效期已达到，不可再用；
+	// 04 套餐已完成（订单调用量量已经达到最大值、或余额已为0，二者中一种情况达到均为订单完成--界面实时计算）
+	public String getPackageStatus() {
+		return packageStatus;
+	}
+
+	public void setPackageStatus(String packageStatus) {
+		this.packageStatus = packageStatus;
+	}
 	public String getSource() {
 		return source;
 	}

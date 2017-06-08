@@ -39,9 +39,10 @@ public class QuartzJobAutoConfig {
         solrDeltaImportJobInfo.setJobGroup("solrJobGroup");
         initJobs(solrDeltaImportJobInfo);
 
-        //订单设置为完成的定时任务
+        //订单设置为完成的定时任务 每隔10分钟执行一次
         QuartzTaskInfo orderStatusUpdateBaseJob = new QuartzTaskInfo();
-        orderStatusUpdateBaseJob.setCronExpression("0 0 3 * * ? ");
+        orderStatusUpdateBaseJob.setCronExpression("0 0/60 * * ? ");
+        //0 0/30 9-17 * * ?
         orderStatusUpdateBaseJob.setJobName(OrderStatusUpdateBaseJob.class.getName());
         orderStatusUpdateBaseJob.setJobGroup("orderJobGroup");
         initJobs(orderStatusUpdateBaseJob);

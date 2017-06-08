@@ -207,6 +207,35 @@ public class ThymeleafToolsUtil {
         //10普通订单 20手动创建订单
         return  orderTypeShow;
     }
+
+    /***
+     * 	private String packageStatus;//套餐状态 01 未生效(默认)，02 在用，03 有效期已达到，不可再用；
+     // 04 套餐已完成（订单调用量量已经达到最大值、或余额已为0，二者中一种情况达到均为订单完成--界面实时计算）
+     * @param packageStatus
+     * @return
+     */
+    public String formatPackageStatus(String packageStatus){
+        String packageStatusShow = "未知类型";
+        switch(packageStatus)
+        {
+            case "01":
+                packageStatusShow = "未生效";
+                break;
+            case "02":
+                packageStatusShow = "在用";
+                break;
+            case "03":
+                packageStatusShow = "有效期已达到";
+                break;
+            case "04":
+                packageStatusShow = "已完成";
+                break;
+            default:
+                packageStatusShow = "--";
+                break;
+        }
+         return  packageStatusShow;
+    }
 	public static void main(String[] args){
 		ThymeleafToolsUtil thymeleafToolsUtil = new ThymeleafToolsUtil();
 		String returnmoney = thymeleafToolsUtil.formatMoney(5);

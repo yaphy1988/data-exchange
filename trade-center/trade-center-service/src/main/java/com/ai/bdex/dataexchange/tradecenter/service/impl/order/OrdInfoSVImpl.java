@@ -155,28 +155,30 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 			criteria.andPayFlagEqualTo(ordInfoReqDTO.getPayFlag());
 		}
 	}
+
+	/**
+	 * 取消订单
+	 * @param ordInfoReqDTO
+	 * @return
+	 * @throws Exception
+     */
 	public int cancelOrderInfo(OrdInfoReqDTO ordInfoReqDTO) throws Exception{
-		OrdInfo record = new OrdInfo();	
-		OrdInfoExample example = new OrdInfoExample();
-		OrdInfoExample.Criteria criteria = example.createCriteria();
-		if(StringUtil.isNotBlank(ordInfoReqDTO.getOrderId())){
-			criteria.andOrderIdEqualTo(ordInfoReqDTO.getOrderId());
-		}
-		ordInfoReqDTO.setUpdateTime(DateUtil.getNowAsDate());
-        ObjectCopyUtil.copyObjValue(ordInfoReqDTO,record,null,false);
-		int code=ordInfoMapper.updateByExampleSelective(record, example);
+		int code=updateOrderStatus(ordInfoReqDTO);
 		return code;
 	}
+
+	/***
+	 * 修改子订单
+	 * @param ordInfoReqDTO
+	 * @return
+	 * @throws Exception
+     */
 	public int updateOrderStatus(OrdInfoReqDTO ordInfoReqDTO) throws Exception {
 		OrdInfo record = new OrdInfo();
 		OrdInfoExample example = new OrdInfoExample();
 		OrdInfoExample.Criteria criteria = example.createCriteria();
 		if(StringUtil.isNotBlank(ordInfoReqDTO.getOrderId())){
 			criteria.andOrderIdEqualTo(ordInfoReqDTO.getOrderId());
-		}
-		if(StringUtil.isBlank(ordInfoReqDTO.getStatus()))
-		{
-			return 0;
 		}
 		ordInfoReqDTO.setUpdateTime(DateUtil.getNowAsDate());
 		ObjectCopyUtil.copyObjValue(ordInfoReqDTO,record,null,false);

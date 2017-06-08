@@ -114,7 +114,8 @@ function changeCreateType(){
 	$("#ordernum").removeAttr("readonly");
 	$('#skunamebtn').removeAttr("disabled");
 	$("#allmoney").attr("readonly","readonly");
- 	$("#gdsid").val();
+
+	$("#gdsid").val();
 	$("#gdsname").val();
 
 	var seleopValue = $("#typeOption").val();

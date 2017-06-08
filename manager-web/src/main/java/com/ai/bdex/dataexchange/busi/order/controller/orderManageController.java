@@ -285,7 +285,12 @@ public class orderManageController {
    						//从计费接口去可用次数
    						DataAccountDTO dataAccountDTO= iAipCenterDataAccountRSV.queryDataAccountBySubOrder(ordInfoRespDTO.getSubOrder());
    						if(dataAccountDTO!=null&&dataAccountDTO.getLeftNum()!=null){
+   							//我的订单中只有固定套餐和自定义套餐,都必须有次数的，如果是次数为0 ，则应该给他一个状态为03
    							ordInfoRespDTO.setLeftCount(dataAccountDTO.getLeftNum());
+							if(dataAccountDTO.getLeftNum() <= 0)
+							{
+								ordInfoRespDTO.setPackageStatus(Constants.Order.ORDER_PACKAGE_STATUS_04);
+							}
    						}
    					}
    					ordMainRespDTO.setOrdInfoRespDTO(ordInfoRespDTO);
@@ -359,16 +364,18 @@ public class orderManageController {
 						}
 						//去查询可用次数
 						try{
-							String suborderid = ordInfoRespDTO.getSubOrder();
-							DataAccountDTO dataAccountDTO= iAipCenterDataAccountRSV.queryDataAccountBySubOrder(suborderid);
-							if(dataAccountDTO != null){
-								int iLeftNum = dataAccountDTO.getLeftNum();
- 								ordInfoRespDTO.setBelanceAllCount(iLeftNum);
-                                ordInfoRespDTO.setDataAccountId(dataAccountDTO.getDataAcctId());
-								/*int iUsedAll = dataAccountDTO.getTotalConsumeNum();
-								long lUsedAll=(long)iUsedAll;
-								ordInfoRespDTO.setUsedAllCount(lUsedAll);*/
-							}
+
+						    if(!ordMainRespDTO.getOrderType().equals(Constants.Order.ORDER_TYPE_30))
+                            {
+                                //非跨类套餐才去查询次数
+                                String suborderid = ordInfoRespDTO.getSubOrder();
+                                DataAccountDTO dataAccountDTO= iAipCenterDataAccountRSV.queryDataAccountBySubOrder(suborderid);
+                                if(dataAccountDTO != null){
+                                    int iLeftNum = dataAccountDTO.getLeftNum();
+                                    ordInfoRespDTO.setBelanceAllCount(iLeftNum);
+                                    ordInfoRespDTO.setDataAccountId(dataAccountDTO.getDataAcctId());
+                                }
+                            }
 						}
 						catch(Exception e2){
 							logger.error("查询我的订单列表失败！原因是：" + e2.getMessage());

@@ -149,17 +149,15 @@ public class OrderMainInfoRSVImpl  implements IOrderMainInfoRSV {
  	public int updateOrderAndSubOrderInfoByAip(OrdInfoReqDTO ordInfoReqDTO) throws Exception{
 		try{
  			//将数据设置为无效的
-			OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
-			ordMainInfoReqDTO.setOrderId(ordInfoReqDTO.getOrderId());
-			//ordMainInfoReqDTO.setUpdateStaff(Constants.Order.ORDER_UPDATE_USER_SYS);
-			ordMainInfoReqDTO.setOrderStatus(Constants.Order.ORDER_STATUS_04);
+			// 套餐状态：00 未生效，02 在用，03 有效期已达到，不可再用；
+			// 04 套餐已完成（订单调用量量已经达到最大值、或余额已为0，二者中一种情况达到均为订单完成--界面实时计算）
 			OrdInfoReqDTO ordInfo = new OrdInfoReqDTO();
-			//ordInfo.setUpdateStaff(Constants.Order.ORDER_UPDATE_USER_SYS);
+			ordInfo.setUpdateStaff(Constants.Order.ORDER_UPDATE_USER_SYS);
 			ordInfo.setOrderId(ordInfoReqDTO.getOrderId());
 			ordInfo.setSubOrder(ordInfoReqDTO.getSubOrder());
-			ordInfo.setStatus(Constants.Order.ORDER_STATUS_04);
-			 updateOrderAndSubOrdStatuss(ordMainInfoReqDTO,ordInfo);
-		}
+			ordInfo.setPackageStatus(Constants.Order.ORDER_PACKAGE_STATUS_03);
+			int code  = iOrdInfoSV.updateOrderStatus(ordInfo);
+ 		}
 		catch (Exception e){
 			throw new Exception("updateOrderAndSubOrderInfoByAip：订单完成状态失败："+e.getStackTrace());
 		}
@@ -177,7 +175,7 @@ public class OrderMainInfoRSVImpl  implements IOrderMainInfoRSV {
 					OrdInfoReqDTO ordInfoReqDTO2 = new OrdInfoReqDTO();
 					ordInfoReqDTO2.setOrderId(resordInfoRespDTO.getOrderId());
 					ordInfoReqDTO2.setSubOrder(resordInfoRespDTO.getSubOrder());
-					updateOrderAndSubOrderInfoByAip(ordInfoReqDTO2);
+ 					updateOrderAndSubOrderInfoByAip(ordInfoReqDTO2);
 				}
 			}
 		}
