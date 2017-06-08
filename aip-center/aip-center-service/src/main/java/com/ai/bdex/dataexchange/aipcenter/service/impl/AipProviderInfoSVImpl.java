@@ -168,13 +168,9 @@ public class AipProviderInfoSVImpl implements IAipProviderInfoSV{
     private AipProviderInfo getAipProviderInfoByOrder(AipProviderInfo currentProviderInfo , int newOrder) throws Exception{
     	AipProviderInfoExample example = new AipProviderInfoExample();
 		AipProviderInfoExample.Criteria criteria = example.createCriteria();
-//		if (!StringUtil.isBlank(currentProviderInfo.getProviderId())) {
-//			criteria.andProviderIdEqualTo(currentProviderInfo.getProviderId());
-//		}
 		if (newOrder!= 0) {
 			criteria.andProviderSortEqualTo(newOrder);
 		}
-		criteria.andStatusEqualTo(Constants.Page.STATUS_VALID);
 		List<AipProviderInfo> list = aipProviderInfoMapper.selectByExample(example);
 
         if(CollectionUtil.isEmpty(list)){

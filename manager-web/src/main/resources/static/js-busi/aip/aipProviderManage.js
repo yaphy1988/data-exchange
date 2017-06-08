@@ -10,6 +10,7 @@ function queryAipProviderInfoList(pageNo) {
 		status : status,
 		pageNo : pageNo
 	};
+	$.gridLoading({message:"修改供应商列表"});
 	$.ajax({
 		url : WEB_ROOT + "/aipProviderManage/queryAipProviderInfoList",
 		type : 'post',
@@ -19,6 +20,7 @@ function queryAipProviderInfoList(pageNo) {
 		success : function(data) {
 			$("#aipProviderInfoList").empty();
 			$("#aipProviderInfoList").html(data);
+			$.gridUnLoading({message:"修改供应商列表"});
 		}
 	});
 }
