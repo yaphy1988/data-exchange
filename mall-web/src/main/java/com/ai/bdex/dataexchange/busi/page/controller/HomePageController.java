@@ -1,18 +1,21 @@
 package com.ai.bdex.dataexchange.busi.page.controller;
 
-import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
-
-import com.ai.bdex.dataexchange.constants.Constants;
+import com.ai.bdex.dataexchange.busi.page.entity.PageModuleGoodsVO;
+import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
+import com.ai.bdex.dataexchange.busi.page.entity.PageNewsInfoVO;
+import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.*;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
 import com.ai.bdex.dataexchange.usercenter.dubbo.dto.StaffInfoDTO;
+import com.ai.bdex.dataexchange.util.StaffUtil;
+import com.ai.paas.util.ImageUtil;
+import com.ai.paas.utils.StringUtil;
+import com.alibaba.boot.dubbo.annotation.DubboConsumer;
+import com.alibaba.dubbo.common.utils.StringUtils;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
@@ -23,32 +26,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.ai.bdex.dataexchange.busi.page.entity.PageModuleGoodsVO;
-import com.ai.bdex.dataexchange.busi.page.entity.PageModuleVO;
-import com.ai.bdex.dataexchange.busi.page.entity.PageNewsInfoVO;
-import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.DataCustomizationRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHeaderNavRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageHotSearchRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleAdRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleGoodsRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageModuleRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.PageNewsInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.page.SortInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.page.IPageDisplayRSV;
-import com.ai.bdex.dataexchange.util.StaffUtil;
-import com.ai.paas.util.ImageUtil;
-import com.ai.paas.utils.StringUtil;
-import com.alibaba.boot.dubbo.annotation.DubboConsumer;
-import com.alibaba.dubbo.common.utils.StringUtils;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.net.URLDecoder;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -448,11 +433,9 @@ public class HomePageController {
 	}
 	//分页查询新闻资讯列表
 	@RequestMapping(value="/queryNewsPageInfo")
-	@ResponseBody
-	public Map<String,Object> queryNewsPageInfo(HttpServletRequest request){
+	public String queryNewsPageInfo(HttpServletRequest request,Model model){
 		String pageNo = request.getParameter("pageNo");
 		String moduleId = request.getParameter("moduleId");
-		Map<String, Object> rMap = new HashMap<String, Object>();
 		PageResponseDTO<PageNewsInfoRespDTO> pageInfoList = new PageResponseDTO<>();
 		PageModuleRespDTO moduleRespDTO = null;
 		try {
@@ -476,6 +459,7 @@ public class HomePageController {
 					if(!CollectionUtils.isEmpty(result)){
 						for(PageNewsInfoRespDTO infoRespDTO : result){
 							infoRespDTO.setInfoType(moduleRespDTO.getModuleName());
+							model.addAttribute("moduleName", moduleRespDTO.getModuleName());
 							infoRespDTO.setInfoUrl(ImageUtil.getStaticDocUrl(infoRespDTO.getInfoUrl(), "html"));
 						}
 						
@@ -505,13 +489,11 @@ public class HomePageController {
 					}
 				}
 			}
-			rMap.put("pageInfo", pageInfoList);
-			rMap.put("success", true);
+			model.addAttribute("pageInfo", pageInfoList);
 		} catch (Exception e) {
-			rMap.put("success", false);
 			log.error("查询新闻资讯列表异常：" + e.getMessage());
 		}
-		return rMap;
+		return "info_list :: #info_listitem";
 	}
 	/**
 	 * 公司简介
@@ -544,11 +526,9 @@ public class HomePageController {
 	 * @return
 	 */
 	@RequestMapping(value = "/queryRightNewslist")
-	@ResponseBody
-	private Map<String, Object> queryRightNewslist(HttpServletRequest request) {
+	private String queryRightNewslist(HttpServletRequest request,Model model) {
 		String moduleType = request.getParameter("moduleType");
 		String modulePid = request.getParameter("modulePid");
-		Map<String, Object> rMap = new HashMap<String, Object>();
 		List<PageNewsInfoVO> resultList = new ArrayList<>();
 		try {
 			
@@ -599,14 +579,11 @@ public class HomePageController {
 					resultList.add(newsInfoVO);
 				}
 			}
-			
-			rMap.put("rightNewsList", resultList);
-			rMap.put("success", true);
+			model.addAttribute("resultList", resultList);
 		} catch (Exception e) {
-			rMap.put("success", false);
 			log.error("查询首页导航信息信息异常：" + e.getMessage());
 		}
-		return rMap;
+		return "home/rightNewslist :: #news_list";
 	}
 	protected String getJsonCallback(Map<String, Object> map,HttpServletRequest request){
 		String callback = request.getParameter("jsonpCallback");

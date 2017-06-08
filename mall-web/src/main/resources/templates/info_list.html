@@ -126,23 +126,24 @@
 		<input type="hidden" id="news_moduleId" th:value="${moduleId}"/>
 		<div class="info clearfix pt20">
 			<div class="infoLeft">
-				<div class="infoLeft_inner">
+				<div class="infoLeft_inner" id="info_listitem">
 					<div class="title">
-						<i class="glyphicon glyphicon-list-alt"></i>行业资讯
+						<i class="glyphicon glyphicon-list-alt"></i><span th:text="${moduleName}"></span>
 					</div>
-					<div class="con" id="info_listitem" th:remove="body">
-						<div class="info_item">
+					<div class="con" th:remove="all-but-first" th:if="${pageInfo}">
+						<div class="info_item" th:each="rs : ${pageInfo.result}">
 							<dl >
 								<dt>
-									<label class="label label-default">行业新闻</label>
-									大数据揭秘：视频数据的“火眼金睛”
-									
+									<label class="label label-default" th:text="${rs.infoType}">行业新闻</label>
+									<a style="margin-left:10px" th:href="@{'/homePage/newsDetail?infoId='+${rs.infoId}}" target="_blank" th:text="${rs.infoTitle}">
+										大数据揭秘：视频数据的“火眼金睛”
+									</a>
 								</dt>
-								<dd>我们身处一个大数据的时代，视频数据的爆炸性增长是这个时代的重要特征之一。“如何让计算机看懂视频的内容，实现对海量视频数据的检索和分析是有效管理和利用视频大数据的关键。”中国科学院自动化研究所研究员王金.</dd>
+								<dd th:infoId="${rs.infoId}" th:infoUrl="${rs.infoUrl}">我们身处一个大数据的时代，视频数据的爆炸性增长是这个时代的重要特征之一。“如何让计算机看懂视频的内容，实现对海量视频数据的检索和分析是有效管理和利用视频大数据的关键。”中国科学院自动化研究所研究员王金.</dd>
 							</dl>
 							<div class="info_panel">
 								<span class="pr20">发布方:广州数据交易：www.gzbdex.com</span>
-								<span>发布时间:2017-04-17</span>
+								<span>发布时间：<span th:text="${#dates.format(rs.pubTime, 'yyyy-MM-dd')}">2017-04-17</span></span>
 							</div>
 						</div>
 						<div class="info_item">
@@ -161,30 +162,28 @@
 						</div>
 					</div>
 					<!-- 分页-->
-					<div  class="pagelist" style="margin-top:0px;" >
-						<span data-toggle="pager" id="pagerId" data-count="" data-size="" data-currentindex="" ></span>
-					</div>
+					<div th:replace="~{fragments/pager :: pager}"></div>
 					<div class="pagelist" th:remove="all">
-                            <nav aria-label="Page navigation">
-                                <ul class="pagination">
-                                    <li >
-                                        <a href="#" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-                                    <li class="active"><a href="#">1</a></li>
-                                    <li><a href="#">2</a></li>
-                                    <li><a href="#">3</a></li>
-                                    <li><a href="#">4</a></li>
-                                    <li><a href="#">5</a></li>
-                                    <li>
-                                        <a href="#" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
+						<nav aria-label="Page navigation">
+							<ul class="pagination">
+								<li >
+									<a href="#" aria-label="Previous">
+										<span aria-hidden="true">&laquo;</span>
+									</a>
+								</li>
+								<li class="active"><a href="#">1</a></li>
+								<li><a href="#">2</a></li>
+								<li><a href="#">3</a></li>
+								<li><a href="#">4</a></li>
+								<li><a href="#">5</a></li>
+								<li>
+									<a href="#" aria-label="Next">
+										<span aria-hidden="true">&raquo;</span>
+									</a>
+								</li>
+							</ul>
+						</nav>
+					</div>
 				</div>
 			</div>
 			<div th:replace="~{home/rightNewslist :: rightNewslist}"></div>

@@ -19,54 +19,34 @@
 				var url = basePath+'/homePage/queryRightNewslist';
 				var params ={moduleType:moduleType,modulePid:modulePid}; //新闻资讯类型
 				var callBack =function(data){
-					var html='';
-					if(data.success){
-						var newsList = data.rightNewsList;
-						$(newsList).each(function(i,d){
-							var moduleVO = d.pageModuleVO;
-							var infoList = d.newsInfoList;
-							if(i==0){
-								html +='<div class="sidebarBox" style="border-top:none;"><h3 class="title">';
-							}else{
-								html +='<div class="sidebarBox"><h3 class="title">';
-							}
-							html +='<a href="'+basePath+'/homePage/pageNewsInfolist?moduleId='+moduleVO.moduleId+'"  class="pull-right more">查看全部 »</a>';
-							html +=''+moduleVO.moduleName+'</h3><ul class="sideli">';
-			                $(infoList).each(function(k,f){
-			                	html+='<li><a href="'+basePath+'/homePage/newsDetail?infoId='+f.infoId+'" target="_blank">'+f.infoTitle+'</a></li>';
-			                });
-			                html += '</ul></div>';
-						});
-					}
-					$('#news_list').html(html);
+					$('#right_content').html(data);
 				};
-				doAjax(url,params,callBack);	
+				$.appAjax({
+					url:url,
+					data:params,
+					dataType:'html',
+					cache:false,
+					async:true,
+					success:callBack
+				});
 			}
 		</script>
-		<div class="infoRight" id="news_list" th:remove="body">
-			<div class="sidebarImg">
+		<div class="infoRight" id="right_content">
+			<!--<div class="sidebarImg">
 				<img src="" width="200" height="200">
-			</div>
-			<!-- <div class="sidebarCollect">
-				<ul class="sideli">
-					<li><a href=""><i class="glyphicon glyphicon-leaf"></i>行业资讯</a></li>
-					<li><a href=""><i class="glyphicon glyphicon-leaf"></i>平台公告</a></li>
-					<li><a href=""><i class="glyphicon glyphicon-leaf"></i>平台活动</a></li>
-					<li><a href=""><i class="glyphicon glyphicon-leaf"></i>常见问题</a></li>
-				</ul>
-			</div> -->
-			<div class="sidebarBox" style="border-top:none;">
+			</div>-->
+			<div  th:if="${resultList}" id="news_list" th:each="rs,status : ${resultList}" class="sidebarBox" style="border-top:none;">
 				<h3 class="title">
-					<a href="" class="pull-right more">查看全部 »</a>
-					行业资讯
+					<a th:href="@{'/homePage/pageNewsInfolist?moduleId='+${rs.pageModuleVO.moduleId}}" class="pull-right more">查看全部 »</a>
+					<span th:if="${rs.pageModuleVO}" th:text="${rs.pageModuleVO.moduleName}">行业资讯</span>
 				</h3>
-				<ul class="sideli">
-					<li><a href="">如何才能完成一场高效的演讲？</a></li>
+				<ul class="sideli" th:if="${rs.newsInfoList}" th:each="info :${rs.newsInfoList}" th:remove="all-but-first">
+					<li><a th:href="@{'/homePage/newsDetail?infoId='+${info.infoId}}" target="_blank" th:text="${info.infoTitle}">如何才能完成一场高效的演讲？</a></li>
 					<li><a href="">如何才能完成一场高效的演讲？</a></li>
 					<li><a href="">如何才能完成一场高效的演讲？</a></li>
 				</ul>
 			</div>
-			<div class="sidebarBox">
+			<div class="sidebarBox" th:remove="all">
 				<h3 class="title">
 					<a href="" class="pull-right more">查看全部 »</a>
 					平台公告
@@ -77,7 +57,7 @@
 					<li><a href="">如何才能完成一场高效的演讲？</a></li>
 				</ul>
 			</div>
-			<div class="sidebarBox">
+			<div class="sidebarBox" th:remove="all">
 				<h3 class="title">
 					<a href="" class="pull-right more">查看全部 »</a>
 					平台活动
@@ -89,7 +69,7 @@
 				</ul>
 			</div>
 		
-			<div class="sidebarBox">
+			<div class="sidebarBox" th:remove="all">
 				<h3 class="title">
 					<a href="" class="pull-right more">查看全部 »</a>
 					常见问题
