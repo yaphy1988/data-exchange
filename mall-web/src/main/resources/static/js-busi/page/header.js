@@ -60,7 +60,7 @@ var header = new Object({
 						//一级菜单：
 						var c = d.contentRespDTO;
 						if(c != null){
-							htmlLever1 +='<li pSortId='+c.sortId+'><a href="'+setLinkUrk(c.contentLink)+'"  target="_blank"><i>&rsaquo;</i>'+c.contentName+'</a> </li>';
+							htmlLever1 +='<li pSortId='+c.sortId+'><a href="javascript:;"  target="_blank"><i>&rsaquo;</i>'+c.contentName+'</a> </li>';
 
 						}else{
 							htmlLever1 +='<li pSortId='+d.sortId+'><a href="javascript:;"  target="_blank"><i>&rsaquo;</i>'+d.sortName+'</a> </li>';
@@ -72,7 +72,7 @@ var header = new Object({
 						//子菜单：目前只取一个
 						var subMenu = subSortInfoList[0];
 						htmlLever2 += '<div pSortId='+subMenu.parentSortId+' class="sidebar-hidden" style="display: none">'+
-						'<h4>'+subMenu.sortName+'</h4>'+
+						'<a href="'+setLinkUrk(subMenu.contentRespDTO.contentLink)+'" ><h4>'+subMenu.sortName+'</h4></a>'+
 						'<div class="sidebar-link">';
 						//子菜单内容	
 						var contentVOList = subMenu.sortInfoRespDTOList;
