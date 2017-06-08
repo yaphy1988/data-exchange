@@ -11,16 +11,18 @@
   from t_aip_service_used_log m LEFT JOIN t_aip_client_info t on 
   t.CLIENT_ID=m.CLIENT_ID LEFT JOIN 
   (SELECT x.CLIENT_ID,x.service_id,COUNT(x.SERVICE_ID) as successCount from t_aip_service_used_log x 
-  WHERE x.`STATUS`='1' 
+  <where>
+   x.`STATUS`='1' 
   <if test="startTime != null">
   <![CDATA[and x.CREATE_TIME >= #{startTime}]]>
   </if>
   <if test="endTime != null">
   <![CDATA[and x.CREATE_TIME <= #{endTime}]]>
   </if>
+  </where>
   GROUP BY x.CLIENT_ID,x.service_id) y on 
   y.service_id=m.SERVICE_ID AND y.CLIENT_ID=m.CLIENT_ID 
-  where 1=1 
+  <where>
   <if test="startTime != null">
   <![CDATA[and m.CREATE_TIME >= #{startTime}]]>
   </if>
@@ -30,6 +32,7 @@
   <if test="userId != null">
   <![CDATA[and t.USER_ID = #{userId}]]>
   </if>
+  </where> 
   GROUP BY t.client_id,t.user_id,m.service_id order by t.USER_ID,totalCount
   </select>
   
@@ -43,7 +46,7 @@
   s.unit_price unitPrice from t_aip_service_used_log m 
   LEFT JOIN t_aip_client_info t on t.CLIENT_ID=m.client_id
   LEFT JOIN t_aip_service_info s on s.SERVICE_ID=m.SERVICE_ID  
-  where 1=1
+  <where>
   <if test="startTime != null">
   <![CDATA[and m.CREATE_TIME >= #{startTime}]]>
   </if>
@@ -53,6 +56,7 @@
   <if test="userId != null">
   <![CDATA[and t.USER_ID = #{userId}]]>
   </if>
+  </where>
   order by createTime desc
   </select>
 </mapper>
