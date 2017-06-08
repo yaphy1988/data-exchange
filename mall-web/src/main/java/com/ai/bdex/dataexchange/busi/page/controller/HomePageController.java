@@ -621,4 +621,13 @@ public class HomePageController {
 			throw new RuntimeException("JsonUtil.toJSONString发生错误", e);
 		}
 	}
+
+	/**
+	 * 帮助中心
+	 */
+	@RequestMapping(value="/ihaveData")
+	private String IhaveData(){
+		String viewName = "ihaveData";
+		return viewName;
+	}
 }
