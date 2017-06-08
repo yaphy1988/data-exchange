@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ai.bdex.dataexchange.report.dao.mapper.ApiServiceCountMapper">
+  <select id="ApiServiceCountReport" resultType="com.ai.bdex.dataexchange.report.entity.AipServiceCountQueryInfo" parameterType="com.ai.bdex.dataexchange.report.entity.AipServiceCountQueryInfo">
+
+   select t.service_id serviceId,t.service_name serviceName, t.status , a.ordAmount,b.requestSum,b.requestSucess ,b.localData from t_aip_service_info as t
+      left join (select t_ord_info.AIP_SERVICE_ID,sum(t_ord_info.ORDER_AMOUNT)  as ordAmount from t_ord_info group by t_ord_info.AIP_SERVICE_ID) as a on a.AIP_SERVICE_ID = t.SERVICE_ID
+      left join (select t_aip_service_used_log.SERVICE_ID, count(*) as requestSum,  count(case when t_aip_service_used_log.STATUS = '1' then 1  end  )  as requestSucess,count(case  when  t_aip_service_used_log.STATUS='1' and t_aip_service_used_log.data_flag='1' then 1  end ) as localData  from t_aip_service_used_log
+      <if test="startTime != null and endTime !=null">
+        WHERE t_aip_service_used_log.create_time >= #{startTime}  AND  t_aip_service_used_log.create_time = #{endTime}
+      </if>
+       )  as b on b.SERVICE_ID = t.SERVICE_ID  WHERE  1=1
+    <if test="serviceNameKey != null">
+      AND t.service_name LIKE #{serviceNameKey}
+    </if>
+
+    <if test="queryStatus != null">
+      AND t.status = #{queryStatus}
+    </if>
+
+  </select>
+</mapper>

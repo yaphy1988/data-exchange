@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script type="text/javascript" src="../../META-INF/resources/webjars/jquery/3.2.0/jquery.js" th:remove="all"></script>
+</head>
+<body>
+<div layout:fragment="screen_content" id="table_content">
+    <ol class="breadcrumb">
+        <li><strong><span style="color: #27a0d7">API运行统计</span></strong></li>
+    </ol>
+    <form class="form-inline" role="form" style="float: left;padding-bottom:20px;" method="post" id="queryForm">
+        <div class="form-group">
+            <label >请求时间:</label>
+            <input placeholder="开始时间" class="form-control layer-date" id="startTime" name="startTime">-
+            <input placeholder="结束时间" class="form-control layer-date" id="endTime" name="endTime">
+        </div>
+        <div class="form-group">
+            <button type="button" id="queryBtn" th:onclick="|doQuery();|" class="btn btn-primary">查询</button>
+        </div>
+    </form>
+    <table id="table"
+           data-show-refresh="true"
+           data-show-toggle="true"
+           data-show-columns="true"
+           data-show-export="true"
+           data-pagination="true"
+           data-side-pagination="server"
+           th:data-url="${#tools.reportDomain()}+'/reportdata/getServiceCount'">
+        <thead>
+        <tr>
+
+            <th data-field="serviceId">服务编码</th>
+            <th data-field="serviceName">服务名称</th>
+            <th data-field="status">服务状态</th>
+            <th data-field="invoiceType">发票类型</th>
+            <th data-field="ordAmount" >连接量</th>
+            <th data-field="requestSum" >请求次数</th>
+            <th data-field="requestSucess" >成功次数</th>
+            <th data-field="localData" >缓存调用次数</th>
+
+        </tr>
+        </thead>
+    </table>
+    <script>
+        $(function () {
+            dateTimepickerinit($('#startTime'),$('#endTime'));
+        });
+        //请求服务器数据入参方法，参数可自定义
+        function queryParams(params) {
+            var param = {
+                startDate : $("#startTime").val(),
+                endDate : $("#endDate").val(),
+                pageindex : this.pageNumber,
+                pageSize : this.pageSize
+            }
+            return param;
+        }
+        //加载服务器数据之前的处理程序，可以用来格式化数据。
+        //参数：res为从服务器请求到的数据。服务器返回PageInfo<T>的json格式，必须包含total
+        function responseHandler(res) {
+            if (res) {
+                var rows = res.list;
+                $.each(rows, function (i, row) {
+                    row.state = $.inArray(row.id, selections) !== -1;
+                });
+                return {
+                    "rows" : res.list,
+                    "total" : res.total
+                };
+            } else {
+                return {
+                    "rows" : [],
+                    "total" : 0
+                };
+            }
+        }
+        //自定义查询触发事件
+        function doQuery(params){
+            $('#table').bootstrapTable('refresh');//刷新表格
+            $.ajax({
+                url: REPORT_ROOT+"/reportdata/getServiceCount",
+                type: "POST",
+                dataType: "html",
+                cache: false,
+                async: true,
+                crossDomain: true,
+                xhrFields: {
+                    withCredentials: true
+                },
+                success: function(data){
+                    $("#userTotalData").html($(data).html());
+                }
+            });
+        }
+
+        /**
+         * 初始化时间控件
+         * @param startTime
+         * @param endTime
+         */
+        function dateTimepickerinit(startTime,endTime) {
+            startTime.datetimepicker({
+                format: 'yyyy-mm-dd 00:00:00',
+                minView:'month',
+                language: 'zh-CN',
+                clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
+                autoclose:true
+                // startDate:new Date()
+            }).on("click",function(){
+                startTime.datetimepicker("setEndDate",endTime.val());
+            });
+            endTime.datetimepicker({
+                format: 'yyyy-mm-dd 23:59:59',
+                minView:'month',
+                language: 'zh-CN',
+                clearBtn:true,// 自定义属性,true 显示 清空按钮 false 隐藏 默认:true
+                autoclose:true
+                // startDate:new Date()
+            }).on("click",function(){
+                endTime.datetimepicker("setStartDate",startTime.val());
+            });
+        }
+    </script>
+</div>
+</body>
+</html>
