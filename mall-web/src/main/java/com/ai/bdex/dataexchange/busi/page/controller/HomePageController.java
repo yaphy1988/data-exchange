@@ -164,14 +164,11 @@ public class HomePageController {
 	 * 通过楼层ID查询广告信息
 	 * 
 	 * @param model
-	 * @param moduleId
 	 * @return
 	 */
 	@RequestMapping(value = "/queryPageModuleAd")
-	@ResponseBody
-	public Map<String, Object> queryPageModuleAd(Model model, HttpServletRequest request) {
+	public String queryPageModuleAd(Model model, HttpServletRequest request) {
 		String moduleId = request.getParameter("moduleId");
-		Map<String, Object> rMap = new HashMap<String, Object>();
 		try {
 			// 查询楼层信息
 			PageModuleReqDTO pageModuleReqDTO = new PageModuleReqDTO();
@@ -214,12 +211,11 @@ public class HomePageController {
 					}
 				}
 			}
-			rMap.put("moduleAdList", moduleAdPageInfo.getResult());
-			rMap.put("success", true);
+			model.addAttribute("moduleAdList", moduleAdPageInfo.getResult());
 		} catch (Exception e) {
 			log.error("查询广告楼层信息出错：楼层ID=" + moduleId + "," + e.getMessage());
 		}
-		return rMap;
+		return "index :: #carousel-example-generic";
 	}
 
 	/**

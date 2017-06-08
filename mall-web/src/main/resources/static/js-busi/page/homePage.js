@@ -101,28 +101,10 @@ function queryModue101(moduleId){
 	var url = basePath+'/homePage/queryPageModuleAd';
 	var params={moduleId:moduleId};
 	var callBack =function(data){
-		var htmlOl = '';
-		var htmDiv = '';
-		if(data.success){
-			$(data.moduleAdList).each(function(i,d){
-				if(i==0){
-					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'" class="active"></li>';
-					htmDiv +='<div class="item active">'+
-	                '<a href="'+setLinkUrk(d.linkPage)+'" target="_blank"><img src="'+d.vfsId+'" alt="'+d.adTitle+'"></a>'+
-	            '</div>';
-				}else{
-					htmlOl +='<li data-target="#carousel-example-generic" data-slide-to="'+i+'"></li>';
-					htmDiv +='<div class="item">'+
-		                '<a href="'+setLinkUrk(d.linkPage)+'" target="_blank"><img  src="'+d.vfsId+'" alt="'+d.adTitle+'"></a>'+
-		            '</div>';
-				}
-			});
-		}
-		$('#carousel-example-generic>ol').html(htmlOl);
-		$('#carousel-example-generic>div').html(htmDiv);
-		$('#carousel-example-generic').carousel({interval: 5000});
-	};
-	doAjax(url,params,callBack);
+		$("#main_carousel").html(data);
+        $('#carousel-example-generic').carousel({interval: 5000});
+    };
+    $.appAjax({url : url,type : "POST",dataType : "html", async : true,data : params,success : callBack});
 }
 //获取数据定制的图片
 function queryModue103(moduleId){
