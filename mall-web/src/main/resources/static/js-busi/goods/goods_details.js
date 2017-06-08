@@ -201,3 +201,14 @@ function userfootprint(){
 	        }
 	    })
 }
+
+function hideMadeDataModal()
+{
+    $("#myModal").modal('hide');
+}
+
+//显示提示
+function showwarm(id,msg){
+    $("#"+id).find("p").css('visibility','visible');
+    $("#"+id).find("span").html(msg);
+}
