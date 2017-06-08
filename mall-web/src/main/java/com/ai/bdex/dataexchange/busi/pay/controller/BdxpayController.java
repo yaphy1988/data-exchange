@@ -364,7 +364,7 @@ public class BdxpayController {
 				rechargeDTO.setTotalMoney(iordermoney);
 				try {
 					iAipCenterDataAccountRSV.dealRecharge(rechargeDTO);
-					iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
+					iOrderMainInfoRSV.setOrderAndSubOrdToPayInline(ordMainInfoReqDTO, ordInfo);
 					return true;
 				} catch (Exception e) {
 					log.error("更新AipCenter失败：" + e.getMessage());

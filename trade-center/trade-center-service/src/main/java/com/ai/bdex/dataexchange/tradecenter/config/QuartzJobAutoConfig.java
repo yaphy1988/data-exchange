@@ -41,7 +41,7 @@ public class QuartzJobAutoConfig {
 
         //订单设置为完成的定时任务 每隔10分钟执行一次
         QuartzTaskInfo orderStatusUpdateBaseJob = new QuartzTaskInfo();
-        orderStatusUpdateBaseJob.setCronExpression("0 0/60 * * ? ");
+        orderStatusUpdateBaseJob.setCronExpression("0 0 0/1 * * ? ");
         //0 0/30 9-17 * * ?
         orderStatusUpdateBaseJob.setJobName(OrderStatusUpdateBaseJob.class.getName());
         orderStatusUpdateBaseJob.setJobGroup("orderJobGroup");

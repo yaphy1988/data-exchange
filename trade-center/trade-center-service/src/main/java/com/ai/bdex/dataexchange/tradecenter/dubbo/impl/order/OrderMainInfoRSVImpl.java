@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 
 import com.ai.bdex.dataexchange.constants.Constants;
 import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdInfo;
+import com.ai.bdex.dataexchange.tradecenter.dao.model.OrdLog;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.paas.utils.CollectionUtil;
@@ -61,6 +62,12 @@ public class OrderMainInfoRSVImpl  implements IOrderMainInfoRSV {
 				//取消主订单成功，更新子订单状态
 				code=iOrdInfoSV.cancelOrderInfo(ordInfoReqDTO);
 			}
+		 	OrdLog ordLog = new OrdLog();
+			ordLog.setCreateStaff(ordMainInfoReqDTO.getCreateStaff());
+			ordLog.setOrderId(ordMainInfoReqDTO.getOrderId());
+			ordLog.setNode(Constants.Order.LOG_CODE_CODE_99);
+			ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_99);
+			iOrdMainInfoSV.saveOrderlog(ordLog);
 		} catch (Exception e) {
 			log.error("取消订单信息异常:", e);
 			throw new Exception(e);
@@ -101,12 +108,12 @@ public class OrderMainInfoRSVImpl  implements IOrderMainInfoRSV {
 			throw new Exception("更新订单异常，oderId入参为空");
 		}
 		int code=0;
-
 		Date updateTime =  DateUtil.getNowAsDate();
 		ordMainInfoReqDTO.setUpdateTime(updateTime);
 		ordInfo.setUpdateTime(updateTime);
 		try {
 			code= iOrdMainInfoSV.updateOrderMainInfo(ordMainInfoReqDTO);
+
 		} catch (Exception e) {
 			log.error("更新主订单信息异常:", e);
 			throw new Exception(e);
@@ -119,6 +126,41 @@ public class OrderMainInfoRSVImpl  implements IOrderMainInfoRSV {
 		}
 		return code;
 	}
+    /***
+     * 在线支付成功更新主订单和子订单的状态信息
+     * @param ordMainInfoReqDTO
+     * @return
+     * @throws Exception
+     */
+    public int setOrderAndSubOrdToPayInline(OrdMainInfoReqDTO ordMainInfoReqDTO,OrdInfoReqDTO ordInfo) throws Exception {
+        int docount =  updateOrderAndSubOrdStatuss(ordMainInfoReqDTO,  ordInfo);
+        //写支付日志
+        OrdLog ordLog = new OrdLog();
+        ordLog.setCreateStaff(ordMainInfoReqDTO.getCreateStaff());
+        ordLog.setOrderId(ordMainInfoReqDTO.getOrderId());
+        ordLog.setNode(Constants.Order.LOG_CODE_02);
+        ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_02);
+        iOrdMainInfoSV.saveOrderlog(ordLog);
+        return docount;
+    }
+    /***
+     * 管理员后台设置订单支付
+     * @param ordMainInfoReqDTO
+     * @return
+     * @throws Exception
+     */
+    public int setOrderAndSubOrdToPayByManager(OrdMainInfoReqDTO ordMainInfoReqDTO,OrdInfoReqDTO ordInfo) throws Exception {
+        int docount =  updateOrderAndSubOrdStatuss(ordMainInfoReqDTO,  ordInfo);
+        //写支付日志
+        OrdLog ordLog = new OrdLog();
+        ordLog.setCreateStaff(ordMainInfoReqDTO.getCreateStaff());
+        ordLog.setOrderId(ordMainInfoReqDTO.getOrderId());
+        ordLog.setNode(Constants.Order.LOG_CODE_020);
+        ordLog.setNodeDesc(Constants.Order.LOG_CODE_DESC_020);
+        iOrdMainInfoSV.saveOrderlog(ordLog);
+        return docount;
+    }
+
 	public OrdMainInfoRespDTO queryOrderDetail(OrdMainInfoReqDTO ordMainInfoReqDTO) throws Exception {
 		 OrdMainInfoRespDTO  respOrderDetailDTO = new OrdMainInfoRespDTO();
 		OrdInfoRespDTO ordInfoRespDTO  =new OrdInfoRespDTO ();

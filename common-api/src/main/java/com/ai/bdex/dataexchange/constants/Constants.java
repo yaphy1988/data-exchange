@@ -46,9 +46,13 @@ public class Constants {
      
 	    public static String LOG_CODE_02 = "02"; 
         // 订单日志-节点描述
-        public static String LOG_CODE_DESC_02 = "订单支付"; 
-		
-		public static String LOG_CODE_03 = "03"; 
+        public static String LOG_CODE_DESC_02 = "订单支付";
+
+        public static String LOG_CODE_020 = "020";
+        // 订单日志-节点描述
+        public static String LOG_CODE_DESC_020 = "后场设置订单支付";
+
+        public static String LOG_CODE_03 = "03";
         // 订单日志-节点描述
         public static String LOG_CODE_DESC_03 = "手动失效订单"; 
 		

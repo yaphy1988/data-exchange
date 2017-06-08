@@ -313,6 +313,8 @@ public class orderManageController {
 		Map<String,Object>  rMap = new HashMap<>();
 		String status = ordMainInfoVO.getOrderStatus();
 		try {
+			HttpSession hpptsesion = request.getSession();
+			String staff_id = StaffUtil.getStaffId(hpptsesion);
 			OrdMainInfoReqDTO ordMainInfoReqDTO = new OrdMainInfoReqDTO();
 			if(!StringUtils.isBlank(status)){
 				ordMainInfoReqDTO.setOrderStatus(status);
@@ -320,6 +322,7 @@ public class orderManageController {
 			if(StringUtils.isNotEmpty(ordMainInfoVO.getOrderId())){
 				ordMainInfoReqDTO.setOrderId(ordMainInfoVO.getOrderId());
 			}
+			ordMainInfoReqDTO.setCreateStaff(staff_id);
 			int code=iOrderMainInfoRSV.cancelOrder(ordMainInfoReqDTO);
 			rMap.put("success", true);
 		} catch (Exception e) {
@@ -487,8 +490,7 @@ public class orderManageController {
 				rechargeDTO.setTotalMoney(iordermoney);
 				try {
 					iAipCenterDataAccountRSV.dealRecharge(rechargeDTO);
-					ordInfo.setPackageStatus(Constants.Order.ORDER_PACKAGE_STATUS_02);
-                    iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
+                     iOrderMainInfoRSV.setOrderAndSubOrdToPayByManager(ordMainInfoReqDTO, ordInfo);
                     rMap.put("success", true);
 				} catch (Exception e) {
 					System.out.print("更新AipCenter失败：" + e.getMessage());
@@ -519,8 +521,8 @@ public class orderManageController {
 	@RequestMapping(value="/orderManageoffline")
 	@ResponseBody
 	public  Map<String, Object>  orderManageoffline(HttpServletRequest request,OrdMainInfoVO ordMainInfoVO) {
-		Map<String, Object> rMap = new HashMap<String, Object>();
-		HttpSession hpptsesion = request.getSession();
+        Map<String, Object> rMap = new HashMap<String, Object>();
+        HttpSession hpptsesion = request.getSession();
 		String staff_id = StaffUtil.getStaffId(hpptsesion);
 		String orderid = request.getParameter("orderid");
 		String subordid = request.getParameter("suborderid");

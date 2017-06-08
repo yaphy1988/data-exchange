@@ -67,5 +67,24 @@ public interface IOrderMainInfoRSV {
 	public int updateOrderAndSubOrderInfoByJob(OrdInfoReqDTO ordInfoReqDTO) throws Exception;
 
 
+	/***
+	 * 在线支付成功
+	 * @param ordMainInfoReqDTO
+	 * @param ordInfo
+	 * @return
+	 * @throws Exception
+	 */
+	public int setOrderAndSubOrdToPayInline(OrdMainInfoReqDTO ordMainInfoReqDTO,OrdInfoReqDTO ordInfo) throws Exception;
+
+
+    /***
+     * 在线支付成功
+     * @param ordMainInfoReqDTO
+     * @param ordInfo
+     * @return
+     * @throws Exception
+     */
+    public int setOrderAndSubOrdToPayByManager(OrdMainInfoReqDTO ordMainInfoReqDTO,OrdInfoReqDTO ordInfo) throws Exception;
+
 
 }
