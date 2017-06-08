@@ -71,6 +71,9 @@ public class AipServiceInfoSVImpl implements IAipServiceInfoSV{
 			if(!StringUtil.isBlank(req.getVersion())){
 				sql.andVersionEqualTo(req.getVersion());
 			}
+			if (!StringUtil.isBlank(req.getServiceName())){
+				sql.andServiceNameLike("%"+req.getServiceName()+"%");
+			}
 			
 			ex.setOrderByClause("create_time desc");
 			//分页设置

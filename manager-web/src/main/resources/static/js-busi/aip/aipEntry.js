@@ -161,7 +161,12 @@ function pServiceSel() {
 
 function queryPServicePage(pageNo) {
     var params = {};
-    params.pageNo = pageNo
+    params.pageNo = pageNo;
+    var pServiceName = $("#pServiceModal_serviceNameInput").val();
+    if (pServiceName == undefined || $.trim(pServiceName) == ""){
+        pServiceName = "";
+    }
+    params.serviceName = pServiceName;
     $.ajax({
         url:basePath + "/aipEntry/queryProviderServicePage",
         dataType:'html',
