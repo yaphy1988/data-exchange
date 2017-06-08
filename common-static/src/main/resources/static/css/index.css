@@ -568,7 +568,7 @@ i.icon-auto{
 .stickyBox{
     position: fixed;
     right: 20px;
-    top: 30px;
+    top: 220px;
 }
 .stickyBox li a{
     display: block;
