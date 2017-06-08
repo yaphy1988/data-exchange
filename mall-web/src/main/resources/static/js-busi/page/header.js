@@ -123,7 +123,7 @@ function setLinkUrk(linkUrl){
 }
 
 function doAjax(url,params,callBack){
-	$.appAajax({
+	$.appAjax({
 		url : url,
 		type : "POST",
 		dataType : "json",
