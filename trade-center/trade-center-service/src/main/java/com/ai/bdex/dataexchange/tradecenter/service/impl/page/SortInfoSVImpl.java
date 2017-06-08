@@ -60,7 +60,7 @@ public class SortInfoSVImpl  implements ISortInfoSV{
 				//空值，就只查有效的数据
 				criteria.andStatusEqualTo("1");
 			} 
-			example.setOrderByClause(" ORDER_NO DESC");
+			example.setOrderByClause(" UPDATE_TIME ASC");
 			//    List<PageInfo> selectByExample(PageInfoExample example);
 			 return sortInfoMapper.selectByExample(example);	
 		  }

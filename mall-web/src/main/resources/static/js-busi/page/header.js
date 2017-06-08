@@ -113,7 +113,7 @@ var header = new Object({
 });
 
 function setLinkUrk(linkUrl){
-	if(linkUrl == null || linkUrl == undefined){
+	if(linkUrl == null || linkUrl == undefined || linkUrl == ""){
 		return 'javascript:void(0);'
 	}else if(new RegExp('http').test(linkUrl)){
 		return  linkUrl;
@@ -123,7 +123,7 @@ function setLinkUrk(linkUrl){
 }
 
 function doAjax(url,params,callBack){
-	$.ajax({
+	$.appAajax({
 		url : url,
 		type : "POST",
 		dataType : "json",

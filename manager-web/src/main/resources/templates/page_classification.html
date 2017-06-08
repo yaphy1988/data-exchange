@@ -101,7 +101,7 @@
 				            </ul>
 				            <!-- 二级子菜单 -->
 				            <div psortid="1" class="class_sidebar_secon" style="display: block;">
-								<a><h4>金融理财<a href="javascript:;"><span>✖</span></a></h4></a>
+								<h4><a>金融理财</a><a href="javascript:;"><span>✖</span></a></h4>
 								<ol class="class_link">
 									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
 									<li><a href="https://www.baidu.com" target="_blank">条码查询</a><a>✖</a></li>
@@ -274,6 +274,7 @@
 				<tr>
 					<td class="Hint class-zi" th:if="${sortLever} == '1'">一级分类：</td>
 					<td class="Hint class-zi" th:if="${sortLever} == '2'">二级分类：</td>
+					<td class="Hint class-zi" th:if="${sortLever} == '3'">子类内容：</td>
 					<td><a class="pull-right p10 close" th:onclick="|deleteAddedSort(this)|">✖️</a></td>
 				</tr>
 				<tr>

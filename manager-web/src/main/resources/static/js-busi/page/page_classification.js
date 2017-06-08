@@ -34,9 +34,10 @@ function querySortInfo(sortParentId,sortLever){
 					if(subSortInfoList != null && subSortInfoList.length >0){
 						//子菜单：目前只取一个
 						var subMenu = subSortInfoList[0];
-						htmlLever2 += '<div pSortId='+d.sortId+' class="class_sidebar_secon" style="display: none">';
+						htmlLever2 += '<div pSortId='+d.sortId+' sortId='+c.sortId+' class="class_sidebar_secon" style="display: none">';
                         var sc = subMenu.contentRespDTO;
-                        htmlLever2 +='<h4 sortContentId='+sc.sortContentId+' sortId="'+sc.sortId+'"><a  href="javascript:;" onclick="querySortSenlever(this)">'+subMenu.sortName+'</a></h4>'+
+                        htmlLever2 +='<h4 sortContentId='+sc.sortContentId+' sortId="'+sc.sortId+'"><a  href="javascript:;" onclick="querySortSenlever(this)">'+subMenu.sortName+'</a>' +
+							'<a href="javascript:;" onclick="deleteSortInfo(this)"><span>✖</span></a></h4>'+
 						'<ol class="class_link">';
 						var subContentList = subMenu.sortInfoRespDTOList;
 						$(subContentList).each(function(i,k){
