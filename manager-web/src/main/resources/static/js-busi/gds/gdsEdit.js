@@ -543,8 +543,8 @@ function createGdsSkuList(){
 			saveValid=false;
 			return;
 		}
-		if(packTimes!="" ){
-			if(!isInteger(packPrice)){
+		if(packDay!="" ){
+			if(!isInteger(packDay)){
 				WEB.msg.error("提示","有效期应为整数！");
 				skuValid=false;
 				return;
