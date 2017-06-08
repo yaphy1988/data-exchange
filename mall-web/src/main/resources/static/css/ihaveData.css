@@ -1,0 +1,47 @@
+.ihave_box{
+  
+  padding: 50px;
+}
+.ihave_box .iconfont{
+  color: #ec6000;
+  font-size: 24px;
+  margin-right: 20px;
+  border: solid 1px #ec6000;
+  padding: 20px;
+  border-radius: 50%;
+}
+.ihave_info{
+    font-size: 16px;
+    width: 60%;
+    border-right: solid 1px #eee;
+    
+}
+.ihave_box p{
+  line-height: 100px;
+  color: #666;
+}
+
+.ihave_QQ .qq img{
+  position: relative;
+  top: -38px;
+}
+.ihave_code{
+  width: 30%;
+  font-size: 14px;
+  text-align: center;
+  position: relative;
+}
+.code img{
+  width: 180px;
+  height: 180px;
+  margin-top: 10px;
+}
+.ihave_code .code{
+  width: 200px;
+  height: 200px;
+  border: solid 1px #eee;
+  position: absolute;
+  left: 50%;
+  margin-left:-100px;
+  top: 80px;
+}
