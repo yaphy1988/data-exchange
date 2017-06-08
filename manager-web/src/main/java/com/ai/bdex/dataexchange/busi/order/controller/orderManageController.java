@@ -487,6 +487,7 @@ public class orderManageController {
 				rechargeDTO.setTotalMoney(iordermoney);
 				try {
 					iAipCenterDataAccountRSV.dealRecharge(rechargeDTO);
+					ordInfo.setPackageStatus(Constants.Order.ORDER_PACKAGE_STATUS_02);
                     iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
                     rMap.put("success", true);
 				} catch (Exception e) {
@@ -548,6 +549,7 @@ public class orderManageController {
 					dataAccountDTO.setCurrentUserId(staff_id);
                     //更新人：staff_id
 					iAipCenterDataAccountRSV.dealDisableDataAccount(dataAccountDTO);
+					ordInfo.setPackageStatus(Constants.Order.ORDER_PACKAGE_STATUS_03);
 					iOrderMainInfoRSV.updateOrderAndSubOrdStatuss(ordMainInfoReqDTO, ordInfo);
 
 					rMap.put("success", true);

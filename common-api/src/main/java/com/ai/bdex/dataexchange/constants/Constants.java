@@ -104,10 +104,11 @@ public class Constants {
             Date activeEndTime =  calendar.getTime();   //这个时间就是日期往后推一天的结果
             return activeEndTime;
         }
-        /*
-        *套餐状态：01 未生效（未支付订单的套餐），02 在用，03 有效期已达到，不可再用；
-        * 04 套餐已完成（订单调用量量已经达到最大值、或余额已为0，二者中一种情况达到均为订单完成--界面实时计算）
-         */
+        /* 公共类中有宏设置
+    套餐状态：01 未生效（未支付订单的套餐），02 在用，
+    03 有效期已达到，不可再用（属于套餐已完成,管理员失效订单）；
+    04 套餐已完成（订单调用量量已经达到最大值、或余额已为0，二者中一种情况达到均为订单完成--界面实时计算）
+      */
         public final static String ORDER_UPDATE_USER_SYS   =  "SYSTEMJOB" ;//
         public final static String ORDER_PACKAGE_STATUS_01   =  "01" ;//01 未生效
         public final static String ORDER_PACKAGE_STATUS_02   =  "02" ;//02 在用
