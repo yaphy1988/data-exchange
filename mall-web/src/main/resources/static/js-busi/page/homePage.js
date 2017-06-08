@@ -16,7 +16,11 @@ var basePath =  WEB_ROOT;
 		hiddenwarm('lnkemailDiv');
 	});
 	queryPageModue();
+	$(".pinned").pin({
+        containerSelector: ".wrap"
+  })
 })
+
 //显示提示
 function showwarm(id,msg){
 	$("#"+id).find("p").css('visibility','visible');
