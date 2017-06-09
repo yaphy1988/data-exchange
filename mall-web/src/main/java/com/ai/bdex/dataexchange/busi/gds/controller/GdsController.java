@@ -10,6 +10,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.*;
+import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -37,25 +39,8 @@ import com.ai.bdex.dataexchange.busi.gds.entity.GdsLabelVO;
 import com.ai.bdex.dataexchange.busi.gds.entity.GdsSkuVO;
 import com.ai.bdex.dataexchange.common.AjaxJson;
 import com.ai.bdex.dataexchange.common.dto.PageResponseDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsCatRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfo2PropRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsLabelRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.GdsSkuRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserFootPrintReqDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.gds.UserFootPrintRespDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoReqDTO;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.dto.order.OrdInfoRespDTO;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsCatRSV;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfo2PropRSV;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsInfoRSV;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsLabelRSV;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IGdsSkuRSV;
-import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.gds.IUserFootPrintRSV;
 import com.ai.bdex.dataexchange.tradecenter.dubbo.interfaces.order.IOrderInfoRSV;
 import com.ai.bdex.dataexchange.util.ObjectCopyUtil;
 import com.ai.bdex.dataexchange.util.StaffUtil;
@@ -94,6 +79,8 @@ public class GdsController {
     private IOrderInfoRSV iOrderInfoRSV;
     @DubboConsumer 
     private IUserFootPrintRSV iUserFootPrintRSV;
+    @DubboConsumer
+    private IUserCollectionRSV iUserCollectionRSV;
 
     @RequestMapping(value = "/details/{gdsId}-{skuId}")
     public String pageInit(HttpServletRequest request, HttpServletResponse response, @PathVariable Integer gdsId,@PathVariable Integer skuId){
@@ -463,6 +450,42 @@ public class GdsController {
         } catch (Exception e) {
             log.error("保存用户浏览历史失败", e);
         }
+        return ajaxJson;
+    }
+
+    @RequestMapping("/checkUserCollection")
+    @ResponseBody
+    public AjaxJson checkUserCollection(HttpServletRequest request , HttpServletResponse response,HttpSession session){
+        AjaxJson ajaxJson = new AjaxJson();
+
+        String gdsId = request.getParameter("gdsId");
+        String staffId = StaffUtil.getStaffId(session);
+
+        if (StringUtil.isBlank(gdsId)){
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("查询是否已收藏商品失败，gdsId为空");
+            return ajaxJson;
+        }
+
+        try {
+            UserCollectionReqDTO userCollectionReqDTO = new UserCollectionReqDTO();
+            userCollectionReqDTO.setStaffId(staffId);
+            userCollectionReqDTO.setStatus("1");
+            userCollectionReqDTO.setGdsId(Integer.parseInt(gdsId));
+            UserCollectionRespDTO userCollectionRespDTO = iUserCollectionRSV.queryUserCollection(userCollectionReqDTO);
+            if (userCollectionRespDTO!=null){
+                ajaxJson.setMsg("1");
+            }else{
+                ajaxJson.setMsg("0");
+            }
+            ajaxJson.setSuccess(true);
+        }catch (Exception e){
+            log.error("查询是否已收藏商品异常：",e);
+            ajaxJson.setSuccess(false);
+            ajaxJson.setMsg("查询是否已收藏商品异常");
+            return ajaxJson;
+        }
+
         return ajaxJson;
     }
 }

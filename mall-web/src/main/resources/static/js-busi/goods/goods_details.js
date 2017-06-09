@@ -51,8 +51,12 @@ $(function(){
 				if(data.success ){
 					if(data.obj=="add"){
 						WEB.msg.info("提示",'收藏成功');
+                        $(this).find("i").removeClass();
+                        $(this).find("i").addClass("glyphicon").addClass("glyphicon-heart");
 					}else if(data.obj=="cancel"){
 						WEB.msg.info("提示",'取消成功');
+                        $(this).find("i").removeClass();
+                        $(this).find("i").addClass("glyphicon").addClass("glyphicon-heart-empty");
 					}
 					$("#detail_count_collect").text(data.attributes.count);
 				}
@@ -211,4 +215,25 @@ function hideMadeDataModal()
 function showwarm(id,msg){
     $("#"+id).find("p").css('visibility','visible');
     $("#"+id).find("span").html(msg);
+}
+
+function checkUserCollection() {
+    var gdsId = $("#gdsId_detail").val();
+    $.ajax({
+        url : WEB_ROOT + "/goods/checkUserCollection",
+        data:{gdsId : gdsId},
+        dataType:'json',
+        type:'post',
+        async:true,
+        success:function (jsonObj) {
+            if (jsonObj.success){
+                if (jsonObj.msg == "1"){
+                    $(".gd_etails .collect").find(i).addClass("glyphicon").addClass("glyphicon-heart");
+                }else if (jsonObj.msg == "0"){
+                    $(".gd_etails .collect").find(i).addClass("glyphicon").addClass("glyphicon-heart-empty");
+                }
+
+            }
+        }
+    })
 }
