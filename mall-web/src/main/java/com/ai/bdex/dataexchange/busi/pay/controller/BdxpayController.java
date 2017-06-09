@@ -134,7 +134,7 @@ public class BdxpayController {
 	        String biz_content = "{" +
 	            "    \"out_trade_no\":\""+orderId+"\"," +
 	            "    \"product_code\":\"FAST_INSTANT_TRADE_PAY\"," +
-	            "    \"total_amount\":"+0.01+"," +
+	            "    \"total_amount\":"+ordInfoRespDTO.getOrderMoney()/100+"," +
 	            "    \"subject\":\""+gdsName+"\"," +
 	            "    \"body\":\""+skuName+"\"," +
 	            "    \"passback_params\":\""+passbackParams+"\"," +

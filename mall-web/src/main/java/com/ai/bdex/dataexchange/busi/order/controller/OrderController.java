@@ -209,7 +209,11 @@ public class OrderController {
 			}
 			//每次进来都是讲session赋值为新的数据
 			 CacheUtil.addItem(staff_id+SESSION_UNION_SHOPCART, ordInfoReqDTO);
-		}  
+		}
+		else {
+			request.setAttribute("errinfo","商品["+gdsid+"-"+skusid+"]查询异常，请联系管理员");
+
+		}
 	    request.setAttribute("skuInfo",gdsSkuRespDTO);
 	    request.setAttribute("gdsname",gdsname);
 	    request.setAttribute("skuname",skuname);
