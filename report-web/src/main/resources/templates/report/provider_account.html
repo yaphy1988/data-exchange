@@ -12,9 +12,8 @@
 </head>
 <body>
 <div layout:fragment="screen_content" id="table_content">
-    <ol class="breadcrumb">
-        <li><strong><span style="color: #27a0d7">供货商对账单统计</span></strong></li>
-    </ol>
+
+    <div style="width: 100%;float: left">
     <form class="form-inline" role="form" style="float: left;" method="post" id="queryForm">
         <div class="form-group">
             <label >订购时间:</label>
@@ -26,6 +25,7 @@
         </div>
 
     </form>
+    </div>
     <!--<div id="toolbar" style="margin-left: 10px;">-->
         <!--<select class="form-control">-->
             <!--<option value="">Export Basic</option>-->
@@ -33,6 +33,18 @@
             <!--<option value="selected">Export Selected</option>-->
         <!--</select>-->
     <!--</div>-->
+    <div style="width: 100%;float: left">
+    <!--<ol class="breadcrumb">-->
+        <!--<li><strong><span style="color: #27a0d7">供货商对账单统计</span></strong></li>-->
+    <!--</ol>-->
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="active"><a href="#tab01" aria-controls="home" role="tab" data-toggle="tab">供货商对账单统计</a></li>
+            <li ><a href="#tab02" aria-controls="home" role="tab" data-toggle="tab">供货商对账单明细</a></li>
+        </ul>
+    </div>
+
+    <div class="tab-content pt15">
+    <div role="tabpanel" class="tab-pane fade in active" id="tab01">
     <table id="table"
            data-toolbar="#toolbar"
            data-show-refresh="true"
@@ -40,8 +52,10 @@
            data-show-columns="true"
            data-show-export="true"
            data-detail-view="true"
+           data-query-params="queryParams"
            data-detail-formatter="detailFormatter"
            data-minimum-count-columns="2"
+           data-show-pagination-switch="true"
            data-pagination="true"
            data-id-field="id"
            data-show-footer="false"
@@ -56,7 +70,9 @@
         </tr>
         </thead>
     </table>
+    </div>
 
+    <div role="tabpanel" class="tab-pane fade" id="tab02">
     <table id="table2"
            data-toolbar="#toolbar"
            data-show-refresh="true"
@@ -64,8 +80,10 @@
            data-show-columns="true"
            data-show-export="true"
            data-detail-view="true"
+           data-query-params="queryParams_detail"
            data-detail-formatter="detailFormatter"
            data-minimum-count-columns="2"
+           data-show-pagination-switch="true"
            data-pagination="true"
            data-id-field="id"
            data-show-footer="false"
@@ -81,6 +99,8 @@
         </tr>
         </thead>
     </table>
+    </div>
+        </div>
 
     <script th:inline="javascript">
         $(function () {
@@ -97,6 +117,15 @@
                 pageSize : this.pageSize
             }
             return param;
+        }
+
+        function queryParams_detail(params){
+            var param = {
+                startDate : $("#startTime").val(),
+                endDate : $("#endTime").val(),
+                pageindex : this.pageNumber,
+                pageSize : this.pageSize
+            }
         }
         /**
          * 初始化时间控件
