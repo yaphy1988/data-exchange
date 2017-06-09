@@ -20,7 +20,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import java.util.Date;
 
 /**
- * Created by fangyunfeng on 2017/5/12.
+ * Created by fangyunfeng on 2017/5/12. add test
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest
