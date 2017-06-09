@@ -18,7 +18,7 @@
 		<img src="../static/images/gl_banner.jpg" th:src="@{/images/gl_banner.jpg}">
 		<div class="btnBox">
 			<a href="javascript:void(0)" class="btn btn_banner custom_made">立即定制</a>
-			<a href="javascript:void(0)" class="btn btn_banner">在线咨询</a>
+			<a href="javascript:void(0)" class="btn btn_banner" th:href="tencent://message/?uin=2065833797&Site=在线客服&Menu=yes">在线咨询</a>
 		</div>
 		<!--定制数据弹窗-->
         <div th:replace="~{fragments/custom_made :: custom_made}"></div>
