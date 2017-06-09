@@ -1,0 +1,27 @@
+variables:
+  GET_SOURCES_ATTEMPTS: "3"
+  # gitlab-ci.yml 的版本。
+  ci_version: "1.0"
+
+before_script:
+  # 定义模块名和部署名
+  - export build_module=.
+  - export build_module_application_name=woego
+
+stages:
+  - envCheck
+  - build
+  - test
+  - staging
+  - deploy
+  - record
+  - destroy
+
+env_check:
+  stage: envCheck
+  script:
+    - ls
+  only:
+    - develop
+  tags:
+    - ANSIBLE
