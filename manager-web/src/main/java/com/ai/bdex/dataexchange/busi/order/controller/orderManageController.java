@@ -490,7 +490,8 @@ public class orderManageController {
 				rechargeDTO.setTotalMoney(iordermoney);
 				try {
 					iAipCenterDataAccountRSV.dealRecharge(rechargeDTO);
-                     iOrderMainInfoRSV.setOrderAndSubOrdToPayByManager(ordMainInfoReqDTO, ordInfo);
+                    ordInfo.setPackageStatus(Constants.Order.ORDER_PACKAGE_STATUS_02);
+                    iOrderMainInfoRSV.setOrderAndSubOrdToPayByManager(ordMainInfoReqDTO, ordInfo);
                     rMap.put("success", true);
 				} catch (Exception e) {
 					System.out.print("更新AipCenter失败：" + e.getMessage());

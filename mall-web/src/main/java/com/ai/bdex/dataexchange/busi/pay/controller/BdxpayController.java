@@ -364,6 +364,7 @@ public class BdxpayController {
 				rechargeDTO.setTotalMoney(iordermoney);
 				try {
 					iAipCenterDataAccountRSV.dealRecharge(rechargeDTO);
+                    ordInfo.setPackageStatus(Constants.Order.ORDER_PACKAGE_STATUS_02);
 					iOrderMainInfoRSV.setOrderAndSubOrdToPayInline(ordMainInfoReqDTO, ordInfo);
 					return true;
 				} catch (Exception e) {
