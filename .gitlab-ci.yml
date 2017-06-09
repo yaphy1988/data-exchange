@@ -11,23 +11,23 @@ before_script:
   - export build_module2=api-gateway/api-gateway-service
   - export build_module2_application_name=api-gateway-service
 
-  - export build_module3=api-gateway-web
-  - export build_module3_application_name=api-gateway-web
+  - export build_module3=trade-center/trade-center-service
+  - export build_module3_application_name=trade-center-service
 
-  - export build_module4=mall-web
-  - export build_module4_application_name=mall-web
+  - export build_module4=user-center/user-center-service
+  - export build_module4_application_name=user-center-service
 
-  - export build_module5=manager-web
-  - export build_module5_application_name=manager-web
+  - export build_module5=api-gateway-web
+  - export build_module5_application_name=api-gateway-web
 
-  - export build_module6=report-web
-  - export build_module6_application_name=report-web
+  - export build_module6=mall-web
+  - export build_module6_application_name=mall-web
 
-  - export build_module7=trade-center/trade-center-service
-  - export build_module7_application_name=trade-center-service
+  - export build_module7=manager-web
+  - export build_module7_application_name=manager-web
 
-  - export build_module8=user-center/user-center-service
-  - export build_module8_application_name=user-center-service
+  - export build_module8=report-web
+  - export build_module8_application_name=report-web
 
 stages:
   - envCheck
@@ -118,15 +118,16 @@ deploy_review:
     # 如果除DB变更文件外无其他文件提交，则跳过部署
     - if [[ $(cat ${CI_PROJECT_DIR}/.CT_EXCEPT_SQL_FILES) == 0 ]]; then echo -e "\n未提交除DB变更外的其他代码，跳过部署步骤。\n";exit 0;fi
     # 执行部署
-    # dubbo部署
-    - ssh asbuser@127.0.0.1 "set -x;cd ansible;
+    - for i in 1;do
+      eval build_module_application_name=\${build_module${i}_application_name};
+      ssh asbuser@127.0.0.1 "set -x;cd ansible;
       export ANSIBLE_INVENTORY=inventory/${DEP_ENV};
       ansible-playbook -v deploy_javaSvr.yml
-      -e host=${DEP_ENV}_aip_center_svr
+      -e host=${DEP_ENV}-${build_module_application_name}
       -e DEP_ENV=${DEP_ENV}
       -e build_maven_version=${build_maven_version}
       -e PRD_NAME=${CI_PROJECT_NAME}
-      -e javaapp_application_name=${build_module1_application_name}"
+      -e javaapp_application_name=${build_module_application_name}"
   tags:
     - ANSIBLE
 
