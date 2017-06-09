@@ -193,7 +193,7 @@
 						<p th:each="gdsLabelVO,catStat:${gdsInfoVO.gdsLabelVOList}" th:style="'border:solid 1px '+@{${gdsLabelVO.labColor}}+'; color:'+@{${gdsLabelVO.labColor}}+''" th:labId="${gdsLabelVO.labId}" th:labName="${gdsLabelVO.labName}" th:labColor="${gdsLabelVO.labColor}">
 							<span>
 							<label  th:text="${gdsLabelVO.labName}"></label>
-								<a class=" pl5 colse"  th:onclick="'deleteGdsLabel(this)'">×</a>
+								<a class=" pl5 colse" th:onclick="|deleteGdsLabel(this)|">×</a>
 							</span>
 						</p>
 						<p th:remove="all" >

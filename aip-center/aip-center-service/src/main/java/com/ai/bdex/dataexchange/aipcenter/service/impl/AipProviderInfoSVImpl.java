@@ -56,7 +56,7 @@ public class AipProviderInfoSVImpl implements IAipProviderInfoSV{
 		AipProviderInfoExample.Criteria criteria = example.createCriteria();
 		initCriteria(criteria, aipProviderInfoReqDTO);
 		PageHelper.startPage(pageNo, pageSize);
-		example.setOrderByClause("update_time DESC");
+		example.setOrderByClause("status DESC,update_time DESC");
 		List<AipProviderInfo> list = aipProviderInfoMapper.selectByExample(example);
 		PageInfo pageInfo = new PageInfo(list);
 		pageResponseDTO = PageResponseFactory.genPageResponse(pageInfo, AipProviderInfoRespDTO.class);

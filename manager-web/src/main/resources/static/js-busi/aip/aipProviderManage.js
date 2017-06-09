@@ -115,28 +115,30 @@ function updateAipProviderInfo(providerId, status) {
 		providerId : providerId,
 		status : status
 	};
-	$.ajax({
-		url : WEB_ROOT + "/aipProviderManage/updateAipProviderInfoStatus",
-		type : 'post',
-		dataType : 'json',
-		data : params,
-		async : true,
-		success : function(data) {
-			if (data.success) {
-				WEB.msg.info("提示", text + "操作成功！", function() {
-					queryAipProviderInfoList(1);
-				});
-			} else {
-				WEB.msg.info("提示", text + "操作失败！");
+	WEB.msg.confirm('温馨提示：', "确定要" + text + "？", function() {
+		$.ajax({
+			url : WEB_ROOT + "/aipProviderManage/updateAipProviderInfoStatus",
+			type : 'post',
+			dataType : 'json',
+			data : params,
+			async : true,
+			success : function(data) {
+				if (data.success) {
+					WEB.msg.info("提示", text + "操作成功！", function() {
+						queryAipProviderInfoList(1);
+					});
+				} else {
+					WEB.msg.info("提示", text + "操作失败！");
+				}
 			}
-		}
+		});
 	});
 }
 /**
  * 批量删除
  */
 function batchDelAipProviderInfo(){
-	 WEB.msg.confirm('温馨提示：',"确定要批量删除？",function(){
+	 WEB.msg.confirm('温馨提示：',"确定要批量失效？",function(){
 		 var providerIds="";
 			$("input[name='delAipList']").each(function(){
 				if($(this).is(":checked")){
@@ -161,7 +163,7 @@ function batchDelAipProviderInfo(){
 		        data: params,
 		        success: function (data) {
 		            if(data.success){
-		                WEB.msg.info("提示",'删除成功',function(){
+		                WEB.msg.info("提示",'失效成功',function(){
 							queryAipProviderInfoList(1);
 		                });
 		            }else{
