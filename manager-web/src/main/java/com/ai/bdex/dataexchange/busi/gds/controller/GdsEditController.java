@@ -350,7 +350,7 @@ public class GdsEditController {
         } catch (BusinessException e) {
             jsonBean.setSuccess("false");
             jsonBean.setMsg(e.getMessage());
-
+            logger.error("商品保存失败,原因："+e.getMessage(),e);
         } catch (GenericException e) {
             jsonBean.setSuccess("false");
             jsonBean.setMsg("系统异常!");
@@ -358,6 +358,8 @@ public class GdsEditController {
         catch (Exception e) {
             jsonBean.setSuccess("false");
             jsonBean.setMsg(e.getMessage());
+            logger.error("商品保存失败,原因："+e.getMessage(),e);
+
         }
 
         return jsonBean;
@@ -461,10 +463,13 @@ public class GdsEditController {
         } catch (GenericException e) {
             jsonBean.setSuccess("false");
             jsonBean.setMsg("系统异常!");
+            logger.error("商品保存失败,原因："+e.getMessage(),e);
         }
         catch (Exception e) {
             jsonBean.setSuccess("false");
             jsonBean.setMsg(e.getMessage());
+            logger.error("商品保存失败,原因："+e.getMessage(),e);
+
         }
 
         return jsonBean;

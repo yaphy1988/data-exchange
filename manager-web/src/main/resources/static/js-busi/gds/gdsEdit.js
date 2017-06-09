@@ -406,6 +406,8 @@ function saveGds(){
             	WEB.msg.info("提示","保存成功",function(){
                 	window.location.href = WEB_ROOT+"/gdsManage/index";
             	});
+            }else{
+            	WEB.msg.info("提示","保存失败");
             }
         }
     });
