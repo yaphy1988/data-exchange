@@ -12,7 +12,7 @@ function queryNewsPageInfo(pageNo,moduleId){
 	var url=basePath+'/homePage/queryNewsPageInfo'
 	var params={pageNo:pageNo,moduleId:moduleId};
 	var callBack = function(data){
-		$('#info_listitem').html(data);
+		$('#news_contain').html(data);
 		//从mongDB获取内容
 		$('#info_listitem').find('dd').each(function(i,d){
 			var infoId = $(this).attr('infoid');
