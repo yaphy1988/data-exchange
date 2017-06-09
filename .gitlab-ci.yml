@@ -5,8 +5,29 @@ variables:
 
 before_script:
   # 定义模块名和部署名
-  - export build_module=.
-  - export build_module_application_name=woego
+  - export build_module1=aip-center/aip-center-service
+  - export build_module1_application_name=aip-center-service
+
+  - export build_module2=api-gateway/api-gateway-service
+  - export build_module2_application_name=api-gateway-service
+
+  - export build_module3=api-gateway-web
+  - export build_module3_application_name=api-gateway-web
+
+  - export build_module4=mall-web
+  - export build_module4_application_name=mall-web
+
+  - export build_module5=manager-web
+  - export build_module5_application_name=manager-web
+
+  - export build_module6=report-web
+  - export build_module6_application_name=report-web
+
+  - export build_module7=trade-center/trade-center-service
+  - export build_module7_application_name=trade-center-service
+
+  - export build_module8=user-center/user-center-service
+  - export build_module8_application_name=user-center-service
 
 stages:
   - envCheck
@@ -20,12 +41,72 @@ stages:
 env_check:
   stage: envCheck
   script:
-    - ls
-  only:
-    - develop
+    # 定义版本号
+    - mvn -q -N -Dexec.executable="echo"  -Dexec.args='${project.version}'  org.codehaus.mojo:exec-maven-plugin:1.5.0:exec > .BUILD_VERSION
+    - export build_maven_version=$(cat .BUILD_VERSION)
+    - if [[ -z "${build_maven_version}" ]];then echo -e "未能获取版本号，请检查！";exit 1;fi
+    # 打包部署脚本
+    - git clone -b master https://zentao:937QELX4R28M9em8R37b@gitlab.com/huangzhongzhang/ans_dep.git
+    - rm -rf ans_dep/.git
+    - chmod -R u+x ans_dep
+    # 分析部署环境
+    - cd ${CI_PROJECT_DIR}/ans_dep/dep
+    - ./env_check.sh # 输出.DEP_ENV
+    - cd -
+    # 判断是否绑定环境
+    - export DEP_ENV=$(cat ${CI_PROJECT_DIR}/.DEP_ENV)
+    - if [[ -z "${DEP_ENV}" ]];then echo -e "未能获取部署环境信息，跳过部署！";exit 0;fi
+    # 获取提交记录及db脚本获取
+    - cd ${CI_PROJECT_DIR}/ans_dep/dep
+    - ./gitlog_check.sh # 输出.CT_EXCEPT_SQL_FILES
+    - cd -
+  artifacts:
+    paths:
+      - .BUILD_VERSION
+      - ./ans_dep/
+      - ./.DEP_ENV
+      - ./.CT_EXCEPT_SQL_FILES
+      - ./.SQL_SCRIPT_PKG_NAME
+      - ./.SQL_OBJECT_PKG_NAME
+      - ./*.zip
+    name: "${CI_PROJECT_NAME}_${CI_BUILD_REF_NAME}_${CI_PIPELINE_ID}_DEP_ENV"
+    expire_in: 2 weeks
+  except:
+    - release
+    - master
   tags:
     - ANSIBLE
 
+# build阶段执行maven编译，单元测试，发布操作
+
+build_artifacts:
+  stage: build
+  script:
+    # 获取版本号
+    - export build_maven_version=$(cat .BUILD_VERSION)
+    # 获取环境信息
+    - export DEP_ENV=$(cat ${CI_PROJECT_DIR}/.DEP_ENV)
+    - if [[ -z "${DEP_ENV}" ]];then echo -e "未能获取部署环境信息，跳过部署！";exit 0;fi
+    # 如果除DB变更文件外无其他文件提交，则跳过部署
+    - if [[ $(cat ${CI_PROJECT_DIR}/.CT_EXCEPT_SQL_FILES) == 0 ]]; then echo -e "\n未提交除DB变更外的其他代码，跳过编译步骤。\n";exit 0;fi
+    # 开始编译
+    - mvn -DskipTests=true -U clean deploy;
+    - mkdir -p applications
+    - for i in {1..8};do
+      eval build_module=\${build_module1${i}};
+      eval build_module_application_name=${build_module${i}_application_name};
+      cd ${build_module}/target;
+      echo -e "PKG_VERSION：${build_maven_version}\nPKG_REF：${CI_BUILD_REF_NAME}\nPKG_LAST_COMMIT：${CI_BUILD_REF}\nPKG_PIP：${CI_PIPELINE_ID}\nPKG_TIME：$(date)" > ${build_module_application_name}/VERSION;
+      tar -cf ../../applications/${build_module_application_name}-${build_maven_version}.tar ${build_module_application_name};
+      cd -;
+      done
+  artifacts:
+    paths:
+      - applications/
+    name: "${CI_PROJECT_NAME}_${CI_BUILD_REF_NAME}_${CI_PIPELINE_ID}"
+    expire_in: 24 hrs
+  tags:
+    - ANSIBLE
 mvn_build:
   stage: build
   script:
