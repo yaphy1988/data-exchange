@@ -125,7 +125,7 @@
 	<div class="main" layout:fragment="screen_content">
 		<input type="hidden" id="news_moduleId" th:value="${moduleId}"/>
 		<div class="info clearfix pt20">
-			<div class="infoLeft">
+			<div class="infoLeft" id="news_contain">
 				<div class="infoLeft_inner" id="info_listitem">
 					<div class="title">
 						<i class="glyphicon glyphicon-list-alt"></i><span th:text="${moduleName} != null ? ${moduleName}: '新闻动态'">新闻动态</span>
