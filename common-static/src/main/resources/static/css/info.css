@@ -93,8 +93,8 @@
 }
 .info_item dl dd{
 	margin-bottom: 15px;
-	max-height: 200px;
-	overflow-y: auto;
+	max-height: 220px;
+	overflow-y: hidden;
 	word-wrap: break-word;
 	line-height: 27px;
 	color: #666;
