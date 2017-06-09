@@ -205,6 +205,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
             //获取单品主表信息
             GdsSkuReqDTO gdsSkuReqDTO = new GdsSkuReqDTO();
             gdsSkuReqDTO.setGdsId(gdsId);
+            gdsSkuReqDTO.setStatus("1");
             List<GdsSku> skuInfo = iGdsSkuSV.queryGdsSkuList(gdsSkuReqDTO);
             if(skuInfo != null && skuInfo.size() >= 1){
                 GdsSku sku = skuInfo.get(0);
@@ -284,6 +285,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                     //获取单品主表信息
                     GdsSkuReqDTO gdsSkuReqDTO = new GdsSkuReqDTO();
                     gdsSkuReqDTO.setGdsId(gdsInfo.getGdsId());
+                    gdsSkuReqDTO.setStatus("1");
                     List<GdsSku> skuInfo = iGdsSkuSV.queryGdsSkuList(gdsSkuReqDTO);
                     if(skuInfo != null && skuInfo.size() >= 1){
                         GdsSku sku = skuInfo.get(0);
@@ -372,6 +374,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
                     //获取单品主表信息
                     GdsSkuReqDTO gdsSkuReqDTO = new GdsSkuReqDTO();
                     gdsSkuReqDTO.setGdsId( gdsInfoRespDTO.getGdsId());
+                    gdsSkuReqDTO.setStatus("1");
                     List<GdsSku> skuInfo = iGdsSkuSV.queryGdsSkuList(gdsSkuReqDTO);
                     if(skuInfo != null && skuInfo.size() >= 1){
                         GdsSku sku = skuInfo.get(0);
