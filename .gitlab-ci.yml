@@ -107,6 +107,29 @@ build_artifacts:
   tags:
     - ANSIBLE
 
+deploy_review:
+  stage: deploy
+  script:
+    # 获取版本号
+    - export build_maven_version=$(cat .BUILD_VERSION)
+    # 获取环境信息
+    - export DEP_ENV=$(cat ${CI_PROJECT_DIR}/.DEP_ENV)
+    - if [[ -z "${DEP_ENV}" ]];then echo -e "未能获取部署环境信息，跳过部署！";exit 0;fi
+    # 如果除DB变更文件外无其他文件提交，则跳过部署
+    - if [[ $(cat ${CI_PROJECT_DIR}/.CT_EXCEPT_SQL_FILES) == 0 ]]; then echo -e "\n未提交除DB变更外的其他代码，跳过部署步骤。\n";exit 0;fi
+    # 执行部署
+    # dubbo部署
+    - ssh asbuser@127.0.0.1 "set -x;cd woego-ansible;
+      export ANSIBLE_INVENTORY=inventory/${DEP_ENV};
+      ansible-playbook -v deploy_javaSvr.yml
+      -e host=${DEP_ENV}_aip_center_svr
+      -e DEP_ENV=${DEP_ENV}
+      -e build_maven_version=${build_maven_version}
+      -e PRD_NAME=${CI_PROJECT_NAME}
+      -e javaapp_application_name=${build_module1_application_name}"
+  tags:
+    - ANSIBLE
+
 insert_commit:
   stage: record
   script:
