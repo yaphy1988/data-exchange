@@ -253,6 +253,7 @@ public class DeltaIndexServiceSVImpl implements IDeltaIndexServiceSV{
             GdsInfoReqDTO gdsInfoReqDTO = new GdsInfoReqDTO();
             gdsInfoReqDTO.setGdsIds(gdsIds);
             gdsInfoReqDTO.setStatus("1");
+            
             List<GdsInfo> list = iGdsInfoSV.queryGdsInfoList(gdsInfoReqDTO);
             if(list != null && list.size() >= 1){
                 SolrInputDocument solrInputDocument = null;
