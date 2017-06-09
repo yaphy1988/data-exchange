@@ -328,15 +328,16 @@
   </dependencies>
 
   <distributionManagement>
+    <!-- 使用nexus私服在阿里云的内网地址，加快内网deploy并禁止开发本地deploy -->
     <repository>
       <id>releases</id>
       <name>Internal Releases</name>
-      <url>http://112.74.163.29:8081/nexus/content/repositories/releases</url>
+      <url>http://172.18.27.53:8081/nexus/content/repositories/releases</url>
     </repository>
     <snapshotRepository>
       <id>snapshots</id>
       <name>Internal Snapshots</name>
-      <url>http://112.74.163.29:8081/nexus/content/repositories/snapshots</url>
+      <url>http://172.18.27.53:8081/nexus/content/repositories/snapshots</url>
     </snapshotRepository>
   </distributionManagement>
 

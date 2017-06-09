@@ -1,11 +1,10 @@
 # data-exchange数据交易中心项目
 
-使用spring-boot,spring,mybatis,thymeleaf,jQuery,bootstrap,sass框架搭建
+使用spring-boot,spring,mybatis,thymeleaf,jQuery,bootstrap,sass,webjars框架搭建
 数据库使用Mysql
 
 ## spring-boot
 使用spring-boot框架搭建应用。spring-boot是基于spring4.0的快速开发部署框架，不需要配置即可搭建一个应用，用于简化配置和部署工作。
-本项目中用到了spring-boot和activiti的整合，spring-boot和mybatis的整合，spring-boot和web的整合。    
 
 ## mybatis
 使用mybatis官方最新的mybatis-spring-boot-starter-1.1.1版本，用于集成mybatis
