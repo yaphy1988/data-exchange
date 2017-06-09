@@ -1,4 +1,6 @@
 var ckeditPackage,ckeditDataDetail,ckeditDataExample,ckeditCase,ckeditCompany;
+var delSkuIds="";
+var delLabelIds="";
 var saveValid=true;
 var basePath = WEB_ROOT;
 $(function(){
@@ -94,6 +96,10 @@ function saveGdsLabelQuik(){
  */
 function deleteGdsLabel(obj){
 	WEB.msg.confirm("提示","确定要删除该标签吗？",function(){
+		var labId=$(obj).parent().parent().attr("labId");
+		if(labId!=""){
+			delLabelIds=labId+",";
+		}
 		$(obj).parent().parent().remove();
 	});
 }
@@ -114,6 +120,10 @@ function addPackAgeOne(){
  */
 function deleteGdsSku(obj){
 	WEB.msg.confirm("提示","确定要删除该套餐吗？",function(){
+		var skuId=$(obj).parent().parent().attr("skuId");
+		if(skuId!=undefined){
+			delSkuIds+=skuId+",";
+		}
 		$(obj).parent().parent().remove();
 	});
 }
@@ -349,6 +359,12 @@ function saveGds(){
 	if(!saveValid){
 		return;
 	}
+	if(delSkuIds.length>0){
+		delSkuIds=delSkuIds.substring(0, delSkuIds.length-1);
+	}
+	if(delLabelIds.length>0){
+		delLabelIds=delLabelIds.substring(0, delLabelIds.length-1);
+	}
 	//整个活动信息的结构
 	var gdsInfoObj={
 			gdsInfoVO:{},//商品基本信息
@@ -356,6 +372,8 @@ function saveGds(){
 			gdsLabelVOList:[],// 商品标签
 			gdsSkuVOList:[],//单品信息
 			gdsInfo2PropVOList:[],// 属性信息
+			delSkuIds:delSkuIds,//删除的套餐Id
+			delLabelIds:delLabelIds//删除标签Id
 		
 	}
 	//逐一赋值
@@ -494,9 +512,12 @@ function createGdsLabelList(){
 	$("#gdsLabelList").find("p").each(function(){
 		var labName =$(this).attr("labName");
 		var labColor =$(this).attr("labColor");
-		var gdsLabelVO={
-				labName:labName,
-				labColor:labColor
+		var labId=$(this).attr("labId");
+		if(labId==""){
+			var gdsLabelVO={
+					labName:labName,
+					labColor:labColor
+			}
 		}
 		gdsLabelVOList.push(gdsLabelVO);
 	});
@@ -512,10 +533,14 @@ function createGdsSkuList(){
 		return;
 	}
 	$("#APIPackage").find("tbody tr").each(function(){
+		var skuId=$(this).attr("skuId");
 		var skuName=$(this).find('[name="skuName"]').val();
 		var packPrice =$(this).find('[name="packPrice"]').val();
 		var packTimes =$(this).find('[name="packTimes"]').val();
 		var packDay =$(this).find('[name="packDay"]').val();
+		if(skuId==undefined){
+			skuId="";
+		}
 		if(skuName==""){
 			WEB.msg.error("提示","套餐名称不能为空！");
 			saveValid=false;
@@ -552,6 +577,7 @@ function createGdsSkuList(){
 
 		}
 		var gdsSkuVO={
+				skuId:skuId,
 				skuName:skuName,
 				packPrice:packPrice,
 				packTimes:packTimes,

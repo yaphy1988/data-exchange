@@ -97,9 +97,6 @@ public class GdsSkuSVImpl implements IGdsSkuSV {
     }
     @Override
     public int updataGdsSkuByGdsId(GdsSkuReqDTO gdsSkuReqDTO) throws Exception {
-        if (gdsSkuReqDTO.getGdsId()==null || gdsSkuReqDTO.getGdsId()<=0){
-            throw new Exception("删除单品信息入参为空");
-        }
         GdsSkuExample gdsSkuExample = new GdsSkuExample();
         GdsSkuExample.Criteria criteria = gdsSkuExample.createCriteria();
         if (gdsSkuReqDTO.getSkuId()!=null){

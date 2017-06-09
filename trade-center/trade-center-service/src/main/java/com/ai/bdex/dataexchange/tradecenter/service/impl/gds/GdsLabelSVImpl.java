@@ -118,9 +118,6 @@ public class GdsLabelSVImpl implements IGdsLabelSV {
         return code;
     }
     public int updataGdslabelByGdsId(GdsLabelReqDTO gdsLabelReqDTO) throws Exception {
-        if (gdsLabelReqDTO.getGdsId()==null || gdsLabelReqDTO.getGdsId()<=0){
-            throw new Exception("删除商品标签入参为空");
-        }
         GdsLabelExample gdsLabelExample = new GdsLabelExample();
         GdsLabelExample.Criteria criteria = gdsLabelExample.createCriteria();
         if (gdsLabelReqDTO.getLabId()!=null && gdsLabelReqDTO.getLabId().intValue()>0){
