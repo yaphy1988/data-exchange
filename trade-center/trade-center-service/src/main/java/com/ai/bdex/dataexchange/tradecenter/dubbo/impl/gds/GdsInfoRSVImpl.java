@@ -1,6 +1,7 @@
 package com.ai.bdex.dataexchange.tradecenter.dubbo.impl.gds;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -321,10 +322,26 @@ public class GdsInfoRSVImpl implements IGdsInfoRSV {
         try {
             gdsId = iGdsInfoSV.updateGdsInfo(gdsInfoReqDTO);
 
+
         } catch (Exception e) {
             log.error("跟新商品基本信息异常:", e);
             throw new Exception(e);
         }
+
+        try{
+            if (gdsId!=0){
+                GdsSkuReqDTO gdsSkuReqDTO = new GdsSkuReqDTO();
+                gdsSkuReqDTO.setGdsId(gdsId);
+                gdsSkuReqDTO.setStatus(gdsInfoReqDTO.getStatus());
+                gdsSkuReqDTO.setUpdateTime(new Date());
+                gdsSkuReqDTO.setUpdateUser(gdsInfoReqDTO.getUpdateUser());
+                iGdsSkuSV.updataGdsSkuByGdsId(gdsSkuReqDTO);
+            }
+        }catch (Exception e){
+            log.error("更新单品基本信息异常：",e);
+            throw new Exception(e);
+        }
+
         try{
             if (gdsId!=0){
                 if ("1".equals(gdsInfoReqDTO.getStatus())){
