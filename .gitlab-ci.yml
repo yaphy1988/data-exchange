@@ -119,7 +119,7 @@ deploy_review:
     - if [[ $(cat ${CI_PROJECT_DIR}/.CT_EXCEPT_SQL_FILES) == 0 ]]; then echo -e "\n未提交除DB变更外的其他代码，跳过部署步骤。\n";exit 0;fi
     # 执行部署
     # dubbo部署
-    - ssh asbuser@127.0.0.1 "set -x;cd woego-ansible;
+    - ssh asbuser@127.0.0.1 "set -x;cd ansible;
       export ANSIBLE_INVENTORY=inventory/${DEP_ENV};
       ansible-playbook -v deploy_javaSvr.yml
       -e host=${DEP_ENV}_aip_center_svr
