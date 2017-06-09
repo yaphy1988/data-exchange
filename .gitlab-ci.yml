@@ -94,7 +94,7 @@ build_artifacts:
     - mkdir -p applications
     - for i in {1..8};do
       eval build_module=\${build_module1${i}};
-      eval build_module_application_name=${build_module${i}_application_name};
+      eval build_module_application_name=\${build_module${i}_application_name};
       cd ${build_module}/target;
       echo -e "PKG_VERSION：${build_maven_version}\nPKG_REF：${CI_BUILD_REF_NAME}\nPKG_LAST_COMMIT：${CI_BUILD_REF}\nPKG_PIP：${CI_PIPELINE_ID}\nPKG_TIME：$(date)" > ${build_module_application_name}/VERSION;
       tar -cf ../../applications/${build_module_application_name}-${build_maven_version}.tar ${build_module_application_name};
