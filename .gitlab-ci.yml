@@ -127,7 +127,8 @@ deploy_review:
       -e DEP_ENV=${DEP_ENV}
       -e build_maven_version=${build_maven_version}
       -e PRD_NAME=${CI_PROJECT_NAME}
-      -e javaapp_application_name=${build_module_application_name}"
+      -e javaapp_application_name=${build_module_application_name}";
+      done
   tags:
     - ANSIBLE
 
