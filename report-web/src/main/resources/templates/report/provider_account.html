@@ -16,6 +16,10 @@
     <div style="width: 100%;float: left">
     <form class="form-inline" role="form" style="float: left;" method="post" id="queryForm">
         <div class="form-group">
+            <label >供应商ID:</label>
+            <input type="text" class="form-control layer-date" id="providerId" name="providerId">
+        </div>
+        <div class="form-group">
             <label >订购时间:</label>
             <input placeholder="开始时间" class="form-control layer-date" id="startTime" name="startTime">-
             <input placeholder="结束时间" class="form-control layer-date" id="endTime" name="endTime">
@@ -107,12 +111,18 @@
             dateTimepickerinit($('#startTime'),$('#endTime'));
             $('#toolbar').parent().attr('style','margin-top:0px;');
         });
+        //自定义查询触发事件
+        function doQuery(params){
+            $('#table').bootstrapTable('refresh');//刷新表格
+            $('#table2').bootstrapTable('refresh');//刷新表格
+        }
 
         // 要求重写次方法，请求服务器数据入参方法,参数可自定义
         function queryParams(params) {
             var param = {
                 startDate : $("#startTime").val(),
                 endDate : $("#endTime").val(),
+                providerId:$("#providerId").val(),
                 pageindex : this.pageNumber,
                 pageSize : this.pageSize
             }
@@ -123,9 +133,11 @@
             var param = {
                 startDate : $("#startTime").val(),
                 endDate : $("#endTime").val(),
+                providerId:$("#providerId").val(),
                 pageindex : this.pageNumber,
                 pageSize : this.pageSize
             }
+            return param;
         }
         /**
          * 初始化时间控件
