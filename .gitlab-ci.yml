@@ -107,3 +107,13 @@ build_artifacts:
     expire_in: 24 hrs
   tags:
     - ANSIBLE
+
+insert_commit:
+  stage: record
+  script:
+    # 提交commit到数据库
+    - cd ${CI_PROJECT_DIR}/ans_dep/dep
+    - ./insert_commit_info.sh
+    - cd -
+  tags:
+    - ANSIBLE
