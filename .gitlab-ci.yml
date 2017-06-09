@@ -90,7 +90,7 @@ build_artifacts:
     # 如果除DB变更文件外无其他文件提交，则跳过部署
     - if [[ $(cat ${CI_PROJECT_DIR}/.CT_EXCEPT_SQL_FILES) == 0 ]]; then echo -e "\n未提交除DB变更外的其他代码，跳过编译步骤。\n";exit 0;fi
     # 开始编译
-    - mvn -DskipTests=true -U clean deploy;
+    - mvn -U clean deploy -Dmaven.test.skip=true
     - mkdir -p applications
     - for i in {1..8};do
       eval build_module=\${build_module1${i}};
@@ -105,13 +105,5 @@ build_artifacts:
       - applications/
     name: "${CI_PROJECT_NAME}_${CI_BUILD_REF_NAME}_${CI_PIPELINE_ID}"
     expire_in: 24 hrs
-  tags:
-    - ANSIBLE
-mvn_build:
-  stage: build
-  script:
-    - mvn -U clean deploy -Dmaven.test.skip=true
-  only:
-    - develop
   tags:
     - ANSIBLE
