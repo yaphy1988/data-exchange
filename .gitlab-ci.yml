@@ -118,7 +118,7 @@ deploy_review:
     # 如果除DB变更文件外无其他文件提交，则跳过部署
     - if [[ $(cat ${CI_PROJECT_DIR}/.CT_EXCEPT_SQL_FILES) == 0 ]]; then echo -e "\n未提交除DB变更外的其他代码，跳过部署步骤。\n";exit 0;fi
     # 执行部署
-    - for i in 1;do
+    - for i in {1..8};do
       eval build_module_application_name=\${build_module${i}_application_name};
       ssh asbuser@127.0.0.1 "set -x;cd ansible;
       export ANSIBLE_INVENTORY=inventory/${DEP_ENV};
