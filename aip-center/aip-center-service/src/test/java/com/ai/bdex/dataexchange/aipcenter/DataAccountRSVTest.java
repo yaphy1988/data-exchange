@@ -34,14 +34,15 @@ public class DataAccountRSVTest {
 
 
         RechargeReqDTO rechargeDTO = new RechargeReqDTO();
-        rechargeDTO.setRechargeUserId("fangyf007");
-        rechargeDTO.setSubOrder("20170512000000001-1");
+        rechargeDTO.setRechargeUserId("fangyf008");
+        rechargeDTO.setSubOrder("20170606000000001-1");
         rechargeDTO.setRechargeType(Constants.Bill.RECHARGE_TYPE_NUM);
-        rechargeDTO.setOrderId("20170512000000001");
+        rechargeDTO.setOrderId("20170606000000001");
         rechargeDTO.setServiceId("getlocationinterface");
         rechargeDTO.setTotalNum(10000);
         rechargeDTO.setTotalMoney(1000000);
         rechargeDTO.setPeriodType(Constants.Bill.DATA_ACCT_PERIOD_VALID);
+        rechargeDTO.setPackageType(Constants.Bill.PACKAGE_TYPE_FIX);
         rechargeDTO.setStartDate(new Date());
         rechargeDTO.setEndDate(new Date(System.currentTimeMillis()+15552000000L));
 
