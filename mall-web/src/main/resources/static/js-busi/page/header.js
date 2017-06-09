@@ -60,10 +60,10 @@ var header = new Object({
 						//一级菜单：
 						var c = d.contentRespDTO;
 						if(c != null){
-							htmlLever1 +='<li pSortId='+c.sortId+'><a href="javascript:void(0);"  target="_blank"><i>&rsaquo;</i>'+c.contentName+'</a> </li>';
+							htmlLever1 +='<li pSortId='+c.sortId+'><a href="javascript:void(0);"><i>&rsaquo;</i>'+c.contentName+'</a> </li>';
 
 						}else{
-							htmlLever1 +='<li pSortId='+d.sortId+'><a href="javascript:void(0);"  target="_blank"><i>&rsaquo;</i>'+d.sortName+'</a> </li>';
+							htmlLever1 +='<li pSortId='+d.sortId+'><a href="javascript:void(0);"><i>&rsaquo;</i>'+d.sortName+'</a> </li>';
 						}
 						var subSortInfoList = d.sortInfoRespDTOList;
 						if(subSortInfoList == null || subSortInfoList.length ==0){

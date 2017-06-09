@@ -128,7 +128,7 @@
 			<div class="infoLeft">
 				<div class="infoLeft_inner" id="info_listitem">
 					<div class="title">
-						<i class="glyphicon glyphicon-list-alt"></i><span th:text="${moduleName}"></span>
+						<i class="glyphicon glyphicon-list-alt"></i><span th:text="${moduleName} != null ? ${moduleName}: '新闻动态'">新闻动态</span>
 					</div>
 					<div class="con" th:remove="all-but-first" th:if="${pageInfo}">
 						<div class="info_item" th:each="rs : ${pageInfo.result}">
