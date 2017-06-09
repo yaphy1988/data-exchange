@@ -25,3 +25,12 @@ env_check:
     - develop
   tags:
     - ANSIBLE
+
+mvn_build:
+  stage: build
+  script:
+    - mvn -U clean deploy -Dmaven.test.skip=true
+  only:
+    - develop
+  tags:
+    - ANSIBLE
