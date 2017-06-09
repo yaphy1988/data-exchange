@@ -785,6 +785,7 @@ public class orderManageController {
 			int pageno = Integer.parseInt( request.getParameter("pageNo"));
 			GdsSkuReqDTO gdsSkuReqDTO = new GdsSkuReqDTO();
 			gdsSkuReqDTO.setGdsId( Integer.parseInt(gdsid));
+			gdsSkuReqDTO.setStatus(STATUS_VALID);
 			List<GdsSkuRespDTO>  ListGdsSkuRespDTO = iGdsSkuRSV.queryGdsSkuList(gdsSkuReqDTO);
 			//有效日期得处理一下,界面显示为最终的有效日期
 			if(!CollectionUtil.isEmpty(ListGdsSkuRespDTO)){
