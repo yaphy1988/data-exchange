@@ -98,7 +98,7 @@ build_artifacts:
       cd ${build_module}/target;
       echo -e "PKG_VERSION：${build_maven_version}\nPKG_REF：${CI_BUILD_REF_NAME}\nPKG_LAST_COMMIT：${CI_BUILD_REF}\nPKG_PIP：${CI_PIPELINE_ID}\nPKG_TIME：$(date)" > ${build_module_application_name}/VERSION;
       tar -cf ${CI_PROJECT_DIR}/applications/${build_module_application_name}-${build_maven_version}.tar ${build_module_application_name};
-      echo "${build_module_application_name} 打包成功！"
+      echo "${build_module_application_name} 打包成功！";
       cd - > /dev/null;
       done
     # 执行打包推送应用
