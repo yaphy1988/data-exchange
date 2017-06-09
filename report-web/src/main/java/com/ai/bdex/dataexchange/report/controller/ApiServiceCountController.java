@@ -59,7 +59,6 @@ public class ApiServiceCountController {
             queryInfo.setQueryStatus(queryStatus);
         }
         PageInfo<AipServiceCountQueryInfo> page = reportSV.getRePortData(API_COUNT_KEY,queryInfo);
-        System.out.println(""+page.getList().size());
         return page;
     }
 
