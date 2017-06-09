@@ -5,6 +5,7 @@ import com.ai.bdex.dataexchange.report.service.interfaces.IReportSV;
 import com.ai.bdex.dataexchange.report.service.interfaces.IRowForMat;
 import com.ai.bdex.dataexchange.util.StringUtil;
 import com.ai.paas.utils.DateUtil;
+import com.alibaba.boot.dubbo.annotation.DubboConsumer;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,6 +33,9 @@ public class ProviderAccountController {
     @RequestMapping(value = "/supplierbilling")
     public String queryUserRegister(Model model) throws Exception{
         model.addAttribute("hello","报表");
+
+
+
         log.info("报表数据请求已经到达report-web，返回页面模板：report/user_billing");
         return "report/provider_account :: #table_content";
     }
