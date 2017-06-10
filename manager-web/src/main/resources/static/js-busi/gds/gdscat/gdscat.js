@@ -2,7 +2,7 @@ var zTreeObj;
 $(function(){
 	GdsCat.initZTree();
 	//新增同级分类
-	$(".addNewSomeLevel").off().on('click',function(e){
+	$(document).off().on("click",'.addNewSomeLevel',function(e){
 		$("#editCatId").val('');
 		$("#editInfoCatId").hide();
 		$("#netChildCat").val("");
@@ -10,7 +10,7 @@ $(function(){
 		e.preventDefault();
 	});
 	//新增下级分类
-	$(".addChildCat").off().on('click',function(e){
+	$(document).off().on("click",'.addChildCat',function(e){
 		$("#editCatId").val('');
 		//表示进行的是新增下级分类的操作
 		$("#netChildCat").val("true");
@@ -19,7 +19,7 @@ $(function(){
 		e.preventDefault();
 	});
 	//编辑
-	$(".editThisCat").off().on('click',function(e){
+	$(document).off().on("click",'.editThisCat',function(e){
 		$("#editInfoCatId").show();
 		$("#netChildCat").val("");
 		GdsCat.queryEditCatInfo($(this).attr('catId'));
