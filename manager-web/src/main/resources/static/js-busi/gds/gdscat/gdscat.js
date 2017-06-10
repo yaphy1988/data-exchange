@@ -1,23 +1,23 @@
 var zTreeObj;
+//新增同级分类
+function addNewSomeLevel (){
+	$("#editCatId").val('');
+	$("#editInfoCatId").hide();
+	$("#netChildCat").val("");
+	$("#myModalLabel").text("新增同级分类");
+	$("#myModal2").modal();
+}
+//新增下级分类
+function addChildCat(){
+	$("#editCatId").val('');
+	//表示进行的是新增下级分类的操作
+	$("#netChildCat").val("true");
+	$("#editInfoCatId").hide();
+	$("#myModalLabel").text("新增下级分类");
+	$("#myModal2").modal();
+}
 $(function(){
 	GdsCat.initZTree();
-	//新增同级分类
-	$(document).off().on("click",'.addNewSomeLevel',function(e){
-		$("#editCatId").val('');
-		$("#editInfoCatId").hide();
-		$("#netChildCat").val("");
-		$("#myModal2").modal();
-		e.preventDefault();
-	});
-	//新增下级分类
-	$(document).off().on("click",'.addChildCat',function(e){
-		$("#editCatId").val('');
-		//表示进行的是新增下级分类的操作
-		$("#netChildCat").val("true");
-		$("#editInfoCatId").hide();
-		$("#myModal2").modal();
-		e.preventDefault();
-	});
 	//编辑
 	$(document).off().on("click",'.editThisCat',function(e){
 		$("#editInfoCatId").show();

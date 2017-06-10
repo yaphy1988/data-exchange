@@ -111,7 +111,7 @@
 									    </tbody>
 									</table>
 									<div class="text-right">
-									    <button class="btn btn-default btn-mini ml20 addNewSomeLevel" id="addNewSomeLevel"><i class="glyphicon glyphicon-plus"></i>新增同级分类</button>
+									    <button class="btn btn-default btn-mini ml20" id="addNewSomeLevel" onclick="addNewSomeLevel()"><i class="glyphicon glyphicon-plus"></i>新增同级分类</button>
 									    <button class="btn btn-default btn-mini editThisCat" id="editThisCat" th:attr="catId=${catInfo.catId}"><i class="glyphicon glyphicon-pencil"></i>编辑</button>
 									    <button class="btn btn-default btn-mini" id="deleteThisCat" th:onclick="'javascript:GdsCat.deleteGdsCat(\''+${catInfo.catId}+'\')'"><i class="glyphicon glyphicon-minus"></i>删除</button>
 									</div>
@@ -247,7 +247,7 @@
 				                    
 				                    <div class="overflow-hidden clearfix" >
 				                          <div class="pull-left mt20">
-				                              <button class="btn btn-primary btn-small addChildCat" data-target="#add_article" data-toggle="modal2"><i class="glyphicon glyphicon-plus"></i>新增下级</button>
+				                              <button class="btn btn-primary btn-small addChildCat" data-target="#add_article" data-toggle="modal2" onclick="addChildCat()"><i class="glyphicon glyphicon-plus"></i>新增下级</button>
 				                          </div>
 				                          <!-- pagerBar -->
 			                              <div class="pagelist pull-right" th:remove="all" th:replace="fragments/pager :: pager">
