@@ -32,7 +32,7 @@
 	            <a href="#" th:href="@{/homePage/contactouer}">联系我们</a>
 				<a class="item" href="#"
 				   th:if="${staffInfoDTO!=null and staffInfoDTO.loginIn}"
-				   th:href="${session.menuDisPlayFirstUrl==null}? '#':${session.menuDisPlayFirstUrl}"
+				   th:href="${staffInfoDTO.staffType=='1'}?${#tools.managerDomain()+'/orderManage/orderManage'}:${#tools.managerDomain()+'/orderManage/myOrder'}"
 				   th:text="${staffInfoDTO.staffType=='1'}?'后台管理':'个人中心'">
 					个人中心
 				</a>

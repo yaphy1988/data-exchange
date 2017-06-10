@@ -61,5 +61,6 @@ function buyGoodsAgain(gdsId,skuId){
  	//window.location.href = basePath+"/goods/details/"+gdsId+"-"+skuId;
 }
 function jumpToInterface(gdsId,skuId){
- 	window.location.href = MALL_ROOT+"/goods/details/"+gdsId+"-"+skuId;
+	var url = MALL_ROOT+"/goods/details/"+gdsId+"-"+skuId;
+	window.open(url);
 }

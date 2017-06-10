@@ -121,6 +121,9 @@ public class OrdInfoSVImpl  implements IOrdInfoSV {
 		if (StringUtil.isNotBlank(ordInfoReqDTO.getSubOrder())) {
 			criteria.andSubOrderEqualTo(ordInfoReqDTO.getSubOrder());
 		}
+		if (StringUtil.isNotBlank(ordInfoReqDTO.getAipServiceId())) {
+			criteria.andAipServiceIdEqualTo(Integer.parseInt(ordInfoReqDTO.getAipServiceId()));
+		}
 		if (StringUtil.isNotBlank(ordInfoReqDTO.getOrderId())) {
 			criteria.andOrderIdEqualTo(ordInfoReqDTO.getOrderId());
 		}

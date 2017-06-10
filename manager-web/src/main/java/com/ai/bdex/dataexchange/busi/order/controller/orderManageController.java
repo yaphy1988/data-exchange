@@ -179,7 +179,7 @@ public class orderManageController {
                      //取最早申请的支付成功的数据
 					OrdInfoReqDTO ordInfo = new OrdInfoReqDTO ();
 					ordInfo.setAipServiceId(serviceid);
-					ordInfo.setCreateStaff(staff_id);
+					ordInfo.setStaffId(staff_id);
 					ordInfo.setPayFlag(Constants.Order.ORDER_PAY_FLAG_1);
 					List<OrdInfoRespDTO>  listOrder =  iOrderInfoRSV.queryMyDataFirstBuy(ordInfo);
 					if (CollectionUtils.isNotEmpty(listOrder)) {
