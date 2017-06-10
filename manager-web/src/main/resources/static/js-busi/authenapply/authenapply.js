@@ -78,6 +78,10 @@ function saveapply(){
 	var taxNo = $("#taxNo").val();
 	var organCode = $("#organCode").val();
 	var vfsId1 = $("#vfsId1").val();
+	if($.trim(vfsId1) == ""){
+        WEB.msg.info('提示',"请上传营业执照副本",null);
+        return;
+	}
 	var relName = $("#relName").val();
 	if(!relName){
 		showwarm('relName','请填写联系人姓名！');
@@ -107,6 +111,10 @@ function saveapply(){
     }
 	//邮箱
 	var companyMail = $("#companyMail").val();
+	if($.trim(companyMail) == ""){
+        showwarm('companyMail','请输入邮箱！');
+        return;
+    }
     if(companyMail && WEB.check.isEmail(companyMail) == false){
         showwarm('companyMail','邮箱格式错误！');
         return;

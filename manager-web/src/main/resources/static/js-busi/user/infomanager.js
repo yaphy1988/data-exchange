@@ -302,7 +302,10 @@ function updateInfo(){
         }
         //邮箱
         var companyMail = $("#companyMail").val();
-
+        if($.trim(companyMail) == ""){
+            showwarm('companyMail','请输入邮箱！');
+            return;
+        }
         if(companyMail && WEB.check.isEmail(companyMail) == false){
             showwarm('companyMail','邮箱格式错误！');
             return;
