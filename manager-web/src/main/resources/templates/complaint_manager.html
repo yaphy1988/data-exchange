@@ -118,14 +118,14 @@
 	                       <table class="table table-bordered text-center" >
 	                            <thead>
 	                            <tr class="active">
-	                                <th>订单编码</th>
-	                                <th>投诉事项</th>
-									<th>投诉内容</th>
-	                                <th>投诉日期</th>
-									<th>回复内容</th>
-	                                <th>处理时间</th>
-	                                <th>投诉状态</th>
-	                                <th>操作</th>
+									<th width="10%">订单编码</th>
+									<th width="5%">投诉事项</th>
+									<th width="25%">投诉内容</th>
+									<th width="10%">投诉日期</th>
+									<th width="20%">回复内容</th>
+									<th width="10%">处理时间</th>
+									<th width="10%">投诉状态</th>
+									<th width="5%">操作</th>
 	                            </tr>
 	                            </thead>
 	                            <tbody th:if="${pageInfo}">
@@ -134,9 +134,19 @@
 		                                <td th:if="${rs.complaintItem} == '0'">快速发货</td>
 										<td th:if="${rs.complaintItem} == '1'">售后保障</td>
 										<td th:if="${rs.complaintItem} == '9'">其它</td>
-										<td th:text="${rs.ordComplaintContRespDTO.fromRemark}">商品投诉</td>
+										<td>
+											<div style="overflow: hidden;text-overflow: ellipsis;display: box; display:-webkit-box; line-clamp: 2;-webkit-line-clamp: 2;-webkit-box-orient: vertical;"
+												 th:text="${rs.ordComplaintContRespDTO.fromRemark}" th:title="${rs.ordComplaintContRespDTO.fromRemark}">
+												商品投诉
+											</div>
+										</td>
 		                                <td th:text="${#dates.format(rs.complaintsTime, 'yyyy-MM-dd  HH:mm:ss')}">2017-02-10 18:08:34</td>
-										<td th:text="${rs.ordComplaintContRespDTO.repeatCont}">无视</td>
+										<td>
+											<div style="overflow: hidden;text-overflow: ellipsis;display: box; display:-webkit-box; line-clamp: 2;-webkit-line-clamp: 2;-webkit-box-orient: vertical;"
+												 th:text="${rs.ordComplaintContRespDTO.repeatCont}"  th:title="${rs.ordComplaintContRespDTO.repeatCont}">
+												无视
+											</div>
+										</td>
 		                                <td th:if="${rs.complaintStatus} == '2'" th:text="${#dates.format(rs.updateTime, 'yyyy-MM-dd  HH:mm:ss')}">2018-02-23 12:12:34</td>
 										<td th:if="${rs.complaintStatus} != '2'"></td>
 		                                <td th:if="${rs.complaintStatus} == '1'">待处理</td>

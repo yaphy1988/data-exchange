@@ -36,11 +36,18 @@ function checkModalData(params){
         WEB.msg.info('提示','订单编号不能为空！');
         return false;
     }
+
     if(!params.complaintContent){
+        $('#needcontentDiv .error-tip span').html('请填写投诉内容');
         $('#complaintContent').next().attr('style','visibility: block;color:red');
         return false;
     }else{
-        $('#complaintContent').next().attr('style','visibility: hidden');
+        if(WEB.fucCheckLength(params.complaintContent)>512){
+            $('#needcontentDiv .error-tip span').html('不能超过512个字符');
+            $('#complaintContent').next().attr('style','visibility: block;color:red');
+        }else{
+            $('#complaintContent').next().attr('style','visibility: hidden');
+        }
     }
     if(!params.linPerson){
         $('#lnkposen').next().attr('style','visibility: block;color:red');
