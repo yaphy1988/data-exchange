@@ -69,17 +69,27 @@ var header = new Object({
 						if(subSortInfoList == null || subSortInfoList.length ==0){
 							return;
 						}
-						//子菜单：目前只取一个
+						//二级菜单：目前只取一个
 						var subMenu = subSortInfoList[0];
-						htmlLever2 += '<div pSortId='+subMenu.parentSortId+' class="sidebar-hidden" style="display: none">'+
-						'<a href="'+setLinkUrk(subMenu.contentRespDTO.contentLink)+'" ><h4>'+subMenu.sortName+'</h4></a>'+
-						'<div class="sidebar-link">';
-						//子菜单内容	
+						htmlLever2 += '<div pSortId='+subMenu.parentSortId+' class="sidebar-hidden" style="display: none">';
+						var subMlinkUrl = subMenu.contentRespDTO.contentLink;
+                        if(subMlinkUrl != null && subMlinkUrl != undefined && subMlinkUrl != ""){
+                            htmlLever2 +='<a href="'+setLinkUrk(subMlinkUrl)+'" target="_blank"><h4>'+subMenu.sortName+'</h4></a>';
+						}else{
+                            htmlLever2 +='<a href="'+setLinkUrk(subMlinkUrl)+'" ><h4>'+subMenu.sortName+'</h4></a>';
+						}
+                        htmlLever2 +='<div class="sidebar-link">';
+						//三级菜单内容
 						var contentVOList = subMenu.sortInfoRespDTOList;
 						$(contentVOList).each(function(i,d){
 							var k = d.contentRespDTO;
 							if(k != null){
-								htmlLever2 +='<a href="'+setLinkUrk(k.contentLink)+'"  target="_blank">'+k.contentName+'</a>';
+								var linkUrl = k.contentLink;
+                                if(linkUrl != null && linkUrl != undefined && linkUrl != ""){
+                                    htmlLever2 +='<a href="'+setLinkUrk(linkUrl)+'"  target="_blank">'+k.contentName+'</a>';
+								}else{
+                                    htmlLever2 +='<a href="'+setLinkUrk(linkUrl)+'">'+k.contentName+'</a>';
+                                }
 							}
 						});
 						htmlLever2 +='</div></div>';

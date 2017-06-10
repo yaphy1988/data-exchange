@@ -203,7 +203,7 @@ margin-right: -46px;
 }
 .sidebar-hidden{
     height: 400px;
-    width: 940px;
+    width: 340px;
     border: 2px solid #2b4099;
     border-left: 0;
     background: #fff;
@@ -224,7 +224,6 @@ margin-right: -46px;
     line-height: 2.6;
 }
 .sidebar-link a{
-    white-space: nowrap;
     margin-right:15px;
     color: #666;
 }
@@ -260,13 +259,14 @@ margin-right: -46px;
 .carousel-control.right{
     background: none;
 }
-
+.carousel-control{
+    top: 50%;
+}
 .icon-left,.icon-right{
     display: inline-block;
     width: 40px;
     height: 96px;
     position: relative;
-    top:50%;
     margin-top: -48px;
     background-image: url("../images/left-right.png");
     overflow: hidden;
