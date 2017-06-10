@@ -115,6 +115,9 @@
 										<a href="javaScript:void(0)"
 											th:onclick="'cancelOrder(this,'+@{${list.orderId}}+')'">取消订单</a>
 									</p>
+									<p class="pop-link" th:if="${list.ordInfoRespDTO.status=='02'} or  ${list.ordInfoRespDTO.status=='03'}  or  ${list.ordInfoRespDTO.status=='04'} or  ${list.ordInfoRespDTO.status=='99'}">
+										--
+									</p>
 								</td>
 							</tr>
 
