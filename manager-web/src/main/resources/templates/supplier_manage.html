@@ -116,7 +116,8 @@
 							</tr>
 						</tbody>
 					</table>
-					<div class="text-right">
+					<div class="clearfix">
+						<div class="btnBox" >
 						<button class="btn btn-primary btn-sm" type="button" th:onclick="'addAipModal()'">新增</button>
 						<a href="javaScript:void(0)" class="btn btn-default btn-sm" th:onclick="'batchDelAipProviderInfo()'">批量失效</a>
 					</div>
@@ -144,6 +145,7 @@
 								callback : pagerClick
 							});
 						</script>
+					</div>
 					</div>
 				</div>
 				<div class="pagelist" th:replace="fragments/pager :: pager"

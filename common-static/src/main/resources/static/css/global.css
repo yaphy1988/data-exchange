@@ -465,9 +465,17 @@ fieldset[disabled] .btn-default.focus {
 		opacity: 1;
 		color: #ec6000;
 	}
+
+  /* 页面下方操作按钮盒子 */
+  .btnBox{
+    text-align: left;
+    float: left;
+    margin: 20px 0 ;
+  }
 	/* 分页 */
 	.pagelist{
-		text-align: center;
+		text-align: right;
+    float: right;
 	}
 	.pagination > .active > a,
 	.pagination > .active > span,
