@@ -21,7 +21,6 @@ var Search = {
 				Search.gridGdsInfo(param);
 				e.preventDefault();
 			});
-			
 			//分类选择事件绑定
 			$(".catSelecte").off().on('click',function(e){
 				var $this = $(this);
