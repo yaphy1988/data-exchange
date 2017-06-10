@@ -45,6 +45,7 @@ function selectGdsLabelModal(){
  * @returns
  */
 function selectGdsLabel(obj){
+	
 	var labName=$(obj).attr("labName");
 	var labColor=$(obj).attr("labColor");
 	$("#selGdsLabName").val(labName);
