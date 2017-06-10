@@ -44,16 +44,20 @@ public class AipParaCacheSVImpl implements InitializingBean{
 					if(APIConstants.AipCache.AIP_PARA_SIMPLE_TYPE.equals(paraType)){
 						List<AipParaSimple> simpleList= gatewayAipParaSimpleSV.getValidAipParaSimpleListByLinkKey(paraLinkKey);
 						if(!CollectionUtil.isEmpty(simpleList)){
-							Map<String,String> cacheMap=new HashMap<String,String>();
+//							Map<String,String> cacheMap=new HashMap<String,String>();
 							String mapCacheKey=APIConstants.AipCache.AIP_CACHE_NAME_PREFIX+paraCode;
 							for(AipParaSimple simple:simpleList){
-								cacheMap.put(simple.getSpCode(), simple.getSpValue());														
+								String spCodeKey=mapCacheKey+"_"+simple.getSpCode();
+								if(CacheUtil.exists(spCodeKey)){
+									CacheUtil.delItem(spCodeKey);
+								}
+								CacheUtil.addItem(spCodeKey, simple.getSpValue());
 							}
-							//扔进缓存							
-							if(CacheUtil.exists(mapCacheKey)){
-								CacheUtil.delItem(mapCacheKey);
-							}
-							CacheUtil.addMap(mapCacheKey, cacheMap);						
+//							//扔进缓存							
+//							if(CacheUtil.exists(mapCacheKey)){
+//								CacheUtil.delItem(mapCacheKey);
+//							}
+//							CacheUtil.addMap(mapCacheKey, cacheMap);						
 						}
 					}
 				}

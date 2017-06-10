@@ -18,9 +18,11 @@ import com.ai.bdex.dataexchange.apigateway.dao.model.AipPServiceUsedLog;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.ApiTransationCode;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants.SystemErrorCode;
+import com.ai.bdex.dataexchange.apigateway.dubbo.dto.AipPServiceUsedLogDTO;
 import com.ai.bdex.dataexchange.apigateway.dubbo.dto.ApiTransationRespDTO;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IAipPServiceUsedLogSV;
 import com.ai.bdex.dataexchange.apigateway.service.interfaces.IApiDealTransationSV;
+import com.ai.bdex.dataexchange.apigateway.util.AipCacheUtil;
 import com.ai.paas.sequence.SeqUtil;
 import com.ai.paas.utils.DateUtil;
 import com.ai.paas.utils.StringUtil;
@@ -43,21 +45,52 @@ public class DefaultDealTransation4CFCASVImpl implements IApiDealTransationSV{
 		Map resultMap=null;
 		logBean.setCreateTime(new Timestamp(System.currentTimeMillis()));
 		logBean.setRequestMsg(JSON.toJSONString(getParamMap(paramMap)));
-	
+		Object result=null;
 		//调用fcfa基础服务
 		try{
-			resultMap=cFCATransactionSV.getResult(serviceId, version, getParamMap(paramMap));
-			
-			Object result=resultMap==null?null:resultMap.get("result");
-
-			dto.setResult(result);
-			if(null!=resultMap){
-				dto.setRespCode(SystemErrorCode.CODE_00000);
-				dto.setRespDesc("success");				
+			//包含有head和body
+			resultMap=sendRequest(logBean,serviceId, version, paramMap);
+			Map headMap=(Map)resultMap.get("head");
+			if(null!=headMap){
+				String headCode=(String)headMap.get("code");
+				if("00000".equals(headCode)){
+					Map bodyMap=(Map)resultMap.get("body");
+					if(null!=bodyMap){
+						result=bodyMap.get("result");
+					}
+					dto.setRespCode(SystemErrorCode.CODE_00000);
+					dto.setRespDesc("success");	
+				}else{
+					if("20001".equals(headCode)){
+						//cfca 账号不存在，进行告警
+						log.error("cfca account not exists,please contract administrators");
+					}
+					if("20002".equals(headCode)){
+						//cfca 账号被冻结，进行告警
+						log.error("cfca account has been frozen,please contract administrators");
+					}
+					if("20003".equals(headCode)){
+						//cfca 账号余额不足，进行告警
+						log.error("cfca account has not enough money,please contract administrators");
+					}
+					if("20004".equals(headCode)){
+						//cfca 非法交易类型，进行告警
+						log.error("serviceId:"+serviceId+",cfca Illegal transaction type,please contract administrators");
+					}
+					if("20004".equals(headCode)){
+						//cfca 尚未开通此业务，进行告警
+						log.error("serviceId:"+serviceId+",cfca Not yet opened this business,please contract administrators");
+					}
+					dto.setRespCode(ApiTransationCode.CODE_20002);
+					dto.setRespDesc("occured error");
+					
+				}
 			}else{
 				dto.setRespCode(ApiTransationCode.CODE_20002);
 				dto.setRespDesc("no data");
 			}
+			
+			dto.setResult(result);
 						
 			logBean.setResponseMsg(resultMap==null?null:JSON.toJSONString(resultMap));
 			logBean.setResponseTime(new Timestamp(System.currentTimeMillis()));
@@ -134,5 +167,52 @@ public class DefaultDealTransation4CFCASVImpl implements IApiDealTransationSV{
 	}
 	private String getPLogId(){    
 		return DateUtil.getDateString(new Timestamp(System.currentTimeMillis()), "yyyyMMddHHmmss")+SeqUtil.getNextValueLong(APIConstants.AipSeqName.SEQ_AIP_P_SERVICE_USED_LOG);
-	}	
+	}
+	
+	@SuppressWarnings({ "rawtypes" })
+	private Map sendRequest(AipPServiceUsedLog logBean,String serviceId, String version,Map<String, Object> paramMap)throws Exception{
+		Map resultMap=null;
+		resultMap=cFCATransactionSV.getResult(serviceId, version, getParamMap(paramMap));
+		Map headMap=(Map)resultMap.get("head");
+		if(null!=headMap){
+			String headCode=(String)headMap.get("code");
+			if("10008".equals(headCode)){
+				//密钥失效，重新申请
+				AipPServiceUsedLogDTO plogBean=new AipPServiceUsedLogDTO();
+				plogBean.setUsedId(getPLogId());
+				plogBean.setAccessToken("");
+				plogBean.setClientId("");
+				plogBean.setCreateTime(new Timestamp(System.currentTimeMillis()));
+				plogBean.setProviderId("2");
+				plogBean.setServiceId("2");
+				plogBean.setStatus("1");
+				plogBean.setVersion("1.0");
+				plogBean.setFromUsedId(logBean.getUsedId());
+				String lastKey=(String)AipCacheUtil.getConfigFromCache("CFCA", "USER_ACCOUNT_KEY");
+				String key=cFCATransactionSV.applyKey(lastKey, plogBean);
+				if(StringUtil.isBlank(key)){
+					//告警
+					throw new Exception("使用"+lastKey+"申请新的用户密钥失败");
+				}
+				//重新发次请求
+				resultMap=cFCATransactionSV.getResult(serviceId, version, getParamMap(paramMap));
+			}
+		}
+		return resultMap;
+	}
+
+
+	@Override
+	public void sendWarnSms(String warnContent) {
+		// TODO 自动生成的方法存根
+		
+	}
+
+
+	@Override
+	public void sendWarnEmail(String title, String warnContent) {
+		// TODO 自动生成的方法存根
+		
+	}
+	
 }

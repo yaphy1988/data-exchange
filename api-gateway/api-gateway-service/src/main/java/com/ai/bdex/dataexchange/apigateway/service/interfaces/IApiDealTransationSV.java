@@ -10,4 +10,6 @@ public interface IApiDealTransationSV {
 	Map<String, Object> getFinalParamMap(Map<String, Object> paramMap)throws Exception;
 	Class<?> getResultClass();
 	ApiTransationRespDTO checkParams(Map<String,Object> others,Map<String, Object> paramMap);
+	void sendWarnSms(String warnContent);
+	void sendWarnEmail(String title,String warnContent);
 }

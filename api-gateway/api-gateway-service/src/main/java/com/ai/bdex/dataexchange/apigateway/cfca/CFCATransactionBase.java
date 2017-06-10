@@ -12,24 +12,20 @@ import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.apache.commons.httpclient.protocol.Protocol;
 import org.apache.commons.lang3.time.FastDateFormat;
 
-
-
-
-
-import com.ai.bdex.dataexchange.apigateway.dubbo.dto.APIConstants;
+import com.ai.bdex.dataexchange.apigateway.util.AipCacheUtil;
 import com.ai.bdex.dataexchange.apigateway.util.cfca.utils.EncryptUtils;
 import com.ai.bdex.dataexchange.apigateway.util.cfca.utils.HashUtils;
 import com.ai.bdex.dataexchange.apigateway.util.cfca.utils.JsonUtils;
 import com.ai.bdex.dataexchange.apigateway.util.cfca.utils.SSLProtocolSocketFactory;
 import com.ai.bdex.dataexchange.util.StringUtil;
-import com.ai.paas.util.CacheUtil;
+
 
 public class CFCATransactionBase {
     public final static String UTF_8 = "UTF-8";
     /**
      * 加密密钥的密钥
      */
-    private static final String HOME_KEY = "SDGr4234gG465356";
+    private static  String HOME_KEY = "SDGr4234gG465356";
 
     /** 生产环境地址 ,保存缓存和表中*/
     // private String urlPrefix = "https://dtserv.cfca.com.cn/dataservice";
@@ -41,19 +37,19 @@ public class CFCATransactionBase {
     private static int defaultSleepTime = 5000;
 
     /** 异步轮训结果尝试次数 */
-    private static int asyncGetResultTryCount = 3;
+    private  static int asyncGetResultTryCount = 3;
 
     /** 用户账号 */
-    private static final String USER_ACCOUNT_ID = "GZSJ170209";
+    private static  String USER_ACCOUNT_ID = "GZSJ170209";
 
     /** 用户秘钥 */
-    private static final String USER_ACCOUNT_KEY = "MjycqUAwdacm2LmI";
+//    private static final String USER_ACCOUNT_KEY = "MjycqUAwdacm2LmI";
 
 
     static{
         Protocol protocol = new Protocol("https", new SSLProtocolSocketFactory(), 443);
         Protocol.registerProtocol("https", protocol);
-        //初始化urlPrefix
+        //初始化urlPrefix等
         initFromCache();
     }
 
@@ -65,7 +61,7 @@ public class CFCATransactionBase {
     @SuppressWarnings("rawtypes")
     public static String applyKey(String lastKey) throws Exception {
     	if(StringUtil.isBlank(lastKey)){
-    		lastKey=USER_ACCOUNT_KEY;
+    		lastKey=getUserAccountkey();
     	}
     	String key=null;
         Map<String, String> params = new HashMap<>();
@@ -73,7 +69,8 @@ public class CFCATransactionBase {
         params.put("lastKeyGenTime", FastDateFormat.getInstance("yyyyMMddHHmmss").format(new Date()));
         params.put("validationTime", "0");
         params.put("keyType", "0");
-        Map responseBody = notEncryptSync("CF00000001", "apply-for-key.json", params);
+        Map responseMap = notEncryptSync("CF00000001", "apply-for-key.json", params);
+        Map responseBody=(Map)responseMap.get("body");
         if (responseBody != null) {
             String newKey = (String) ((Map) responseBody.get("result")).get("newKey");
             key = EncryptUtils.decryptWithAES(newKey, HOME_KEY); // 替换USER_ACCOUNT_KEY
@@ -215,7 +212,7 @@ public class CFCATransactionBase {
         Map body = new HashMap<String, String>(params);
         String bodyJson = JsonUtils.obj2Json(body);
         System.out.println("encrypt source:" + bodyJson);
-        request.put("body", encryptFlag ? EncryptUtils.encryptWithAES(bodyJson, USER_ACCOUNT_KEY) : body);
+        request.put("body", encryptFlag ? EncryptUtils.encryptWithAES(bodyJson, getUserAccountkey()) : body);
         String temp = JsonUtils.obj2Json(request);
         String hashSource = temp.substring(1, temp.length() - 1);
         System.out.println("hashSource:" + hashSource);
@@ -238,22 +235,26 @@ public class CFCATransactionBase {
         postMethod.releaseConnection();
         Map response = JsonUtils.json2Obj(responseStr, Map.class);
         Map responseBody = null;
+        Map<String,Map<String,Object>> resultMap=new HashMap<>();
+        resultMap.put("head", (Map) response.get("head"));
+        resultMap.put("body", null);
         if ("00000".equals(((Map) response.get("head")).get("code"))) {
-            responseBody = encryptFlag ? JsonUtils.json2Obj(EncryptUtils.decryptWithAES((String) response.get("body"), USER_ACCOUNT_KEY), Map.class)
+            responseBody = encryptFlag ? JsonUtils.json2Obj(EncryptUtils.decryptWithAES((String) response.get("body"), getUserAccountkey()), Map.class)
                     : (Map) (response.get("body"));
             System.out.println("response body:" + responseBody);
         } else {
-            return null;
+            return resultMap;
         }
         if (syncFlag) {
-            return responseBody;
+        	resultMap.put("body", responseBody);
+            return resultMap;
         }
         String orderID = (String) responseBody.get("orderID"); // 异步接口提交任务回执
 
-        responseBody = null;
+        resultMap = null;
 
-        responseBody = asyncGetResult(transactionCode, urlSuffix, encryptFlag, orderID, sleepTime);
-        return responseBody;
+        resultMap = asyncGetResult(transactionCode, urlSuffix, encryptFlag, orderID, sleepTime);
+        return resultMap;
     }
 
     /**
@@ -274,11 +275,15 @@ public class CFCATransactionBase {
      */
     @SuppressWarnings({ "rawtypes", "unchecked" })
     private static Map asyncGetResult(String transactionCode, String urlSuffix, boolean encryptFlag, String orderID, int... sleepTime) throws Exception {
-
+        
+    	Map<String,Map<String,Object>> resultMap=new HashMap<>();
+        resultMap.put("head", null);
+        resultMap.put("body", null);
+        
         Map responseBody = null;
         HttpClient httpClient = new HttpClient();
-
-        while ((responseBody == null || responseBody.get("result") == null) && (asyncGetResultTryCount-- > 0)) {
+        int tryCount=asyncGetResultTryCount;
+        while ((responseBody == null || responseBody.get("result") == null) && (tryCount-- > 0)) {
 
             Thread.sleep(sleepTime != null && sleepTime.length > 0 ? sleepTime[0] : defaultSleepTime);
             long start = System.currentTimeMillis();
@@ -298,7 +303,7 @@ public class CFCATransactionBase {
             body.put("orderID", orderID);
             String bodyJson = JsonUtils.obj2Json(body);
             System.out.println("body source:" + bodyJson);
-            request.put("body", encryptFlag ? EncryptUtils.encryptWithAES(bodyJson, USER_ACCOUNT_KEY) : body);
+            request.put("body", encryptFlag ? EncryptUtils.encryptWithAES(bodyJson, getUserAccountkey()) : body);
             String temp = JsonUtils.obj2Json(request);
             String hashSource = temp.substring(1, temp.length() - 1);
             System.out.println("hashSource:" + hashSource);
@@ -319,8 +324,9 @@ public class CFCATransactionBase {
 
             System.out.println("response:" + responseStr);
             Map response = JsonUtils.json2Obj(responseStr, Map.class);
+            resultMap.put("head", (Map) response.get("head"));
             if ("00000".equals(((Map) response.get("head")).get("code"))) {
-                responseBody = encryptFlag ? JsonUtils.json2Obj(EncryptUtils.decryptWithAES((String) response.get("body"), USER_ACCOUNT_KEY), Map.class)
+                responseBody = encryptFlag ? JsonUtils.json2Obj(EncryptUtils.decryptWithAES((String) response.get("body"), getUserAccountkey()), Map.class)
                         : (Map) (response.get("body"));
                 System.out.println("response body:" + responseBody);
             } else {
@@ -330,24 +336,42 @@ public class CFCATransactionBase {
             System.out.println("+++++++++++++++++++++++++++++++++");
             System.out.println(System.currentTimeMillis() - start);
         }
-        return responseBody;
+        resultMap.put("body",responseBody);
+        return resultMap;
     }
     public static void main(String[] args)throws Exception{
-//    	String key=applyKey(null);
-//    	System.out.println("key:"+key);
-    	testCF203b0001();
+    	String key=applyKey("R20SoZvkgIvlSoLj");
+//    	String key=EncryptUtils.decryptWithAES("g6ryzUhnV9H0IB8gg8QkepnTpM0ljD2WSzoyMeJtBY4=", HOME_KEY);
+    	System.out.println("key:"+key);
+//    	testCF203b0001();
     }
     
     private static void initFromCache(){
-    	String mapCacheKey=APIConstants.AipCache.AIP_CACHE_NAME_PREFIX+"CFCA";
-    	Map<String,String> map=CacheUtil.getMap(mapCacheKey);
-    	if(map==null||map.size()==0){
+    	Object urlValue=AipCacheUtil.getConfigFromCache("CFCA", "urlPrefix");
+    	Object homeKey=AipCacheUtil.getConfigFromCache("CFCA", "HOME_KEY");
+    	Object userAccountId=AipCacheUtil.getConfigFromCache("CFCA", "USER_ACCOUNT_ID");
+    	if(null==urlValue){
     		//发出警告
-    	}else{
-	    	String urlPrefixDB=map.get("urlPrefix");
-	    	if(StringUtil.isNotBlank(urlPrefixDB)){
-	    		urlPrefix=urlPrefixDB;
-	    	}
+    	}else{	    	
+    		urlPrefix=(String)urlValue;	    	
     	}
+    	if(null==homeKey){
+    		//发出警告
+    	}else{	    	
+    		HOME_KEY=(String)homeKey;	    	
+    	}
+    	if(null==userAccountId){
+    		//发出警告
+    	}else{	    	
+    		USER_ACCOUNT_ID=(String)userAccountId;	    	
+    	}
+    }
+    
+    private static String getUserAccountkey()throws Exception{
+    	Object value=AipCacheUtil.getConfigFromCache("CFCA", "USER_ACCOUNT_KEY");
+    	if(null==value){
+    		throw new Exception("get USER_ACCOUNT_KEY FROM CACHE FAILTED");
+    	}
+    	return (String)value;
     }
 }
